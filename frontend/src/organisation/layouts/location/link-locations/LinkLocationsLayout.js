@@ -19,9 +19,10 @@ import {
 } from '../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 
-export default function LinkLocationsLayout (
+export default function LinkLocationsLayout ({
   navigateToPreviousPage,
   navigateToNextPage
+}
 ) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -71,7 +72,7 @@ export default function LinkLocationsLayout (
       )
       if (TargetAreaToAdd) {
         const alertTypes =
-          TargetAreaToAdd.properties.category === 'Flood Warning'
+          TargetAreaToAdd.properties.category === 'Flood Warning' || TargetAreaToAdd.properties.category === 'Flood Warning Rapid Response'
             ? [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
             : TargetAreaToAdd.properties.category === 'Flood Alert'
               ? [AlertType.FLOOD_ALERT]
@@ -110,7 +111,12 @@ export default function LinkLocationsLayout (
           navigate
         )
         if (data) {
-          setChildrenIDs((prev) => [...prev, { id: data.id, TA_CODE: areaId }])
+          setChildrenIDs((prev) => [...prev, {
+            id: data.id,
+            TA_Name: TargetAreaToAdd.properties.TA_Name,
+            TA_CODE: TargetAreaToAdd.properties.TA_CODE,
+            category: TargetAreaToAdd.properties.category
+           }])
         } else {
           // TODO set an error
           console.log(errorMessage)

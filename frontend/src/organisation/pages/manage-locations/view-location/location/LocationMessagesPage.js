@@ -10,7 +10,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { getLocationAdditionals, getLocationOtherAdditional, setCurrentLocation, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOther, getLocationOtherAdditional, setCurrentLocation, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
@@ -21,7 +21,6 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [linkedTAs, setLinkedTAs] = useState([])
   const orgId = useSelector((state) => state.session.orgId)
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
@@ -30,7 +29,7 @@ export default function LocationMessagesPage () {
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
 
-  const [withinAreas, setWithinAreas] = useState(null)
+  const [withinAreas, setWithinAreas] = useState([])
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
   const [floodHistoryUrl, setHistoryUrl] = useState('')
   const [floodHistoryData, setFloodHistoryData] = useState(null)
@@ -39,6 +38,10 @@ export default function LocationMessagesPage () {
     additionalData,
     'alertTypes'
   )
+  const childrenIDs = useSelector((state) => getLocationOther(
+    state,
+    'childrenIDs'
+  ))
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
   const hasFetchedArea = useRef(false)
   const [alertTypesEnabled, setAlertTypesEnabled] = useState([
@@ -74,34 +77,22 @@ export default function LocationMessagesPage () {
     setWithinAreas(result)
   }
 
-  useEffect(() => {
-    const getData = async () => {
-      const childrenIDs = getLocationOtherAdditional(currentLocation.additionals, 'childrenIDs')?.map((child) => child.id) || []
-      for (const taID of childrenIDs) {
-        const alertKey = orgId + ':t_POIS:' + taID
-        const { data } = await backendCall(
-          { key: alertKey },
-          'api/elasticache/get_data',
-          navigate
-        )
-        data && setLinkedTAs((prev) => [...prev, data])
-      }
-    }
-    getData()
-  }, [])
-
-  const onClick = (e, location) => {
+  const onClick = async (e, area) => {
     e.preventDefault()
-    dispatch(setCurrentLocation(location))
+    const alertKey = orgId + ':t_POIS:' + area.id
+    const { data } = await backendCall(
+      { key: alertKey },
+      'api/elasticache/get_data',
+      navigate
+    )
+    data && dispatch(setCurrentLocation(data))
     // Will need a different page to view the nearby area but no figma?
     navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
-  const setHistoricalData = (area, type) => {
+  const setHistoricalData = (taCode, type) => {
     const twoYearsAgo = moment().subtract(2, 'years')
-    if (area) {
-      const taCode = area.properties.TA_CODE
-
+    if (taCode && type) {
       const filteredData = floodHistoryData.filter(
         (alert) =>
           alert['TA Code'] === taCode &&
@@ -116,51 +107,68 @@ export default function LocationMessagesPage () {
     const processFloodData = () => {
       if (floodHistoryData && hasFetchedArea) {
         if (withinAreas.length > 0) {
-          withinAreas.forEach((area) => setHistoricalData(area, area.properties.category))
+          withinAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
+        }
+        if (childrenIDs.length > 0) {
+          childrenIDs.forEach((child) => setHistoricalData(child.TA_CODE, child.category))
         }
       }
     }
     processFloodData()
   }, [floodHistoryData, withinAreas, hasFetchedArea])
 
+  const populateMessagesSent = (category, floodCount) => {
+    let messageSent
+    switch (category) {
+      case 'Flood Warning Rapid Response':
+      case 'Flood Warning':
+        messageSent = [
+          `${floodCount} severe flood warning${floodCount > 1 ? 's' : ''}`,
+          `${floodCount} flood warning${floodCount > 1 ? 's' : ''}`]
+        break
+      case 'Flood Alert':
+        messageSent = [
+          `${floodCount} flood alert${floodCount > 1 ? 's' : ''}`
+        ]
+        break
+      default:
+        messageSent = ['']
+        break
+    }
+    return messageSent
+  }
+
   useEffect(() => {
-    const populateInputs = (withinAreas) => {
+    const populateInputs = (withinAreas, childrenIDs, floodCounts) => {
       const updatedFloodAreas = []
       for (const area of withinAreas) {
-        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode).count
         const taCode = area.properties.TA_CODE
-        let messageSent
-        switch (area.properties.category) {
-          case 'Flood Warning Rapid Response':
-          case 'Flood Warning':
-            messageSent = [
-              `${floodCount} severe flood warning${floodCount > 1 ? 's' : ''}`,
-              `${floodCount} flood warning${floodCount > 1 ? 's' : ''}`]
-            break
-          case 'Flood Alert':
-            messageSent = [
-              `${floodCount} flood alert${floodCount > 1 ? 's' : ''}`
-            ]
-            break
-          default:
-            messageSent = ['']
-            break
-        }
-
+        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode).count
+        const messageSent = populateMessagesSent(area.properties.category, floodCount)
         updatedFloodAreas.push({
           areaName: area.properties.TA_Name,
           areaType: `${area.properties.category === 'Flood Warning Rapid Response' ? 'Severe flood warning' : area.properties.category === 'Flood Warning' ? 'Flood warning' : 'Flood alert'} area`,
           messagesSent: messageSent
         })
       }
-
+      for (const area of childrenIDs) {
+        const taCode = area.TA_CODE
+        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode).count
+        const messageSent = populateMessagesSent(area.category, floodCount)
+        updatedFloodAreas.push({
+          areaName: area.TA_Name,
+          areaType: `${area.category === 'Flood Warning Rapid Response' ? 'Severe flood warning' : area.category === 'Flood Warning' ? 'Flood warning' : 'Flood alert'} area`,
+          messagesSent: messageSent,
+          linked: area.id
+        })
+      }
       setFloodAreasInputs(updatedFloodAreas)
     }
 
-    if (withinAreas) {
-      populateInputs(withinAreas)
+    if ((withinAreas.length > 0 || childrenIDs.length > 0) && floodCounts.length > 0) {
+      populateInputs(withinAreas, childrenIDs, floodCounts)
     }
-  }, [withinAreas])
+  }, [withinAreas, childrenIDs, floodCounts])
 
   useEffect(() => {
     if ((hasFetchedArea) || (floodAreasInputs.length > 0)) {
@@ -178,7 +186,7 @@ export default function LocationMessagesPage () {
       if (currentLocation && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
         if (!hasFetchedArea.current) {
           await getWithinAreas()
-          if (withinAreas) {
+          if (withinAreas.length > 0) {
             hasFetchedArea.current = true
           }
         }
@@ -405,12 +413,10 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          {/* TODO: Add link icon if location is already linked */}
-                          {/* <img
-                          src={linkIcon}
-                          alt='Link icon'
-                          style={{ marginRight: '10px' }}
-                        /> */}
+                          {detail.linked &&
+                          <svg width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M24.0109 10.4792C26.4088 8.08136 26.4088 4.19439 24.0109 1.7965C21.7282 -0.486187 18.0631 -0.609922 15.6311 1.51916L15.3708 1.74957C14.9441 2.12077 14.9015 2.76931 15.2727 3.19598C15.6439 3.62265 16.2924 3.66532 16.7191 3.29411L16.9793 3.06371C18.6007 1.64716 21.0413 1.72823 22.5645 3.25145C24.1602 4.84719 24.1602 7.43708 22.5645 9.0371L17.7303 13.867C16.1345 15.4628 13.5404 15.4628 11.9446 13.867C10.4214 12.3438 10.3404 9.90324 11.7569 8.28189L11.9574 8.05149C12.3286 7.62482 12.286 6.98054 11.8593 6.60507C11.4326 6.2296 10.7884 6.27654 10.4129 6.70321L10.2124 6.93361C8.08754 9.36563 8.21127 13.0307 10.494 15.3134C12.8918 17.7113 16.7788 17.7113 19.1767 15.3134L24.0109 10.4792ZM1.79842 9.5235C-0.599472 11.9214 -0.599472 15.8084 1.79842 18.202C4.08537 20.4889 7.75047 20.6084 10.1825 18.4793L10.4428 18.2489C10.8694 17.8777 10.9121 17.2292 10.5409 16.8025C10.1697 16.3758 9.52115 16.3332 9.09448 16.7044L8.83421 16.9348C7.21286 18.3513 4.77231 18.2702 3.24909 16.747C1.65335 15.1513 1.65335 12.5614 3.24909 10.9614L8.08327 6.13574C9.67902 4.53999 12.2689 4.53999 13.8689 6.13574C15.3921 7.65895 15.4732 10.0995 14.0567 11.7209L13.8263 11.9811C13.4551 12.4078 13.4977 13.0521 13.9244 13.4275C14.3511 13.803 14.9953 13.7561 15.3708 13.3294L15.6012 13.0691C17.7303 10.6371 17.6066 6.97201 15.3239 4.68506C12.926 2.28717 9.03901 2.28717 6.64112 4.68506L1.79842 9.5235Z" fill="black"/>
+                          </svg>}
                           {detail.areaType}
                         </td>
                         <td
@@ -431,47 +437,6 @@ export default function LocationMessagesPage () {
                               <Link className='govuk-link'>Unlink</Link>
                               )
                             : null}
-                        </td>
-                      </tr>
-                    ))}
-                    {linkedTAs.map((linkedTA, index) => (
-                      <tr key={index} className='govuk-table__row'>
-                        <td
-                          className='govuk-table__cell'
-                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                        >
-                          <Link onClick={(e) => onClick(e, linkedTA)} className='govuk-link'>
-                            {linkedTA.address}
-                          </Link>
-                        </td>
-                        <td
-                          className='govuk-table__cell'
-                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                        >
-                          {/* TODO: Add link icon if location is already linked */}
-                          {/* <img
-                            src={linkIcon}
-                            alt='Link icon'
-                            style={{ marginRight: '10px' }}
-                          /> */}
-                        </td>
-                        <td
-                          className='govuk-table__cell'
-                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                        >
-                          {/* {detail.messagesSent.map((message, idx) => (
-                            <div key={idx}>{message}</div>
-                          ))} */}
-                        </td>
-                        <td
-                          className='govuk-table__cell'
-                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                        >
-                          {/* {detail.areaType === 'Flood alert'
-                            ? (
-                              <Link className='govuk-link'>Unlink</Link>
-                              )
-                            : null} */}
                         </td>
                       </tr>
                     ))}

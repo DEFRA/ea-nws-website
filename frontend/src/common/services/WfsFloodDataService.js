@@ -20,7 +20,9 @@ const wfsCall = async (bbox, type) => {
 
 export const getFloodAreas = async (lat, lng) => {
   const { alertAreas, warningAreas } = await getSurroundingFloodAreas(lat, lng)
-  const allAreas = alertAreas.features.concat(warningAreas.features)
+  const alertAreasFeatures = alertAreas?.features || []
+  const warningAreasFeatures = warningAreas?.features || []
+  const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
   const withinAreas = []
   for (const feature of allAreas) {
     if (turf.booleanPointInPolygon([lng, lat], feature)) {
@@ -43,7 +45,9 @@ export const getFloodAreasFromShape = async (geoJsonShape) => {
   // We only want intersections from the current shape to get areas within
   const filteredWarningData = getIntersections(wfsWarningData, geoJsonShape)
   const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
-  const withinAreas = filteredWarningData.features.concat(filteredAlertData.features)
+  const filteredWarningDataFeatures = filteredWarningData?.features || []
+  const filteredAlertDataFeatures = filteredAlertData?.features || []
+  const withinAreas = filteredWarningDataFeatures.concat(filteredAlertDataFeatures)
 
   return withinAreas
 }

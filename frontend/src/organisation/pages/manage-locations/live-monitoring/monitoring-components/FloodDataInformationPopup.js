@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
 import Button from '../../../../../common/components/gov-uk/Button'
+import ServiceNavigation from '../../../../../common/components/gov-uk/ServiceNavigation'
 import AlertType from '../../../../../common/enums/AlertType'
-import { setSelectedLocation } from '../../../../../common/redux/userSlice'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
+import { webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FloodDataInformationPopup({
@@ -107,10 +110,28 @@ export default function FloodDataInformationPopup({
     </a>
   )
 
-  const viewLocation = async (e, location) => {
+  const viewLocation = (e, location) => {
     e.preventDefault()
-    await dispatch(setSelectedLocation(location))
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
     navigate(orgManageLocationsUrls.view.viewLocation)
+  }
+
+  const navLinks = [
+    {
+      name: 'Live',
+      url: '/live'
+    },
+    {
+      name: 'Timeline',
+      url: '/timeline'
+    }
+  ]
+
+  const [currentPage, setCurrentPage] = useState(navLinks[0].url)
+
+  const updateNavBar = (page) => {
+    console.log(page)
+    setCurrentPage(page)
   }
 
   return (
@@ -132,9 +153,14 @@ export default function FloodDataInformationPopup({
               {locationsFloodInformation[0].locationData.address}
             </Link>
           </h1>
-          <p>placeholder for navigation</p>
-          {/* Scrollable section if there are more than 2 items */}
+          <ServiceNavigation
+            navLinks={navLinks}
+            currentPage={currentPage}
+            updatePage={updateNavBar}
+            removeGreyBackground={true}
+          />
           <div
+            className='govuk-!-margin-top-6'
             style={{
               maxHeight:
                 locationsFloodInformation.length > 2 ? '300px' : 'unset',

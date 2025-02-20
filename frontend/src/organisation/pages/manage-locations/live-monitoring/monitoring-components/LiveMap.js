@@ -22,15 +22,11 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
 import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
-import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
-} from '../../../../../common/services/formatters/LocationFormatter'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { createShapefilePattern } from '../../../../components/custom/FloodAreaPatterns'
 import FloodDataInformationPopup from './FloodDataInformationPopup'
 
 export default function LiveMap({
@@ -63,6 +59,11 @@ export default function LiveMap({
     useState(false)
   const [locationsFloodInformation, setLocationsFloodInformation] = useState([])
 
+  useEffect(() => {
+    createShapefilePattern()
+  }, [])
+
+  //flood information popup
   const viewFloodInformationData = (data) => {
     setShowFloodInformationData(true)
     setLocationsFloodInformation(findAllFloodAreasAffectingLocation(data))
@@ -71,6 +72,11 @@ export default function LiveMap({
   const findAllFloodAreasAffectingLocation = (data) => {
     const allPoints = [...severePoints, ...warningPoints, ...alertPoints]
 
+    console.log(
+      'all points',
+      allPoints.map((point) => point.properties)
+    )
+
     return allPoints
       .filter(
         (point) => point.properties.locationData.id === data.locationData.id
@@ -78,11 +84,12 @@ export default function LiveMap({
       .map((point) => point.properties)
   }
 
+  // load live alerts
   useEffect(() => {
     ;(async () => {
+      console.log('start')
       await loadMap()
       setLoading(false)
-      console.log('finished')
     })()
   }, [])
 
@@ -95,7 +102,16 @@ export default function LiveMap({
   }, [loading])
 
   const loadMap = async () => {
-    //get orgs locations
+    // reset data before loading
+    setSeverePoints([])
+    setSevereFloodAreas([])
+    setWarningPoints([])
+    setWarningFloodAreas([])
+    setAlertPoints([])
+    setAlertFloodAreas([])
+    setShapes([])
+
+    // get orgs locations
     const { data: locationsData, errorMessage } = await backendCall(
       { orgId },
       'api/elasticache/list_locations',
@@ -109,7 +125,7 @@ export default function LiveMap({
       })
     }
 
-    //loop through locations and convert points to geojson to calculate bbox and compare
+    // loop through locations and convert points to geojson to calculate bbox and compare
     const locationsCollection = []
     if (locations) {
       locations.forEach((location) => {
@@ -135,7 +151,6 @@ export default function LiveMap({
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
 
-      // load live alerts
       const options = {
         states: ['CURRENT'],
         boundingBox: {
@@ -146,7 +161,7 @@ export default function LiveMap({
         partnerId: ''
       }
 
-      // get live alerts
+      // load live alerts
       const { data: liveAlertsData, errorMessage } = await backendCall(
         { options: options },
         'api/alert/list',
@@ -159,6 +174,11 @@ export default function LiveMap({
           liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
           'TA_CODE'
         )
+
+        if (liveAlert.id === '7') {
+          console.log('live alert id', liveAlert.id)
+        }
+
         const severity = liveAlert.type
         const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
         const floodArea = await getFloodAreaByTaCode(TA_CODE)
@@ -176,6 +196,7 @@ export default function LiveMap({
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type
 
+    // add required data to flood area point
     const createPointWithProperties = (coords) => {
       const point = convertDataToGeoJsonFeature('Point', coords)
       const floodData = {
@@ -195,6 +216,7 @@ export default function LiveMap({
       }
     }
 
+    // for xy coord locations
     const handleXYCoordinates = () => {
       const point = createPointWithProperties([
         coordinates.longitude,
@@ -202,10 +224,15 @@ export default function LiveMap({
       ])
 
       if (turf.booleanIntersects(point, floodArea.geometry)) {
-        processFloodAlert(severity, point, floodArea)
+        console.log(
+          'xy coords in location intersect with flood area',
+          location.id
+        )
+        processFloodArea(severity, point, floodArea)
       }
     }
 
+    // for shapes or boundary's locations
     const handleGeoJsonLocation = () => {
       if (turf.booleanIntersects(geometry.geoJson, floodArea.geometry)) {
         const point = createPointWithProperties([
@@ -214,7 +241,13 @@ export default function LiveMap({
         ])
 
         setShapes((prevShape) => [...prevShape, geometry.geoJson])
-        processFloodAlert(severity, point, floodArea)
+        if (location.id === '7') {
+          console.log('shape location intersects with flood area', location.id)
+
+          console.log('geometry.geoJson', geometry.geoJson)
+          console.log('floodArea.geometry', floodArea.geometry)
+        }
+        processFloodArea(severity, point, floodArea)
       }
     }
 
@@ -225,7 +258,7 @@ export default function LiveMap({
     }
   }
 
-  const processFloodAlert = (severity, point, floodArea) => {
+  const processFloodArea = (severity, point, floodArea) => {
     // locations being affected by flood areas where parent flood alert area and child severe/warning area
     // overlap - moving coords to right/left to avoid this
     point.geometry.coordinates[0] = adjustCoords(
@@ -262,6 +295,7 @@ export default function LiveMap({
     }
   }
 
+  // required to convert the unix time from geosafe
   const getUpdatedTime = (unixTime) => {
     const date = new Date(unixTime * 1000)
 
@@ -285,12 +319,6 @@ export default function LiveMap({
       }
     }
     return ''
-  }
-
-  const viewLocation = (e, location) => {
-    e.preventDefault()
-    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
-    navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
   const ZoomTracker = () => {
@@ -407,7 +435,10 @@ export default function LiveMap({
           {showFloodInformationData && (
             <FloodDataInformationPopup
               locationsFloodInformation={locationsFloodInformation}
-              onClose={() => setShowFloodInformationData(false)}
+              onClose={() => {
+                setShowFloodInformationData(false)
+                setLocationsFloodInformation([])
+              }}
             />
           )}
           <MapContainer

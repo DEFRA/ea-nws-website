@@ -121,11 +121,11 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         )
 
       if (isInAlertArea) {
-        setHistoricalAlertNumber(alertArea.features[0].properties.FWS_TACODE)
+        setHistoricalAlertNumber(alertArea.features[0].properties.TA_CODE)
       }
       if (isInWarningArea) {
         setHistoricalWarningNumber(
-          warningArea?.features[0].properties.FWS_TACODE
+          warningArea?.features[0].properties.TA_CODE
         )
       }
 

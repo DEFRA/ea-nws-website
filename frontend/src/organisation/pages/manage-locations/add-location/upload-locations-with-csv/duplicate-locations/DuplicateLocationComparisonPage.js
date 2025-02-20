@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
+import {
+  setNotFoundLocations,
+  setNotInEnglandLocations
+} from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -13,11 +17,13 @@ import LocationInformation from './duplicate-location-components/LocationInforma
 export default function DuplicateLocationComparisonPage () {
   const location = useLocation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [existingOrNew, setExistingOrNew] = useState('')
   const [error, setError] = useState('')
   const existingLocation = location?.state?.existingLocation
   const newLocation = location?.state?.newLocation
   const numDuplicates = location?.state?.numDuplicates
+  const flow = location?.state?.flow || null
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -34,6 +40,17 @@ export default function DuplicateLocationComparisonPage () {
       setError('')
     }
   }, [existingOrNew])
+
+  const navigateToNextPage = (url) => {
+    navigate(url, {
+      state: {
+        text:
+          existingOrNew === 'Existing'
+            ? `Existing ${existingLocation.additionals.locationName} kept`
+            : `${newLocation.additionals.locationName} replaced`
+      }
+    })
+  }
 
   const handleSubmit = async () => {
     if (existingOrNew === '') {
@@ -59,9 +76,15 @@ export default function DuplicateLocationComparisonPage () {
 
       if (numDuplicates === 1) {
         if (notFoundLocations > 1) {
-          navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard)
+          flow?.includes('not-found') &&
+            dispatch(setNotFoundLocations(notFoundLocations - 1))
+          navigateToNextPage(
+            orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
+          )
         } else if (notInEnglandLocations > 1) {
-          navigate(
+          flow?.includes('not-in-england') &&
+            dispatch(setNotInEnglandLocations(notInEnglandLocations - 1))
+          navigateToNextPage(
             orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
           )
         } else {
@@ -69,14 +92,9 @@ export default function DuplicateLocationComparisonPage () {
           navigate(orgManageLocationsUrls.view.dashboard)
         }
       } else {
-        navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage, {
-          state: {
-            text:
-              existingOrNew === 'Existing'
-                ? `Existing ${existingLocation.additionals.locationName} kept`
-                : `${newLocation.additionals.locationName} replaced`
-          }
-        })
+        navigateToNextPage(
+          orgManageLocationsUrls.add.manageDuplicateLocationsPage
+        )
       }
     }
   }
@@ -102,48 +120,50 @@ export default function DuplicateLocationComparisonPage () {
                 Select if you want to keep the existing location or use the new
                 location uploaded.
               </div>
-              <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
-                <div className='outline-1px'>
-                  <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
-                    Existing Location
-                  </div>
-                  <LocationInformation location={existingLocation} />
-                  <div
-                    className={`org-location-information-footer ${
-                      error && 'error'
-                    }`}
-                  >
-                    <p className='govuk-!-margin-0'>Keep existing location</p>
-                    <Radio
-                      label=''
-                      name='ExistingOrNewRadio'
-                      small='true'
-                      onChange={(e) => setExistingOrNew('Existing')}
-                    />
+              <div className='org-location-comparison'>
+                <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
+                  <div className='outline-1px org-location-comparison-box'>
+                    <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
+                      Existing Location
+                    </div>
+                    <LocationInformation location={existingLocation} />
+                    <div
+                      className={`org-location-information-footer ${
+                        error && 'error'
+                      }`}
+                    >
+                      <p className='govuk-!-margin-0'>Keep existing location</p>
+                      <Radio
+                        label=''
+                        name='ExistingOrNewRadio'
+                        small='true'
+                        onChange={(e) => setExistingOrNew('Existing')}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='govuk-grid-column-one-half govuk-!-padding-right-0'>
-                <div className='outline-1px'>
-                  <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
-                    New Location
-                  </div>
-                  <LocationInformation
-                    location={newLocation}
-                    comparedLocation={existingLocation}
-                  />
-                  <div
-                    className={`org-location-information-footer ${
-                      error && 'error'
-                    }`}
-                  >
-                    <p className='govuk-!-margin-0'>Use new location</p>
-                    <Radio
-                      label=''
-                      name='ExistingOrNewRadio'
-                      small='true'
-                      onChange={(e) => setExistingOrNew('New')}
+                <div className='govuk-grid-column-one-half govuk-!-padding-right-0'>
+                  <div className='outline-1px org-location-comparison-box'>
+                    <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
+                      New Location
+                    </div>
+                    <LocationInformation
+                      location={newLocation}
+                      comparedLocation={existingLocation}
                     />
+                    <div
+                      className={`org-location-information-footer ${
+                        error && 'error'
+                      }`}
+                    >
+                      <p className='govuk-!-margin-0'>Use new location</p>
+                      <Radio
+                        label=''
+                        name='ExistingOrNewRadio'
+                        small='true'
+                        onChange={(e) => setExistingOrNew('New')}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

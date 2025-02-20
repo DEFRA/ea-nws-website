@@ -7,6 +7,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import store from '../../../../../../common/redux/store'
 import {
+  getLocationAdditional,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
@@ -16,6 +17,7 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
+import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
@@ -35,6 +37,16 @@ export default function DropPinOnMapLayout ({
   let { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+  const locationName = useSelector((state) =>
+    getLocationAdditional(state, 'locationName')
+  )
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
+
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [displayCoords, setDisplayCoords] = useState('')
@@ -43,12 +55,6 @@ export default function DropPinOnMapLayout ({
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
-  const notFoundLocations = useSelector(
-    (state) => state.session.notFoundLocations
-  )
-  const notInEnglandLocations = useSelector(
-    (state) => state.session.notInEnglandLocations
-  )
 
   const pinDropCoordsDisplay = () => {
     if (pinCoords) {
@@ -77,6 +83,25 @@ export default function DropPinOnMapLayout ({
     }
   }, [pinCoords])
 
+  const checkDuplicateLocation = async () => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type: 'valid'
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
+
   const handleSubmit = async () => {
     if (!pinCoords) {
       setError('Click on the map to drop a pin')
@@ -85,10 +110,12 @@ export default function DropPinOnMapLayout ({
         pinCoords.latitude,
         pinCoords.longitude
       )
-      if (inEngland) {
+      const duplicateLocation = await checkDuplicateLocation()
+      const locationToAdd = store.getState().session.currentLocation
+
+      if (inEngland && !duplicateLocation) {
         dispatch(setCurrentLocationCoordinates(pinCoords))
 
-        const locationToAdd = store.getState().session.currentLocation
         const dataToSend = { authToken, orgId, location: locationToAdd }
         const { data, errorMessage } = await backendCall(
           dataToSend,
@@ -135,6 +162,15 @@ export default function DropPinOnMapLayout ({
             ? setError(errorMessage)
             : setError('Oops, something went wrong')
         }
+      } else if (inEngland && duplicateLocation) {
+        navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
+          state: {
+            existingLocation: geoSafeToWebLocation(duplicateLocation),
+            newLocation: geoSafeToWebLocation(locationToAdd),
+            numDuplicates: 1,
+            flow
+          }
+        })
       } else {
         navigateToNotInEnglandPage()
       }

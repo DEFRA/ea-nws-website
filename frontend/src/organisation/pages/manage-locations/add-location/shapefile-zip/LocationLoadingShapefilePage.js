@@ -1,4 +1,4 @@
-import { area, centroid } from '@turf/turf'
+import { area, bbox, centroid } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -13,7 +13,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-// import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
+import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationLoadingShapefilePage () {
@@ -54,7 +54,7 @@ export default function LocationLoadingShapefilePage () {
 
     const properties = geojsonData.features[0]?.properties || {}
 
-    return {
+    const multiPolygonGeoJSON = {
       type: 'Feature',
       properties: { ...properties, fileName: geojsonData.fileName },
       geometry: {
@@ -62,6 +62,9 @@ export default function LocationLoadingShapefilePage () {
         coordinates: multiPolygonCoords
       }
     }
+
+    const featureBbox = bbox(multiPolygonGeoJSON)
+    return { ...multiPolygonGeoJSON, bbox: featureBbox }
   }
 
   const calculateShapeArea = (geojson) => {
@@ -103,11 +106,10 @@ export default function LocationLoadingShapefilePage () {
         ? dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_POLYGON))
         : dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_LINE))
 
-      // const bbox = geojsonData.geometry?.bbox
-
-      const inEngland = true
-      // (await locationInEngland(bbox[1], bbox[0])) &&
-      // (await locationInEngland(bbox[3], bbox[2]))
+      const bbox = geojsonData.bbox
+      const inEngland =
+        (await locationInEngland(bbox[1], bbox[0])) &&
+        (await locationInEngland(bbox[3], bbox[2]))
 
       const locationName =
         geojsonData.properties.name || geojsonData.properties.fileName

@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
-import {
-  setNotFoundLocations,
-  setNotInEnglandLocations
-} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage () {
+export default function LocationLoadingShapefilePage () {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
-  const [validLocations, setValidLocations] = useState(null)
-  const [invalidLocations, setInvalidLocations] = useState(null)
-  const [duplicateLocations, setDuplicateLocations] = useState(null)
+  const [geojsonData, setGeojsonData] = useState(null)
+  const [duplicateLocation, setDuplicateLocation] = useState(false)
+  const [notInEnglandLocation, setNotInEnglandLocation] = useState(false)
   const location = useLocation()
   const orgId = useSelector((state) => state.session.orgId)
   const fileName = location.state?.fileName
@@ -30,17 +25,13 @@ export default function LocationAddLoadingPage () {
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = () => {
-      if (invalidLocations === 0) {
-        navigate(orgManageLocationsUrls.add.confirm, {
-          state: { fileName, valid: validLocations }
-        })
+      if (duplicateLocation) {
+        // TODO: EAN-1523 - navigate to duplicate page
+      } else if (notInEnglandLocation) {
+        // TODO: EAN-1523 - navigate to not in england page
       } else {
-        navigate('/organisation/manage-locations/confirm', {
-          state: {
-            fileName,
-            valid: validLocations,
-            duplicates: duplicateLocations
-          }
+        navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
+          state: { geojsonData }
         })
       }
     }
@@ -48,7 +39,7 @@ export default function LocationAddLoadingPage () {
       continueToNextPage()
     } else if (status === 'rejected') {
       // navigate back to the upload page and pass the errors
-      navigate(orgManageLocationsUrls.add.uploadFile, {
+      navigate(orgManageLocationsUrls.add.uploadLocationsWithShapefile, {
         state: {
           errors
         }
@@ -62,7 +53,7 @@ export default function LocationAddLoadingPage () {
       const dataToSend = { orgId, fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
-        'api/bulk_uploads/process_status',
+        'api/shapefile/process_status',
         navigate
       )
       if (data) {
@@ -74,34 +65,16 @@ export default function LocationAddLoadingPage () {
             setErrors(data.error)
           }
           if (data?.data) {
-            setValidLocations(data.data.valid.length)
-
-            // Duplicate location that are found
-            const duplicateLocations = data.data.invalid.filter(
-              (invalid) =>
-                Array.isArray(invalid.error) &&
-                invalid.error.includes('duplicate') &&
-                invalid.error.length === 1
-            ).length
-            setDuplicateLocations(duplicateLocations)
-
-            // Not in England locations
-            const notInEnglandLocations = data.data.invalid.filter(
-              (invalid) =>
-                Array.isArray(invalid.error) &&
-                invalid.error.includes('not in England')
-            ).length
-            dispatch(setNotInEnglandLocations(notInEnglandLocations))
-
-            // Not found locations
-            dispatch(
-              setNotFoundLocations(
-                data.data.invalid.length -
-                  duplicateLocations -
-                  notInEnglandLocations
-              )
+            setDuplicateLocation(
+              Array.isArray(data.data?.properties?.error) &&
+              data.data.properties.error.includes('duplicate') &&
+              data.data.properties.error.length === 1
             )
-            setInvalidLocations(data.data.invalid.length)
+            setNotInEnglandLocation(
+              Array.isArray(data.data?.properties?.error) &&
+              data.data.properties.error.includes('not in England')
+            )
+            setGeojsonData(data.data)
           }
           setStatus(data.status)
         }
@@ -123,7 +96,7 @@ export default function LocationAddLoadingPage () {
       const dataToSend = { Message: fileName }
       const { errorMessage } = await backendCall(
         dataToSend,
-        'api/bulk_uploads/process_file',
+        'api/shapefile/process_file',
         navigate
       )
       if (errorMessage) {

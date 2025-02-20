@@ -296,7 +296,7 @@ export default function ViewLocationsDashboardPage () {
     } else if (type === 'linked-locations') {
       updatedFilteredLocations = locations.filter(
         (location) =>
-          location.additionals.parentID.length > 0 &&
+          location.additionals.other?.childrenIDs?.length > 0 &&
           location.additionals.other?.alertTypes?.length > 0
       )
       setSelectedFloodMessagesAvailableFilters(['Yes'])

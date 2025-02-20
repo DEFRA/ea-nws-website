@@ -59,10 +59,14 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   }
 }
 
-export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0.5) => {
+export const getSurroundingFloodAreasFromShape = async (
+  geoJsonShape,
+  bboxKM = 0.5
+) => {
   // Add a buffer zone around the shape
-  console.log(geoJsonShape)
-  const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, { units: 'kilometers' })
+  const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, {
+    units: 'kilometers'
+  })
   // Get the boundary box for the buffered shape - it will be a square
   const bbox = turf.bbox(bufferedShape)
   const bboxInput =
@@ -84,7 +88,7 @@ const getIntersections = (areas, bufferedShape) => {
   const bufferedShapeValid = turf.booleanValid(bufferedShape.geometry)
   if (!bufferedShapeValid) return
   const bufferedShapeGeometry = bufferedShape.geometry
-  const filteredTargetData = areas.features.filter(area => {
+  const filteredTargetData = areas.features.filter((area) => {
     if (turf.booleanValid(area.geometry)) {
       try {
         return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
@@ -101,7 +105,10 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
   const bboxKM = 0.5 // size of bounding box from centre in KM
 
   // alert area
-  const { data: wfsAlertData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_alerts')
+  const { data: wfsAlertData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'flood_alerts'
+  )
 
   const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
     (floodArea) => floodArea.properties.TA_CODE === code
@@ -195,7 +202,10 @@ export const getLocationsNearbyRiversAndSeaFloodAreas = async (
   lng,
   bboxKM = 0.5
 ) => {
-  const { data: riversAndSeaFloodRiskData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'risk-rivers-sea')
+  const { data: riversAndSeaFloodRiskData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'risk-rivers-sea'
+  )
 
   return riversAndSeaFloodRiskData
 }
@@ -205,7 +215,10 @@ export const getLocationsNearbyGroundWaterFloodAreas = async (
   lng,
   bboxKM = 0.5
 ) => {
-  const { data: groundwaterFloodRiskData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'groundwater-flood-risk')
+  const { data: groundwaterFloodRiskData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'groundwater-flood-risk'
+  )
 
   return groundwaterFloodRiskData
 }

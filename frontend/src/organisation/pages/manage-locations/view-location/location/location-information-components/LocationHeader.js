@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { useNavigate } from 'react-router-dom'
@@ -28,7 +28,30 @@ export default function LocationHeader ({ currentPage }) {
   const [showPopup, setShowPopup] = useState(false)
   const [error, setError] = useState(false)
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
+
   const handleDelete = async () => {
+    const unregisterData = {
+      authToken,
+      locationId: locationId,
+      partnerId
+    }
+
+    await backendCall(
+      unregisterData,
+      'api/location/unregister_from_partner',
+      navigate
+    )
+
     const locationIds = [locationId]
     const dataToSend = { authToken, orgId, locationIds }
 

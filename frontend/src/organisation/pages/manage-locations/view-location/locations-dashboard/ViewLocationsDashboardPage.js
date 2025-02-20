@@ -553,6 +553,20 @@ export default function ViewLocationsDashboardPage () {
       locationIds.push(location.id)
     })
 
+    for (const locationID of locationIds) {
+      const unregisterData = {
+        authToken,
+        locationId: locationID,
+        partnerId
+      }
+
+      await backendCall(
+        unregisterData,
+        'api/location/unregister_from_partner',
+        navigate
+      )
+    }
+
     const dataToSend = { authToken, orgId, locationIds }
 
     const { errorMessage } = await backendCall(

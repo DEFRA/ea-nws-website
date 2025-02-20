@@ -34,10 +34,6 @@ export default function LocationLoadingShapefilePage () {
 
   // Takes a GeoJSON FeatureCollection and converts to a MultiPolygon (for shapefile handling)
   const convertToMultiPolygon = (geojsonData) => {
-    if (!geojsonData || geojsonData.type !== 'FeatureCollection') {
-      return geojsonData // No changes needed
-    }
-
     const multiPolygonCoords = geojsonData.features
       .filter(
         (feature) =>

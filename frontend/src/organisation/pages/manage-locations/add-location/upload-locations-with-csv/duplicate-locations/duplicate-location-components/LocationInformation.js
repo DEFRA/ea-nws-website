@@ -1,3 +1,4 @@
+import { area } from '@turf/turf'
 import LocationDataType from '../../../../../../../common/enums/LocationDataType'
 import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../../components/custom/Map'
@@ -58,14 +59,16 @@ export default function LocationInformation ({ location, comparedLocation }) {
     }
   }
 
-  const getShapePolygonArea = () => {
-    const formattArea = (area) => {
-      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const calculateShapeArea = () => {
+    if (!location.geometry) {
+      return 0
     }
-    const shapeArea = formattArea(
-      Math.round(location.geometry.properties?.Shape_Area)
-    )
-    return shapeArea
+
+    const formatShapeArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
+    }
+
+    return formatShapeArea(Math.round(area(location.geometry) / 1000))
   }
 
   const LocationData = () => {
@@ -81,7 +84,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
         )
       case LocationDataType.SHAPE_POLYGON:
         // code to return shape area
-        return <>{getShapePolygonArea()} square metres</>
+        return <>{calculateShapeArea()} square metres</>
       case LocationDataType.SHAPE_LINE:
         // code to return length of line
         return <>0.5km (dummy data)</>

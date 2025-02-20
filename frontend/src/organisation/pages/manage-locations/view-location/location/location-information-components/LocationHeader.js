@@ -42,7 +42,7 @@ export default function LocationHeader ({ currentPage }) {
   const handleDelete = async () => {
     const unregisterData = {
       authToken,
-      locationId: locationId,
+      locationId,
       partnerId
     }
 

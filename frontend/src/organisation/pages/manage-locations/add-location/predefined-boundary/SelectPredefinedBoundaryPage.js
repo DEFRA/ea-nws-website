@@ -133,9 +133,9 @@ export default function SelectPredefinedBoundaryPage () {
       const locationToAdd = store.getState().session.currentLocation
 
       // Set default alert types
-      let newWebLocation = geoSafeToWebLocation(locationToAdd)
+      const newWebLocation = geoSafeToWebLocation(locationToAdd)
       newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
-      let newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+      const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
       const dataToSend = { authToken, orgId, location: newGeosafeLocation }
       const { data } = await backendCall(
@@ -164,7 +164,7 @@ export default function SelectPredefinedBoundaryPage () {
           'api/location/register_to_partner',
           navigate
         )
-        
+
         dispatch(setCurrentLocation(newGeosafeLocation))
         dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
         dispatch(setPredefinedBoundaryFlow(true))

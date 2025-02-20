@@ -129,9 +129,9 @@ export default function DropPinOnMapLayout ({
         dispatch(setCurrentLocationCoordinates(pinCoords))
 
         // Set default alert types
-        let newWebLocation = geoSafeToWebLocation(locationToAdd)
+        const newWebLocation = geoSafeToWebLocation(locationToAdd)
         newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
-        let newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+        const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
         const dataToSend = { authToken, orgId, location: newGeosafeLocation }
         const { data, errorMessage } = await backendCall(
@@ -161,7 +161,7 @@ export default function DropPinOnMapLayout ({
             'api/location/register_to_partner',
             navigate
           )
-      
+
           dispatch(setCurrentLocation(newGeosafeLocation))
 
           // Remove invalid location from elasticache

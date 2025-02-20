@@ -151,9 +151,9 @@ export default function ConfirmLocationLayout ({
     }
 
     // Set default alert types
-    let newWebLocation = geoSafeToWebLocation(locationToAdd)
+    const newWebLocation = geoSafeToWebLocation(locationToAdd)
     newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
-    let newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+    const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
     // since we added to currentLocation we need to get that information to pass to the api
     const dataToSend = { authToken, orgId, location: newGeosafeLocation }

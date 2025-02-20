@@ -13,7 +13,6 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { setLocationAlertTypeOrg } from '../../../../../common/services/ProfileServices'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation,
@@ -46,7 +45,6 @@ export default function ViewLocationsDashboardPage () {
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
   const [unavailableLocationsIds, setUnavailableLocationsIds] = useState([])
-  const [alertOnlyLocationsIds, setAlertOnlyLocationsIds] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -234,7 +232,7 @@ export default function ViewLocationsDashboardPage () {
             </p>
             {alertOnlyLocs.length === 0 && (
               <p>
-                Any updates will change the message settings for all {locationsToBeEdited.length} locations. 
+                Any updates will change the message settings for all {locationsToBeEdited.length} locations.
               </p>
             )}
             {alertOnlyLocs.length > 0 && (
@@ -256,10 +254,10 @@ export default function ViewLocationsDashboardPage () {
               <>
                 <p>
                   Select the type of flood messages you want the other {locationsToBeEdited.length - unavailableLocs.length} locations to get.
-                </p>  
+                </p>
                 {alertOnlyLocs.length === 0 && (
                   <p>
-                    Any updates will change the message settings for all {locationsToBeEdited.length - unavailableLocs.length} locations. 
+                    Any updates will change the message settings for all {locationsToBeEdited.length - unavailableLocs.length} locations.
                   </p>
                 )}
                 {alertOnlyLocs.length > 0 && (
@@ -270,11 +268,11 @@ export default function ViewLocationsDashboardPage () {
                     </p>
                     <p>
                       Any updates will change the message settings for all locations where those message
-                      types are available.  
+                      types are available.
                     </p>
                   </>
                 )}
-                </>
+              </>
             )}
           </>
         )}
@@ -283,10 +281,10 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const getSelectedLocationsInformation = async (selectedLocations) => {
-    let unavailableLocs = []
-    let alertOnlyLocs = []
+    const unavailableLocs = []
+    const alertOnlyLocs = []
 
-    for(const location of selectedLocations){
+    for (const location of selectedLocations) {
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
         location.coordinates.latitude,
         location.coordinates.longitude
@@ -298,16 +296,16 @@ export default function ViewLocationsDashboardPage () {
           location.coordinates.latitude,
           location.coordinates.longitude,
           alertArea
-      )
+        )
       const isInWarningArea =
         warningArea &&
         isLocationInFloodArea(
           location.coordinates.latitude,
           location.coordinates.longitude,
           warningArea
-      )
+        )
 
-      if(!isInAlertArea && !isInWarningArea) {
+      if (!isInAlertArea && !isInWarningArea) {
         unavailableLocs.push(location.id)
       } else if (!isInWarningArea && isInAlertArea) {
         alertOnlyLocs.push(location.id)
@@ -315,7 +313,6 @@ export default function ViewLocationsDashboardPage () {
     }
 
     setUnavailableLocationsIds(unavailableLocs)
-    setAlertOnlyLocationsIds(alertOnlyLocs)
 
     return editLocationText(selectedLocations, unavailableLocs, alertOnlyLocs)
   }
@@ -342,7 +339,7 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const editDialog = async (locationsToBeEdited) => {
-    let dialogText = await getSelectedLocationsInformation(locationsToBeEdited)
+    const dialogText = await getSelectedLocationsInformation(locationsToBeEdited)
     if (locationsToBeEdited && locationsToBeEdited.length > 0) {
       setDialog({
         show: true,
@@ -350,9 +347,9 @@ export default function ViewLocationsDashboardPage () {
         title: `Update message settings for ${locationsToBeEdited.length} ${
           locationsToBeEdited.length > 1 ? 'locations' : 'location'
         }`,
-        buttonText: `Update message settings`,
+        buttonText: 'Update message settings',
         buttonClass: '',
-        error:'',
+        error: '',
         options: [
           {
             label: 'Severe flood warnings',
@@ -483,14 +480,14 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const editLocations = async (locationsToEdit) => {
-    let chosenAlerts = []
-    if (dialog.options[0].sent){
+    const chosenAlerts = []
+    if (dialog.options[0].sent) {
       chosenAlerts.push(AlertType.SEVERE_FLOOD_WARNING)
     }
-    if (dialog.options[1].sent){
+    if (dialog.options[1].sent) {
       chosenAlerts.push(AlertType.FLOOD_WARNING)
     }
-    if (dialog.options[2].sent){
+    if (dialog.options[2].sent) {
       chosenAlerts.push(AlertType.FLOOD_ALERT)
     }
 
@@ -528,9 +525,9 @@ export default function ViewLocationsDashboardPage () {
     setDialog({ ...dialog, show: false })
   }
 
-  const handleRadioChange = (index, isItOn) => {    
+  const handleRadioChange = (index, isItOn) => {
     setDialog(prevDialog => {
-      const updatedDialog = {...prevDialog}
+      const updatedDialog = { ...prevDialog }
       updatedDialog.options = [...prevDialog.options]
       updatedDialog.options[index] = {
         ...updatedDialog.options[index],
@@ -622,13 +619,12 @@ export default function ViewLocationsDashboardPage () {
 
   const handleClose = () => {
     setUnavailableLocationsIds([])
-    setAlertOnlyLocationsIds([])
 
     setDialog({ ...dialog, show: false })
   }
 
-  const validateInput = () => {     
-    return dialog.options.some(option => option.sent === null) ? 'There is a problem, select On or Off for each message type': ''
+  const validateInput = () => {
+    return dialog.options.some(option => option.sent === null) ? 'There is a problem, select On or Off for each message type' : ''
   }
 
   const navigateBack = (event) => {
@@ -756,56 +752,56 @@ export default function ViewLocationsDashboardPage () {
                     />
                   </div>
 
-                <div className='govuk-grid-column-three-quarters'>
-                  <div className='govuk-grid-row'>
-                    <Button
-                      text='Close Filter'
-                      className='govuk-button govuk-button--secondary'
-                      onClick={() => onOpenCloseFilter()}
-                    />
+                  <div className='govuk-grid-column-three-quarters'>
+                    <div className='govuk-grid-row'>
+                      <Button
+                        text='Close Filter'
+                        className='govuk-button govuk-button--secondary'
+                        onClick={() => onOpenCloseFilter()}
+                      />
                       {(!location.state || !location.state.linkContacts || location.state.linkContacts.length === 0) && (
                         <>
                         &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
+                          <ButtonMenu
+                            title='More actions'
+                            options={moreActions}
+                            onSelect={(index) => onMoreAction(index)}
+                          />
                         &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                        />
+                          <Button
+                            text='Print'
+                            className='govuk-button govuk-button--secondary inline-block'
+                          />
                         </>
                       )}
-                  </div>
-                  <LocationsTable
-                    locations={locations}
-                    displayedLocations={displayedLocations}
-                    filteredLocations={filteredLocations}
-                    selectedLocations={selectedLocations}
-                    setLocations={setLocations}
-                    setSelectedLocations={setSelectedLocations}
-                    setFilteredLocations={setFilteredLocations}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                    onAction={onAction}
+                    </div>
+                    <LocationsTable
+                      locations={locations}
+                      displayedLocations={displayedLocations}
+                      filteredLocations={filteredLocations}
+                      selectedLocations={selectedLocations}
+                      setLocations={setLocations}
+                      setSelectedLocations={setSelectedLocations}
+                      setFilteredLocations={setFilteredLocations}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      onAction={onAction}
                       actionText='Delete'
                       linkContacts={location.state?.linkContacts}
-                  />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredLocations.length / locationsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    holdPage={holdPage}
-                    setHoldPage={setHoldPage}
-                    pageList
-                    reset={resetPaging}
-                  />
+                    />
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredLocations.length / locationsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      holdPage={holdPage}
+                      setHoldPage={setHoldPage}
+                      pageList
+                      reset={resetPaging}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+                )}
             {dialog.show && (
               <>
                 <Popup
@@ -819,14 +815,13 @@ export default function ViewLocationsDashboardPage () {
                   options={dialog.options}
                   error={dialog.error}
                   setError={(val) =>
-                    setDialog((dial) => ({ ...dial, error: val }))
-                  }
+                    setDialog((dial) => ({ ...dial, error: val }))}
                   validateInput={() => validateInput()}
                   defaultValue={
                     dialog.input ? targetLocation.additionals.locationName : ''
                   }
-                  onRadioChange={handleRadioChange} 
-                  />
+                  onRadioChange={handleRadioChange}
+                />
 
               </>
             )}

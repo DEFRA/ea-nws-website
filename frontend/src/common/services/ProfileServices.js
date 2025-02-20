@@ -301,14 +301,6 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
   return additionals
 }
 
-const setLocationAlertTypeOrg = (additionals, value) => {
-    if (additionals.other !== null) {
-      additionals.other.alertTypes = value
-      return additionals
-    }
-    return null
-}
-
 const getLocationOtherAdditional = (additionals, id) => {
   for (let i = 0; i < additionals.length; i++) {
     if (additionals[i].id === 'other') {
@@ -333,6 +325,5 @@ module.exports = {
   updateAdditionals,
   addLocation,
   removeLocation,
-  updateLocationsAlertTypes,
-  setLocationAlertTypeOrg
+  updateLocationsAlertTypes
 }

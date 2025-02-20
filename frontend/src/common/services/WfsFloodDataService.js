@@ -18,6 +18,36 @@ const wfsCall = async (bbox, type) => {
   return result
 }
 
+export const getFloodAreas = async (lat, lng) => {
+  const { alertAreas, warningAreas } = await getSurroundingFloodAreas(lat, lng)
+  const allAreas = alertAreas.features.concat(warningAreas.features)
+  const withinAreas = []
+  for (const feature of allAreas) {
+    if (turf.booleanPointInPolygon([lng, lat], feature)) {
+      withinAreas.push(feature)
+    }
+  }
+  return withinAreas
+}
+
+export const getFloodAreasFromShape = async (geoJsonShape) => {
+  // Add a buffer zone around the shape
+  const bufferedShape = turf.buffer(geoJsonShape.geometry, 0.5, { units: 'kilometers' })
+  // Get the boundary box for the buffered shape - it will be a square
+  const bbox = turf.bbox(bufferedShape)
+  const bboxInput =
+    bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
+  // warning areas
+  const { data: wfsWarningData } = await wfsCall(bboxInput, 'flood_warnings')
+  const { data: wfsAlertData } = await wfsCall(bboxInput, 'flood_alerts')
+  // We only want intersections from the current shape to get areas within
+  const filteredWarningData = getIntersections(wfsWarningData, geoJsonShape)
+  const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
+  const withinAreas = filteredWarningData.features.concat(filteredAlertData.features)
+
+  return withinAreas
+}
+
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
   const { data: wfsWarningData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_warnings')
@@ -58,7 +88,6 @@ const getIntersections = (areas, bufferedShape) => {
     if (turf.booleanValid(area.geometry)) {
       try {
         return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
-
       } catch (e) {
         console.error('Error during intersection', e)
         return false

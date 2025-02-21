@@ -226,7 +226,12 @@ const listLocations = async (orgId) => {
   await Promise.all(
     locationKeys.map(async (key) => {
       const location = await getJsonData(key)
-      locationArr.push(location)
+      const hasParentID = location.additionals.find((additional) =>
+        additional.id === 'parentID')?.value?.s?.length > 0 || false
+      // We only want to return locations that aren't nearby areas
+      if (!hasParentID) {
+        locationArr.push(location)
+      }
     })
   )
   return locationArr

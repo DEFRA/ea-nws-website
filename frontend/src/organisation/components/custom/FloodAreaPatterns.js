@@ -91,3 +91,29 @@ export const createShapefilePattern = () => {
     .attr('y', 15)
     .attr('fill', '#809095')
 }
+
+export const createLiveMapShapePattern = () => {
+  const liveMapSvg = d3
+    .select('body')
+    .append('svg')
+    .attr('width', 0)
+    .attr('height', 0)
+    .attr('id', 'svg-live-map-shape-pattern')
+
+  const pattern = liveMapSvg
+    .append('pattern')
+    .attr('id', 'live-map-shape-pattern')
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 20)
+    .attr('height', 20)
+
+  // Add diagonal lines
+  pattern
+    .append('line')
+    .attr('x1', 0)
+    .attr('y1', 20)
+    .attr('x2', 20)
+    .attr('y2', 0)
+    .attr('stroke', '#808080') // Grey color
+    .attr('stroke-width', 2)
+}

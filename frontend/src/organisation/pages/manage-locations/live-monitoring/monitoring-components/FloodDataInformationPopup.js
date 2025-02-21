@@ -21,25 +21,22 @@ export default function FloodDataInformationPopup({
   const FLOOD_WARNING_CONFIG = {
     [AlertType.SEVERE_FLOOD_WARNING]: {
       type: 'Severe flood warning',
-      backgroundColor: '#FFD7DC',
+      className: 'live-map-popup-severe',
       borderColor: '#DB091C',
-      iconColor: '#DB091C',
       icon: floodSevereWarningIcon,
       linkText: 'View severe flood warning'
     },
     [AlertType.FLOOD_WARNING]: {
       type: 'Flood warning',
-      backgroundColor: '#FCEAEC',
+      className: 'live-map-popup-warning',
       borderColor: '#DB091C',
-      iconColor: '#DB091C',
       icon: floodWarningIcon,
       linkText: 'View flood warning'
     },
     [AlertType.FLOOD_ALERT]: {
       type: 'Flood alert',
-      backgroundColor: '#FDF1E3',
+      className: 'live-map-popup-alert',
       borderColor: '#EB7C25',
-      iconColor: '#EB7C25',
       icon: floodAlertIcon,
       linkText: 'View flood alert'
     }
@@ -50,24 +47,18 @@ export default function FloodDataInformationPopup({
 
     return (
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          paddingTop: '10px',
-          paddingBottom: '10px',
-          backgroundColor: config.backgroundColor,
-          borderLeft: `6px solid ${config.borderColor}`
-        }}
+        className={`live-map-popup-warning-container ${config.className}`}
+        style={{ borderLeft: `6px solid ${config.borderColor}` }}
       >
-        <div style={{ flex: '0 0 auto', marginRight: '12px' }}>
+        <div className='live-map-popup-icon-container'>
           <img
             src={config.icon}
-            alt={`Flood Icon`}
-            style={{ width: '100px', height: '82px' }}
+            alt='Flood Icon'
+            className='live-map-popup-icon'
           />
         </div>
 
-        <div style={{ flex: 1 }}>
+        <div className='live-map-popup-content'>
           <div className='govuk-grid-row text-nowrap'>
             <span className='govuk-grid-column-one-quarter govuk-!-font-weight-bold govuk-!-font-size-19'>
               Type
@@ -144,7 +135,7 @@ export default function FloodDataInformationPopup({
           </span>
         </div>
         <div className='popup-dialog-body'>
-          <h1 class='govuk-heading-l govuk-link'>
+          <h1 className='govuk-heading-l govuk-link'>
             <Link
               onClick={(e) =>
                 viewLocation(e, locationsFloodInformation[0].locationData)
@@ -160,13 +151,11 @@ export default function FloodDataInformationPopup({
             removeGreyBackground={true}
           />
           <div
-            className='govuk-!-margin-top-6'
-            style={{
-              maxHeight:
-                locationsFloodInformation.length > 2 ? '300px' : 'unset',
-              overflowY:
-                locationsFloodInformation.length > 2 ? 'auto' : 'visible'
-            }}
+            className={`govuk-!-margin-top-6 live-map-popup-scroll-container ${
+              locationsFloodInformation.length > 2
+                ? 'live-map-popup-scrollable'
+                : ''
+            }`}
           >
             {locationsFloodInformation.map((floodInformation, index) => (
               <div key={`${floodInformation.floodData.code}-${index}`}>

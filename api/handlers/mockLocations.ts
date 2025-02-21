@@ -386,6 +386,268 @@ const locations = [
         }
       }
     ]
+  },
+  {
+    id: '9',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Mersey and Surrounding',
+    coordinates: null,
+    geometry: {
+      geoJson: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [-3.061354122057935, 53.47523565129262],
+              [-2.891982383564624, 53.321890425649],
+              [-2.4654345478330697, 53.3930209206699],
+              [-2.2427935885820602, 53.48268362694367],
+              [-2.4623017865785926, 53.546057497151736],
+              [-2.5344064165724376, 53.6223374816538],
+              [-2.5626345621992925, 53.72452977980481],
+              [-2.6285031525856937, 53.77465054832436],
+              [-2.7163417686112723, 53.785821980971605],
+              [-2.8449586825331323, 53.95598969114968],
+              [-2.9578813569513613, 53.946767720824056],
+              [-3.048843491190979, 53.93199738796696],
+              [-3.058242762082159, 53.80807974403061],
+              [-3.051966436219402, 53.75433207999032],
+              [-3.001777517422738, 53.73763567631289],
+              [-2.9170950205208044, 53.737638323631074],
+              [-3.0257843003839042, 53.65490100455378],
+              [-3.1145368945389507, 53.562514781151634],
+              [-3.061354122057935, 53.47523565129262]
+            ]
+          ]
+        }
+      }
+    },
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Mersey and Surrounding' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '["keywords"]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+          })
+        }
+      }
+    ]
+  },
+  {
+    id: '10',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Nottingham',
+    coordinates: null,
+    geometry: {
+      geoJson: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [-1.250307243067624, 53.205946879055205],
+              [-1.504201684828928, 53.06395825754504],
+              [-1.6015490549746119, 52.850622111626166],
+              [-1.5210152003101314, 52.73761160381429],
+              [-1.3406098143558438, 52.68186892424242],
+              [-1.0926498531518973, 52.68521220206887],
+              [-0.888372941757666, 52.724752771764],
+              [-0.7405248230899701, 52.81562316826012],
+              [-0.6774224842033334, 52.90086727059523],
+              [-0.6578691793809242, 53.00254714161565],
+              [-0.6791236787922514, 53.10019747018117],
+              [-0.7448147423122862, 53.22330228361642],
+              [-0.9238539936985148, 53.275952337385434],
+              [-1.0511403389942302, 53.27585346046749],
+              [-1.142818161284282, 53.213554680914626],
+              [-1.1852485991306594, 53.18558391892617],
+              [-1.250307243067624, 53.205946879055205]
+            ]
+          ]
+        }
+      }
+    },
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Nottingham' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '["keywords"]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+          })
+        }
+      }
+    ]
+  },
+  {
+    id: '11',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Hereford',
+    coordinates: {
+      latitude: 52.045556502054296 * 10 ** 6,
+      longitude: -2.703896829613342 * 10 ** 6
+    },
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Hereford' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+          })
+        }
+      }
+    ]
+  },
+  {
+    id: '12',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Southampton',
+    coordinates: null,
+    geometry: {
+      geoJson: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [-2.1341905304781505, 50.837897465696614],
+              [-2.254975323142787, 50.79869959348824],
+              [-2.2060998289651934, 50.74702455739592],
+              [-2.085240518913224, 50.68288837090617],
+              [-1.934970900493994, 50.637307812012324],
+              [-1.8826801203153707, 50.709790441601314],
+              [-1.5657596231154685, 50.664220887167204],
+              [-1.5134799553414382, 50.67457857097227],
+              [-1.392583513093939, 50.633148379220785],
+              [-1.2521182631624015, 50.57511677191059],
+              [-1.173741620136127, 50.61661972630833],
+              [-0.7945967205407669, 50.730447666284505],
+              [-0.7684648311203262, 50.765597433929514],
+              [-0.8044359024997902, 50.83788004880685],
+              [-1.0757420137692861, 50.89562572926238],
+              [-1.3338211062933851, 50.99237032261078],
+              [-1.5821014030443905, 50.992377300820266],
+              [-1.9054976342091834, 50.92652245400137],
+              [-2.1341905304781505, 50.837897465696614]
+            ]
+          ]
+        }
+      }
+    },
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Southampton' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'boundary',
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+          })
+        }
+      }
+    ]
+  },
+  {
+    id: '13',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Little Chester',
+    coordinates: {
+      latitude: 52.92944454871733 * 10 ** 6,
+      longitude: -1.4721362793347623 * 10 ** 6
+    },
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Little Chester' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+          })
+        }
+      }
+    ]
   }
 ]
 

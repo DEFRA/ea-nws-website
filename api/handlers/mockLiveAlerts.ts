@@ -457,8 +457,8 @@ const liveAlerts = {
       workspaceName: 'National Workspace'
     },
     {
-      // this is affecting Gloucester
-      id: '7',
+      // this is affecting Liverpool
+      id: '9',
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
@@ -474,7 +474,7 @@ const liveAlerts = {
           placemarks: [
             {
               id: '0',
-              name: 'The River Severn',
+              name: 'Irish Sea and Mersey estuary from the Head of the Wirral to Runcorn',
               geometry: {
                 rings: [],
                 circles: [],
@@ -483,12 +483,12 @@ const liveAlerts = {
                 extraInfo: [
                   {
                     id: 'TA_CODE',
-                    value: { s: '031FWBSE590' }
+                    value: { s: '013FWTTME8' }
                   },
                   {
                     id: 'TA_NAME',
                     value: {
-                      s: 'The River Severn'
+                      s: 'Irish Sea and Mersey estuary from the Head of the Wirral to Runcorn'
                     }
                   }
                 ]
@@ -513,8 +513,8 @@ const liveAlerts = {
       workspaceName: 'National Workspace'
     },
     {
-      // this is affecting Gloucester
-      id: '8',
+      // this is affecting Liverpool
+      id: '10',
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
@@ -526,11 +526,11 @@ const liveAlerts = {
       certainty: 'OBSERVED',
       mode: {
         zoneDesc: {
-          name: '031FWBSE590',
+          name: '013WAFWI',
           placemarks: [
             {
               id: '0',
-              name: 'Severn estuary from Gloucester to Sharpness',
+              name: 'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey',
               geometry: {
                 rings: [],
                 circles: [],
@@ -539,12 +539,404 @@ const liveAlerts = {
                 extraInfo: [
                   {
                     id: 'TA_CODE',
-                    value: { s: '031WAT217' }
+                    value: { s: '013WAFWI' }
                   },
                   {
                     id: 'TA_NAME',
                     value: {
-                      s: 'Severn estuary from Gloucester to Sharpness'
+                      s: 'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_3',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting Liverpool
+      id: '10',
+      version: 123456,
+      name: 'Flood warning',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '034FWFTRNOTTCITY',
+          placemarks: [
+            {
+              id: '0',
+              name: 'River Trent at Nottingham including The Meadows',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '034FWFTRNOTTCITY' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'River Trent at Nottingham including The Meadows'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_1',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting Derby
+      id: '11',
+      version: 123456,
+      name: 'Flood warning',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '034FWFDELITTLECH',
+          placemarks: [
+            {
+              id: '0',
+              name: 'River Derwent at Little Chester, Eastgate and Cattle Market',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '034FWFDELITTLECH' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'River Derwent at Little Chester, Eastgate and Cattle Market'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_2',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting Derby
+      id: '12',
+      version: 123456,
+      name: 'Flood warning',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '034WAF409',
+          placemarks: [
+            {
+              id: '0',
+              name: 'River Derwent from Rowsley to the River Trent at Shardlow',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '034WAF409' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'River Derwent from Rowsley to the River Trent at Shardlow'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_3',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting Hereford
+      id: '13',
+      version: 123456,
+      name: 'Flood warning',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '031FWFWY110',
+          placemarks: [
+            {
+              id: '0',
+              name: 'River Wye in North Hereford',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '031FWFWY110' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'River Wye in North Hereford'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_2',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting Hereford
+      id: '14',
+      version: 123456,
+      name: 'Flood warning',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '031WAF119',
+          placemarks: [
+            {
+              id: '0',
+              name: 'River Wye in North Hereford',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '031WAF119' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'River Wye in North Hereford'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_3',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting Southampton
+      id: '15',
+      version: 123456,
+      name: 'Flood warning',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '065FWC0501',
+          placemarks: [
+            {
+              id: '0',
+              name: 'Itchen estuary',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '065FWC0501' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'Itchen estuary'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_2',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting Southampton
+      id: '16',
+      version: 123456,
+      name: 'Flood alert',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '065WAC151',
+          placemarks: [
+            {
+              id: '0',
+              name: 'Southampton Water and Hamble',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '065WAC151' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'Southampton Water and Hamble'
                     }
                   }
                 ]

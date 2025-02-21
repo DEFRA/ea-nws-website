@@ -211,7 +211,7 @@ export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
   const data = await getLocationsNearbyRiversAndSeaFloodAreas(lat, lng)
 
   const ratingOrder = {
-    'v.low': 1,
+    'very low': 1,
     low: 2,
     medium: 3,
     high: 4
@@ -219,9 +219,9 @@ export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
 
   if (data) {
     if (data.features && data.features.length > 0) {
-      return getHighestRiskRating(data.features, ratingOrder)
+      return getHighestRiskRating(data.features, ratingOrder, 'prob_4band')
     } else {
-      return 'v.low'
+      return 'very low'
     }
   } else {
     return 'unavailable'
@@ -237,7 +237,7 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
   }
   if (data) {
     if (data.features && data.features.length > 0) {
-      return getHighestRiskRating(data.features, ratingOrder)
+      return getHighestRiskRating(data.features, ratingOrder, 'FlooddRisk')
     } else {
       return 'unlikely'
     }
@@ -246,12 +246,12 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
   }
 }
 
-function getHighestRiskRating (areas, ratingOrder) {
+function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
   // if there are no areas nearby, set to lowest risk rating
   let highestRating = null
 
   areas?.forEach((area) => {
-    const rating = area.properties?.prob_4band.toLowerCase()
+    const rating = area.properties?.[propertyToCheck].toLowerCase()
 
     if (
       ratingOrder[rating] > (highestRating ? ratingOrder[highestRating] : 0)

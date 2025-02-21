@@ -20,7 +20,7 @@ frontend:
       image:
         repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "frontend-0.3.4-hotfix"
+        tag: "frontend-0.3.5"
       livenessProbe:
         httpGet:
           path: /
@@ -70,7 +70,7 @@ backend:
       image:
         repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "backend-0.3.4-hotfix"
+        tag: "backend-0.3.5"
       livenessProbe:
         httpGet:
           path: /liveness

@@ -406,13 +406,10 @@ export default function LiveMap({
     ),
     []
   )
-
-  //map key
-
   // locations affected list under map
   const locationsAffected = [...severePoints, ...warningPoints, ...alertPoints]
 
-  const getFloodIcon = (alertLevel) => {
+  const getLocationsAffectedFloodIcon = (alertLevel) => {
     switch (alertLevel) {
       case AlertType.SEVERE_FLOOD_WARNING:
         return floodSevereWarningIcon
@@ -629,7 +626,9 @@ export default function LiveMap({
                         key={colIndex}
                       >
                         <img
-                          src={getFloodIcon(location.properties.floodData.type)}
+                          src={getLocationsAffectedFloodIcon(
+                            location.properties.floodData.type
+                          )}
                           alt='Flood Icon'
                           style={{
                             width: '55px',

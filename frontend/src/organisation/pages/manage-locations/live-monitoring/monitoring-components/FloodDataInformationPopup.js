@@ -59,7 +59,7 @@ export default function FloodDataInformationPopup({
         </div>
 
         <div className='live-map-popup-content'>
-          <div className='govuk-grid-row text-nowrap'>
+          <div className='text-nowrap'>
             <span className='govuk-grid-column-one-quarter govuk-!-font-weight-bold govuk-!-font-size-19'>
               Type
             </span>
@@ -68,7 +68,7 @@ export default function FloodDataInformationPopup({
             </span>
           </div>
 
-          <div className='govuk-grid-row'>
+          <div>
             <span className='govuk-grid-column-one-quarter govuk-!-font-weight-bold govuk-!-font-size-19 text-nowrap'>
               Flood area
             </span>
@@ -77,7 +77,7 @@ export default function FloodDataInformationPopup({
             </span>
           </div>
 
-          <div className='govuk-grid-row text-nowrap'>
+          <div className='text-nowrap'>
             <span className='govuk-grid-column-one-quarter govuk-!-font-weight-bold govuk-!-font-size-19'>
               Area code
             </span>

@@ -75,11 +75,6 @@ export default function FullscreenMap ({
 
   // Get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {}
-    fetchFloodAreaData()
-  }, [])
-
-  useEffect(() => {
     async function fetchFloodAreaData () {
       if (zoomLevel >= 12 && mapCenter) {
         const { alertArea, warningArea } = await getSurroundingFloodAreas(

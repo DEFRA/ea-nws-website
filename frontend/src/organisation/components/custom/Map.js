@@ -70,6 +70,7 @@ export default function Map ({
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const [shapeBounds, setShapeBounds] = useState(null)
+  const [fitBoundsTriggered, setFitBoundsTriggered] = useState(false)
 
   // get flood area data
   useEffect(() => {
@@ -243,8 +244,9 @@ export default function Map ({
     const map = useMap()
 
     useEffect(() => {
-      if (shapeBounds) {
+      if (shapeBounds && !fitBoundsTriggered) {
         map.fitBounds(shapeBounds)
+        setFitBoundsTriggered(true)
       }
     }, [shapeBounds])
   }

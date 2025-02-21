@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import store from '../../../../../common/redux/store'
@@ -8,20 +8,21 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
-import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOtherAdditional, setCurrentLocation, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
-import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  const authToken = useSelector((state) => state.session.authToken)
+  const [linkedTAs, setLinkedTAs] = useState([])
   const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
+  const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector(
     (state) => getLocationAdditionals(state)
   )
@@ -53,6 +54,29 @@ export default function LocationMessagesPage () {
     'Flood warnings',
     'Flood alerts'
   ]
+
+  useEffect(() => {
+    const getData = async () => {
+      const childrenIDs = getLocationOtherAdditional(currentLocation.additionals, 'childrenIDs')?.map((child) => child.id) || []
+      for (const taID of childrenIDs) {
+        const alertKey = orgId + ':t_POIS:' + taID
+        const { data } = await backendCall(
+          { key: alertKey },
+          'api/elasticache/get_data',
+          navigate
+        )
+        data && setLinkedTAs((prev) => [...prev, data])
+      }
+    }
+    getData()
+  }, [])
+
+  const onClick = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(location))
+    // Will need a different page to view the nearby area but no figma?
+    navigate(orgManageLocationsUrls.view.viewLocation)
+  }
 
   const floodAreasInputs = [
     {
@@ -328,6 +352,47 @@ export default function LocationMessagesPage () {
                   </td>
                 </tr>
               ))}
+              {linkedTAs.map((linkedTA, index) => (
+                <tr key={index} className='govuk-table__row'>
+                  <td
+                    className='govuk-table__cell'
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                  >
+                    <Link onClick={(e) => onClick(e, linkedTA)} className='govuk-link'>
+                      {linkedTA.address}
+                    </Link>
+                  </td>
+                  <td
+                    className='govuk-table__cell'
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                  >
+                    {/* TODO: Add link icon if location is already linked */}
+                    {/* <img
+                      src={linkIcon}
+                      alt='Link icon'
+                      style={{ marginRight: '10px' }}
+                    /> */}
+                  </td>
+                  <td
+                    className='govuk-table__cell'
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                  >
+                    {/* {detail.messagesSent.map((message, idx) => (
+                      <div key={idx}>{message}</div>
+                    ))} */}
+                  </td>
+                  <td
+                    className='govuk-table__cell'
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                  >
+                    {/* {detail.areaType === 'Flood alert'
+                      ? (
+                        <Link className='govuk-link'>Unlink</Link>
+                        )
+                      : null} */}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </>
@@ -338,7 +403,7 @@ export default function LocationMessagesPage () {
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
         // TODO: Add link to nearby flood areas
-        onClick={() => navigate('/')}
+        onClick={() => navigate(orgManageLocationsUrls.add.linkToTargetArea)}
       />
     </>
   )

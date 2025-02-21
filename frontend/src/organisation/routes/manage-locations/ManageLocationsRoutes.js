@@ -86,6 +86,7 @@ import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitorin
 
 // view imports
 import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
+import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
@@ -174,7 +175,8 @@ const orgManageLocationsUrls = {
       addActionPlan:
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
-    }
+    },
+    linkToTargetArea: urlManageOrg + '/add/link'
   },
   edit: {
     individualLocation: {
@@ -529,6 +531,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.optionalInformation.optionalLocation,
     component: <AddOptionalAddress />
+  },
+  {
+    path: orgManageLocationsUrls.add.linkToTargetArea,
+    component: <LinkLocationsPage />
   },
   {
     path: urlManageOrgConfirmLocations,

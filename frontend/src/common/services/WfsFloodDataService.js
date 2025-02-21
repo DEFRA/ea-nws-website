@@ -3,54 +3,89 @@ import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 import { backendCall } from './BackendService'
 
+const wfsCall = async (bbox, type) => {
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-nfws.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: type,
+    srsname: 'EPSG:4326',
+    bbox,
+    outputFormat: 'GEOJSON'
+  }
+  const result = await backendCall(WFSParams, 'api/wfs')
+  return result
+}
+
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
-  let WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'flood_warnings',
-    srsname: 'EPSG:4326',
-    bbox: calculateBoundingBox(lat, lng, bboxKM),
-    outputFormat: 'GEOJSON'
-  }
-  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
-
+  const { data: wfsWarningData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'flood_warnings'
+  )
   // alert area
-  WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'flood_alerts',
-    srsname: 'EPSG:4326',
-    bbox: calculateBoundingBox(lat, lng, bboxKM),
-    outputFormat: 'GEOJSON'
-  }
-  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
-
+  const { data: wfsAlertData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'flood_alerts'
+  )
   return {
     alertArea: wfsAlertData,
     warningArea: wfsWarningData
   }
 }
 
+export const getSurroundingFloodAreasFromShape = async (
+  geoJsonShape,
+  bboxKM = 0.5
+) => {
+  // Add a buffer zone around the shape
+  console.log(geoJsonShape)
+  const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, {
+    units: 'kilometers'
+  })
+  // Get the boundary box for the buffered shape - it will be a square
+  const bbox = turf.bbox(bufferedShape)
+  const bboxInput =
+    bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
+  // warning areas
+  const { data: wfsWarningData } = await wfsCall(bboxInput, 'flood_warnings')
+  // As the surrounding areas will be for square box, it might return data that is irrelevant to the original shape: we need to filter it
+  const filteredWarningData = getIntersections(wfsWarningData, bufferedShape)
+  // alert area
+  const { data: wfsAlertData } = await wfsCall(bboxInput, 'flood_alerts')
+  const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
+  return {
+    alertArea: filteredAlertData,
+    warningArea: filteredWarningData
+  }
+}
+
+const getIntersections = (areas, bufferedShape) => {
+  const bufferedShapeValid = turf.booleanValid(bufferedShape.geometry)
+  if (!bufferedShapeValid) return
+  const bufferedShapeGeometry = bufferedShape.geometry
+  const filteredTargetData = areas.features.filter((area) => {
+    if (turf.booleanValid(area.geometry)) {
+      try {
+        return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
+      } catch (e) {
+        console.error('Error during intersection', e)
+        return false
+      }
+    } else return false
+  })
+  return filteredTargetData
+}
+
 export const getAssociatedAlertArea = async (lat, lng, code) => {
   const bboxKM = 0.5 // size of bounding box from centre in KM
 
   // alert area
-  const WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'flood_alerts',
-    srsname: 'EPSG:4326',
-    bbox: calculateBoundingBox(lat, lng, bboxKM),
-    outputFormat: 'GEOJSON'
-  }
-  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
+  const { data: wfsAlertData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'flood_alerts'
+  )
 
   const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
     (floodArea) => floodArea.properties.TA_CODE === code
@@ -98,7 +133,14 @@ export const isLocationWithinFloodAreaProximity = (
 }
 
 export const getCoordsOfFloodArea = (area) => {
-  const firstLatLngCoords = getFirstCoordinates(area.geometry.coordinates)
+  let firstLatLngCoords
+  try {
+    const latitude = Number(area.properties.latitude.replace(',', '.'))
+    const longitude = Number(area.properties.longitude.replace(',', '.'))
+    firstLatLngCoords = { latitude, longitude }
+  } catch {
+    firstLatLngCoords = getFirstCoordinates(area.geometry.coordinates)
+  }
 
   return firstLatLngCoords
 }
@@ -144,20 +186,9 @@ export const getLocationsNearbyRiversAndSeaFloodAreas = async (
   lng,
   bboxKM = 0.5
 ) => {
-  const WFSParams = {
-    service: 'WFS',
-    map: 'uk-rs.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'risk-rivers-sea',
-    srsname: 'EPSG:4326',
-    bbox: calculateBoundingBox(lat, lng, bboxKM),
-    outputFormat: 'GEOJSON'
-  }
-
-  const { data: riversAndSeaFloodRiskData } = await backendCall(
-    WFSParams,
-    'api/wfs'
+  const { data: riversAndSeaFloodRiskData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'risk-rivers-sea'
   )
 
   return riversAndSeaFloodRiskData
@@ -168,20 +199,9 @@ export const getLocationsNearbyGroundWaterFloodAreas = async (
   lng,
   bboxKM = 0.5
 ) => {
-  const WFSParams = {
-    service: 'WFS',
-    map: 'uk-gf.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'groundwater-flood-risk',
-    srsname: 'EPSG:4326',
-    bbox: calculateBoundingBox(lat, lng, bboxKM),
-    outputFormat: 'GEOJSON'
-  }
-
-  const { data: groundwaterFloodRiskData } = await backendCall(
-    WFSParams,
-    'api/wfs'
+  const { data: groundwaterFloodRiskData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'groundwater-flood-risk'
   )
 
   return groundwaterFloodRiskData

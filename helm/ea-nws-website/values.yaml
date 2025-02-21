@@ -70,7 +70,11 @@ backend:
       image:
         repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
+<<<<<<< HEAD
         tag: "backend-0.3.5"
+=======
+        tag: "backend-0.3.4-hotfix"
+>>>>>>> 7a0141ed071a249ae7411a16223981f2ca229851
       livenessProbe:
         httpGet:
           path: /liveness

@@ -1,4 +1,4 @@
-import { point, pointToPolygonDistance } from '@turf/turf'
+import { distance, point, pointToPolygonDistance } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -35,7 +35,6 @@ export default function LinkLocationsLayout ({
   const orgId = useSelector((state) => state.session.orgId)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
-  const [childrenIDs, setChildrenIDs] = useState([])
 
   const handleCheckboxChange = (areaId) => {
     setSelectedTAs((prev) =>
@@ -66,6 +65,7 @@ export default function LinkLocationsLayout ({
   }
 
   const handleSubmit = async () => {
+    let childrenIDs = []
     for (const areaId of selectedTAs) {
       const TargetAreaToAdd = floodAreas.find(
         (floodArea) => floodArea.properties.TA_CODE === areaId
@@ -111,12 +111,12 @@ export default function LinkLocationsLayout ({
           navigate
         )
         if (data) {
-          setChildrenIDs((prev) => [...prev, {
+          childrenIDs.push({
             id: data.id,
             TA_Name: TargetAreaToAdd.properties.TA_Name,
             TA_CODE: TargetAreaToAdd.properties.TA_CODE,
             category: TargetAreaToAdd.properties.category
-           }])
+           })
         } else {
           // TODO set an error
           console.log(errorMessage)
@@ -204,14 +204,26 @@ export default function LinkLocationsLayout ({
           let distanceM = 0
 
           if (currentLocation.coordinates) {
+            console.log(currentLocation.coordinates)
             // Use the coordinate point for locations that have them
             const locationPoint = point([
               currentLocation.coordinates.longitude,
               currentLocation.coordinates.latitude
             ])
-            distanceM = pointToPolygonDistance(locationPoint, area.geometry, {
-              units: 'meters'
-            })
+            console.log(area)
+            try {
+              distanceM = pointToPolygonDistance(locationPoint, area.geometry, {
+                units: 'meters'
+              })
+            } catch {
+              const areaPoint = point([
+                Number(area.properties.longitude.replace(',', '.')),
+                Number(area.properties.latitude.replace(',', '.'))
+              ])
+              distanceM = distance(locationPoint, areaPoint, {
+                units: 'meters'
+              })
+            }
           } else if (currentLocation.geometry) {
             // For shapefile locations, compute the smallest positive distance
             distanceM = computeMinPositiveDistance(
@@ -235,8 +247,9 @@ export default function LinkLocationsLayout ({
       floodAreasWithDistances = floodAreasWithDistances.filter(Boolean)
       setFloodAreas(floodAreasWithDistances)
     }
-
-    fetchFloodAreas()
+    if (currentLocation.coordinates || currentLocation.geometry) {
+      fetchFloodAreas()
+    }
   }, [currentLocation])
 
   const table = (
@@ -346,7 +359,7 @@ export default function LinkLocationsLayout ({
             <Button
               text='Link to areas'
               className='govuk-button'
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
             />
           </div>
         </div>

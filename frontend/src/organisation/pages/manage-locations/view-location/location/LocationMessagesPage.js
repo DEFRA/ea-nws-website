@@ -168,7 +168,7 @@ export default function LocationMessagesPage () {
     if ((withinAreas.length > 0 || childrenIDs.length > 0) && floodCounts.length > 0) {
       populateInputs(withinAreas, childrenIDs, floodCounts)
     }
-  }, [withinAreas, childrenIDs, floodCounts])
+  }, [withinAreas, floodCounts])
 
   useEffect(() => {
     if ((hasFetchedArea) || (floodAreasInputs.length > 0)) {

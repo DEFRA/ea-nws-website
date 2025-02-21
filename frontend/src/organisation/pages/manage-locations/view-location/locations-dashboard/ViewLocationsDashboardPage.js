@@ -337,6 +337,16 @@ export default function ViewLocationsDashboardPage () {
 
   const editDialog = async (locationsToBeEdited) => {
     const dialogText = await getSelectedLocationsInformation(locationsToBeEdited)
+
+    let severeOption = null
+    let warningOption = null
+    let alertOption = null
+    if (locationsToBeEdited.length === 1) {
+      severeOption = locationsToBeEdited[0].additionals.other.alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
+      warningOption = locationsToBeEdited[0].additionals.other.alertTypes.includes(AlertType.FLOOD_WARNING)
+      alertOption = locationsToBeEdited[0].additionals.other.alertTypes.includes(AlertType.FLOOD_ALERT)
+    }
+
     if (locationsToBeEdited && locationsToBeEdited.length > 0) {
       setDialog({
         show: true,
@@ -351,17 +361,17 @@ export default function ViewLocationsDashboardPage () {
           {
             label: 'Severe flood warnings',
             value: AlertType.SEVERE_FLOOD_WARNING,
-            sent: null
+            sent: severeOption
           },
           {
             label: 'Flood warnings',
             value: AlertType.FLOOD_WARNING,
-            sent: null
+            sent: warningOption
           },
           {
             label: 'Flood alerts',
             value: AlertType.FLOOD_ALERT,
-            sent: null
+            sent: alertOption
           }
         ]
       })

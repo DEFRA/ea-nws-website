@@ -44,7 +44,6 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
-  const [unavailableLocationsIds, setUnavailableLocationsIds] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -312,8 +311,6 @@ export default function ViewLocationsDashboardPage () {
       }
     }
 
-    setUnavailableLocationsIds(unavailableLocs)
-
     return editLocationText(selectedLocations, unavailableLocs, alertOnlyLocs)
   }
 
@@ -492,33 +489,31 @@ export default function ViewLocationsDashboardPage () {
     }
 
     for (let i = 0; i < locationsToEdit.length; i++) {
-      if (!unavailableLocationsIds.includes(locationsToEdit[i].id)) {
-        locationsToEdit[i].additionals.other.alertTypes = chosenAlerts
+      locationsToEdit[i].additionals.other.alertTypes = chosenAlerts
 
-        const updateData = { authToken, orgId, location: webToGeoSafeLocation(locationsToEdit[i]) }
-        await backendCall(updateData, 'api/location/update', navigate)
+      const updateData = { authToken, orgId, location: webToGeoSafeLocation(locationsToEdit[i]) }
+      await backendCall(updateData, 'api/location/update', navigate)
 
-        const registerData = {
-          authToken,
-          locationId: locationsToEdit[i].id,
-          partnerId,
-          params: {
-            channelVoiceEnabled: true,
-            channelSmsEnabled: true,
-            channelEmailEnabled: true,
-            channelMobileAppEnabled: true,
-            partnerCanView: true,
-            partnerCanEdit: true,
-            alertTypes: chosenAlerts
-          }
+      const registerData = {
+        authToken,
+        locationId: locationsToEdit[i].id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: chosenAlerts
         }
-
-        await backendCall(
-          registerData,
-          'api/location/update_registration',
-          navigate
-        )
       }
+
+      await backendCall(
+        registerData,
+        'api/location/update_registration',
+        navigate
+      )
     }
 
     setSelectedLocations([])
@@ -618,8 +613,6 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const handleClose = () => {
-    setUnavailableLocationsIds([])
-
     setDialog({ ...dialog, show: false })
   }
 

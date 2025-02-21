@@ -6,7 +6,7 @@ export default function LinkLocationsPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate('#') // TODO: Link to next page
+    navigate(-1)
   }
 
   const navigateToPreviousPage = () => {

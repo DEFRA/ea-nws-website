@@ -19,7 +19,7 @@ const wfsCall = async (bbox, type) => {
 }
 
 export const getFloodAreas = async (lat, lng) => {
-  const { alertAreas, warningAreas } = await getSurroundingFloodAreas(lat, lng)
+  const { alertArea: alertAreas, warningArea: warningAreas } = await getSurroundingFloodAreas(lat, lng)
   const alertAreasFeatures = alertAreas?.features || []
   const warningAreasFeatures = warningAreas?.features || []
   const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []

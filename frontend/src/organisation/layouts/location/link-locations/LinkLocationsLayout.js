@@ -51,7 +51,11 @@ export default function LinkLocationsLayout ({
       if (location.additionals[i].id === 'other') {
         idFound = true
         otherAdditionals = JSON.parse(location.additionals[i].value?.s)
-        otherAdditionals.childrenIDs = value
+        if (otherAdditionals.childrenIDs) {
+          otherAdditionals.childrenIDs.push(...value)
+        } else {
+          otherAdditionals.childrenIDs = value
+        }
         location.additionals[i].value = { s: JSON.stringify(otherAdditionals) }
       }
     }
@@ -344,17 +348,19 @@ export default function LinkLocationsLayout ({
               {additionalData.locationName} is near to these flood areas. You
               can select 1 or more nearby flood areas you want to link this
               location to.
-              <br />
-              <Link to={infoUrls.floodAreas} className='govuk-link inline-link'>
+            </p>
+            <p className='govuk-body'>
+              <Link to={infoUrls.floodAreas} className='govuk-link'>
                 What are flood areas?
               </Link>
-              <br />
-              <Link to={infoUrls.floodTypes} className='govuk-link inline-link'>
+            </p>
+            <p className='govuk-body'>
+              <Link to={infoUrls.floodTypes} className='govuk-link'>
                 What are the different types of flood messages?
               </Link>
-            </p>{' '}
+            </p>
           </div>
-          <div className='govuk-grid-column-full'>
+          <div className='govuk-grid-column-full govuk-!-margin-top-4'>
             {table}
             <Button
               text='Link to areas'

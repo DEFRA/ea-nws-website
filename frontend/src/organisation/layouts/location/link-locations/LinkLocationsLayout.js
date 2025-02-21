@@ -69,7 +69,7 @@ export default function LinkLocationsLayout ({
   }
 
   const handleSubmit = async () => {
-    let childrenIDs = []
+    const childrenIDs = []
     for (const areaId of selectedTAs) {
       const TargetAreaToAdd = floodAreas.find(
         (floodArea) => floodArea.properties.TA_CODE === areaId
@@ -120,7 +120,7 @@ export default function LinkLocationsLayout ({
             TA_Name: TargetAreaToAdd.properties.TA_Name,
             TA_CODE: TargetAreaToAdd.properties.TA_CODE,
             category: TargetAreaToAdd.properties.category
-           })
+          })
         } else {
           // TODO set an error
           console.log(errorMessage)

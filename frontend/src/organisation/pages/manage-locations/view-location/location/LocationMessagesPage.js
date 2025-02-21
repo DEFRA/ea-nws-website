@@ -21,7 +21,7 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  //const orgId = useSelector((state) => state.session.orgId)
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
 
@@ -79,7 +79,7 @@ export default function LocationMessagesPage () {
     setWithinAreas(result)
   }
 
-/*   const onClick = async (e, area) => {
+  /*   const onClick = async (e, area) => {
     e.preventDefault()
     const alertKey = orgId + ':t_POIS:' + area.id
     const { data } = await backendCall(
@@ -173,6 +173,28 @@ export default function LocationMessagesPage () {
   }, [withinAreas, floodCounts])
 
   useEffect(() => {
+    if (withinAreas.length > 0) {
+      let alertsArray = []
+      for (const area of withinAreas) {
+        switch (area.properties.category) {
+          case 'Flood Warning Rapid Response':
+            alertsArray.push('Severe flood warnings')
+            break
+          case 'Flood Warning':
+            alertsArray.push('Flood warnings')
+            break
+          case 'Flood Alert':
+            alertsArray.push('Flood alerts')
+            break
+          default:
+            break
+        }
+      }
+      setAvailableAlerts(alertsArray)
+    }
+  }, [withinAreas])
+
+  useEffect(() => {
     if ((hasFetchedArea) || (floodAreasInputs.length > 0)) {
       setLoading(false)
     }
@@ -245,6 +267,8 @@ export default function LocationMessagesPage () {
     setIsBannerDisplayed(false)
   }
 
+
+
   const messageSettingsSection = (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
@@ -295,29 +319,7 @@ export default function LocationMessagesPage () {
               >
                 <strong>{message}</strong>
               </td>
-              {withinAreas.find((area) => {
-                let alertType
-                switch (message) {
-                  case 'Severe flood warnings':
-                    alertType = 'Flood Warning Rapid Response'
-                    break
-                  case 'Flood warnings':
-                    alertType = 'Flood Warning'
-                    break
-                  case 'Flood alerts':
-                    alertType = 'Flood Alert'
-                    break
-                  default:
-                    alertType = null
-                    break
-                }
-
-                if (area.properties.category === alertType) {
-                  return true
-                } else {
-                  return false
-                }
-              })
+              {availableAlerts.includes(message)
                 ? (
                   <>
                     <td className='govuk-table__cell'>
@@ -344,8 +346,7 @@ export default function LocationMessagesPage () {
                   )
                 : (
                   <>
-                    <td className='govuk-table__cell'>
-                    </td>
+                    <td className='govuk-table__cell' />
                     <td
                       className='govuk-table__cell'
                       style={{ lineHeight: '50px' }}
@@ -442,9 +443,9 @@ export default function LocationMessagesPage () {
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
                           {detail.linked &&
-                          <svg width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M24.0109 10.4792C26.4088 8.08136 26.4088 4.19439 24.0109 1.7965C21.7282 -0.486187 18.0631 -0.609922 15.6311 1.51916L15.3708 1.74957C14.9441 2.12077 14.9015 2.76931 15.2727 3.19598C15.6439 3.62265 16.2924 3.66532 16.7191 3.29411L16.9793 3.06371C18.6007 1.64716 21.0413 1.72823 22.5645 3.25145C24.1602 4.84719 24.1602 7.43708 22.5645 9.0371L17.7303 13.867C16.1345 15.4628 13.5404 15.4628 11.9446 13.867C10.4214 12.3438 10.3404 9.90324 11.7569 8.28189L11.9574 8.05149C12.3286 7.62482 12.286 6.98054 11.8593 6.60507C11.4326 6.2296 10.7884 6.27654 10.4129 6.70321L10.2124 6.93361C8.08754 9.36563 8.21127 13.0307 10.494 15.3134C12.8918 17.7113 16.7788 17.7113 19.1767 15.3134L24.0109 10.4792ZM1.79842 9.5235C-0.599472 11.9214 -0.599472 15.8084 1.79842 18.202C4.08537 20.4889 7.75047 20.6084 10.1825 18.4793L10.4428 18.2489C10.8694 17.8777 10.9121 17.2292 10.5409 16.8025C10.1697 16.3758 9.52115 16.3332 9.09448 16.7044L8.83421 16.9348C7.21286 18.3513 4.77231 18.2702 3.24909 16.747C1.65335 15.1513 1.65335 12.5614 3.24909 10.9614L8.08327 6.13574C9.67902 4.53999 12.2689 4.53999 13.8689 6.13574C15.3921 7.65895 15.4732 10.0995 14.0567 11.7209L13.8263 11.9811C13.4551 12.4078 13.4977 13.0521 13.9244 13.4275C14.3511 13.803 14.9953 13.7561 15.3708 13.3294L15.6012 13.0691C17.7303 10.6371 17.6066 6.97201 15.3239 4.68506C12.926 2.28717 9.03901 2.28717 6.64112 4.68506L1.79842 9.5235Z" fill="black"/>
-                          </svg>}{' '}
+                            <svg width='26' height='20' viewBox='0 0 26 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                              <path d='M24.0109 10.4792C26.4088 8.08136 26.4088 4.19439 24.0109 1.7965C21.7282 -0.486187 18.0631 -0.609922 15.6311 1.51916L15.3708 1.74957C14.9441 2.12077 14.9015 2.76931 15.2727 3.19598C15.6439 3.62265 16.2924 3.66532 16.7191 3.29411L16.9793 3.06371C18.6007 1.64716 21.0413 1.72823 22.5645 3.25145C24.1602 4.84719 24.1602 7.43708 22.5645 9.0371L17.7303 13.867C16.1345 15.4628 13.5404 15.4628 11.9446 13.867C10.4214 12.3438 10.3404 9.90324 11.7569 8.28189L11.9574 8.05149C12.3286 7.62482 12.286 6.98054 11.8593 6.60507C11.4326 6.2296 10.7884 6.27654 10.4129 6.70321L10.2124 6.93361C8.08754 9.36563 8.21127 13.0307 10.494 15.3134C12.8918 17.7113 16.7788 17.7113 19.1767 15.3134L24.0109 10.4792ZM1.79842 9.5235C-0.599472 11.9214 -0.599472 15.8084 1.79842 18.202C4.08537 20.4889 7.75047 20.6084 10.1825 18.4793L10.4428 18.2489C10.8694 17.8777 10.9121 17.2292 10.5409 16.8025C10.1697 16.3758 9.52115 16.3332 9.09448 16.7044L8.83421 16.9348C7.21286 18.3513 4.77231 18.2702 3.24909 16.747C1.65335 15.1513 1.65335 12.5614 3.24909 10.9614L8.08327 6.13574C9.67902 4.53999 12.2689 4.53999 13.8689 6.13574C15.3921 7.65895 15.4732 10.0995 14.0567 11.7209L13.8263 11.9811C13.4551 12.4078 13.4977 13.0521 13.9244 13.4275C14.3511 13.803 14.9953 13.7561 15.3708 13.3294L15.6012 13.0691C17.7303 10.6371 17.6066 6.97201 15.3239 4.68506C12.926 2.28717 9.03901 2.28717 6.64112 4.68506L1.79842 9.5235Z' fill='black' />
+                            </svg>}{' '}
                           {detail.areaType}
                         </td>
                         <td

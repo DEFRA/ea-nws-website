@@ -133,7 +133,14 @@ export const isLocationWithinFloodAreaProximity = (
 }
 
 export const getCoordsOfFloodArea = (area) => {
-  const firstLatLngCoords = getFirstCoordinates(area.geometry.coordinates)
+  let firstLatLngCoords
+  try {
+    const latitude = Number(area.properties.latitude.replace(',', '.'))
+    const longitude = Number(area.properties.longitude.replace(',', '.'))
+    firstLatLngCoords = { latitude, longitude }
+  } catch {
+    firstLatLngCoords = getFirstCoordinates(area.geometry.coordinates)
+  }
 
   return firstLatLngCoords
 }

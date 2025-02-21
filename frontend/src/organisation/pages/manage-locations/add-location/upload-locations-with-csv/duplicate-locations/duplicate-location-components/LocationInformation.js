@@ -76,15 +76,35 @@ export default function LocationInformation ({ location, comparedLocation }) {
       case LocationDataType.ADDRESS:
       case LocationDataType.X_AND_Y_COORDS:
         return (
-          <>
+          <div
+            style={
+              comparedLocation &&
+              (comparedAdditionalData?.x_coordinate !==
+                additionalData?.x_coordinate ||
+                comparedAdditionalData?.y_coordinate !==
+                  additionalData?.y_coordinate)
+                ? compareStyle
+                : {}
+            }
+          >
             {Math.trunc(additionalData?.x_coordinate)}
             {', '}
             {Math.trunc(additionalData?.y_coordinate)}
-          </>
+          </div>
         )
       case LocationDataType.SHAPE_POLYGON:
-        // code to return shape area
-        return <>{calculateShapeArea()} square metres</>
+        return (
+          <div
+            style={
+              comparedLocation &&
+              area(comparedLocation.geometry) !== area(location.geometry)
+                ? compareStyle
+                : {}
+            }
+          >
+            {calculateShapeArea()} square metres
+          </div>
+        )
       case LocationDataType.SHAPE_LINE:
         // code to return length of line
         return <>0.5km (dummy data)</>

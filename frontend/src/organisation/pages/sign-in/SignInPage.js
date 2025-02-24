@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import SignInPageLayout from '../../../common/layouts/sign-in/SignInPageLayout'
 import { setSigninType } from '../../../common/redux/userSlice'
 
-export default function SignInPage () {
+export default function SignInPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -18,7 +18,5 @@ export default function SignInPage () {
     })
   }
 
-  return (
-    <SignInPageLayout navigateToNextPage={navigateToNextPage} />
-  )
+  return <SignInPageLayout navigateToNextPage={navigateToNextPage} />
 }

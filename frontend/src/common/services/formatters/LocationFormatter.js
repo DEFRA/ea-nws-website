@@ -17,6 +17,7 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
   }
 
   if (location?.geometry?.geoJson) {
+    console.log('hit', location)
     location.geometry.geoJson = JSON.parse(location?.geometry?.geoJson)
   }
 

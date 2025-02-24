@@ -28,8 +28,8 @@ async function getSigninValidate(
     code: string
     signinToken: string
   }
-  if(code === '111111'){
-    console.log("invalid credentials, responding 101")
+  if (code === '111111') {
+    console.log('invalid credentials, responding 101')
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }
   if (code === '999999' || signinToken === undefined) {
@@ -39,6 +39,7 @@ async function getSigninValidate(
   console.log('Valid token')
   const profile = mockResponses.citizenProfile2
   const registrations = mockResponses.registrations
+  // comment below out to login as citizen
   const organization = mockResponses.organization
 
   // also returns organization

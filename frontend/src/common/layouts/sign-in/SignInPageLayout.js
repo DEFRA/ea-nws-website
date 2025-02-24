@@ -7,7 +7,7 @@ import Input from '../../../common/components/gov-uk/Input'
 import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
-export default function SignInPageLayout ({ navigateToNextPage }) {
+export default function SignInPageLayout({ navigateToNextPage }) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -24,9 +24,14 @@ export default function SignInPageLayout ({ navigateToNextPage }) {
         'api/sign_in',
         navigate
       )
+      console.log('data', data)
       if (errorMessage !== null) {
         setError(errorMessage)
-        if (errorMessage === 'Email address not recognised - check and try again' && location.pathname.includes('organisation')) {
+        if (
+          errorMessage ===
+            'Email address not recognised - check and try again' &&
+          location.pathname.includes('organisation')
+        ) {
           navigate('/organisation/signin/account-pending')
         }
       } else {
@@ -37,13 +42,20 @@ export default function SignInPageLayout ({ navigateToNextPage }) {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            {location.pathname.includes('organisation') ? <h1 className='govuk-heading-l'>Sign in to your organisation's flood warnings account</h1> : <h1 className='govuk-heading-l'>Sign in to your flood warnings account</h1>}
+            {location.pathname.includes('organisation') ? (
+              <h1 className='govuk-heading-l'>
+                Sign in to your organisation's flood warnings account
+              </h1>
+            ) : (
+              <h1 className='govuk-heading-l'>
+                Sign in to your flood warnings account
+              </h1>
+            )}
             <div className='govuk-body'>
               <Input
                 className='govuk-input govuk-input--width-30'
@@ -58,7 +70,10 @@ export default function SignInPageLayout ({ navigateToNextPage }) {
                 onClick={handleSubmit}
               />
               <br />
-              <Link to='/signup/register-location/search' className='govuk-link'>
+              <Link
+                to='/signup/register-location/search'
+                className='govuk-link'
+              >
                 Sign up if you do not have an account
               </Link>
             </div>

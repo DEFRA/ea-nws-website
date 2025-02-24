@@ -20,10 +20,11 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
+import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 import { getAdditionals } from '../../services/ProfileServices'
 import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
 
-export default function SignInValidatePageLayout ({
+export default function SignInValidatePageLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -49,7 +50,8 @@ export default function SignInValidatePageLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { error: validationError, code: formattedCode } = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { signinToken, code: formattedCode, signinType }
@@ -73,7 +75,7 @@ export default function SignInValidatePageLayout ({
         setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
-        if (signinType === 'org') {
+        if (signinType === 'org' || data.organization) {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
@@ -94,7 +96,12 @@ export default function SignInValidatePageLayout ({
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
         } else {
-          navigateToNextPage()
+          //scenario where org user has tried signing in via citizen route
+          if (data.organization) {
+            navigate(orgManageLocationsUrls.monitoring.view)
+          } else {
+            navigateToNextPage()
+          }
         }
       }
     }
@@ -126,62 +133,59 @@ export default function SignInValidatePageLayout ({
 
   return (
     <>
-
-      {codeExpired || signUpNotComplete
-        ? (
-            (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
+      {codeExpired || signUpNotComplete ? (
+        (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
         (signUpNotComplete && (
           <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />
         ))
-          )
-        : (
-          <>
-            <BackLink onClick={navigateBack} />
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && (
-                    <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
-                    />
-                  )}
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Confirm email address </h2>
-                  <div className='govuk-body'>
-                    We've sent an email with a code to:
-                    <InsetText text={location.state.email} />
-                    <Input
-                      className='govuk-input govuk-input--width-10'
-                      name='Enter code'
-                      inputType='text'
-                      value={code}
-                      error={error}
-                      onChange={(val) => setCode(val)}
-                    />
-                    <Button
-                      className='govuk-button'
-                      text='Continue'
-                      onClick={handleSubmit}
-                    />
+      ) : (
+        <>
+          <BackLink onClick={navigateBack} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {codeResent && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + codeResentTime}
+                  />
+                )}
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>Confirm email address </h2>
+                <div className='govuk-body'>
+                  We've sent an email with a code to:
+                  <InsetText text={location.state.email} />
+                  <Input
+                    className='govuk-input govuk-input--width-10'
+                    name='Enter code'
+                    inputType='text'
+                    value={code}
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text='Continue'
+                    onClick={handleSubmit}
+                  />
                   &nbsp; &nbsp;
-                    <Link
-                      onClick={navigateBack}
-                      className='govuk-link inline-link'
-                    >
-                      Enter a different email
-                    </Link>
-                    <br />
-                    <Link onClick={getNewCode} className='govuk-link'>
-                      Get a new code
-                    </Link>
-                  </div>
+                  <Link
+                    onClick={navigateBack}
+                    className='govuk-link inline-link'
+                  >
+                    Enter a different email
+                  </Link>
+                  <br />
+                  <Link onClick={getNewCode} className='govuk-link'>
+                    Get a new code
+                  </Link>
                 </div>
               </div>
-            </main>
-          </>
-          )}
+            </div>
+          </main>
+        </>
+      )}
     </>
   )
 }

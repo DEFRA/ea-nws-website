@@ -269,7 +269,7 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
   }
   if (data) {
     if (data.features && data.features.length > 0) {
-      return getHighestRiskRating(data.features, ratingOrder, 'FlooddRisk')
+      return getHighestRiskRating(data.features, ratingOrder, 'FloodRisk')
     } else {
       return 'unlikely'
     }

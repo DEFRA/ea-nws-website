@@ -74,16 +74,11 @@ export default function SearchFilter ({
     )
   ]
 
-  const keywords = locations
-    .flatMap((location) => {
-      if (Array.isArray(location.additionals)) {
-        return location.additionals
-          .filter((additional) => additional.id === 'keywords')
-          .map((additional) => JSON.parse(additional.value.s))
-      }
-      return []
-    })
-    .flat()
+  const keywords = [
+    ...new Set(
+      locations.flatMap(location => location.additionals.keywords)
+    )
+  ]
 
   const linkedLocations = [...new Set(['No', 'Yes'])]
 
@@ -197,7 +192,7 @@ export default function SearchFilter ({
     if (selectedKeywordFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedKeywordFilters.some((keyword) =>
-          location.additionals.other?.keywords.includes(keyword)
+          location.additionals.keywords.includes(keyword)
         )
       )
     }

@@ -10,7 +10,7 @@ export default function SignInPage () {
 
   useEffect(() => {
     dispatch(setSigninType('org'))
-  })
+  }, [])
 
   const navigateToNextPage = ({ signinToken, email }) => {
     navigate('/organisation/signin/validate', {

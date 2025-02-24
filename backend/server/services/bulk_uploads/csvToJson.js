@@ -104,7 +104,10 @@ const csvToJson = (csv) => {
     for (let j = 0; j < headers.length; j++) {
       // put all keywords in an array with a single key
       if (headers[j].toLowerCase().includes('keyword')) {
-        keywords.push(currentLine[j])
+        const blankKeyword = currentLine[j].replace(/\s/g, '').length === 0
+        if (!blankKeyword) {
+          keywords.push(currentLine[j])
+        }
       } else {
         obj[headers[j]] = currentLine[j]
       }

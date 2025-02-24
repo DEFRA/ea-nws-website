@@ -22,6 +22,7 @@ import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
 import ConfirmShapefilePolygonPage from '../../pages/manage-locations/add-location/shapefile-zip/ConfirmShapefilePolygonPage'
 import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
+import LocationLoadingShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationLoadingShapefilePage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
@@ -83,6 +84,7 @@ import EditNotesPage from '../../pages/manage-locations/edit-location/edit-indiv
 import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
+import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
@@ -121,6 +123,7 @@ const orgManageLocationsUrls = {
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-upload',
+    loadingShapefilePage: urlManageOrgAddLocations + '/shapefile-upload/loading',
     confirmLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-confirm',
     options: urlManageOrgAddLocations,
@@ -166,7 +169,8 @@ const orgManageLocationsUrls = {
       addActionPlan:
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
-    }
+    },
+    linkToTargetArea: urlManageOrg + '/add/link'
   },
   edit: {
     individualLocation: {
@@ -291,6 +295,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.uploadLocationsWithShapefile,
     component: <LocationUploadShapeFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.loadingShapefilePage,
+    component: <LocationLoadingShapefilePage />
   },
   {
     path: orgManageLocationsUrls.add.confirmLocationsWithShapefile,
@@ -512,6 +520,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.optionalInformation.optionalLocation,
     component: <AddOptionalAddress />
+  },
+  {
+    path: orgManageLocationsUrls.add.linkToTargetArea,
+    component: <LinkLocationsPage />
   },
   {
     path: urlManageOrgConfirmLocations,

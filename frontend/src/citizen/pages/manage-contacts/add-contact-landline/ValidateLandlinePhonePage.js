@@ -3,7 +3,14 @@ import ValidateLandlineLayout from '../../../layouts/landline/ValidateLandlineLa
 export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
 
-  const navigateToNextPage = () => navigate('/managecontacts')
+  const navigateToNextPage = (homePhone) => {
+    navigate('/managecontacts', {
+      state: {
+        confirmedtype: 'homePhone',
+        confirmedvalue: homePhone
+      }
+    })
+  }
   const SkipValidation = (homePhone) => {
     navigate('/managecontacts', {
       state: {

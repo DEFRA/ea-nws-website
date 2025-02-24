@@ -14,7 +14,7 @@ const contacts = [
     comments: 'This is a comment',
     additionals: [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
-      { id: 'signUpComplete', value: { s: 'true' } },
+      { id: 'signupComplete', value: { s: 'true' } },
       { id: 'businessName', value: { s: 'thatOne' } },
       { id: 'jobTitle', value: { s: 'Operations Director' } },
       { id: 'keywords', value: { s: '["Team 1", "Team 2"]' } }
@@ -42,7 +42,7 @@ const contacts = [
     comments: null,
     additionals: [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
-      { id: 'signUpComplete', value: { s: 'true' } },
+      { id: 'signupComplete', value: { s: 'true' } },
       { id: 'businessName', value: { s: 'thatOne' } },
       { id: 'jobTitle', value: { s: '' } },
       { id: 'keywords', value: { s: '[]' } }
@@ -70,7 +70,7 @@ const contacts = [
     comments: null,
     additionals: [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
-      { id: 'signUpComplete', value: { s: 'true' } },
+      { id: 'signupComplete', value: { s: 'true' } },
       { id: 'businessName', value: { s: 'thatOne' } },
       { id: 'jobTitle', value: { s: 'Regional Manager' } },
       { id: 'keywords', value: { s: '[]' } }
@@ -98,7 +98,7 @@ const contacts = [
     comments: null,
     additionals: [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
-      { id: 'signUpComplete', value: { s: 'true' } },
+      { id: 'signupComplete', value: { s: 'true' } },
       { id: 'businessName', value: { s: 'thatOne' } },
       { id: 'jobTitle', value: { s: 'Site Manager' } },
       { id: 'keywords', value: { s: '["Team 2", "Team 3"]' } }

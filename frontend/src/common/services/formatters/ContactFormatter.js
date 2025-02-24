@@ -13,11 +13,11 @@ const geoSafeToWebContact = (geoSafeContact) => {
     service: geoSafeContact?.service,
     comments: geoSafeContact?.comments,
     additionals: {
-      lastAccessedUrl: null,
-      signUpComplete: null,
-      businessName: null,
-      jobTitle: null,
-      keywords: null
+      lastAccessedUrl: '',
+      signupComplete: '',
+      businessName: '',
+      jobTitle: '',
+      keywords: []
     },
     unverified: geoSafeContact?.unverified,
     metatdata: geoSafeContact?.metatdata,
@@ -64,8 +64,8 @@ const webToGeoSafeContact = (webContact) => {
         value: { s: webContact.additionals?.lastAccessedUrl }
       },
       {
-        id: 'signUpComplete',
-        value: { s: webContact.additionals?.signUpComplete }
+        id: 'signupComplete',
+        value: { s: webContact.additionals?.signupComplete }
       },
       {
         id: 'businessName',

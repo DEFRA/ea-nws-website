@@ -76,6 +76,7 @@ export default function ConfirmAddingLocationsPage () {
       'api/bulk_uploads/save_locations',
       navigate
     )
+
     if (!errorMessage && data) {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
@@ -106,7 +107,7 @@ export default function ConfirmAddingLocationsPage () {
           navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
             state: {
               addedLocations: data.valid,
-              numDuplicates: data.invalid.duplicate
+              numDuplicates: duplicateLocations
             }
           })
         }
@@ -207,7 +208,7 @@ export default function ConfirmAddingLocationsPage () {
                       {notInEnglandLocations === 1 ? '' : 's'} cannot be added
                       because{' '}
                       {notInEnglandLocations === 1 ? 'it is' : 'they are'} not
-                      in England. You can check
+                      in England. You can check{' '}
                       {notInEnglandLocations === 1 ? '' : 'each of'} the
                       location's details and change{' '}
                       {notInEnglandLocations === 1 ? 'it' : 'them'} if you think

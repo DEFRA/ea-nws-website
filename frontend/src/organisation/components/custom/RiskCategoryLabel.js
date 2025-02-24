@@ -6,7 +6,7 @@ import {
 } from '../../../common/services/WfsFloodDataService'
 
 export const riskData = {
-  'v.low': { className: 'very-low-risk', title: 'Very low risk' },
+  'very low': { className: 'very-low-risk', title: 'Very low risk' },
   low: { className: 'low-risk', title: 'Low risk' },
   medium: { className: 'medium-risk', title: 'Medium risk' },
   high: { className: 'high-risk', title: 'High risk' },

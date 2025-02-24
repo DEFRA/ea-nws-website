@@ -258,7 +258,6 @@ export default function ContactsTable ({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  // onClick={(e) => onAction(e, 'view', contact)}
                   onClick={(e) => viewContact(e, contact)}
                 >
                   {contact.firstname}
@@ -272,7 +271,6 @@ export default function ContactsTable ({
               <td className='govuk-table__cell'>
                 {contact.linked_locations?.length}
               </td>
-              <td className='govuk-table__cell'>0</td>
               <td className='govuk-table__cell'>0</td>
               <td className='govuk-table__cell'>
                 <Link

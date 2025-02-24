@@ -1939,3 +1939,10 @@ govuk-menu-toggle.button-menu > button {
   z-index: 1100;
   text-align: center;
 }
+
+/* This should stay near the end of the stylesheet to override link styling for print */
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}

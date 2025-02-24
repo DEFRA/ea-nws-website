@@ -33,10 +33,7 @@ export const getFloodAreas = async (lat, lng) => {
 }
 
 export const getFloodAreasFromShape = async (geoJsonShape) => {
-  // Add a buffer zone around the shape
-  const bufferedShape = turf.buffer(geoJsonShape.geometry, 0.5, { units: 'kilometers' })
-  // Get the boundary box for the buffered shape - it will be a square
-  const bbox = turf.bbox(bufferedShape)
+  const bbox = turf.bbox(geoJsonShape)
   const bboxInput =
     bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
   // warning areas

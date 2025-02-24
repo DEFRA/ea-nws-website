@@ -141,8 +141,8 @@ export default function ViewLocationsDashboardPage () {
       })
 
       window.onload = (event) => {
-        console.log("page is fully loaded");
-      };
+        console.log('page is fully loaded')
+      }
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)

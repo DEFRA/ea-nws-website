@@ -65,8 +65,7 @@ export default function LocationMessagesPage () {
 
   const getWithinAreas = async () => {
     let result
-    console.log(currentLocation)
-    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.coordinates) {
+    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS) {
       result = await getFloodAreas(
         currentLocation.coordinates.latitude, currentLocation.coordinates.longitude
       )
@@ -93,22 +92,14 @@ export default function LocationMessagesPage () {
   } */
 
   const categoryToMessageType = (type) => {
-    const messageTypes = []
-    switch (type) {
-      case 'Flood Warning':
-      case 'Flood Warning Groundwater':
-      case 'Flood Warning Rapid Response':
-        messageTypes.push('Flood Warning')
-        messageTypes.push('Severe Flood Warning')
-        break
-      case 'Flood Alert':
-      case 'Flood Alert Groundwater':
-        messageTypes.push('Flood Alert')
-        break
-      default:
-        break
+    const typeMap = {
+      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Alert': ['Flood Alert'],
+      'Flood Alert Groundwater': ['Flood Alert']
     }
-    return messageTypes
+    return typeMap[type] || []
   }
 
   const setHistoricalData = (taCode, type) => {
@@ -123,7 +114,6 @@ export default function LocationMessagesPage () {
             alert.TYPE === messageType &&
             moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
         )
-        console.log(filteredData)
         newCount.counts.push({ type: messageType, count: filteredData.length })
       }
       setFloodCounts((prev) => [...prev, newCount])
@@ -208,20 +198,14 @@ export default function LocationMessagesPage () {
     if (withinAreas.length > 0) {
       const alertsArray = []
       for (const area of withinAreas) {
-        switch (area.properties.category) {
-          case 'Flood Warning Rapid Response':
-          case 'Flood Warning Groundwater':
-          case 'Flood Warning':
-            alertsArray.push('Severe flood warnings')
-            alertsArray.push('Flood warnings')
-            break
-          case 'Flood Alert Groundwater':
-          case 'Flood Alert':
-            alertsArray.push('Flood alerts')
-            break
-          default:
-            break
+        const typeMap = {
+          'Flood Warning': ['Flood warnings', 'Severe flood warnings'],
+          'Flood Warning Groundwater': ['Flood warnings', 'Severe flood warnings'],
+          'Flood Warning Rapid Response': ['Flood warnings', 'Severe flood warnings'],
+          'Flood Alert': ['Flood alerts'],
+          'Flood Alert Groundwater': ['Flood alerts']
         }
+        alertsArray.push(...(typeMap[area.properties.category] || []))
       }
       setAvailableAlerts(alertsArray)
     }
@@ -236,9 +220,6 @@ export default function LocationMessagesPage () {
   // it should reload the surrounding areas if the location is changed
   useEffect(() => {
     hasFetchedArea.current = false
-  }, [currentLocation])
-
-  useEffect(() => {
     const fetchAreas = async () => {
       if (currentLocation && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
         if (!hasFetchedArea.current) {
@@ -492,11 +473,7 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          {detail.linked
-                            ? (
-                              <Link className='govuk-link'>Unlink</Link>
-                              )
-                            : null}
+                          {detail.linked && <Link className='govuk-link'>Unlink</Link>}
                         </td>
                       </tr>
                     ))}

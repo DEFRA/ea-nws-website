@@ -43,22 +43,14 @@ export default function LinkLocationsLayout ({
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
 
   const categoryToMessageType = (type) => {
-    const messageTypes = []
-    switch (type) {
-      case 'Flood Warning':
-      case 'Flood Warning Groundwater':
-      case 'Flood Warning Rapid Response':
-        messageTypes.push('Flood Warning')
-        messageTypes.push('Severe Flood Warning')
-        break
-      case 'Flood Alert':
-      case 'Flood Alert Groundwater':
-        messageTypes.push('Flood Alert')
-        break
-      default:
-        break
+    const typeMap = {
+      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Alert': ['Flood Alert'],
+      'Flood Alert Groundwater': ['Flood Alert']
     }
-    return messageTypes
+    return typeMap[type] || []
   }
 
   const setHistoricalData = (taCode, type) => {
@@ -252,8 +244,6 @@ export default function LinkLocationsLayout ({
       }
     }
 
-    console.log(childrenIDs)
-
     const locationToAdd = setLocationChildrenIDs(
       JSON.parse(JSON.stringify(currentLocation)),
       childrenIDs
@@ -332,13 +322,11 @@ export default function LinkLocationsLayout ({
           let distanceM = 0
 
           if (currentLocation.coordinates) {
-            console.log(currentLocation.coordinates)
             // Use the coordinate point for locations that have them
             const locationPoint = point([
               currentLocation.coordinates.longitude,
               currentLocation.coordinates.latitude
             ])
-            console.log(area)
             try {
               distanceM = pointToPolygonDistance(locationPoint, area.geometry, {
                 units: 'meters'

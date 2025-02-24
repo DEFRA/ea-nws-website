@@ -16,6 +16,10 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
     }
   }
 
+  if (location?.geometry?.geoJson) {
+    location.geometry.geoJson = JSON.parse(location?.geometry?.geoJson)
+  }
+
   const additionals = geoSafeLocation?.additionals
   additionals?.forEach((additional) => {
     if (additional.id === 'keywords') {

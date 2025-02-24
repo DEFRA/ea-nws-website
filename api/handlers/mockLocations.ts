@@ -115,7 +115,7 @@ const locations = [
     address: 'York',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -133,7 +133,7 @@ const locations = [
             ]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [
@@ -168,7 +168,7 @@ const locations = [
     address: 'River Thames and London Eye, London',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -194,7 +194,7 @@ const locations = [
             ]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [
@@ -229,7 +229,7 @@ const locations = [
     address: 'High Street, Halstead, Essex, England',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -247,7 +247,7 @@ const locations = [
             [0.6523566388888185, 51.96006876219539]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [
@@ -282,7 +282,7 @@ const locations = [
     address: 'Peterborough',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -301,7 +301,7 @@ const locations = [
             ]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [
@@ -336,7 +336,7 @@ const locations = [
     address: 'Gloucester',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -359,7 +359,7 @@ const locations = [
             ]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [
@@ -394,7 +394,7 @@ const locations = [
     address: 'Mersey and Surrounding',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -423,7 +423,7 @@ const locations = [
             ]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [
@@ -458,7 +458,7 @@ const locations = [
     address: 'Nottingham',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -485,7 +485,7 @@ const locations = [
             ]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [
@@ -556,7 +556,7 @@ const locations = [
     address: 'Southampton',
     coordinates: null,
     geometry: {
-      geoJson: {
+      geoJson: JSON.stringify({
         type: 'Feature',
         properties: {},
         geometry: {
@@ -585,7 +585,7 @@ const locations = [
             ]
           ]
         }
-      }
+      })
     },
     geocode: null,
     additionals: [

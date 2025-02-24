@@ -110,7 +110,6 @@ export const getFloodAreaByTaCode = async (code) => {
     : wfsAlertData.features[0]
 }
 
-
 export const getAssociatedAlertArea = async (lat, lng, code) => {
   const bboxKM = 0.5 // size of bounding box from centre in KM
 
@@ -279,8 +278,7 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
   }
 }
 
-function getHighestRiskRating(areas, ratingOrder) {
-function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
+function getHighestRiskRating(areas, ratingOrder, propertyToCheck) {
   // if there are no areas nearby, set to lowest risk rating
   let highestRating = null
 

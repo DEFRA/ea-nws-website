@@ -67,21 +67,13 @@ export default function LiveMap({
     createLiveMapShapePattern()
   }, [])
 
-  //flood information popup
-  const viewFloodInformationData = (data) => {
-    setShowFloodInformationData(true)
-    setLocationsFloodInformation(findAllFloodAreasAffectingLocation(data))
-  }
-
-  const findAllFloodAreasAffectingLocation = (data) => {
-    const allPoints = [...severePoints, ...warningPoints, ...alertPoints]
-
-    return allPoints
-      .filter(
-        (point) => point.properties.locationData.id === data.locationData.id
-      )
-      .map((point) => point.properties)
-  }
+  useEffect(() => {
+    onFloodAreasUpdate({
+      severeFloodAreasAmount: severeFloodAreas.length,
+      warningFloodAreasAmount: warningFloodAreas.length,
+      alertFloodAreasAmount: alertFloodAreas.length
+    })
+  }, [loading])
 
   // load live alerts
   useEffect(() => {
@@ -90,14 +82,6 @@ export default function LiveMap({
       setLoading(false)
     })()
   }, [])
-
-  useEffect(() => {
-    onFloodAreasUpdate({
-      severeFloodAreasAmount: severeFloodAreas.length,
-      warningFloodAreasAmount: warningFloodAreas.length,
-      alertFloodAreasAmount: alertFloodAreas.length
-    })
-  }, [loading])
 
   const loadMap = async () => {
     // reset data before loading
@@ -123,7 +107,8 @@ export default function LiveMap({
       })
     }
 
-    // loop through locations and convert points to geojson to calculate bbox and compare
+    // loop through locations and convert points(xy coords locations) to geojson point to calculate bbox and compare
+    // if a location is a shape or boundary, save the geojson
     const locationsCollection = []
     if (locations.length > 0) {
       locations.forEach((location) => {
@@ -319,6 +304,7 @@ export default function LiveMap({
     return null
   }
 
+  // give shapes or boundarys a dashed line fill pattern
   const onEachShapeFeature = (feature, layer) => {
     layer.options.className = 'live-map-shape-pattern-fill'
     layer.setStyle({
@@ -411,6 +397,22 @@ export default function LiveMap({
     ),
     []
   )
+
+  //flood information popup
+  const viewFloodInformationData = (data) => {
+    setShowFloodInformationData(true)
+    setLocationsFloodInformation(findAllFloodAreasAffectingLocation(data))
+  }
+
+  const findAllFloodAreasAffectingLocation = (data) => {
+    const allPoints = [...severePoints, ...warningPoints, ...alertPoints]
+
+    return allPoints
+      .filter(
+        (point) => point.properties.locationData.id === data.locationData.id
+      )
+      .map((point) => point.properties)
+  }
 
   // map key
   const [visibleFeatures, setVisibleFeatures] = useState([])
@@ -517,7 +519,7 @@ export default function LiveMap({
     }
   }
 
-  // locations affected list under map
+  // locations affected list under map when there are less than 20 affected locations
   const locationsAffected = [...severePoints, ...warningPoints, ...alertPoints]
 
   const getLocationsAffectedFloodIcon = (alertLevel) => {

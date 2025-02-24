@@ -70,7 +70,9 @@ export default function DeleteLayout () {
         {error && <ErrorSummary errorList={[error]} />}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>Delete {nameToDelete}</h1>
+            <h1 className='govuk-heading-l'>
+              Delete {!isLocation && 'contact'} {nameToDelete}
+            </h1>
             <div className='govuk-body'>
               <p className='govuk-!-margin-bottom-8'>
                 If you continue {nameToDelete} will be deleted from this account

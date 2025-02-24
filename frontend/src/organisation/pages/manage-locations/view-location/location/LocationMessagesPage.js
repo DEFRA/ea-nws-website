@@ -92,22 +92,47 @@ export default function LocationMessagesPage () {
     navigate(orgManageLocationsUrls.view.viewLocation)
   } */
 
+  const categoryToMessageType = (type) => {
+    const messageTypes = []
+    switch (type) {
+      case 'Flood Warning':
+      case 'Flood Warning Groundwater':
+      case 'Flood Warning Rapid Response':
+        messageTypes.push('Flood Warning')
+        messageTypes.push('Severe Flood Warning')
+        break
+      case 'Flood Alert':
+      case 'Flood Alert Groundwater':
+        messageTypes.push('Flood Alert')
+        break
+      default:
+        break
+    }
+    return messageTypes
+  }
+
   const setHistoricalData = (taCode, type) => {
     const twoYearsAgo = moment().subtract(2, 'years')
     if (taCode && type) {
-      const filteredData = floodHistoryData.filter(
-        (alert) =>
-          alert['TA Code'] === taCode &&
-          alert['lookup category'] === type &&
-          (moment(alert.Approved
-            , 'DD/MM/YYYY HH:MM:SS')).format('DD/MM/YYYY') > twoYearsAgo.format('DD/MM/YYYY'))
-      setFloodCounts((prev) => [...prev, { TA_CODE: taCode, count: filteredData.length }])
+      const newCount = {TA_CODE: taCode, counts: []}
+      const messageTypes = categoryToMessageType(type)
+      for (const messageType of messageTypes) {
+        const filteredData = floodHistoryData.filter(
+          (alert) =>
+            alert['CODE'] === taCode &&
+            alert['TYPE'] === messageType &&
+            (moment(alert.Approved
+              , 'DD/MM/YYYY HH:MM:SS')).format('DD/MM/YYYY') > twoYearsAgo.format('DD/MM/YYYY')
+        )
+        newCount.counts.push({type: messageType, count: filteredData.length})   
+      }
+      setFloodCounts((prev) => [...prev, newCount])
     }
   }
 
   useEffect(() => {
     const processFloodData = () => {
-      if (floodHistoryData && hasFetchedArea) {
+      if (floodHistoryData && hasFetchedArea) {        
         if (withinAreas.length > 0) {
           withinAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
         }
@@ -120,22 +145,26 @@ export default function LocationMessagesPage () {
   }, [floodHistoryData, withinAreas, hasFetchedArea])
 
   const populateMessagesSent = (category, floodCount) => {
-    let messageSent
-    switch (category) {
-      case 'Flood Warning Rapid Response':
-      case 'Flood Warning':
-        messageSent = [
-          `${floodCount} severe flood warning${floodCount === 1 ? '' : 's'}`,
-          `${floodCount} flood warning${floodCount === 1 ? '' : 's'}`]
-        break
-      case 'Flood Alert':
-        messageSent = [
-          `${floodCount} flood alert${floodCount === 1 ? '' : 's'}`
-        ]
-        break
-      default:
-        messageSent = ['']
-        break
+    const messageSent = []
+    const messageTypes = categoryToMessageType(category)
+    for (const messageType of messageTypes) {
+      switch (messageType) {
+        case 'Severe Flood Warning':
+          const severeCount = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${severeCount} severe flood warning${severeCount === 1 ? '' : 's'}`)
+          break
+        case 'Flood Warning':
+          const warningCount = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${warningCount} flood warning${warningCount === 1 ? '' : 's'}`)
+          break
+        case 'Flood Warning':
+          const AlertCount = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${AlertCount} flood alerts${AlertCount === 1 ? '' : 's'}`)
+          break
+        case 'default':
+          messageSent.push('')
+          break
+      }
     }
     return messageSent
   }
@@ -145,21 +174,23 @@ export default function LocationMessagesPage () {
       const updatedFloodAreas = []
       for (const area of withinAreas) {
         const taCode = area.properties.TA_CODE
-        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)?.count
+        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
         const messageSent = populateMessagesSent(area.properties.category, floodCount)
+        const type = categoryToMessageType(area.properties.category)
         updatedFloodAreas.push({
           areaName: area.properties.TA_Name,
-          areaType: `${area.properties.category === 'Flood Warning Rapid Response' ? 'Severe flood warning' : area.properties.category === 'Flood Warning' ? 'Flood warning' : 'Flood alert'} area`,
+          areaType: `${type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'} area`,
           messagesSent: messageSent
         })
       }
       for (const area of childrenIDs) {
         const taCode = area.TA_CODE
-        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)?.count
+        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
         const messageSent = populateMessagesSent(area.category, floodCount)
+        const type = categoryToMessageType(area.properties.category)
         updatedFloodAreas.push({
           areaName: area.TA_Name,
-          areaType: `${area.category === 'Flood Warning Rapid Response' ? 'Severe flood warning' : area.category === 'Flood Warning' ? 'Flood warning' : 'Flood alert'} area`,
+          areaType: `${type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'} area`,
           messagesSent: messageSent,
           linked: area.id
         })
@@ -178,11 +209,12 @@ export default function LocationMessagesPage () {
       for (const area of withinAreas) {
         switch (area.properties.category) {
           case 'Flood Warning Rapid Response':
-            alertsArray.push('Severe flood warnings')
-            break
+          case 'Flood Warning Groundwater':
           case 'Flood Warning':
+            alertsArray.push('Severe flood warnings')
             alertsArray.push('Flood warnings')
             break
+          case 'Flood Alert Groundwater':
           case 'Flood Alert':
             alertsArray.push('Flood alerts')
             break

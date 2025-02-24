@@ -141,8 +141,8 @@ export default function ViewLocationsDashboardPage () {
       })
 
       window.onload = (event) => {
-        console.log("page is fully loaded");
-      };
+        console.log('page is fully loaded')
+      }
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -424,7 +424,6 @@ export default function ViewLocationsDashboardPage () {
   return (
     <>
       <BackLink onClick={navigateBack} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           {notificationText && (

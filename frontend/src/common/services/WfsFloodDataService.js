@@ -18,17 +18,42 @@ const wfsCall = async (bbox, type) => {
   return result
 }
 
+export const getFloodAreas = async (lat, lng) => {
+  const { alertArea: alertAreas, warningArea: warningAreas } = await getSurroundingFloodAreas(lat, lng)
+  const alertAreasFeatures = alertAreas?.features || []
+  const warningAreasFeatures = warningAreas?.features || []
+  const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
+  const withinAreas = []
+  for (const feature of allAreas) {
+    if (turf.booleanPointInPolygon([lng, lat], feature)) {
+      withinAreas.push(feature)
+    }
+  }
+  return withinAreas
+}
+
+export const getFloodAreasFromShape = async (geoJsonShape) => {
+  const bbox = turf.bbox(geoJsonShape)
+  const bboxInput =
+    bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
+  // warning areas
+  const { data: wfsWarningData } = await wfsCall(bboxInput, 'flood_warnings')
+  const { data: wfsAlertData } = await wfsCall(bboxInput, 'flood_alerts')
+  // We only want intersections from the current shape to get areas within
+  const filteredWarningData = getIntersections(wfsWarningData, geoJsonShape)
+  const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
+  const filteredWarningDataFeatures = filteredWarningData?.features || []
+  const filteredAlertDataFeatures = filteredAlertData?.features || []
+  const withinAreas = filteredWarningDataFeatures.concat(filteredAlertDataFeatures)
+
+  return withinAreas
+}
+
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
-  const { data: wfsWarningData } = await wfsCall(
-    calculateBoundingBox(lat, lng, bboxKM),
-    'flood_warnings'
-  )
+  const { data: wfsWarningData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_warnings')
   // alert area
-  const { data: wfsAlertData } = await wfsCall(
-    calculateBoundingBox(lat, lng, bboxKM),
-    'flood_alerts'
-  )
+  const { data: wfsAlertData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_alerts')
   return {
     alertArea: wfsAlertData,
     warningArea: wfsWarningData
@@ -40,7 +65,6 @@ export const getSurroundingFloodAreasFromShape = async (
   bboxKM = 0.5
 ) => {
   // Add a buffer zone around the shape
-  console.log(geoJsonShape)
   const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, {
     units: 'kilometers'
   })

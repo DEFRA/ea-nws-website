@@ -91,7 +91,7 @@ export default function SelectPredefinedBoundaryPage () {
 
   const onBoundarySelected = (boundaryName) => {
     const boundarySelected = boundaries.find(
-      (boundary) => boundary.properties.layer === boundaryName
+      (boundary) => boundary.properties.TA_Name === boundaryName
     )
 
     dispatch(setSelectedBoundary(boundarySelected))
@@ -126,7 +126,7 @@ export default function SelectPredefinedBoundaryPage () {
         setCurrentLocationName(
           locationBoundary.boundary_type +
             ', ' +
-            locationBoundary.boundary.properties.layer
+            locationBoundary.boundary.properties.TA_Name
         )
       )
       // since we added to currentLocation we need to get that information to pass to the api
@@ -215,17 +215,17 @@ export default function SelectPredefinedBoundaryPage () {
                     key={selectedBoundary}
                     label='Boundary'
                     options={boundaries.map((boundary) => {
-                      return boundary.properties.layer
+                      return boundary.properties.TA_Name
                     })}
                     onSelect={onBoundarySelected}
                     error={boundaryError}
                     initialSelectOptionText={
                       selectedBoundary
-                        ? selectedBoundary.properties.layer
+                        ? selectedBoundary.properties.TA_Name
                         : 'Select boundary'
                     }
                     disabledOptions={boundariesAlreadyAdded.map((boundary) => {
-                      return boundary.properties.layer
+                      return boundary.properties.TA_Name
                     })}
                   />
                   <Button

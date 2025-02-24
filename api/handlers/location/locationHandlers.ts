@@ -9,7 +9,10 @@ async function getLocationCreate(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, location } = req.payload as { authToken: string, location: any }
+  const { authToken, location } = req.payload as {
+    authToken: string
+    location: any
+  }
 
   if (authToken !== 'WrongAuthToken' && location) {
     let updatedLocation = location
@@ -28,7 +31,10 @@ async function getLocationList(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, options } = req.payload as { authToken: string, options: { contactId: string } }
+  const { authToken, options } = req.payload as {
+    authToken: string
+    options: { contactId: string }
+  }
 
   if (authToken !== 'WrongAuthToken') {
     if (options?.contactId) {
@@ -55,7 +61,10 @@ async function getLocationRemove(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, locationIds } = req.payload as { authToken: string, locationIds: Array<string> }
+  const { authToken, locationIds } = req.payload as {
+    authToken: string
+    locationIds: Array<string>
+  }
 
   if (authToken !== 'WrongAuthToken' && locationIds) {
     return res.response(responseCodes.SUCCESS)
@@ -69,8 +78,11 @@ async function getLocationUpdate(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, location } = req.payload as { authToken: string, location: Object }
-  //location object must already contain location.id 
+  const { authToken, location } = req.payload as {
+    authToken: string
+    location: Object
+  }
+  //location object must already contain location.id
   if (authToken !== 'WrongAuthToken' && location) {
     return {
       location: location
@@ -80,4 +92,9 @@ async function getLocationUpdate(
   }
 }
 
-module.exports = { getLocationCreate, getLocationList, getLocationRemove, getLocationUpdate }
+module.exports = {
+  getLocationCreate,
+  getLocationList,
+  getLocationRemove,
+  getLocationUpdate
+}

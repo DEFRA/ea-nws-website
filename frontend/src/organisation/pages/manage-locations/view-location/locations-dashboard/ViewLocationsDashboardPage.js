@@ -32,6 +32,8 @@ export default function ViewLocationsDashboardPage () {
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const defaultLocationsPerPage = 20
+
   const [notificationText, setNotificationText] = useState(
     location.state?.successMessage
   )
@@ -44,6 +46,7 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [locationsPerPage, setLocationsPerPage] = useState(defaultLocationsPerPage)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -59,7 +62,12 @@ export default function ViewLocationsDashboardPage () {
     options: []
   })
 
-  const locationsPerPage = 20
+  useEffect(() => {
+    if (!locationsPerPage) {
+      window.print()
+      setLocationsPerPage(defaultLocationsPerPage)
+    }
+  }, [displayedLocations])
 
   const [partnerId, setPartnerId] = useState(false)
 
@@ -78,13 +86,17 @@ export default function ViewLocationsDashboardPage () {
   }, [resetPaging])
 
   useEffect(() => {
-    setDisplayedLocations(
-      filteredLocations.slice(
-        (currentPage - 1) * locationsPerPage,
-        currentPage * locationsPerPage
+    if (locationsPerPage) {
+      setDisplayedLocations(
+        filteredLocations.slice(
+          (currentPage - 1) * locationsPerPage,
+          currentPage * locationsPerPage
+        )
       )
-    )
-  }, [filteredLocations, currentPage])
+    } else {
+      setDisplayedLocations(filteredLocations)
+    }
+  }, [filteredLocations, currentPage, locationsPerPage])
 
   useEffect(() => {
     const getLocations = async () => {
@@ -139,6 +151,10 @@ export default function ViewLocationsDashboardPage () {
           })
         }
       })
+
+      window.onload = (event) => {
+        console.log('page is fully loaded')
+      }
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -424,6 +440,10 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
+  const onPrint = () => {
+    setLocationsPerPage(null)
+  }
+
   const onClickLinked = (type) => {
     setSelectedFilters([])
     setSelectedLocationTypeFilters([])
@@ -638,7 +658,6 @@ export default function ViewLocationsDashboardPage () {
   return (
     <>
       <BackLink onClick={navigateBack} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           {notificationText && (
@@ -677,6 +696,7 @@ export default function ViewLocationsDashboardPage () {
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
+                        onClick={() => onPrint()}
                       />
                     </>
                   )}
@@ -694,16 +714,18 @@ export default function ViewLocationsDashboardPage () {
                     actionText='Delete'
                     linkContacts={location.state?.linkContacts}
                   />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredLocations.length / locationsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    holdPage={holdPage}
-                    setHoldPage={setHoldPage}
-                    pageList
-                    reset={resetPaging}
-                  />
+                  {locationsPerPage && (
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredLocations.length / locationsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      holdPage={holdPage}
+                      setHoldPage={setHoldPage}
+                      pageList
+                      reset={resetPaging}
+                    />
+                  )}
                 </>
                 )
               : (
@@ -774,6 +796,7 @@ export default function ViewLocationsDashboardPage () {
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
+                            onClick={() => onPrint()}
                           />
                         </>
                       )}
@@ -792,16 +815,18 @@ export default function ViewLocationsDashboardPage () {
                       actionText='Delete'
                       linkContacts={location.state?.linkContacts}
                     />
-                    <Pagination
-                      totalPages={Math.ceil(
-                        filteredLocations.length / locationsPerPage
-                      )}
-                      onPageChange={(val) => setCurrentPage(val)}
-                      holdPage={holdPage}
-                      setHoldPage={setHoldPage}
-                      pageList
-                      reset={resetPaging}
-                    />
+                    {locationsPerPage && (
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredLocations.length / locationsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        holdPage={holdPage}
+                        setHoldPage={setHoldPage}
+                        pageList
+                        reset={resetPaging}
+                      />
+                    )}
                   </div>
                 </div>
                 )}

@@ -48,7 +48,12 @@ module.exports = [
             )
 
             // Send the profile to elasticache
-            await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
+            await orgSignIn(
+              response.data.profile,
+              response.data.organization,
+              locationRes.data.locations,
+              contactRes.data.contacts
+            )
 
             for (const contact of contactRes.data.contacts) {
               const options = { contactId: contact.id }
@@ -65,7 +70,11 @@ module.exports = [
                 locationIDs.push(location.id)
               })
 
-              await addLinkedLocations(response.data.organization.id, contact.id, locationIDs)
+              await addLinkedLocations(
+                response.data.organization.id,
+                contact.id,
+                locationIDs
+              )
             }
           }
           return h.response(response)

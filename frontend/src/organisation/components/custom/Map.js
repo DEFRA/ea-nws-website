@@ -387,7 +387,7 @@ export default function Map ({
   const onEachBoundaryFeature = (feature, layer) => {
     layer.on({
       mouseover: () => {
-        const text = feature.properties.NAME
+        const text = feature.properties.TA_Name
         layer
           .bindTooltip(text, {
             opacity: 1,

@@ -1,6 +1,4 @@
-import { faSquareFull } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
@@ -10,58 +8,121 @@ import floodSevereWarningIcon from '../../../../common/assets/images/severe_floo
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
+import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
 
-export default function LiveFLoodMonitoringPage () {
+export default function LiveFLoodMonitoringPage() {
   const navigate = useNavigate()
-  const [activeLocations] = useState(true)
+  const [showSevereLocations, setShowSevereLocations] = useState(true)
+  const [showWarningLocations, setShowWarningLocations] = useState(true)
+  const [showAlertLocations, setShowAlertLocations] = useState(true)
+  const [filters, setFilters] = useState({
+    severeAreas: true,
+    warningAreas: true,
+    alertAreas: true
+  })
+  const [floodData, setFloodData] = useState({
+    severeFloodAreasAmount: 0,
+    warningFloodAreasAmount: 0,
+    alertFloodAreasAmount: 0
+  })
+  const [accountHasLocations, setAccountHasLocations] = useState(true)
+
+  const handleFloodAreasUpdate = (data) => {
+    setFloodData(data)
+  }
+
+  const applyFilter = () => {
+    setFilters({
+      severeAreas: showSevereLocations,
+      warningAreas: showWarningLocations,
+      alertAreas: showAlertLocations
+    })
+  }
+
+  const totalLocationsAffected =
+    floodData.severeFloodAreasAmount +
+    floodData.warningFloodAreasAmount +
+    floodData.alertFloodAreasAmount
+
+  const lastUpdated = () => {
+    const now = new Date()
+
+    let hours = now.getHours()
+    const minutes = now.getMinutes().toString().padStart(2, '0')
+    const ampm = hours >= 12 ? 'pm' : 'am'
+
+    // Convert to 12-hour format
+    hours = hours % 12 || 12 // Convert 0 to 12 for 12 AM and keep other
+    const time = `${hours}:${minutes}${ampm}`
+
+    const date = now.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    })
+
+    return `${time} on ${date}`
+  }
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-5 govuk-body'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Live flood warnings</h1>
-            <Link
-              className='govuk-heading-m govuk-link'
-              style={{ color: '#1d70b8', marginBottom: '0' }}
-              to={orgFloodReportsUrls.live}
-            >
-              202 locations currently affected
-            </Link>
-            <p style={{ marginTop: '0' }}>Updated 10:00pm on 12 June 2024</p>
+          <div class='govuk-grid-column-two-thirds'>
+            <h1 class='govuk-heading-l'>Live flood warnings</h1>
+            {accountHasLocations && (
+              <>
+                <Link
+                  class='govuk-heading-m govuk-link'
+                  style={{ color: '#1d70b8', marginBottom: '0' }}
+                  to={orgFloodReportsUrls.live}
+                >
+                  {totalLocationsAffected} of your organisation's locations
+                  currently affected
+                </Link>
+                <p className='govuk-!-font-size-16' style={{ marginTop: '0' }}>
+                  Updated {lastUpdated()}
+                </p>
+              </>
+            )}
           </div>
         </div>
-        <div className='govuk-grid-row govuk-!-padding-top-4'>
-          <div className='govuk-grid-column-one-third'>
-            {activeLocations
-              ? (
+        <div class='govuk-grid-row govuk-!-padding-top-4'>
+          <div class='govuk-grid-column-one-third'>
+            {accountHasLocations ? (
+              totalLocationsAffected > 0 ? (
                 <>
                   <FloodTypeFilter
                     iconSrc={floodSevereWarningIcon}
-                    locationsCount={2}
+                    locationsCount={floodData.severeFloodAreasAmount}
                     warningType='Severe'
                     warningText='Severe flood warning'
                     warningDescription='Severe flooding - danger to life'
+                    showFloodType={showSevereLocations}
+                    updateFloodTypeVisibility={setShowSevereLocations}
                   />
                   <br />
                   <FloodTypeFilter
                     iconSrc={floodWarningIcon}
-                    locationsCount={33}
+                    locationsCount={floodData.warningFloodAreasAmount}
                     warningType='Warning'
                     warningText='Flood warning'
                     warningDescription='Flooding expected - act now'
+                    showFloodType={showWarningLocations}
+                    updateFloodTypeVisibility={setShowWarningLocations}
                   />
                   <br />
                   <FloodTypeFilter
                     iconSrc={floodAlertIcon}
-                    locationsCount={167}
+                    locationsCount={floodData.alertFloodAreasAmount}
                     warningType='Alert'
                     warningText='Flood alert'
                     warningDescription='Early alert of possible flooding - be prepared'
+                    showFloodType={showAlertLocations}
+                    updateFloodTypeVisibility={setShowAlertLocations}
                   />
                   <br />
                   <p className='govuk-body govuk-!-font-weight-bold'>
@@ -69,7 +130,7 @@ export default function LiveFLoodMonitoringPage () {
                   </p>
                   <FloodTypeFilter
                     iconSrc={floodWarningRemovedIcon}
-                    locationsCount={3}
+                    locationsCount={0}
                     warningType='Removed'
                     warningText='Warnings removed'
                     warningDescription=''
@@ -77,57 +138,43 @@ export default function LiveFLoodMonitoringPage () {
                   <Button
                     text='Apply filter'
                     className='govuk-button govuk-button--primary govuk-!-margin-top-3'
+                    onClick={() => {
+                      applyFilter()
+                    }}
                   />
                 </>
-                )
-              : (
-                <>
-                  <h2 className='govuk-heading-m'>Latest warnings</h2>
-                  <p className='govuk-!-padding-top-0'>0 to display</p>
-                  <br />
-                  <p>
-                    You’ll only see flood warnings here when you{' '}
-                    <Link href='#' className='govuk-link'>
-                      add locations
-                    </Link>
-                  </p>
-                </>
-                )}
+              ) : (
+                <p>
+                  There are currently no warnings in force across your locations
+                </p>
+              )
+            ) : (
+              <>
+                <h2 class='govuk-heading-m govuk-!-margin-bottom-0'>
+                  Latest warnings
+                </h2>
+                <p className='govuk-!-margin-top-0'>0 to display</p>
+                <p>
+                  You'll only see flood warnings here when you{' '}
+                  <Link
+                    to={orgManageLocationsUrls.add.options}
+                    className='govuk-link'
+                  >
+                    add locations
+                  </Link>
+                </p>
+              </>
+            )}
           </div>
-          <div className='govuk-grid-column-two-thirds'>
-            <LiveMap />
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingTop: '10px',
-                paddingBottom: '10px',
-                backgroundColor: '#F3F2F1'
-              }}
-            >
-              <div style={{ flex: '0 0 auto', marginRight: '12px' }}>
-                <FontAwesomeIcon
-                  icon={faSquareFull}
-                  style={{ color: '#E1414B' }}
-                  size='lg'
-                  className='govuk-!-margin-left-4'
-                />
-                <span className='govuk-!-font-size-19 govuk-!-margin-left-2'>
-                  Severe flood warnings and flood warnings area
-                </span>
-                <FontAwesomeIcon
-                  icon={faSquareFull}
-                  style={{ color: '#ED9E4A' }}
-                  size='lg'
-                  className='govuk-!-margin-left-6'
-                />
-                <span className='govuk-!-font-size-19 govuk-!-margin-left-2'>
-                  Flood alert area
-                </span>
-              </div>
-            </div>
-            <br />
+          <div class='govuk-grid-column-two-thirds'>
+            <LiveMap
+              showSevereLocations={filters.severeAreas}
+              showWarningLocations={filters.warningAreas}
+              showAlertLocations={filters.alertAreas}
+              onFloodAreasUpdate={handleFloodAreasUpdate}
+              isDisabled={!accountHasLocations}
+              setAccountHasLocations={(val) => setAccountHasLocations(val)}
+            />
           </div>
         </div>
       </main>

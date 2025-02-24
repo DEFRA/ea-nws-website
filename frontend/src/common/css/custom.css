@@ -197,6 +197,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-x: hidden;
 }
 
 .popup-dialog-container {
@@ -825,7 +826,7 @@
 /* Styles for the active state */
 .one-login-header__nav__list-item.active,
 .one-login-header__nav__list-item:hover {
-  background-color: #F3F2F1;
+  background-color: #f3f2f1;
 }
 
 .one-login-header__nav__list-item.no-highlight:hover,
@@ -840,26 +841,26 @@
   left: 10%;
   width: 80%;
   height: 4px;
-  background-color: #1D70B8;
+  background-color: #1d70b8;
 }
 
 .one-login-header__nav__list-item .active,
 .one-login-header__nav__list-item:hover .highlighted {
-  color: #1D70B8;
+  color: #1d70b8;
 }
 
 .one-login-header__nav__list-item.active span,
 .one-login-header__nav__list-item:hover span {
-  color: #1D70B8;
+  color: #1d70b8;
 }
 
 .one-login-header__nav__list-item svg {
-  stroke: #FFFFFF;
+  stroke: #ffffff;
 }
 
 .one-login-header__nav__list-item.active svg,
 .one-login-header__nav__list-item:hover svg {
-  stroke: #1D70B8;
+  stroke: #1d70b8;
 }
 
 @media (min-width: 40.0625em) {
@@ -1535,6 +1536,10 @@
   fill: url(#shapefile-pattern);
 }
 
+.live-map-shape-pattern-fill {
+  fill: url(#live-map-shape-pattern);
+}
+
 /* flood risk banner */
 .map-error-container {
   display: flex;
@@ -1818,4 +1823,126 @@ govuk-menu-toggle.button-menu > button {
 
 .right {
   float: right;
+}
+
+.live-map-filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.live-map-filter-severe {
+  background-color: #ffd7dc;
+}
+
+.live-map-filter-warning {
+  background-color: #fceaec;
+}
+
+.live-map-filter-alert {
+  background-color: #fdf1e3;
+}
+
+.live-map-filter-removed {
+  background-color: #f5f5f5;
+}
+
+.live-map-filter-icon {
+  flex: 0 0 auto;
+  margin-right: 2px;
+}
+
+.live-map-filter-image {
+  width: 100px;
+  height: 75px;
+}
+
+.live-map-filter-count {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 20px;
+}
+
+.live-map-filter-locations {
+  font-size: 14px;
+}
+
+.live-map-filter-description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 10px;
+}
+
+.live-map-filter-caption {
+  font-size: 14px;
+}
+
+.live-map-filter-checkbox {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.live-map-popup-warning-container {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.live-map-popup-severe {
+  background-color: #ffd7dc;
+}
+
+.live-map-popup-warning {
+  background-color: #fceaec;
+}
+
+.live-map-popup-alert {
+  background-color: #fdf1e3;
+}
+
+.live-map-popup-icon-container {
+  flex: 0 0 auto;
+  margin-right: 12px;
+}
+
+.live-map-popup-icon {
+  width: 100px;
+  height: 82px;
+}
+
+.live-map-popup-content {
+  flex: 1;
+}
+
+.live-map-popup-scroll-container {
+  overflow-y: visible;
+  max-height: unset;
+}
+
+.live-map-popup-scrollable {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.live-map-disabled {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 65px 100px;
+  z-index: 1100;
+  text-align: center;
+}
+
+/* This should stay near the end of the stylesheet to override link styling for print */
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
 }

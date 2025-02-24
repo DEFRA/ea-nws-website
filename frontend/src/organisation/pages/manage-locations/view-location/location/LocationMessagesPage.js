@@ -21,7 +21,7 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  //const orgId = useSelector((state) => state.session.orgId)
+  // const orgId = useSelector((state) => state.session.orgId)
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
 
@@ -114,17 +114,17 @@ export default function LocationMessagesPage () {
   const setHistoricalData = (taCode, type) => {
     const twoYearsAgo = moment().subtract(2, 'years')
     if (taCode && type) {
-      const newCount = {TA_CODE: taCode, counts: []}
+      const newCount = { TA_CODE: taCode, counts: [] }
       const messageTypes = categoryToMessageType(type)
       for (const messageType of messageTypes) {
         const filteredData = floodHistoryData.filter(
           (alert) =>
-            alert['CODE'] === taCode &&
-            alert['TYPE'] === messageType &&
+            alert.CODE === taCode &&
+            alert.TYPE === messageType &&
             moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
         )
         console.log(filteredData)
-        newCount.counts.push({type: messageType, count: filteredData.length})   
+        newCount.counts.push({ type: messageType, count: filteredData.length })
       }
       setFloodCounts((prev) => [...prev, newCount])
     }
@@ -132,7 +132,7 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const processFloodData = () => {
-      if (floodHistoryData && hasFetchedArea) {        
+      if (floodHistoryData && hasFetchedArea) {
         if (withinAreas.length > 0) {
           withinAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
         }
@@ -148,18 +148,19 @@ export default function LocationMessagesPage () {
     const messageSent = []
     const messageTypes = categoryToMessageType(category)
     for (const messageType of messageTypes) {
+      let count
       switch (messageType) {
         case 'Severe Flood Warning':
-          const severeCount = floodCount.counts.find((count) => count.type === messageType)?.count
-          messageSent.push(`${severeCount} severe flood warning${severeCount === 1 ? '' : 's'}`)
+          count = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${count} severe flood warning${count === 1 ? '' : 's'}`)
           break
         case 'Flood Warning':
-          const warningCount = floodCount.counts.find((count) => count.type === messageType)?.count
-          messageSent.push(`${warningCount} flood warning${warningCount === 1 ? '' : 's'}`)
+          count = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${count} flood warning${count === 1 ? '' : 's'}`)
           break
         case 'Flood Alert':
-          const AlertCount = floodCount.counts.find((count) => count.type === messageType)?.count
-          messageSent.push(`${AlertCount} flood alert${AlertCount === 1 ? '' : 's'}`)
+          count = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${count} flood alert${count === 1 ? '' : 's'}`)
           break
         case 'default':
           messageSent.push('')
@@ -205,7 +206,7 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     if (withinAreas.length > 0) {
-      let alertsArray = []
+      const alertsArray = []
       for (const area of withinAreas) {
         switch (area.properties.category) {
           case 'Flood Warning Rapid Response':
@@ -298,8 +299,6 @@ export default function LocationMessagesPage () {
     setAlertTypesEnabled(newalertTypesEnabled)
     setIsBannerDisplayed(false)
   }
-
-
 
   const messageSettingsSection = (
     <>
@@ -485,7 +484,7 @@ export default function LocationMessagesPage () {
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
                           {detail.messagesSent.map((messageSent, index) => (
-                            <><span key={index}>{messageSent}</span><br /></>
+                            <span key={index}>{messageSent}<br /></span>
                           ))}
 
                         </td>

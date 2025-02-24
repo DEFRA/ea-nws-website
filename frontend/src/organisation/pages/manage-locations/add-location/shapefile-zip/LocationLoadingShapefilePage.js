@@ -176,6 +176,7 @@ export default function LocationLoadingShapefilePage () {
             setErrors(data.error)
           }
           if (data?.data) {
+            // TODO: Process file for featureCollection only. GeoJson type can be feature, featureCollection, polygon or multi-polygon
             const processedGeojsonData = convertToMultiPolygon(data.data)
             setGeojsonData(processedGeojsonData)
           }

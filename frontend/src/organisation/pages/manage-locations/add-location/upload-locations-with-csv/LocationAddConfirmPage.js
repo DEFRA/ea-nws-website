@@ -44,7 +44,7 @@ export default function LocationAddConfirmPage () {
   return (
     <>
       <BackLink onClick={() => navigate(-2)} />
-      <main className='govuk-grid-row govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-column-two-thirds'>
           {error && <ErrorSummary errorList={[error]} />}
           <h1 className='govuk-heading-l govuk-!-margin-bottom-7'>

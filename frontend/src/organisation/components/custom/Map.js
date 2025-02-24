@@ -338,7 +338,10 @@ export default function Map ({
   // get boundary data
   useEffect(() => {
     async function fetchBoundaries () {
-      if (type === 'boundary' && selectedBoundaryType) {
+      if (
+        currentLocationDataType !== LocationDataType.BOUNDARY &&
+        selectedBoundaryType
+      ) {
         const data = await getBoundaries(selectedBoundaryType)
         if (data) {
           setBoundaries(data)
@@ -491,7 +494,7 @@ export default function Map ({
                   <ResetMapButton />
                 </>
               )}
-              {type !== 'boundary' &&
+              {currentLocationDataType !== LocationDataType.BOUNDARY &&
               currentLocationDataType !== LocationDataType.SHAPE_POLYGON &&
               currentLocationDataType !== LocationDataType.SHAPE_LINE && (
                 <>
@@ -524,7 +527,8 @@ export default function Map ({
                   }}
                 />
               )}
-              {boundaries && type === 'boundary' && (
+              {boundaries &&
+              currentLocationDataType !== LocationDataType.BOUNDARY && (
                 <GeoJSON
                   data={boundaries}
                   onEachFeature={onEachBoundaryFeature}

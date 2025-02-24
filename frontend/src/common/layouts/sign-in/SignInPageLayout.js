@@ -24,7 +24,7 @@ export default function SignInPageLayout({ navigateToNextPage }) {
         'api/sign_in',
         navigate
       )
-      console.log('data', data)
+
       if (errorMessage !== null) {
         setError(errorMessage)
         if (

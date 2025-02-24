@@ -28,7 +28,6 @@ module.exports = [
           )
 
           if (signinType === 'org' || response.data.organization) {
-            console.log('yes org')
             const signupComplete = response.data.profile.additionals?.find(
               (additional) => additional.id === 'signupComplete'
             )

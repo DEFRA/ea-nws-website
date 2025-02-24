@@ -122,7 +122,6 @@ export default function LiveMap({
             location.coordinates.latitude
           ])
         } else {
-          console.log('geometry', location)
           feature = location.geometry.geoJson
         }
 

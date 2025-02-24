@@ -16,8 +16,8 @@ import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../commo
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation,
-  getSurroundingFloodAreas,
-  isLocationInFloodArea
+  getFloodAreas,
+  getFloodAreasFromShape
 } from '../../../../../common/services/WfsFloodDataService'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
@@ -151,10 +151,6 @@ export default function ViewLocationsDashboardPage () {
           })
         }
       })
-
-      window.onload = (event) => {
-        console.log('page is fully loaded')
-      }
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -296,30 +292,50 @@ export default function ViewLocationsDashboardPage () {
     )
   }
 
+  const categoryToMessageType = (type) => {
+    const typeMap = {
+      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Alert': ['Flood Alert'],
+      'Flood Alert Groundwater': ['Flood Alert']
+    }
+    return typeMap[type] || []
+  }
+
+  const getWithinAreas = async (location) => {
+    let result
+    if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+      result = await getFloodAreas(
+        location.coordinates.latitude, location.coordinates.longitude
+      )
+    } else {
+      const geoJson = JSON.parse(location.geometry.geoJson)
+      result = await getFloodAreasFromShape(
+        geoJson
+      )
+    }
+    return result
+  }
+
   const getSelectedLocationsInformation = async (selectedLocations) => {
     const unavailableLocs = []
     const alertOnlyLocs = []
 
     for (const location of selectedLocations) {
-      const { warningArea, alertArea } = await getSurroundingFloodAreas(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
+      const withinAreas = await getWithinAreas(location)
 
-      const isInAlertArea =
-        alertArea &&
-        isLocationInFloodArea(
-          location.coordinates.latitude,
-          location.coordinates.longitude,
-          alertArea
-        )
-      const isInWarningArea =
-        warningArea &&
-        isLocationInFloodArea(
-          location.coordinates.latitude,
-          location.coordinates.longitude,
-          warningArea
-        )
+      let isInWarningArea = false
+      let isInAlertArea = false
+
+      for (const area of withinAreas) {
+        const type = categoryToMessageType(area.properties.category)
+        if (type.includes('Flood Warning')) {
+          isInWarningArea = true
+        } else {
+          isInAlertArea = true
+        }
+      }
 
       if (!isInAlertArea && !isInWarningArea) {
         unavailableLocs.push(location.id)

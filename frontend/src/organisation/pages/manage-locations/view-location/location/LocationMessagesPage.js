@@ -11,7 +11,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { getLocationAdditionals, getLocationOther, getLocationOtherAdditional, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
@@ -42,10 +42,7 @@ export default function LocationMessagesPage () {
   const [floodHistoryUrl, setHistoryUrl] = useState('')
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [floodCounts, setFloodCounts] = useState([])
-  const alertTypes = getLocationOtherAdditional(
-    additionalData,
-    'alertTypes'
-  )
+  const alertTypes = additionalData.alertTypes
   const [availableAlerts, setAvailableAlerts] = useState([])
   const childrenIDs = useSelector((state) => getLocationOther(
     state,

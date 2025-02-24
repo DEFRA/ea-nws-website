@@ -121,9 +121,9 @@ export default function LocationMessagesPage () {
           (alert) =>
             alert['CODE'] === taCode &&
             alert['TYPE'] === messageType &&
-            (moment(alert.Approved
-              , 'DD/MM/YYYY HH:MM:SS')).format('DD/MM/YYYY') > twoYearsAgo.format('DD/MM/YYYY')
+            moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
         )
+        console.log(filteredData)
         newCount.counts.push({type: messageType, count: filteredData.length})   
       }
       setFloodCounts((prev) => [...prev, newCount])
@@ -157,9 +157,9 @@ export default function LocationMessagesPage () {
           const warningCount = floodCount.counts.find((count) => count.type === messageType)?.count
           messageSent.push(`${warningCount} flood warning${warningCount === 1 ? '' : 's'}`)
           break
-        case 'Flood Warning':
+        case 'Flood Alert':
           const AlertCount = floodCount.counts.find((count) => count.type === messageType)?.count
-          messageSent.push(`${AlertCount} flood alerts${AlertCount === 1 ? '' : 's'}`)
+          messageSent.push(`${AlertCount} flood alert${AlertCount === 1 ? '' : 's'}`)
           break
         case 'default':
           messageSent.push('')
@@ -187,7 +187,7 @@ export default function LocationMessagesPage () {
         const taCode = area.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
         const messageSent = populateMessagesSent(area.category, floodCount)
-        const type = categoryToMessageType(area.properties.category)
+        const type = categoryToMessageType(area.category)
         updatedFloodAreas.push({
           areaName: area.TA_Name,
           areaType: `${type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'} area`,
@@ -439,7 +439,7 @@ export default function LocationMessagesPage () {
             {floodAreasInputs.length > 0 &&
             (
               <>
-                <span class='govuk-caption-m'>
+                <span className='govuk-caption-m'>
                   {floodAreasInputs.length} flood areas
                 </span>
 
@@ -485,7 +485,7 @@ export default function LocationMessagesPage () {
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
                           {detail.messagesSent.map((messageSent, index) => (
-                            <tr rowSpan={index} key={index}>{messageSent}</tr>
+                            <><span key={index}>{messageSent}</span><br /></>
                           ))}
 
                         </td>

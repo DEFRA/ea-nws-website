@@ -1,4 +1,5 @@
 import { distance, point, pointToPolygonDistance } from '@turf/turf'
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -13,6 +14,7 @@ import {
   setCurrentLocation
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
   getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
@@ -35,6 +37,127 @@ export default function LinkLocationsLayout ({
   const orgId = useSelector((state) => state.session.orgId)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
+  const [floodHistoryUrl, setHistoryUrl] = useState('')
+  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const [floodCounts, setFloodCounts] = useState([])
+  const [floodAreaInputs, setFloodAreasInputs] = useState([])
+
+  const categoryToMessageType = (type) => {
+    const messageTypes = []
+    switch (type) {
+      case 'Flood Warning':
+      case 'Flood Warning Groundwater':
+      case 'Flood Warning Rapid Response':
+        messageTypes.push('Flood Warning')
+        messageTypes.push('Severe Flood Warning')
+        break
+      case 'Flood Alert':
+      case 'Flood Alert Groundwater':
+        messageTypes.push('Flood Alert')
+        break
+      default:
+        break
+    }
+    return messageTypes
+  }
+
+  const setHistoricalData = (taCode, type) => {
+    const twoYearsAgo = moment().subtract(2, 'years')
+    if (taCode && type) {
+      const newCount = {TA_CODE: taCode, counts: []}
+      const messageTypes = categoryToMessageType(type)
+      for (const messageType of messageTypes) {
+        const filteredData = floodHistoryData.filter(
+          (alert) =>
+            alert['CODE'] === taCode &&
+            alert['TYPE'] === messageType &&
+            moment(alert.DATE,'DD/MM/YYYY') > twoYearsAgo
+        )
+        newCount.counts.push({type: messageType, count: filteredData.length})   
+      }
+      setFloodCounts((prev) => [...prev, newCount])
+    }
+  }
+
+  useEffect(() => {
+    const processFloodData = () => {
+      if (floodHistoryData && floodAreas) {        
+        if (floodAreas.length > 0) {
+          floodAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
+        }
+      }
+    }
+    processFloodData()
+  }, [floodHistoryData, floodAreas])
+
+  useEffect(() => {
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+      setHistoryUrl(data)
+    }
+    getHistoryUrl()
+    floodHistoryUrl &&
+      fetch(floodHistoryUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          setFloodHistoryData(csvToJson(data))
+        })
+        .catch((e) =>
+          console.error('Could not fetch Organisation Historic Flood Warning file', e)
+        )
+  }, [floodHistoryUrl])
+
+  const populateMessagesSent = (category, floodCount) => {
+    const messageSent = []
+    const messageTypes = categoryToMessageType(category)
+    for (const messageType of messageTypes) {
+      switch (messageType) {
+        case 'Severe Flood Warning':
+          const severeCount = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${severeCount} severe flood warning${severeCount === 1 ? '' : 's'}`)
+          break
+        case 'Flood Warning':
+          const warningCount = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${warningCount} flood warning${warningCount === 1 ? '' : 's'}`)
+          break
+        case 'Flood Alert':
+          const AlertCount = floodCount.counts.find((count) => count.type === messageType)?.count
+          messageSent.push(`${AlertCount} flood alert${AlertCount === 1 ? '' : 's'}`)
+          break
+        case 'default':
+          messageSent.push('')
+          break
+      }
+    }
+    return messageSent
+  }
+
+  useEffect(() => {
+    const populateInputs = (floodAreas, floodCounts) => {
+      const updatedFloodAreas = []
+      for (const area of floodAreas) {
+        const taCode = area.properties.TA_CODE
+        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
+        const messageSent = populateMessagesSent(area.properties.category, floodCount)
+        const type = categoryToMessageType(area.properties.category)
+        updatedFloodAreas.push({
+          areaCode: area.properties.TA_CODE,
+          areaName: area.properties.TA_Name,
+          areaDistance: area.properties.distance,
+          areaType: `${type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'} area`,
+          messagesSent: messageSent
+        })
+      }
+      setFloodAreasInputs(updatedFloodAreas)
+    }
+
+    if (floodAreas.length > 0 && floodCounts.length > 0) {
+      populateInputs(floodAreas, floodCounts)
+    }
+  }, [floodAreas, floodCounts])
 
   const handleCheckboxChange = (areaId) => {
     setSelectedTAs((prev) =>
@@ -298,20 +421,21 @@ export default function LinkLocationsLayout ({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {floodAreas.map((area) => (
+          {floodAreaInputs.map((area) => (
             <tr key={area.id} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 <Link to='#' className='govuk-link'>
-                  {area.properties.TA_Name}
+                  {area.areaName}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {area.properties.distance ?? 'Xm'}
+                {area.areaDistance ?? 'Xm'}
               </td>
-              <td className='govuk-table__cell'>{area.properties.category}</td>
+              <td className='govuk-table__cell'>{area.areaType}</td>
               <td className='govuk-table__cell'>
-                X severe flood warnings <br />
-                X flood warnings <br />X flood alerts
+              {area.messagesSent.map((messageSent, index) => (
+                            <><span key={index}>{messageSent}</span><br /></>
+                          ))}
               </td>
               <td className='govuk-table__cell'>
                 <div
@@ -322,10 +446,10 @@ export default function LinkLocationsLayout ({
                   }}
                 >
                   <Checkbox
-                    value={area.properties.TA_CODE}
+                    value={area.areaCode}
                     onChange={() =>
-                      handleCheckboxChange(area.properties.TA_CODE)}
-                    checked={selectedTAs.includes(area.properties.TA_CODE)}
+                      handleCheckboxChange(area.areaCode)}
+                    checked={selectedTAs.includes(area.areaCode)}
                   />
                 </div>
               </td>

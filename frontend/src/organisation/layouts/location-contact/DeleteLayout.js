@@ -16,7 +16,7 @@ export default function DeleteLayout () {
 
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const isLocation = location.pathname.includes('manage-locations')
+  const isLocation = location.pathname.includes(orgManageLocationsUrls.delete)
   const idToDelete = useSelector((state) =>
     isLocation
       ? state.session.currentLocation.id

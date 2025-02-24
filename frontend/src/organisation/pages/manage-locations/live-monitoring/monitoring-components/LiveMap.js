@@ -5,6 +5,7 @@ import {
   MapContainer,
   TileLayer,
   ZoomControl,
+  useMap,
   useMapEvents
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
@@ -14,6 +15,7 @@ import { Marker, Popup } from 'react-leaflet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
+import boundaryKeyIcon from '../../../../../common/assets/images/boundary_already_added_icon.png'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
 import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
@@ -27,7 +29,6 @@ import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJ
 import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { createLiveMapShapePattern } from '../../../../components/custom/FloodAreaPatterns'
-import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodDataInformationPopup from './FloodDataInformationPopup'
 
@@ -181,7 +182,6 @@ export default function LiveMap({
         }
       }
     } else {
-      console.log('hit')
       setAccountHasLocations(false)
     }
   }
@@ -235,6 +235,11 @@ export default function LiveMap({
           floodArea.properties.longitude.replace(',', '.'),
           floodArea.properties.latitude.replace(',', '.')
         ])
+
+        geometry.geoJson.properties = {
+          ...geometry.geoJson.properties,
+          isShape: true
+        }
 
         setShapes((prevShape) => [...prevShape, geometry.geoJson])
         processFloodArea(severity, point, floodArea)
@@ -406,6 +411,112 @@ export default function LiveMap({
     ),
     []
   )
+
+  // map key
+  const [visibleFeatures, setVisibleFeatures] = useState([])
+
+  const FeatureTracker = () => {
+    const features = [
+      ...severeFloodAreas,
+      ...warningFloodAreas,
+      ...alertFloodAreas,
+      ...shapes
+    ]
+    const map = useMap()
+
+    useEffect(() => {
+      // Run on initial load when the map is ready
+      checkVisibleFeatures()
+    }, [map])
+
+    useMapEvents({
+      moveend: () => checkVisibleFeatures(),
+      zoomend: () => checkVisibleFeatures()
+    })
+
+    const checkVisibleFeatures = () => {
+      const bounds = map.getBounds()
+
+      // convert map bounds to GeoJSON polygon for intersection checking
+      const viewportGeoJSON = {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [bounds.getWest(), bounds.getSouth()],
+              [bounds.getEast(), bounds.getSouth()],
+              [bounds.getEast(), bounds.getNorth()],
+              [bounds.getWest(), bounds.getNorth()],
+              [bounds.getWest(), bounds.getSouth()]
+            ]
+          ]
+        }
+      }
+
+      // filter features that intersect with current bounds
+      const visibleFeatures = features.filter((feature) => {
+        // handle all other geometry types
+        return turf.booleanIntersects(feature, viewportGeoJSON)
+      })
+      setVisibleFeatures(visibleFeatures)
+    }
+
+    return null
+  }
+  const keyTypes = {
+    noKey: 'noKey',
+    boundaryOrShape: 'boundaryOrShape',
+    floodAreas: 'floodAreas'
+  }
+
+  const [mapKeyType, setMapKeyType] = useState({ keyType: keyTypes.noKey })
+
+  useEffect(() => {
+    visibleFeatures.forEach((feature) => {
+      if (zoomLevel >= 12 && feature?.properties?.TA_CODE) {
+        setMapKeyType(keyTypes.floodAreas)
+      } else if (feature?.properties?.isShape) {
+        setMapKeyType(keyTypes.boundaryOrShape)
+      } else {
+        setMapKeyType(keyTypes.noKey)
+      }
+    })
+  }, [visibleFeatures])
+
+  const LiveMapKey = () => {
+    switch (mapKeyType) {
+      case keyTypes.floodAreas:
+        return (
+          <div className='org-flood-warning-key'>
+            <div className='org-flood-warning-item'>
+              <div className='org-flood-warning-square warning-square' />
+              <span className='org-flood-warning-text'>
+                Severe flood warnings and flood warnings area
+              </span>
+            </div>
+
+            <div className='org-flood-alert-item'>
+              <div className='org-flood-warning-square alert-square' />
+              <span className='org-flood-warning-text'>Flood alert area</span>
+            </div>
+          </div>
+        )
+
+      case keyTypes.boundaryOrShape:
+        return (
+          <div className='org-flood-warning-key'>
+            <div className='org-flood-warning-item'>
+              <img src={boundaryKeyIcon} alt='Shapefile' />
+              <span className='org-flood-warning-text'>Boundary</span>
+            </div>
+          </div>
+        )
+      case keyTypes.noKey:
+        return
+    }
+  }
+
   // locations affected list under map
   const locationsAffected = [...severePoints, ...warningPoints, ...alertPoints]
 
@@ -451,6 +562,7 @@ export default function LiveMap({
               filter: isDisabled ? 'grayscale(100%)' : 'none'
             }}
           >
+            <FeatureTracker />
             {isDisabled && (
               <div className='live-map-disabled'>
                 <Link
@@ -594,7 +706,7 @@ export default function LiveMap({
 
           {locationsAffected.length > 0 && (
             <>
-              <FloodWarningKey /> <br />
+              <LiveMapKey /> <br />
             </>
           )}
 

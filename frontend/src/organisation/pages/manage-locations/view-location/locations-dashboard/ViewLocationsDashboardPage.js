@@ -237,6 +237,7 @@ export default function ViewLocationsDashboardPage () {
     return text
   }
 
+  // TODO: Refactor to make more readable
   const editLocationText = (locationsToBeEdited, unavailableLocs, alertOnlyLocs) => {
     return (
       <>

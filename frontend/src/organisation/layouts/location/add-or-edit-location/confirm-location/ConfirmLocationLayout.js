@@ -186,7 +186,7 @@ export default function ConfirmLocationLayout ({
       )
 
       // need to set the current location due to geosafe creating the ID.
-      dispatch(setCurrentLocation(newGeosafeLocation))
+      dispatch(setCurrentLocation(data))
 
       // Remove invalid location from elasticache
       if (flow?.includes('unmatched-locations')) {

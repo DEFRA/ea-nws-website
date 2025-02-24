@@ -149,7 +149,6 @@ export default function LocationMessagesPage () {
   const populateMessagesSent = (category, floodCount) => {
     const messageSent = []
     const messageTypes = categoryToMessageType(category)
-    console.log(messageTypes)
     for (const messageType of messageTypes) {
       let count
       switch (messageType) {
@@ -288,7 +287,6 @@ export default function LocationMessagesPage () {
       const locationToUpdate = store.getState().session.currentLocation
 
       const updateData = { authToken, orgId, location: locationToUpdate }
-      console.log(updateData)
       await backendCall(updateData, 'api/location/update', navigate)
 
       const registerData = {

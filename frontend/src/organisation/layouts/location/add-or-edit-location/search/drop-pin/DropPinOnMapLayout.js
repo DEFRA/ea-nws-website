@@ -162,7 +162,7 @@ export default function DropPinOnMapLayout ({
             navigate
           )
 
-          dispatch(setCurrentLocation(newGeosafeLocation))
+          dispatch(setCurrentLocation(data))
 
           // Remove invalid location from elasticache
           if (flow?.includes('unmatched-locations')) {

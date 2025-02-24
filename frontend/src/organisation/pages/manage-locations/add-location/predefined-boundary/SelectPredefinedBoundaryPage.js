@@ -165,7 +165,7 @@ export default function SelectPredefinedBoundaryPage () {
           navigate
         )
 
-        dispatch(setCurrentLocation(newGeosafeLocation))
+        dispatch(setCurrentLocation(data))
         dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
         dispatch(setPredefinedBoundaryFlow(true))
         // TODO: This needs to navigate to optional info page once it has been developed

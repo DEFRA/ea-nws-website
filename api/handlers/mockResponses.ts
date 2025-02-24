@@ -154,7 +154,7 @@ const registrations = {
 }
 
 const organization = {
-  id: '15',
+  id: '1',
   name: 'Flood Inc.',
   description: JSON.stringify({
     name: 'Flood Inc.',

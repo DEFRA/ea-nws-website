@@ -348,7 +348,7 @@ export default function Map ({
           // return list of boundaries for user to choose from
           boundaryList(
             data.features.map((feature) => {
-              return { properties: feature.properties, id: feature.id }
+              return { feature }
             })
           )
 
@@ -538,10 +538,13 @@ export default function Map ({
                   }}
                 />
               )}
-              {locationGeometry && (
+              {locationGeometry &&
+              (currentLocationDataType === LocationDataType.SHAPE_LINE ||
+                currentLocationDataType === LocationDataType.SHAPE_POLYGON) &&
+              (
                 <>
                   <GeoJSON
-                    data={locationGeometry}
+                    data={JSON.parse(locationGeometry.geoJson)}
                     onEachFeature={onEachShapefileFeature}
                     ref={(el) => {
                       shapefileRef.current = el

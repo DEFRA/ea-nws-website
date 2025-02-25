@@ -143,7 +143,7 @@ export default function LiveMap ({
           northEast: { latitude: parseInt(bbox[3] * 10 ** 6), longitude: parseInt(bbox[2] * 10 ** 6) }
         },
         channels: [],
-        partnerId: partnerId
+        partnerId
       }
 
       // load live alerts

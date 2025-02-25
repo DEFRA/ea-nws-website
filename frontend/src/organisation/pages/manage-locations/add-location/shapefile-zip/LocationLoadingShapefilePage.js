@@ -122,7 +122,7 @@ export default function LocationLoadingShapefilePage () {
           longitude: polygonCentre.geometry.coordinates[0]
         })
       )
-      dispatch(setCurrentLocationGeometry(geojsonData))
+      dispatch(setCurrentLocationGeometry({ geoJson: JSON.stringify(geojsonData) }))
       dispatch(setCurrentLocationName(locationName))
 
       const newLocation = store.getState().session.currentLocation

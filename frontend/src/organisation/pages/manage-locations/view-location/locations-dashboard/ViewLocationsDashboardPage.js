@@ -7,15 +7,18 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
-  getRiversAndSeaFloodRiskRatingOfLocation
+  getRiversAndSeaFloodRiskRatingOfLocation,
+  getFloodAreas,
+  getFloodAreasFromShape
 } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -46,6 +49,7 @@ export default function ViewLocationsDashboardPage () {
   const [locationsPerPage, setLocationsPerPage] = useState(defaultLocationsPerPage)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -54,7 +58,8 @@ export default function ViewLocationsDashboardPage () {
     buttonClass: '',
     input: '',
     charLimit: 0,
-    error: ''
+    error: '',
+    options: []
   })
 
   useEffect(() => {
@@ -63,6 +68,13 @@ export default function ViewLocationsDashboardPage () {
       setLocationsPerPage(defaultLocationsPerPage)
     }
   }, [displayedLocations])
+
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
 
   useEffect(() => {
     setFilteredLocations(locations)
@@ -140,14 +152,11 @@ export default function ViewLocationsDashboardPage () {
         }
       })
 
-      window.onload = (event) => {
-        console.log('page is fully loaded')
-      }
-
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
 
+    getPartnerId()
     getLocations()
   }, [])
 
@@ -224,6 +233,120 @@ export default function ViewLocationsDashboardPage () {
     return text
   }
 
+  // TODO: Refactor to make more readable
+  const editLocationText = (locationsToBeEdited, unavailableLocs, alertOnlyLocs) => {
+    return (
+      <>
+        {unavailableLocs.length === 0 && (
+          <>
+            <p>
+              Select the type of flood messages you want these {locationsToBeEdited.length} locations to get.
+            </p>
+            {alertOnlyLocs.length === 0 && (
+              <p>
+                Any updates will change the message settings for all {locationsToBeEdited.length} locations.
+              </p>
+            )}
+            {alertOnlyLocs.length > 0 && (
+              <p>
+                {alertOnlyLocs.length} of these locations is in a place that can only get flood alerts even if severe flood warnings and
+                flood warnings are selected.
+              </p>
+            )}
+          </>
+        )}
+        {unavailableLocs.length > 0 && (
+          <>
+            <p>
+              Flood messages are unavailable for {unavailableLocs.length} of the {locationsToBeEdited.length} locations selected. To get flood
+              messages for these locations you may be able to link them to any nearby flood areas
+              that get flood messages.
+            </p>
+            {locationsToBeEdited.length > unavailableLocs.length && (
+              <>
+                <p>
+                  Select the type of flood messages you want the other {locationsToBeEdited.length - unavailableLocs.length} locations to get.
+                </p>
+                {alertOnlyLocs.length === 0 && (
+                  <p>
+                    Any updates will change the message settings for all {locationsToBeEdited.length - unavailableLocs.length} locations.
+                  </p>
+                )}
+                {alertOnlyLocs.length > 0 && (
+                  <>
+                    <p>
+                      {alertOnlyLocs.length} of these locations is in a place that can only get flood alerts even if severe flood warnings and
+                      flood warnings are selected.
+                    </p>
+                    <p>
+                      Any updates will change the message settings for all locations where those message
+                      types are available.
+                    </p>
+                  </>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </>
+    )
+  }
+
+  const categoryToMessageType = (type) => {
+    const typeMap = {
+      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
+      'Flood Alert': ['Flood Alert'],
+      'Flood Alert Groundwater': ['Flood Alert']
+    }
+    return typeMap[type] || []
+  }
+
+  const getWithinAreas = async (location) => {
+    let result
+    if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+      result = await getFloodAreas(
+        location.coordinates.latitude, location.coordinates.longitude
+      )
+    } else {
+      const geoJson = JSON.parse(location.geometry.geoJson)
+      result = await getFloodAreasFromShape(
+        geoJson
+      )
+    }
+    return result
+  }
+
+  const getSelectedLocationsInformation = async (selectedLocations) => {
+    const unavailableLocs = []
+    const alertOnlyLocs = []
+
+    for (const location of selectedLocations) {
+      const withinAreas = await getWithinAreas(location)
+
+      let isInWarningArea = false
+      let isInAlertArea = false
+
+      for (const area of withinAreas) {
+        const type = categoryToMessageType(area.properties.category)
+        if (type.includes('Flood Warning')) {
+          isInWarningArea = true
+        } else {
+          isInAlertArea = true
+        }
+      }
+
+      if (!isInAlertArea && !isInWarningArea) {
+        unavailableLocs.push(location.id)
+      } else if (!isInWarningArea && isInAlertArea) {
+        alertOnlyLocs.push(location.id)
+      }
+    }
+
+    return editLocationText(selectedLocations, unavailableLocs, alertOnlyLocs)
+  }
+
   const deleteDialog = (locationsToBeDeleted) => {
     if (locationsToBeDeleted && locationsToBeDeleted.length > 0) {
       setDialog({
@@ -241,6 +364,49 @@ export default function ViewLocationsDashboardPage () {
           locationsToBeDeleted.length > 1 ? 'locations' : 'location'
         }`,
         buttonClass: 'govuk-button--warning'
+      })
+    }
+  }
+
+  const editDialog = async (locationsToBeEdited) => {
+    const dialogText = await getSelectedLocationsInformation(locationsToBeEdited)
+
+    let severeOption = null
+    let warningOption = null
+    let alertOption = null
+    if (locationsToBeEdited.length === 1) {
+      severeOption = locationsToBeEdited[0].additionals.other.alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
+      warningOption = locationsToBeEdited[0].additionals.other.alertTypes.includes(AlertType.FLOOD_WARNING)
+      alertOption = locationsToBeEdited[0].additionals.other.alertTypes.includes(AlertType.FLOOD_ALERT)
+    }
+
+    if (locationsToBeEdited && locationsToBeEdited.length > 0) {
+      setDialog({
+        show: true,
+        text: dialogText,
+        title: `Update message settings for ${locationsToBeEdited.length} ${
+          locationsToBeEdited.length > 1 ? 'locations' : 'location'
+        }`,
+        buttonText: 'Update message settings',
+        buttonClass: '',
+        error: '',
+        options: [
+          {
+            label: 'Severe flood warnings',
+            value: AlertType.SEVERE_FLOOD_WARNING,
+            sent: severeOption
+          },
+          {
+            label: 'Flood warnings',
+            value: AlertType.FLOOD_WARNING,
+            sent: warningOption
+          },
+          {
+            label: 'Flood alerts',
+            value: AlertType.FLOOD_ALERT,
+            sent: alertOption
+          }
+        ]
       })
     }
   }
@@ -282,7 +448,7 @@ export default function ViewLocationsDashboardPage () {
         linkContactsToLocations()
         break
       case 1:
-        // TODO - message settings (EAN-1424)
+        editDialog(selectedLocations)
         break
       case 2:
         deleteDialog(selectedLocations)
@@ -357,6 +523,62 @@ export default function ViewLocationsDashboardPage () {
     setIsFilterVisible(!isFilterVisible)
   }
 
+  const editLocations = async (locationsToEdit) => {
+    const chosenAlerts = []
+    if (dialog.options[0].sent) {
+      chosenAlerts.push(AlertType.SEVERE_FLOOD_WARNING)
+    }
+    if (dialog.options[1].sent) {
+      chosenAlerts.push(AlertType.FLOOD_WARNING)
+    }
+    if (dialog.options[2].sent) {
+      chosenAlerts.push(AlertType.FLOOD_ALERT)
+    }
+
+    for (let i = 0; i < locationsToEdit.length; i++) {
+      locationsToEdit[i].additionals.other.alertTypes = chosenAlerts
+
+      const updateData = { authToken, orgId, location: webToGeoSafeLocation(locationsToEdit[i]) }
+      await backendCall(updateData, 'api/location/update', navigate)
+
+      const registerData = {
+        authToken,
+        locationId: locationsToEdit[i].id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: chosenAlerts
+        }
+      }
+
+      await backendCall(
+        registerData,
+        'api/location/update_registration',
+        navigate
+      )
+    }
+
+    setSelectedLocations([])
+    setDialog({ ...dialog, show: false })
+  }
+
+  const handleRadioChange = (index, isItOn) => {
+    setDialog(prevDialog => {
+      const updatedDialog = { ...prevDialog }
+      updatedDialog.options = [...prevDialog.options]
+      updatedDialog.options[index] = {
+        ...updatedDialog.options[index],
+        sent: isItOn
+      }
+      return updatedDialog
+    })
+  }
+
   const removeLocations = async (locationsToRemove) => {
     const updatedLocations = locations.filter(
       (location) => !locationsToRemove.includes(location)
@@ -369,6 +591,20 @@ export default function ViewLocationsDashboardPage () {
     locationsToRemove.forEach((location) => {
       locationIds.push(location.id)
     })
+
+    for (const locationID of locationIds) {
+      const unregisterData = {
+        authToken,
+        locationId: locationID,
+        partnerId
+      }
+
+      await backendCall(
+        unregisterData,
+        'api/location/unregister_from_partner',
+        navigate
+      )
+    }
 
     const dataToSend = { authToken, orgId, locationIds }
 
@@ -414,6 +650,21 @@ export default function ViewLocationsDashboardPage () {
     } else {
       setFilteredLocations(locations)
     }
+  }
+
+  const handleEdit = () => {
+    if (selectedLocations.length > 0) {
+      const locationsToBeEdited = [...selectedLocations]
+      editLocations(locationsToBeEdited)
+    }
+  }
+
+  const handleClose = () => {
+    setDialog({ ...dialog, show: false })
+  }
+
+  const validateInput = () => {
+    return dialog.options.some(option => option.sent === null) ? 'There is a problem, select On or Off for each message type' : ''
   }
 
   const navigateBack = (event) => {
@@ -599,18 +850,24 @@ export default function ViewLocationsDashboardPage () {
             {dialog.show && (
               <>
                 <Popup
+                  onEdit={() => handleEdit()}
                   onDelete={() => handleDelete()}
-                  onClose={() => setDialog({ ...dialog, show: false })}
+                  onClose={() => handleClose()}
                   title={dialog.title}
                   popupText={dialog.text}
                   buttonText={dialog.buttonText}
                   buttonClass={dialog.buttonClass}
+                  options={dialog.options}
+                  error={dialog.error}
                   setError={(val) =>
                     setDialog((dial) => ({ ...dial, error: val }))}
+                  validateInput={() => validateInput()}
                   defaultValue={
                     dialog.input ? targetLocation.additionals.locationName : ''
                   }
+                  onRadioChange={handleRadioChange}
                 />
+
               </>
             )}
           </div>

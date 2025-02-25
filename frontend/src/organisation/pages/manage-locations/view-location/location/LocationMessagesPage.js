@@ -2,6 +2,7 @@ import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import store from '../../../../../common/redux/store'
 import linkIcon from '../../../../../common/assets/images/link.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
@@ -10,7 +11,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { getLocationAdditionals, getLocationOther, getLocationOtherAdditional, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
@@ -21,23 +22,27 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  // const orgId = useSelector((state) => state.session.orgId)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
 
   const [loading, setLoading] = useState(true)
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
+  const authToken = useSelector((state) => state.session.authToken)
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
 
   const [withinAreas, setWithinAreas] = useState([])
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
   const [floodHistoryUrl, setHistoryUrl] = useState('')
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [floodCounts, setFloodCounts] = useState([])
-  const alertTypes = getLocationOtherAdditional(
-    additionalData,
-    'alertTypes'
-  )
+  const alertTypes = additionalData.alertTypes
   const [availableAlerts, setAvailableAlerts] = useState([])
   const childrenIDs = useSelector((state) => getLocationOther(
     state,
@@ -119,6 +124,10 @@ export default function LocationMessagesPage () {
       setFloodCounts((prev) => [...prev, newCount])
     }
   }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   useEffect(() => {
     const processFloodData = () => {
@@ -253,7 +262,7 @@ export default function LocationMessagesPage () {
         )
   }, [floodHistoryUrl])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       alertTypesEnabledOriginal.every(
         (value, index) => value === alertTypesEnabled[index]
@@ -271,6 +280,32 @@ export default function LocationMessagesPage () {
       if (alertTypesDispatch.length > 0) {
         dispatch(setCurrentLocationAlertTypes(alertTypesDispatch))
       }
+
+      const locationToUpdate = store.getState().session.currentLocation
+
+      const updateData = { authToken, orgId, location: locationToUpdate }
+      await backendCall(updateData, 'api/location/update', navigate)
+
+      const registerData = {
+        authToken,
+        locationId: locationToUpdate.id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: alertTypesDispatch
+        }
+      }
+
+      await backendCall(
+        registerData,
+        'api/location/update_registration',
+        navigate
+      )
     }
   }
 
@@ -372,7 +407,7 @@ export default function LocationMessagesPage () {
         </tbody>
       </table>
 
-      {alertTypes && (
+      {availableAlerts.length > 0 && (
         <Button
           text='Save message settings'
           className='govuk-button'

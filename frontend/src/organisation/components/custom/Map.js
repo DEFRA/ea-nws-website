@@ -339,7 +339,7 @@ export default function Map ({
   useEffect(() => {
     async function fetchBoundaries () {
       if (
-        currentLocationDataType !== LocationDataType.BOUNDARY &&
+        currentLocationDataType === LocationDataType.BOUNDARY &&
         selectedBoundaryType
       ) {
         const data = await getBoundaries(selectedBoundaryType)
@@ -528,7 +528,7 @@ export default function Map ({
                 />
               )}
               {boundaries &&
-              currentLocationDataType !== LocationDataType.BOUNDARY && (
+              currentLocationDataType === LocationDataType.BOUNDARY && (
                 <GeoJSON
                   data={boundaries}
                   onEachFeature={onEachBoundaryFeature}

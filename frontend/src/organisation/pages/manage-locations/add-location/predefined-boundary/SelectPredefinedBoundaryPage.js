@@ -18,6 +18,8 @@ import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataSer
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import AlertType from '../../../../../common/enums/AlertType'
 
 export default function SelectPredefinedBoundaryPage () {
   const dispatch = useDispatch()
@@ -42,6 +44,13 @@ export default function SelectPredefinedBoundaryPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
   // Get boundary types
   useEffect(() => {
     const getBoundaryTypesList = async () => {
@@ -49,6 +58,7 @@ export default function SelectPredefinedBoundaryPage () {
       setBoundaryTypes(boundaryTypesList)
     }
     getBoundaryTypesList()
+    getPartnerId()
   }, [])
 
   useEffect(() => {
@@ -81,7 +91,7 @@ export default function SelectPredefinedBoundaryPage () {
 
   const onBoundarySelected = (boundaryName) => {
     const boundarySelected = boundaries.find(
-      (boundary) => boundary.properties.layer === boundaryName
+      (boundary) => boundary.properties.TA_Name === boundaryName
     )
 
     dispatch(setSelectedBoundary(boundarySelected))
@@ -116,18 +126,45 @@ export default function SelectPredefinedBoundaryPage () {
         setCurrentLocationName(
           locationBoundary.boundary_type +
             ', ' +
-            locationBoundary.boundary.properties.layer
+            locationBoundary.boundary.properties.TA_Name
         )
       )
       // since we added to currentLocation we need to get that information to pass to the api
       const locationToAdd = store.getState().session.currentLocation
-      const dataToSend = { authToken, orgId, location: locationToAdd }
+
+      // Set default alert types
+      const newWebLocation = geoSafeToWebLocation(locationToAdd)
+      newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+      const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+
+      const dataToSend = { authToken, orgId, location: newGeosafeLocation }
       const { data } = await backendCall(
         dataToSend,
         'api/location/create',
         navigate
       )
       if (data) {
+        const registerData = {
+          authToken,
+          locationId: data.id,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+          }
+        }
+
+        await backendCall(
+          registerData,
+          'api/location/register_to_partner',
+          navigate
+        )
+
         dispatch(setCurrentLocation(data))
         dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
         dispatch(setPredefinedBoundaryFlow(true))
@@ -178,17 +215,17 @@ export default function SelectPredefinedBoundaryPage () {
                     key={selectedBoundary}
                     label='Boundary'
                     options={boundaries.map((boundary) => {
-                      return boundary.properties.layer
+                      return boundary.properties.TA_Name
                     })}
                     onSelect={onBoundarySelected}
                     error={boundaryError}
                     initialSelectOptionText={
                       selectedBoundary
-                        ? selectedBoundary.properties.layer
+                        ? selectedBoundary.properties.TA_Name
                         : 'Select boundary'
                     }
                     disabledOptions={boundariesAlreadyAdded.map((boundary) => {
-                      return boundary.properties.layer
+                      return boundary.properties.TA_Name
                     })}
                   />
                   <Button

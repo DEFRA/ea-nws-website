@@ -177,7 +177,7 @@ export default function ContactsTable ({
                 type='button'
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
-                    return contact.firstname + contact.lastname
+                    return contact.firstname + (contact.lastname || '')
                   })}
               >
                 Name
@@ -258,11 +258,10 @@ export default function ContactsTable ({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  // onClick={(e) => onAction(e, 'view', contact)}
                   onClick={(e) => viewContact(e, contact)}
                 >
                   {contact.firstname}
-                  {contact.lastname.length > 0 ? ' ' + contact.lastname : ''}
+                  {contact?.lastname?.length > 0 ? ' ' + contact?.lastname : ''}
                 </Link>
               </td>
               <td className='govuk-table__cell'>

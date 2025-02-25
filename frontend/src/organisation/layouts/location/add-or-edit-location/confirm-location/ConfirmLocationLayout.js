@@ -1,10 +1,11 @@
-import { React, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
   getLocationAdditional,
@@ -14,7 +15,10 @@ import {
   setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -59,6 +63,16 @@ export default function ConfirmLocationLayout ({
   )
 
   const shapeArea = location.state?.shapeArea
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const checkDuplicateLocation = async () => {
     const dataToSend = {
@@ -97,7 +111,17 @@ export default function ConfirmLocationLayout ({
       return
     }
 
-    const dataToSend = { authToken, orgId, location: currentLocation }
+    // Set default alert types
+    const newWebLocation = geoSafeToWebLocation(currentLocation)
+    newWebLocation.additionals.other.alertTypes = [
+      AlertType.SEVERE_FLOOD_WARNING,
+      AlertType.FLOOD_WARNING,
+      AlertType.FLOOD_ALERT
+    ]
+    const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+
+    // since we added to currentLocation we need to get that information to pass to the api
+    const dataToSend = { authToken, orgId, location: newGeosafeLocation }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/create',
@@ -105,6 +129,31 @@ export default function ConfirmLocationLayout ({
     )
 
     if (data) {
+      const registerData = {
+        authToken,
+        locationId: data.id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: [
+            AlertType.SEVERE_FLOOD_WARNING,
+            AlertType.FLOOD_WARNING,
+            AlertType.FLOOD_ALERT
+          ]
+        }
+      }
+
+      await backendCall(
+        registerData,
+        'api/location/register_to_partner',
+        navigate
+      )
+
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
 

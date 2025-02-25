@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { useNavigate } from 'react-router-dom'
@@ -6,6 +7,7 @@ import NotificationBanner from '../../../../../../common/components/gov-uk/Notif
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../../common/enums/RiskAreaType'
 import { getLocationAdditionals } from '../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../common/services/BackendService'
 import RiskCategoryLabel from '../../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import ViewLocationSubNavigation from './ViewLocationSubNavigation'
@@ -18,6 +20,56 @@ export default function LocationHeader ({ currentPage }) {
   const coordinates = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+
+  const locationId = useSelector((state) => state.session.currentLocation.id)
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
+  const [showPopup, setShowPopup] = useState(false)
+  const [error, setError] = useState(false)
+
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
+
+  const handleDelete = async () => {
+    const unregisterData = {
+      authToken,
+      locationId,
+      partnerId
+    }
+
+    await backendCall(
+      unregisterData,
+      'api/location/unregister_from_partner',
+      navigate
+    )
+
+    const locationIds = [locationId]
+    const dataToSend = { authToken, orgId, locationIds }
+
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/remove',
+      navigate
+    )
+
+    if (!errorMessage) {
+      navigate(orgManageLocationsUrls.view.dashboard, {
+        state: {
+          successMessage: `${additionalData.locationName} deleted`
+        }
+      })
+    } else {
+      setError(errorMessage)
+    }
+  }
 
   return (
     <>

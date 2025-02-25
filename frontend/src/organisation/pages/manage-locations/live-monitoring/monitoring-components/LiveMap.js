@@ -3,11 +3,11 @@ import React, { useEffect, useMemo, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
+  Marker, Popup,
   TileLayer,
   ZoomControl,
   useMap,
   useMapEvents
-  , Marker, Popup
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
 import * as turf from '@turf/turf'
@@ -134,14 +134,16 @@ export default function LiveMap ({
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
 
+      const { data: partnerId } = await backendCall('data', 'api/service/get_partner_id')
+
       const options = {
         states: ['CURRENT'],
         boundingBox: {
-          southWest: { latitude: bbox[1], longitude: bbox[0] },
-          northEast: { latitude: bbox[3], longitude: bbox[2] }
+          southWest: { latitude: parseInt(bbox[1] * 10 ** 6), longitude: parseInt(bbox[0] * 10 ** 6) },
+          northEast: { latitude: parseInt(bbox[3] * 10 ** 6), longitude: parseInt(bbox[2] * 10 ** 6) }
         },
         channels: [],
-        partnerId: ''
+        partnerId: partnerId
       }
 
       // load live alerts

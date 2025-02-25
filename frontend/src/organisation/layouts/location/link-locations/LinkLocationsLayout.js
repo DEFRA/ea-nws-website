@@ -295,7 +295,7 @@ export default function LinkLocationsLayout ({
       let warningAreas = []
       if (currentLocation.geometry) {
         const { alertArea, warningArea } =
-          await getSurroundingFloodAreasFromShape(currentLocation.geometry, 1.0)
+          await getSurroundingFloodAreasFromShape(JSON.parse(currentLocation.geometry.geoJson), 1.0)
 
         alertAreas = alertArea.features.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)

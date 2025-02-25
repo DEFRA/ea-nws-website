@@ -13,15 +13,15 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
-} from '../../../../../common/services/formatters/LocationFormatter'
-import {
   getFloodAreas,
   getFloodAreasFromShape,
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -446,7 +446,7 @@ export default function ViewLocationsDashboardPage () {
     setTargetLocation(location)
     if (action === 'view') {
       e.preventDefault()
-      dispatch(setCurrentLocation(location))
+      dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
       navigate(orgManageLocationsUrls.view.viewLocation)
     } else {
       const locationsToDelete = [location]

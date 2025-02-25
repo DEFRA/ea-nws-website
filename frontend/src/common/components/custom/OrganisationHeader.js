@@ -81,21 +81,23 @@ export default function OrganisationHeader () {
               </a>
             </div>
 
+            
+
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
               {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
-            <li className='sub-navigation__item'>
-              <button onClick={() => toggleMenu()} className='header-navigation-menu'>
-                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-              </button>
-            </li>}
+                  <li className='one-login-header__nav__list-item header-navigation-menu'>
+                    <button onClick={() => toggleMenu()} className='one-login-header__nav__list-item'>
+                      Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+                    </button>
+                  </li>}
               
                 <li
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'orgDetails' && 'active'
                   }`}
                   onClick={() => handleActiveHeader('orgDetails')}
-                >
+                > 
                   <FontAwesomeIcon
                     icon={
                       activeHeader === 'orgDetails' ? faAngleUp : faAngleDown
@@ -122,6 +124,7 @@ export default function OrganisationHeader () {
                       </clipPath>
                     </defs>
                   </svg>
+                  
 
                   <span className='govuk-!-font-weight-bold'>{orgName}</span>
                 </li>

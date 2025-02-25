@@ -35,7 +35,9 @@ export default function SignInPage() {
           navigate('/sign-in/organisation/account-pending')
         }
       } else {
-        navigate('/sign-in/validate/', { signinToken: data.signinToken, email })
+        navigate('/sign-in/validate/', {
+          state: { signinToken: data.signinToken, email }
+        })
       }
     }
   }

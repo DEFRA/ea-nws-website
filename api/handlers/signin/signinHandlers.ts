@@ -39,7 +39,6 @@ async function getSigninValidate(
   console.log('Valid token')
   const profile = mockResponses.citizenProfile2
   const registrations = mockResponses.registrations
-  // comment below out to login as citizen
   const organization = mockResponses.organization
 
   // also returns organization
@@ -47,6 +46,8 @@ async function getSigninValidate(
     authToken: uuidv4(),
     profile: profile,
     registrations: registrations,
+
+    // comment below out to login as citizen or set as null
     organization: organization
   }
 }

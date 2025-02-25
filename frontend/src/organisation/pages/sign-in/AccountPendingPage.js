@@ -13,7 +13,7 @@ export default function AccountPendingPage() {
             <h1 className='govuk-heading-l'>Email address not recognised</h1>
             <p>
               You can try{' '}
-              <Link to={navigate(-1)} className='govuk-link'>
+              <Link to={'/sign-in'} className='govuk-link'>
                 entering your email again.
               </Link>
             </p>
@@ -21,7 +21,7 @@ export default function AccountPendingPage() {
             <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
               Personal sign up
             </h3>
-            <Link to='/sign-up' className='govuk-link'>
+            <Link to='/signup' className='govuk-link'>
               Get flood warnings by text, email or phone
             </Link>
             <h3 className='govuk-heading-s govuk-!-margin-bottom-1 govuk-!-margin-top-2'>

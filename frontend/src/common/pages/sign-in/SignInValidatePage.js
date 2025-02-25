@@ -95,7 +95,7 @@ export default function SignInValidatePage() {
           if (data.organization) {
             navigate(orgManageLocationsUrls.monitoring.view)
           } else {
-            navigate('home')
+            navigate('/home')
           }
         }
       }

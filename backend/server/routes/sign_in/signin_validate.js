@@ -22,6 +22,7 @@ module.exports = [
         const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && signinToken) {
+          console.log(2)
           const response = await apiCall(
             { signinToken: signinToken, code: formattedCode },
             'member/signinValidate'
@@ -33,15 +34,18 @@ module.exports = [
             )
 
             if (signupComplete?.value?.s === 'pending') {
+              console.log(6)
               return h.response({
                 status: 500,
                 errorMessage: 'account pending'
               })
             }
+
             const locationRes = await apiCall(
               { authToken: response.data.authToken },
               'location/list'
             )
+
             const contactRes = await apiCall(
               { authToken: response.data.authToken },
               'organization/listContacts'
@@ -77,6 +81,8 @@ module.exports = [
               )
             }
           }
+
+          console.log(11)
           return h.response(response)
         } else {
           return h.response({

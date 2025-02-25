@@ -159,16 +159,20 @@
   font-weight: 700;
   border: none;
   background: none;
-  color: #fff;
+  color:blue;
   padding-left: 0;
   border-bottom: 0.25rem;
   padding-bottom: 0.25rem;
   padding-top: 1rem;
+  display: block;
+  margin: auto;
+  position: relative;
 }
 
 @media (min-width: 40.0625em) {
   .header-navigation-menu{
     display: none;
+
   }
 }
 

@@ -82,15 +82,15 @@ export default function OrganisationHeader () {
             </div>
 
             
-
-            <nav className='one-login-header__nav'>
-              <ul className='one-login-header__nav__list'>
-              {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
-                  <li className='one-login-header__nav__list-item header-navigation-menu'>
-                    <button onClick={() => toggleMenu()} className='one-login-header__nav__list-item'>
+            {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
+                  
+                    <button onClick={() => toggleMenu()} className='header-navigation-menu'>
                       Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
                     </button>
-                  </li>}
+                  }
+            <nav className='one-login-header__nav'>
+              <ul className='one-login-header__nav__list'>
+              
               
                 <li
                   className={`one-login-header__nav__list-item ${

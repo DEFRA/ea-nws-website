@@ -11,7 +11,7 @@ import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function FloodDataInformationPopup({
+export default function FloodDataInformationPopup ({
   locationsFloodInformation,
   onClose
 }) {
@@ -138,8 +138,7 @@ export default function FloodDataInformationPopup({
           <h1 className='govuk-heading-l govuk-link'>
             <Link
               onClick={(e) =>
-                viewLocation(e, locationsFloodInformation[0].locationData)
-              }
+                viewLocation(e, locationsFloodInformation[0].locationData)}
             >
               {locationsFloodInformation[0].locationData.address}
             </Link>
@@ -148,7 +147,7 @@ export default function FloodDataInformationPopup({
             navLinks={navLinks}
             currentPage={currentPage}
             updatePage={updateNavBar}
-            removeGreyBackground={true}
+            removeGreyBackground
           />
           <div
             className={`govuk-!-margin-top-6 live-map-popup-scroll-container ${

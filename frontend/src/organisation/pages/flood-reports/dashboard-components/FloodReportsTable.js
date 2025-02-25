@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
-import FloodReportPopup from './FloodReportPopup'
 
-export default function FloodReportsTable ({
+export default function FloodReportsTable({
   warnings,
   displayedWarnings,
   filteredWarnings,
@@ -98,6 +97,9 @@ export default function FloodReportsTable ({
         {warnings.length} {warnings.length === 1 ? 'location' : 'locations'}
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet reports-table-data-position'>
+        <colgroup>
+          <col style={{ width: '25%' }} />
+        </colgroup>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
             <th
@@ -111,8 +113,9 @@ export default function FloodReportsTable ({
                   sortTableData(
                     locationNameSort,
                     setLocationNameSort,
-                    'meta_data.location_additional.location_name'
-                  )}
+                    'mode.zoneDesc.placemarks.0.name'
+                  )
+                }
               >
                 Location name
               </button>
@@ -125,11 +128,8 @@ export default function FloodReportsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortTableData(
-                    warningTypeSort,
-                    setWarningTypeSort,
-                    'meta_data.alert_categories'
-                  )}
+                  sortTableData(warningTypeSort, setWarningTypeSort, 'severity')
+                }
               >
                 Warning <br />
                 type
@@ -143,11 +143,11 @@ export default function FloodReportsTable ({
               <button
                 type='button'
                 onClick={() => {
-                  sortTableData(
-                    locationTypeSort,
-                    setLocationTypeSort,
-                    'meta_data.location_additional.location_type'
-                  )
+                  // sortTableData(
+                  //   locationTypeSort,
+                  //   setLocationTypeSort,
+                  //   'meta_data.location_additional.location_type'
+                  // )
                 }}
               >
                 Location or
@@ -161,12 +161,13 @@ export default function FloodReportsTable ({
             >
               <button
                 type='button'
-                onClick={() =>
-                  sortTableData(
-                    businessCriticalitySort,
-                    setBusinessCriticalitySort,
-                    'meta_data.location_additional.business_criticality'
-                  )}
+                onClick={() => {
+                  // sortTableData(
+                  //   businessCriticalitySort,
+                  //   setBusinessCriticalitySort,
+                  //   'meta_data.location_additional.business_criticality'
+                  // )
+                }}
               >
                 Business
                 <br /> criticality
@@ -194,7 +195,8 @@ export default function FloodReportsTable ({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     '' // TODO: Change  to use the warning time values when available
-                  )}
+                  )
+                }
               >
                 Last
                 <br /> updated
@@ -208,9 +210,7 @@ export default function FloodReportsTable ({
             <tr key={index} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
-                  {`Boundary_${warning.meta_data.location_additional.location_name.slice(
-                    -2
-                  )}`}
+                  {`Boundary`}
                   {/* TODO: Link in boundaries when real warning data available */}
                 </p>
                 <Link
@@ -220,37 +220,35 @@ export default function FloodReportsTable ({
                     openPopup(warning)
                   }}
                 >
-                  {warning.meta_data.location_additional.location_name}
+                  {warning.mode.zoneDesc.placemarks[0].name}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {' '}
-                {warning.alert_categories.map((type, i) => (
-                  <div key={i} className='reports-table-icon-position'>
-                    {type === 'Alert' && (
-                      <img
-                        src={floodAlertIcon}
-                        alt='Flood alert icon'
-                        style={{ width: '2em', height: '2em' }}
-                      />
-                    )}
-                    {type === 'Warning' && (
-                      <img
-                        src={floodWarningIcon}
-                        alt='Flood warning icon'
-                        style={{ width: '2em', height: '2em' }}
-                      />
-                    )}
-                    Flood {type.toLowerCase()}
-                  </div>
-                ))}
+                <div className='reports-table-icon-position'>
+                  {(warning.type === 'ALERT_LVL_1' ||
+                    warning.type === 'ALERT_LVL_2') && (
+                    <img
+                      src={floodWarningIcon}
+                      alt='Flood warning icon'
+                      style={{ width: '2em', height: '2em' }}
+                    />
+                  )}
+                  {warning.type === 'ALERT_LVL_3' && (
+                    <img
+                      src={floodAlertIcon}
+                      alt='Flood alert icon'
+                      style={{ width: '2em', height: '2em' }}
+                    />
+                  )}
+                  {warning.name}
+                </div>
+              </td>{' '}
+              <td className='govuk-table__cell'>
+                {/* {warning.meta_data.location_additional.location_type} */}
               </td>
               <td className='govuk-table__cell'>
-                {warning.meta_data.location_additional.location_type}
-              </td>
-              <td className='govuk-table__cell'>
-                {warning.meta_data.location_additional.business_criticality ||
-                  '-'}
+                {/* {warning.meta_data.location_additional.business_criticality ||
+                  '-'} */}
               </td>
               <td className='govuk-table__cell'>*linkedContacts*</td>
               <td className='govuk-table__cell'>*lastUpdated*</td>
@@ -258,13 +256,13 @@ export default function FloodReportsTable ({
           ))}
         </tbody>{' '}
       </table>
-      {popupVisible && popupWarning && (
+      {/* {popupVisible && popupWarning && (
         <FloodReportPopup
           onClose={closePopup}
           title={popupWarning.meta_data.location_additional.location_name}
           warning={popupWarning}
         />
-      )}
+      )} */}
     </>
   )
 }

@@ -24,6 +24,7 @@ import ConfirmShapefilePolygonPage from '../../pages/manage-locations/add-locati
 import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
 import LocationLoadingShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationLoadingShapefilePage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
+import NotInEnglandShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/NotInEnglandShapefilePage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -84,14 +85,17 @@ import EditNotesPage from '../../pages/manage-locations/edit-location/edit-indiv
 import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
-import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
 // link imports
 import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
+
+// delete location
+import DeleteLocationPage from '../../pages/manage-locations/delete/DeleteLocationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 export const urlManageOrgViewLocations = urlManageOrg + '/locations'
@@ -123,7 +127,8 @@ const orgManageLocationsUrls = {
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-upload',
-    loadingShapefilePage: urlManageOrgAddLocations + '/shapefile-upload/loading',
+    loadingShapefilePage:
+      urlManageOrgAddLocations + '/shapefile-upload/loading',
     confirmLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-confirm',
     options: urlManageOrgAddLocations,
@@ -142,6 +147,7 @@ const orgManageLocationsUrls = {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england',
+      shapefileNotInEngland: urlManageOrg + '/add/shapefile-not-in-england',
       dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england',
       alreadyExists: urlManageOrg + '/add/location-already-exists'
     },
@@ -252,7 +258,8 @@ const orgManageLocationsUrls = {
   },
   link: {
     linkLocation: urlManageOrg + '/link-locations'
-  }
+  },
+  delete: urlManageOrg + '/delete-location'
 }
 
 // Manage location routes
@@ -345,6 +352,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland,
     component: <XYCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.shapefileNotInEngland,
+    component: <NotInEnglandShapefilePage />
   },
   {
     path: orgManageLocationsUrls.add.error.dropPinNotInEngland,
@@ -614,6 +625,11 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.link.linkLocation,
     component: <LinkLocationPage />
+  },
+  // Delete location
+  {
+    path: orgManageLocationsUrls.delete,
+    component: <DeleteLocationPage />
   }
 ]
 

@@ -2,6 +2,7 @@ import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddCo
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
 import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddContactKeywordsPage'
 import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
+import DeleteContactPage from '../../pages/manage-contact/delete/DeleteContactPage'
 import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/EditContactChannelsPage'
 import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/EditContactKeywordsPage'
@@ -31,7 +32,8 @@ const orgManageContactsUrls = {
     keywords: urlManageContactsEdit + '/keywords',
     channels: urlManageContactsEdit + '/channels',
     notes: urlManageContactsEdit + '/notes'
-  }
+  },
+  delete: urlManageContactsOrg + '/delete-contact'
 }
 
 const orgManageContactsRoutes = [
@@ -81,6 +83,11 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.edit.notes,
     component: <EditContactNotesPage />
+  },
+  // Delete
+  {
+    path: orgManageContactsUrls.delete,
+    component: <DeleteContactPage />
   }
 ]
 

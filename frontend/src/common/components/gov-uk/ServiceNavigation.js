@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function ServiceNavigation({
+export default function ServiceNavigation ({
   serviceLink,
   navLinks,
   currentPage,
@@ -41,13 +41,15 @@ export default function ServiceNavigation({
                       onClick={() => updatePage(link.url)}
                       aria-current='true'
                     >
-                      {currentPage === link.url ? (
-                        <strong className='govuk-service-navigation__active-fallback'>
-                          {link.name}
-                        </strong>
-                      ) : (
-                        link.name
-                      )}
+                      {currentPage === link.url
+                        ? (
+                          <strong className='govuk-service-navigation__active-fallback'>
+                            {link.name}
+                          </strong>
+                          )
+                        : (
+                            link.name
+                          )}
                     </Link>
                   </li>
                 ))}

@@ -11,12 +11,15 @@ import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import ContactsTable from '../../../../components/custom/ContactsTable'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
+import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
@@ -120,7 +123,12 @@ export default function ViewContactsDashboardPage () {
         if (data) {
           data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
-            contact.message_count += await getLocationMessageCount(historyData, location)
+            const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
+            if (floodAreas) {
+              for (const area of floodAreas) {
+                contact.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
+              }
+            }
           })
         }
       })
@@ -139,6 +147,35 @@ export default function ViewContactsDashboardPage () {
   const [selectedJobTitleFilters, setSelectedJobTitleFilters] = useState([])
   const [selectedKeywordFilters, setSelectedKeywordFilters] = useState([])
   const [selectedLinkedFilters, setSelectedLinkedFilters] = useState([])
+
+  const getWithinAreas = async (location) => {
+    let result
+    if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+      result = await getFloodAreas(
+        location.coordinates.latitude, location.coordinates.longitude
+      )
+    } else {
+      const geoJson = JSON.parse(location.geometry.geoJson)
+      result = await getFloodAreasFromShape(
+        geoJson
+      )
+    }
+    return result
+  }
+
+  const getHistoricalData = (taCode, floodHistoryData) => {
+    let floodCount = []
+    const twoYearsAgo = moment().subtract(2, 'years')
+    if (taCode && floodHistoryData) {
+      const filteredData = floodHistoryData.filter(
+        (alert) =>
+          alert.CODE === taCode &&
+          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+      )
+      floodCount.push(filteredData.length)
+    }
+    return floodCount
+  }
 
   const deleteContactsText = (contactsToBeDeleted) => {
     let text = ''

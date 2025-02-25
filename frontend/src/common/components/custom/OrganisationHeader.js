@@ -1,6 +1,7 @@
 import {
   faAngleDown,
-  faAngleUp
+  faAngleUp,
+  faL
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
@@ -8,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { orgAccountUrls } from '../../../organisation/routes/account/AccountRoutes'
 import { urlManageKeywordsOrg } from '../../../organisation/routes/manage-keywords/ManageKeywordsRoutes'
-
+import { useLocation } from 'react-router-dom'
 export default function OrganisationHeader () {
   const [activeHeader, setActiveHeader] = useState(null)
   const navigate = useNavigate()
@@ -16,6 +17,13 @@ export default function OrganisationHeader () {
   const lastname = useSelector((state) => state?.session?.profile?.lastname) || null
   const formattedName = firstname && lastname ? firstname.charAt(0) + '.' + lastname : ''
   const orgName = useSelector((state) => state?.session?.organization?.name) || null
+  const [menuOpen,setMenuOpen] = useState(false)
+  const session = useSelector((state) => state.session)
+  const authToken = session.authToken
+  const location = useLocation()
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen)
+  }
 
   const handleActiveHeader = (item) => {
     if (item === activeHeader) {
@@ -75,6 +83,13 @@ export default function OrganisationHeader () {
 
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
+              {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
+            <li className='sub-navigation__item'>
+              <button onClick={() => toggleMenu()} className='header-navigation-menu'>
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+            </li>}
+              
                 <li
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'orgDetails' && 'active'

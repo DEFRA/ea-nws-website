@@ -51,10 +51,6 @@ export default function ViewContactsDashboardPage () {
   })
 
   useEffect(() => {
-    setFilteredContacts(contacts)
-  }, [])
-
-  useEffect(() => {
     if (!contactsPerPage) {
       window.print()
       setContactsPerPage(defaultContactsPerPage)
@@ -103,7 +99,7 @@ export default function ViewContactsDashboardPage () {
         )
 
         contact.linked_locations = []
-        if (data) {
+        if (data && data.length > 0) {
           data.forEach((location) => {
             contact.linked_locations.push(location.id)
           })

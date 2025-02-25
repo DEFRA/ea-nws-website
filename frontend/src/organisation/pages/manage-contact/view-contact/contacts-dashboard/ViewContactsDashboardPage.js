@@ -27,6 +27,8 @@ export default function ViewContactsDashboardPage () {
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const defaultContactsPerPage = 20
+
   const [contacts, setContacts] = useState([])
   const [notificationText, setNotificationText] = useState(
     location.state?.successMessage
@@ -42,6 +44,7 @@ export default function ViewContactsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const [contactsPerPage, setContactsPerPage] = useState(defaultContactsPerPage)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -53,11 +56,16 @@ export default function ViewContactsDashboardPage () {
     error: ''
   })
 
-  const contactsPerPage = 20
-
   useEffect(() => {
     setFilteredContacts(contacts)
   }, [])
+
+  useEffect(() => {
+    if (!contactsPerPage) {
+      window.print()
+      setContactsPerPage(defaultContactsPerPage)
+    }
+  }, [displayedContacts])
 
   useEffect(() => {
     setCurrentPage(1)
@@ -65,13 +73,17 @@ export default function ViewContactsDashboardPage () {
   }, [resetPaging])
 
   useEffect(() => {
-    setDisplayedContacts(
-      filteredContacts.slice(
-        (currentPage - 1) * contactsPerPage,
-        currentPage * contactsPerPage
+    if (contactsPerPage) {
+      setDisplayedContacts(
+        filteredContacts.slice(
+          (currentPage - 1) * contactsPerPage,
+          currentPage * contactsPerPage
+        )
       )
-    )
-  }, [filteredContacts, currentPage])
+    } else {
+      setDisplayedContacts(filteredContacts)
+    }
+  }, [filteredContacts, currentPage, contactsPerPage])
 
   useEffect(() => {
     const getContacts = async () => {
@@ -202,6 +214,10 @@ export default function ViewContactsDashboardPage () {
     } else if (index === 1) {
       deleteDialog(selectedContacts)
     }
+  }
+
+  const onPrint = () => {
+    setContactsPerPage(null)
   }
 
   const onClickLinked = (type) => {
@@ -389,6 +405,7 @@ export default function ViewContactsDashboardPage () {
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
+                        onClick={() => onPrint()}
                       />
                     </>
                   )}
@@ -405,16 +422,18 @@ export default function ViewContactsDashboardPage () {
                     onAction={onAction}
                     actionText='Delete'
                   />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredContacts.length / contactsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    holdPage={holdPage}
-                    setHoldPage={setHoldPage}
-                    pageList
-                    reset={resetPaging}
-                  />
+                  {contactsPerPage && (
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredContacts.length / contactsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      holdPage={holdPage}
+                      setHoldPage={setHoldPage}
+                      pageList
+                      reset={resetPaging}
+                    />
+                  )}
                 </>
                 )
               : (
@@ -459,6 +478,7 @@ export default function ViewContactsDashboardPage () {
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
+                            onClick={() => onPrint()}
                           />
                         </>
                       )}
@@ -476,16 +496,18 @@ export default function ViewContactsDashboardPage () {
                       onAction={onAction}
                       actionText='Delete'
                     />
-                    <Pagination
-                      totalPages={Math.ceil(
-                        filteredContacts.length / contactsPerPage
-                      )}
-                      onPageChange={(val) => setCurrentPage(val)}
-                      holdPage={holdPage}
-                      setHoldPage={setHoldPage}
-                      pageList
-                      reset={resetPaging}
-                    />
+                    {contactsPerPage && (
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredContacts.length / contactsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        holdPage={holdPage}
+                        setHoldPage={setHoldPage}
+                        pageList
+                        reset={resetPaging}
+                      />
+                    )}
                   </div>
                 </div>
                 )}

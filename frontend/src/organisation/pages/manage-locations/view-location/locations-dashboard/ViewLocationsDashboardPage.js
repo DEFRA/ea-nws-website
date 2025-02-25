@@ -208,7 +208,7 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const getHistoricalData = (taCode, floodHistoryData) => {
-    let floodCount = []
+    const floodCount = []
     const twoYearsAgo = moment().subtract(2, 'years')
     if (taCode && floodHistoryData) {
       const filteredData = floodHistoryData.filter(

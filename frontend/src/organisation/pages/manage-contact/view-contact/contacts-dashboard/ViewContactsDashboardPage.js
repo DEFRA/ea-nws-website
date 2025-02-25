@@ -19,10 +19,9 @@ import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
 import {
-  getSurroundingFloodAreas,
-  isLocationInFloodArea
+  getFloodAreas,
+  getFloodAreasFromShape
 } from '../../../../../common/services/WfsFloodDataService'
 
 export default function ViewContactsDashboardPage () {
@@ -164,7 +163,7 @@ export default function ViewContactsDashboardPage () {
   }
 
   const getHistoricalData = (taCode, floodHistoryData) => {
-    let floodCount = []
+    const floodCount = []
     const twoYearsAgo = moment().subtract(2, 'years')
     if (taCode && floodHistoryData) {
       const filteredData = floodHistoryData.filter(
@@ -337,52 +336,6 @@ export default function ViewContactsDashboardPage () {
       const contactsToRemove = [...selectedContacts]
       removeContacts(contactsToRemove)
     }
-  }
-
-  const getHistoricalMessageNumber = (historyData, area) => {
-    const twoYearsAgo = moment().subtract(2, 'years')
-
-    const areaAlert = historyData.filter(
-      (alert) =>
-        alert.CODE === area &&
-        moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
-    )
-
-    return areaAlert.length
-  }
-
-  const getLocationMessageCount = async (historyData, location) => {
-    let messageCount = 0
-
-    const { warningArea, alertArea } = await getSurroundingFloodAreas(
-      location.coordinates.latitude,
-      location.coordinates.longitude
-    )
-
-    const isInAlertArea =
-      alertArea &&
-      isLocationInFloodArea(
-        location.coordinates.latitude,
-        location.coordinates.longitude,
-        alertArea
-      )
-
-    const isInWarningArea =
-      warningArea &&
-      isLocationInFloodArea(
-        location.coordinates.latitude,
-        location.coordinates.longitude,
-        warningArea
-      )
-
-    if (isInAlertArea) {
-      messageCount += getHistoricalMessageNumber(historyData, alertArea.features[0].properties.TA_CODE)
-    }
-    if (isInWarningArea) {
-      messageCount += getHistoricalMessageNumber(historyData, warningArea?.features[0].properties.TA_CODE)
-    }
-
-    return messageCount
   }
 
   const onOnlyShowSelected = (enabled) => {

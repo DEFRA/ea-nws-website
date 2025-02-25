@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
-import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../common/components/gov-uk/Input'
-import InsetText from '../../../common/components/gov-uk/InsetText'
-import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
+import BackLink from '../../components/custom/BackLink'
+import Button from '../../components/gov-uk/Button'
+import ErrorSummary from '../../components/gov-uk/ErrorSummary'
+import Input from '../../components/gov-uk/Input'
+import InsetText from '../../components/gov-uk/InsetText'
+import NotificationBanner from '../../components/gov-uk/NotificationBanner'
+import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
@@ -17,17 +19,12 @@ import {
   setProfile,
   setProfileId,
   setRegistrations
-} from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
-import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
+} from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
-import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function SignInValidatePageLayout({
-  navigateToNextPage,
-  NavigateToPreviousPage
-}) {
+export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -39,7 +36,6 @@ export default function SignInValidatePageLayout({
   const [codeExpired, setCodeExpired] = useState(false)
   const [signUpNotComplete, setSignUpNotComplete] = useState(false)
   const [lastAccessedUrl, setLastAccessedUrl] = useState('')
-  const signinType = useSelector((state) => state.session.signinType)
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
 
@@ -54,7 +50,7 @@ export default function SignInValidatePageLayout({
       authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { signinToken, code: formattedCode, signinType }
+      const dataToSend = { signinToken, code: formattedCode }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/sign_in_validate'
@@ -62,7 +58,7 @@ export default function SignInValidatePageLayout({
 
       if (errorMessage !== null) {
         if (errorMessage === 'account pending') {
-          navigate('/organisation/signin/account-pending')
+          navigate('/sign-in/organisation/account-pending')
         } else if (
           errorMessage ===
           'The code you have entered has expired - please request a new code'
@@ -75,7 +71,7 @@ export default function SignInValidatePageLayout({
         setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
-        if (signinType === 'org' || data.organization) {
+        if (data.organization) {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
@@ -96,11 +92,10 @@ export default function SignInValidatePageLayout({
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
         } else {
-          //scenario where org user has tried signing in via citizen route
           if (data.organization) {
             navigate(orgManageLocationsUrls.monitoring.view)
           } else {
-            navigateToNextPage()
+            navigate('home')
           }
         }
       }
@@ -128,7 +123,7 @@ export default function SignInValidatePageLayout({
 
   const navigateBack = async (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (

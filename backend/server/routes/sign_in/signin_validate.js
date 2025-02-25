@@ -18,7 +18,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { signinToken, code, signinType } = request.payload
+        const { signinToken, code } = request.payload
         const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && signinToken) {
@@ -27,7 +27,7 @@ module.exports = [
             'member/signinValidate'
           )
 
-          if (signinType === 'org' || response.data.organization) {
+          if (response.data.organization) {
             const signupComplete = response.data.profile.additionals?.find(
               (additional) => additional.id === 'signupComplete'
             )

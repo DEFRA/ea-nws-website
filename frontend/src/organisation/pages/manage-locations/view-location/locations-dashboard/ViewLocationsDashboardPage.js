@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -25,6 +26,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -136,7 +138,14 @@ export default function ViewLocationsDashboardPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      locationsUpdate.forEach(async function (location, idx) {
+      const historyFileUrl = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+
+      const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
+
+      locationsUpdate.forEach(async function (location) {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -149,6 +158,14 @@ export default function ViewLocationsDashboardPage () {
           data.forEach((contact) => {
             location.linked_contacts.push(contact.id)
           })
+        }
+
+        location.message_count = 0
+        const floodAreas = await getWithinAreas(location)
+        if (floodAreas) {
+          for (const area of floodAreas) {
+            location.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
+          }
         }
       })
 
@@ -188,6 +205,20 @@ export default function ViewLocationsDashboardPage () {
     }
 
     return riskData[riskCategory]
+  }
+
+  const getHistoricalData = (taCode, floodHistoryData) => {
+    let floodCount = []
+    const twoYearsAgo = moment().subtract(2, 'years')
+    if (taCode && floodHistoryData) {
+      const filteredData = floodHistoryData.filter(
+        (alert) =>
+          alert.CODE === taCode &&
+          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+      )
+      floodCount.push(filteredData.length)
+    }
+    return floodCount
   }
 
   const moreActions = [
@@ -469,6 +500,7 @@ export default function ViewLocationsDashboardPage () {
     setSelectedGroundWaterRiskFilters([])
     setSelectedRiverSeaRiskFilters([])
     setSelectedFloodMessagesAvailableFilters([])
+    setSelectedFloodMessagesSentFilters([])
     setSelectedLinkedFilters([])
 
     let updatedFilteredLocations = []

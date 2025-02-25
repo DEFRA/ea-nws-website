@@ -7,16 +7,15 @@ export default function CannotChangeLocationManuallyLayout ({ LocationType }) {
 
   return (
     <>
-
       <BackLink
         onClick={(e) => {
           e.preventDefault()
           navigate(-1)
         }}
       />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
               You cannot change the location of a {LocationType} manually in
               this account
@@ -25,7 +24,7 @@ export default function CannotChangeLocationManuallyLayout ({ LocationType }) {
               <p>
                 If you want to change the location of the {LocationType} your
                 organisation has created, you need to upload the new location as
-                a shapefile in a .zip file.
+                a shapefile in a .ZIP file.
               </p>
             </div>
           </div>

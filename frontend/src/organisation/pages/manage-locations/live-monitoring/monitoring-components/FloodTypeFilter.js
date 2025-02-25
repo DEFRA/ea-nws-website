@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function FloodTypeFilter({
+export default function FloodTypeFilter ({
   iconSrc,
   locationsCount,
   warningType,

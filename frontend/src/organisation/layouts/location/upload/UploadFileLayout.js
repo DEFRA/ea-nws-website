@@ -29,21 +29,28 @@ const csvErrorText = (error, index, templateUrl) => {
             and try again.
           </p>
           <p classNAme='govuk-body'>
-            If you still cannot upload your organisation's locations contact us within 48 hours at{' '}
+            If you still cannot upload your organisation's locations contact us
+            within 48 hours at{' '}
             <Link
               className='govuk-link'
-              onClick={() => { window.location = 'mailto:getfloodwarnings@environment-agency.gov.uk' }}
+              onClick={() => {
+                window.location =
+                  'mailto:getfloodwarnings@environment-agency.gov.uk'
+              }}
             >
               getfloodwarnings@environment-agency.gov.uk
-            </Link>.
+            </Link>
+            .
           </p>
         </div>
       )
     case 'Duplicates':
-      errorText = 'Each location name must be unique. You need to change the location names, or delete the duplicate locations from the file, for the following lines that have the same location name:'
+      errorText =
+        'Each location name must be unique. You need to change the location names, or delete the duplicate locations from the file, for the following lines that have the same location name:'
       break
     case 'Missing location details':
-      errorText = 'You need to add either a full address and postcode or X and Y coordinates for lines:'
+      errorText =
+        'You need to add either a full address and postcode or X and Y coordinates for lines:'
       break
     case 'Missing location name':
       errorText = 'You need to add unique location names for lines:'
@@ -64,17 +71,20 @@ const shapeErrorText = (error, index) => {
     case 'virus':
       return (
         <div key={index}>
-          <p className='govuk-body'>
-            Create a new shapefile and try again.
-          </p>
+          <p className='govuk-body'>Create a new shapefile and try again.</p>
           <p classNAme='govuk-body'>
-            If you still cannot upload your organisation's locations contact us within 48 hours at{' '}
+            If you still cannot upload your organisation's locations contact us
+            within 48 hours at{' '}
             <Link
               className='govuk-link'
-              onClick={() => { window.location = 'mailto:getfloodwarnings@environment-agency.gov.uk' }}
+              onClick={() => {
+                window.location =
+                  'mailto:getfloodwarnings@environment-agency.gov.uk'
+              }}
             >
               getfloodwarnings@environment-agency.gov.uk
-            </Link>.
+            </Link>
+            .
           </p>
         </div>
       )
@@ -254,7 +264,6 @@ export default function UploadFileLayout ({
 
   return (
     <>
-
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 
       <main className='govuk-main-wrapper govuk-!-width-two-thirds'>
@@ -270,7 +279,10 @@ export default function UploadFileLayout ({
                     errorList={[
                       errorFileType,
                       errorFileSize,
-                      ...Array.from(errorShapefile, (error) => error.errorMessage),
+                      ...Array.from(
+                        errorShapefile,
+                        (error) => error.errorMessage
+                      ),
                       ...Array.from(csvErrors, (error) => error.errorMessage)
                     ].filter(Boolean)}
                   />
@@ -279,7 +291,10 @@ export default function UploadFileLayout ({
                   <h1 className='govuk-heading-l'>Upload file</h1>
                   <div
                     className={
-                    errorFileSize || errorFileType || csvErrors.length > 0 || errorShapefile.length > 0
+                    errorFileSize ||
+                    errorFileType ||
+                    csvErrors.length > 0 ||
+                    errorShapefile.length > 0
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
@@ -316,12 +331,12 @@ export default function UploadFileLayout ({
                       onChange={setValidSelectedFile}
                     />
                   </div>
-                  {csvErrors.map((error, index) => (
+                  {csvErrors.map((error, index) =>
                     csvErrorText(error, index, templateUrl)
-                  ))}
-                  {errorShapefile.map((error, index) => (
+                  )}
+                  {errorShapefile.map((error, index) =>
                     shapeErrorText(error, index)
-                  ))}
+                  )}
                   <Button
                     text='Upload file'
                     className='govuk-button govuk-!-margin-top-4'

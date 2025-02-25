@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { useNavigate } from 'react-router-dom'
-import Popup from '../../../../../../common/components/custom/Popup'
 import Button from '../../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../../common/enums/RiskAreaType'
@@ -22,6 +20,7 @@ export default function LocationHeader ({ currentPage }) {
   const coordinates = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+
   const locationId = useSelector((state) => state.session.currentLocation.id)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -81,7 +80,6 @@ export default function LocationHeader ({ currentPage }) {
           text={location.state.successMessage}
         />
       )}
-      {error && <ErrorSummary errorList={[error]} />}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
           <h1 className='govuk-heading-l'>{additionalData.locationName}</h1>
@@ -97,7 +95,7 @@ export default function LocationHeader ({ currentPage }) {
           <Button
             text='Delete location'
             className='govuk-button govuk-button--secondary'
-            onClick={() => setShowPopup(true)}
+            onClick={() => navigate(orgManageLocationsUrls.delete)}
           />
         </div>
       </div>
@@ -143,24 +141,6 @@ export default function LocationHeader ({ currentPage }) {
       <div className='govuk-!-margin-top-6 govuk-!-margin-bottom-9'>
         <ViewLocationSubNavigation currentPage={currentPage} type='sub' />
       </div>
-
-      {showPopup && (
-        <>
-          <Popup
-            onDelete={() => handleDelete()}
-            onClose={() => setShowPopup(false)}
-            title='Delete location'
-            popupText={
-              <>
-                If you continue {additionalData.locationName} will be deleted
-                from this account and will not get flood messages.
-              </>
-            }
-            buttonText='Delete location'
-            buttonClass='govuk-button--warning'
-          />
-        </>
-      )}
     </>
   )
 }

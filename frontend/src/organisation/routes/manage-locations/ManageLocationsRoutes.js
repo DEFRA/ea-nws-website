@@ -85,8 +85,8 @@ import EditNotesPage from '../../pages/manage-locations/edit-location/edit-indiv
 import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
-import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
@@ -95,6 +95,8 @@ import ViewLocationsDashboardPage from '../../pages/manage-locations/view-locati
 import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
 
 // delete location
+import LocationNotInFloodAreaPage from '../../pages/manage-locations/add-location/not-flood-area/LocationNotInFloodAreasPage'
+import SelectNearbyFloodAreasPage from '../../pages/manage-locations/add-location/not-flood-area/SelectNearbyFloodAreasPage'
 import DeleteLocationPage from '../../pages/manage-locations/delete/DeleteLocationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
@@ -175,6 +177,11 @@ const orgManageLocationsUrls = {
       addActionPlan:
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
+    },
+    notInFloodArea: {
+      locationNotInFloodArea: urlManageOrgAddLocations + '/not-in-flood-area',
+      selectNearbyFloodAreas:
+        urlManageOrgAddLocations + '/select-nearby-flood-areas'
     },
     linkToTargetArea: urlManageOrg + '/add/link'
   },
@@ -544,6 +551,15 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
     component: <PredefinedBoundaryOptionalInfoPage />
+  },
+  // location not in flood area
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.locationNotInFloodArea,
+    component: <LocationNotInFloodAreaPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.selectNearbyFloodAreas,
+    component: <SelectNearbyFloodAreasPage />
   },
   // edit
   {

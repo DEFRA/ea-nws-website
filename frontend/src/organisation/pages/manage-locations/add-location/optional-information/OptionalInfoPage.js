@@ -5,16 +5,22 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
   getLocationAdditional,
   getLocationOther
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 
-export default function OptionalLocationInformationPage () {
+export default function OptionalLocationInformationPage() {
   const navigate = useNavigate()
+  const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
+  )
+  const locationType = useSelector((state) =>
+    getLocationOther(state, 'location_data_type')
   )
   const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
   const navigateToNextPage = () => {
@@ -28,6 +34,20 @@ export default function OptionalLocationInformationPage () {
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
+  }
+
+  const skipOptionalInformation = async (event) => {
+    event.preventDefault()
+    console.log('locationType', locationType)
+    //shape file uploads shouldnt come through optional information
+    if (locationType === LocationDataType.X_AND_Y_COORDS) {
+      // TODO - this needs updated to go through contact linking when done
+      await verifyLocationInFloodAreaAndNavigate(
+        orgManageLocationsUrls.view.viewLocation
+      )
+    } else if (locationType === LocationDataType.BOUNDARY) {
+      //navigate to link contacts
+    }
   }
 
   return (
@@ -131,7 +151,7 @@ export default function OptionalLocationInformationPage () {
             />
             &nbsp; &nbsp;
             <Link
-              to={orgManageLocationsUrls.view.viewLocation}
+              onClick={(e) => skipOptionalInformation(e)}
               className='govuk-link inline-link'
             >
               I'll do this later

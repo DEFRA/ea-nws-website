@@ -1,14 +1,15 @@
 import { React } from 'react'
-import { useNavigate } from 'react-router'
 import ConfirmLocationLayout from '../../../../layouts/location/add-or-edit-location/confirm-location/ConfirmLocationLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function ConfirmShapefilePolygonPage () {
-  const navigate = useNavigate()
+import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 
-  // TODO: Update this to navigate to next page in flow, once it's created
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.viewLocation)
-  }
+export default async function ConfirmShapefilePolygonPage() {
+  const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
+
+  //update below to navigate to contact linking pages
+  const navigateToNextPage = await verifyLocationInFloodAreaAndNavigate(
+    orgManageLocationsUrls.view.viewLocation
+  )
 
   return (
     <ConfirmLocationLayout

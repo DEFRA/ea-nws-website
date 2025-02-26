@@ -45,7 +45,19 @@ export default function FloodReportsTable({
   // Sort standard data
   const sortTableData = (sortType, setSort, data) => {
     const getValue = (obj, path) => {
-      return path.split('.').reduce((acc, part) => acc && acc[part], obj) || ''
+      if (path === 'locationName') {
+        const locationName =
+          obj.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo.find(
+            (info) => info.id === 'TA_NAME'
+          )?.value?.s || '-'
+        return locationName
+      } else if (path === 'alert.effectiveDate') {
+        return obj.alert ? obj.alert.effectiveDate : 0
+      } else {
+        return (
+          path.split('.').reduce((acc, part) => acc && acc[part], obj) || ''
+        )
+      }
     }
 
     if (sortType === 'none' || sortType === 'descending') {
@@ -113,7 +125,7 @@ export default function FloodReportsTable({
                   sortTableData(
                     locationNameSort,
                     setLocationNameSort,
-                    'mode.zoneDesc.placemarks.0.name'
+                    'locationName'
                   )
                 }
               >
@@ -128,7 +140,11 @@ export default function FloodReportsTable({
               <button
                 type='button'
                 onClick={() =>
-                  sortTableData(warningTypeSort, setWarningTypeSort, 'severity')
+                  sortTableData(
+                    warningTypeSort,
+                    setWarningTypeSort,
+                    'alert.type'
+                  )
                 }
               >
                 Warning <br />
@@ -194,7 +210,7 @@ export default function FloodReportsTable({
                   sortTableData(
                     lastUpdatedSort,
                     setlastUpdatedSort,
-                    '' // TODO: Change  to use the warning time values when available
+                    'alert.effectiveDate'
                   )
                 }
               >
@@ -206,54 +222,86 @@ export default function FloodReportsTable({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {displayedWarnings.map((warning, index) => (
-            <tr key={index} className='govuk-table__row'>
-              <td className='govuk-table__cell'>
-                <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
-                  {`Boundary`}
-                  {/* TODO: Link in boundaries when real warning data available */}
-                </p>
-                <Link
-                  className='govuk-link'
-                  onClick={(e) => {
-                    e.preventDefault()
-                    openPopup(warning)
-                  }}
-                >
-                  {warning.mode.zoneDesc.placemarks[0].name}
-                </Link>
-              </td>
-              <td className='govuk-table__cell'>
-                <div className='reports-table-icon-position'>
-                  {(warning.type === 'ALERT_LVL_1' ||
-                    warning.type === 'ALERT_LVL_2') && (
-                    <img
-                      src={floodWarningIcon}
-                      alt='Flood warning icon'
-                      style={{ width: '2em', height: '2em' }}
-                    />
-                  )}
-                  {warning.type === 'ALERT_LVL_3' && (
-                    <img
-                      src={floodAlertIcon}
-                      alt='Flood alert icon'
-                      style={{ width: '2em', height: '2em' }}
-                    />
-                  )}
-                  {warning.name}
-                </div>
-              </td>{' '}
-              <td className='govuk-table__cell'>
-                {/* {warning.meta_data.location_additional.location_type} */}
-              </td>
-              <td className='govuk-table__cell'>
-                {/* {warning.meta_data.location_additional.business_criticality ||
-                  '-'} */}
-              </td>
-              <td className='govuk-table__cell'>*linkedContacts*</td>
-              <td className='govuk-table__cell'>*lastUpdated*</td>
-            </tr>
-          ))}
+          {displayedWarnings.map((warning, index) => {
+            const locationName =
+              warning.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo.find(
+                (info) => info.id === 'TA_NAME'
+              )?.value?.s || '-'
+
+            const locNameObj = warning.additionals.find(
+              (item) => item.id === 'locationName'
+            )
+            const boundary = locNameObj ? locNameObj.value.s : ''
+
+            let otherData = {}
+            const otherStr = warning.additionals.find(
+              (item) => item.id === 'other'
+            )?.value.s
+            otherData = otherStr ? JSON.parse(otherStr) : {}
+            const locationType = otherData.location_type || '-'
+            const businessCriticality = otherData.business_criticality || '-'
+
+            // Format the effective date as the last updated time.
+            const dateObj = new Date(warning.alert.effectiveDate * 1000)
+            const datePart = dateObj.toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric'
+            })
+            const timeString = dateObj
+              .toLocaleTimeString('en-GB', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+              })
+              .toLowerCase()
+            const timePart = timeString.replace(':', '.').replace(' ', '')
+            const lastUpdated = `${datePart} at ${timePart}`
+
+            return (
+              <tr key={index} className='govuk-table__row'>
+                <td className='govuk-table__cell'>
+                  <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
+                    {boundary}
+                  </p>
+                  <Link
+                    className='govuk-link'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      openPopup(warning)
+                    }}
+                  >
+                    {locationName}
+                  </Link>
+                </td>
+                <td className='govuk-table__cell'>
+                  <div className='reports-table-icon-position'>
+                    {warning.alert &&
+                      (warning.alert.type === 'ALERT_LVL_1' ||
+                        warning.alert.type === 'ALERT_LVL_2') && (
+                        <img
+                          src={floodWarningIcon}
+                          alt='Flood warning icon'
+                          style={{ width: '2em', height: '2em' }}
+                        />
+                      )}
+                    {warning.alert && warning.alert.type === 'ALERT_LVL_3' && (
+                      <img
+                        src={floodAlertIcon}
+                        alt='Flood alert icon'
+                        style={{ width: '2em', height: '2em' }}
+                      />
+                    )}
+                    {warning.alert ? warning.alert.name : '-'}
+                  </div>
+                </td>{' '}
+                <td className='govuk-table__cell'>{locationType}</td>
+                <td className='govuk-table__cell'>{businessCriticality}</td>
+                <td className='govuk-table__cell'>*linkedContacts*</td>
+                <td className='govuk-table__cell'>{lastUpdated}</td>
+              </tr>
+            )
+          })}
         </tbody>{' '}
       </table>
       {/* {popupVisible && popupWarning && (

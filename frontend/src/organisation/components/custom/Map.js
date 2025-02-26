@@ -346,11 +346,8 @@ export default function Map ({
         if (data) {
           setBoundaries(data)
           // return list of boundaries for user to choose from
-          boundaryList(
-            data.features.map((feature) => {
-              return { feature }
-            })
-          )
+          boundaryList(data.features)
+          
 
           dispatch(setSelectedBoundary(null))
         }

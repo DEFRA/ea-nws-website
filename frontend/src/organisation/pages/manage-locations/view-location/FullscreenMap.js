@@ -25,10 +25,12 @@ export default function FullscreenMap ({
   showMap,
   setShowMap,
   locations,
+  targetArea,
   filteredLocations
 }) {
   const initialPosition = filteredLocations
     ? [52.7152, -1.17349]
+    : targetArea ? [Number(area.properties.latitude.replace(',', '.')), Number(area.properties.longitude.replace(',', '.'))]
     : [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
   const initialZoom = filteredLocations ? 7 : 14
 
@@ -376,7 +378,7 @@ export default function FullscreenMap ({
                 <ZoomTracker />
                 <ResetMapButton />
                 <ExitMapButton />
-                {mapLocations
+                {mapLocations && mapLocations
                   .filter(displayLocationsWithAlerts)
                   .map((location, index) => (
                     <div key={index}>

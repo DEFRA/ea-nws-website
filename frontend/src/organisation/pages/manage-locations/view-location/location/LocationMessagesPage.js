@@ -177,7 +177,7 @@ export default function LocationMessagesPage () {
       for (const area of withinAreas) {
         const taCode = area.properties.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = populateMessagesSent(area.properties.category, floodCount)
+        const messageSent = floodCount ? populateMessagesSent(area.properties.category, floodCount) : []
         const type = categoryToMessageType(area.properties.category)
         updatedFloodAreas.push({
           areaName: area.properties.TA_Name,
@@ -188,7 +188,7 @@ export default function LocationMessagesPage () {
       for (const area of childrenIDs) {
         const taCode = area.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = populateMessagesSent(area.category, floodCount)
+        const messageSent = floodCount ? populateMessagesSent(area.category, floodCount) : []
         const type = categoryToMessageType(area.category)
         updatedFloodAreas.push({
           areaName: area.TA_Name,

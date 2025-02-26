@@ -153,7 +153,7 @@ export default function ViewContactsDashboardPage () {
       result = await getFloodAreas(
         location.coordinates.latitude, location.coordinates.longitude
       )
-    } else {
+    } else if (location.geometry?.geoJson) {
       const geoJson = JSON.parse(location.geometry.geoJson)
       result = await getFloodAreasFromShape(
         geoJson

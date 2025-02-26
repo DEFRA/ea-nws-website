@@ -148,7 +148,7 @@ export default function ViewContactsDashboardPage () {
   const [selectedLinkedFilters, setSelectedLinkedFilters] = useState([])
 
   const getWithinAreas = async (location) => {
-    let result
+    let result = []
     if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
       result = await getFloodAreas(
         location.coordinates.latitude, location.coordinates.longitude

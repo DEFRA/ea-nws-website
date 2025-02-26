@@ -48,7 +48,7 @@ export default function SearchFilter ({
 
   // the below probably needs updated unless it can only be Yes or No
   const floodMessagesAvailable = ['Yes', 'No']
-  const floodMessagesSent = []
+  const floodMessagesSent = ['Yes', 'No']
 
   const businessCriticality = [
     ...new Set(
@@ -89,6 +89,7 @@ export default function SearchFilter ({
   )
   const [floodMessagesAvailableVisible, setFloodMessagesAvailableVisible] =
     useState(selectedFloodMessagesAvailableFilters.length > 0)
+
   const [floodMessagesSentVisible, setFloodMessagesSentVisible] = useState(
     selectedFloodMessagesSentFilters.length > 0
   )
@@ -163,6 +164,17 @@ export default function SearchFilter ({
         // Default return none (this should never be reached)
         return false
       })
+    }
+
+    // Apply flood messages sent filter
+    if (selectedFloodMessagesSentFilters.length > 0) {
+      filteredLocations = filteredLocations.filter(
+        (location) =>
+          (selectedFloodMessagesSentFilters.includes('Yes') &&
+            location.message_count > 0) ||
+          (selectedFloodMessagesSentFilters.includes('No') &&
+            location.message_count === 0)
+      )
     }
 
     // Apply Business Criticality filter

@@ -5,7 +5,7 @@ import {
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
@@ -30,14 +30,14 @@ export default function FloodReportsFilter({
   const warningTypes = [
     ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
   ]
-  const locationTypes = [
-    warnings.map((warning) => {
+  const locationTypes = warnings
+    .map((warning) => {
       const otherStr = warning.additionals.find((item) => item.id === 'other')
         ?.value.s
       const otherData = otherStr ? JSON.parse(otherStr) : {}
       return otherData.location_type || ''
     })
-  ].filter((val) => val !== '')
+    .filter((val) => val !== '')
   const busCriticalityTypes = [...new Set(['High', 'Medium', 'Low'])]
 
   // Search filter visibility
@@ -110,7 +110,7 @@ export default function FloodReportsFilter({
         const otherStr = warning.additionals.find((item) => item.id === 'other')
           ?.value.s
         const otherData = otherStr ? JSON.parse(otherStr) : {}
-        return selectedLocationTypeFilters.includes(
+        return selectedBusCriticalityFilters.includes(
           otherData.business_criticality || ''
         )
       })
@@ -175,6 +175,10 @@ export default function FloodReportsFilter({
       )}
     </>
   )
+
+  useEffect(() => {
+    filterWarnings()
+  }, [locationNameFilter])
 
   // All other filters
   const otherFilter = (

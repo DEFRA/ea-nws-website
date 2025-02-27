@@ -10,6 +10,7 @@ import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
 export default function LiveFloodWarningsDashboardPage() {
   const navigate = useNavigate()
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const [locations, setLocations] = useState([])
@@ -28,14 +29,25 @@ export default function LiveFloodWarningsDashboardPage() {
   // Load in mock data
   useEffect(() => {
     const loadLocations = async () => {
-      console.log('OrgId: ', orgId)
       const { data: locationsData } = await backendCall(
         { orgId },
         'api/elasticache/list_locations',
         navigate
       )
-      console.log('Locations retrieved: ', locationsData)
-      setLocations(locationsData)
+
+      // Attach linked contacts to each location
+      const updatedLocations = await Promise.all(
+        locationsData.map(async (location) => {
+          const { data: contactsData } = await backendCall(
+            { authToken, orgId, location },
+            'api/elasticache/list_linked_contacts',
+            navigate
+          )
+          location.linked_contacts = contactsData || {}
+          return location
+        })
+      )
+      setLocations(updatedLocations)
     }
     const loadAlerts = async () => {
       const { data: liveAlertsData } = await backendCall(
@@ -59,59 +71,39 @@ export default function LiveFloodWarningsDashboardPage() {
 
   // Combine data once locations and alerts have been populated
   useEffect(() => {
-    const debugLocNames = []
-    const debugAlertNames = []
-    let debugAlertNamesFilled = false
+    const combined = locations
+      .map((location) => {
+        const locNameObj = location.additionals.find(
+          (item) => item.id === 'locationName'
+        )
+        if (!locNameObj) {
+          return null
+        }
+        const locName = locNameObj.value.s.toLowerCase()
 
-    try {
-      const combined = locations
-        .map((location) => {
-          const locNameObj = location.additionals.find(
-            (item) => item.id === 'locationName'
+        // For each alert, check if the alert's placemark or TA_NAME contains the location name
+        const matchingAlert = alerts.find((alert) => {
+          const placemark = alert.mode.zoneDesc.placemarks[0]
+          const taNameObj = placemark.geometry.extraInfo.find(
+            (info) => info.id === 'TA_NAME'
           )
-          if (!locNameObj) {
-            return null
-          }
-          const locName = locNameObj.value.s.toLowerCase()
 
-          debugLocNames.push(locName)
+          const alertDisplayName = (
+            taNameObj ? taNameObj.value.s : placemark.name
+          ).toLowerCase()
 
-          // For each alert, check if the alert's placemark or TA_NAME contains the location name
-          const matchingAlert = alerts.find((alert) => {
-            const placemark = alert.mode.zoneDesc.placemarks[0]
-            const taNameObj = placemark.geometry.extraInfo.find(
-              (info) => info.id === 'TA_NAME'
-            )
-
-            const alertDisplayName = (
-              taNameObj ? taNameObj.value.s : placemark.name
-            ).toLowerCase()
-
-            if (!debugAlertNamesFilled) {
-              debugAlertNames.push(alertDisplayName)
-            }
-            return alertDisplayName.includes(locName)
-          })
-
-          debugAlertNamesFilled = true
-
-          if (matchingAlert) {
-            return { ...location, alert: matchingAlert }
-          } else {
-            return null
-          }
+          return alertDisplayName.includes(locName)
         })
-        .filter((item) => item !== null)
 
-      console.log('Location names: ', debugLocNames)
-      console.log('Alert names: ', debugAlertNames)
+        if (matchingAlert) {
+          return { ...location, alert: matchingAlert }
+        } else {
+          return null
+        }
+      })
+      .filter((item) => item !== null)
 
-      console.log('Locations with alerts: ', combined)
-
-      setLocationsWithAlerts(combined)
-    } catch (e) {
-      console.log(e)
-    }
+    setLocationsWithAlerts(combined)
   }, [alerts, locations])
 
   useEffect(() => {
@@ -121,14 +113,12 @@ export default function LiveFloodWarningsDashboardPage() {
   }, [locationsWithAlerts])
 
   useEffect(() => {
-    if (filteredAlerts.length > 0) {
-      setDisplayedAlerts(
-        filteredAlerts.slice(
-          (currentPage - 1) * alertsPerPage,
-          currentPage * alertsPerPage
-        )
+    setDisplayedAlerts(
+      filteredAlerts.slice(
+        (currentPage - 1) * alertsPerPage,
+        currentPage * alertsPerPage
       )
-    }
+    )
   }, [filteredAlerts, currentPage])
 
   useEffect(() => {
@@ -148,7 +138,7 @@ export default function LiveFloodWarningsDashboardPage() {
   }
 
   // Selected filters
-  const [locationNameFilter, setLocationNameFilter] = useState([])
+  const [locationNameFilter, setLocationNameFilter] = useState('')
   const [selectedWarningTypeFilters, setSelectedWarningTypeFilters] = useState(
     []
   )

@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
-import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
-import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
-import Button from '../gov-uk/Button'
-import ServiceNavigation from '../gov-uk/ServiceNavigation'
+import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
+import floodAlertIcon from '../../assets/images/flood_alert.svg'
+import floodWarningIcon from '../../assets/images/flood_warning.svg'
+import floodSevereWarningIcon from '../../assets/images/severe_flood_warning.svg'
 import AlertType from '../../enums/AlertType'
 import { setCurrentLocation } from '../../redux/userSlice'
 import { webToGeoSafeLocation } from '../../services/formatters/LocationFormatter'
-import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
+import Button from '../gov-uk/Button'
+import ServiceNavigation from '../gov-uk/ServiceNavigation'
 
 export default function FloodDataInformationPopup({
   locationsFloodInformation,

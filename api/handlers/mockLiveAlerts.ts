@@ -572,7 +572,7 @@ const liveAlerts = {
       // this is affecting Liverpool
       id: '10',
       version: 123456,
-      name: 'Flood warning',
+      name: 'Severe flood warning',
       description: { en: 'Flood', additionalLabels: [] },
       effectiveDate: 1734003781, // unix time
       expirationDate: 1734004381,

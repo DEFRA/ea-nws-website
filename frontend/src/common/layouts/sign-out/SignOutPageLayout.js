@@ -1,10 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Button from '../../components/gov-uk/Button'
 
-export default function SignOutLayout ({ text }) {
+export default function SignOutLayout({ text }) {
   const navigate = useNavigate()
-  const isOrgRoute = !!window.location.pathname.includes('/organisation/')
+  const isOrganisation =
+    useSelector((state) => state?.session?.organization) || null
 
   return (
     <>
@@ -16,12 +18,11 @@ export default function SignOutLayout ({ text }) {
             <Button
               text='Sign in'
               className='govuk-button'
-              onClick={() =>
-                navigate(isOrgRoute ? '/organisation/signin' : '/signin')}
+              onClick={() => navigate('/sign-in')}
             />
 
             {/* Flood text only for citizen route */}
-            {!isOrgRoute && (
+            {!isOrganisation && (
               <>
                 <h3 className='govuk-heading-s'> More about flooding </h3>
                 <p className='govuk-body'>

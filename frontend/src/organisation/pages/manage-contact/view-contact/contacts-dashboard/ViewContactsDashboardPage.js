@@ -8,8 +8,14 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
+import {
+  getFloodAreas,
+  getFloodAreasFromShape
+} from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import ContactsTable from '../../../../components/custom/ContactsTable'
@@ -17,12 +23,6 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
-import {
-  getFloodAreas,
-  getFloodAreasFromShape
-} from '../../../../../common/services/WfsFloodDataService'
 
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
@@ -57,10 +57,6 @@ export default function ViewContactsDashboardPage () {
     charLimit: 0,
     error: ''
   })
-
-  useEffect(() => {
-    setFilteredContacts(contacts)
-  }, [])
 
   useEffect(() => {
     if (!contactsPerPage) {
@@ -119,7 +115,7 @@ export default function ViewContactsDashboardPage () {
 
         contact.linked_locations = []
         contact.message_count = 0
-        if (data) {
+        if (data && data.length > 0) {
           data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
             const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))

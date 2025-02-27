@@ -464,7 +464,7 @@ const listLinkedLocations = async (orgId, contactID) => {
           link.linkIDs.map(async (locationID) => {
             const locKey = orgId + ':t_POIS:' + locationID
             const location = await getJsonData(locKey)
-            locationArr.push(location)
+            location && locationArr.push(location)
           }))
       }
     }))

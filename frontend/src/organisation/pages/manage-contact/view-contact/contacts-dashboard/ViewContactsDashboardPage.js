@@ -7,11 +7,11 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import { setOrgCurrentContact, clearOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import ContactsTable from '../../../../components/custom/ContactsTable'
-import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageContactsUrls, urlManageContactsAdd } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
@@ -300,11 +300,44 @@ export default function ViewContactsDashboardPage () {
     navigate(-1)
   }
 
+  const NoContactsDisplay = () => {
+    return (
+      <>
+        <h1 className='govuk-heading-l'>
+          Contacts
+        </h1>
+        <div className='govuk-body'>
+          <p>
+            Contacts get sent flood messages that are available for their locations.<br/>
+            Contacts do not have access to this account and cannot sign in to it.
+          </p>
+          <p>
+            As an admin you can add, edit and delete contacts. You can also decide how<br/>
+            contacts get flood messages for the locations they're responsible for.
+          </p>
+          <Button
+            text='Add contacts'
+            className='govuk-button govuk-!-margin-top-6'
+            onClick={() => {
+              dispatch(clearOrgCurrentContact())
+              navigate(urlManageContactsAdd)
+            }}
+          />
+        </div>
+      </>
+    )
+  }
+
   return (
     <>
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      {contacts.length === 0 ? (
+        <NoContactsDisplay/>
+      )
+      :
+      (
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {notificationText && (
@@ -469,6 +502,7 @@ export default function ViewContactsDashboardPage () {
             )}
           </div>
         </div>
+      )}
       </main>
     </>
   )

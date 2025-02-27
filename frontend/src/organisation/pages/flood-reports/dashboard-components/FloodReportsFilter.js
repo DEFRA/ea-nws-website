@@ -11,7 +11,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
 
-export default function FloodReportsFilter({
+export default function FloodReportsFilter ({
   warnings,
   setFilteredWarnings,
   resetPaging,

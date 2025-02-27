@@ -11,7 +11,7 @@ import { webToGeoSafeLocation } from '../../services/formatters/LocationFormatte
 import Button from '../gov-uk/Button'
 import ServiceNavigation from '../gov-uk/ServiceNavigation'
 
-export default function FloodDataInformationPopup({
+export default function FloodDataInformationPopup ({
   locationsFloodInformation,
   onClose
 }) {
@@ -138,8 +138,7 @@ export default function FloodDataInformationPopup({
           <h1 className='govuk-heading-l govuk-link'>
             <Link
               onClick={(e) =>
-                viewLocation(e, locationsFloodInformation[0].locationData)
-              }
+                viewLocation(e, locationsFloodInformation[0].locationData)}
             >
               {locationsFloodInformation[0].locationData.address}
             </Link>

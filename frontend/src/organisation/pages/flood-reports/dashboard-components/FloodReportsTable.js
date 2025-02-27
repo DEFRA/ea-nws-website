@@ -6,7 +6,7 @@ import severeFloodWarningIcon from '../../../../common/assets/images/severe_floo
 import FloodDataInformationPopup from '../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../common/enums/AlertType'
 
-export default function FloodReportsTable({
+export default function FloodReportsTable ({
   warnings,
   displayedWarnings,
   filteredWarnings,
@@ -181,8 +181,7 @@ export default function FloodReportsTable({
                     locationNameSort,
                     setLocationNameSort,
                     'locationName'
-                  )
-                }
+                  )}
               >
                 Location name
               </button>
@@ -199,8 +198,7 @@ export default function FloodReportsTable({
                     warningTypeSort,
                     setWarningTypeSort,
                     'alert.type'
-                  )
-                }
+                  )}
               >
                 Warning <br />
                 type
@@ -266,8 +264,7 @@ export default function FloodReportsTable({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     'alert.effectiveDate'
-                  )
-                }
+                  )}
               >
                 Last
                 <br /> updated
@@ -323,7 +320,7 @@ export default function FloodReportsTable({
                           alt='Flood warning icon'
                           style={{ width: '2em', height: '2em' }}
                         />
-                      )}
+                    )}
                     {warning.alert &&
                       warning.alert.type === AlertType.FLOOD_WARNING && (
                         <img
@@ -331,7 +328,7 @@ export default function FloodReportsTable({
                           alt='Flood warning icon'
                           style={{ width: '2em', height: '2em' }}
                         />
-                      )}
+                    )}
                     {warning.alert &&
                       warning.alert.type === AlertType.FLOOD_ALERT && (
                         <img
@@ -339,7 +336,7 @@ export default function FloodReportsTable({
                           alt='Flood alert icon'
                           style={{ width: '2em', height: '2em' }}
                         />
-                      )}
+                    )}
                     {warning.alert ? warning.alert.name : '-'}
                   </div>
                 </td>{' '}

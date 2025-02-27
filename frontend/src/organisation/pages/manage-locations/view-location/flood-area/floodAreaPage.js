@@ -1,7 +1,7 @@
 import { booleanIntersects } from '@turf/turf'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
@@ -9,10 +9,12 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import FullscreenMap from '../FullscreenMap'
+import FloodAreaMap from './floodAreaMap'
 
-export default function floodAreaPage ({area}) {
+export default function floodAreaPage () {
   const navigate = useNavigate()
+  const location = useLocation()
+  const area = location.state.area
   const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
   const [floodHistoryUrl, setHistoryUrl] = useState('')
@@ -230,11 +232,11 @@ export default function floodAreaPage ({area}) {
               <Link className='govuk-link' onClick={openMap}>View map</Link>
             </div>
               {showMap && (
-                <FullscreenMap
+                <FloodAreaMap
                   showMap={showMap}
                   setShowMap={setShowMap}
                   targetArea={area}
-                  locations={[currentLocation]}
+                  locations={locations}
                 />
               )}
           </div>

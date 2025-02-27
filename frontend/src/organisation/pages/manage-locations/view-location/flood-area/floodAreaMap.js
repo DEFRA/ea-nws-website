@@ -2,7 +2,7 @@ import { faArrowLeft, faRedoAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import {
   GeoJSON,
@@ -15,83 +15,41 @@ import {
   useMapEvents
 } from 'react-leaflet'
 import { Link } from 'react-router-dom'
-import iconUrl from '../../../../common/assets/images/location_pin.svg'
+import iconUrl from '../../../../../common/assets/images/location_pin.svg'
+import { backendCall } from '../../../../../common/services/BackendService'
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
-import { backendCall } from '../../../../common/services/BackendService'
-import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
-import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
+import FullMapInteractiveKey from '../../../../components/custom/FullMapInteractiveKey'
 
-export default function FullscreenMap ({
+export default function FloodAreaMap ({
   showMap,
   setShowMap,
   locations,
-  filteredLocations
+  targetArea
 }) {
-  const initialPosition = filteredLocations
-    ? [52.7152, -1.17349]
-    : [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
-  const initialZoom = filteredLocations ? 7 : 14
+  const initialPosition = [Number(targetArea.properties.latitude.replace(',', '.')), Number(targetArea.properties.longitude.replace(',', '.'))]
+  const initialZoom = 14
+
+  const categoryToType = (type) => {
+    const typeMap = {
+      'Flood Warning': 'warning',
+      'Flood Warning Groundwater': 'warning',
+      'Flood Warning Rapid Response': 'warning',
+      'Flood Alert': 'alert',
+      'Flood Alert Groundwater': 'alert'
+    }
+    return typeMap[type] || []
+  }
 
   const [apiKey, setApiKey] = useState(null)
-  const [alertArea, setAlertArea] = useState(null)
-  const [warningArea, setWarningArea] = useState(null)
-  const [mapCenter, setMapCenter] = useState(
-    filteredLocations
-      ? null
-      : {
+  const alertArea = categoryToType(targetArea.properties.category) === 'alert' && targetArea
+  const warningArea =  categoryToType(targetArea.properties.category) === 'warning' && targetArea
+  const [mapCenter, setMapCenter] = useState({
           lat: initialPosition[0],
           lng: initialPosition[1]
         }
   )
   const [zoomLevel, setZoomLevel] = useState(initialZoom)
-  const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
-  const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
-  const [showFloodExtents, setShowFloodExtents] = useState(true)
-  const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
-  const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
 
-  const [showLocationsWithinFloodAreas, setShowLocationsWithinFloodAreas] =
-    useState(true)
-  const [showLocationsOutsideFloodAreas, setShowLocationsOutsideFloodAreas] =
-    useState(false)
-  const [showOnlyFilteredLocations, setShowOnlyFilteredLocations] =
-    useState(true)
-
-  const [mapLocations, setMapLocations] = useState(
-    filteredLocations || locations
-  )
-
-  useEffect(() => {
-    if (filteredLocations && showOnlyFilteredLocations) {
-      setMapLocations(filteredLocations)
-    } else {
-      setMapLocations(locations)
-    }
-  }, [showOnlyFilteredLocations])
-
-  useEffect(() => {
-    if (!filteredLocations) setShowLocationsOutsideFloodAreas(true)
-  }, [])
-
-  // Get flood area data
-  useEffect(() => {
-    async function fetchFloodAreaData () {
-      if (zoomLevel >= 12 && mapCenter) {
-        const { alertArea, warningArea } = await getSurroundingFloodAreas(
-          mapCenter.lat,
-          mapCenter.lng,
-          2
-        )
-        setAlertArea(alertArea)
-        setWarningArea(warningArea)
-      }
-    }
-    fetchFloodAreaData()
-  }, [mapCenter, zoomLevel])
-
-  useEffect(() => {
-    showAreas()
-  }, [showFloodWarningAreas, showFloodAlertAreas])
 
   const ZoomTracker = () => {
     const map = useMapEvents({
@@ -175,23 +133,6 @@ export default function FullscreenMap ({
     []
   )
 
-  useEffect(() => {
-    if (zoomLevel < 12) {
-      if (warningAreaRef.current) {
-        warningAreaRef.current.clearLayers()
-      }
-      if (alertAreaRef.current) {
-        alertAreaRef.current.clearLayers()
-      }
-      setAlertArea(null)
-      setWarningArea(null)
-    }
-  }, [zoomLevel])
-
-  const alertAreaRef = useRef(null)
-  const warningAreaRef = useRef(null)
-  const shapefileRef = useRef(null)
-
   const handleCloseMap = () => {
     setShowMap(false)
   }
@@ -259,8 +200,6 @@ export default function FullscreenMap ({
   }
 
   const showWarningAreas = () => {
-    if (warningAreaRefVisible && warningAreaRef.current) {
-      warningAreaRef.current.eachLayer((layer) => {
         layer.options.className = 'warning-area-pattern-fill'
         layer.setStyle({
           opacity: 1,
@@ -268,14 +207,9 @@ export default function FullscreenMap ({
           weight: 2,
           fillOpacity: 0.25
         })
-        layer.bringToFront()
-      })
-    }
   }
 
   const showAlertAreas = () => {
-    if (alertAreaRefVisible && alertAreaRef.current) {
-      alertAreaRef.current.eachLayer((layer) => {
         layer.options.className = 'alert-area-pattern-fill'
         layer.setStyle({
           opacity: 1,
@@ -283,68 +217,9 @@ export default function FullscreenMap ({
           weight: 2,
           fillOpacity: 0.5
         })
-      })
     }
-  }
+  
 
-  // TODO: Add functionality to show/hide flood extent areas
-
-  const hideWarningArea = () => {
-    if (warningAreaRefVisible && warningAreaRef.current) {
-      warningAreaRef.current.eachLayer((layer) => {
-        layer.setStyle({ opacity: 0, fillOpacity: 0 })
-      })
-      setWarningAreaRefVisible(false)
-    }
-  }
-
-  const hideAlertArea = () => {
-    if (alertAreaRefVisible && alertAreaRef.current) {
-      alertAreaRef.current.eachLayer((layer) => {
-        layer.setStyle({ opacity: 0, fillOpacity: 0 })
-      })
-      setAlertAreaRefVisible(false)
-    }
-  }
-
-  const showAreas = () => {
-    if (showFloodWarningAreas && showFloodAlertAreas) {
-      showAlertAreas()
-      showWarningAreas()
-    } else if (showFloodWarningAreas) {
-      showWarningAreas()
-      hideAlertArea()
-    } else if (showFloodAlertAreas) {
-      showAlertAreas()
-      hideWarningArea()
-    } else {
-      hideWarningArea()
-      hideAlertArea()
-    }
-  }
-
-  // Check if location has alert type
-  const locationHasAlertType = (location) => {
-    const alertTypes = location.additionals.other?.alertTypes?.length
-
-    // Needed to parse current location structure in redux
-    const parsedAlertTypes = location.additionals[4]
-      ? JSON.parse(location.additionals[4]?.value?.s).alertTypes?.length
-      : 0
-    return alertTypes || parsedAlertTypes
-  }
-
-  // Display locations with alerts
-  const displayLocationsWithAlerts = (location) => {
-    const { latitude, longitude } = location.coordinates
-    const isValidLocation = latitude && longitude
-    const isInFloodArea =
-      showLocationsWithinFloodAreas && locationHasAlertType(location)
-    const isOutsideFloodArea =
-      showLocationsOutsideFloodAreas && !locationHasAlertType(location)
-
-    return isValidLocation && (isInFloodArea || isOutsideFloodArea)
-  }
 
   const onEachShapefileFeature = (feature, layer) => {
     layer.options.className = 'shapefile-area-pattern-fill'
@@ -362,8 +237,8 @@ export default function FullscreenMap ({
           <div style={{ display: 'flex', height: '100vh' }}>
             <div style={{ height: '100vh', width: '85%' }}>
               <MapContainer
-                center={initialPosition}
-                zoom={initialZoom}
+                center={mapCenter}
+                zoom={zoomLevel}
                 zoomControl={false}
                 attributionControl={false}
                 minZoom={7}
@@ -376,8 +251,7 @@ export default function FullscreenMap ({
                 <ZoomTracker />
                 <ResetMapButton />
                 <ExitMapButton />
-                {mapLocations
-                  .filter(displayLocationsWithAlerts)
+                {locations && locations
                   .map((location, index) => (
                     <div key={index}>
                       <Marker
@@ -391,25 +265,18 @@ export default function FullscreenMap ({
                             className='govuk-link'
                             // onClick={(e) => viewLocation(e, location)}
                           >
-                            {location.additionals.locationName ||
-                              location.additionals[0].value.s}
+                            {location.additionals.locationName}
                           </Link>
                           <br />
-                          {filteredLocations
-                            ? location.additionals.other.location_type
-                            : JSON.parse(location.additionals[4]?.value?.s)
-                              .location_type}
+                          {location.additionals.other.location_type}
                           <br />
                           {location.address}
                         </Popup>
                       </Marker>
                       {location.geometry && (
                         <GeoJSON
-                          data={location.geometry}
+                          data={location.geometry.geoJson}
                           onEachFeature={onEachShapefileFeature}
-                          ref={(el) => {
-                            shapefileRef.current = el
-                          }}
                         />
                       )}
                     </div>
@@ -418,22 +285,16 @@ export default function FullscreenMap ({
                   <GeoJSON
                     key={warningArea}
                     data={warningArea}
+                    onEachFeature={showWarningAreas}
                     style={{ color: '#f70202' }}
-                    ref={(el) => {
-                      warningAreaRef.current = el
-                      setWarningAreaRefVisible(true)
-                    }}
                   />
                 )}
                 {alertArea && (
                   <GeoJSON
                     key={alertArea}
                     data={alertArea}
+                    onEachFeature={showAlertAreas}
                     style={{ color: '#ffa200' }}
-                    ref={(el) => {
-                      alertAreaRef.current = el
-                      setAlertAreaRefVisible(true)
-                    }}
                   />
                 )}
               </MapContainer>
@@ -441,25 +302,7 @@ export default function FullscreenMap ({
 
             <div style={{ width: '15%', padding: '20px', overflowY: 'auto' }}>
               <FullMapInteractiveKey
-                showFloodWarningAreas={showFloodWarningAreas}
-                setShowFloodWarningAreas={setShowFloodWarningAreas}
-                showFloodAlertAreas={showFloodAlertAreas}
-                setShowFloodAlertAreas={setShowFloodAlertAreas}
-                showFloodExtents={showFloodExtents}
-                setShowFloodExtents={setShowFloodExtents}
-                showLocationsWithinFloodAreas={showLocationsWithinFloodAreas}
-                setShowLocationsWithinFloodAreas={
-                  setShowLocationsWithinFloodAreas
-                }
-                showLocationsOutsideFloodAreas={showLocationsOutsideFloodAreas}
-                setShowLocationsOutsideFloodAreas={
-                  setShowLocationsOutsideFloodAreas
-                }
-                showOnlyFilteredLocations={showOnlyFilteredLocations}
-                setShowOnlyFilteredLocations={setShowOnlyFilteredLocations}
-                locations={
-                  showOnlyFilteredLocations ? filteredLocations : locations
-                }
+                locations={locations}
               />
             </div>
           </div>

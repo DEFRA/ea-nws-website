@@ -116,7 +116,7 @@ export default function LocationLoadingShapefilePage () {
       const polygonCentre = centroid(geojsonData.geometry)
       const shapeArea = calculateShapeArea(geojsonData)
 
-      //TODO: make map work without coordinates since shapefile aree only geoJson
+      // TODO: make map work without coordinates since shapefile aree only geoJson
       dispatch(
         setCurrentLocationCoordinates({
           latitude: polygonCentre.geometry.coordinates[1],

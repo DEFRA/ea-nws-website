@@ -33,7 +33,7 @@ import { geoSafeToWebLocation } from '../../../../../common/services/formatters/
 import { createLiveMapShapePattern } from '../../../../components/custom/FloodAreaPatterns'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LiveMap({
+export default function LiveMap ({
   showSevereLocations,
   showWarningLocations,
   showAlertLocations,
@@ -350,7 +350,7 @@ export default function LiveMap({
     iconAnchor: [12, 41]
   })
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -606,8 +606,7 @@ export default function LiveMap({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(alertPoint.properties)
-                          }
+                            viewFloodInformationData(alertPoint.properties)}
                         >
                           {
                             alertPoint.properties.locationData.additionals
@@ -645,8 +644,7 @@ export default function LiveMap({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(warningPoint.properties)
-                          }
+                            viewFloodInformationData(warningPoint.properties)}
                         >
                           {
                             warningPoint.properties.locationData.additionals
@@ -684,8 +682,7 @@ export default function LiveMap({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(severePoint.properties)
-                          }
+                            viewFloodInformationData(severePoint.properties)}
                         >
                           {
                             severePoint.properties.locationData.additionals
@@ -763,8 +760,7 @@ export default function LiveMap({
                         />
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(location.properties)
-                          }
+                            viewFloodInformationData(location.properties)}
                           style={{ flex: 1 }}
                         >
                           {location.properties.floodData.name}

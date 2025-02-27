@@ -13,6 +13,8 @@ export default function LiveFloodWarningsDashboardPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
+  const defaultAlertsPertPage = 20
+
   const [locations, setLocations] = useState([])
   const [alerts, setAlerts] = useState([])
   const [locationsWithAlerts, setLocationsWithAlerts] = useState([])
@@ -21,10 +23,10 @@ export default function LiveFloodWarningsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
   const [holdPage, setHoldPage] = useState(0)
+  const [alertsPerPage, setAlertsPerPage] = useState(defaultAlertsPertPage)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
-  const alertsPerPage = 10
 
   // Load in mock data
   useEffect(() => {
@@ -125,7 +127,7 @@ export default function LiveFloodWarningsDashboardPage () {
         currentPage * alertsPerPage
       )
     )
-  }, [filteredAlerts, currentPage])
+  }, [filteredAlerts, currentPage, alertsPerPage])
 
   useEffect(() => {
     if (resetPaging) {
@@ -153,6 +155,10 @@ export default function LiveFloodWarningsDashboardPage () {
   const [selectedBusCriticalityFilters, setSelectedBusCriticalityFilters] =
     useState([])
 
+  const onPrint = () => {
+    setAlertsPerPage(null)
+  }
+
   const table = (
     <>
       <Button
@@ -164,7 +170,7 @@ export default function LiveFloodWarningsDashboardPage () {
       <Button
         text='Print'
         className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => window.print()} // TODO utilise formatted print when available
+        onClick={() => onPrint()}
       />
       <FloodReportsTable
         warnings={locationsWithAlerts}

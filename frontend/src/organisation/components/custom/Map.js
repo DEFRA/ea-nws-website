@@ -347,7 +347,6 @@ export default function Map ({
           setBoundaries(data)
           // return list of boundaries for user to choose from
           boundaryList(data.features)
-          
 
           dispatch(setSelectedBoundary(null))
         }

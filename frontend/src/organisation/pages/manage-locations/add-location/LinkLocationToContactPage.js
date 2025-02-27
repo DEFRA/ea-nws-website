@@ -52,18 +52,20 @@ export default function LinkLocationToContactPage () {
             <p className='govuk-body'>
               Contacts do not have access to this account and cannot sign in to it.
             </p>
-            <Button
-              className='govuk-button'
-              text='Link location to contacts now'
-              onClick={linkToContacts}
-            />
-            &nbsp; &nbsp;
-            <Link
-              to={orgManageLocationsUrls.monitoring.view}
-              className='govuk-link inline-link'
-            >
-              I'll do this later
-            </Link>
+            <div className='govuk-!-margin-top-6'>
+              <Button
+                className='govuk-button'
+                text='Link location to contacts now'
+                onClick={linkToContacts}
+              />
+              &nbsp; &nbsp;
+              <Link
+                to={orgManageLocationsUrls.monitoring.view}
+                className='govuk-link inline-link'
+              >
+                I'll do this later
+              </Link>
+            </div>
           </div>
         </div>
       </main>

@@ -8,7 +8,7 @@ import {
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export function useVerifyLocationInFloodArea() {
+export function useVerifyLocationInFloodArea () {
   const navigate = useNavigate()
 
   return async (successPage) => {

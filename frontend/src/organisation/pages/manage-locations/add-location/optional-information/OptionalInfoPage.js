@@ -14,7 +14,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 import { backendCall } from '../../../../../common/services/BackendService'
 
-export default function OptionalLocationInformationPage() {
+export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const locationName = useSelector((state) =>
@@ -53,7 +53,7 @@ export default function OptionalLocationInformationPage() {
     } else {
       nextPage = orgManageLocationsUrls.add.addContacts
     }
-    
+
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
       await verifyLocationInFloodAreaAndNavigate(
         nextPage

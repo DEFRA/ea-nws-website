@@ -5,11 +5,11 @@ import store from '../../../../../common/redux/store'
 import ActionPlanLayout from '../../../../layouts/optional-info/ActionPlanLayout'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { setCurrentLocation, getLocationAdditional, getLocationOther } from '../../../../../common/redux/userSlice'
+import { setCurrentLocation, getLocationOther } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 
-export default function ActionPlanPage() {
+export default function ActionPlanPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
@@ -32,7 +32,7 @@ export default function ActionPlanPage() {
     if (data) {
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
-      
+
       let nextPage = ''
 
       const dataToSend = { orgId }
@@ -46,7 +46,7 @@ export default function ActionPlanPage() {
       } else {
         nextPage = orgManageLocationsUrls.add.addContacts
       }
-    
+
       if (locationType === LocationDataType.X_AND_Y_COORDS) {
         await verifyLocationInFloodAreaAndNavigate(
           nextPage
@@ -64,7 +64,7 @@ export default function ActionPlanPage() {
   return (
     <>
       <ActionPlanLayout
-        navigateToNextPage={() => {navigateToNextPage()}}
+        navigateToNextPage={() => { navigateToNextPage() }}
         error={error}
         setError={setError}
       />

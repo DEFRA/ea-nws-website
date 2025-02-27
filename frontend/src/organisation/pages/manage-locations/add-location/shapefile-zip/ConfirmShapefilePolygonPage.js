@@ -6,7 +6,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 import { backendCall } from '../../../../../common/services/BackendService'
 
-export default async function ConfirmShapefilePolygonPage() {
+export default async function ConfirmShapefilePolygonPage () {
   const navigate = useNavigate()
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const orgId = useSelector((state) => state.session.orgId)
@@ -24,7 +24,7 @@ export default async function ConfirmShapefilePolygonPage() {
   } else {
     nextPage = orgManageLocationsUrls.add.addContacts
   }
-  
+
   const navigateToNextPage = await verifyLocationInFloodAreaAndNavigate(nextPage)
 
   return (

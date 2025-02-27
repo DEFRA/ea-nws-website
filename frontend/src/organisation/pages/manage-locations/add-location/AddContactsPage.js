@@ -49,18 +49,20 @@ export default function AddContactsPage () {
               location. Any contacts not linked to this location will not get available
               flood messages for it.
             </p>
-            <Button
-              className='govuk-button'
-              text='Add contacts now'
-              onClick={addContacts}
-            />
-            &nbsp; &nbsp;
-            <Link
-              to={orgManageLocationsUrls.monitoring.view}
-              className='govuk-link inline-link'
-            >
-              I'll do this later
-            </Link>
+            <div className='govuk-!-margin-top-6'>
+              <Button
+                className='govuk-button'
+                text='Add contacts now'
+                onClick={addContacts}
+              />
+              &nbsp; &nbsp;
+              <Link
+                to={orgManageLocationsUrls.monitoring.view}
+                className='govuk-link inline-link'
+              >
+                I'll do this later
+              </Link>
+            </div>
           </div>
         </div>
       </main>

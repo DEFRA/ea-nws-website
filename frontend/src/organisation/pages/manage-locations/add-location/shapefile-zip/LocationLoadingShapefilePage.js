@@ -116,13 +116,14 @@ export default function LocationLoadingShapefilePage () {
       const polygonCentre = centroid(geojsonData.geometry)
       const shapeArea = calculateShapeArea(geojsonData)
 
+      //TODO: make map work without coordinates since shapefile aree only geoJson
       dispatch(
         setCurrentLocationCoordinates({
           latitude: polygonCentre.geometry.coordinates[1],
           longitude: polygonCentre.geometry.coordinates[0]
         })
       )
-      dispatch(setCurrentLocationGeometry(geojsonData))
+      dispatch(setCurrentLocationGeometry({ geoJson: JSON.stringify(geojsonData) }))
       dispatch(setCurrentLocationName(locationName))
 
       const newLocation = store.getState().session.currentLocation

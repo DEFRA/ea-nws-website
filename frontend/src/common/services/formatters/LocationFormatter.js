@@ -68,6 +68,11 @@ const webToGeoSafeLocation = (webLocation) => {
       }
     ]
   }
+
+  if (location?.geometry?.geoJson) {
+    location.geometry.geoJson = JSON.stringify(location?.geometry?.geoJson)
+  }
+
   return location
 }
 

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
+import FloodDataInformationPopup from '../../../../common/components/custom/FloodDataInformationPopup'
+import AlertType from '../../../../common/enums/AlertType'
 
 export default function FloodReportsTable({
   warnings,
@@ -33,7 +35,20 @@ export default function FloodReportsTable({
 
   // Popup logic
   const openPopup = (warning) => {
-    setPopupWarning(warning)
+    const floodInfo = {
+      locationData: {
+        address: warning.address
+      },
+      floodData: {
+        name: warning.alert.name,
+        code: warning.alert.eventCode.code,
+        type: warning.alert.type,
+        updatedTime: new Date(warning.alert.effectiveDate * 1000)
+          .toLocaleString('en-GB')
+          .toLowerCase()
+      }
+    }
+    setPopupWarning([floodInfo])
     setPopupVisible(true)
   }
 
@@ -277,21 +292,22 @@ export default function FloodReportsTable({
                 <td className='govuk-table__cell'>
                   <div className='reports-table-icon-position'>
                     {warning.alert &&
-                      (warning.alert.type === 'ALERT_LVL_1' ||
-                        warning.alert.type === 'ALERT_LVL_2') && (
+                      (warning.alert.type === AlertType.SEVERE_FLOOD_WARNING ||
+                        warning.alert.type === AlertType.FLOOD_WARNING) && (
                         <img
                           src={floodWarningIcon}
                           alt='Flood warning icon'
                           style={{ width: '2em', height: '2em' }}
                         />
                       )}
-                    {warning.alert && warning.alert.type === 'ALERT_LVL_3' && (
-                      <img
-                        src={floodAlertIcon}
-                        alt='Flood alert icon'
-                        style={{ width: '2em', height: '2em' }}
-                      />
-                    )}
+                    {warning.alert &&
+                      warning.alert.type === AlertType.FLOOD_ALERT && (
+                        <img
+                          src={floodAlertIcon}
+                          alt='Flood alert icon'
+                          style={{ width: '2em', height: '2em' }}
+                        />
+                      )}
                     {warning.alert ? warning.alert.name : '-'}
                   </div>
                 </td>{' '}
@@ -304,13 +320,12 @@ export default function FloodReportsTable({
           })}
         </tbody>{' '}
       </table>
-      {/* {popupVisible && popupWarning && (
-        <FloodReportPopup
+      {popupVisible && popupWarning && (
+        <FloodDataInformationPopup
           onClose={closePopup}
-          title={popupWarning.meta_data.location_additional.location_name}
-          warning={popupWarning}
+          locationsFloodInformation={popupWarning}
         />
-      )} */}
+      )}
     </>
   )
 }

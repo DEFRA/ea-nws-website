@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
+import AlertType from '../../../../common/enums/AlertType'
 
 export default function FloodReportsFilter({
   warnings,
@@ -30,12 +31,13 @@ export default function FloodReportsFilter({
     ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
   ]
   const locationTypes = [
-    // ...new Set(
-    //   warnings.map(
-    //     (warning) => warning.meta_data.location_additional.location_type
-    //   )
-    // )
-  ]
+    warnings.map((warning) => {
+      const otherStr = warning.additionals.find((item) => item.id === 'other')
+        ?.value.s
+      const otherData = otherStr ? JSON.parse(otherStr) : {}
+      return otherData.location_type || ''
+    })
+  ].filter((val) => val !== '')
   const busCriticalityTypes = [...new Set(['High', 'Medium', 'Low'])]
 
   // Search filter visibility
@@ -68,7 +70,7 @@ export default function FloodReportsFilter({
     // Apply location name filter
     if (locationNameFilter) {
       filteredWarnings = filteredWarnings.filter((warning) =>
-        warning.mode.zoneDesc.placemarks[0].name.includes(locationNameFilter)
+        warning.address.toLowerCase().includes(locationNameFilter.toLowerCase())
       )
     }
 
@@ -77,13 +79,13 @@ export default function FloodReportsFilter({
       filteredWarnings = filteredWarnings.filter((warning) => {
         return selectedWarningTypeFilters.some((filter) => {
           if (filter === 'Severe flood warnings') {
-            return warning.type === 'ALERT_LVL_1'
+            return warning.alert.type === AlertType.SEVERE_FLOOD_WARNING
           }
           if (filter === 'Flood warnings') {
-            return warning.type === 'ALERT_LVL_2'
+            return warning.alert.type === AlertType.FLOOD_WARNING
           }
           if (filter === 'Flood alerts') {
-            return warning.type === 'ALERT_LVL_3'
+            return warning.alert.type === AlertType.FLOOD_ALERT
           }
           return false
         })
@@ -91,22 +93,28 @@ export default function FloodReportsFilter({
     }
 
     // Apply location or boundary type filter
-    // if (selectedLocationTypeFilters.length > 0) {
-    //   filteredWarnings = filteredWarnings.filter((warning) =>
-    //     selectedLocationTypeFilters.includes(
-    //       warning.meta_data.location_additional.location_type
-    //     )
-    //   )
-    // }
+    if (selectedLocationTypeFilters.length > 0) {
+      filteredWarnings = filteredWarnings.filter((warning) => {
+        const otherStr = warning.additionals.find((item) => item.id === 'other')
+          ?.value.s
+        const otherData = otherStr ? JSON.parse(otherStr) : {}
+        return selectedLocationTypeFilters.includes(
+          otherData.location_type || ''
+        )
+      })
+    }
 
     // Apply business criticality filter
-    // if (selectedBusCriticalityFilters.length > 0) {
-    //   filteredWarnings = filteredWarnings.filter((warning) =>
-    //     selectedBusCriticalityFilters.includes(
-    //       warning.meta_data.location_additional.business_criticality
-    //     )
-    //   )
-    // }
+    if (selectedBusCriticalityFilters.length > 0) {
+      filteredWarnings = filteredWarnings.filter((warning) => {
+        const otherStr = warning.additionals.find((item) => item.id === 'other')
+          ?.value.s
+        const otherData = otherStr ? JSON.parse(otherStr) : {}
+        return selectedLocationTypeFilters.includes(
+          otherData.business_criticality || ''
+        )
+      })
+    }
 
     setResetPaging(!resetPaging)
     setFilteredWarnings(filteredWarnings)

@@ -4,14 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
-import Button from '../../../../../common/components/gov-uk/Button'
-import ServiceNavigation from '../../../../../common/components/gov-uk/ServiceNavigation'
-import AlertType from '../../../../../common/enums/AlertType'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
-import { webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import Button from '../gov-uk/Button'
+import ServiceNavigation from '../gov-uk/ServiceNavigation'
+import AlertType from '../../enums/AlertType'
+import { setCurrentLocation } from '../../redux/userSlice'
+import { webToGeoSafeLocation } from '../../services/formatters/LocationFormatter'
+import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 
-export default function FloodDataInformationPopup ({
+export default function FloodDataInformationPopup({
   locationsFloodInformation,
   onClose
 }) {
@@ -138,7 +138,8 @@ export default function FloodDataInformationPopup ({
           <h1 className='govuk-heading-l govuk-link'>
             <Link
               onClick={(e) =>
-                viewLocation(e, locationsFloodInformation[0].locationData)}
+                viewLocation(e, locationsFloodInformation[0].locationData)
+              }
             >
               {locationsFloodInformation[0].locationData.address}
             </Link>

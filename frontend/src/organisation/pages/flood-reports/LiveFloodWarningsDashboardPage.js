@@ -28,6 +28,7 @@ export default function LiveFloodWarningsDashboardPage() {
   // Load in mock data
   useEffect(() => {
     const loadLocations = async () => {
+      console.log('OrgId: ', orgId)
       const { data: locationsData } = await backendCall(
         { orgId },
         'api/elasticache/list_locations',
@@ -48,7 +49,7 @@ export default function LiveFloodWarningsDashboardPage() {
       // const activeAlerts = liveAlertsData.alerts.filter(
       //   (alert) => alert.expirationDate > now
       // )
-      // setWarnings(activeAlerts)
+      // setAlerts(activeAlerts)
 
       setAlerts(liveAlertsData.alerts)
     }

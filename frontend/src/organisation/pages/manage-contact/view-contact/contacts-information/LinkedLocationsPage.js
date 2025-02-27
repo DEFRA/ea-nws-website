@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
@@ -128,7 +128,7 @@ export default function LinkedLocationsPage () {
         LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
-      location.coordinates.longtitude === null
+      location.coordinates.longitude === null
     ) {
       return null
     }

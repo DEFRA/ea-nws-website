@@ -13,6 +13,7 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
   getFloodAreas,
   getFloodAreasFromShape,
@@ -29,7 +30,6 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -192,7 +192,7 @@ export default function ViewLocationsDashboardPage () {
           LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
-      location.coordinates.longtitude === null
+      location.coordinates.longitude === null
     ) {
       return null
     }

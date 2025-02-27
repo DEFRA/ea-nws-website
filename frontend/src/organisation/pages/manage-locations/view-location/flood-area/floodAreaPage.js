@@ -1,9 +1,12 @@
+import { booleanIntersects } from '@turf/turf'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FullscreenMap from '../FullscreenMap'
@@ -15,6 +18,7 @@ export default function floodAreaPage ({area}) {
   const [floodHistoryUrl, setHistoryUrl] = useState('')
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [historicalMessages, setHistoricalMessages] = useState([])
+  const orgId = useSelector((state) => state.session.orgId)
 
   const openMap = () => {
     setShowMap(true)
@@ -128,7 +132,7 @@ export default function floodAreaPage ({area}) {
       LocationDataType.X_AND_Y_COORDS ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
-      location.coordinates.longtitude === null
+      location.coordinates.longitude === null
     ) {
       return null
     }
@@ -157,10 +161,22 @@ export default function floodAreaPage ({area}) {
         navigate
       )
 
-      const locationsUpdate = []
+      const webLocations = []
+
       if (data) {
         data.forEach((location) => {
-          locationsUpdate.push(geoSafeToWebLocation(location))
+          webLocations.push(geoSafeToWebLocation(location))
+        })
+      }
+
+      const locationsUpdate = []
+      if (webLocations.length > 0) {
+        webLocations.forEach((location) => {
+          if (location.additionals.other.location_data_type == LocationDataType.X_AND_Y_COORDS) {
+            booleanIntersects([location.coordinates.longitude, location.coordinates.latitude], area) && locationsUpdate.push(location)
+          } else {
+            booleanIntersects(location.geometry.geoJson, area) && locationsUpdate.push(location)
+          }
         })
       }
 

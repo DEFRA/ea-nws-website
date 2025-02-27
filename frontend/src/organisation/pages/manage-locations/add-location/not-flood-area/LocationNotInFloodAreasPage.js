@@ -10,7 +10,7 @@ import { getLocationAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { backendCall } from '../../../../../common/services/BackendService'
 
-export default function LocationNotInFloodAreaPage() {
+export default function LocationNotInFloodAreaPage () {
   const navigate = useNavigate()
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
@@ -48,10 +48,10 @@ export default function LocationNotInFloodAreaPage() {
   const floodRiskInfo = (
     <>
       <p>
-        Flood risk is based on a combination of likelihood and impact – how
+        Flood risk is based on a combination of likelihood and impact - how
         likely it is that flooding will happen and the effect that flooding will
-        have on people, buildings and services. Flood risk can fall into the
-        following categories:  
+        have on people, buildings and services. Flood risk can fall into the
+        following categories:
       </p>
       <p className='govuk-!-font-weight-bold govuk-!-font-size-24'>
         Rivers and sea
@@ -60,21 +60,21 @@ export default function LocationNotInFloodAreaPage() {
         High risk
       </p>
       <p className=' govuk-!-margin-top-0'>
-        Each year there’s a chance of flooding from rivers and the sea of
+        Each year there's a chance of flooding from rivers and the sea of
         greater than 1 in 30.
       </p>
       <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
         Medium risk
       </p>
       <p className=' govuk-!-margin-top-0'>
-        Each year there’s a chance of flooding from rivers and the sea of
-        between 1 in 100 and 1 in 30.   
+        Each year there's a chance of flooding from rivers and the sea of
+        between 1 in 100 and 1 in 30.
       </p>
       <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
         Low risk
       </p>
       <p className=' govuk-!-margin-top-0'>
-        Each year there’s a chance of flooding from rivers and the sea of
+        Each year there's a chance of flooding from rivers and the sea of
         between 1 in 1000 and 1 in 100.
       </p>
       <p className='govuk-!-font-weight-bold govuk-!-font-size-24'>
@@ -85,13 +85,13 @@ export default function LocationNotInFloodAreaPage() {
       </p>
       <p className=' govuk-!-margin-top-0'>
         Flooding is possible in the local area when groundwater levels are
-        high. 
+        high.
       </p>
       <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
         Unlikely
       </p>
       <p className=' govuk-!-margin-top-0'>
-        It’s unlikely the location will be affected by groundwater flooding.
+        It's unlikely the location will be affected by groundwater flooding.
       </p>
     </>
   )
@@ -106,7 +106,7 @@ export default function LocationNotInFloodAreaPage() {
               Flood messages are not available for {locationName}
             </h1>
             <InsetText text={insetTextInfo} />
-            <Details title={'What is flood risk'} text={floodRiskInfo} />
+            <Details title='What is flood risk' text={floodRiskInfo} />
             <p class='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
               Why are flood messages unavailable for some locations?
             </p>
@@ -133,8 +133,7 @@ export default function LocationNotInFloodAreaPage() {
                 navigate(
                   orgManageLocationsUrls.add.notInFloodArea
                     .selectNearbyFloodAreas
-                )
-              }
+                )}
             />
             &nbsp; &nbsp;
             <Link

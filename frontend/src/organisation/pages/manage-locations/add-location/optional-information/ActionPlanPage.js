@@ -1,23 +1,70 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import store from '../../../../../common/redux/store'
 import ActionPlanLayout from '../../../../layouts/optional-info/ActionPlanLayout'
-import updateLocationAndNavigate from '../../updateLocationAndNavigate'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { setCurrentLocation, getLocationAdditional, getLocationOther } from '../../../../../common/redux/userSlice'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 
 export default function ActionPlanPage() {
-  const verfiyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const [error, setError] = useState(null)
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
-  // update this to be verify location not in flood area and navigate function
-  let navigateToNextPage = updateLocationAndNavigate(setError)
+  const locationType = useSelector((state) =>
+    getLocationOther(state, 'location_data_type')
+  )
 
-  //only do this if location is xy coord, boundarys are exempt and shape file uploads
-  // dont have have optional information
-  navigateToNextPage = verfiyLocationInFloodAreaAndNavigate()
+  const navigateToNextPage = async () => {
+    const locationToAdd = store.getState().session.currentLocation
+    const dataToSend = { authToken, orgId, location: locationToAdd }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/update',
+      navigate
+    )
+    if (data) {
+      // need to set the current location due to geosafe creating the ID.
+      dispatch(setCurrentLocation(data))
+      
+      let nextPage = ''
+
+      const dataToSend = { orgId }
+      const { contactsData } = await backendCall(
+        dataToSend,
+        'api/elasticache/list_contacts',
+        navigate
+      )
+      if (contactsData && contactsData.length > 0) {
+        nextPage = orgManageLocationsUrls.add.linkLocationToContacts
+      } else {
+        nextPage = orgManageLocationsUrls.add.addContacts
+      }
+    
+      if (locationType === LocationDataType.X_AND_Y_COORDS) {
+        await verifyLocationInFloodAreaAndNavigate(
+          nextPage
+        )
+      } else if (locationType === LocationDataType.BOUNDARY) {
+        navigate(nextPage)
+      }
+    } else {
+      errorMessage
+        ? setError(errorMessage)
+        : setError('Oops, something went wrong')
+    }
+  }
 
   return (
     <>
       <ActionPlanLayout
-        navigateToNextPage={navigateToNextPage}
+        navigateToNextPage={() => {navigateToNextPage()}}
         error={error}
         setError={setError}
       />

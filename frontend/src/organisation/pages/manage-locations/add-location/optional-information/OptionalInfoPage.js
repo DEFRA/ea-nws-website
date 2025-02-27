@@ -12,6 +12,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
+import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function OptionalLocationInformationPage() {
   const navigate = useNavigate()
@@ -23,6 +24,7 @@ export default function OptionalLocationInformationPage() {
     getLocationOther(state, 'location_data_type')
   )
   const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
+  const orgId = useSelector((state) => state.session.orgId)
   const navigateToNextPage = () => {
     if (postcode) {
       navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
@@ -38,15 +40,26 @@ export default function OptionalLocationInformationPage() {
 
   const skipOptionalInformation = async (event) => {
     event.preventDefault()
-    console.log('locationType', locationType)
-    //shape file uploads shouldnt come through optional information
+    let nextPage = ''
+
+    const dataToSend = { orgId }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/elasticache/list_contacts',
+      navigate
+    )
+    if (data && data.length > 0) {
+      nextPage = orgManageLocationsUrls.add.linkLocationToContacts
+    } else {
+      nextPage = orgManageLocationsUrls.add.addContacts
+    }
+    
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
-      // TODO - this needs updated to go through contact linking when done
       await verifyLocationInFloodAreaAndNavigate(
-        orgManageLocationsUrls.view.viewLocation
+        nextPage
       )
     } else if (locationType === LocationDataType.BOUNDARY) {
-      //navigate to link contacts
+      navigate(nextPage)
     }
   }
 

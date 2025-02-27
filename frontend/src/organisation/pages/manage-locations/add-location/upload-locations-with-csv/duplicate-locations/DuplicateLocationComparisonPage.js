@@ -13,11 +13,14 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationInformation from './duplicate-location-components/LocationInformation'
+import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import { useVerifyLocationInFloodArea } from '../../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 
 export default function DuplicateLocationComparisonPage () {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const [existingOrNew, setExistingOrNew] = useState('')
   const [error, setError] = useState('')
   const existingLocation = location?.state?.existingLocation
@@ -87,8 +90,24 @@ export default function DuplicateLocationComparisonPage () {
           navigateToNextPage(
             orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
           )
+        } else if (newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_POLYGON ||
+                   newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_LINE) {
+          const dataToSend = { orgId }
+          const { contactsData } = await backendCall(
+            dataToSend,
+            'api/elasticache/list_contacts',
+            navigate
+          )
+
+          let nextPage = ''
+          if (contactsData && contactsData.length > 0) {
+            nextPage = orgManageLocationsUrls.add.linkLocationToContacts
+          } else {
+            nextPage = orgManageLocationsUrls.add.addContacts
+          }
+
+          verifyLocationInFloodAreaAndNavigate(nextPage)
         } else {
-          // navigate to link contacts, for now navigate to locations dashboard
           navigate(orgManageLocationsUrls.view.dashboard)
         }
       } else {

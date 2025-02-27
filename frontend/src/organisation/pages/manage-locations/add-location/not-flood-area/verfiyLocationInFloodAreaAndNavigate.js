@@ -14,7 +14,7 @@ export function useVerifyLocationInFloodArea() {
   return async (successPage) => {
     let location = store.getState().session.currentLocation
     location = geoSafeToWebLocation(location)
-    let withinAreas
+    let withinAreas = []
 
     const locationType = location.additionals.other.location_data_type
 
@@ -27,7 +27,6 @@ export function useVerifyLocationInFloodArea() {
       const geoJson = JSON.parse(location.geometry.geoJson)
       withinAreas = getFloodAreasFromShape(geoJson)
     }
-    console.log('withinAreas', withinAreas)
 
     if (withinAreas.length === 0) {
       navigate(orgManageLocationsUrls.add.notInFloodArea.locationNotInFloodArea)

@@ -22,7 +22,7 @@ const orgManageContactsUrls = {
     keywords: urlManageContactsAdd + '/keywords',
     channels: urlManageContactsAdd + '/channels',
     notes: urlManageContactsAdd + '/notes',
-    linkContactToLocations: urlManageContactsAdd + '/link-contact-to-locations',
+    linkContactToLocations: urlManageContactsAdd + '/link-contact-to-locations'
   },
   view: {
     dashboard: urlManageContactsOrg + '/view-contacts',

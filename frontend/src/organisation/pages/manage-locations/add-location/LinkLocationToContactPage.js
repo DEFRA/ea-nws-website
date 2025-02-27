@@ -8,8 +8,6 @@ import { geoSafeToWebLocation } from '../../../../common/services/formatters/Loc
 import { setLinkLocations } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
-import { setCurrentLocation } from '../../../../common/redux/userSlice'
-import store from '../../../../common/redux/store'
 
 export default function LinkLocationToContactPage () {
   const navigate = useNavigate()
@@ -40,7 +38,7 @@ export default function LinkLocationToContactPage () {
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
               If you want other people (contacts) to
-              get available flood messages for<br/>
+              get available flood messages for<br />
               {currentLocation.additionals.locationName} you need to link them
             </h1>
             <p className='govuk-body'>

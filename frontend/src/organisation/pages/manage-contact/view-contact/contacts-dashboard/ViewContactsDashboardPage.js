@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -8,8 +9,15 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import { setOrgCurrentContact, clearOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
+import {
+  getFloodAreas,
+  getFloodAreasFromShape
+} from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import ContactsTable from '../../../../components/custom/ContactsTable'
 import { orgManageContactsUrls, urlManageContactsAdd } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -51,10 +59,6 @@ export default function ViewContactsDashboardPage () {
   })
 
   useEffect(() => {
-    setFilteredContacts(contacts)
-  }, [])
-
-  useEffect(() => {
     if (!contactsPerPage) {
       window.print()
       setContactsPerPage(defaultContactsPerPage)
@@ -82,17 +86,24 @@ export default function ViewContactsDashboardPage () {
   useEffect(() => {
     const getContacts = async () => {
       const dataToSend = { orgId }
-      const { data } = await backendCall(
+      const contactsData = await backendCall(
         dataToSend,
         'api/elasticache/list_contacts',
         navigate
       )
       const contactsUpdate = []
-      if (data) {
-        data.forEach((contact) => {
+      if (contactsData.data) {
+        contactsData.data.forEach((contact) => {
           contactsUpdate.push(geoSafeToWebContact(contact))
         })
       }
+
+      const historyFileUrl = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+
+      const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
 
       contactsUpdate.forEach(async function (contact, idx) {
         const contactsDataToSend = { authToken, orgId, contact }
@@ -103,9 +114,16 @@ export default function ViewContactsDashboardPage () {
         )
 
         contact.linked_locations = []
-        if (data) {
-          data.forEach((location) => {
+        contact.message_count = 0
+        if (data && data.length > 0) {
+          data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
+            const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
+            if (floodAreas) {
+              for (const area of floodAreas) {
+                contact.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
+              }
+            }
           })
         }
       })
@@ -124,6 +142,35 @@ export default function ViewContactsDashboardPage () {
   const [selectedJobTitleFilters, setSelectedJobTitleFilters] = useState([])
   const [selectedKeywordFilters, setSelectedKeywordFilters] = useState([])
   const [selectedLinkedFilters, setSelectedLinkedFilters] = useState([])
+
+  const getWithinAreas = async (location) => {
+    let result = []
+    if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+      result = await getFloodAreas(
+        location.coordinates.latitude, location.coordinates.longitude
+      )
+    } else if (location.geometry?.geoJson) {
+      const geoJson = JSON.parse(location.geometry.geoJson)
+      result = await getFloodAreasFromShape(
+        geoJson
+      )
+    }
+    return result
+  }
+
+  const getHistoricalData = (taCode, floodHistoryData) => {
+    const floodCount = []
+    const twoYearsAgo = moment().subtract(2, 'years')
+    if (taCode && floodHistoryData) {
+      const filteredData = floodHistoryData.filter(
+        (alert) =>
+          alert.CODE === taCode &&
+          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+      )
+      floodCount.push(filteredData.length)
+    }
+    return floodCount
+  }
 
   const deleteContactsText = (contactsToBeDeleted) => {
     let text = ''

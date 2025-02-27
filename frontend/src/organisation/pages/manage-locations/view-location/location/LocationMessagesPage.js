@@ -2,7 +2,6 @@ import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import store from '../../../../../common/redux/store'
 import linkIcon from '../../../../../common/assets/images/link.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
@@ -11,6 +10,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import store from '../../../../../common/redux/store'
 import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
@@ -47,7 +47,7 @@ export default function LocationMessagesPage () {
   const childrenIDs = useSelector((state) => getLocationOther(
     state,
     'childrenIDs'
-  ))
+  )) || []
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
   const hasFetchedArea = useRef(false)
   const [alertTypesEnabled, setAlertTypesEnabled] = useState([
@@ -69,16 +69,18 @@ export default function LocationMessagesPage () {
   ]
 
   const getWithinAreas = async () => {
-    let result
-    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS) {
-      result = await getFloodAreas(
-        currentLocation.coordinates.latitude, currentLocation.coordinates.longitude
-      )
-    } else {
-      const geoJson = JSON.parse(currentLocation.geometry.geoJson)
-      result = await getFloodAreasFromShape(
-        geoJson
-      )
+    let result = []
+    if (additionalData.location_data_type) {
+      if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+        result = await getFloodAreas(
+          currentLocation.coordinates.latitude, currentLocation.coordinates.longitude
+        )
+      } else if (currentLocation.geometry?.geoJson) {
+        const geoJson = JSON.parse(currentLocation.geometry.geoJson)
+        result = await getFloodAreasFromShape(
+          geoJson
+        )
+      }
     }
     setWithinAreas(result)
   }
@@ -175,7 +177,7 @@ export default function LocationMessagesPage () {
       for (const area of withinAreas) {
         const taCode = area.properties.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = populateMessagesSent(area.properties.category, floodCount)
+        const messageSent = floodCount ? populateMessagesSent(area.properties.category, floodCount) : []
         const type = categoryToMessageType(area.properties.category)
         updatedFloodAreas.push({
           areaName: area.properties.TA_Name,
@@ -186,7 +188,7 @@ export default function LocationMessagesPage () {
       for (const area of childrenIDs) {
         const taCode = area.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = populateMessagesSent(area.category, floodCount)
+        const messageSent = floodCount ? populateMessagesSent(area.category, floodCount) : []
         const type = categoryToMessageType(area.category)
         updatedFloodAreas.push({
           areaName: area.TA_Name,

@@ -28,8 +28,8 @@ async function getSigninValidate(
     code: string
     signinToken: string
   }
-  if(code === '111111'){
-    console.log("invalid credentials, responding 101")
+  if (code === '111111') {
+    console.log('invalid credentials, responding 101')
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }
   if (code === '999999' || signinToken === undefined) {
@@ -46,6 +46,8 @@ async function getSigninValidate(
     authToken: uuidv4(),
     profile: profile,
     registrations: registrations,
+
+    // comment below out to login as citizen or set as null
     organization: organization
   }
 }

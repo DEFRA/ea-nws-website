@@ -339,18 +339,15 @@ export default function Map ({
   useEffect(() => {
     async function fetchBoundaries () {
       if (
-        currentLocationDataType !== LocationDataType.BOUNDARY &&
+        currentLocationDataType === LocationDataType.BOUNDARY &&
         selectedBoundaryType
       ) {
         const data = await getBoundaries(selectedBoundaryType)
         if (data) {
           setBoundaries(data)
           // return list of boundaries for user to choose from
-          boundaryList(
-            data.features.map((feature) => {
-              return { properties: feature.properties, id: feature.id }
-            })
-          )
+          boundaryList(data.features)
+          
 
           dispatch(setSelectedBoundary(null))
         }
@@ -528,7 +525,7 @@ export default function Map ({
                 />
               )}
               {boundaries &&
-              currentLocationDataType !== LocationDataType.BOUNDARY && (
+              currentLocationDataType === LocationDataType.BOUNDARY && (
                 <GeoJSON
                   data={boundaries}
                   onEachFeature={onEachBoundaryFeature}
@@ -538,10 +535,13 @@ export default function Map ({
                   }}
                 />
               )}
-              {locationGeometry && (
+              {locationGeometry &&
+              (currentLocationDataType === LocationDataType.SHAPE_LINE ||
+                currentLocationDataType === LocationDataType.SHAPE_POLYGON) &&
+              (
                 <>
                   <GeoJSON
-                    data={locationGeometry}
+                    data={JSON.parse(locationGeometry.geoJson)}
                     onEachFeature={onEachShapefileFeature}
                     ref={(el) => {
                       shapefileRef.current = el

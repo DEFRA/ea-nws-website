@@ -47,7 +47,15 @@ export default function LiveFloodWarningsDashboardPage() {
           return location
         })
       )
-      setLocations(updatedLocations)
+
+      const uniqueLocations = Array.from(
+        new Map(
+          updatedLocations.map((location) => [location.id, location])
+        ).values()
+      )
+      console.log('Locations retrieved: ', uniqueLocations)
+
+      setLocations(uniqueLocations)
     }
     const loadAlerts = async () => {
       const { data: liveAlertsData } = await backendCall(
@@ -55,15 +63,13 @@ export default function LiveFloodWarningsDashboardPage() {
         'api/alert/list',
         navigate
       )
-      // Only keep alerts that are live (i.e. not expired)
-      // UNCOMMENT THIS AFTER TESTING
-      // const now = Math.floor(Date.now / 1000)
-      // const activeAlerts = liveAlertsData.alerts.filter(
-      //   (alert) => alert.expirationDate > now
-      // )
-      // setAlerts(activeAlerts)
 
-      setAlerts(liveAlertsData.alerts)
+      // Only keep alerts that are live (i.e. not expired)
+      const now = Math.floor(Date.now / 1000)
+      const activeAlerts = liveAlertsData.alerts.filter(
+        (alert) => alert.expirationDate > now
+      )
+      setAlerts(activeAlerts)
     }
     loadLocations()
     loadAlerts()

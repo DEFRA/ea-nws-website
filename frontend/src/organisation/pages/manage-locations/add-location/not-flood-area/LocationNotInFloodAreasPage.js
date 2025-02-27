@@ -87,7 +87,7 @@ export default function LocationNotInFloodAreaPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half govuk-body'>
             <h1 class='govuk-heading-l'>
-              Flood messages are not availble for {locationName}
+              Flood messages are not available for {locationName}
             </h1>
             <InsetText text={insetTextInfo} />
             <Details title={'What is flood risk'} text={floodRiskInfo} />

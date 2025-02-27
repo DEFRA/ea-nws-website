@@ -91,8 +91,9 @@ import ViewLocationInformationPage from '../../pages/manage-locations/view-locat
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
-// link imports
-import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
+// post-add imports
+import LinkLocationToContactPage from '../../pages/manage-locations/add-location/LinkLocationToContactPage'
+import AddContactsPage from '../../pages/manage-locations/add-location/AddContactsPage'
 
 // delete location
 import LocationNotInFloodAreaPage from '../../pages/manage-locations/add-location/not-flood-area/LocationNotInFloodAreasPage'
@@ -183,7 +184,9 @@ const orgManageLocationsUrls = {
       selectNearbyFloodAreas:
         urlManageOrgAddLocations + '/select-nearby-flood-areas'
     },
-    linkToTargetArea: urlManageOrg + '/add/link'
+    linkToTargetArea: urlManageOrg + '/add/link',
+    linkLocationToContacts: urlManageOrg + '/add/link-location-to-contacts',
+    addContacts: urlManageOrg + '/add/add-contacts'
   },
   edit: {
     individualLocation: {
@@ -262,9 +265,6 @@ const orgManageLocationsUrls = {
       },
       confirm: urlUnmatchedLocationsNotInEngland + '/confirm-location'
     }
-  },
-  link: {
-    linkLocation: urlManageOrg + '/link-locations'
   },
   delete: urlManageOrg + '/delete-location'
 }
@@ -544,6 +544,14 @@ const orgManageLocationRoutes = [
     component: <LinkLocationsPage />
   },
   {
+    path: orgManageLocationsUrls.add.linkLocationToContacts,
+    component: <LinkLocationToContactPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.addContacts,
+    component: <AddContactsPage />
+  },
+  {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
@@ -636,11 +644,6 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
       .keywords,
     component: <EditKeywordsPage />
-  },
-  // link location
-  {
-    path: orgManageLocationsUrls.link.linkLocation,
-    component: <LinkLocationPage />
   },
   // Delete location
   {

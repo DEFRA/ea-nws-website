@@ -15,8 +15,7 @@ export default function AddContactNotesPage () {
   const [error, setError] = useState('')
 
   const navigateToNextPage = () => {
-    // TODO navigate to link locations
-    navigate(orgManageContactsUrls.view.viewContact)
+    navigate(orgManageContactsUrls.add.linkContactToLocations)
   }
 
   const onAddContact = async () => {

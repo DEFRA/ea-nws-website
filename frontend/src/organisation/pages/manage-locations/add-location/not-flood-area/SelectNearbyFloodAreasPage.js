@@ -1,12 +1,27 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import LinkLocationsLayout from '../../../../layouts/location/link-locations/LinkLocationsLayout'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function SelectNearbyFloodAreasPage () {
   const navigate = useNavigate()
 
-  const navigateToNextPage = () => {
-    navigate(-1)
+  const orgId = useSelector((state) => state.session.orgId)
+
+  const navigateToNextPage = async () => {
+    const dataToSend = { orgId }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/elasticache/list_contacts',
+      navigate
+    )
+    if (data && data.length > 0) {
+      navigate(orgManageLocationsUrls.add.linkLocationToContacts)
+    } else {
+      navigate(orgManageLocationsUrls.add.addContacts)
+    }
   }
 
   const navigateToPreviousPage = () => {

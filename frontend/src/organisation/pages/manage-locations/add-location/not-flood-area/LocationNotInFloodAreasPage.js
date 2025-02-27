@@ -8,12 +8,33 @@ import Details from '../../../../../common/components/gov-uk/Details'
 import InsetText from '../../../../../common/components/gov-uk/InsetText'
 import { getLocationAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function LocationNotInFloodAreaPage() {
   const navigate = useNavigate()
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
+  const orgId = useSelector((state) => state.session.orgId)
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
+  const onSkipLink = async () => {
+    const dataToSend = { orgId }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/elasticache/list_contacts',
+      navigate
+    )
+    if (data && data.length > 0) {
+      navigate(orgManageLocationsUrls.add.linkLocationToContacts)
+    } else {
+      navigate(orgManageLocationsUrls.add.addContacts)
+    }
+  }
 
   const insetTextInfo = (
     <>
@@ -75,11 +96,6 @@ export default function LocationNotInFloodAreaPage() {
     </>
   )
 
-  const navigateBack = (event) => {
-    event.preventDefault()
-    navigate(-1)
-  }
-
   return (
     <>
       <BackLink onClick={navigateBack} />
@@ -122,8 +138,7 @@ export default function LocationNotInFloodAreaPage() {
             />
             &nbsp; &nbsp;
             <Link
-              //this links to add contacts for location - ask kevin about this
-              //to={}
+              onClick={() => onSkipLink()}
               className='govuk-link inline-link'
             >
               I'll do this later

@@ -90,8 +90,6 @@ export default function OrganisationHeader () {
                   }
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
-              
-              
                 <li
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'orgDetails' && 'active'

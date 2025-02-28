@@ -14,7 +14,7 @@ import store from '../../../../../common/redux/store'
 import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
-import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaName, getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -85,18 +85,11 @@ export default function LocationMessagesPage () {
     setWithinAreas(result)
   }
 
-  /*   const onClick = async (e, area) => {
+    const onClick = async (e, areaName) => {
     e.preventDefault()
-    const alertKey = orgId + ':t_POIS:' + area.id
-    const { data } = await backendCall(
-      { key: alertKey },
-      'api/elasticache/get_data',
-      navigate
-    )
-    data && dispatch(setCurrentLocation(data))
-    // Will need a different page to view the nearby area but no figma?
-    navigate(orgManageLocationsUrls.view.viewLocation)
-  } */
+    const floodArea = await getFloodAreaByTaName(areaName)
+    navigate(orgManageLocationsUrls.view.viewFloodArea, {state: {area: floodArea}})
+  }
 
   const categoryToMessageType = (type) => {
     const typeMap = {
@@ -483,7 +476,7 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          <Link className='govuk-link'>
+                          <Link onClick={() => onClick(detail.areaName)} className='govuk-link'>
                             {detail.areaName}
                           </Link>
                         </td>
@@ -525,7 +518,6 @@ export default function LocationMessagesPage () {
         imageSrc={linkIcon}
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
-            // TODO: Add link to nearby flood areas
         onClick={() => navigate(orgManageLocationsUrls.add.linkToTargetArea)}
       />
     </>

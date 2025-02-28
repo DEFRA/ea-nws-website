@@ -11,7 +11,7 @@ import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodAreaMap from './floodAreaMap'
 
-export default function floodAreaPage () {
+export default function FloodAreaPage () {
   const navigate = useNavigate()
   const location = useLocation()
   const area = location.state.area

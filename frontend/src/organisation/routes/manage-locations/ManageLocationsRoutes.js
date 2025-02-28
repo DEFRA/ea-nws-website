@@ -85,8 +85,9 @@ import EditNotesPage from '../../pages/manage-locations/edit-location/edit-indiv
 import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
-import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
+import FloodAreaPage from '../../pages/manage-locations/view-location/flood-area/floodAreaPage'
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
@@ -114,7 +115,8 @@ const orgManageLocationsUrls = {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
     viewMessages: urlManageOrgViewLocations + '/view-messages',
-    viewLinkedContacts: urlManageOrgViewLocations + '/view-linked-contacts'
+    viewLinkedContacts: urlManageOrgViewLocations + '/view-linked-contacts',
+    viewFloodArea: urlManageOrgViewLocations + '/view-flood-area'
   },
   monitoring: {
     view: urlManageOrgLiveMonitoring + '/view'
@@ -276,6 +278,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewFloodArea,
+    component: <FloodAreaPage />
   },
   {
     path: orgManageLocationsUrls.view.viewLinkedContacts,

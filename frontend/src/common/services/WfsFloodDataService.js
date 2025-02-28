@@ -20,9 +20,11 @@ const wfsCallWithFilter = async (type, property, value) => {
 }
 
 export const getFilteredFloodAreas = async (property, value) => {
-  const filteredWarningAreas = await wfsCallWithFilter('flood_warnings', property, value)?.features || []
-  const filteredAlertAreas = await wfsCallWithFilter('flood_alerts', property, value)?.features || []
-  const allFilteredAreas = filteredWarningAreas.concat(filteredAlertAreas) || []
+  const { data: filteredWarningAreas } = await wfsCallWithFilter('flood_warnings', property, value)
+  const { data: filteredAlertAreas } = await wfsCallWithFilter('flood_alerts', property, value)
+  const alertAreasFeatures = filteredAlertAreas?.features || []
+  const warningAreasFeatures = filteredWarningAreas?.features || []
+  const allFilteredAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
   return allFilteredAreas
 }
 
@@ -128,13 +130,14 @@ const getIntersections = (areas, bufferedShape) => {
 export const getFloodAreaByTaCode = async (code) => {
   const areas = await getFilteredFloodAreas('TA_CODE', code)
   // TA_CODE is unique so there will only be one element in the array
-  return areas[0]
+  return areas[0] || []
 }
 
 export const getFloodAreaByTaName = async (name) => {
   const areas = await getFilteredFloodAreas('TA_Name', name)
+  console.log(areas)
   // TA_Name is unique so there will only be one element in the array
-  return areas[0]
+  return areas[0] || []
 }
 
 export const getAssociatedAlertArea = async (lat, lng, code) => {

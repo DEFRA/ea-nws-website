@@ -1,4 +1,4 @@
-import { faArrowLeft, faRedoAlt } from '@fortawesome/free-solid-svg-icons'
+import { faRedoAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -16,9 +16,10 @@ import {
 } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import iconUrl from '../../../../../common/assets/images/location_pin.svg'
+import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../../../common/services/BackendService'
-import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
-import FullMapInteractiveKey from '../../../../components/custom/FullMapInteractiveKey'
+import { createShapefilePattern } from '../../../../components/custom/FloodAreaPatterns'
+import FloodAreaMapKey from './FloodAreaMapKey'
 
 export default function FloodAreaMap ({
   showMap,
@@ -50,6 +51,9 @@ export default function FloodAreaMap ({
   )
   const [zoomLevel, setZoomLevel] = useState(initialZoom)
 
+  useEffect(() => {
+    createShapefilePattern()
+  }, [])
 
   const ZoomTracker = () => {
     const map = useMapEvents({
@@ -171,6 +175,43 @@ export default function FloodAreaMap ({
     )
   }
 
+  const LocationInformation = () => {
+    return (
+      <div style={
+        {
+          position: 'absolute',
+          left: '10px',
+          bottom: '10px',
+          zIndex: 1000,
+          backgroundColor: 'white',
+          width: '400px'
+        }}
+        >
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span className='govuk-heading-s govuk-!-margin-0' style={{padding: '0 15px 0 15px'}}>Area name</span>
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" fill="white"/>
+<g clip-path="url(#clip0_5588_113377)">
+<path d="M20 18.6L25.6 13L27 14.4L21.4 20L27 25.6L25.6 27L20 21.4L14.4 27L13 25.6L18.6 20L13 14.4L14.4 13L20 18.6Z" fill="#0B0C0C" stroke="#0B0C0C" stroke-width="0.1"/>
+</g>
+<defs>
+<clipPath id="clip0_5588_113377">
+<rect width="14" height="14" fill="white" transform="translate(13 13)"/>
+</clipPath>
+</defs>
+</svg>
+          </div>
+
+          <span className='govuk-body govuk-!-margin-0' style={{padding: '10px 15px 10px 15px'}}>{targetArea.properties.TA_Name}</span>
+
+        </div>
+    )
+  }
+
   const ExitMapButton = () => {
     return (
       <button
@@ -179,43 +220,50 @@ export default function FloodAreaMap ({
           top: '10px',
           left: '10px',
           zIndex: 1000,
-          padding: '5px 10px',
+          padding: '10px',
           backgroundColor: 'white',
-          border: '1px solid #ccc',
           cursor: 'pointer',
-          borderRadius: '4px'
+          border: 'none',
+          fontSize: '16px',
+          fontFamily: '"GDS Transport", arial, sans-serif',
         }}
         onClick={handleCloseMap}
       >
-        <FontAwesomeIcon
-          icon={faArrowLeft}
-          style={{
-            fontSize: '16px',
-            marginRight: '5px'
-          }}
-        />
+        <span className='govuk-!-margin-right-2'>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_5588_113337)">
+        <path d="M4.828 11.0006L12.314 18.4856L10.899 19.8996L1 10.0006L10.899 0.101562L12.314 1.51556L4.828 9.00056H19V11.0006H4.828Z" fill="#0B0C0C" stroke="#0B0C0C" stroke-width="0.1"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_5588_113337">
+        <rect width="20" height="20" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+        </span>
+
         Exit map
       </button>
     )
   }
 
-  const showWarningAreas = () => {
-        layer.options.className = 'warning-area-pattern-fill'
+  const showWarningAreas = (feature, layer) => {
         layer.setStyle({
-          opacity: 1,
-          color: '#f70202',
+          opacity: 0.4,
+          color: '#E1414B',
           weight: 2,
-          fillOpacity: 0.25
+          fillOpacity: 0.4,
+          stroke: false
         })
   }
 
-  const showAlertAreas = () => {
-        layer.options.className = 'alert-area-pattern-fill'
+  const showAlertAreas = (feature, layer) => {
         layer.setStyle({
-          opacity: 1,
-          color: '#ffa200',
+          opacity: 0.4,
+          color: '#ED9E4A',
           weight: 2,
-          fillOpacity: 0.5
+          fillOpacity: 0.4,
+          stroke: false
         })
     }
   
@@ -251,6 +299,7 @@ export default function FloodAreaMap ({
                 <ZoomTracker />
                 <ResetMapButton />
                 <ExitMapButton />
+                <LocationInformation />
                 {locations && locations
                   .map((location, index) => (
                     <div key={index}>
@@ -286,7 +335,6 @@ export default function FloodAreaMap ({
                     key={warningArea}
                     data={warningArea}
                     onEachFeature={showWarningAreas}
-                    style={{ color: '#f70202' }}
                   />
                 )}
                 {alertArea && (
@@ -294,14 +342,13 @@ export default function FloodAreaMap ({
                     key={alertArea}
                     data={alertArea}
                     onEachFeature={showAlertAreas}
-                    style={{ color: '#ffa200' }}
                   />
                 )}
               </MapContainer>
             </div>
 
-            <div style={{ width: '15%', padding: '20px', overflowY: 'auto' }}>
-              <FullMapInteractiveKey
+            <div style={{ width: '315px', padding: '15px 10px 10px 30px', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+              <FloodAreaMapKey
                 locations={locations}
               />
             </div>

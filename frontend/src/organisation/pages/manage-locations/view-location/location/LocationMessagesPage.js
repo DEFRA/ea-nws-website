@@ -11,7 +11,7 @@ import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
-import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes, setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getFloodAreaByTaName, getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
@@ -88,7 +88,8 @@ export default function LocationMessagesPage () {
     const onClick = async (e, areaName) => {
     e.preventDefault()
     const floodArea = await getFloodAreaByTaName(areaName)
-    navigate(orgManageLocationsUrls.view.viewFloodArea, {state: {area: floodArea}})
+    dispatch(setCurrentTA(floodArea))
+    navigate(orgManageLocationsUrls.view.viewFloodArea)
   }
 
   const categoryToMessageType = (type) => {
@@ -476,7 +477,7 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          <Link onClick={() => onClick(detail.areaName)} className='govuk-link'>
+                          <Link onClick={(e) => onClick(e, detail.areaName)} className='govuk-link'>
                             {detail.areaName}
                           </Link>
                         </td>

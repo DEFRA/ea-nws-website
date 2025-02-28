@@ -1,25 +1,28 @@
-import { booleanIntersects } from '@turf/turf'
-import { useState } from 'react'
+import { booleanIntersects, booleanPointInPolygon } from '@turf/turf'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import locationPin from '../../../../../common/assets/images/location_pin.svg'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
+import { getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import FloodAreaMap from './floodAreaMap'
+import FloodAreaMap from './FloodAreaMap'
 
 export default function FloodAreaPage () {
   const navigate = useNavigate()
-  const location = useLocation()
-  const area = location.state.area
+  const area = useSelector((state) => state.session.currentTA)
   const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
   const [floodHistoryUrl, setHistoryUrl] = useState('')
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [historicalMessages, setHistoricalMessages] = useState([])
+  const [floodCount, setFloodCount] = useState([])
   const orgId = useSelector((state) => state.session.orgId)
 
   const openMap = () => {
@@ -32,6 +35,7 @@ export default function FloodAreaPage () {
   }
 
   const categoryToMessageType = (type) => {
+    console.log(type)
     const typeMap = {
       'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
       'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
@@ -64,11 +68,11 @@ export default function FloodAreaPage () {
           messageSent.push(`${count} severe flood warning${count === 1 ? '' : 's'} were sent for this area in the last 2 years.`)
           break
         case 'Flood Warning':
-          count = floodCount.counts.find((count) => count.type === messageType)?.count
+          count = floodCount.find((count) => count.type === messageType)?.count
           messageSent.push(`${count} flood warning${count === 1 ? '' : 's'} were sent for this area in the last 2 years.`)
           break
         case 'Flood Alert':
-          count = floodCount.counts.find((count) => count.type === messageType)?.count
+          count = floodCount.find((count) => count.type === messageType)?.count
           messageSent.push(`${count} flood alert${count === 1 ? '' : 's'} were sent for this area in the last 2 years.`)
           break
         case 'default':
@@ -78,6 +82,13 @@ export default function FloodAreaPage () {
     }
     setHistoricalMessages(messageSent)
   }
+
+  useEffect(() => {
+    if (floodCount.length > 0) {
+      console.log(floodCount)
+      populateMessagesSent(area.properties.category, floodCount)
+    } 
+  },[floodCount])
 
   const setHistoricalData = (taCode, type) => {
     const twoYearsAgo = moment().subtract(2, 'years')
@@ -92,8 +103,8 @@ export default function FloodAreaPage () {
             moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
         )
         newCount.push({ type: messageType, count: filteredData.length })
+        setFloodCount(newCount)
       }
-      populateMessagesSent(type, newCount)
     }
   }
 
@@ -175,12 +186,14 @@ export default function FloodAreaPage () {
       if (webLocations.length > 0) {
         webLocations.forEach((location) => {
           if (location.additionals.other.location_data_type == LocationDataType.X_AND_Y_COORDS) {
-            booleanIntersects([location.coordinates.longitude, location.coordinates.latitude], area) && locationsUpdate.push(location)
+            console.log(area)
+            booleanPointInPolygon([location.coordinates.longitude, location.coordinates.latitude], area.geometry) && locationsUpdate.push(location)
           } else {
-            booleanIntersects(location.geometry.geoJson, area) && locationsUpdate.push(location)
+            booleanIntersects(location.geometry.geoJson, area.geometry) && locationsUpdate.push(location)
           }
         })
       }
+
 
       const riverSeaRisks = await Promise.all(
         locationsUpdate.map((location) =>
@@ -225,10 +238,23 @@ export default function FloodAreaPage () {
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>Area Name</h1>
+            <h1 className='govuk-heading-l'>{area.properties.TA_Name}</h1>
             {message}
-            <div className='govuk-!-margin-top-4' style={{ display: 'flex', marginLeft: '-0.5rem' }}>
-              <img src={locationPin} alt='Location pin icon' />
+            <div className='govuk-!-margin-top-5' style={
+              {
+                display: 'flex',
+                width: 'fit-content',
+                gap: '10px',
+                border: '1px',
+                borderStyle: 'solid',
+                borderColor: '#B1B4B6',
+                padding: ' 10px 20px 10px 10px'
+              }
+              }>
+            <svg width="17" height="23" viewBox="0 0 17 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 23C12.58 18.8182 17 13.5237 17 8.71212C17 3.90055 13.1949 0 8.5 0C3.80508 0 0 3.90055 0 8.71212C0 13.5237 4.42 18.8182 8.5 23ZM8.5 14.6364C11.6928 14.6364 14.28 11.9839 14.28 8.71212C14.28 5.44031 11.6928 2.78788 8.5 2.78788C5.30719 2.78788 2.72 5.44031 2.72 8.71212C2.72 11.9839 5.30719 14.6364 8.5 14.6364Z" fill="#111010"/>
+</svg>
+
               <Link className='govuk-link' onClick={openMap}>View map</Link>
             </div>
               {showMap && (
@@ -240,7 +266,7 @@ export default function FloodAreaPage () {
                 />
               )}
           </div>
-          <div className='govuk-grid-column-full'>
+          <div className='govuk-grid-column-full govuk-!-margin-top-5 govuk-!-padding-top-4'>
             <h2 className='govuk-heading-m govuk-!-display-inline-block'>
               Locations in {categoryToTableText(area.properties.category)} area
             </h2>
@@ -273,7 +299,7 @@ export default function FloodAreaPage () {
                       <tr key={index} className='govuk-table__row'>
                         <td className='govuk-table__cell'>
                           <Link className='govuk-link'>
-                            {location.other.locationName}
+                            {location.additionals.locationName}
                           </Link>
                         </td>
                         <td className='govuk-table__cell'>
@@ -291,7 +317,7 @@ export default function FloodAreaPage () {
                         </span>
                         </td>
                         <td className='govuk-table__cell'>
-                          {location.other.business_criticality}
+                          {location.additionals.other?.business_criticality}
                         </td>
                       </tr>
                     ))}

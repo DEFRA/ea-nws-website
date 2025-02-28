@@ -86,7 +86,7 @@ import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitorin
 
 // view imports
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
-import FloodAreaPage from '../../pages/manage-locations/view-location/flood-area/floodAreaPage'
+import FloodAreaPage from '../../pages/manage-locations/view-location/flood-area/FloodAreaPage'
 import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'

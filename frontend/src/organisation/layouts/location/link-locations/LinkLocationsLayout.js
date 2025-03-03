@@ -184,6 +184,23 @@ export default function LinkLocationsLayout ({
     return location
   }
 
+  const getParentLinkedContacts = async (currentLocation) => {
+    const contactsDataToSend = { authToken, orgId, location: currentLocation }
+    const { data } = await backendCall(
+      contactsDataToSend,
+      'api/elasticache/list_linked_contacts',
+      navigate
+    )
+
+    const contactIds = []
+    if (data) {
+      data.forEach((contact) => {
+        contactIds.push(contact.id)
+      })
+    }
+    return contactIds
+  }
+
   const handleSubmit = async () => {
     const childrenIDs = []
     for (const areaId of selectedTAs) {
@@ -231,6 +248,17 @@ export default function LinkLocationsLayout ({
           navigate
         )
         if (data) {
+          // link the contacts from the parent location
+          const linkedContacts = await getParentLinkedContacts(currentLocation)
+          if (linkedContacts && linkedContacts.length > 0) {
+            const dataToSend = { authToken, orgId, locationId: data.id, contactIds: linkedContacts }
+            await backendCall(
+              dataToSend,
+              'api/location/attach_contacts',
+              navigate
+            )
+          }
+
           childrenIDs.push({
             id: data.id,
             TA_Name: TargetAreaToAdd.properties.TA_Name,

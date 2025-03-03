@@ -13,6 +13,7 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
   getFloodAreas,
   getFloodAreasFromShape,
@@ -29,7 +30,6 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -658,6 +658,10 @@ export default function ViewLocationsDashboardPage () {
     const locationIds = []
     locationsToRemove.forEach((location) => {
       locationIds.push(location.id)
+      const children = location.additionals?.other?.childrenIDs
+      if (children && children.length > 0) {
+        children.forEach((child) => locationIds.push(child?.id))
+      }
     })
 
     for (const locationID of locationIds) {

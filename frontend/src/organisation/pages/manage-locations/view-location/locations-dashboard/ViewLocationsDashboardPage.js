@@ -659,6 +659,10 @@ export default function ViewLocationsDashboardPage () {
     const locationIds = []
     locationsToRemove.forEach((location) => {
       locationIds.push(location.id)
+      const children = location.additionals?.other?.childrenIDs
+      if (children && children.length > 0) {
+        children.forEach((child) => locationIds.push(child?.id))
+      }
     })
 
     for (const locationID of locationIds) {

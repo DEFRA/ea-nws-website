@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
@@ -8,6 +8,8 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function ContactInformationPage () {
   const navigate = useNavigate()
@@ -21,9 +23,11 @@ export default function ContactInformationPage () {
   )
   const keywords = contactKeywords ? JSON.parse(contactKeywords) : []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const locations = null
+  const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -33,6 +37,23 @@ export default function ContactInformationPage () {
   const openMap = () => {
     setShowMap(true)
   }
+
+  useEffect(() => {
+    const getLocations = async () => {
+      const dataToSend = { authToken, orgId, contact: currentContact }
+      const linkLocationsRes = await backendCall(
+        dataToSend,
+        'api/elasticache/list_linked_locations',
+        navigate
+      )
+
+      if (linkLocationsRes.data) {
+        setLocations(linkLocationsRes.data)
+      }
+    }
+
+    getLocations()
+  }, [])
 
   return (
     <>

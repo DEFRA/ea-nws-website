@@ -26,14 +26,14 @@ export default function ContactMap({ locations }) {
   useEffect(() => {
     loadLocationsOnMap()
     setLoading(false)
-  }, [])
+  }, [locations])
 
   const loadLocationsOnMap = () => {
     // load all locations user is connected to onto map
     const locationsCollection = []
     const points = []
     const shapes = []
-    if (locations) {
+    if (locations && locations.length > 0) {
       // centre must be set to 0, 0 as map will be fit accordingly to locations loaded
       setCentre([0, 0])
       locations.forEach((location) => {
@@ -49,8 +49,8 @@ export default function ContactMap({ locations }) {
           if (locationType === LocationDataType.X_AND_Y_COORDS) {
             // turf accepts in the format [lng,lat] - we save points as [lat,lng]
             feature = convertDataToGeoJsonFeature('Point', [
-              location.coordinates[1],
-              location.coordinates[0]
+              location.coordinates.longitude,
+              location.coordinates.latitude
             ])
             points.push(location.coordinates)
           } else {
@@ -186,7 +186,7 @@ export default function ContactMap({ locations }) {
               {tileLayerWithHeader}
               {markers &&
                 markers.map((marker, index) => (
-                  <Marker key={index} position={[marker[0], marker[1]]}>
+                  <Marker key={index} position={[marker.latitude, marker.longitude]}>
                     <Popup />
                   </Marker>
                 ))}

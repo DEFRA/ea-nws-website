@@ -109,6 +109,17 @@ export default function LocationMessagesPage () {
     return typeMap[type] || []
   }
 
+  const categoryToAlertType = (category) => {
+    const typeMap = {
+      'Flood Warning': [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING],
+      'Flood Warning Groundwater': [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING],
+      'Flood Warning Rapid Response': [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING],
+      'Flood Alert': [AlertType.FLOOD_ALERT],
+      'Flood Alert Groundwater': [AlertType.FLOOD_ALERT]
+    }
+    return typeMap[category] || []
+  }
+
   const setHistoricalData = (taCode, type) => {
     const twoYearsAgo = moment().subtract(2, 'years')
     if (taCode && type) {
@@ -138,7 +149,16 @@ export default function LocationMessagesPage () {
           withinAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
         }
         if (childrenIDs.length > 0) {
-          childrenIDs.forEach((child) => setHistoricalData(child.TA_CODE, child.category))
+          childrenIDs.forEach((child) => {
+            setHistoricalData(child.TA_CODE, child.category)
+            const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+            const type = categoryToAlertType(child.category)
+            setAlertTypesEnabled([
+              alertTypesEnabled[0] || type.includes(allAlertTypes[0]),
+              alertTypesEnabled[1] || type.includes(allAlertTypes[1]),
+              alertTypesEnabled[2] || type.includes(allAlertTypes[2])
+            ])
+          })
         }
       }
     }
@@ -288,26 +308,30 @@ export default function LocationMessagesPage () {
       const updateData = { authToken, orgId, location: locationToUpdate }
       await backendCall(updateData, 'api/location/update', navigate)
 
-      const registerData = {
-        authToken,
-        locationId: locationToUpdate.id,
-        partnerId,
-        params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
-          channelMobileAppEnabled: true,
-          partnerCanView: true,
-          partnerCanEdit: true,
-          alertTypes: alertTypesDispatch
-        }
-      }
+      const locationIDsToUpdate = [locationToUpdate.id, ...childrenIDs.filter((child) => child?.id).map((child) => child.id)]
 
-      await backendCall(
-        registerData,
-        'api/location/update_registration',
-        navigate
-      )
+      for (const locationID of locationIDsToUpdate) {
+        const registerData = {
+          authToken,
+          locationId: locationID,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: alertTypesDispatch
+          }
+        }
+  
+        await backendCall(
+          registerData,
+          'api/location/update_registration',
+          navigate
+        )
+      }
     }
   }
 

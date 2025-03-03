@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
@@ -95,7 +95,7 @@ export default function LinkedLocationsPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      locationsUpdate.forEach(async function (location, idx) {
+      for (const location of locationsUpdate) {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -109,7 +109,7 @@ export default function LinkedLocationsPage () {
             location.linked_contacts.push(contactID)
           })
         }
-      })
+      }
 
       setLinkedLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)

@@ -150,7 +150,7 @@ export default function ViewLocationsDashboardPage () {
 
       const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
 
-      locationsUpdate.forEach(async function (location) {
+      for (const location of locationsUpdate) {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -172,7 +172,8 @@ export default function ViewLocationsDashboardPage () {
             location.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
           }
         }
-      })
+      }
+    
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)

@@ -308,26 +308,30 @@ export default function LocationMessagesPage () {
       const updateData = { authToken, orgId, location: locationToUpdate }
       await backendCall(updateData, 'api/location/update', navigate)
 
-      const registerData = {
-        authToken,
-        locationId: locationToUpdate.id,
-        partnerId,
-        params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
-          channelMobileAppEnabled: true,
-          partnerCanView: true,
-          partnerCanEdit: true,
-          alertTypes: alertTypesDispatch
-        }
-      }
+      const locationIDsToUpdate = [locationToUpdate.id, ...childrenIDs.filter((child) => child?.id).map((child) => child.id)]
 
-      await backendCall(
-        registerData,
-        'api/location/update_registration',
-        navigate
-      )
+      for (const locationID of locationIDsToUpdate) {
+        const registerData = {
+          authToken,
+          locationId: locationID,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: alertTypesDispatch
+          }
+        }
+  
+        await backendCall(
+          registerData,
+          'api/location/update_registration',
+          navigate
+        )
+      }
     }
   }
 

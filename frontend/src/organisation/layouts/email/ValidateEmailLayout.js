@@ -80,7 +80,7 @@ export default function ValidateEmailLayout({
           { id: 'signupComplete', value: { s: 'false' } },
           {
             id: 'lastAccessedUrl',
-            value: { s: '/organisation/sign-up/alternative-contact' }
+            value: { s: '/organisation/sign-up/address' }
           }
         ])
         dispatch(setProfile(updatedProfile))

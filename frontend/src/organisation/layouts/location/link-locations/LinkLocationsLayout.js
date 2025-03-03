@@ -31,6 +31,7 @@ export default function LinkLocationsLayout ({
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
+  
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
@@ -41,6 +42,16 @@ export default function LinkLocationsLayout ({
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [floodCounts, setFloodCounts] = useState([])
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const categoryToMessageType = (type) => {
     const typeMap = {
@@ -231,6 +242,31 @@ export default function LinkLocationsLayout ({
           navigate
         )
         if (data) {
+          const registerData = {
+            authToken,
+            locationId: data.id,
+            partnerId,
+            params: {
+              channelVoiceEnabled: true,
+              channelSmsEnabled: true,
+              channelEmailEnabled: true,
+              channelMobileAppEnabled: true,
+              partnerCanView: true,
+              partnerCanEdit: true,
+              alertTypes: [
+                AlertType.SEVERE_FLOOD_WARNING,
+                AlertType.FLOOD_WARNING,
+                AlertType.FLOOD_ALERT
+              ]
+            }
+          }
+    
+          await backendCall(
+            registerData,
+            'api/location/register_to_partner',
+            navigate
+          )
+    
           childrenIDs.push({
             id: data.id,
             TA_Name: TargetAreaToAdd.properties.TA_Name,

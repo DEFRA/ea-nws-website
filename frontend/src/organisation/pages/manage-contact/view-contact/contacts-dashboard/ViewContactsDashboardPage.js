@@ -105,7 +105,7 @@ export default function ViewContactsDashboardPage () {
 
       const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
 
-      contactsUpdate.forEach(async function (contact, idx) {
+      for (const contact of contactsUpdate) {
         const contactsDataToSend = { authToken, orgId, contact }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -126,7 +126,7 @@ export default function ViewContactsDashboardPage () {
             }
           })
         }
-      })
+      }
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)

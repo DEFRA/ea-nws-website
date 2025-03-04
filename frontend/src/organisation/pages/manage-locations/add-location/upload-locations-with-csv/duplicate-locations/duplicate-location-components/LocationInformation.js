@@ -67,8 +67,8 @@ export default function LocationInformation ({ location, comparedLocation }) {
     const formatShapeArea = (area) => {
       return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
     }
-
-    return formatShapeArea(Math.round(area(location.geometry) / 1000))
+    
+    return formatShapeArea(Math.round(area(location.geometry.geoJson) / 1000))
   }
 
   const LocationData = () => {
@@ -97,7 +97,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
           <div
             style={
               comparedLocation &&
-              area(comparedLocation.geometry) !== area(location.geometry)
+              area(comparedLocation.geometry.geoJson) !== area(location.geometry.geoJson)
                 ? compareStyle
                 : {}
             }
@@ -120,7 +120,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
         comparedLocation &&
         ((!isShapeFile && comparedAdditionalData?.full_address === null) ||
           (isShapeFile &&
-            comparedAdditionalData?.geometry?.properties?.Shape_Area === null))
+            comparedLocation?.geometry?.geoJson?.properties?.Shape_Area === null))
           ? compareStyle
           : {}
       }
@@ -128,7 +128,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
       <div
         className={
           (!isShapeFile && additionalData?.full_address) ||
-          (isShapeFile && additionalData?.geometry?.properties?.Shape_Area)
+          (isShapeFile && location?.geoJson?.geometry?.properties?.Shape_Area)
             ? sectionClassName
             : 'govuk-!-padding-left-4 govuk-!-padding-right-4'
         }

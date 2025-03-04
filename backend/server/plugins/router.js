@@ -55,6 +55,7 @@ const routes = [].concat(
   require('../routes/gov_uk_notify/citizen/account_confirm_deletion'),
   require('../routes/service/get_service_phase'),
   require('../routes/service/get_partner_id'),
+  require('../routes/service/get_ea_email'),
   require('../routes/values/gtm'),
   require('../routes/gov_uk_notify/organisation/account_pending_ea_admin'),
   require('../routes/gov_uk_notify/organisation/account_pending_org_admin'),

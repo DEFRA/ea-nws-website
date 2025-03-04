@@ -101,7 +101,7 @@ export default function DuplicateLocationComparisonPage () {
 
           verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
         } else {
-          navigate(orgManageLocationsUrls.view.dashboard)
+          navigate(orgManageLocationsUrls.add.contactLinkInfo)
         }
       } else {
         navigateToNextPage(

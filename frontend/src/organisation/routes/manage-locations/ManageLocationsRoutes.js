@@ -30,6 +30,7 @@ import LocationAddConfirm from '../../pages/manage-locations/add-location/upload
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import ContactLinkInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/ContactLinkInfoPage'
 
 // Unmatched locations not found
 import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/ConfirmLocationNotFoundPage'
@@ -143,6 +144,7 @@ const orgManageLocationsUrls = {
       urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
     duplicateLocationComparisonPage:
       urlManageOrgAddLocations + '/upload-file/duplicate-location-comparison',
+    contactLinkInfo: urlManageOrgAddLocations + '/upload-file/contact-link-info',
     confirm: urlManageOrgAddLocations + '/bulk/confirm',
     name: urlManageOrg + '/add/name',
     error: {
@@ -402,6 +404,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
     component: <AddAnotherPredefinedBoundaryPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.contactLinkInfo,
+    component: <ContactLinkInfoPage />
   },
   // unmatched locations: location not found
   {

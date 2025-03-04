@@ -109,17 +109,6 @@ export default function LocationMessagesPage () {
     return typeMap[type] || []
   }
 
-  const categoryToAlertType = (category) => {
-    const typeMap = {
-      'Flood Warning': [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING],
-      'Flood Warning Groundwater': [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING],
-      'Flood Warning Rapid Response': [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING],
-      'Flood Alert': [AlertType.FLOOD_ALERT],
-      'Flood Alert Groundwater': [AlertType.FLOOD_ALERT]
-    }
-    return typeMap[category] || []
-  }
-
   const setHistoricalData = (taCode, type) => {
     const twoYearsAgo = moment().subtract(2, 'years')
     if (taCode && type) {
@@ -149,16 +138,7 @@ export default function LocationMessagesPage () {
           withinAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
         }
         if (childrenIDs.length > 0) {
-          childrenIDs.forEach((child) => {
-            setHistoricalData(child.TA_CODE, child.category)
-            const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
-            const type = categoryToAlertType(child.category)
-            setAlertTypesEnabled([
-              alertTypesEnabled[0] || type.includes(allAlertTypes[0]),
-              alertTypesEnabled[1] || type.includes(allAlertTypes[1]),
-              alertTypesEnabled[2] || type.includes(allAlertTypes[2])
-            ])
-          })
+          childrenIDs.forEach((child) => setHistoricalData(child.TA_CODE, child.category))
         }
       }
     }
@@ -226,21 +206,18 @@ export default function LocationMessagesPage () {
   }, [withinAreas, floodCounts])
 
   useEffect(() => {
-    if (withinAreas.length > 0) {
+    if (floodAreasInputs.length > 0) {
       const alertsArray = []
-      for (const area of withinAreas) {
+      for (const area of floodAreasInputs) {
         const typeMap = {
-          'Flood Warning': ['Flood warnings', 'Severe flood warnings'],
-          'Flood Warning Groundwater': ['Flood warnings', 'Severe flood warnings'],
-          'Flood Warning Rapid Response': ['Flood warnings', 'Severe flood warnings'],
-          'Flood Alert': ['Flood alerts'],
-          'Flood Alert Groundwater': ['Flood alerts']
+          'Flood warning area': ['Flood warnings', 'Severe flood warnings'],
+          'Flood alert area': ['Flood alerts']
         }
-        alertsArray.push(...(typeMap[area.properties.category] || []))
+        alertsArray.push(...(typeMap[area.areaType] || []))
       }
       setAvailableAlerts(alertsArray)
     }
-  }, [withinAreas])
+  }, [floodAreasInputs])
 
   useEffect(() => {
     if ((hasFetchedArea) || (floodAreasInputs.length > 0)) {

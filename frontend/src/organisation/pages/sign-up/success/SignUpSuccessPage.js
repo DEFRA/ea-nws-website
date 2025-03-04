@@ -16,11 +16,8 @@ export default function SignUpSuccessPage () {
   const jobTitle = organizationAdditionals.alternativeContact.jobTitle.trim() || '-'
   const compHouseNum = organizationAdditionals.compHouseNum ?? '-'
   const [servicePhase, setServicePhase] = useState(false)
+  const [eaEmail, setEAEmail] = useState(null)
 
-  async function getServicePhase () {
-    const { data } = await backendCall('data', 'api/service/get_service_phase')
-    setServicePhase(data)
-  }
 
   async function notifySignUpSuccessEa () {
     const submissionDateTime = new Date().toLocaleString('en-GB', {
@@ -33,7 +30,7 @@ export default function SignUpSuccessPage () {
     }).replace('AM', 'am').replace('PM', 'pm')
 
     const dataToSend = {
-      email: profile.emails[0],
+      email: eaEmail,
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
@@ -51,7 +48,6 @@ export default function SignUpSuccessPage () {
 
   async function notifySignUpSuccessOrg () {
     const dataToSend = {
-      // ToDo change the eaEmail to their email once confirmed
       email: profile.emails[0],
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
@@ -63,16 +59,32 @@ export default function SignUpSuccessPage () {
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
       alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: jobTitle,
-      eaEmail: 'exampleEA@email.com'
+      eaEmail: eaEmail
     }
     await backendCall(dataToSend, 'api/notify/account_pending_org', navigate)
   }
 
   useEffect(() => {
+    const getEAEmail = async () => {
+      const { data } = await backendCall('data', 'api/service/get_ea_email')
+      setEAEmail(data)
+    }
+
+    const getServicePhase = async () => {
+      const { data } = await backendCall('data', 'api/service/get_service_phase')
+      setServicePhase(data)
+    }
+
+    getEAEmail()
     getServicePhase()
-    notifySignUpSuccessEa()
-    notifySignUpSuccessOrg()
   }, [])
+
+  useEffect(() => {
+    if (eaEmail) {
+      notifySignUpSuccessEa()
+      notifySignUpSuccessOrg()
+    }
+  }, [eaEmail])
 
   return (
     <>

@@ -86,16 +86,18 @@ import EditNotesPage from '../../pages/manage-locations/edit-location/edit-indiv
 import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
-import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
-// link imports
-import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
+// post-add imports
+import LinkLocationToContactPage from '../../pages/manage-locations/add-location/LinkLocationToContactPage'
 
 // delete location
+import LocationNotInFloodAreaPage from '../../pages/manage-locations/add-location/not-flood-area/LocationNotInFloodAreasPage'
+import SelectNearbyFloodAreasPage from '../../pages/manage-locations/add-location/not-flood-area/SelectNearbyFloodAreasPage'
 import DeleteLocationPage from '../../pages/manage-locations/delete/DeleteLocationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
@@ -178,7 +180,13 @@ const orgManageLocationsUrls = {
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
     },
-    linkToTargetArea: urlManageOrg + '/add/link'
+    notInFloodArea: {
+      locationNotInFloodArea: urlManageOrgAddLocations + '/not-in-flood-area',
+      selectNearbyFloodAreas:
+        urlManageOrgAddLocations + '/select-nearby-flood-areas'
+    },
+    linkToTargetArea: urlManageOrg + '/add/link',
+    linkLocationToContacts: urlManageOrg + '/add/link-location-to-contacts'
   },
   edit: {
     individualLocation: {
@@ -257,9 +265,6 @@ const orgManageLocationsUrls = {
       },
       confirm: urlUnmatchedLocationsNotInEngland + '/confirm-location'
     }
-  },
-  link: {
-    linkLocation: urlManageOrg + '/link-locations'
   },
   delete: urlManageOrg + '/delete-location'
 }
@@ -543,6 +548,10 @@ const orgManageLocationRoutes = [
     component: <LinkLocationsPage />
   },
   {
+    path: orgManageLocationsUrls.add.linkLocationToContacts,
+    component: <LinkLocationToContactPage />
+  },
+  {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
@@ -550,6 +559,15 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
     component: <PredefinedBoundaryOptionalInfoPage />
+  },
+  // location not in flood area
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.locationNotInFloodArea,
+    component: <LocationNotInFloodAreaPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.selectNearbyFloodAreas,
+    component: <SelectNearbyFloodAreasPage />
   },
   // edit
   {
@@ -626,11 +644,6 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
       .keywords,
     component: <EditKeywordsPage />
-  },
-  // link location
-  {
-    path: orgManageLocationsUrls.link.linkLocation,
-    component: <LinkLocationPage />
   },
   // Delete location
   {

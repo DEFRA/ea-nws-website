@@ -13,6 +13,7 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
   getFloodAreas,
   getFloodAreasFromShape,
@@ -29,7 +30,6 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -150,7 +150,7 @@ export default function ViewLocationsDashboardPage () {
 
       const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
 
-      locationsUpdate.forEach(async function (location) {
+      for (const location of locationsUpdate) {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -172,7 +172,8 @@ export default function ViewLocationsDashboardPage () {
             location.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
           }
         }
-      })
+      }
+    
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -658,6 +659,10 @@ export default function ViewLocationsDashboardPage () {
     const locationIds = []
     locationsToRemove.forEach((location) => {
       locationIds.push(location.id)
+      const children = location.additionals?.other?.childrenIDs
+      if (children && children.length > 0) {
+        children.forEach((child) => locationIds.push(child?.id))
+      }
     })
 
     for (const locationID of locationIds) {

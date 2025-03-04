@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import { setLinkLocations, setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
@@ -66,7 +66,7 @@ export default function LinkedContactsPage () {
         })
       }
 
-      contactsUpdate.forEach(async function (contact, idx) {
+      for (const contact of contactsUpdate) {
         const contactsDataToSend = { authToken, orgId, contact }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -80,7 +80,7 @@ export default function LinkedContactsPage () {
             contact.linked_locations.push(locationID)
           })
         }
-      })
+      }
 
       setLinkedContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)

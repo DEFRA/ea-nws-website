@@ -90,7 +90,7 @@ export default function LinkBanner ({
       })
     }
 
-    linkLocationIDs.forEach(async function (locationID, idx) {
+    for (const locationID of linkLocationIDs) {
       const dataToSend = { authToken, orgId, locationId: locationID, contactIds: linkContactIDs }
 
       const { errorMessage } = await backendCall(
@@ -133,7 +133,7 @@ export default function LinkBanner ({
       } else {
         console.log(errorMessage)
       }
-    })
+    }
   }
 
   const firstFieldText = () => {

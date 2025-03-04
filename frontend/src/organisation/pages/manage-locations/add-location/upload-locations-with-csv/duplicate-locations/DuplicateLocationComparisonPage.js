@@ -88,8 +88,7 @@ export default function DuplicateLocationComparisonPage () {
             orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
           )
         } else {
-          // navigate to link contacts, for now navigate to locations dashboard
-          navigate(orgManageLocationsUrls.view.dashboard)
+          navigate(orgManageLocationsUrls.add.contactLinkInfo)
         }
       } else {
         navigateToNextPage(

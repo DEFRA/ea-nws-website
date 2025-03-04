@@ -8,7 +8,7 @@ import ScrollToTop from './common/components/custom/ScrollToTop'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
 import { authenticatedRoutes, routes } from './routes'
 
-function App () {
+function App() {
   const auth = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
   const [isInactive, setIsInactive] = useState(false)
@@ -36,8 +36,11 @@ function App () {
   still a session cookie */
   useEffect(() => {
     const currentTime = Date.now()
-    const timeout = (Number(process.env.REACT_APP_INACTIVITY_POPUP) + Number(process.env.REACT_APP_TIMEOUT_POPUP)) * 1000
-    if ((currentTime - lastActivity) > timeout) {
+    const timeout =
+      (Number(process.env.REACT_APP_INACTIVITY_POPUP) +
+        Number(process.env.REACT_APP_TIMEOUT_POPUP)) *
+      1000
+    if (currentTime - lastActivity > timeout) {
       removeCookie('authToken', { path: '/' })
       dispatch(clearAuth())
     }
@@ -95,16 +98,14 @@ function App () {
   }
 
   const isSignOutRoute = () => {
-    return currentRoute.includes('/signout') ||
+    return (
+      currentRoute.includes('/signout') ||
       currentRoute === '/account/delete/confirm'
+    )
   }
 
   const SignBackInLink = () => {
-    if (currentRoute.includes('organisation')) {
-      return '/organisation/sign-back-in'
-    } else {
-      return '/sign-back-in'
-    }
+    return '/sign-back-in'
   }
 
   return (
@@ -117,13 +118,11 @@ function App () {
               key={route.path}
               path={route.path}
               element={
-                hasAuthCookie || isSignOutRoute()
-                  ? (
-                      route.component
-                    )
-                  : (
-                    <Navigate to={SignBackInLink()} />
-                    )
+                hasAuthCookie || isSignOutRoute() ? (
+                  route.component
+                ) : (
+                  <Navigate to={SignBackInLink()} />
+                )
               }
             />
           ))}
@@ -132,13 +131,16 @@ function App () {
               key={route.path}
               path={route.path}
               element={
-                 (route.path === '/signin' || route.path === '/signup/register-location/search') && hasAuthCookie
-                   ? <Navigate to='/home' replace />
-                   : route.component
+                (route.path === '/sign-in' ||
+                  route.path === '/signup/register-location/search') &&
+                hasAuthCookie ? (
+                  <Navigate to='/home' replace />
+                ) : (
+                  route.component
+                )
               }
             />
           ))}
-
         </Route>
       </Routes>
       {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}

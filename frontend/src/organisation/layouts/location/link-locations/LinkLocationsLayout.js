@@ -31,6 +31,7 @@ export default function LinkLocationsLayout ({
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
+  
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
@@ -41,6 +42,16 @@ export default function LinkLocationsLayout ({
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [floodCounts, setFloodCounts] = useState([])
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const categoryToMessageType = (type) => {
     const typeMap = {
@@ -134,7 +145,7 @@ export default function LinkLocationsLayout ({
       for (const area of floodAreas) {
         const taCode = area.properties.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = populateMessagesSent(area.properties.category, floodCount)
+        const messageSent = floodCount ? populateMessagesSent(area.properties.category, floodCount) : []
         const type = categoryToMessageType(area.properties.category)
         updatedFloodAreas.push({
           areaCode: area.properties.TA_CODE,
@@ -184,6 +195,23 @@ export default function LinkLocationsLayout ({
     return location
   }
 
+  const getParentLinkedContacts = async (currentLocation) => {
+    const contactsDataToSend = { authToken, orgId, location: currentLocation }
+    const { data } = await backendCall(
+      contactsDataToSend,
+      'api/elasticache/list_linked_contacts',
+      navigate
+    )
+
+    const contactIds = []
+    if (data) {
+      data.forEach((contact) => {
+        contactIds.push(contact.id)
+      })
+    }
+    return contactIds
+  }
+
   const handleSubmit = async () => {
     const childrenIDs = []
     for (const areaId of selectedTAs) {
@@ -231,6 +259,42 @@ export default function LinkLocationsLayout ({
           navigate
         )
         if (data) {
+          // link the contacts from the parent location
+          const linkedContacts = await getParentLinkedContacts(currentLocation)
+          if (linkedContacts && linkedContacts.length > 0) {
+            const dataToSend = { authToken, orgId, locationId: data.id, contactIds: linkedContacts }
+            await backendCall(
+              dataToSend,
+              'api/location/attach_contacts',
+              navigate
+            )
+          }
+
+          const registerData = {
+            authToken,
+            locationId: data.id,
+            partnerId,
+            params: {
+              channelVoiceEnabled: true,
+              channelSmsEnabled: true,
+              channelEmailEnabled: true,
+              channelMobileAppEnabled: true,
+              partnerCanView: true,
+              partnerCanEdit: true,
+              alertTypes: [
+                AlertType.SEVERE_FLOOD_WARNING,
+                AlertType.FLOOD_WARNING,
+                AlertType.FLOOD_ALERT
+              ]
+            }
+          }
+    
+          await backendCall(
+            registerData,
+            'api/location/register_to_partner',
+            navigate
+          )
+    
           childrenIDs.push({
             id: data.id,
             TA_Name: TargetAreaToAdd.properties.TA_Name,
@@ -295,7 +359,7 @@ export default function LinkLocationsLayout ({
       let warningAreas = []
       if (currentLocation.geometry) {
         const { alertArea, warningArea } =
-          await getSurroundingFloodAreasFromShape(currentLocation.geometry, 1.0)
+          await getSurroundingFloodAreasFromShape(JSON.parse(currentLocation.geometry.geoJson), 1.0)
 
         alertAreas = alertArea.features.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)

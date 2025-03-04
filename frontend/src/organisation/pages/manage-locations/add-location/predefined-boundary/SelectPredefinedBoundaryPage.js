@@ -5,6 +5,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Select from '../../../../../common/components/gov-uk/Select'
+import AlertType from '../../../../../common/enums/AlertType'
 import store from '../../../../../common/redux/store'
 import {
   setConsecutiveBoundariesAdded, setCurrentLocation, setCurrentLocationGeometry, setCurrentLocationName,
@@ -15,11 +16,10 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataService'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import AlertType from '../../../../../common/enums/AlertType'
 
 export default function SelectPredefinedBoundaryPage () {
   const dispatch = useDispatch()

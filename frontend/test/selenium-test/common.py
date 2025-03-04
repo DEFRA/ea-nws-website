@@ -33,8 +33,8 @@ url_index = local_host + '/index'
 # Citizen URLs
 url_cit_contacts = local_host + '/managecontacts'
 url_cit_signup = local_host + '/signup'
-url_cit_signin = local_host + '/signin'
-url_cit_signin_val = local_host + '/signin/validate'
+url_cit_signin = local_host + '/sign-in'
+url_cit_signin_val = local_host + '/sign-in/validate'
 url_cit_sign_back_in = local_host + '/sign-back-in'
 url_cit_home = local_host + '/home'
 url_cit_account = local_host + '/account'
@@ -65,12 +65,12 @@ url_org_signup = {
     'declaration': url_org_signup_path + '/declaration'
 }
 # Signin urls
-url_org_signin_path = url_org + '/signin'
+url_org_signin_path = url_org + '/sign-in'
 url_org_signin = {
     'signin': url_org_signin_path,
     'validate': url_org_signin_path + '/validate',
     'signBackIn': url_org + '/sign-back-in',
-    'pending': url_org_signin_path + '/account-pending'
+    'pending': url_org_signin_path + '/organisation/account-pending'
 }
 # Signout urls
 url_org_signout = {

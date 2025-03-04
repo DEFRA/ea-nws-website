@@ -11,21 +11,14 @@ export default async function ConfirmShapefilePolygonPage () {
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const orgId = useSelector((state) => state.session.orgId)
 
-  let nextPage = ''
-
   const dataToSend = { orgId }
   const { data } = await backendCall(
     dataToSend,
     'api/elasticache/list_contacts',
     navigate
   )
-  if (data && data.length > 0) {
-    nextPage = orgManageLocationsUrls.add.linkLocationToContacts
-  } else {
-    nextPage = orgManageLocationsUrls.add.addContacts
-  }
 
-  const navigateToNextPage = await verifyLocationInFloodAreaAndNavigate(nextPage)
+  const navigateToNextPage = await verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
 
   return (
     <ConfirmLocationLayout

@@ -40,7 +40,6 @@ export default function OptionalLocationInformationPage () {
 
   const skipOptionalInformation = async (event) => {
     event.preventDefault()
-    let nextPage = ''
 
     const dataToSend = { orgId }
     const { data } = await backendCall(
@@ -48,18 +47,13 @@ export default function OptionalLocationInformationPage () {
       'api/elasticache/list_contacts',
       navigate
     )
-    if (data && data.length > 0) {
-      nextPage = orgManageLocationsUrls.add.linkLocationToContacts
-    } else {
-      nextPage = orgManageLocationsUrls.add.addContacts
-    }
 
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
       await verifyLocationInFloodAreaAndNavigate(
-        nextPage
+        orgManageLocationsUrls.add.linkLocationToContacts
       )
     } else if (locationType === LocationDataType.BOUNDARY) {
-      navigate(nextPage)
+      navigate(orgManageLocationsUrls.add.linkLocationToContacts)
     }
   }
 

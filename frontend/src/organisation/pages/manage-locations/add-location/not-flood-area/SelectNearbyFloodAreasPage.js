@@ -17,11 +17,7 @@ export default function SelectNearbyFloodAreasPage () {
       'api/elasticache/list_contacts',
       navigate
     )
-    if (data && data.length > 0) {
-      navigate(orgManageLocationsUrls.add.linkLocationToContacts)
-    } else {
-      navigate(orgManageLocationsUrls.add.addContacts)
-    }
+    navigate(orgManageLocationsUrls.add.linkLocationToContacts)
   }
 
   const navigateToPreviousPage = () => {

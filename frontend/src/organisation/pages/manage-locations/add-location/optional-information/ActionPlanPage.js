@@ -33,26 +33,19 @@ export default function ActionPlanPage () {
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
 
-      let nextPage = ''
-
       const dataToSend = { orgId }
       const { contactsData } = await backendCall(
         dataToSend,
         'api/elasticache/list_contacts',
         navigate
       )
-      if (contactsData && contactsData.length > 0) {
-        nextPage = orgManageLocationsUrls.add.linkLocationToContacts
-      } else {
-        nextPage = orgManageLocationsUrls.add.addContacts
-      }
 
       if (locationType === LocationDataType.X_AND_Y_COORDS) {
         await verifyLocationInFloodAreaAndNavigate(
-          nextPage
+          orgManageLocationsUrls.add.linkLocationToContacts
         )
       } else if (locationType === LocationDataType.BOUNDARY) {
-        navigate(nextPage)
+        navigate(orgManageLocationsUrls.add.linkLocationToContacts)
       }
     } else {
       errorMessage

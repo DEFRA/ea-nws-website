@@ -99,14 +99,7 @@ export default function DuplicateLocationComparisonPage () {
             navigate
           )
 
-          let nextPage = ''
-          if (contactsData && contactsData.length > 0) {
-            nextPage = orgManageLocationsUrls.add.linkLocationToContacts
-          } else {
-            nextPage = orgManageLocationsUrls.add.addContacts
-          }
-
-          verifyLocationInFloodAreaAndNavigate(nextPage)
+          verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
         } else {
           navigate(orgManageLocationsUrls.view.dashboard)
         }

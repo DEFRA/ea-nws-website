@@ -11,7 +11,8 @@ import AlertType from '../../../../common/enums/AlertType'
 import {
   getLocationAdditionals,
   getLocationOther,
-  setCurrentLocation
+  setCurrentLocation,
+  setCurrentLocationAlertTypes
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { csvToJson } from '../../../../common/services/CsvToJson'

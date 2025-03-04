@@ -126,7 +126,7 @@ export default function LocationLoadingShapefilePage () {
       dispatch(setCurrentLocationGeometry({ geoJson: JSON.stringify(geojsonData) }))
       dispatch(setCurrentLocationName(locationName))
 
-      const newLocation = store.getState().session.currentLocation
+      const newLocation = JSON.parse(JSON.stringify(store.getState().session.currentLocation))
 
       if (inEngland && !existingLocation) {
         navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {

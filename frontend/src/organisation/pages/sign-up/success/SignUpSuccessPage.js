@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import BackLink from '../../../../common/components/custom/BackLink'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 import { backendCall } from '../../../../common/services/BackendService'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function SignUpSuccessPage () {
   // need to check for authToken
@@ -14,6 +14,7 @@ export default function SignUpSuccessPage () {
   const responderValue = organizationAdditionals.emergencySector ? 'yes' : 'no'
   const jobTitle = organizationAdditionals.alternativeContact.jobTitle.trim() || '-'
   const compHouseNum = organizationAdditionals.compHouseNum ?? '-'
+  const [eaEmail, setEAEmail] = useState(null)
 
   async function notifySignUpSuccessEa () {
     const submissionDateTime = new Date().toLocaleString('en-GB', {
@@ -26,7 +27,7 @@ export default function SignUpSuccessPage () {
     }).replace('AM', 'am').replace('PM', 'pm')
 
     const dataToSend = {
-      email: profile.emails[0],
+      email: eaEmail,
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
@@ -44,7 +45,6 @@ export default function SignUpSuccessPage () {
 
   async function notifySignUpSuccessOrg () {
     const dataToSend = {
-      // ToDo change the eaEmail to their email once confirmed
       email: profile.emails[0],
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
@@ -56,15 +56,26 @@ export default function SignUpSuccessPage () {
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
       alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: jobTitle,
-      eaEmail: 'exampleEA@email.com'
+      eaEmail: eaEmail
     }
     await backendCall(dataToSend, 'api/notify/account_pending_org', navigate)
   }
 
   useEffect(() => {
-    notifySignUpSuccessEa()
-    notifySignUpSuccessOrg()
+    const getEAEmail = async () => {
+      const { data } = await backendCall('data', 'api/service/get_ea_email')
+      setEAEmail(data)
+    }
+
+    getEAEmail()
   }, [])
+
+  useEffect(() => {
+    if (eaEmail) {
+      notifySignUpSuccessEa()
+      notifySignUpSuccessOrg()
+    }
+  }, [eaEmail])
 
   return (
     <>

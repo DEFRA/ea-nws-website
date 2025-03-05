@@ -7,13 +7,13 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Button from '../../../../common/components/gov-uk/Button'
-import CheckBox from '../../../../common/components/gov-uk/CheckBox'
-import AlertType from '../../../../common/enums/AlertType'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
+import AlertType from '../../../../../../common/enums/AlertType'
 
 export default function FloodReportsFilter ({
-  warnings,
-  setFilteredWarnings,
+  locationsWithAlerts,
+  setFilteredAlerts,
   resetPaging,
   setResetPaging,
   selectedFilters,
@@ -27,25 +27,33 @@ export default function FloodReportsFilter ({
   selectedBusCriticalityFilters,
   setSelectedBusCriticalityFilters
 }) {
-  const warningTypes = [
-    ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
-  ]
-  const locationTypes = warnings
-    .map((warning) => {
-      const otherStr = warning.additionals.find((item) => item.id === 'other')
-        ?.value.s
-      const otherData = otherStr ? JSON.parse(otherStr) : {}
-      return otherData.location_type || ''
-    })
-    .filter((val) => val !== '')
-  const busCriticalityTypes = [...new Set(['High', 'Medium', 'Low'])]
-
   // Search filter visibility
   const [locationNameVisible, setLocationNameVisible] = useState(false)
   const [warningTypeVisible, setWarningTypeVisible] = useState(false)
   const [locationTypeVisible, setLocationTypeVisible] = useState(false)
   const [busCriticalityTypeVisible, setBusCriticalityTypeVisible] =
     useState(false)
+
+  const getOtherData = (additionals) => {
+    const otherStr = additionals.find((item) => item.id === 'other')?.value.s
+    try {
+      return otherStr ? JSON.parse(otherStr) : {}
+    } catch (e) {
+      console.error(e)
+      return {}
+    }
+  }
+
+  const warningTypes = [
+    ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
+  ]
+  const locationTypes = locationsWithAlerts
+    .map((affectedLocation) => {
+      const otherData = getOtherData(affectedLocation.additionals)
+      return otherData.location_type || ''
+    })
+    .filter((val) => val !== '')
+  const busCriticalityTypes = [...new Set(['High', 'Medium', 'Low'])]
 
   // Handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -64,28 +72,30 @@ export default function FloodReportsFilter ({
     })
   }
 
-  const filterWarnings = () => {
-    let filteredWarnings = [...warnings]
+  const filterAlerts = () => {
+    let filteredAlerts = [...locationsWithAlerts]
 
     // Apply location name filter
     if (locationNameFilter) {
-      filteredWarnings = filteredWarnings.filter((warning) =>
-        warning.address.toLowerCase().includes(locationNameFilter.toLowerCase())
+      filteredAlerts = filteredAlerts.filter((alert) =>
+        alert.address.toLowerCase().includes(locationNameFilter.toLowerCase())
       )
     }
 
     // Apply warning type filter
     if (selectedWarningTypeFilters.length > 0) {
-      filteredWarnings = filteredWarnings.filter((warning) => {
+      filteredAlerts = filteredAlerts.filter((affectedLocation) => {
         return selectedWarningTypeFilters.some((filter) => {
           if (filter === 'Severe flood warnings') {
-            return warning.alert.type === AlertType.SEVERE_FLOOD_WARNING
+            return (
+              affectedLocation.alert.type === AlertType.SEVERE_FLOOD_WARNING
+            )
           }
           if (filter === 'Flood warnings') {
-            return warning.alert.type === AlertType.FLOOD_WARNING
+            return affectedLocation.alert.type === AlertType.FLOOD_WARNING
           }
           if (filter === 'Flood alerts') {
-            return warning.alert.type === AlertType.FLOOD_ALERT
+            return affectedLocation.alert.type === AlertType.FLOOD_ALERT
           }
           return false
         })
@@ -94,10 +104,8 @@ export default function FloodReportsFilter ({
 
     // Apply location or boundary type filter
     if (selectedLocationTypeFilters.length > 0) {
-      filteredWarnings = filteredWarnings.filter((warning) => {
-        const otherStr = warning.additionals.find((item) => item.id === 'other')
-          ?.value.s
-        const otherData = otherStr ? JSON.parse(otherStr) : {}
+      filteredAlerts = filteredAlerts.filter((alert) => {
+        const otherData = getOtherData(alert.additionals)
         return selectedLocationTypeFilters.includes(
           otherData.location_type || ''
         )
@@ -106,10 +114,8 @@ export default function FloodReportsFilter ({
 
     // Apply business criticality filter
     if (selectedBusCriticalityFilters.length > 0) {
-      filteredWarnings = filteredWarnings.filter((warning) => {
-        const otherStr = warning.additionals.find((item) => item.id === 'other')
-          ?.value.s
-        const otherData = otherStr ? JSON.parse(otherStr) : {}
+      filteredAlerts = filteredAlerts.filter((alert) => {
+        const otherData = getOtherData(alert.additionals)
         return selectedBusCriticalityFilters.includes(
           otherData.business_criticality || ''
         )
@@ -117,12 +123,12 @@ export default function FloodReportsFilter ({
     }
 
     setResetPaging(!resetPaging)
-    setFilteredWarnings(filteredWarnings)
+    setFilteredAlerts(filteredAlerts)
   }
 
   // Clear all filters
   const clearFilters = () => {
-    setFilteredWarnings(warnings)
+    setFilteredAlerts(locationsWithAlerts)
     setSelectedFilters([])
     setLocationNameFilter('')
     setSelectedWarningTypeFilters([])
@@ -177,7 +183,7 @@ export default function FloodReportsFilter ({
   )
 
   useEffect(() => {
-    filterWarnings()
+    filterAlerts()
   }, [locationNameFilter])
 
   // All other filters
@@ -351,7 +357,7 @@ export default function FloodReportsFilter ({
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'
-            onClick={() => filterWarnings()}
+            onClick={() => filterAlerts()}
           />
         </div>
 

@@ -7,6 +7,7 @@ import floodWarningRemovedIcon from '../../../../common/assets/images/flood_warn
 import floodSevereWarningIcon from '../../../../common/assets/images/severe_flood_warning.svg'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
+import { formatDateTime } from '../../../../common/services/formatters/DateTimeFormatter'
 import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
@@ -47,23 +48,7 @@ export default function LiveFLoodMonitoringPage () {
     floodData.alertFloodAreasAmount
 
   const lastUpdated = () => {
-    const now = new Date()
-
-    let hours = now.getHours()
-    const minutes = now.getMinutes().toString().padStart(2, '0')
-    const ampm = hours >= 12 ? 'pm' : 'am'
-
-    // Convert to 12-hour format
-    hours = hours % 12 || 12 // Convert 0 to 12 for 12 AM and keep other
-    const time = `${hours}:${minutes}${ampm}`
-
-    const date = now.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
-    })
-
-    return `${time} on ${date}`
+    return formatDateTime(Date.now() / 1000)
   }
 
   return (

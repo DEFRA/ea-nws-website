@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
-import Pagination from '../../../common/components/gov-uk/Pagination'
-import { backendCall } from '../../../common/services/BackendService.js'
+import BackLink from '../../../../../common/components/custom/BackLink.js'
+import Button from '../../../../../common/components/gov-uk/Button'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import { getLocationAdditional } from '../../../../../common/redux/userSlice.js'
+import { backendCall } from '../../../../../common/services/BackendService.js'
+import { getLiveFloodAlerts } from '../../../../../common/services/WfsFloodDataService.js'
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
@@ -13,7 +15,7 @@ export default function LiveFloodWarningsDashboardPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
-  const defaultAlertsPertPage = 20
+  const defaultAlertsPerPage = 20
 
   const [locations, setLocations] = useState([])
   const [alerts, setAlerts] = useState([])
@@ -23,10 +25,21 @@ export default function LiveFloodWarningsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
   const [holdPage, setHoldPage] = useState(0)
-  const [alertsPerPage, setAlertsPerPage] = useState(defaultAlertsPertPage)
+  const [alertsPerPage, setAlertsPerPage] = useState(defaultAlertsPerPage)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
+
+  const getExtraInfo = (extraInfo, id) => {
+    if (extraInfo) {
+      for (let i = 0; i < extraInfo.length; i++) {
+        if (extraInfo[i].id === id) {
+          return extraInfo[i].value?.s
+        }
+      }
+    }
+    return ''
+  }
 
   // Load in mock data
   useEffect(() => {
@@ -55,78 +68,55 @@ export default function LiveFloodWarningsDashboardPage () {
           updatedLocations.map((location) => [location.id, location])
         ).values()
       )
-      console.log('Locations retrieved: ', uniqueLocations)
 
       setLocations(uniqueLocations)
     }
-    const loadAlerts = async () => {
-      const { data: liveAlertsData } = await backendCall(
-        {},
-        'api/alert/list',
-        navigate
-      )
 
-      // Only keep alerts that are live (i.e. not expired)
-      const now = Math.floor(Date.now / 1000)
-      const activeAlerts = liveAlertsData.alerts.filter(
-        (alert) => alert.expirationDate > now
-      )
-      setAlerts(activeAlerts)
+    const loadAlerts = async () => {
+      const liveAlerts = await getLiveFloodAlerts()
+      setAlerts(liveAlerts)
     }
+
     loadLocations()
     loadAlerts()
   }, [])
 
-  // Combine data once locations and alerts have been populated
   useEffect(() => {
-    const combined = locations
-      .map((location) => {
-        const locNameObj = location.additionals.find(
-          (item) => item.id === 'locationName'
-        )
-        if (!locNameObj) {
-          return null
-        }
-        const locName = locNameObj.value.s.toLowerCase()
-
-        // For each alert, check if the alert's placemark or TA_NAME contains the location name
-        const matchingAlert = alerts.find((alert) => {
-          const placemark = alert.mode.zoneDesc.placemarks[0]
-          const taNameObj = placemark.geometry.extraInfo.find(
-            (info) => info.id === 'TA_NAME'
-          )
-
-          const alertDisplayName = (
-            taNameObj ? taNameObj.value.s : placemark.name
+    // Combine location and alert data into one usable structure
+    if (locations.length && alerts.length) {
+      const combined = locations
+        .map((location) => {
+          const locName = getLocationAdditional(
+            location.additionals,
+            'locationName'
           ).toLowerCase()
-
-          return alertDisplayName.includes(locName)
+          const matchingAlert = alerts.find((alert) => {
+            const placemark = alert.mode?.zoneDesc?.placemarks?.[0]
+            if (!placemark) return false
+            const taName = getExtraInfo(placemark.geometry.extraInfo, 'TA_NAME')
+            const alertDisplayName = (taName || placemark.name).toLowerCase()
+            return alertDisplayName.includes(locName)
+          })
+          return matchingAlert ? { ...location, alert: matchingAlert } : null
         })
+        .filter((item) => item !== null)
 
-        if (matchingAlert) {
-          return { ...location, alert: matchingAlert }
-        } else {
-          return null
-        }
-      })
-      .filter((item) => item !== null)
-
-    setLocationsWithAlerts(combined)
+      setLocationsWithAlerts(combined)
+      setFilteredAlerts(combined)
+    }
   }, [alerts, locations])
 
   useEffect(() => {
-    if (locationsWithAlerts.length > 0) {
-      setFilteredAlerts(locationsWithAlerts)
-    }
-  }, [locationsWithAlerts])
-
-  useEffect(() => {
-    setDisplayedAlerts(
-      filteredAlerts.slice(
-        (currentPage - 1) * alertsPerPage,
-        currentPage * alertsPerPage
+    if (alertsPerPage === null) {
+      setDisplayedAlerts(filteredAlerts)
+    } else {
+      setDisplayedAlerts(
+        filteredAlerts.slice(
+          (currentPage - 1) * alertsPerPage,
+          currentPage * alertsPerPage
+        )
       )
-    )
+    }
   }, [filteredAlerts, currentPage, alertsPerPage])
 
   useEffect(() => {
@@ -173,9 +163,9 @@ export default function LiveFloodWarningsDashboardPage () {
         onClick={() => onPrint()}
       />
       <FloodReportsTable
-        warnings={locationsWithAlerts}
-        displayedWarnings={displayedAlerts}
-        filteredWarnings={filteredAlerts}
+        locationsWithAlerts={locationsWithAlerts}
+        displayedAlerts={displayedAlerts}
+        filteredAlerts={filteredAlerts}
         setFilteredWarnings={setFilteredAlerts}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
@@ -208,8 +198,8 @@ export default function LiveFloodWarningsDashboardPage () {
                 <div className='govuk-grid-row'>
                   <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
                     <FloodReportsFilter
-                      warnings={locationsWithAlerts}
-                      setFilteredWarnings={setFilteredAlerts}
+                      locationsWithAlerts={locationsWithAlerts}
+                      setFilteredAlerts={setFilteredAlerts}
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}
                       selectedFilters={selectedFilters}

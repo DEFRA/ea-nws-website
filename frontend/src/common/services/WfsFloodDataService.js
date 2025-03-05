@@ -1,4 +1,5 @@
 import * as turf from '@turf/turf'
+import { active } from 'd3'
 import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 import { backendCall } from './BackendService'
@@ -19,7 +20,8 @@ const wfsCall = async (bbox, type) => {
 }
 
 export const getFloodAreas = async (lat, lng) => {
-  const { alertArea: alertAreas, warningArea: warningAreas } = await getSurroundingFloodAreas(lat, lng)
+  const { alertArea: alertAreas, warningArea: warningAreas } =
+    await getSurroundingFloodAreas(lat, lng)
   const alertAreasFeatures = alertAreas?.features || []
   const warningAreasFeatures = warningAreas?.features || []
   const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
@@ -44,16 +46,24 @@ export const getFloodAreasFromShape = async (geoJsonShape) => {
   const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
   const filteredWarningDataFeatures = filteredWarningData?.features || []
   const filteredAlertDataFeatures = filteredAlertData?.features || []
-  const withinAreas = filteredWarningDataFeatures.concat(filteredAlertDataFeatures)
+  const withinAreas = filteredWarningDataFeatures.concat(
+    filteredAlertDataFeatures
+  )
 
   return withinAreas
 }
 
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
-  const { data: wfsWarningData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_warnings')
+  const { data: wfsWarningData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'flood_warnings'
+  )
   // alert area
-  const { data: wfsAlertData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_alerts')
+  const { data: wfsAlertData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'flood_alerts'
+  )
   return {
     alertArea: wfsAlertData,
     warningArea: wfsWarningData
@@ -350,4 +360,15 @@ export const getBoundaries = async (name) => {
   const { data: wfsBoundaries } = await backendCall(WFSParams, 'api/wfs')
 
   return wfsBoundaries
+}
+
+// Returns all flood alerts that have not expired
+export const getLiveFloodAlerts = async () => {
+  const { data: liveAlertsData } = await backendCall({}, 'api/alert/list')
+  const now = Math.floor(Date.now / 1000)
+  const activeAlerts = liveAlertsData.alerts.filter(
+    (alert) => alert.expirationDate > now
+  )
+
+  return active
 }

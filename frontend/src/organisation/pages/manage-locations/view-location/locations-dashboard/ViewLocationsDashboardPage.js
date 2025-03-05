@@ -167,7 +167,7 @@ export default function ViewLocationsDashboardPage () {
 
         location.message_count = 0
         const floodAreas = await getWithinAreas(location)
-        if (floodAreas && floodAreas.length > 0) {
+        if (floodAreas) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
           }
@@ -187,8 +187,10 @@ export default function ViewLocationsDashboardPage () {
     let riskCategory = null
 
     if (
-      location.additionals.other?.location_data_type !==
-          LocationDataType.X_AND_Y_COORDS ||
+      (location.additionals.other?.location_data_type !==
+        LocationDataType.ADDRESS &&
+        location.additionals.other?.location_data_type !==
+          LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
@@ -362,12 +364,8 @@ export default function ViewLocationsDashboardPage () {
         location.coordinates.longitude
       )
     } else {
-      const geoJson = location.geometry.geoJson
-      try {
-        result = await getFloodAreasFromShape(geoJson)
-      } catch {
-        result = null
-      }
+      const geoJson = JSON.parse(location.geometry.geoJson)
+      result = await getFloodAreasFromShape(geoJson)
     }
     return result
   }
@@ -378,18 +376,16 @@ export default function ViewLocationsDashboardPage () {
 
     for (const location of selectedLocations) {
       const withinAreas = await getWithinAreas(location)
-      
+
       let isInWarningArea = false
       let isInAlertArea = false
 
-      if (withinAreas && withinAreas.length > 0) {
-        for (const area of withinAreas) {
-          const type = categoryToMessageType(area.properties.category)
-          if (type.includes('Flood Warning')) {
-            isInWarningArea = true
-          } else {
-            isInAlertArea = true
-          }
+      for (const area of withinAreas) {
+        const type = categoryToMessageType(area.properties.category)
+        if (type.includes('Flood Warning')) {
+          isInWarningArea = true
+        } else {
+          isInAlertArea = true
         }
       }
 

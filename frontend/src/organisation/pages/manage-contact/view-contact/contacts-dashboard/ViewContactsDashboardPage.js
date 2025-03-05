@@ -119,7 +119,7 @@ export default function ViewContactsDashboardPage () {
           data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
             const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
-            if (floodAreas && floodAreas.length > 0) {
+            if (floodAreas) {
               for (const area of floodAreas) {
                 contact.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
               }
@@ -150,14 +150,10 @@ export default function ViewContactsDashboardPage () {
         location.coordinates.latitude, location.coordinates.longitude
       )
     } else if (location.geometry?.geoJson) {
-      const geoJson = location.geometry.geoJson
-      try {
-        result = await getFloodAreasFromShape(
-          geoJson
-        )
-      } catch {
-        result = []
-      }
+      const geoJson = JSON.parse(location.geometry.geoJson)
+      result = await getFloodAreasFromShape(
+        geoJson
+      )
     }
     return result
   }

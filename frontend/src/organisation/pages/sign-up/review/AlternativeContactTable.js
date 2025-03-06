@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 export default function ContactReviewTable ({ alternativeContact }) {
   const fullName = `${alternativeContact.firstName} ${alternativeContact.lastName}`
   return (
@@ -9,11 +10,12 @@ export default function ContactReviewTable ({ alternativeContact }) {
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
-          <td className='govuk-table__header  govuk-!-width-one-quarter'>Name</td>
+          <td className='govuk-table__header  govuk-!-width-one-quarter'>
+            Name
+          </td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
-            {/* TODO - Add correct link when implemented */}
-            <Link to='/' className='govuk-link'>
+            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
               Change
             </Link>
           </td>
@@ -26,8 +28,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
             {alternativeContact.email}
           </td>
           <td className='govuk-table__cell'>
-            {/* TODO - Add correct link when implemented */}
-            <Link to='/' className='govuk-link'>
+            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
               Change
             </Link>
           </td>
@@ -40,8 +41,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
             {alternativeContact.telephone}
           </td>
           <td className='govuk-table__cell'>
-            {/* TODO - Add correct link when implemented */}
-            <Link to='/' className='govuk-link'>
+            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
               Change
             </Link>
           </td>
@@ -56,8 +56,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
               : '-'}
           </td>
           <td className='govuk-table__cell'>
-            {/* TODO - Add correct link when implemented */}
-            <Link to='/' className='govuk-link'>
+            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
               Change
             </Link>
           </td>

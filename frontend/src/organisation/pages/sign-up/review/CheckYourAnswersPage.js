@@ -9,6 +9,10 @@ import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
+import {
+  orgSignUpRoutes,
+  orgSignUpUrls
+} from '../../../routes/sign-up/SignUpRoutes'
 export default function CheckYourAnswersPage () {
   const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)
@@ -21,11 +25,7 @@ export default function CheckYourAnswersPage () {
     // TODO once we have updated API
     // call to update profile with final profile here
     const dataToSend = { organization, authToken }
-    await backendCall(
-      dataToSend,
-      'api/organization/update',
-      navigate
-    )
+    await backendCall(dataToSend, 'api/organization/update', navigate)
 
     const updatedProfile = updateAdditionals(profile, [
       { id: 'signupComplete', value: { s: 'pending' } },
@@ -40,7 +40,7 @@ export default function CheckYourAnswersPage () {
     }
     await backendCall(profileDataToSend, 'api/profile/update', navigate)
 
-    navigate('/organisation/sign-up/success')
+    navigate(orgSignUpUrls.success)
   }
 
   return (

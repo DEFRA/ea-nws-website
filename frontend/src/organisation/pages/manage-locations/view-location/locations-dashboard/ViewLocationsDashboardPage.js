@@ -173,7 +173,6 @@ export default function ViewLocationsDashboardPage () {
           }
         }
       }
-    
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)

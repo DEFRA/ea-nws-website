@@ -22,7 +22,7 @@ export default function SubNavigation ({ pages, currentPage, type }) {
               <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
                 Get flood warnings
               </a>
-              <br/>
+              <br />
               <span style={{ color: '#505a5f', fontSize: '12px' }}>Professional</span>
             </div>
           </li>

@@ -17,6 +17,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
+import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
 export default function AdminDetailsLayout ({
   navigateToNextPage,
@@ -78,11 +79,11 @@ export default function AdminDetailsLayout ({
 
     if (errorMessage !== null) {
       if (errorMessage === 'email already registered') {
-        navigate('/organisation/sign-up/admin-email-duplicate', {
+        navigate(orgSignUpUrls.admin.duplicateEmail, {
           state: { email }
         })
       } else if (errorMessage === 'organisation already registered') {
-        navigate('/organisation/sign-up/duplicate', {
+        navigate(orgSignUpUrls.duplicateOrgName, {
           state: { name: organization.name }
         })
       } else {

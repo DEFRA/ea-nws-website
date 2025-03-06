@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
 export default function OrganisationDetailsTable ({ organisation }) {
   return (
@@ -9,14 +10,15 @@ export default function OrganisationDetailsTable ({ organisation }) {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header govuk-!-width-one-quarter'>Name</td>
+            <td className='govuk-table__header govuk-!-width-one-quarter'>
+              Name
+            </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {organisation.name}
             </td>
 
             <td className='govuk-table__cell'>
-              {/* TODO - Add correct link when implemented */}
-              <Link to='/' className='govuk-link'>
+              <Link to={orgSignUpUrls.signUp} className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -30,8 +32,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              {/* TODO - Add correct link when implemented */}
-              <Link to='/' className='govuk-link'>
+              <Link to={orgSignUpUrls.address.add} className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -44,8 +45,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
               {organisation.compHouseNum ? 'Yes' : 'No'}
             </td>
             <td className='govuk-table__cell'>
-              {/* TODO - Add correct link when implemented */}
-              <Link to='/' className='govuk-link'>
+              <Link to={orgSignUpUrls.compHouseNum} className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -59,8 +59,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              {/* TODO - Add correct link when implemented */}
-              <Link to='/' className='govuk-link'>
+              <Link to={orgSignUpUrls.compHouseNum} className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -74,8 +73,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              {/* TODO - Add correct link when implemented */}
-              <Link to='/' className='govuk-link'>
+              <Link to={orgSignUpUrls.sector} className='govuk-link'>
                 Change
               </Link>
             </td>

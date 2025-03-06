@@ -1,14 +1,15 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import AddAddressLayout from '../../layouts/address/AddAddressLayout'
+import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
 export default function AddAddressPage () {
   const navigate = useNavigate()
   const navigateToNextPage = () => {
-    navigate('/organisation/sign-up/address-search')
+    navigate(orgSignUpUrls.address.select)
   }
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/admin-email-confirm')
+    navigate(orgSignUpUrls.signUp)
   }
 
   return (

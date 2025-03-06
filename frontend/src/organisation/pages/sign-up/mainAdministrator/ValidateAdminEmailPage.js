@@ -1,15 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../layouts/email/ValidateEmailLayout'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
-export default function ValidateAdminEmailPage() {
+export default function ValidateAdminEmailPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate('/organisation/sign-up/address')
+    navigate(orgSignUpUrls.altContact)
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/admin-details')
+    navigate(orgSignUpUrls.admin.details)
   }
 
   return (

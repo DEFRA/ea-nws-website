@@ -18,7 +18,6 @@ export default function SignUpSuccessPage () {
   const [servicePhase, setServicePhase] = useState(false)
   const [eaEmail, setEAEmail] = useState(null)
 
-
   async function notifySignUpSuccessEa () {
     const submissionDateTime = new Date().toLocaleString('en-GB', {
       day: 'numeric',
@@ -59,7 +58,7 @@ export default function SignUpSuccessPage () {
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
       alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: jobTitle,
-      eaEmail: eaEmail
+      eaEmail
     }
     await backendCall(dataToSend, 'api/notify/account_pending_org', navigate)
   }

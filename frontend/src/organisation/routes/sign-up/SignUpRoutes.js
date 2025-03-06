@@ -4,73 +4,95 @@ import AlternativeContactDetailsPage from '../../pages/sign-up/AlternativeContac
 import CompaniesHouseNumPage from '../../pages/sign-up/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/sign-up/ConfirmAddressPage'
 import DuplicateNamePage from '../../pages/sign-up/DuplicateNamePage'
-import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
-import SectorPage from '../../pages/sign-up/SectorPage'
 import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetailsPage'
 import DuplicateAdminEmailPage from '../../pages/sign-up/mainAdministrator/DuplicateAdminEmailPage'
 import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
 import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
+import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
+import SectorPage from '../../pages/sign-up/SectorPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import TermsAndConditionsPage from '../../pages/sign-up/TermsAndConditionsPage'
-const urlSignUpOrg = '/organisation/sign-up'
 
-// registration
-const signupRoutes = [
-  { path: urlSignUpOrg, component: <AddNamePage /> },
+const orgSignUpUrl = '/organisation/sign-up'
+
+const orgSignUpUrls = {
+  signUp: orgSignUpUrl,
+  address: {
+    add: orgSignUpUrl + '/address',
+    select: orgSignUpUrl + '/address-search',
+    confirm: orgSignUpUrl + '/address-confirm'
+  },
+  compHouseNum: orgSignUpUrl + '/number',
+  sector: orgSignUpUrl + '/sector',
+  admin: {
+    mainAdmin: orgSignUpUrl + '/main-admin',
+    details: orgSignUpUrl + '/admin-details',
+    confirmEmail: orgSignUpUrl + '/admin-email-confirm',
+    duplicateEmail: orgSignUpUrl + '/admin-email-duplicate'
+  },
+  altContact: orgSignUpUrl + '/alternative-contact',
+  duplicateOrgName: orgSignUpUrl + '/duplicate',
+  success: orgSignUpUrl + '/success',
+  review: orgSignUpUrl + '/review',
+  termsAndConditions: orgSignUpUrl + '/declaration'
+}
+
+const orgSignUpRoutes = [
+  { path: orgSignUpUrls.signUp, component: <AddNamePage /> },
   {
-    path: urlSignUpOrg + '/address',
+    path: orgSignUpUrls.address.add,
     component: <AddAddressPage />
   },
   {
-    path: urlSignUpOrg + '/address-search',
+    path: orgSignUpUrls.address.select,
     component: <SelectAddressPage />
   },
   {
-    path: urlSignUpOrg + '/address-confirm',
+    path: orgSignUpUrls.address.confirm,
     component: <ConfirmAddressPage />
   },
   {
-    path: urlSignUpOrg + '/number',
+    path: orgSignUpUrls.compHouseNum,
     component: <CompaniesHouseNumPage />
   },
   {
-    path: urlSignUpOrg + '/sector',
+    path: orgSignUpUrls.sector,
     component: <SectorPage />
   },
   {
-    path: urlSignUpOrg + '/main-admin',
+    path: orgSignUpUrls.admin.mainAdmin,
     component: <MainAdminPage />
   },
   {
-    path: urlSignUpOrg + '/admin-details',
+    path: orgSignUpUrls.admin.details,
     component: <AdminDetailsPage />
   },
   {
-    path: urlSignUpOrg + '/admin-email-confirm',
+    path: orgSignUpUrls.admin.confirmEmail,
     component: <ValidateAdminEmailPage />
   },
   {
-    path: urlSignUpOrg + '/alternative-contact',
-    component: <AlternativeContactDetailsPage />
-  },
-  {
-    path: urlSignUpOrg + '/admin-email-duplicate',
+    path: orgSignUpUrls.admin.duplicateEmail,
     component: <DuplicateAdminEmailPage />
   },
   {
-    path: urlSignUpOrg + '/success',
+    path: orgSignUpUrls.altContact,
+    component: <AlternativeContactDetailsPage />
+  },
+  {
+    path: orgSignUpUrls.success,
     component: <SignUpSuccessPage />
   },
   {
-    path: urlSignUpOrg + '/duplicate',
+    path: orgSignUpUrls.duplicateOrgName,
     component: <DuplicateNamePage />
   },
-  { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> },
+  { path: orgSignUpUrls.review, component: <CheckYourAnswersPage /> },
   {
-    path: urlSignUpOrg + '/declaration',
+    path: orgSignUpUrls.termsAndConditions,
     component: <TermsAndConditionsPage />
   }
 ]
 
-export default signupRoutes
+export { orgSignUpRoutes, orgSignUpUrls }

@@ -67,7 +67,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
     const formatShapeArea = (area) => {
       return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
     }
-    
+
     return formatShapeArea(Math.round(area(location.geometry.geoJson) / 1000))
   }
 

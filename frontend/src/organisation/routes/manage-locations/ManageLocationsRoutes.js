@@ -82,11 +82,11 @@ import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-in
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
 
 // monitoring imports
-import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
+import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/monitoring/LiveFloodMonitoringPage'
 
 // view imports
-import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'

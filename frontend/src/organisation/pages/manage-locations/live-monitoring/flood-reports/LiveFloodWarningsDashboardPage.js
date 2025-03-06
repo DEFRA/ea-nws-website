@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink.js'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import { getLocationAdditional } from '../../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../../common/services/BackendService.js'
-import { getLiveFloodAlerts } from '../../../../../common/services/WfsFloodDataService.js'
+import {
+  getFloodAreaByTaCode,
+  getLiveFloodAlerts,
+  locationIntersectsAlert
+} from '../../../../../common/services/WfsFloodDataService.js'
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
@@ -74,33 +77,36 @@ export default function LiveFloodWarningsDashboardPage () {
 
     const loadAlerts = async () => {
       const liveAlerts = await getLiveFloodAlerts()
-      setAlerts(liveAlerts)
+      // For each alert, attach its flood area geometry using TA_CODE
+      const alertsWithFloodArea = await Promise.all(
+        liveAlerts.map(async (alert) => {
+          const TA_CODE = getExtraInfo(
+            alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+            'TA_CODE'
+          )
+          const floodArea = await getFloodAreaByTaCode(TA_CODE)
+          return { ...alert, floodArea }
+        })
+      )
+      setAlerts(alertsWithFloodArea)
     }
 
     loadLocations()
     loadAlerts()
   }, [])
 
+  // Combine location and alert data using spatial intersection.
   useEffect(() => {
-    // Combine location and alert data into one usable structure
     if (locations.length && alerts.length) {
       const combined = locations
         .map((location) => {
-          const locName = getLocationAdditional(
-            location.additionals,
-            'locationName'
-          ).toLowerCase()
           const matchingAlert = alerts.find((alert) => {
-            const placemark = alert.mode?.zoneDesc?.placemarks?.[0]
-            if (!placemark) return false
-            const taName = getExtraInfo(placemark.geometry.extraInfo, 'TA_NAME')
-            const alertDisplayName = (taName || placemark.name).toLowerCase()
-            return alertDisplayName.includes(locName)
+            if (!alert.floodArea) return false
+            return locationIntersectsAlert(location, alert.floodArea)
           })
           return matchingAlert ? { ...location, alert: matchingAlert } : null
         })
         .filter((item) => item !== null)
-
       setLocationsWithAlerts(combined)
       setFilteredAlerts(combined)
     }
@@ -146,7 +152,7 @@ export default function LiveFloodWarningsDashboardPage () {
     useState([])
 
   const onPrint = () => {
-    setAlertsPerPage(null)
+    setAlertsPerPage(filteredAlerts.length)
   }
 
   const table = (
@@ -166,7 +172,7 @@ export default function LiveFloodWarningsDashboardPage () {
         locationsWithAlerts={locationsWithAlerts}
         displayedAlerts={displayedAlerts}
         filteredAlerts={filteredAlerts}
-        setFilteredWarnings={setFilteredAlerts}
+        setFilteredAlerts={setFilteredAlerts}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
       />

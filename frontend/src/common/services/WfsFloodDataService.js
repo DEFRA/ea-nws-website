@@ -1,5 +1,4 @@
 import * as turf from '@turf/turf'
-import { active } from 'd3'
 import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 import { backendCall } from './BackendService'
@@ -370,5 +369,36 @@ export const getLiveFloodAlerts = async () => {
     (alert) => alert.expirationDate > now
   )
 
-  return active
+  return activeAlerts
+}
+
+// Converts a location object to a GeoJSON point
+export const locationToGeoJSON = (location) => {
+  if (location.coordinates) {
+    return turf.point([
+      location.coordinates.longitude,
+      location.coordinates.latitude
+    ])
+  }
+
+  if (location.geometry && location.geometry.geoJson) {
+    let geoJsonData = location.geometry.geoJson
+    if (typeof geoJsonData === 'string') {
+      geoJsonData = JSON.parse(geoJsonData)
+    }
+
+    return geoJsonData
+  }
+
+  return null
+}
+
+// Checks if a location is affected by an alert's flood area
+export function locationIntersectsAlert (location, floodArea) {
+  const locFeature = locationToGeoJSON(location)
+  if (!locFeature || !floodArea) {
+    return false
+  } else {
+    return turf.booleanIntersects(locFeature, floodArea)
+  }
 }

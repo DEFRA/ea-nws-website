@@ -5,7 +5,6 @@ import floodWarningIcon from '../../../../../../common/assets/images/flood_warni
 import severeFloodWarningIcon from '../../../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../../../common/enums/AlertType'
-import { getLocationAdditional } from '../../../../../../common/redux/userSlice'
 import { formatDateTime } from '../../../../../../common/services/formatters/DateTimeFormatter'
 
 export default function FloodReportsTable ({
@@ -35,6 +34,15 @@ export default function FloodReportsTable ({
     setLinkedContactsSort('none')
     setlastUpdatedSort('none')
   }, [locationsWithAlerts])
+
+  const getAdditional = (additionals, id) => {
+    for (let i = 0; i < additionals.length; i++) {
+      if (additionals[i].id === id) {
+        return additionals[i].value?.s
+      }
+    }
+    return ''
+  }
 
   const getOtherData = (additionals) => {
     const otherStr = additionals.find((item) => item.id === 'other')?.value.s
@@ -281,7 +289,7 @@ export default function FloodReportsTable ({
               'TA_NAME'
             )
 
-            const locName = getLocationAdditional(
+            const locName = getAdditional(
               affectedLocation.additionals,
               'locationName'
             )

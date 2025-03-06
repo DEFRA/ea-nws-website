@@ -20,7 +20,8 @@ export default function CheckYourAnswersPage () {
   )
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const handleButton = async () => {
+  const handleButton = async (event) => {
+    event.preventDefault()
     if (signUpAccountValidation) {
       const updatedProfile = updateAdditionals(profile, [
         { id: 'signupComplete', value: { s: 'true' } },

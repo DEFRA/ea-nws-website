@@ -18,7 +18,8 @@ export default function SelectContactTypeToAddPage () {
     }
   ]
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     switch (selectedContactType) {
       case 'Mobile Number (texts)':
         navigate('/signup/review/add-mobile')

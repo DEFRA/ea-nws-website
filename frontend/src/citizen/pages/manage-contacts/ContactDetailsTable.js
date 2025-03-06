@@ -14,7 +14,8 @@ export default function ContactDetailsTable ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const handleButton = () => {
+  const handleButton = (event) => {
+    event.preventDefault()
     switch (contactType) {
       case 'email address':
         navigate('/managecontacts/add-email')
@@ -56,6 +57,7 @@ export default function ContactDetailsTable ({
             e.preventDefault()
             handleContactSelection(contact, nextPage)
           }}
+          style={{ cursor: 'pointer' }}
         >
           Confirm
         </Link>
@@ -104,6 +106,7 @@ export default function ContactDetailsTable ({
                           contact
                         }}
                         className='govuk-link right'
+                        style={{ cursor: 'pointer' }}
                       >
                         Remove
                       </Link>
@@ -133,6 +136,7 @@ export default function ContactDetailsTable ({
                       navigateTo: '/managecontacts'
                     }}
                     className='govuk-link right'
+                    style={{ cursor: 'pointer' }}
                   >
                     Remove
                   </Link>

@@ -22,7 +22,8 @@ export default function WarningContactsPreferencePage () {
     { label: 'Phone call', value: 'PhoneCall' }
   ]
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (selectedContactPreferences.length === 0) {
       setError('Select at least one way to get messages about flooding')
     } else {

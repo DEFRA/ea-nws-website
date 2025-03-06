@@ -8,8 +8,11 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import { setOrgCurrentContact, clearOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import {
+  clearOrgCurrentContact,
+  setOrgCurrentContact
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
@@ -19,12 +22,15 @@ import {
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import ContactsTable from '../../../../components/custom/ContactsTable'
-import { orgManageContactsUrls, urlManageContactsAdd } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import {
+  orgManageContactsUrls,
+  urlManageContactsAdd
+} from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewContactsDashboardPage () {
+export default function ViewContactsDashboardPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -103,7 +109,9 @@ export default function ViewContactsDashboardPage () {
         'api/locations/download_flood_history'
       )
 
-      const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
+      const historyData = await fetch(historyFileUrl.data)
+        .then((response) => response.text())
+        .then((data) => csvToJson(data))
 
       for (const contact of contactsUpdate) {
         const contactsDataToSend = { authToken, orgId, contact }
@@ -118,10 +126,15 @@ export default function ViewContactsDashboardPage () {
         if (data && data.length > 0) {
           data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
-            const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
+            const floodAreas = await getWithinAreas(
+              geoSafeToWebLocation(location)
+            )
             if (floodAreas) {
               for (const area of floodAreas) {
-                contact.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
+                contact.message_count += getHistoricalData(
+                  area.properties.TA_CODE,
+                  historyData
+                ).length
               }
             }
           })
@@ -145,15 +158,19 @@ export default function ViewContactsDashboardPage () {
 
   const getWithinAreas = async (location) => {
     let result = []
-    if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+    if (
+      location.additionals.other.location_data_type ===
+      LocationDataType.X_AND_Y_COORDS
+    ) {
       result = await getFloodAreas(
-        location.coordinates.latitude, location.coordinates.longitude
+        location.coordinates.latitude,
+        location.coordinates.longitude
       )
     } else if (location.geometry?.geoJson) {
-      const geoJson = JSON.parse(location.geometry.geoJson)
-      result = await getFloodAreasFromShape(
-        geoJson
-      )
+      console.log('id', location.id)
+      console.log('location.geometry.geoJson', location.geometry.geoJson)
+      const geoJson = location.geometry.geoJson
+      result = await getFloodAreasFromShape(geoJson)
     }
     return result
   }
@@ -350,17 +367,21 @@ export default function ViewContactsDashboardPage () {
   const NoContactsDisplay = () => {
     return (
       <>
-        <h1 className='govuk-heading-l'>
-          Contacts
-        </h1>
+        <h1 className='govuk-heading-l'>Contacts</h1>
         <div className='govuk-body'>
           <p>
-            Contacts get sent flood messages that are available for their locations.<br />
-            Contacts do not have access to this account and cannot sign in to it.
+            Contacts get sent flood messages that are available for their
+            locations.
+            <br />
+            Contacts do not have access to this account and cannot sign in to
+            it.
           </p>
           <p>
-            As an admin you can add, edit and delete contacts. You can also decide how<br />
-            contacts get flood messages for the locations they're responsible for.
+            As an admin you can add, edit and delete contacts. You can also
+            decide how
+            <br />
+            contacts get flood messages for the locations they're responsible
+            for.
           </p>
           <Button
             text='Add contacts'
@@ -380,49 +401,118 @@ export default function ViewContactsDashboardPage () {
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        {contacts.length === 0
-          ? (
-            <NoContactsDisplay />
-            )
-          : (
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-full'>
-                {notificationText && (
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={notificationText}
-                  />
-                )}
-                <DashboardHeader
-                  contacts={contacts}
-                  onClickLinked={onClickLinked}
-                  linkLocations={location.state?.linkLocations}
-                  selectedContacts={selectedContacts}
-                  onOnlyShowSelected={onOnlyShowSelected}
-                  linkSource={location.state?.linkSource}
+        {contacts.length === 0 ? (
+          <NoContactsDisplay />
+        ) : (
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-full'>
+              {notificationText && (
+                <NotificationBanner
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  text={notificationText}
                 />
-              </div>
-              <div className='govuk-grid-column-full govuk-body'>
-                {!isFilterVisible
-                  ? (
+              )}
+              <DashboardHeader
+                contacts={contacts}
+                onClickLinked={onClickLinked}
+                linkLocations={location.state?.linkLocations}
+                selectedContacts={selectedContacts}
+                onOnlyShowSelected={onOnlyShowSelected}
+                linkSource={location.state?.linkSource}
+              />
+            </div>
+            <div className='govuk-grid-column-full govuk-body'>
+              {!isFilterVisible ? (
+                <>
+                  <Button
+                    text='Open filter'
+                    className='govuk-button govuk-button--secondary inline-block'
+                    onClick={() => onOpenCloseFilter()}
+                  />
+                  {(!location.state ||
+                    !location.state.linkLocations ||
+                    location.state.linkLocations.length === 0) && (
                     <>
+                      &nbsp; &nbsp;
+                      <ButtonMenu
+                        title='More actions'
+                        options={moreActions}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
+                      &nbsp; &nbsp;
                       <Button
-                        text='Open filter'
+                        text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
+                        onClick={() => onPrint()}
+                      />
+                    </>
+                  )}
+                  <ContactsTable
+                    contacts={contacts}
+                    displayedContacts={displayedContacts}
+                    filteredContacts={filteredContacts}
+                    selectedContacts={selectedContacts}
+                    setContacts={setContacts}
+                    setSelectedContacts={setSelectedContacts}
+                    setFilteredContacts={setFilteredContacts}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    onAction={onAction}
+                    actionText='Delete'
+                  />
+                  {contactsPerPage && (
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredContacts.length / contactsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      holdPage={holdPage}
+                      setHoldPage={setHoldPage}
+                      pageList
+                      reset={resetPaging}
+                    />
+                  )}
+                </>
+              ) : (
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
+                    <SearchFilter
+                      contacts={contacts}
+                      setFilteredContacts={setFilteredContacts}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      selectedFilters={selectedFilters}
+                      setSelectedFilters={setSelectedFilters}
+                      contactNameFilter={contactNameFilter}
+                      setContactNameFilter={setContactNameFilter}
+                      selectedJobTitleFilters={selectedJobTitleFilters}
+                      setSelectedJobTitleFilters={setSelectedJobTitleFilters}
+                      selectedKeywordFilters={selectedKeywordFilters}
+                      setSelectedKeywordFilters={setSelectedKeywordFilters}
+                      selectedLinkedFilters={selectedLinkedFilters}
+                      setSelectedLinkedFilters={setSelectedLinkedFilters}
+                    />
+                  </div>
+
+                  <div className='govuk-grid-column-three-quarters'>
+                    <div className='govuk-grid-row'>
+                      <Button
+                        text='Close Filter'
+                        className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
+                      &nbsp; &nbsp;
                       {(!location.state ||
-                      !location.state.linkLocations ||
-                      location.state.linkLocations.length === 0) && (
+                        !location.state.linkLocations ||
+                        location.state.linkLocations.length === 0) && (
                         <>
-                        &nbsp; &nbsp;
                           <ButtonMenu
                             title='More actions'
                             options={moreActions}
                             onSelect={(index) => onMoreAction(index)}
                           />
-                        &nbsp; &nbsp;
+                          &nbsp; &nbsp;
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
@@ -430,126 +520,54 @@ export default function ViewContactsDashboardPage () {
                           />
                         </>
                       )}
-                      <ContactsTable
-                        contacts={contacts}
-                        displayedContacts={displayedContacts}
-                        filteredContacts={filteredContacts}
-                        selectedContacts={selectedContacts}
-                        setContacts={setContacts}
-                        setSelectedContacts={setSelectedContacts}
-                        setFilteredContacts={setFilteredContacts}
-                        resetPaging={resetPaging}
-                        setResetPaging={setResetPaging}
-                        onAction={onAction}
-                        actionText='Delete'
-                      />
-                      {contactsPerPage && (
-                        <Pagination
-                          totalPages={Math.ceil(
-                            filteredContacts.length / contactsPerPage
-                          )}
-                          onPageChange={(val) => setCurrentPage(val)}
-                          holdPage={holdPage}
-                          setHoldPage={setHoldPage}
-                          pageList
-                          reset={resetPaging}
-                        />
-                      )}
-                    </>
-                    )
-                  : (
-                    <div className='govuk-grid-row'>
-                      <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
-                        <SearchFilter
-                          contacts={contacts}
-                          setFilteredContacts={setFilteredContacts}
-                          resetPaging={resetPaging}
-                          setResetPaging={setResetPaging}
-                          selectedFilters={selectedFilters}
-                          setSelectedFilters={setSelectedFilters}
-                          contactNameFilter={contactNameFilter}
-                          setContactNameFilter={setContactNameFilter}
-                          selectedJobTitleFilters={selectedJobTitleFilters}
-                          setSelectedJobTitleFilters={setSelectedJobTitleFilters}
-                          selectedKeywordFilters={selectedKeywordFilters}
-                          setSelectedKeywordFilters={setSelectedKeywordFilters}
-                          selectedLinkedFilters={selectedLinkedFilters}
-                          setSelectedLinkedFilters={setSelectedLinkedFilters}
-                        />
-                      </div>
-
-                      <div className='govuk-grid-column-three-quarters'>
-                        <div className='govuk-grid-row'>
-                          <Button
-                            text='Close Filter'
-                            className='govuk-button govuk-button--secondary'
-                            onClick={() => onOpenCloseFilter()}
-                          />
-                        &nbsp; &nbsp;
-                          {(!location.state ||
-                          !location.state.linkLocations ||
-                          location.state.linkLocations.length === 0) && (
-                            <>
-                              <ButtonMenu
-                                title='More actions'
-                                options={moreActions}
-                                onSelect={(index) => onMoreAction(index)}
-                              />
-                            &nbsp; &nbsp;
-                              <Button
-                                text='Print'
-                                className='govuk-button govuk-button--secondary inline-block'
-                                onClick={() => onPrint()}
-                              />
-                            </>
-                          )}
-                        </div>
-                        <ContactsTable
-                          contacts={contacts}
-                          displayedContacts={displayedContacts}
-                          filteredContacts={filteredContacts}
-                          selectedContacts={selectedContacts}
-                          setContacts={setContacts}
-                          setSelectedContacts={setSelectedContacts}
-                          setFilteredContacts={setFilteredContacts}
-                          resetPaging={resetPaging}
-                          setResetPaging={setResetPaging}
-                          onAction={onAction}
-                          actionText='Delete'
-                        />
-                        {contactsPerPage && (
-                          <Pagination
-                            totalPages={Math.ceil(
-                              filteredContacts.length / contactsPerPage
-                            )}
-                            onPageChange={(val) => setCurrentPage(val)}
-                            holdPage={holdPage}
-                            setHoldPage={setHoldPage}
-                            pageList
-                            reset={resetPaging}
-                          />
-                        )}
-                      </div>
                     </div>
-                    )}
-                {dialog.show && (
-                  <>
-                    <Popup
-                      onDelete={() => handleDelete()}
-                      onClose={() => setDialog({ ...dialog, show: false })}
-                      title={dialog.title}
-                      popupText={dialog.text}
-                      buttonText={dialog.buttonText}
-                      buttonClass={dialog.buttonClass}
-                      setError={(val) =>
-                        setDialog((dial) => ({ ...dial, error: val }))}
-                      defaultValue={dialog.input ? targetContact.name : ''}
+                    <ContactsTable
+                      contacts={contacts}
+                      displayedContacts={displayedContacts}
+                      filteredContacts={filteredContacts}
+                      selectedContacts={selectedContacts}
+                      setContacts={setContacts}
+                      setSelectedContacts={setSelectedContacts}
+                      setFilteredContacts={setFilteredContacts}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      onAction={onAction}
+                      actionText='Delete'
                     />
-                  </>
-                )}
-              </div>
+                    {contactsPerPage && (
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredContacts.length / contactsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        holdPage={holdPage}
+                        setHoldPage={setHoldPage}
+                        pageList
+                        reset={resetPaging}
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
+              {dialog.show && (
+                <>
+                  <Popup
+                    onDelete={() => handleDelete()}
+                    onClose={() => setDialog({ ...dialog, show: false })}
+                    title={dialog.title}
+                    popupText={dialog.text}
+                    buttonText={dialog.buttonText}
+                    buttonClass={dialog.buttonClass}
+                    setError={(val) =>
+                      setDialog((dial) => ({ ...dial, error: val }))
+                    }
+                    defaultValue={dialog.input ? targetContact.name : ''}
+                  />
+                </>
+              )}
             </div>
-            )}
+          </div>
+        )}
       </main>
     </>
   )

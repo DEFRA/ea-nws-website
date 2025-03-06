@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
-  Marker, Popup,
+  Marker,
+  Popup,
   TileLayer,
   ZoomControl,
   useMap,
@@ -32,7 +33,7 @@ import { createLiveMapShapePattern } from '../../../../components/custom/FloodAr
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodDataInformationPopup from './FloodDataInformationPopup'
 
-export default function LiveMap ({
+export default function LiveMap({
   showSevereLocations,
   showWarningLocations,
   showAlertLocations,
@@ -84,6 +85,7 @@ export default function LiveMap ({
   }, [])
 
   const loadMap = async () => {
+    console.log('2')
     // reset data before loading
     setSeverePoints([])
     setSevereFloodAreas([])
@@ -134,13 +136,22 @@ export default function LiveMap ({
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
 
-      const { data: partnerId } = await backendCall('data', 'api/service/get_partner_id')
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
 
       const options = {
         states: ['CURRENT'],
         boundingBox: {
-          southWest: { latitude: parseInt(bbox[1] * 10 ** 6), longitude: parseInt(bbox[0] * 10 ** 6) },
-          northEast: { latitude: parseInt(bbox[3] * 10 ** 6), longitude: parseInt(bbox[2] * 10 ** 6) }
+          southWest: {
+            latitude: parseInt(bbox[1] * 10 ** 6),
+            longitude: parseInt(bbox[0] * 10 ** 6)
+          },
+          northEast: {
+            latitude: parseInt(bbox[3] * 10 ** 6),
+            longitude: parseInt(bbox[2] * 10 ** 6)
+          }
         },
         channels: [],
         partnerId
@@ -340,7 +351,7 @@ export default function LiveMap ({
     iconAnchor: [12, 41]
   })
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -429,6 +440,7 @@ export default function LiveMap ({
     const map = useMap()
 
     useEffect(() => {
+      console.log('1')
       // Run on initial load when the map is ready
       checkVisibleFeatures()
     }, [map])
@@ -565,7 +577,7 @@ export default function LiveMap ({
               filter: isDisabled ? 'grayscale(100%)' : 'none'
             }}
           >
-            <FeatureTracker />
+            {/* <FeatureTracker /> */}
             {isDisabled && (
               <div className='live-map-disabled'>
                 <Link
@@ -596,7 +608,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(alertPoint.properties)}
+                            viewFloodInformationData(alertPoint.properties)
+                          }
                         >
                           {
                             alertPoint.properties.locationData.additionals
@@ -634,7 +647,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(warningPoint.properties)}
+                            viewFloodInformationData(warningPoint.properties)
+                          }
                         >
                           {
                             warningPoint.properties.locationData.additionals
@@ -672,7 +686,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(severePoint.properties)}
+                            viewFloodInformationData(severePoint.properties)
+                          }
                         >
                           {
                             severePoint.properties.locationData.additionals
@@ -750,7 +765,8 @@ export default function LiveMap ({
                         />
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(location.properties)}
+                            viewFloodInformationData(location.properties)
+                          }
                           style={{ flex: 1 }}
                         >
                           {location.properties.floodData.name}

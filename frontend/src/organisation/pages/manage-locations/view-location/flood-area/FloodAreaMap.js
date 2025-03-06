@@ -7,18 +7,20 @@ import { Modal } from 'react-bootstrap'
 import {
   GeoJSON,
   MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
+  Marker, TileLayer,
   ZoomControl,
   useMap,
   useMapEvents
 } from 'react-leaflet'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import iconUrl from '../../../../../common/assets/images/location_pin.svg'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
+import { setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
 import { createShapefilePattern } from '../../../../components/custom/FloodAreaPatterns'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodAreaMapKey from './FloodAreaMapKey'
 
 export default function FloodAreaMap ({
@@ -27,6 +29,10 @@ export default function FloodAreaMap ({
   locations,
   targetArea
 }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [locationInformationActive, setLocationInformationActive] = useState(false)
+  const [clickedLocation, setClickedLocation] = useState(null)
   const initialPosition = [Number(targetArea.properties.latitude.replace(',', '.')), Number(targetArea.properties.longitude.replace(',', '.'))]
   const initialZoom = 14
 
@@ -175,7 +181,40 @@ export default function FloodAreaMap ({
     )
   }
 
+  const onTAClick = async (e, areaName) => {
+    e.preventDefault()
+    const floodArea = await getFloodAreaByTaName(areaName)
+    dispatch(setCurrentTA(floodArea))
+    navigate(orgManageLocationsUrls.view.viewFloodArea)
+  }
+
   const LocationInformation = () => {
+    const formattedAddress = clickedLocation ? clickedLocation.address?.split(',') : ''
+    const title = clickedLocation ?
+    clickedLocation.additionals.locationName
+      : `${locations.length} locations are in or linked to this flood ${categoryToType(targetArea.properties.category)} area`
+    const content = clickedLocation ?
+      <>
+      <p className='govuk-body'>{clickedLocation.additionals.other.location_type}</p>
+      <p className='govuk-body'>
+        {formattedAddress.map((line, index) => {
+                    return (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    )
+                  })}
+      </p>
+      </>
+      :
+      <Link
+        onClick={(e) => onTAClick(e, targetArea.properties.TA_Name)}
+        className='govuk-body govuk-linkgovuk-!-margin-0'
+        style={{padding: '10px 15px 10px 15px'}}
+      >
+        {targetArea.properties.TA_Name}
+      </Link>
     return (
       <div style={
         {
@@ -192,22 +231,35 @@ export default function FloodAreaMap ({
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <span className='govuk-heading-s govuk-!-margin-0' style={{padding: '0 15px 0 15px'}}>Area name</span>
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="40" height="40" fill="white"/>
-<g clip-path="url(#clip0_5588_113377)">
-<path d="M20 18.6L25.6 13L27 14.4L21.4 20L27 25.6L25.6 27L20 21.4L14.4 27L13 25.6L18.6 20L13 14.4L14.4 13L20 18.6Z" fill="#0B0C0C" stroke="#0B0C0C" stroke-width="0.1"/>
-</g>
-<defs>
-<clipPath id="clip0_5588_113377">
-<rect width="14" height="14" fill="white" transform="translate(13 13)"/>
-</clipPath>
-</defs>
-</svg>
+            <span
+              className='govuk-heading-s govuk-!-margin-0'
+              style={{padding: '0 15px 0 15px'}}
+            >
+              {title}
+            </span>
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              onClick={() => {
+                setLocationInformationActive(false)
+                setClickedLocation(null)
+              }}
+            >
+              <rect width="40" height="40" fill="white"/>
+              <g clip-path="url(#clip0_5588_113377)">
+              <path d="M20 18.6L25.6 13L27 14.4L21.4 20L27 25.6L25.6 27L20 21.4L14.4 27L13 25.6L18.6 20L13 14.4L14.4 13L20 18.6Z" fill="#0B0C0C" stroke="#0B0C0C" stroke-width="0.1"/>
+              </g>
+              <defs>
+              <clipPath id="clip0_5588_113377">
+              <rect width="14" height="14" fill="white" transform="translate(13 13)"/>
+              </clipPath>
+              </defs>
+            </svg>
           </div>
-
-          <span className='govuk-body govuk-!-margin-0' style={{padding: '10px 15px 10px 15px'}}>{targetArea.properties.TA_Name}</span>
-
+          {content}
         </div>
     )
   }
@@ -255,6 +307,12 @@ export default function FloodAreaMap ({
           fillOpacity: 0.4,
           stroke: false
         })
+        layer.on({
+          click: () => {
+            setClickedLocation(false)
+            setLocationInformationActive(true)
+          }
+        })
   }
 
   const showAlertAreas = (feature, layer) => {
@@ -265,16 +323,28 @@ export default function FloodAreaMap ({
           fillOpacity: 0.4,
           stroke: false
         })
+        layer.on({
+          click: () => {
+            setClickedLocation(false)
+            setLocationInformationActive(true)
+          }
+        })
     }
   
 
 
-  const onEachShapefileFeature = (feature, layer) => {
+  const onEachShapefileFeature = (feature, layer, location) => {
     layer.options.className = 'shapefile-area-pattern-fill'
     layer.setStyle({
       color: '#809095',
       weight: 2,
       fillOpacity: 1.0
+    })
+    layer.on({
+      click: () => {
+        setClickedLocation(location)
+        setLocationInformationActive(true)
+      }
     })
   }
 
@@ -299,33 +369,29 @@ export default function FloodAreaMap ({
                 <ZoomTracker />
                 <ResetMapButton />
                 <ExitMapButton />
-                <LocationInformation />
+                {locationInformationActive && <LocationInformation />}
                 {locations && locations
                   .map((location, index) => (
                     <div key={index}>
+                      {location?.coordinates &&
                       <Marker
                         position={[
                           location.coordinates.latitude,
                           location.coordinates.longitude
                         ]}
+                        eventHandlers={{
+                          click: () => {
+                            setClickedLocation(location)
+                            setLocationInformationActive(true)
+                          }
+                        }}
                       >
-                        <Popup offset={[0, -25]}>
-                          <Link
-                            className='govuk-link'
-                            // onClick={(e) => viewLocation(e, location)}
-                          >
-                            {location.additionals.locationName}
-                          </Link>
-                          <br />
-                          {location.additionals.other.location_type}
-                          <br />
-                          {location.address}
-                        </Popup>
                       </Marker>
-                      {location.geometry && (
+                      }
+                      {location?.geometry?.geoJson && (
                         <GeoJSON
                           data={location.geometry.geoJson}
-                          onEachFeature={onEachShapefileFeature}
+                          onEachFeature={(feature, layer) => onEachShapefileFeature(feature, layer, location)}
                         />
                       )}
                     </div>

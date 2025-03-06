@@ -2,12 +2,6 @@ import React from 'react'
 import CheckBox from '../../../../../common/components/gov-uk/CheckBox'
 
 export default function FloodAreaMapKey ({
-  showFloodWarningAreas,
-  setShowFloodWarningAreas,
-  showFloodAlertAreas,
-  setShowFloodAlertAreas,
-  showFloodExtents,
-  setShowFloodExtents,
   showLocationsWithinFloodAreas,
   setShowLocationsWithinFloodAreas,
   showLocationsOutsideFloodAreas,

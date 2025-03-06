@@ -11,11 +11,13 @@ import AlertType from '../../../../common/enums/AlertType'
 import {
   getLocationAdditionals,
   getLocationOther,
-  setCurrentLocation
+  setCurrentLocation,
+  setCurrentTA
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
+  getFloodAreaByTaName,
   getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
@@ -368,6 +370,13 @@ export default function LinkLocationsLayout ({
     }
   }, [currentLocation])
 
+  const onClick = async (e, areaName) => {
+    e.preventDefault()
+    const floodArea = await getFloodAreaByTaName(areaName)
+    dispatch(setCurrentTA(floodArea))
+    navigate(orgManageLocationsUrls.view.viewFloodArea)
+  }
+
   const table = (
     <>
       <table className='govuk-table'>
@@ -413,7 +422,7 @@ export default function LinkLocationsLayout ({
           {floodAreaInputs.map((area) => (
             <tr key={area.id} className='govuk-table__row'>
               <td className='govuk-table__cell'>
-                <Link to='#' className='govuk-link'>
+                <Link onClick={(e) => onClick(e, area.areaName)} className='govuk-link'>
                   {area.areaName}
                 </Link>
               </td>

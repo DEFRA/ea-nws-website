@@ -85,7 +85,7 @@ export default function LocationMessagesPage () {
     setWithinAreas(result)
   }
 
-    const onClick = async (e, areaName) => {
+  const onClick = async (e, areaName) => {
     e.preventDefault()
     const floodArea = await getFloodAreaByTaName(areaName)
     dispatch(setCurrentTA(floodArea))

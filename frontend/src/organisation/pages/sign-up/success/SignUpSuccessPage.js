@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import BackLink from '../../../../common/components/custom/BackLink'
+import Button from '../../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 import { backendCall } from '../../../../common/services/BackendService'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function SignUpSuccessPage () {
   // need to check for authToken
@@ -14,6 +15,9 @@ export default function SignUpSuccessPage () {
   const responderValue = organizationAdditionals.emergencySector ? 'yes' : 'no'
   const jobTitle = organizationAdditionals.alternativeContact.jobTitle.trim() || '-'
   const compHouseNum = organizationAdditionals.compHouseNum ?? '-'
+  const [servicePhase, setServicePhase] = useState(false)
+  const [eaEmail, setEAEmail] = useState(null)
+
 
   async function notifySignUpSuccessEa () {
     const submissionDateTime = new Date().toLocaleString('en-GB', {
@@ -26,7 +30,7 @@ export default function SignUpSuccessPage () {
     }).replace('AM', 'am').replace('PM', 'pm')
 
     const dataToSend = {
-      email: profile.emails[0],
+      email: eaEmail,
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
@@ -44,7 +48,6 @@ export default function SignUpSuccessPage () {
 
   async function notifySignUpSuccessOrg () {
     const dataToSend = {
-      // ToDo change the eaEmail to their email once confirmed
       email: profile.emails[0],
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
@@ -56,15 +59,32 @@ export default function SignUpSuccessPage () {
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
       alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: jobTitle,
-      eaEmail: 'exampleEA@email.com'
+      eaEmail: eaEmail
     }
     await backendCall(dataToSend, 'api/notify/account_pending_org', navigate)
   }
 
   useEffect(() => {
-    notifySignUpSuccessEa()
-    notifySignUpSuccessOrg()
+    const getEAEmail = async () => {
+      const { data } = await backendCall('data', 'api/service/get_ea_email')
+      setEAEmail(data)
+    }
+
+    const getServicePhase = async () => {
+      const { data } = await backendCall('data', 'api/service/get_service_phase')
+      setServicePhase(data)
+    }
+
+    getEAEmail()
+    getServicePhase()
   }, [])
+
+  useEffect(() => {
+    if (eaEmail) {
+      notifySignUpSuccessEa()
+      notifySignUpSuccessOrg()
+    }
+  }, [eaEmail])
 
   return (
     <>
@@ -88,15 +108,27 @@ export default function SignUpSuccessPage () {
                 Once approved, we will email you and explain how the service can
                 be accessed.
               </p>
-              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
-                Help us improve this service
-              </h1>
-              <p className='govuk-!-margin-top-6'>
-                <Link to='/signup/feedback' className='govuk-link'>
-                  What do you think of the service?
-                </Link>
-                &nbsp; (takes 30 seconds)
-              </p>
+              {servicePhase !== 'beta' && (
+                <div>
+                  <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Help us improve this service
+                  </h1>
+                  <p className='govuk-!-margin-top-6'>
+                    <Link to='/signup/feedback' className='govuk-link'>
+                      What do you think of the service?
+                    </Link>
+                    &nbsp; (takes 30 seconds)
+                  </p>
+                </div>
+              )}
+              {servicePhase === 'beta' && (
+                <a
+                  className='govuk-link'
+                  href='https://forms.office.com/e/09pkcE64uK'
+                >
+                  <Button text='Continue' className='govuk-button' />
+                </a>
+              )}
             </div>
           </div>
         </div>

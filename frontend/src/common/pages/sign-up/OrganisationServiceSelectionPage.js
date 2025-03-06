@@ -102,15 +102,11 @@ export default function OrganisationServiceSelectionPage () {
                     </div>
                   </div>
                   <div className='org-service-selection-footer govuk-!-padding-left-4'>
-                    <a
-                      href='https://forms.office.com/e/WKanLTi1WX'
-                      className='govuk-link'
-                    >
-                      <Button
-                        text='Apply (approval takes 3 to 5 days)'
-                        className='govuk-button govuk-!-margin-bottom-1'
-                      />
-                    </a>
+                    <Button
+                      text='Instant sign up'
+                      className='govuk-button govuk-!-margin-bottom-1 '
+                      onClick={() => navigate('/signup/organisation-service-confirm')}
+                    />
                   </div>
                 </div>
               </div>

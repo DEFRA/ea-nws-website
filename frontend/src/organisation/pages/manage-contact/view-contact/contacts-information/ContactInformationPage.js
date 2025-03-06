@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
@@ -8,6 +8,8 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function ContactInformationPage () {
   const navigate = useNavigate()
@@ -21,9 +23,11 @@ export default function ContactInformationPage () {
   )
   const keywords = contactKeywords ? JSON.parse(contactKeywords) : []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const locations = null
+  const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -33,6 +37,23 @@ export default function ContactInformationPage () {
   const openMap = () => {
     setShowMap(true)
   }
+
+  useEffect(() => {
+    const getLocations = async () => {
+      const dataToSend = { authToken, orgId, contact: currentContact }
+      const linkLocationsRes = await backendCall(
+        dataToSend,
+        'api/elasticache/list_linked_locations',
+        navigate
+      )
+
+      if (linkLocationsRes.data) {
+        setLocations(linkLocationsRes.data)
+      }
+    }
+
+    getLocations()
+  }, [])
 
   return (
     <>
@@ -50,8 +71,7 @@ export default function ContactInformationPage () {
                 Key information
               </h2>
               <Link
-                className='govuk-link govuk-!-display-inline-block'
-                style={{ float: 'right' }}
+                className='govuk-link right'
                 to={orgManageContactsUrls.edit.details}
               >
                 Change
@@ -70,13 +90,12 @@ export default function ContactInformationPage () {
               )}
             </>
 
-            <>
-              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6 govuk-!-display-inline-block'>
+            <div className='govuk-!-margin-top-7'>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                 Email addresses and numbers
               </h2>
               <Link
-                className='govuk-link govuk-!-display-inline-block'
-                style={{ float: 'right' }}
+                className='govuk-link right'
                 to={orgManageContactsUrls.edit.channels}
               >
                 Change
@@ -133,7 +152,7 @@ export default function ContactInformationPage () {
                   </p>
                 </>
               )}
-            </>
+            </div>
 
             {/* Keywords details */}
             {keywords.length > 0 && (
@@ -142,8 +161,7 @@ export default function ContactInformationPage () {
                   Keywords
                 </h2>
                 <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
+                  className='govuk-link right'
                   to={orgManageContactsUrls.edit.keywords}
                 >
                   Change
@@ -172,22 +190,26 @@ export default function ContactInformationPage () {
             )}
 
             {/* Add more info links */}
-            <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
+            <div className='govuk-!-font-size-19 govuk-!-margin-top-7 govuk-!-display-block'>
               {keywords.length === 0 && (
-                <Link
-                  className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={orgManageContactsUrls.edit.keywords}
-                >
-                  Add keywords
-                </Link>
+                <div className='govuk-!-margin-bottom-1'>
+                  <Link
+                    className='govuk-link'
+                    to={orgManageContactsUrls.edit.keywords}
+                  >
+                    Add keywords
+                  </Link>
+                </div>
               )}
               {!currentContact.comments && (
-                <Link
-                  className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={orgManageContactsUrls.edit.notes}
-                >
-                  Add notes
-                </Link>
+                <div>
+                  <Link
+                    className='govuk-link'
+                    to={orgManageContactsUrls.edit.notes}
+                  >
+                    Add notes
+                  </Link>
+                </div>
               )}
             </div>
           </div>

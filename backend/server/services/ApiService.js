@@ -24,7 +24,10 @@ const apiCall = async (data, path) => {
     data.profile = convertWebProfile(data.profile)
   }
 
-  if (data.location?.coordinates?.latitude && data.location?.coordinates?.longitude) {
+  if (
+    data.location?.coordinates?.latitude &&
+    data.location?.coordinates?.longitude
+  ) {
     data.location.coordinates.latitude = parseInt(
       data.location.coordinates.latitude * 10 ** 6
     )
@@ -51,16 +54,23 @@ const apiCall = async (data, path) => {
       )
     }
 
-    if (response.data.location?.coordinates?.latitude && response.data.location?.coordinates?.longitude) {
-      response.data.location.coordinates.latitude = response.data.location.coordinates.latitude / 10 ** 6
-      response.data.location.coordinates.longitude = response.data.location.coordinates.longitude / 10 ** 6
+    if (
+      response.data.location?.coordinates?.latitude &&
+      response.data.location?.coordinates?.longitude
+    ) {
+      response.data.location.coordinates.latitude =
+        response.data.location.coordinates.latitude / 10 ** 6
+      response.data.location.coordinates.longitude =
+        response.data.location.coordinates.longitude / 10 ** 6
     }
 
     if (response.data.locations) {
       response.data.locations.forEach((location) => {
         if (location.coordinates?.latitude && location.coordinates?.longitude) {
-          location.coordinates.latitude = location.coordinates.latitude / 10 ** 6
-          location.coordinates.longitude = location.coordinates.longitude / 10 ** 6
+          location.coordinates.latitude =
+            location.coordinates.latitude / 10 ** 6
+          location.coordinates.longitude =
+            location.coordinates.longitude / 10 ** 6
         }
       })
     }

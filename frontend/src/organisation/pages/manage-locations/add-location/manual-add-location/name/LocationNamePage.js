@@ -5,10 +5,7 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
-import {
-  setCurrentLocationDataType,
-  setCurrentLocationName
-} from '../../../../../../common/redux/userSlice'
+import { setCurrentLocationName } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import {
@@ -52,7 +49,6 @@ export default function LocationNamePage () {
       const duplicateFound = await locationNameUsedBefore(locationName)
       if (error === '') {
         dispatch(setCurrentLocationName(locationName))
-        dispatch(setCurrentLocationDataType('xycoords'))
 
         if (duplicateFound) {
           navigate(orgManageLocationsUrls.add.error.alreadyExists)

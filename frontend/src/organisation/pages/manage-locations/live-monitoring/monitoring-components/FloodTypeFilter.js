@@ -1,3 +1,4 @@
+// FloodTypeFilter.jsx
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -6,77 +7,52 @@ export default function FloodTypeFilter ({
   locationsCount,
   warningType,
   warningText,
-  warningDescription
+  warningDescription,
+  showFloodType,
+  updateFloodTypeVisibility
 }) {
-  const backgroundColor = () => {
+  const getWarningClass = () => {
     switch (warningType) {
       case 'Severe':
-        return '#FFD7DC'
+        return 'live-map-filter-severe'
       case 'Warning':
-        return '#FCEAEC'
+        return 'live-map-filter-warning'
       case 'Alert':
-        return '#FDF1E3'
+        return 'live-map-filter-alert'
       case 'Removed':
-        return '#F5F5F5'
+        return 'live-map-filter-removed'
     }
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingTop: '10px',
-        paddingBottom: '10px',
-        backgroundColor: backgroundColor()
-      }}
-    >
-      <div style={{ flex: '0 0 auto', marginRight: '12px' }}>
+    <div className={`live-map-filter-container ${getWarningClass()}`}>
+      <div className='live-map-filter-icon'>
         <img
           src={iconSrc}
           alt={`${warningType} Warning Icon`}
-          style={{ width: '100px', height: '75px' }}
+          className='live-map-filter-image'
         />
       </div>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          marginRight: '20px'
-        }}
-      >
+      <div className='live-map-filter-count'>
         <span className='govuk-!-font-size-27'>{locationsCount}</span>
-        <span className='govuk-!-font-size-16'>locations</span>
+        <span className='live-map-filter-locations'>locations</span>
       </div>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          marginRight: '10px'
-        }}
-      >
-        <Link
-          className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-19'
-          style={{ marginRight: '10px', color: '#1d70b8' }}
-        >
+      <div className='live-map-filter-description'>
+        <Link className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-16 text-nowrap govuk-!-margin-bottom-1'>
           {warningText}
         </Link>
-        <span className='govuk-caption-m govuk-!-font-size-16'>
+        <span className='live-map-filter-caption govuk-caption-m'>
           {warningDescription}
         </span>
       </div>
-
-      <div
-        className='govuk-checkboxes govuk-checkboxes--small custom-checkbox-container'
-        style={{ flex: '0 0 auto', marginLeft: 'auto' }}
-      >
+      <div className='live-map-filter-checkbox govuk-checkboxes govuk-checkboxes--small custom-checkbox-container'>
         <div className='govuk-checkboxes__item'>
-          <input className='govuk-checkboxes__input' type='checkbox' />
+          <input
+            className='govuk-checkboxes__input'
+            type='checkbox'
+            checked={showFloodType}
+            onChange={() => updateFloodTypeVisibility(!showFloodType)}
+          />
           <span className='govuk-label govuk-checkboxes__label' />
         </div>
       </div>

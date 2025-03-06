@@ -282,7 +282,7 @@ export default function DashboardHeader ({
 
   return (
     <>
-      <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
+      <div className='govuk-body govuk-!-margin-top-6'>
         {!linkContacts || linkContacts.length === 0
           ? (
             <>

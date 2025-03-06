@@ -9,8 +9,6 @@ import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/Mana
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 
 export default function DashboardHeader ({
-  contactsAdded,
-  lastUpdated,
   contacts,
   onClickLinked,
   linkLocations,
@@ -100,7 +98,7 @@ export default function DashboardHeader ({
 
   return (
     <>
-      <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
+      <div className='govuk-body govuk-!-margin-top-6'>
         {!linkLocations || linkLocations.length === 0
           ? (
             <>

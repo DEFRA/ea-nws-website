@@ -220,6 +220,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-x: hidden;
 }
 
 .popup-dialog-container {
@@ -848,7 +849,7 @@
 /* Styles for the active state */
 .one-login-header__nav__list-item.active,
 .one-login-header__nav__list-item:hover {
-  background-color: #F3F2F1;
+  background-color: #f3f2f1;
 }
 
 .one-login-header__nav__list-item.no-highlight:hover,
@@ -863,26 +864,26 @@
   left: 10%;
   width: 80%;
   height: 4px;
-  background-color: #1D70B8;
+  background-color: #1d70b8;
 }
 
 .one-login-header__nav__list-item .active,
 .one-login-header__nav__list-item:hover .highlighted {
-  color: #1D70B8;
+  color: #1d70b8;
 }
 
 .one-login-header__nav__list-item.active span,
 .one-login-header__nav__list-item:hover span {
-  color: #1D70B8;
+  color: #1d70b8;
 }
 
 .one-login-header__nav__list-item svg {
-  stroke: #FFFFFF;
+  stroke: #ffffff;
 }
 
 .one-login-header__nav__list-item.active svg,
 .one-login-header__nav__list-item:hover svg {
-  stroke: #1D70B8;
+  stroke: #1d70b8;
 }
 
 @media (min-width: 40.0625em) {
@@ -1142,170 +1143,32 @@
   background-color: #b1b4b6;
 }
 
-.locations-filter-container {
-  border: 1px solid #b1b4b6;
-}
-
-.locations-filter-selected {
-  border-style: none none solid;
-  border-width: thin;
-  border-color: #b1b4b6;
-}
-
-.locations-filter-header {
-  position: relative;
-  left: -1rem;
-  right: -1rem;
-  width: calc(100% + 2rem);
-  background-color: #b1b4b6;
-  padding: 0.5rem;
-  margin: 0 1rem 1rem 0;
-  border: 0.0625rem solid #b1b4b6;
-}
-
-.locations-filter-header h1 {
-  margin: 0.75rem 0 0.75rem 0.95rem;
-}
-
-.locations-name-filter {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.locations-select-filter {
-  padding-left: 1rem;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  max-height: 11rem;
-}
-
-.locations-selected-filter-panel {
-  background-color: #f3f2f1;
-  padding: 0.1rem 1rem 0.1rem 1.3rem;
-}
-
-.locations-selected-filter {
-  border-style: solid;
-  border-width: thin;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  height: 2rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  gap: 0.2rem;
-}
-
-.locations-filter-section {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  height: 2rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  gap: 0.2rem;
-}
-
-.locations-selected-filters-panel {
-  border-bottom-style: solid;
-  border-width: thin;
-  border-color: #b1b4b6;
-  background-color: #f3f2f1;
-  padding-bottom: 1rem;
-}
-
-.locations-selected-filters-section {
-  display: flex;
-  align-items: center;
-  background-color: #f3f2f1;
-  padding-left: 1.3rem;
-  padding-right: 1.3rem;
-  padding-top: 0.5rem;
-}
-
-.locations-apply-filters {
-  padding-left: 1.3rem;
-  padding-right: 1rem;
-}
-
-.locations-filter-name-section {
-  display: flex;
-  padding-left: 1rem;
-  gap: 0.5rem;
-}
-
-.locations-filter-other-section {
-  display: flex;
-  padding-left: 1rem;
-  gap: 0.2rem;
-}
-
-.locations-selected-filter-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.locations-selected-filter-label {
-  font-size: 16px;
-}
-
-.locations-selected-filter-icon {
-  width: 1rem;
-  height: 1rem;
-}
-
-.locations-table-panel {
-  display: flex;
-  color: #505a5f;
-}
-
-.locations-table-header {
-  display: flex;
-  color: #505a5f;
-}
-
-.locations-map-key {
-  display: flex;
-  align-items: center;
-}
-
-.locations-filter-section:hover {
-  cursor: pointer;
-}
-
-.locations-filter-title {
-  margin: 0 0 0 8px;
-  color: #1d70b8;
-}
-
+.locations-filter-panel,
 .contacts-filter-panel {
   border: 0.1rem solid #b1b4b6;
   padding-bottom: 1rem;
 }
 
+.locations-filter-header,
 .contacts-filter-header {
   background-color: #b1b4b6;
   padding: 0.5rem 1rem 0.1rem 1.3rem;
 }
 
+.locations-filter-selected,
 .contacts-filter-selected {
   border-style: none none solid;
   border-width: thin;
   border-color: #b1b4b6;
 }
 
+.locations-name-filter,
 .contacts-name-filter {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
+.locations-select-filter,
 .contacts-select-filter {
   padding-left: 1rem;
   display: flex;
@@ -1314,11 +1177,13 @@
   max-height: 11rem;
 }
 
+.locations-selected-filter-panel,
 .contacts-selected-filter-panel {
   background-color: #f3f2f1;
   padding: 0.1rem 1rem 0.1rem 1.3rem;
 }
 
+.locations-selected-filter,
 .contacts-selected-filter {
   border-style: solid;
   border-width: thin;
@@ -1334,6 +1199,7 @@
   gap: 0.2rem;
 }
 
+.locations-selected-filters-panel,
 .contacts-selected-filters-panel {
   border-bottom-style: solid;
   border-width: thin;
@@ -1342,6 +1208,7 @@
   padding-bottom: 1rem;
 }
 
+.locations-selected-filters-section,
 .contacts-selected-filters-section {
   display: flex;
   align-items: center;
@@ -1351,46 +1218,59 @@
   padding-top: 0.5rem;
 }
 
+.locations-apply-filters,
 .contacts-apply-filters {
   padding-left: 1.3rem;
   padding-right: 1rem;
 }
 
+.locations-filter-name-section,
 .contacts-filter-name-section {
   display: flex;
   padding-left: 1rem;
   gap: 0.5rem;
 }
 
+.locations-filter-other-section,
 .contacts-filter-other-section {
   display: flex;
   padding-left: 1rem;
   gap: 0.2rem;
 }
 
+.locations-selected-filter-row,
 .contacts-selected-filter-row {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
 
+.locations-selected-filter-label,
 .contacts-selected-filter-label {
   font-size: 16px;
 }
 
+.locations-selected-filter-icon,
 .contacts-selected-filter-icon {
   width: 1rem;
   height: 1rem;
 }
 
+.locations-table-panel,
 .contacts-table-panel {
   display: flex;
   color: #505a5f;
 }
 
+.locations-table-header,
 .contacts-table-header {
   display: flex;
   color: #505a5f;
+}
+
+.locations-map-key {
+  display: flex;
+  align-items: center;
 }
 
 .reports-table-data-position .govuk-table__cell {
@@ -1504,7 +1384,7 @@
 
 .org-flood-warning-key {
   display: flex;
-  gap: 2.5rem;
+  gap: 1.25rem 1.75rem;
   background-color: #f3f2f1;
   padding: 0.625rem;
   flex-wrap: wrap;
@@ -1556,6 +1436,10 @@
 
 .shapefile-area-pattern-fill {
   fill: url(#shapefile-pattern);
+}
+
+.live-map-shape-pattern-fill {
+  fill: url(#live-map-shape-pattern);
 }
 
 /* flood risk banner */
@@ -1841,6 +1725,121 @@ govuk-menu-toggle.button-menu > button {
 
 .right {
   float: right;
+}
+
+.live-map-filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.live-map-filter-severe {
+  background-color: #ffd7dc;
+}
+
+.live-map-filter-warning {
+  background-color: #fceaec;
+}
+
+.live-map-filter-alert {
+  background-color: #fdf1e3;
+}
+
+.live-map-filter-removed {
+  background-color: #f5f5f5;
+}
+
+.live-map-filter-icon {
+  flex: 0 0 auto;
+  margin-right: 2px;
+}
+
+.live-map-filter-image {
+  width: 100px;
+  height: 75px;
+}
+
+.live-map-filter-count {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 20px;
+}
+
+.live-map-filter-locations {
+  font-size: 14px;
+}
+
+.live-map-filter-description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 10px;
+}
+
+.live-map-filter-caption {
+  font-size: 14px;
+}
+
+.live-map-filter-checkbox {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.live-map-popup-warning-container {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.live-map-popup-severe {
+  background-color: #ffd7dc;
+}
+
+.live-map-popup-warning {
+  background-color: #fceaec;
+}
+
+.live-map-popup-alert {
+  background-color: #fdf1e3;
+}
+
+.live-map-popup-icon-container {
+  flex: 0 0 auto;
+  margin-right: 12px;
+}
+
+.live-map-popup-icon {
+  width: 100px;
+  height: 82px;
+}
+
+.live-map-popup-content {
+  flex: 1;
+}
+
+.live-map-popup-scroll-container {
+  overflow-y: visible;
+  max-height: unset;
+}
+
+.live-map-popup-scrollable {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.live-map-disabled {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 65px 100px;
+  z-index: 1100;
+  text-align: center;
 }
 
 /* This should stay near the end of the stylesheet to override link styling for print */

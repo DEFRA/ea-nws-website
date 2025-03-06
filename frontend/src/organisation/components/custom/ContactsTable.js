@@ -101,7 +101,30 @@ export default function ContactsTable ({
     }
   }
 
-  const sortMessagesReceived = () => {}
+  const sortMessagesReceived = () => {
+    if (messagesReceivedSort === 'none' || messagesReceivedSort === 'descending') {
+      setMessagesReceivedSort('ascending')
+      setFilteredContacts(
+        [...filteredContacts].sort((a, b) => {
+          if (a.message_count === null && b.message_count === null) return 0
+          if (a.message_count === null) return 1
+          if (b.message_count === null) return -1
+          return a.message_count > b.message_count ? 1 : -1
+        })
+      )
+    }
+    if (messagesReceivedSort === 'ascending') {
+      setMessagesReceivedSort('descending')
+      setFilteredContacts(
+        [...filteredContacts].sort((a, b) => {
+          if (a.message_count === null && b.message_count === null) return 0
+          if (a.message_count === null) return 1
+          if (b.message_count === null) return -1
+          return a.message_count < b.message_count ? 1 : -1
+        })
+      )
+    }
+  }
 
   const handleHeaderCheckboxChange = (event) => {
     const isChecked = event.target.checked
@@ -177,7 +200,7 @@ export default function ContactsTable ({
                 type='button'
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
-                    return contact.firstname + contact.lastname
+                    return contact.firstname + (contact.lastname || '')
                   })}
               >
                 Name
@@ -261,7 +284,7 @@ export default function ContactsTable ({
                   onClick={(e) => viewContact(e, contact)}
                 >
                   {contact.firstname}
-                  {contact.lastname.length > 0 ? ' ' + contact.lastname : ''}
+                  {contact?.lastname?.length > 0 ? ' ' + contact?.lastname : ''}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
@@ -271,12 +294,11 @@ export default function ContactsTable ({
               <td className='govuk-table__cell'>
                 {contact.linked_locations?.length}
               </td>
-              <td className='govuk-table__cell'>0</td>
               <td className='govuk-table__cell'>
-                <Link
-                  className='govuk-link'
-                  onClick={(e) => onAction(e, actionText, contact)}
-                >
+                {contact.message_count}
+              </td>
+              <td className='govuk-table__cell'>
+                <Link className='govuk-link' onClick={(e) => onAction(e, actionText, contact)}>
                   {actionText}
                 </Link>
               </td>

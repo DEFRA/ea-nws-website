@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 import Input from '../gov-uk/Input'
+import Radio from '../gov-uk/Radio'
 
 export default function Popup ({
   onEdit,
@@ -11,6 +12,7 @@ export default function Popup ({
   title,
   popupText,
   input = '',
+  options,
   textInput,
   setTextInput,
   buttonClass = '',
@@ -20,6 +22,7 @@ export default function Popup ({
   charLimit = 0,
   validateInput = null,
   defaultValue,
+  onRadioChange,
   showCancel = true
 }) {
   const handleTextInputChange = (val) => {
@@ -33,8 +36,13 @@ export default function Popup ({
     }
   }
 
+  const handleRadioChange = (index, isItOn) => {
+    onRadioChange(index, isItOn)
+    setError('')
+  }
+
   const handleSubmit = () => {
-    if (!input) {
+    if (!input && !options) {
       onDelete()
     } else {
       if (error === '') {
@@ -47,6 +55,43 @@ export default function Popup ({
       }
     }
   }
+
+  const RadioOptions = ({ options }) => (
+    <>
+      {error && <p className='govuk-error-message'>{error}</p>}
+      {options.map((option, index) => (
+        <div className='govuk-radios' key={index}>
+          <table className='govuk-table'>
+            <tbody className='govuk-table__body'>
+              <tr className='govuk-table__row'>
+                <th className='govuk-table__header govuk-!-width-one-half' scope='row' style={{ verticalAlign: 'middle' }}>
+                  <strong>{option.label}</strong>
+                </th>
+                <td className='govuk-table__cell govuk-!-width-one-quarter'>
+                  <Radio
+                    label='On'
+                    key={option.value + '_on'}
+                    name={option.value + 'Radio'}
+                    checked={option.sent}
+                    onChange={() => handleRadioChange(index, true)}
+                  />
+                </td>
+                <td className='govuk-table__cell govuk-!-width-one-quarter'>
+                  <Radio
+                    label='Off'
+                    key={option.value + '_off'}
+                    name={option.value + 'Radio'}
+                    checked={option.sent === false}
+                    onChange={() => handleRadioChange(index, false)}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </>
+  )
 
   return (
     <div className='popup-dialog'>
@@ -67,6 +112,11 @@ export default function Popup ({
               className='govuk-input govuk-input--width-20'
               error={error}
               defaultValue={defaultValue}
+            />
+          )}
+          {options && (
+            <RadioOptions
+              options={options}
             />
           )}
           <div className='popup-dialog-flex'>

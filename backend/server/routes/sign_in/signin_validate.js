@@ -18,7 +18,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { signinToken, code, signinType } = request.payload
+        const { signinToken, code } = request.payload
         const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && signinToken) {
@@ -27,7 +27,7 @@ module.exports = [
             'member/signinValidate'
           )
 
-          if (signinType === 'org') {
+          if (response.data.organization) {
             const signupComplete = response.data.profile.additionals?.find(
               (additional) => additional.id === 'signupComplete'
             )
@@ -38,17 +38,24 @@ module.exports = [
                 errorMessage: 'account pending'
               })
             }
+
             const locationRes = await apiCall(
               { authToken: response.data.authToken },
               'location/list'
             )
+
             const contactRes = await apiCall(
               { authToken: response.data.authToken },
               'organization/listContacts'
             )
 
             // Send the profile to elasticache
-            await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
+            await orgSignIn(
+              response.data.profile,
+              response.data.organization,
+              locationRes.data.locations,
+              contactRes.data.contacts
+            )
 
             for (const contact of contactRes.data.contacts) {
               const options = { contactId: contact.id }
@@ -65,9 +72,14 @@ module.exports = [
                 locationIDs.push(location.id)
               })
 
-              await addLinkedLocations(response.data.organization.id, contact.id, locationIDs)
+              await addLinkedLocations(
+                response.data.organization.id,
+                contact.id,
+                locationIDs
+              )
             }
           }
+
           return h.response(response)
         } else {
           return h.response({

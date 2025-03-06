@@ -7,8 +7,7 @@ export default function LocationsNotFoundDashboardPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () =>
-    // TODO: navigate to correct page when available
-    navigate(orgManageLocationsUrls.view.dashboard)
+    navigate(orgManageLocationsUrls.add.contactLinkInfo)
 
   const navigateToLocationInfo = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.info)

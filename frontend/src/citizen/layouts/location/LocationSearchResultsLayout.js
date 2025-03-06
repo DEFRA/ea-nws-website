@@ -50,14 +50,15 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     }
 
     getHistoryUrl()
-    floodHistoryUrl && fetch(floodHistoryUrl)
-      .then((response) => response.text())
-      .then((data) => {
-        setFloodHistoryData(csvToJson(data))
-      })
-      .catch((e) =>
-        console.error('Could not fetch Historic Flood Warning file', e)
-      )
+    floodHistoryUrl &&
+      fetch(floodHistoryUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          setFloodHistoryData(csvToJson(data))
+        })
+        .catch((e) =>
+          console.error('Could not fetch Historic Flood Warning file', e)
+        )
   }, [floodHistoryUrl])
 
   const setHistoricalAlertNumber = (AlertArea) => {
@@ -123,9 +124,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         setHistoricalAlertNumber(alertArea.features[0].properties.TA_CODE)
       }
       if (isInWarningArea) {
-        setHistoricalWarningNumber(
-          warningArea?.features[0].properties.TA_CODE
-        )
+        setHistoricalWarningNumber(warningArea?.features[0].properties.TA_CODE)
       }
 
       let isWithinWarningAreaProximity = false
@@ -151,10 +150,9 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
   const selectCentreOfAllAreas = (event) => {
     event.preventDefault()
-    const features = turf.points(locations.map((l) =>
-      [l.coordinates.longitude,
-        l.coordinates.latitude]
-    ))
+    const features = turf.points(
+      locations.map((l) => [l.coordinates.longitude, l.coordinates.latitude])
+    )
 
     const centre = turf.center(features)
 
@@ -171,7 +169,6 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   }
 
   const detailsMessage = (
-
     <div>
       You can view flood message areas&nbsp;
       <Link
@@ -185,7 +182,6 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

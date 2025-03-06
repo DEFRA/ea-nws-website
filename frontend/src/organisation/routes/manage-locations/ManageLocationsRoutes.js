@@ -24,11 +24,13 @@ import ConfirmShapefilePolygonPage from '../../pages/manage-locations/add-locati
 import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
 import LocationLoadingShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationLoadingShapefilePage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
+import NotInEnglandShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/NotInEnglandShapefilePage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import ContactLinkInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/ContactLinkInfoPage'
 
 // Unmatched locations not found
 import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/ConfirmLocationNotFoundPage'
@@ -85,13 +87,18 @@ import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitorin
 
 // view imports
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
-import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
-// link imports
-import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
+// post-add imports
+import LinkLocationToContactPage from '../../pages/manage-locations/add-location/LinkLocationToContactPage'
+
+// delete location
+import LocationNotInFloodAreaPage from '../../pages/manage-locations/add-location/not-flood-area/LocationNotInFloodAreasPage'
+import SelectNearbyFloodAreasPage from '../../pages/manage-locations/add-location/not-flood-area/SelectNearbyFloodAreasPage'
+import DeleteLocationPage from '../../pages/manage-locations/delete/DeleteLocationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 export const urlManageOrgViewLocations = urlManageOrg + '/locations'
@@ -123,7 +130,8 @@ const orgManageLocationsUrls = {
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-upload',
-    loadingShapefilePage: urlManageOrgAddLocations + '/shapefile-upload/loading',
+    loadingShapefilePage:
+      urlManageOrgAddLocations + '/shapefile-upload/loading',
     confirmLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-confirm',
     options: urlManageOrgAddLocations,
@@ -136,12 +144,14 @@ const orgManageLocationsUrls = {
       urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
     duplicateLocationComparisonPage:
       urlManageOrgAddLocations + '/upload-file/duplicate-location-comparison',
+    contactLinkInfo: urlManageOrgAddLocations + '/upload-file/contact-link-info',
     confirm: urlManageOrgAddLocations + '/bulk/confirm',
     name: urlManageOrg + '/add/name',
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england',
+      shapefileNotInEngland: urlManageOrg + '/add/shapefile-not-in-england',
       dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england',
       alreadyExists: urlManageOrg + '/add/location-already-exists'
     },
@@ -170,7 +180,13 @@ const orgManageLocationsUrls = {
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
     },
-    linkToTargetArea: urlManageOrg + '/add/link'
+    notInFloodArea: {
+      locationNotInFloodArea: urlManageOrgAddLocations + '/not-in-flood-area',
+      selectNearbyFloodAreas:
+        urlManageOrgAddLocations + '/select-nearby-flood-areas'
+    },
+    linkToTargetArea: urlManageOrg + '/add/link',
+    linkLocationToContacts: urlManageOrg + '/add/link-location-to-contacts'
   },
   edit: {
     individualLocation: {
@@ -250,9 +266,7 @@ const orgManageLocationsUrls = {
       confirm: urlUnmatchedLocationsNotInEngland + '/confirm-location'
     }
   },
-  link: {
-    linkLocation: urlManageOrg + '/link-locations'
-  }
+  delete: urlManageOrg + '/delete-location'
 }
 
 // Manage location routes
@@ -347,6 +361,10 @@ const orgManageLocationRoutes = [
     component: <XYCoordinatesNotInEnglandPage />
   },
   {
+    path: orgManageLocationsUrls.add.error.shapefileNotInEngland,
+    component: <NotInEnglandShapefilePage />
+  },
+  {
     path: orgManageLocationsUrls.add.error.dropPinNotInEngland,
     component: <DropPinNotInEnglandPage />
   },
@@ -386,6 +404,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
     component: <AddAnotherPredefinedBoundaryPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.contactLinkInfo,
+    component: <ContactLinkInfoPage />
   },
   // unmatched locations: location not found
   {
@@ -526,6 +548,10 @@ const orgManageLocationRoutes = [
     component: <LinkLocationsPage />
   },
   {
+    path: orgManageLocationsUrls.add.linkLocationToContacts,
+    component: <LinkLocationToContactPage />
+  },
+  {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
@@ -533,6 +559,15 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
     component: <PredefinedBoundaryOptionalInfoPage />
+  },
+  // location not in flood area
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.locationNotInFloodArea,
+    component: <LocationNotInFloodAreaPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.selectNearbyFloodAreas,
+    component: <SelectNearbyFloodAreasPage />
   },
   // edit
   {
@@ -610,10 +645,10 @@ const orgManageLocationRoutes = [
       .keywords,
     component: <EditKeywordsPage />
   },
-  // link location
+  // Delete location
   {
-    path: orgManageLocationsUrls.link.linkLocation,
-    component: <LinkLocationPage />
+    path: orgManageLocationsUrls.delete,
+    component: <DeleteLocationPage />
   }
 ]
 

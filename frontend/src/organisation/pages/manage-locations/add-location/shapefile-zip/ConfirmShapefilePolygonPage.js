@@ -1,14 +1,24 @@
 import { React } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import ConfirmLocationLayout from '../../../../layouts/location/add-or-edit-location/confirm-location/ConfirmLocationLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function ConfirmShapefilePolygonPage () {
-  const navigate = useNavigate()
+import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
+import { backendCall } from '../../../../../common/services/BackendService'
 
-  // TODO: Update this to navigate to next page in flow, once it's created
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.dashboard)
-  }
+export default async function ConfirmShapefilePolygonPage () {
+  const navigate = useNavigate()
+  const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
+  const orgId = useSelector((state) => state.session.orgId)
+
+  const dataToSend = { orgId }
+  const { data } = await backendCall(
+    dataToSend,
+    'api/elasticache/list_contacts',
+    navigate
+  )
+
+  const navigateToNextPage = await verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
 
   return (
     <ConfirmLocationLayout

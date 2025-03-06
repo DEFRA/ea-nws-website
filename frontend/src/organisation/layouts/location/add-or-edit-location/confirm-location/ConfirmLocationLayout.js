@@ -1,33 +1,32 @@
-import { centroid } from '@turf/turf'
-import { React, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
-import store from '../../../../../common/redux/store'
+import AlertType from '../../../../../common/enums/AlertType'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
   getLocationAdditional,
   getLocationOther,
   setCurrentLocation,
-  setCurrentLocationCoordinates,
-  setCurrentLocationGeometry,
-  setCurrentLocationName,
   setNotFoundLocations,
   setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout ({
+export default function ConfirmLocationLayout({
   navigateToNextPage,
   navigateToPinDropFlow,
-  flow,
-  layoutType = 'XandY'
+  flow
 }) {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
@@ -59,37 +58,21 @@ export default function ConfirmLocationLayout ({
   const notInEnglandLocations = useSelector(
     (state) => state.session.notInEnglandLocations
   )
+  const currentLocationDataType = useSelector((state) =>
+    getLocationOther(state, 'location_data_type')
+  )
 
-  // Shapefile polygon specific values
-  let shapeGeoData, shapeName, shapeArea, shapeLong, shapeLat
-  if (layoutType === 'shape') {
-    const { geojsonData } = location.state || {}
-    const formattArea = (area) => {
-      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    }
+  const shapeArea = location.state?.shapeArea
+  const [partnerId, setPartnerId] = useState(false)
 
-    shapeGeoData = geojsonData
-    shapeArea = formattArea(
-      Math.round(shapeGeoData.features[0]?.properties?.Shape_Area)
-    )
-    shapeName = shapeGeoData.fileName
-
-    // Calculate coords of centre of polygon to display the map properly
-    const polygonCentre = centroid(shapeGeoData.features[0]?.geometry)
-    shapeLong = polygonCentre.geometry.coordinates[0]
-    shapeLat = polygonCentre.geometry.coordinates[1]
+  async function getPartnerId() {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
   }
 
   useEffect(() => {
-    if (layoutType === 'shape') {
-      dispatch(
-        setCurrentLocationCoordinates({
-          latitude: shapeLat,
-          longitude: shapeLong
-        })
-      )
-    }
-  }, [shapeLong, shapeLat])
+    getPartnerId()
+  }, [])
 
   const checkDuplicateLocation = async () => {
     const dataToSend = {
@@ -112,16 +95,6 @@ export default function ConfirmLocationLayout ({
 
   // Switch case to change the button/link logic depending on the location type
   const handleSubmit = async () => {
-    if (layoutType === 'shape') {
-      dispatch(
-        setCurrentLocationGeometry({
-          geoJson: JSON.stringify(shapeGeoData)
-        })
-      )
-      dispatch(setCurrentLocationName(shapeName))
-    }
-
-    const locationToAdd = store.getState().session.currentLocation
     const duplicateLocation = await checkDuplicateLocation()
 
     // Check for duplicates
@@ -129,7 +102,7 @@ export default function ConfirmLocationLayout ({
       navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
         state: {
           existingLocation: geoSafeToWebLocation(duplicateLocation),
-          newLocation: geoSafeToWebLocation(locationToAdd),
+          newLocation: geoSafeToWebLocation(currentLocation),
           numDuplicates: 1,
           flow
         }
@@ -138,8 +111,17 @@ export default function ConfirmLocationLayout ({
       return
     }
 
+    // Set default alert types
+    const newWebLocation = geoSafeToWebLocation(currentLocation)
+    newWebLocation.additionals.other.alertTypes = [
+      AlertType.SEVERE_FLOOD_WARNING,
+      AlertType.FLOOD_WARNING,
+      AlertType.FLOOD_ALERT
+    ]
+    const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+
     // since we added to currentLocation we need to get that information to pass to the api
-    const dataToSend = { authToken, orgId, location: locationToAdd }
+    const dataToSend = { authToken, orgId, location: newGeosafeLocation }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/create',
@@ -147,6 +129,31 @@ export default function ConfirmLocationLayout ({
     )
 
     if (data) {
+      const registerData = {
+        authToken,
+        locationId: data.id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: [
+            AlertType.SEVERE_FLOOD_WARNING,
+            AlertType.FLOOD_WARNING,
+            AlertType.FLOOD_ALERT
+          ]
+        }
+      }
+
+      await backendCall(
+        registerData,
+        'api/location/register_to_partner',
+        navigate
+      )
+
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
 
@@ -195,7 +202,10 @@ export default function ConfirmLocationLayout ({
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
+    currentLocationDataType === LocationDataType.SHAPE_LINE
+      ? navigate(orgManageLocationsUrls.add.uploadLocationsWithShapefile)
+      : navigate(-1)
   }
 
   return (
@@ -207,12 +217,13 @@ export default function ConfirmLocationLayout ({
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l '>Confirm location</h1>
 
+            <h2 className='govuk-heading-m govuk-!-margin-top-8'>
+              {locationName}
+            </h2>
+            <hr />
+
             {currentAddress && (
               <>
-                <h2 className='govuk-heading-m govuk-!-margin-top-8'>
-                  {locationName}
-                </h2>
-                <hr />
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Address
                 </h3>
@@ -231,7 +242,7 @@ export default function ConfirmLocationLayout ({
             )}
 
             {/* X and Y coordinates layout (default) */}
-            {layoutType === 'XandY' && (
+            {currentLocationDataType === LocationDataType.X_AND_Y_COORDS && (
               <>
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-6 govuk-!-margin-bottom-0'>
                   X and Y Coordinates
@@ -270,13 +281,10 @@ export default function ConfirmLocationLayout ({
             )}
 
             {/* Shapefile layout */}
-            {layoutType === 'shape' && (
+            {(currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
+              currentLocationDataType === LocationDataType.SHAPE_LINE) && (
               <>
-                <h2 className='govuk-heading-m govuk-!-margin-top-6'>
-                  {shapeName}
-                </h2>
-                <hr />
-                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Polygon
                 </h3>
                 <p>{shapeArea} square metres</p>
@@ -286,10 +294,10 @@ export default function ConfirmLocationLayout ({
                     text='Add and continue'
                     className='govuk-button'
                     onClick={handleSubmit}
-                  />{' '}
+                  />
                   <Button
                     text='Cancel upload'
-                    className='govuk-button govuk-button--warning'
+                    className='govuk-button govuk-button--warning govuk-!-margin-left-3'
                     onClick={navigateBack}
                   />
                 </div>
@@ -300,14 +308,9 @@ export default function ConfirmLocationLayout ({
             className='govuk-grid-column-one-half'
             style={{ marginTop: '95px' }}
           >
-            <Map
-              showMapControls={false}
-              zoomLevel={14}
-              shapefileData={layoutType === 'shape' ? shapeGeoData : null}
-              type={layoutType === 'shape' ? 'shape' : null}
-            />
+            <Map showMapControls={false} zoomLevel={14} />
             <div className='govuk-!-column-one-third'>
-              <FloodWarningKey showShapefile={layoutType === 'shape'} />
+              <FloodWarningKey />
             </div>
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
               This is not a live flood map

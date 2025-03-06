@@ -117,14 +117,12 @@ const getIntersections = (areas, bufferedShape) => {
   if (!bufferedShapeValid) return
   const bufferedShapeGeometry = bufferedShape.geometry
   const filteredTargetData = areas.features.filter((area) => {
-    if (turf.booleanValid(area.geometry)) {
-      try {
-        return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
-      } catch (e) {
-        console.error('Error during intersection', e)
-        return false
-      }
-    } else return false
+    try {
+      return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
+    } catch (e) {
+      console.error('Error during intersection', e)
+      return false
+    }
   })
   return filteredTargetData
 }
@@ -268,7 +266,7 @@ function calculateBoundingBox(centerLat, centerLng, distanceKm) {
 export const getLocationsNearbyRiversAndSeaFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.5
+  bboxKM = 0.2
 ) => {
   const { data: riversAndSeaFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),
@@ -282,7 +280,7 @@ export const getLocationsNearbyRiversAndSeaFloodAreas = async (
 export const getLocationsNearbyGroundWaterFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.5
+  bboxKM = 0.2
 ) => {
   const { data: groundwaterFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),

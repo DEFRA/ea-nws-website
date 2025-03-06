@@ -129,6 +129,7 @@ export default function ViewLocationsDashboardPage() {
           })
         )
       )
+      console.log('3')
       const groundWaterRisks = await Promise.all(
         locationsUpdate.map((location) =>
           getRiskCategory({
@@ -152,7 +153,10 @@ export default function ViewLocationsDashboardPage() {
         .then((response) => response.text())
         .then((data) => csvToJson(data))
 
+      let counter = 0
       for (const location of locationsUpdate) {
+        console.log(counter)
+        counter++
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -169,7 +173,7 @@ export default function ViewLocationsDashboardPage() {
 
         location.message_count = 0
         const floodAreas = await getWithinAreas(location)
-        if (floodAreas) {
+        if (floodAreas && floodAreas.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(
               area.properties.TA_CODE,
@@ -182,8 +186,6 @@ export default function ViewLocationsDashboardPage() {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
-
-    console.log('getlocations called')
     getPartnerId()
     getLocations()
   }, [])
@@ -194,10 +196,8 @@ export default function ViewLocationsDashboardPage() {
     let riskCategory = null
 
     if (
-      (location.additionals.other?.location_data_type !==
-        LocationDataType.ADDRESS &&
-        location.additionals.other?.location_data_type !==
-          LocationDataType.X_AND_Y_COORDS) ||
+      location.additionals.other?.location_data_type !==
+        LocationDataType.X_AND_Y_COORDS ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
@@ -372,7 +372,11 @@ export default function ViewLocationsDashboardPage() {
       )
     } else {
       const geoJson = location.geometry.geoJson
-      result = await getFloodAreasFromShape(geoJson)
+      try {
+        result = await getFloodAreasFromShape(geoJson)
+      } catch {
+        result = null
+      }
     }
     return result
   }
@@ -387,12 +391,14 @@ export default function ViewLocationsDashboardPage() {
       let isInWarningArea = false
       let isInAlertArea = false
 
-      for (const area of withinAreas) {
-        const type = categoryToMessageType(area.properties.category)
-        if (type.includes('Flood Warning')) {
-          isInWarningArea = true
-        } else {
-          isInAlertArea = true
+      if (withinAreas && withinAreas.length > 0) {
+        for (const area of withinAreas) {
+          const type = categoryToMessageType(area.properties.category)
+          if (type.includes('Flood Warning')) {
+            isInWarningArea = true
+          } else {
+            isInAlertArea = true
+          }
         }
       }
 

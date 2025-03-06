@@ -440,10 +440,9 @@ export default function LiveMap({
     const map = useMap()
 
     useEffect(() => {
-      console.log('1')
       // Run on initial load when the map is ready
       checkVisibleFeatures()
-    }, [map])
+    }, [])
 
     useMapEvents({
       moveend: () => checkVisibleFeatures(),
@@ -475,11 +474,14 @@ export default function LiveMap({
         // handle all other geometry types
         return turf.booleanIntersects(feature, viewportGeoJSON)
       })
+
+      // Only update state if the result is different
       setVisibleFeatures(visibleFeatures)
     }
 
     return null
   }
+
   const keyTypes = {
     noKey: 'noKey',
     boundaryOrShape: 'boundaryOrShape',
@@ -577,7 +579,7 @@ export default function LiveMap({
               filter: isDisabled ? 'grayscale(100%)' : 'none'
             }}
           >
-            {/* <FeatureTracker /> */}
+            <FeatureTracker />
             {isDisabled && (
               <div className='live-map-disabled'>
                 <Link

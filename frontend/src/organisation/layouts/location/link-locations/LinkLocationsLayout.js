@@ -32,7 +32,7 @@ export default function LinkLocationsLayout ({
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
-  
+
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
@@ -284,16 +284,16 @@ export default function LinkLocationsLayout ({
               channelMobileAppEnabled: true,
               partnerCanView: true,
               partnerCanEdit: true,
-              alertTypes: alertTypes
+              alertTypes
             }
           }
-    
+
           await backendCall(
             registerData,
             'api/location/register_to_partner',
             navigate
           )
-    
+
           childrenIDs.push({
             id: data.id,
             TA_Name: TargetAreaToAdd.properties.TA_Name,
@@ -319,13 +319,13 @@ export default function LinkLocationsLayout ({
     )
 
     if (data) {
-      //update alert types of orginal location to include any new ones from linked locations
+      // update alert types of orginal location to include any new ones from linked locations
       const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
       const alertTypes = []
       if (childrenAlertTypes.includes(allAlertTypes[0]) || additionalData.alertTypes.includes(allAlertTypes[0])) alertTypes.push(allAlertTypes[0])
       if (childrenAlertTypes.includes(allAlertTypes[1]) || additionalData.alertTypes.includes(allAlertTypes[1])) alertTypes.push(allAlertTypes[1])
       if (childrenAlertTypes.includes(allAlertTypes[2]) || additionalData.alertTypes.includes(allAlertTypes[2])) alertTypes.push(allAlertTypes[2])
-      
+
       const registerData = {
         authToken,
         locationId: currentLocation.id,
@@ -337,7 +337,7 @@ export default function LinkLocationsLayout ({
           channelMobileAppEnabled: true,
           partnerCanView: true,
           partnerCanEdit: true,
-          alertTypes: alertTypes
+          alertTypes
         }
       }
 

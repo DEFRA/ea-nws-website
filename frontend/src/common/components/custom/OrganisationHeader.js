@@ -6,10 +6,9 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { orgAccountUrls } from '../../../organisation/routes/account/AccountRoutes'
 import { urlManageKeywordsOrg } from '../../../organisation/routes/manage-keywords/ManageKeywordsRoutes'
-import { useLocation } from 'react-router-dom'
 export default function OrganisationHeader () {
   const [activeHeader, setActiveHeader] = useState(null)
   const navigate = useNavigate()
@@ -17,7 +16,7 @@ export default function OrganisationHeader () {
   const lastname = useSelector((state) => state?.session?.profile?.lastname) || null
   const formattedName = firstname && lastname ? firstname.charAt(0) + '.' + lastname : ''
   const orgName = useSelector((state) => state?.session?.organization?.name) || null
-  const [menuOpen,setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
   const location = useLocation()
@@ -89,28 +88,26 @@ export default function OrganisationHeader () {
               </a>
             </div>
 
-            
             {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
-                  
-                    <button onClick={() => toggleMenu()} className='header-navigation-menu'>
-                      Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-                    </button>
-            }
+
+              <button onClick={() => toggleMenu()} className='header-navigation-menu'>
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>}
             <ul>
-            {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
+              {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
               pages.map((page, index) => (
                 <li key={index} className={` ${!menuOpen && 'closed'}`}>
                   <Link
                     to={page.link}
                     className=''
-                  
+
                   >
                     {page.title}
                   </Link>
                 </li>
-            ))}
+              ))}
             </ul>
-            
+
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
                 <li
@@ -118,7 +115,7 @@ export default function OrganisationHeader () {
                     activeHeader === 'orgDetails' && 'active'
                   }`}
                   onClick={() => handleActiveHeader('orgDetails')}
-                > 
+                >
                   <FontAwesomeIcon
                     icon={
                       activeHeader === 'orgDetails' ? faAngleUp : faAngleDown
@@ -145,7 +142,6 @@ export default function OrganisationHeader () {
                       </clipPath>
                     </defs>
                   </svg>
-                  
 
                   <span className='govuk-!-font-weight-bold'>{orgName}</span>
                 </li>

@@ -55,7 +55,6 @@ export default function DeleteLayout () {
     }
   }
 
-
   const handleDelete = async () => {
     const idsToDelete = []
     if (isLocation) {

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Button from '../../components/gov-uk/Button'
 
-export default function SignOutLayout({ text }) {
+export default function SignOutLayout ({ text }) {
   const navigate = useNavigate()
   const isOrganisation =
     useSelector((state) => state?.session?.organization) || null

@@ -173,7 +173,6 @@ export default function ViewLocationsDashboardPage () {
           }
         }
       }
-    
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -378,7 +377,7 @@ export default function ViewLocationsDashboardPage () {
 
     for (const location of selectedLocations) {
       const withinAreas = await getWithinAreas(location)
-      
+
       let isInWarningArea = false
       let isInAlertArea = false
 

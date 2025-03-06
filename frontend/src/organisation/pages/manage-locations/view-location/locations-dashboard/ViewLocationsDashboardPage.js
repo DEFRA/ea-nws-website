@@ -129,7 +129,7 @@ export default function ViewLocationsDashboardPage() {
           })
         )
       )
-      console.log('3')
+
       const groundWaterRisks = await Promise.all(
         locationsUpdate.map((location) =>
           getRiskCategory({
@@ -153,10 +153,7 @@ export default function ViewLocationsDashboardPage() {
         .then((response) => response.text())
         .then((data) => csvToJson(data))
 
-      let counter = 0
       for (const location of locationsUpdate) {
-        console.log(counter)
-        counter++
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -189,8 +186,6 @@ export default function ViewLocationsDashboardPage() {
     getPartnerId()
     getLocations()
   }, [])
-
-  console.log(locations)
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
     let riskCategory = null

@@ -25,6 +25,7 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import { getAdditional } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
 import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
@@ -85,7 +86,6 @@ export default function LiveMap({
   }, [])
 
   const loadMap = async () => {
-    console.log('2')
     // reset data before loading
     setSeverePoints([])
     setSevereFloodAreas([])
@@ -166,7 +166,7 @@ export default function LiveMap({
 
       // loop through live alerts - loop through all locations to find affected locations
       for (const liveAlert of liveAlertsData?.alerts) {
-        const TA_CODE = getExtraInfo(
+        const TA_CODE = getAdditional(
           liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
           'TA_CODE'
         )
@@ -294,17 +294,6 @@ export default function LiveMap({
     const year = date.getFullYear()
 
     return `${time} on ${day} ${month} ${year}`
-  }
-
-  const getExtraInfo = (extraInfo, id) => {
-    if (extraInfo) {
-      for (let i = 0; i < extraInfo.length; i++) {
-        if (extraInfo[i].id === id) {
-          return extraInfo[i].value?.s
-        }
-      }
-    }
-    return ''
   }
 
   const ZoomTracker = () => {

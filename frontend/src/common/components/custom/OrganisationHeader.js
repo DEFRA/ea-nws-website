@@ -50,6 +50,14 @@ export default function OrganisationHeader () {
     navigate(link)
   }
 
+  const pages = [
+    { title: 'Organisation details', link: '/' },
+    { title: 'Manage administrators', link: '/' },
+    { title: 'Manage keywords', link: '/' },
+    { title: 'Administrator details', link: '/' },
+    { title: 'Sign out', link: '/' }
+  ]
+
   return (
     <>
       <header className='cross-service-header'>
@@ -87,7 +95,22 @@ export default function OrganisationHeader () {
                     <button onClick={() => toggleMenu()} className='header-navigation-menu'>
                       Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
                     </button>
-                  }
+            }
+            <ul>
+            {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
+              pages.map((page, index) => (
+                <li key={index} className={` ${!menuOpen && 'closed'}`}>
+                  <Link
+                    to={page.link}
+                    className=''
+                  
+                  >
+                    {page.title}
+                  </Link>
+                </li>
+            ))}
+            </ul>
+            
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
                 <li

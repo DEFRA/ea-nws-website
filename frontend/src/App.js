@@ -6,6 +6,7 @@ import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
+import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { authenticatedRoutes, routes } from './routes'
 
 function App () {
@@ -118,13 +119,11 @@ function App () {
               key={route.path}
               path={route.path}
               element={
-                hasAuthCookie || isSignOutRoute()
-                  ? (
-                      route.component
-                    )
-                  : (
-                    <Navigate to={SignBackInLink()} />
-                    )
+                hasAuthCookie || isSignOutRoute() ? (
+                  route.component
+                ) : (
+                  <Navigate to={SignBackInLink()} />
+                )
               }
             />
           ))}
@@ -135,16 +134,18 @@ function App () {
               element={
                 (route.path === '/sign-in' ||
                   route.path === '/signup/register-location/search') &&
-                hasAuthCookie
-                  ? (
-                    <Navigate
-                      to={signinType === 'org' ? 'organisation/home' : '/home'}
-                      replace
-                    />
-                    )
-                  : (
-                      route.component
-                    )
+                hasAuthCookie ? (
+                  <Navigate
+                    to={
+                      signinType === 'org'
+                        ? orgManageLocationsUrls.monitoring.view
+                        : '/home'
+                    }
+                    replace
+                  />
+                ) : (
+                  route.component
+                )
               }
             />
           ))}

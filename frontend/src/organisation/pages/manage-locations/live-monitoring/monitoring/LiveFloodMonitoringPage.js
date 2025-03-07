@@ -34,7 +34,8 @@ export default function LiveFLoodMonitoringPage () {
     setFloodData(data)
   }
 
-  const applyFilter = () => {
+  const applyFilter = (event) => {
+    event.preventDefault()
     setFilters({
       severeAreas: showSevereLocations,
       warningAreas: showWarningLocations,
@@ -125,8 +126,8 @@ export default function LiveFLoodMonitoringPage () {
                         <Button
                           text='Apply filter'
                           className='govuk-button govuk-button--primary govuk-!-margin-top-3'
-                          onClick={() => {
-                            applyFilter()
+                          onClick={(event) => {
+                            applyFilter(event)
                           }}
                         />
                       </>

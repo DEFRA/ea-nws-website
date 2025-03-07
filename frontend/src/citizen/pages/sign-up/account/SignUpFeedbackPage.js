@@ -35,7 +35,8 @@ export default function FeedbackPage () {
     setTextError('')
   }, [feedbackText])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     let valid = true
 
     if (!feedbackPreference) {

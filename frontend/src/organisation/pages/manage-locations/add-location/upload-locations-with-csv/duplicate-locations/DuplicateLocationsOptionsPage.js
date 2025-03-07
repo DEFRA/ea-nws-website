@@ -103,7 +103,8 @@ export default function DuplicateLocationsOptionsPage () {
     })
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (!option) {
       setError('Select what you want to do with the duplicate locations')
     } else {
@@ -232,7 +233,7 @@ export default function DuplicateLocationsOptionsPage () {
             <Button
               text='Continue'
               className='govuk-button'
-              onClick={() => handleSubmit()}
+              onClick={(event) => handleSubmit(event)}
             />
           </div>
         </div>

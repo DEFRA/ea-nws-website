@@ -29,7 +29,8 @@ export default function AddAccountNameLayout ({
   )
   const location = useLocation()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     const validationError = fullNameValidation(fullName)
     setError(validationError)
 
@@ -91,6 +92,7 @@ export default function AddAccountNameLayout ({
                 <Link
                   onClick={navigateBack}
                   className='govuk-body govuk-link inline-link'
+                  style={{ cursor: 'pointer' }}
                 >
                   Cancel
                 </Link>

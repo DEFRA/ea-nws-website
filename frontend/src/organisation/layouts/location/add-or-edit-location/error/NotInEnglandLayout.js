@@ -12,7 +12,8 @@ export default function NotInEnglandLayout ({
 }) {
   const navigate = useNavigate()
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     navigateToNextPage()
   }
 

@@ -67,7 +67,8 @@ export default function SearchFilter ({
     })
   }
 
-  const filterContacts = () => {
+  const filterContacts = (event) => {
+    event.preventDefault()
     let filteredContacts = contacts
 
     // Apply contact name filter
@@ -275,7 +276,7 @@ export default function SearchFilter ({
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'
-            onClick={() => filterContacts()}
+            onClick={(event) => filterContacts(event)}
           />
         </div>
 

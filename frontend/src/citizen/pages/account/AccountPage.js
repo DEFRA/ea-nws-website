@@ -10,7 +10,8 @@ export default function AccountPage () {
   const location = useLocation()
 
   const navigate = useNavigate()
-  const handleButton = () => {
+  const handleButton = (event) => {
+    event.preventDefault()
     navigate('/account/delete')
   }
 
@@ -64,7 +65,7 @@ export default function AccountPage () {
                     </th>
                     <td className='govuk-table__cell'>{name}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
-                      <Link to='/account/change-name' className='govuk-link'>
+                      <Link to='/account/change-name' className='govuk-link' style={{ cursor: 'pointer' }}>
                         Change
                       </Link>
                     </td>
@@ -75,7 +76,7 @@ export default function AccountPage () {
                     </th>
                     <td className='govuk-table__cell'>{email}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
-                      <Link to='/account/change-email' className='govuk-link'>
+                      <Link to='/account/change-email' className='govuk-link' style={{ cursor: 'pointer' }}>
                         Change
                       </Link>
                     </td>
@@ -89,6 +90,7 @@ export default function AccountPage () {
                       <Link
                         to='/account/change-business-details'
                         className='govuk-link'
+                        style={{ cursor: 'pointer' }}
                       >
                         {businessName === '' ? 'Add' : 'Change'}
                       </Link>
@@ -103,6 +105,7 @@ export default function AccountPage () {
                       <Link
                         to='/account/change-business-details'
                         className='govuk-link'
+                        style={{ cursor: 'pointer' }}
                       >
                         {jobTitle === '' ? 'Add' : 'Change'}
                       </Link>

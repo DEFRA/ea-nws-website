@@ -8,8 +8,8 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import { setOrgCurrentContact, clearOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import { clearOrgCurrentContact, setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
@@ -252,7 +252,8 @@ export default function ViewContactsDashboardPage () {
     }
   }
 
-  const onPrint = () => {
+  const onPrint = (event) => {
+    event.preventDefault()
     setContactsPerPage(null)
   }
 
@@ -283,7 +284,8 @@ export default function ViewContactsDashboardPage () {
     setResetPaging(!resetPaging)
   }
 
-  const onOpenCloseFilter = () => {
+  const onOpenCloseFilter = (event) => {
+    event.preventDefault()
     setHoldPage(currentPage)
     setIsFilterVisible(!isFilterVisible)
   }
@@ -369,7 +371,8 @@ export default function ViewContactsDashboardPage () {
           <Button
             text='Add contacts'
             className='govuk-button govuk-!-margin-top-6'
-            onClick={() => {
+            onClick={(event) => {
+              event.preventDefault()
               dispatch(clearOrgCurrentContact())
               navigate(urlManageContactsAdd)
             }}
@@ -414,7 +417,7 @@ export default function ViewContactsDashboardPage () {
                       <Button
                         text='Open filter'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={() => onOpenCloseFilter()}
+                        onClick={(event) => onOpenCloseFilter(event)}
                       />
                       {(!location.state ||
                       !location.state.linkLocations ||
@@ -430,7 +433,7 @@ export default function ViewContactsDashboardPage () {
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
-                            onClick={() => onPrint()}
+                            onClick={(event) => onPrint(event)}
                           />
                         </>
                       )}
@@ -487,7 +490,7 @@ export default function ViewContactsDashboardPage () {
                           <Button
                             text='Close Filter'
                             className='govuk-button govuk-button--secondary'
-                            onClick={() => onOpenCloseFilter()}
+                            onClick={(event) => onOpenCloseFilter(event)}
                           />
                         &nbsp; &nbsp;
                           {(!location.state ||
@@ -503,7 +506,7 @@ export default function ViewContactsDashboardPage () {
                               <Button
                                 text='Print'
                                 className='govuk-button govuk-button--secondary inline-block'
-                                onClick={() => onPrint()}
+                                onClick={(event) => onPrint(event)}
                               />
                             </>
                           )}

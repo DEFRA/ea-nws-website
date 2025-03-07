@@ -18,7 +18,7 @@ export default function SignOutLayout({ text }) {
             <Button
               text='Sign in'
               className='govuk-button'
-              onClick={() => navigate('/sign-in')}
+              onClick={(event) => {event.preventDefault(); navigate('/sign-in')}}
             />
 
             {/* Flood text only for citizen route */}

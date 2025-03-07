@@ -18,7 +18,8 @@ export default function LocationSearchOptionsLayout ({
     setError('')
   }, [searchOption])
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (!searchOption) {
       if (Object.keys(searchOptions).length > 2) {
         setError('Select how you want to find this location')

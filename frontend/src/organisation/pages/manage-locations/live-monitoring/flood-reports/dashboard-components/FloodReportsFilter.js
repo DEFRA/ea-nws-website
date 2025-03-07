@@ -149,23 +149,10 @@ export default function FloodReportsFilter({
           icon={locationNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
-        <label
-          className='govuk-label'
-          style={{
-            color: '#1d70b8'
-          }}
-        >
-          Location name
-        </label>
+        <label className='govuk-label filter-label'>Location name</label>
       </div>
       {(locationNameVisible || locationNameFilter.length > 0) && (
-        <div
-          className='govuk-form-group'
-          style={{
-            paddingLeft: 20,
-            paddingRight: 20
-          }}
-        >
+        <div className='govuk-form-group warnings-name-filter'>
           <div className='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
             <input
@@ -203,26 +190,10 @@ export default function FloodReportsFilter({
         >
           <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
           &nbsp;
-          <label
-            className='govuk-label'
-            style={{
-              color: '#1d70b8'
-            }}
-          >
-            {filterTitle}
-          </label>
+          <label className='govuk-label filter-label'>{filterTitle}</label>
         </div>
         {visible && (
-          <div
-            className='govuk-checkboxes govuk-checkboxes--small'
-            style={{
-              paddingLeft: 20,
-              display: 'flex',
-              flexDirection: 'column',
-              overflowY: 'scroll',
-              maxHeight: 160
-            }}
-          >
+          <div className='govuk-checkboxes govuk-checkboxes--small warnings-select-filter'>
             {filterType.map((option) => (
               <CheckBox
                 key={option}
@@ -249,42 +220,18 @@ export default function FloodReportsFilter({
 
     return (
       <>
-        <div
-          className='selected-filter'
-          style={{
-            backgroundColor: '#f3f2f1',
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 1,
-            paddingBottom: 11
-          }}
-        >
+        <div className='selected-filter warnings-selected-filter-panel'>
           <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
             {filterName}
           </h3>
           {filterArray.map((filter, index) => (
-            <div
-              key={index}
-              className='filter'
-              style={{
-                borderStyle: 'solid',
-                borderWidth: 'thin',
-                backgroundColor: '#ffffff',
-                display: 'flex',
-                alignItems: 'center',
-                width: 'fit-content',
-                height: 34,
-                paddingLeft: 10,
-                paddingRight: 10,
-                margin: '0 8px 8px 0'
-              }}
-            >
-              <label className='govuk-label' style={{ fontSize: 18 }}>
+            <div key={index} className='filter warnings-selected-filter'>
+              <label className='govuk-label warnings-selected-filter-label'>
                 {filter}
               </label>
               <FontAwesomeIcon
                 icon={faXmark}
-                style={{ width: 16, height: 16, paddingBottom: '5px' }}
+                className='warnings-selected-filter-icon'
                 onClick={() => {
                   setFilterArray(filterArray.filter((item) => item !== filter))
                 }}
@@ -306,22 +253,11 @@ export default function FloodReportsFilter({
         {/* Selected filters */}
         {areFiltersSelected() && (
           <div className='contacts-filter-selected'>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: '#f3f2f1',
-                paddingLeft: 20,
-                paddingRight: 20
-              }}
-            >
-              <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
-                Selected filters
-              </h2>
+            <div className='warnings-selected-filters-section'>
+              <h2 className='govuk-heading-s'>Selected filters</h2>
               <Link
                 onClick={clearFilters}
                 className='govuk-body govuk-link inline-link'
-                style={{ marginLeft: 'auto', marginBottom: '0' }}
               >
                 Clear filters
               </Link>
@@ -344,13 +280,7 @@ export default function FloodReportsFilter({
           </div>
         )}
 
-        <div
-          className=' govuk-!-margin-top-6'
-          style={{
-            paddingLeft: 20,
-            paddingRight: 20
-          }}
-        >
+        <div className=' govuk-!-margin-top-6 warnings-apply-filters'>
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'

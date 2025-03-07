@@ -151,10 +151,7 @@ export default function FloodReportsTable({
 
   return (
     <>
-      <p
-        className='govuk-!-margin-bottom-3'
-        style={{ display: 'flex', color: '#505a5f' }}
-      >
+      <p className='govuk-!-margin-bottom-3 warnings-reports-paragraph'>
         {filteredLocationsAffected.length !== locationsAffected.length &&
           'Showing ' + filteredLocationsAffected.length + ' of '}
         {locationsAffected.length}{' '}
@@ -291,29 +288,13 @@ export default function FloodReportsTable({
                 <td className='govuk-table__cell'>
                   <div className='reports-table-icon-position'>
                     {location.floodData.types.map((type, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.5em',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          marginBottom: '0.5em'
-                        }}
-                      >
+                      <div key={index} className='warnings-table-item'>
                         <img
                           src={warningTypeDisplay[type].icon}
                           alt='Flood warning icon'
-                          style={{ width: '2.5em', height: '2.5em' }}
+                          className='warnings-table-icon'
                         />
-                        <span
-                          style={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis'
-                          }}
-                        >
+                        <span className='warnings-table-text'>
                           {warningTypeDisplay[type].text}
                         </span>
                       </div>

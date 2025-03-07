@@ -295,13 +295,19 @@ export default function DashboardHeader ({
                   <Button
                     text='Add locations'
                     className='govuk-button govuk-button--secondary'
-                    onClick={() => navigate(urlManageOrgAddLocations)}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      navigate(urlManageOrgAddLocations)
+                    }}
                   />
                 &nbsp; &nbsp;
                   <Button
                     text='Manage keywords'
                     className='govuk-button govuk-button--secondary'
-                    onClick={() => navigate(urlManageKeywordsOrg)}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      navigate(urlManageKeywordsOrg)
+                    }}
                   />
                 </div>
               </div>

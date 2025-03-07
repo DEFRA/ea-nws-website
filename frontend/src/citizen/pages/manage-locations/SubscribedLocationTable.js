@@ -42,14 +42,14 @@ export default function SubscribedLocationTable ({ setError }) {
     <div>
       <p>You must keep at least one location on your account.</p>
       <p>
-        <Link to='/manage-locations/add/search' className='govuk-link'>
+        <Link to='/manage-locations/add/search' className='govuk-link' style={{ cursor: 'pointer' }}>
           Add a new location
         </Link>
         &nbsp;before removing any you do not need.
       </p>
       <p>
         Or you could&nbsp;
-        <Link to='/account/delete' className='govuk-link'>
+        <Link to='/account/delete' className='govuk-link' style={{ cursor: 'pointer' }}>
           delete your account
         </Link>
         &nbsp;instead.
@@ -103,7 +103,8 @@ export default function SubscribedLocationTable ({ setError }) {
     return areas.filter((area) => locationName === area.properties.TA_Name)
   }
 
-  const onClickAddLocation = async () => {
+  const onClickAddLocation = async (event) => {
+    event.preventDefault()
     if (locations.length < maxLocations) {
       navigate('/manage-locations/add/search')
     } else {
@@ -121,6 +122,7 @@ export default function SubscribedLocationTable ({ setError }) {
               viewSelectedLocation(location)
             }}
             className='govuk-link'
+            style={{ cursor: 'pointer' }}
           >
             View
           </Link>
@@ -139,6 +141,7 @@ export default function SubscribedLocationTable ({ setError }) {
               partnerId
             }}
             className='govuk-link'
+            style={{ cursor: 'pointer' }}
           >
             Remove
           </Link>
@@ -189,7 +192,7 @@ export default function SubscribedLocationTable ({ setError }) {
         <Button
           text='Add new location'
           className='govuk-button govuk-button--secondary'
-          onClick={() => onClickAddLocation()}
+          onClick={onClickAddLocation}
         />
         {locations.length === 1 && (
           <Details

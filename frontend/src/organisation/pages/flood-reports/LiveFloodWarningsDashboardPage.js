@@ -183,7 +183,8 @@ export default function LiveFloodWarningsDashboardPage () {
     setCurrentPage(1)
   }, [filteredWarnings])
 
-  const openCloseFilter = () => {
+  const openCloseFilter = (event) => {
+    event.preventDefault()
     setHoldPage(currentPage)
     setIsFilterVisible(!isFilterVisible)
   }
@@ -198,7 +199,8 @@ export default function LiveFloodWarningsDashboardPage () {
   const [selectedBusCriticalityFilters, setSelectedBusCriticalityFilters] =
     useState([])
 
-  const onPrint = () => {
+  const onPrint = (event) => {
+    event.preventDefault()
     setWarningsPerPage(null)
   }
 
@@ -207,13 +209,13 @@ export default function LiveFloodWarningsDashboardPage () {
       <Button
         text={isFilterVisible ? 'Close filter' : 'Open filter'}
         className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => openCloseFilter()}
+        onClick={(event) => openCloseFilter(event)}
       />
       &nbsp; &nbsp;
       <Button
         text='Print'
         className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => onPrint()}
+        onClick={(event) => onPrint(event)}
       />
       <FloodReportsTable
         warnings={warnings}

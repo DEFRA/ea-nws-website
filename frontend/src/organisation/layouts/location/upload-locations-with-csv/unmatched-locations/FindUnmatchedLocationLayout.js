@@ -61,7 +61,8 @@ export default function FindUnmatchedLocationLayout ({
     { value: 'map', label: 'Drop a pin on a map' }
   ]
 
-  const handleContinue = async () => {
+  const handleContinue = async (event) => {
+    event.preventDefault()
     if (!findLocationOption) {
       setError('Select how do you want to find this location')
     } else if (findLocationOption === findLocationOptions[0].value) {

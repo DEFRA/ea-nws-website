@@ -14,7 +14,8 @@ export default function SectorLayout ({
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (emergencySector === null) {
       setError(
         'Select whether your organisation is involved in responding to public emergencies or incidents'

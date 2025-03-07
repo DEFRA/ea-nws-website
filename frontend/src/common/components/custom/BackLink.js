@@ -6,6 +6,7 @@ export default function BackLink ({ onClick, to }) {
       onClick={onClick}
       to={to}
       className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'
+      style={{ cursor: 'pointer' }}
     >
       Back
     </Link>

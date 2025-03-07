@@ -196,8 +196,8 @@ export default function UploadFileLayout ({
     return true
   }
 
-  const handleUpload = async (e) => {
-    e.preventDefault()
+  const handleUpload = async (event) => {
+    event.preventDefault()
     setErrorFileSize(null)
     setErrorFileType(null)
     setErrorShapefile([])

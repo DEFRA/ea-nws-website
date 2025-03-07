@@ -36,7 +36,10 @@ export default function ContactHeader ({ contactName, currentPage }) {
           <Button
             text='Delete contact'
             className='govuk-button govuk-button--secondary'
-            onClick={() => navigate(orgManageContactsUrls.delete)}
+            onClick={(event) => {
+              event.preventDefault()
+              navigate(orgManageContactsUrls.delete)
+            }}
           />
         </div>
       </div>

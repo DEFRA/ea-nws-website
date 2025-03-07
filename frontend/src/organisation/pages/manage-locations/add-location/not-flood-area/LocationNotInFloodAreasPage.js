@@ -117,11 +117,14 @@ export default function LocationNotInFloodAreaPage () {
             <Button
               className='govuk-button'
               text='Link to nearby flood areas'
-              onClick={() =>
-                navigate(
-                  orgManageLocationsUrls.add.notInFloodArea
-                    .selectNearbyFloodAreas
-                )}
+              onClick={(event) =>
+                {
+                  event.preventDefault()
+                  navigate(
+                    orgManageLocationsUrls.add.notInFloodArea
+                      .selectNearbyFloodAreas
+                  )
+                }}
             />
             &nbsp; &nbsp;
             <Link

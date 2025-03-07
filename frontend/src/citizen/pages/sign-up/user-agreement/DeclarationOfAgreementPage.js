@@ -20,7 +20,8 @@ export default function DeclarationOfAgreementPage () {
   const profile = session.profile
   const navigate = useNavigate()
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {

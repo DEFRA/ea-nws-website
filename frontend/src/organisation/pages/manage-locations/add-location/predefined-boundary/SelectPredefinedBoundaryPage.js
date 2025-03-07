@@ -97,7 +97,8 @@ export default function SelectPredefinedBoundaryPage () {
     dispatch(setSelectedBoundary(boundarySelected))
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (!selectedBoundaryType) {
       setBoundaryTypeError('Select a boundary type')
     }
@@ -231,7 +232,7 @@ export default function SelectPredefinedBoundaryPage () {
                   <Button
                     className='govuk-button govuk-!-margin-top-4'
                     text='Add predefined boundary'
-                    onClick={() => handleSubmit()}
+                    onClick={(event) => handleSubmit(event)}
                   />
                 </div>
                 <div className='govuk-grid-column-two-thirds'>

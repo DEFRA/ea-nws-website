@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import AlertType from '../../../../../../common/enums/AlertType'
 import store from '../../../../../../common/redux/store'
 import {
   getLocationAdditional,
@@ -23,7 +24,6 @@ import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
-import AlertType from '../../../../../../common/enums/AlertType'
 
 export default function DropPinOnMapLayout ({
   navigateToNextPage,
@@ -114,7 +114,8 @@ export default function DropPinOnMapLayout ({
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (!pinCoords) {
       setError('Click on the map to drop a pin')
     } else {

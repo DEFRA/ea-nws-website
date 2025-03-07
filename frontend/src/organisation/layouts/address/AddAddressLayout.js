@@ -24,7 +24,8 @@ export default function AddAddressLayout ({
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const validationError = postCodeValidation(postCode)
 
     if (!validationError) {

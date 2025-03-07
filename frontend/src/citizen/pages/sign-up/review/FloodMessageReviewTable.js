@@ -60,6 +60,7 @@ export default function FloodMessageReviewTable () {
                     <Link
                       to='/signup/review/change-flood-alert'
                       className='govuk-link'
+                      style={{ cursor: 'pointer' }}
                     >
                       Change
                     </Link>

@@ -178,11 +178,14 @@ export default function LocationAddShapefileInfoPage () {
               <Button
                 text='Continue'
                 className='govuk-button'
-                onClick={() => {
-                  navigate(
-                    orgManageLocationsUrls.add.uploadLocationsWithShapefile
-                  )
-                }}
+                onClick={(event) => 
+                  {
+                    event.preventDefault()
+                    navigate(
+                      orgManageLocationsUrls.add.uploadLocationsWithShapefile
+                    )
+                  }
+                }
               />
             </div>
           </div>

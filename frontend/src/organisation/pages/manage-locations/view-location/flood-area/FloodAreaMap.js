@@ -15,10 +15,12 @@ import {
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import iconUrl from '../../../../../common/assets/images/location_pin.svg'
+import iconClickedUrl from '../../../../../common/assets/images/location_pin_clicked.svg'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
-import { setCurrentTA } from '../../../../../common/redux/userSlice'
+import { setCurrentLocation, setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
+import { webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { createShapefilePattern } from '../../../../components/custom/FloodAreaPatterns'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodAreaMapKey from './FloodAreaMapKey'
@@ -33,6 +35,10 @@ export default function FloodAreaMap ({
   const dispatch = useDispatch()
   const [locationInformationActive, setLocationInformationActive] = useState(false)
   const [clickedLocation, setClickedLocation] = useState(null)
+  const [showLocationsWithinFloodAreas, setShowLocationsWithinFloodAreas] =
+    useState(true)
+  const [showLocationsOutsideFloodAreas, setShowLocationsOutsideFloodAreas] =
+    useState(true)
   const initialPosition = [Number(targetArea.properties.latitude.replace(',', '.')), Number(targetArea.properties.longitude.replace(',', '.'))]
   const initialZoom = 14
 
@@ -45,6 +51,18 @@ export default function FloodAreaMap ({
       'Flood Alert Groundwater': 'alert'
     }
     return typeMap[type] || []
+  }
+
+  // Display locations with alerts
+  const displayLocationsWithAlerts = (location) => {
+    const { latitude, longitude } = location.coordinates
+    const isValidLocation = latitude && longitude
+    const isInFloodArea =
+      showLocationsWithinFloodAreas && location?.within === true
+    const isOutsideFloodArea =
+      showLocationsOutsideFloodAreas && location?.within === false
+
+    return (isInFloodArea || isOutsideFloodArea)
   }
 
   const [apiKey, setApiKey] = useState(null)
@@ -78,8 +96,14 @@ export default function FloodAreaMap ({
   // Leaflet Marker Icon
   const DefaultIcon = L.icon({
     iconUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    iconSize: [53, 69],
+    iconAnchor: [26, 69]
+  })
+
+  const ClickedIcon = L.icon({
+    iconUrl: iconClickedUrl,
+    iconSize: [53, 69],
+    iconAnchor: [26, 69]
   })
   L.Marker.prototype.options.icon = DefaultIcon
 
@@ -185,17 +209,28 @@ export default function FloodAreaMap ({
     e.preventDefault()
     const floodArea = await getFloodAreaByTaName(areaName)
     dispatch(setCurrentTA(floodArea))
+    setShowMap(false)
     navigate(orgManageLocationsUrls.view.viewFloodArea)
+  }
+
+  const viewLocation = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
   const LocationInformation = () => {
     const formattedAddress = clickedLocation ? clickedLocation.address?.split(',') : ''
     const title = clickedLocation ?
-    clickedLocation.additionals.locationName
+    <Link
+        onClick={(e) => viewLocation(e, clickedLocation)}
+      >
+        {clickedLocation.additionals.locationName}
+      </Link>
       : `${locations.length} locations are in or linked to this flood ${categoryToType(targetArea.properties.category)} area`
     const content = clickedLocation ?
-      <>
-      <p className='govuk-body'>{clickedLocation.additionals.other.location_type}</p>
+      <span style={{ padding: '0 15px 15px 15px', display: 'block'}}>
+      {clickedLocation.additionals.other.location_type && <p className='govuk-body'>{clickedLocation.additionals.other.location_type}</p>}
       <p className='govuk-body'>
         {formattedAddress.map((line, index) => {
                     return (
@@ -206,15 +241,16 @@ export default function FloodAreaMap ({
                     )
                   })}
       </p>
-      </>
+      </span>
       :
+      <span style={{ padding: '0 15px 15px 15px', display: 'block'}}>
       <Link
         onClick={(e) => onTAClick(e, targetArea.properties.TA_Name)}
         className='govuk-body govuk-linkgovuk-!-margin-0'
-        style={{padding: '10px 15px 10px 15px'}}
       >
         {targetArea.properties.TA_Name}
       </Link>
+      </span>
     return (
       <div style={
         {
@@ -233,7 +269,7 @@ export default function FloodAreaMap ({
           }}>
             <span
               className='govuk-heading-s govuk-!-margin-0'
-              style={{padding: '0 15px 0 15px'}}
+              style={{padding: '15px'}}
             >
               {title}
             </span>
@@ -311,6 +347,25 @@ export default function FloodAreaMap ({
           click: () => {
             setClickedLocation(false)
             setLocationInformationActive(true)
+            layer.setStyle({
+              opacity: 1,
+              fillColor: '#E1414B',
+              weight: 2,
+              fillOpacity: 0.4,
+              color: '#000000',
+              stroke: true,
+              weight: 3
+
+            })
+          },
+          mouseout: () => {
+            layer.setStyle({
+              opacity: 0.4,
+              color: '#E1414B',
+              weight: 2,
+              fillOpacity: 0.4,
+              stroke: false
+            })
           }
         })
   }
@@ -327,6 +382,25 @@ export default function FloodAreaMap ({
           click: () => {
             setClickedLocation(false)
             setLocationInformationActive(true)
+            layer.setStyle({
+              opacity: 1,
+              fillColor: '#ED9E4A',
+              weight: 2,
+              fillOpacity: 0.4,
+              color: '#000000',
+              stroke: true,
+              weight: 3
+
+            })
+          },
+          mouseout: () => {
+            layer.setStyle({
+              opacity: 0.4,
+              color: '#ED9E4A',
+              weight: 2,
+              fillOpacity: 0.4,
+              stroke: false
+            })
           }
         })
     }
@@ -370,7 +444,7 @@ export default function FloodAreaMap ({
                 <ResetMapButton />
                 <ExitMapButton />
                 {locationInformationActive && <LocationInformation />}
-                {locations && locations
+                {locations && locations.filter(displayLocationsWithAlerts)
                   .map((location, index) => (
                     <div key={index}>
                       {location?.coordinates &&
@@ -379,6 +453,7 @@ export default function FloodAreaMap ({
                           location.coordinates.latitude,
                           location.coordinates.longitude
                         ]}
+                        icon={clickedLocation ? ClickedIcon : DefaultIcon}
                         eventHandlers={{
                           click: () => {
                             setClickedLocation(location)
@@ -416,6 +491,14 @@ export default function FloodAreaMap ({
             <div style={{ width: '315px', padding: '15px 10px 10px 30px', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
               <FloodAreaMapKey
                 locations={locations}
+                showLocationsWithinFloodAreas={showLocationsWithinFloodAreas}
+                setShowLocationsWithinFloodAreas={
+                  setShowLocationsWithinFloodAreas
+                }
+                showLocationsOutsideFloodAreas={showLocationsOutsideFloodAreas}
+                setShowLocationsOutsideFloodAreas={
+                  setShowLocationsOutsideFloodAreas
+                }
               />
             </div>
           </div>

@@ -1,21 +1,23 @@
 import { booleanIntersects, booleanPointInPolygon } from '@turf/turf'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodAreaMap from './FloodAreaMap'
 
 export default function FloodAreaPage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const area = useSelector((state) => state.session.currentTA)
   const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
@@ -31,11 +33,10 @@ export default function FloodAreaPage () {
 
   const navigateBack = (e) => {
     e.preventDefault()
-    navigate(orgManageLocationsUrls.view.dashboard)
+    navigate(-1)
   }
 
   const categoryToMessageType = (type) => {
-    console.log(type)
     const typeMap = {
       'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
       'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
@@ -85,7 +86,6 @@ export default function FloodAreaPage () {
 
   useEffect(() => {
     if (floodCount.length > 0) {
-      console.log(floodCount)
       populateMessagesSent(area.properties.category, floodCount)
     } 
   },[floodCount])
@@ -185,11 +185,20 @@ export default function FloodAreaPage () {
       const locationsUpdate = []
       if (webLocations.length > 0) {
         webLocations.forEach((location) => {
+          location.within = true
           if (location.additionals.other.location_data_type == LocationDataType.X_AND_Y_COORDS) {
-            console.log(area)
             booleanPointInPolygon([location.coordinates.longitude, location.coordinates.latitude], area.geometry) && locationsUpdate.push(location)
           } else {
             booleanIntersects(location.geometry.geoJson, area.geometry) && locationsUpdate.push(location)
+          }
+          if (location?.additionals?.other?.childrenIDs && location?.additionals?.other?.childrenIDs.length > 0) {
+            for (const child of location?.additionals?.other?.childrenIDs) {
+              if (child.TA_CODE === area.properties.TA_CODE) {
+                location.within = false
+                locationsUpdate.push(location)
+                break
+              }
+            }
           }
         })
       }
@@ -230,6 +239,12 @@ export default function FloodAreaPage () {
       ))}
       </>
   )
+
+  const viewLocation = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    navigate(orgManageLocationsUrls.view.viewLocation)
+  }
 
   return (
     <>
@@ -298,7 +313,7 @@ export default function FloodAreaPage () {
                     {locations.map((location, index) => (
                       <tr key={index} className='govuk-table__row'>
                         <td className='govuk-table__cell'>
-                          <Link className='govuk-link'>
+                          <Link className='govuk-link' onClick={(e) => viewLocation(e, location)}>
                             {location.additionals.locationName}
                           </Link>
                         </td>

@@ -6,8 +6,6 @@ export default function FloodAreaMapKey ({
   setShowLocationsWithinFloodAreas,
   showLocationsOutsideFloodAreas,
   setShowLocationsOutsideFloodAreas,
-  showOnlyFilteredLocations,
-  setShowOnlyFilteredLocations,
   locations
 }) {
   const locationsInsideFloodAreas = () => (
@@ -25,7 +23,7 @@ export default function FloodAreaMapKey ({
         Within flood areas (
         {
           locations.filter(
-            (obj) => obj.additionals.other?.alertTypes?.length > 0
+            (obj) => obj?.within === true
           ).length
         }
         )
@@ -53,7 +51,7 @@ export default function FloodAreaMapKey ({
         Outside flood areas (
         {
           locations.filter(
-            (obj) => obj.additionals.other?.alertTypes?.length === 0
+            (obj) => obj?.within === false
           ).length
         }
         )
@@ -62,47 +60,6 @@ export default function FloodAreaMapKey ({
     </div>
   )
 
-  const showFilteredLocations = () => (
-    <div className='govuk-radios__item '>
-      <input
-        className='govuk-radios__input'
-        id='locations-filtered'
-        name='locationFilter'
-        type='radio'
-        value='filteredLocations'
-        checked={showOnlyFilteredLocations === true}
-        onChange={() => setShowOnlyFilteredLocations(true)}
-      />
-      <label
-        className='govuk-label govuk-radios__label'
-        htmlFor='locations-filtered'
-        style={{ fontSize: '16px', margin: 0 }}
-      >
-        Only show filtered locations
-      </label>
-    </div>
-  )
-
-  const showAllLocations = () => (
-    <div className='govuk-radios__item govuk-!-margin-right-0'>
-      <input
-        className='govuk-radios__input'
-        id='locations-all'
-        name='locationFilter'
-        type='radio'
-        value='allLocations'
-        checked={showOnlyFilteredLocations === false}
-        onChange={() => setShowOnlyFilteredLocations(false)}
-      />
-      <label
-        className='govuk-label govuk-radios__label'
-        htmlFor='locations-all'
-        style={{ fontSize: '16px', margin: 0 }}
-      >
-        Show all locations
-      </label>
-    </div>
-  )
 
   return (
 <>    

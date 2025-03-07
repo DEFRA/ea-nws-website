@@ -22,6 +22,7 @@ import {
   getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
+import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LinkLocationsLayout ({
   navigateToPreviousPage,

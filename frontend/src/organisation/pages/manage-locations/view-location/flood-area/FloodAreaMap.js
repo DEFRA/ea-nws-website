@@ -227,7 +227,7 @@ export default function FloodAreaMap ({
       >
         {clickedLocation.additionals.locationName}
       </Link>
-      : `${locations.length} locations are in or linked to this flood ${categoryToType(targetArea.properties.category)} area`
+      : `${locations.length} location${locations.length === 1 ? ' is' : 's are'} in or linked to this flood ${categoryToType(targetArea.properties.category)} area`
     const content = clickedLocation ?
       <span style={{ padding: '0 15px 15px 15px', display: 'block'}}>
       {clickedLocation.additionals.other.location_type && <p className='govuk-body'>{clickedLocation.additionals.other.location_type}</p>}

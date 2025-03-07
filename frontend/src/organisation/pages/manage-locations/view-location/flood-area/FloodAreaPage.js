@@ -286,7 +286,7 @@ export default function FloodAreaPage () {
               Locations in {categoryToTableText(area.properties.category)} area
             </h2>
             <span className='govuk-caption-m'>
-                  {locations.length} locations are in this {categoryToTableText(area.properties.category)} area
+                  {locations.length} location{locations.length === 1 ? ' is' : 's are'} in this {categoryToTableText(area.properties.category)} area
                 </span>
 
                 <table className='govuk-table govuk-table--small-text-until-tablet'>

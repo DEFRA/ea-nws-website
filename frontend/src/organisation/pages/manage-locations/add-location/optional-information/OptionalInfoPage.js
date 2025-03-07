@@ -10,7 +10,6 @@ import {
   getLocationAdditional,
   getLocationOther
 } from '../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 
@@ -24,7 +23,7 @@ export default function OptionalLocationInformationPage () {
     getLocationOther(state, 'location_data_type')
   )
   const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
-  const orgId = useSelector((state) => state.session.orgId)
+
   const navigateToNextPage = (event) => {
     event.preventDefault()
     if (postcode) {
@@ -41,13 +40,6 @@ export default function OptionalLocationInformationPage () {
 
   const skipOptionalInformation = async (event) => {
     event.preventDefault()
-
-    const dataToSend = { orgId }
-    const { data } = await backendCall(
-      dataToSend,
-      'api/elasticache/list_contacts',
-      navigate
-    )
 
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
       await verifyLocationInFloodAreaAndNavigate(

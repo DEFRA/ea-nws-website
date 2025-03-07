@@ -7,7 +7,6 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import InsetText from '../../../../../common/components/gov-uk/InsetText'
 import { getLocationAdditional } from '../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationNotInFloodAreaPage () {
@@ -15,7 +14,6 @@ export default function LocationNotInFloodAreaPage () {
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
-  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -23,12 +21,6 @@ export default function LocationNotInFloodAreaPage () {
   }
 
   const onSkipLink = async () => {
-    const dataToSend = { orgId }
-    const { data } = await backendCall(
-      dataToSend,
-      'api/elasticache/list_contacts',
-      navigate
-    )
     navigate(orgManageLocationsUrls.add.linkLocationToContacts)
   }
 

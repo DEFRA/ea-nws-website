@@ -93,13 +93,6 @@ export default function DuplicateLocationComparisonPage () {
           )
         } else if (newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_POLYGON ||
                    newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_LINE) {
-          const dataToSend = { orgId }
-          const { contactsData } = await backendCall(
-            dataToSend,
-            'api/elasticache/list_contacts',
-            navigate
-          )
-
           verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
         } else {
           navigate(orgManageLocationsUrls.add.contactLinkInfo)

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink.js'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import { getAdditional } from '../../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../../common/services/BackendService.js'
 import {
   getFloodAreaByTaCode,
@@ -13,7 +14,7 @@ import {
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
-export default function LiveFloodWarningsDashboardPage () {
+export default function LiveFloodWarningsDashboardPage() {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -32,17 +33,6 @@ export default function LiveFloodWarningsDashboardPage () {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
-
-  const getExtraInfo = (extraInfo, id) => {
-    if (extraInfo) {
-      for (let i = 0; i < extraInfo.length; i++) {
-        if (extraInfo[i].id === id) {
-          return extraInfo[i].value?.s
-        }
-      }
-    }
-    return ''
-  }
 
   // Load in mock data
   useEffect(() => {
@@ -80,7 +70,7 @@ export default function LiveFloodWarningsDashboardPage () {
       // For each alert, attach its flood area geometry using TA_CODE
       const alertsWithFloodArea = await Promise.all(
         liveAlerts.map(async (alert) => {
-          const TA_CODE = getExtraInfo(
+          const TA_CODE = getAdditional(
             alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
             'TA_CODE'
           )
@@ -194,43 +184,41 @@ export default function LiveFloodWarningsDashboardPage () {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <h1 className='govuk-heading-l'>Live flood warnings</h1>
-            {!isFilterVisible
-              ? (
-                <div className='govuk-grid-row'>
-                  <>{table}</>
-                </div>
-                )
-              : (
-                <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
-                    <FloodReportsFilter
-                      locationsWithAlerts={locationsWithAlerts}
-                      setFilteredAlerts={setFilteredAlerts}
-                      resetPaging={resetPaging}
-                      setResetPaging={setResetPaging}
-                      selectedFilters={selectedFilters}
-                      setSelectedFilters={setSelectedFilters}
-                      locationNameFilter={locationNameFilter}
-                      setLocationNameFilter={setLocationNameFilter}
-                      selectedWarningTypeFilters={selectedWarningTypeFilters}
-                      setSelectedWarningTypeFilters={
+            {!isFilterVisible ? (
+              <div className='govuk-grid-row'>
+                <>{table}</>
+              </div>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                  <FloodReportsFilter
+                    locationsWithAlerts={locationsWithAlerts}
+                    setFilteredAlerts={setFilteredAlerts}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                    locationNameFilter={locationNameFilter}
+                    setLocationNameFilter={setLocationNameFilter}
+                    selectedWarningTypeFilters={selectedWarningTypeFilters}
+                    setSelectedWarningTypeFilters={
                       setSelectedWarningTypeFilters
                     }
-                      selectedLocationTypeFilters={selectedLocationTypeFilters}
-                      setSelectedLocationTypeFilters={
+                    selectedLocationTypeFilters={selectedLocationTypeFilters}
+                    setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
                     }
-                      selectedBusCriticalityFilters={
+                    selectedBusCriticalityFilters={
                       selectedBusCriticalityFilters
                     }
-                      setSelectedBusCriticalityFilters={
+                    setSelectedBusCriticalityFilters={
                       setSelectedBusCriticalityFilters
                     }
-                    />
-                  </div>
-                  <div className='govuk-grid-column-three-quarters'>{table}</div>
+                  />
                 </div>
-                )}
+                <div className='govuk-grid-column-three-quarters'>{table}</div>
+              </div>
+            )}
           </div>
         </div>
       </main>

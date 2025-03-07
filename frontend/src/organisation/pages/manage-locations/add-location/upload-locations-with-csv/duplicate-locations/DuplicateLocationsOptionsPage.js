@@ -112,7 +112,7 @@ export default function DuplicateLocationsOptionsPage () {
           ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
           : notInEnglandLocations > 0
             ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
-            : orgManageLocationsUrls.view.dashboard // change to link contacts
+            : orgManageLocationsUrls.add.contactLinkInfo
 
       switch (option) {
         case options[0].value: {

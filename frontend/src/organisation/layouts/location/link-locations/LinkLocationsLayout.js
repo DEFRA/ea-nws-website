@@ -11,7 +11,8 @@ import AlertType from '../../../../common/enums/AlertType'
 import {
   getLocationAdditionals,
   getLocationOther,
-  setCurrentLocation
+  setCurrentLocation,
+  setCurrentLocationAlertTypes
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { csvToJson } from '../../../../common/services/CsvToJson'
@@ -31,6 +32,7 @@ export default function LinkLocationsLayout ({
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
+  
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
@@ -41,6 +43,16 @@ export default function LinkLocationsLayout ({
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [floodCounts, setFloodCounts] = useState([])
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const categoryToMessageType = (type) => {
     const typeMap = {
@@ -184,8 +196,26 @@ export default function LinkLocationsLayout ({
     return location
   }
 
+  const getParentLinkedContacts = async (currentLocation) => {
+    const contactsDataToSend = { authToken, orgId, location: currentLocation }
+    const { data } = await backendCall(
+      contactsDataToSend,
+      'api/elasticache/list_linked_contacts',
+      navigate
+    )
+
+    const contactIds = []
+    if (data) {
+      data.forEach((contact) => {
+        contactIds.push(contact.id)
+      })
+    }
+    return contactIds
+  }
+
   const handleSubmit = async () => {
     const childrenIDs = []
+    const childrenAlertTypes = []
     for (const areaId of selectedTAs) {
       const TargetAreaToAdd = floodAreas.find(
         (floodArea) => floodArea.properties.TA_CODE === areaId
@@ -197,6 +227,7 @@ export default function LinkLocationsLayout ({
             : TargetAreaToAdd.properties.category === 'Flood Alert'
               ? [AlertType.FLOOD_ALERT]
               : []
+        childrenAlertTypes.push(...alertTypes)
         const locationToAdd = {
           id: null,
           name: null,
@@ -231,6 +262,38 @@ export default function LinkLocationsLayout ({
           navigate
         )
         if (data) {
+          // link the contacts from the parent location
+          const linkedContacts = await getParentLinkedContacts(currentLocation)
+          if (linkedContacts && linkedContacts.length > 0) {
+            const dataToSend = { authToken, orgId, locationId: data.id, contactIds: linkedContacts }
+            await backendCall(
+              dataToSend,
+              'api/location/attach_contacts',
+              navigate
+            )
+          }
+
+          const registerData = {
+            authToken,
+            locationId: data.id,
+            partnerId,
+            params: {
+              channelVoiceEnabled: true,
+              channelSmsEnabled: true,
+              channelEmailEnabled: true,
+              channelMobileAppEnabled: true,
+              partnerCanView: true,
+              partnerCanEdit: true,
+              alertTypes: alertTypes
+            }
+          }
+    
+          await backendCall(
+            registerData,
+            'api/location/register_to_partner',
+            navigate
+          )
+    
           childrenIDs.push({
             id: data.id,
             TA_Name: TargetAreaToAdd.properties.TA_Name,
@@ -254,8 +317,37 @@ export default function LinkLocationsLayout ({
       'api/location/update',
       navigate
     )
+
     if (data) {
+      //update alert types of orginal location to include any new ones from linked locations
+      const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+      const alertTypes = []
+      if (childrenAlertTypes.includes(allAlertTypes[0]) || additionalData.alertTypes.includes(allAlertTypes[0])) alertTypes.push(allAlertTypes[0])
+      if (childrenAlertTypes.includes(allAlertTypes[1]) || additionalData.alertTypes.includes(allAlertTypes[1])) alertTypes.push(allAlertTypes[1])
+      if (childrenAlertTypes.includes(allAlertTypes[2]) || additionalData.alertTypes.includes(allAlertTypes[2])) alertTypes.push(allAlertTypes[2])
+      
+      const registerData = {
+        authToken,
+        locationId: currentLocation.id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: alertTypes
+        }
+      }
+
+      await backendCall(
+        registerData,
+        'api/location/update_registration',
+        navigate
+      )
       dispatch(setCurrentLocation(data))
+      dispatch(setCurrentLocationAlertTypes(alertTypes))
       navigateToNextPage() // TODO: Navigate to correct next page
     } else {
       // TODO set an error

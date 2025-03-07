@@ -25,14 +25,14 @@ export default function ReportsOverviewPage () {
               </Link>
             </p>
             <p>
-              <Link to='#' className='govuk-link'>
-                Warnings removed in last 24 hours
-              </Link>
+              {/* <Link to='#' className='govuk-link'> */}
+                Warnings removed in last 24 hours (not yet available)
+              {/* </Link> */}
             </p>
             <p>
-              <Link to='#' className='govuk-link'>
-                Historic warnings
-              </Link>
+              {/* <Link to='#' className='govuk-link'> */}
+                Historic warnings (not yet available)
+              {/* </Link> */}
             </p>
             <br />
             <h2 className='govuk-heading-m'>Your locations</h2>

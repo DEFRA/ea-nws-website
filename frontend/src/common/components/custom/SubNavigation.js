@@ -18,11 +18,14 @@ export default function SubNavigation ({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
-              Get flood warnings
-            </a>
+            <div>
+              <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+                Get flood warnings
+              </a>
+              <br/>
+              <span style={{ color: '#505a5f', fontSize: '12px' }}>Professional</span>
+            </div>
           </li>
-
           {
             (authToken !== null && !location.pathname.includes('sign-up')) &&
           pages.map((page, index) => (

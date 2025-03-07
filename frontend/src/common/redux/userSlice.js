@@ -505,17 +505,30 @@ const userSlice = createSlice({
     },
     // org data
     setOrganization: (state, action) => {
-      state.organization.id = action.payload.id
-      state.organization.name = action.payload.name
-      state.organization.description = action.payload.description
-      state.organization.postalCode = action.payload.postalCode
-      state.organization.longName = action.payload.longName
-      state.organization.logoUrl = action.payload.logoUrl
-      state.organization.backgroundUrl = action.payload.backgroundUrl
-      state.organization.alertDiffusionZone = action.payload.alertDiffusionZone
+      state.organization.id = action.payload?.id || null
+      state.organization.name = action.payload?.name || null
+      state.organization.description = action.payload?.description || JSON.stringify({
+        name: null,
+        address: null,
+        compHouseNum: null,
+        emergencySector: null,
+        isAdminRegistering: null,
+        alternativeContact: {
+          firstName: null,
+          lastName: null,
+          email: null,
+          telephone: null,
+          jobTitle: null
+        }
+      })
+      state.organization.postalCode = action.payload?.postalCode || null
+      state.organization.longName = action.payload?.longName || null
+      state.organization.logoUrl = action.payload?.logoUrl || null
+      state.organization.backgroundUrl = action.payload?.backgroundUrl || null
+      state.organization.alertDiffusionZone = action.payload?.alertDiffusionZone || null
       state.organization.alertDiffusionZoneBoundingBox =
-        action.payload.alertDiffusionZoneBoundingBox
-      state.organization.urlSlug = action.payload.urlSlug
+        action.payload?.alertDiffusionZoneBoundingBox || null
+      state.organization.urlSlug = action.payload?.urlSlug || null
     },
     setOrganizationId: (state, action) => {
       state.organization.id = action.payload

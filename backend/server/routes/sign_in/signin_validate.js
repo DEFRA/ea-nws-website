@@ -18,7 +18,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { signinToken, code, signinType } = request.payload
+        const { signinToken, code } = request.payload
         const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && signinToken) {
@@ -27,7 +27,7 @@ module.exports = [
             'member/signinValidate'
           )
 
-          if (signinType === 'org') {
+          if (response.data.organization) {
             const signupComplete = response.data.profile.additionals?.find(
               (additional) => additional.id === 'signupComplete'
             )
@@ -38,10 +38,12 @@ module.exports = [
                 errorMessage: 'account pending'
               })
             }
+
             const locationRes = await apiCall(
               { authToken: response.data.authToken },
               'location/list'
             )
+
             const contactRes = await apiCall(
               { authToken: response.data.authToken },
               'organization/listContacts'
@@ -77,6 +79,7 @@ module.exports = [
               )
             }
           }
+
           return h.response(response)
         } else {
           return h.response({

@@ -74,7 +74,8 @@ export default function LinkBanner ({
     return beforeText + afterText
   }
 
-  const linkLocationsContacts = async () => {
+  const linkLocationsContacts = async (event) => {
+    event.preventDefault()
     let linkLocationIDs = []
     let linkContactIDs = []
 
@@ -272,7 +273,7 @@ export default function LinkBanner ({
             <Button
               text={linkLocations ? 'Link location to contacts' : 'Link contact to locations'}
               className='govuk-button govuk-!-margin-0'
-              onClick={() => linkLocationsContacts()}
+              onClick={(event) => linkLocationsContacts(event)}
             />
           </div>
         </div>

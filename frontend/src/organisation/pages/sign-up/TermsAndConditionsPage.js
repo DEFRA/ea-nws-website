@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
-import BackLink from '../../../common/components/custom/BackLink'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
-import { useSelector } from 'react-redux'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 export default function TermsAndConditionsPage () {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const [isChecked, setIsChecked] = useState(false)
 
   const organisationName = useSelector((state) => state.session.organization.name)
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (!isChecked) {
       setError('You must tick to confirm that you’ve read and are authorised to agree to these terms and conditions on behalf of your organisation')
     } else { navigate('/organisation/sign-up/review') }

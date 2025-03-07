@@ -40,7 +40,8 @@ export default function LocationNamePage () {
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
     if (validationError) {

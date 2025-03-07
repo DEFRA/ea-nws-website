@@ -17,7 +17,8 @@ export default function CompaniesHouseNumLayout ({
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (companyNum === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'

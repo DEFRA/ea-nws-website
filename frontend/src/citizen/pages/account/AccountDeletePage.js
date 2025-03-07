@@ -192,7 +192,7 @@ export default function AccountDeletePage () {
                 className='govuk-button govuk-button--warning'
                 onClick={handleButton}
               />
-              <Link to='/account' className='govuk-link inline-link'>
+              <Link to='/account' className='govuk-link inline-link' style={{ cursor: 'pointer' }}>
                 Cancel
               </Link>
             </div>

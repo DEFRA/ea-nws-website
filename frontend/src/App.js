@@ -91,7 +91,8 @@ function App () {
     }
   }, [isPopUpOnScreen])
 
-  const handleStayLoggedIn = () => {
+  const handleStayLoggedIn = (event) => {
+    event.preventDefault()
     setIsInactive(false)
     setIsPopUpOnScreen(false)
     clearTimeout(redirectTimer.current)

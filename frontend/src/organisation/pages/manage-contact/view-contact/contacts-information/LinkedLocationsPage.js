@@ -148,7 +148,8 @@ export default function LinkedLocationsPage () {
     return riskData[riskCategory]
   }
 
-  const linkToLocations = () => {
+  const linkToLocations = (event) => {
+    event.preventDefault()
     const linkContacts = [currentContact.id]
     navigate(orgManageLocationsUrls.view.dashboard, {
       state: {
@@ -233,7 +234,10 @@ export default function LinkedLocationsPage () {
         <Button
           text='Unlink selected'
           className='govuk-button govuk-button--secondary'
-          onClick={() => unlinkLocations(selectedLocations)}
+          onClick={(event) => {
+            event.preventDefault()
+            unlinkLocations(selectedLocations)
+          }}
         />}
     </>
   )

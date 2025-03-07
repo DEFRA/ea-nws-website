@@ -52,7 +52,8 @@ export default function ChangeAdminDetailsPage () {
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     let emailValidationError = ''
     if (email !== null) {
       emailValidationError = emailValidation(email)

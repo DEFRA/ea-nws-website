@@ -55,7 +55,8 @@ export default function DuplicateLocationComparisonPage () {
     })
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (existingOrNew === '') {
       setError(
         'Select if you want to keep the existing location or use the new location'

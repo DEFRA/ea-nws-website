@@ -43,7 +43,10 @@ export default function LocationHeader ({ currentPage }) {
           <Button
             text='Delete location'
             className='govuk-button govuk-button--secondary'
-            onClick={() => navigate(orgManageLocationsUrls.delete)}
+            onClick={(event) => {
+              event.preventDefault()
+              navigate(orgManageLocationsUrls.delete)
+            }}
           />
         </div>
       </div>

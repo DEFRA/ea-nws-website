@@ -73,7 +73,7 @@ export default function OrganisationServiceSelectionPage () {
                     <Button
                       text='Instant sign up'
                       className='govuk-button govuk-!-margin-bottom-1 '
-                      onClick={() => navigate('/signup/register-location/search')}
+                      onClick={(event) => { event.preventDefault(); navigate('/signup/register-location/search') }}
                     />
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export default function OrganisationServiceSelectionPage () {
                     <Button
                       text='Instant sign up'
                       className='govuk-button govuk-!-margin-bottom-1 '
-                      onClick={() => navigate('/signup/organisation-service-confirm')}
+                      onClick={(event) => { event.preventDefault(); navigate('/signup/organisation-service-confirm') }}
                     />
                   </div>
                 </div>

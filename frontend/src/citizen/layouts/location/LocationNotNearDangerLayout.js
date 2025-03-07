@@ -42,6 +42,7 @@ export default function LocationNotNearDangerLayout ({
                       e.preventDefault()
                       continueToSearchResultsPage()
                     }}
+                    style={{ cursor: 'pointer' }}
                   >
                     try another postcode
                   </Link>

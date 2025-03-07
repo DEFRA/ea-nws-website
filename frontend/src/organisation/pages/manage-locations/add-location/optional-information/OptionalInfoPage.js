@@ -23,7 +23,8 @@ export default function OptionalLocationInformationPage () {
     getLocationOther(state, 'location_data_type')
   )
   const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
-  const navigateToNextPage = () => {
+  const navigateToNextPage = (event) => {
+    event.preventDefault()
     if (postcode) {
       navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
     } else {

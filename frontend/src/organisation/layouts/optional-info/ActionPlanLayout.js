@@ -31,7 +31,8 @@ export default function ActionPlanLayout ({
     }
   }, [actionPlan])
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (error) return
     dispatch(setCurrentLocationActionPlan(actionPlan))
     // should update the geosafe profile here?

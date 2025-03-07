@@ -45,8 +45,10 @@ export default function AddAnotherPredefinedBoundaryPage () {
               <Button
                 className='govuk-button'
                 text='Add predefined boundary'
-                onClick={() =>
-                  navigate(orgManageLocationsUrls.add.predefinedBoundary.select)}
+                onClick={(event) => {
+                  event.preventDefault()
+                  navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
+                }}
               />
               <Link
                 onClick={navigateToNextPage}

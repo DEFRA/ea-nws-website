@@ -38,7 +38,8 @@ export default function ManuallyFindLocationsPage () {
     getInvLocations()
   }, [])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     navigate('/organisation/manage-locations/view-locations')
   }
 

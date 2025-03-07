@@ -21,7 +21,8 @@ export default function SignUpDuplicateEmailPageLayout () {
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const dataToSend = { email }
     const { errorMessage, data } = await backendCall(
       dataToSend,

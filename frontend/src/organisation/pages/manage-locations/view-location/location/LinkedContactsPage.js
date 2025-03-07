@@ -89,7 +89,8 @@ export default function LinkedContactsPage () {
     getLinkedContacts()
   }, [])
 
-  const linkToContacts = () => {
+  const linkToContacts = (event) => {
+    event.preventDefault()
     const linkLocations = [currentLocation.id]
     dispatch(setLinkLocations(linkLocations))
     navigate(orgManageContactsUrls.view.dashboard, {
@@ -174,7 +175,10 @@ export default function LinkedContactsPage () {
       {linkedContacts.length > 0 && <Button
         text='Unlink selected'
         className='govuk-button govuk-button--secondary'
-        onClick={() => unlinkContacts(selectedContacts)}
+        onClick={(event) => {
+          event.preventDefault()
+          unlinkContacts(selectedContacts)
+        }}
                                     />}
     </>
   )

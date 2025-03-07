@@ -90,14 +90,12 @@ const getIntersections = (areas, bufferedShape) => {
   if (!bufferedShapeValid) return
   const bufferedShapeGeometry = bufferedShape.geometry
   const filteredTargetData = areas.features.filter((area) => {
-    if (turf.booleanValid(area.geometry)) {
       try {
         return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
       } catch (e) {
         console.error('Error during intersection', e)
         return false
       }
-    } else return false
   })
   return filteredTargetData
 }

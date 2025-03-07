@@ -1,16 +1,17 @@
+import * as turf from '@turf/turf'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink.js'
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner.js'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import LocationDataType from '../../../../../common/enums/LocationDataType.js'
 import { getAdditional } from '../../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../../common/services/BackendService.js'
-import {
-  getFloodAreaByTaCode,
-  getLiveFloodAlerts,
-  locationIntersectsAlert
-} from '../../../../../common/services/WfsFloodDataService.js'
+import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler.js'
+import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService.js'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
@@ -20,100 +21,222 @@ export default function LiveFloodWarningsDashboardPage() {
   const orgId = useSelector((state) => state.session.orgId)
 
   const defaultAlertsPerPage = 20
-
-  const [locations, setLocations] = useState([])
-  const [alerts, setAlerts] = useState([])
-  const [locationsWithAlerts, setLocationsWithAlerts] = useState([])
-  const [displayedAlerts, setDisplayedAlerts] = useState([])
-  const [filteredAlerts, setFilteredAlerts] = useState([])
+  const [displayedLocationsAffected, setDisplayedAlerts] = useState([])
+  const [filteredLocationsAffected, setFilteredLocationsAffected] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
   const [holdPage, setHoldPage] = useState(0)
-  const [alertsPerPage, setAlertsPerPage] = useState(defaultAlertsPerPage)
+  const [locationsAffectedPerPage, setLocationsAffectedPerPage] =
+    useState(defaultAlertsPerPage)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
 
-  // Load in mock data
+  //cammy stuff
+  const [loading, setLoading] = useState(true)
+  const [locationsAffected, setLocationsAffected] = useState([])
+
   useEffect(() => {
-    const loadLocations = async () => {
-      const { data: locationsData } = await backendCall(
-        { orgId },
-        'api/elasticache/list_locations',
+    ;(async () => {
+      await loadLiveWarnings()
+      setLoading(false)
+    })()
+  }, [])
+
+  const loadLiveWarnings = async () => {
+    setLocationsAffected([])
+
+    // get orgs locations
+    const { data: locationsData } = await backendCall(
+      { orgId },
+      'api/elasticache/list_locations',
+      navigate
+    )
+
+    // convert each location to a web format
+    const locations = []
+    if (locationsData) {
+      for (const location of locationsData) {
+        locations.push(geoSafeToWebLocation(location))
+      }
+
+      // attach linked contacts to each location and convert x and y coords to geojson points
+      const locationsCollection = []
+      for (const location of locations) {
+        // linked contacts
+        const contactsDataToSend = { authToken, orgId, location }
+        const { data } = await backendCall(
+          contactsDataToSend,
+          'api/elasticache/list_linked_contacts',
+          navigate
+        )
+
+        location.linked_contacts = []
+        if (data) {
+          data.forEach((contact) => {
+            location.linked_contacts.push(contact.id)
+          })
+        }
+
+        // x and y coord conversion
+        let feature
+        const locationType = location.additionals.other.location_data_type
+
+        if (locationType === LocationDataType.X_AND_Y_COORDS) {
+          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+          feature = convertDataToGeoJsonFeature('Point', [
+            location.coordinates.longitude,
+            location.coordinates.latitude
+          ])
+        } else {
+          feature = location.geometry.geoJson
+        }
+
+        locationsCollection.push(feature)
+      }
+
+      // calculate boundary around locations
+      const geoJsonFeatureCollection =
+        turf.featureCollection(locationsCollection)
+
+      const bbox = turf.bbox(geoJsonFeatureCollection)
+
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
+
+      const options = {
+        states: ['CURRENT'],
+        boundingBox: {
+          southWest: {
+            latitude: parseInt(bbox[1] * 10 ** 6),
+            longitude: parseInt(bbox[0] * 10 ** 6)
+          },
+          northEast: {
+            latitude: parseInt(bbox[3] * 10 ** 6),
+            longitude: parseInt(bbox[2] * 10 ** 6)
+          }
+        },
+        channels: [],
+        partnerId
+      }
+
+      // load live alerts
+      const { data: liveAlertsData } = await backendCall(
+        { options },
+        'api/alert/list',
         navigate
       )
 
-      // Attach linked contacts to each location
-      const updatedLocations = await Promise.all(
-        locationsData.map(async (location) => {
-          const { data: contactsData } = await backendCall(
-            { authToken, orgId, location },
-            'api/elasticache/list_linked_contacts',
-            navigate
+      // loop through live alerts - loop through all locations to find affected locations
+      for (const liveAlert of liveAlertsData?.alerts) {
+        const TA_CODE = getAdditional(
+          liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+          'TA_CODE'
+        )
+
+        const severity = liveAlert.type
+        const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
+        const floodArea = await getFloodAreaByTaCode(TA_CODE)
+
+        for (const location of locations) {
+          processLocation(location, floodArea, severity, updatedTime)
+        }
+      }
+    }
+  }
+
+  const processLocation = (location, floodArea, severity, updatedTime) => {
+    const { coordinates, geometry, additionals } = location
+    const locationType = additionals.other.location_data_type
+
+    // add required data to location row object
+    const createLocationWithFloodData = () => ({
+      ...location,
+      floodData: {
+        types: [severity],
+        name: floodArea.properties.TA_Name,
+        updatedTime
+      }
+    })
+
+    // for xy coord locations
+    const handleXYCoordinates = () => {
+      const updatedLocation = createLocationWithFloodData()
+      const point = convertDataToGeoJsonFeature('Point', [
+        coordinates.longitude,
+        coordinates.latitude
+      ])
+
+      if (turf.booleanIntersects(point, floodArea.geometry)) {
+        setLocationsAffected((prevLocations) => {
+          const index = prevLocations.findIndex(
+            (loc) => loc.id === updatedLocation.id
           )
-          location.linked_contacts = contactsData || {}
-          return location
+
+          if (index !== -1) {
+            const existingTypes = prevLocations[index].floodData.types
+            const updatedTypes = updatedLocation.floodData.types
+
+            // merge the types and remove duplicates using set
+            const combinedTypes = [
+              ...new Set([...existingTypes, ...updatedTypes])
+            ]
+
+            prevLocations[index].floodData.types = combinedTypes
+
+            return prevLocations
+          } else {
+            // If location doesn't exist in array, add the new entry
+            return [...prevLocations, updatedLocation]
+          }
         })
-      )
-
-      const uniqueLocations = Array.from(
-        new Map(
-          updatedLocations.map((location) => [location.id, location])
-        ).values()
-      )
-
-      setLocations(uniqueLocations)
+      }
     }
 
-    const loadAlerts = async () => {
-      const liveAlerts = await getLiveFloodAlerts()
-      // For each alert, attach its flood area geometry using TA_CODE
-      const alertsWithFloodArea = await Promise.all(
-        liveAlerts.map(async (alert) => {
-          const TA_CODE = getAdditional(
-            alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
-            'TA_CODE'
-          )
-          const floodArea = await getFloodAreaByTaCode(TA_CODE)
-          return { ...alert, floodArea }
-        })
-      )
-      setAlerts(alertsWithFloodArea)
+    // for shapes or boundary's locations
+    const handleGeoJsonLocation = () => {
+      const updatedLocation = createLocationWithFloodData()
+      if (turf.booleanIntersects(geometry.geoJson, floodArea.geometry)) {
+        setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
+      }
     }
 
-    loadLocations()
-    loadAlerts()
-  }, [])
+    if (locationType === LocationDataType.X_AND_Y_COORDS) {
+      handleXYCoordinates()
+    } else {
+      handleGeoJsonLocation()
+    }
+  }
 
-  // Combine location and alert data using spatial intersection.
+  // required to convert the unix time from geosafe
+  const getUpdatedTime = (unixTime) => {
+    const date = new Date(unixTime * 1000)
+
+    const options = { hour: 'numeric', minute: '2-digit', hour12: true }
+    let time = date.toLocaleTimeString('en-GB', options).toLowerCase()
+    time = time.replace(' ', '') // Remove space between time and AM/PM
+
+    const day = date.getDate()
+    const month = date.toLocaleString('en-GB', { month: 'long' })
+    const year = date.getFullYear()
+
+    return `${day} ${month} ${year} at ${time}`
+  }
+
   useEffect(() => {
-    if (locations.length && alerts.length) {
-      const combined = locations
-        .map((location) => {
-          const matchingAlert = alerts.find((alert) => {
-            if (!alert.floodArea) return false
-            return locationIntersectsAlert(location, alert.floodArea)
-          })
-          return matchingAlert ? { ...location, alert: matchingAlert } : null
-        })
-        .filter((item) => item !== null)
-      setLocationsWithAlerts(combined)
-      setFilteredAlerts(combined)
-    }
-  }, [alerts, locations])
-
-  useEffect(() => {
-    if (alertsPerPage === null) {
-      setDisplayedAlerts(filteredAlerts)
+    if (locationsAffectedPerPage === null) {
+      setDisplayedAlerts(filteredLocationsAffected)
     } else {
       setDisplayedAlerts(
-        filteredAlerts.slice(
-          (currentPage - 1) * alertsPerPage,
-          currentPage * alertsPerPage
+        filteredLocationsAffected.slice(
+          (currentPage - 1) * locationsAffectedPerPage,
+          currentPage * locationsAffectedPerPage
         )
       )
     }
-  }, [filteredAlerts, currentPage, alertsPerPage])
+  }, [filteredLocationsAffected, currentPage, locationsAffectedPerPage])
 
   useEffect(() => {
     if (resetPaging) {
@@ -124,7 +247,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [filteredAlerts])
+  }, [filteredLocationsAffected])
 
   const openCloseFilter = () => {
     setHoldPage(currentPage)
@@ -138,11 +261,13 @@ export default function LiveFloodWarningsDashboardPage() {
   )
   const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
     useState([])
-  const [selectedBusCriticalityFilters, setSelectedBusCriticalityFilters] =
-    useState([])
+  const [
+    selectedBusinessCriticalityFilters,
+    setSelectedBusinessCriticalityFilters
+  ] = useState([])
 
   const onPrint = () => {
-    setAlertsPerPage(filteredAlerts.length)
+    setLocationsAffectedPerPage(filteredLocationsAffected.length)
   }
 
   const table = (
@@ -159,15 +284,17 @@ export default function LiveFloodWarningsDashboardPage() {
         onClick={() => onPrint()}
       />
       <FloodReportsTable
-        locationsWithAlerts={locationsWithAlerts}
-        displayedAlerts={displayedAlerts}
-        filteredAlerts={filteredAlerts}
-        setFilteredAlerts={setFilteredAlerts}
+        locationsAffected={locationsAffected}
+        displayedLocationsAffected={displayedLocationsAffected}
+        filteredLocationsAffected={filteredLocationsAffected}
+        setFilteredLocationsAffected={setFilteredLocationsAffected}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
       />
       <Pagination
-        totalPages={Math.ceil(filteredAlerts.length / alertsPerPage)}
+        totalPages={Math.ceil(
+          filteredLocationsAffected.length / locationsAffectedPerPage
+        )}
         onPageChange={(val) => setCurrentPage(val)}
         holdPage={holdPage}
         setHoldPage={setHoldPage}
@@ -184,7 +311,9 @@ export default function LiveFloodWarningsDashboardPage() {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <h1 className='govuk-heading-l'>Live flood warnings</h1>
-            {!isFilterVisible ? (
+            {loading ? (
+              <LoadingSpinner />
+            ) : !isFilterVisible ? (
               <div className='govuk-grid-row'>
                 <>{table}</>
               </div>
@@ -192,8 +321,8 @@ export default function LiveFloodWarningsDashboardPage() {
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
                   <FloodReportsFilter
-                    locationsWithAlerts={locationsWithAlerts}
-                    setFilteredAlerts={setFilteredAlerts}
+                    locationsAffected={locationsAffected}
+                    setFilteredLocationsAffected={setFilteredLocationsAffected}
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
                     selectedFilters={selectedFilters}
@@ -208,11 +337,11 @@ export default function LiveFloodWarningsDashboardPage() {
                     setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
                     }
-                    selectedBusCriticalityFilters={
-                      selectedBusCriticalityFilters
+                    selectedBusinessCriticalityFilters={
+                      selectedBusinessCriticalityFilters
                     }
-                    setSelectedBusCriticalityFilters={
-                      setSelectedBusCriticalityFilters
+                    setSelectedBusinessCriticalityFilters={
+                      setSelectedBusinessCriticalityFilters
                     }
                   />
                 </div>

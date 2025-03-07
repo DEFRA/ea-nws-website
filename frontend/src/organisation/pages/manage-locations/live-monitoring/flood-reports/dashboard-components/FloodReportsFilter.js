@@ -5,15 +5,15 @@ import {
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../../../common/enums/AlertType'
 
-export default function FloodReportsFilter ({
-  locationsWithAlerts,
-  setFilteredAlerts,
+export default function FloodReportsFilter({
+  locationsAffected,
+  setFilteredLocationsAffected,
   resetPaging,
   setResetPaging,
   selectedFilters,
@@ -24,36 +24,39 @@ export default function FloodReportsFilter ({
   setSelectedWarningTypeFilters,
   selectedLocationTypeFilters,
   setSelectedLocationTypeFilters,
-  selectedBusCriticalityFilters,
-  setSelectedBusCriticalityFilters
+  selectedBusinessCriticalityFilters,
+  setSelectedBusinessCriticalityFilters
 }) {
   // Search filter visibility
   const [locationNameVisible, setLocationNameVisible] = useState(false)
   const [warningTypeVisible, setWarningTypeVisible] = useState(false)
   const [locationTypeVisible, setLocationTypeVisible] = useState(false)
-  const [busCriticalityTypeVisible, setBusCriticalityTypeVisible] =
+  const [businessCriticalityTypeVisible, setBusinessCriticalityTypeVisible] =
     useState(false)
-
-  const getOtherData = (additionals) => {
-    const otherStr = additionals.find((item) => item.id === 'other')?.value.s
-    try {
-      return otherStr ? JSON.parse(otherStr) : {}
-    } catch (e) {
-      console.error(e)
-      return {}
-    }
-  }
 
   const warningTypes = [
     ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
   ]
-  const locationTypes = locationsWithAlerts
-    .map((affectedLocation) => {
-      const otherData = getOtherData(affectedLocation.additionals)
-      return otherData.location_type || ''
-    })
-    .filter((val) => val !== '')
-  const busCriticalityTypes = [...new Set(['High', 'Medium', 'Low'])]
+
+  const businessCriticalityTypes = [
+    ...new Set(
+      locationsAffected
+        .map((location) => {
+          return location.additionals.other.business_criticality
+        })
+        .filter((val) => val !== '')
+    )
+  ]
+
+  const locationTypes = [
+    ...new Set(
+      locationsAffected
+        .map((location) => {
+          return location.additionals.other.location_type
+        })
+        .filter((val) => val !== '')
+    )
+  ]
 
   // Handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -72,68 +75,66 @@ export default function FloodReportsFilter ({
     })
   }
 
-  const filterAlerts = () => {
-    let filteredAlerts = [...locationsWithAlerts]
+  const filterLocationsAffected = () => {
+    let filteredLocationsAffected = [...locationsAffected]
 
     // Apply location name filter
     if (locationNameFilter) {
-      filteredAlerts = filteredAlerts.filter((alert) =>
-        alert.address.toLowerCase().includes(locationNameFilter.toLowerCase())
+      filteredLocationsAffected = filteredLocationsAffected.filter((location) =>
+        location.additionals.locationName
+          .toLowerCase()
+          .includes(locationNameFilter.toLowerCase())
       )
     }
 
-    // Apply warning type filter
     if (selectedWarningTypeFilters.length > 0) {
-      filteredAlerts = filteredAlerts.filter((affectedLocation) => {
-        return selectedWarningTypeFilters.some((filter) => {
-          if (filter === 'Severe flood warnings') {
-            return (
-              affectedLocation.alert.type === AlertType.SEVERE_FLOOD_WARNING
-            )
-          }
-          if (filter === 'Flood warnings') {
-            return affectedLocation.alert.type === AlertType.FLOOD_WARNING
-          }
-          if (filter === 'Flood alerts') {
-            return affectedLocation.alert.type === AlertType.FLOOD_ALERT
-          }
-          return false
-        })
-      })
+      const filterMap = {
+        'Severe flood warnings': AlertType.SEVERE_FLOOD_WARNING,
+        'Flood warnings': AlertType.FLOOD_WARNING,
+        'Flood alerts': AlertType.FLOOD_ALERT
+      }
+
+      filteredLocationsAffected = filteredLocationsAffected.filter((location) =>
+        selectedWarningTypeFilters.some((filter) =>
+          location.floodData.types.includes(filterMap[filter])
+        )
+      )
     }
 
     // Apply location or boundary type filter
     if (selectedLocationTypeFilters.length > 0) {
-      filteredAlerts = filteredAlerts.filter((alert) => {
-        const otherData = getOtherData(alert.additionals)
-        return selectedLocationTypeFilters.includes(
-          otherData.location_type || ''
-        )
-      })
+      filteredLocationsAffected = filteredLocationsAffected.filter(
+        (location) => {
+          return selectedLocationTypeFilters.includes(
+            location.additionals.other.location_type
+          )
+        }
+      )
     }
 
     // Apply business criticality filter
-    if (selectedBusCriticalityFilters.length > 0) {
-      filteredAlerts = filteredAlerts.filter((alert) => {
-        const otherData = getOtherData(alert.additionals)
-        return selectedBusCriticalityFilters.includes(
-          otherData.business_criticality || ''
-        )
-      })
+    if (selectedBusinessCriticalityFilters.length > 0) {
+      filteredLocationsAffected = filteredLocationsAffected.filter(
+        (location) => {
+          return selectedBusinessCriticalityFilters.includes(
+            location.additionals.other.business_criticality
+          )
+        }
+      )
     }
 
     setResetPaging(!resetPaging)
-    setFilteredAlerts(filteredAlerts)
+    setFilteredLocationsAffected(filteredLocationsAffected)
   }
 
   // Clear all filters
   const clearFilters = () => {
-    setFilteredAlerts(locationsWithAlerts)
+    setFilteredLocationsAffected(locationsAffected)
     setSelectedFilters([])
     setLocationNameFilter('')
     setSelectedWarningTypeFilters([])
     setSelectedLocationTypeFilters([])
-    setSelectedBusCriticalityFilters([])
+    setSelectedBusinessCriticalityFilters([])
   }
 
   // Location name filter
@@ -181,10 +182,6 @@ export default function FloodReportsFilter ({
       )}
     </>
   )
-
-  useEffect(() => {
-    filterAlerts()
-  }, [locationNameFilter])
 
   // All other filters
   const otherFilter = (
@@ -244,7 +241,7 @@ export default function FloodReportsFilter ({
   const areFiltersSelected = () =>
     selectedWarningTypeFilters.length > 0 ||
     selectedLocationTypeFilters.length > 0 ||
-    selectedBusCriticalityFilters.length > 0
+    selectedBusinessCriticalityFilters.length > 0
 
   // Selected filters
   const selectedFilterContents = (filterName, filterArray, setFilterArray) => {
@@ -287,7 +284,7 @@ export default function FloodReportsFilter ({
               </label>
               <FontAwesomeIcon
                 icon={faXmark}
-                style={{ width: 16, height: 16 }}
+                style={{ width: 16, height: 16, paddingBottom: '5px' }}
                 onClick={() => {
                   setFilterArray(filterArray.filter((item) => item !== filter))
                 }}
@@ -341,8 +338,8 @@ export default function FloodReportsFilter ({
             )}
             {selectedFilterContents(
               'Business criticality',
-              selectedBusCriticalityFilters,
-              setSelectedBusCriticalityFilters
+              selectedBusinessCriticalityFilters,
+              setSelectedBusinessCriticalityFilters
             )}
           </div>
         )}
@@ -357,7 +354,7 @@ export default function FloodReportsFilter ({
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'
-            onClick={() => filterAlerts()}
+            onClick={() => filterLocationsAffected()}
           />
         </div>
 
@@ -384,11 +381,11 @@ export default function FloodReportsFilter ({
 
         {otherFilter(
           'Business criticality',
-          busCriticalityTypes,
-          selectedBusCriticalityFilters,
-          setSelectedBusCriticalityFilters,
-          busCriticalityTypeVisible,
-          setBusCriticalityTypeVisible
+          businessCriticalityTypes,
+          selectedBusinessCriticalityFilters,
+          setSelectedBusinessCriticalityFilters,
+          businessCriticalityTypeVisible,
+          setBusinessCriticalityTypeVisible
         )}
       </div>
     </>

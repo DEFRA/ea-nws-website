@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../../common/assets/images/flood_warning.svg'
-import severeFloodWarningIcon from '../../../../../../common/assets/images/severe_flood_warning.svg'
+import floodSevereWarningIcon from '../../../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../../../common/enums/AlertType'
+import { getAdditional } from '../../../../../../common/redux/userSlice'
 import { formatDateTime } from '../../../../../../common/services/formatters/DateTimeFormatter'
 
-export default function FloodReportsTable ({
-  locationsWithAlerts,
-  displayedAlerts,
-  filteredAlerts,
-  setFilteredAlerts,
+export default function FloodReportsTable({
+  locationsAffected,
+  displayedLocationsAffected,
+  filteredLocationsAffected,
+  setFilteredLocationsAffected,
   resetPaging,
   setResetPaging
 }) {
@@ -26,53 +27,23 @@ export default function FloodReportsTable ({
   const [lastUpdatedSort, setlastUpdatedSort] = useState('none')
 
   useEffect(() => {
-    setFilteredAlerts(locationsWithAlerts)
+    setFilteredLocationsAffected(locationsAffected)
     setLocationNameSort('none')
     setWarningTypeSort('none')
     setBusinessCriticalitySort('none')
     setLocationTypeSort('none')
     setLinkedContactsSort('none')
     setlastUpdatedSort('none')
-  }, [locationsWithAlerts])
-
-  const getAdditional = (additionals, id) => {
-    for (let i = 0; i < additionals.length; i++) {
-      if (additionals[i].id === id) {
-        return additionals[i].value?.s
-      }
-    }
-    return ''
-  }
-
-  const getOtherData = (additionals) => {
-    const otherStr = additionals.find((item) => item.id === 'other')?.value.s
-    try {
-      return otherStr ? JSON.parse(otherStr) : {}
-    } catch (e) {
-      console.error(e)
-      return {}
-    }
-  }
-
-  const getExtraInfo = (extraInfo, id) => {
-    if (extraInfo) {
-      for (let i = 0; i < extraInfo.length; i++) {
-        if (extraInfo[i].id === id) {
-          return extraInfo[i].value?.s
-        }
-      }
-    }
-    return ''
-  }
+  }, [locationsAffected])
 
   // Popup logic
   const openPopup = (affectedLocation) => {
-    const taCode = getExtraInfo(
+    const taCode = getAdditional(
       affectedLocation.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
       'TA_CODE'
     )
 
-    const taName = getExtraInfo(
+    const taName = getAdditional(
       affectedLocation.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
       'TA_NAME'
     )
@@ -101,8 +72,8 @@ export default function FloodReportsTable ({
   const sortTableData = (sortType, setSort, data) => {
     const getValue = (obj, path) => {
       // Parse JSON string from other field to pull out relevant values
-      const otherData = getOtherData(obj.additionals)
-      const objLocationName = getExtraInfo(
+      const otherData = getAdditional(obj.additionals)
+      const objLocationName = getAdditional(
         obj.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
         'TA_NAME'
       )
@@ -127,8 +98,8 @@ export default function FloodReportsTable ({
 
     if (sortType === 'none' || sortType === 'descending') {
       setSort('ascending')
-      setFilteredAlerts(
-        [...filteredAlerts].sort((a, b) => {
+      setFilteredLocationsAffected(
+        [...filteredLocationsAffected].sort((a, b) => {
           const valueA = getValue(a, data)
           const valueB = getValue(b, data)
 
@@ -148,8 +119,8 @@ export default function FloodReportsTable ({
     }
     if (sortType === 'ascending') {
       setSort('descending')
-      setFilteredAlerts(
-        [...filteredAlerts].sort((a, b) => {
+      setFilteredLocationsAffected(
+        [...filteredLocationsAffected].sort((a, b) => {
           const valueA = getValue(a, data)
           const valueB = getValue(b, data)
           return (valueB || '').localeCompare(valueA || '')
@@ -163,16 +134,31 @@ export default function FloodReportsTable ({
     // TODO: when linked contacts are available
   }
 
+  const warningTypeDisplay = {
+    [AlertType.SEVERE_FLOOD_WARNING]: {
+      icon: floodSevereWarningIcon,
+      text: 'Severe flood warning'
+    },
+    [AlertType.FLOOD_WARNING]: {
+      icon: floodWarningIcon,
+      text: 'Flood warning'
+    },
+    [AlertType.FLOOD_ALERT]: {
+      icon: floodAlertIcon,
+      text: 'Flood alert'
+    }
+  }
+
   return (
     <>
       <p
         className='govuk-!-margin-bottom-3'
         style={{ display: 'flex', color: '#505a5f' }}
       >
-        {filteredAlerts.length !== locationsWithAlerts.length &&
-          'Showing ' + filteredAlerts.length + ' of '}
-        {locationsWithAlerts.length}{' '}
-        {locationsWithAlerts.length === 1 ? 'location' : 'locations'}
+        {filteredLocationsAffected.length !== locationsAffected.length &&
+          'Showing ' + filteredLocationsAffected.length + ' of '}
+        {locationsAffected.length}{' '}
+        {locationsAffected.length === 1 ? 'location' : 'locations'}
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet reports-table-data-position'>
         <thead className='govuk-table__head'>
@@ -189,7 +175,8 @@ export default function FloodReportsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'locationName'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -206,7 +193,8 @@ export default function FloodReportsTable ({
                     warningTypeSort,
                     setWarningTypeSort,
                     'alert.type'
-                  )}
+                  )
+                }
               >
                 Warning <br />
                 type
@@ -272,7 +260,8 @@ export default function FloodReportsTable ({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     'alert.effectiveDate'
-                  )}
+                  )
+                }
               >
                 Last
                 <br /> updated
@@ -282,77 +271,67 @@ export default function FloodReportsTable ({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {displayedAlerts.map((affectedLocation, index) => {
-            const locationName = getExtraInfo(
-              affectedLocation.alert.mode.zoneDesc.placemarks[0].geometry
-                .extraInfo,
-              'TA_NAME'
-            )
-
-            const locName = getAdditional(
-              affectedLocation.additionals,
-              'locationName'
-            )
-
-            const otherData = getOtherData(affectedLocation.additionals)
-            const locationType = otherData.location_type || '-'
-            const businessCriticality = otherData.business_criticality || '-'
-            const linkedContacts = affectedLocation.linked_contacts?.length
-            const lastUpdated = formatDateTime(
-              affectedLocation.alert.effectiveDate
-            )
-
+          {displayedLocationsAffected.map((location, index) => {
             return (
               <tr key={index} className='govuk-table__row'>
                 <td className='govuk-table__cell'>
                   <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
-                    {locName}
+                    {location.additionals.locationName}
                   </p>
                   <Link
                     className='govuk-link'
                     onClick={(e) => {
                       e.preventDefault()
-                      openPopup(affectedLocation)
+                      openPopup(location)
                     }}
                   >
-                    {locationName}
+                    {location.floodData.name}
                   </Link>
                 </td>
                 <td className='govuk-table__cell'>
                   <div className='reports-table-icon-position'>
-                    {affectedLocation.alert &&
-                      affectedLocation.alert.type ===
-                        AlertType.SEVERE_FLOOD_WARNING && (
-                          <img
-                            src={severeFloodWarningIcon}
-                            alt='Flood warning icon'
-                            style={{ width: '2em', height: '2em' }}
-                          />
-                    )}
-                    {affectedLocation.alert &&
-                      affectedLocation.alert.type ===
-                        AlertType.FLOOD_WARNING && (
-                          <img
-                            src={floodWarningIcon}
-                            alt='Flood warning icon'
-                            style={{ width: '2em', height: '2em' }}
-                          />
-                    )}
-                    {affectedLocation.alert &&
-                      affectedLocation.alert.type === AlertType.FLOOD_ALERT && (
+                    {location.floodData.types.map((type, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5em',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          marginBottom: '0.5em'
+                        }}
+                      >
                         <img
-                          src={floodAlertIcon}
-                          alt='Flood alert icon'
-                          style={{ width: '2em', height: '2em' }}
+                          src={warningTypeDisplay[type].icon}
+                          alt='Flood warning icon'
+                          style={{ width: '2.5em', height: '2.5em' }}
                         />
-                    )}
-                    {affectedLocation.alert ? affectedLocation.alert.name : '-'}
+                        <span
+                          style={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }}
+                        >
+                          {warningTypeDisplay[type].text}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </td>{' '}
-                <td className='govuk-table__cell'>{locationType}</td>
-                <td className='govuk-table__cell'>{businessCriticality}</td>
-                <td className='govuk-table__cell'>{linkedContacts}</td>
-                <td className='govuk-table__cell'>{lastUpdated}</td>
+                <td className='govuk-table__cell'>
+                  {location.additionals.other.location_type || '-'}
+                </td>
+                <td className='govuk-table__cell'>
+                  {location.additionals.other.business_criticality || '-'}
+                </td>
+                <td className='govuk-table__cell'>
+                  {location.linked_contacts?.length}
+                </td>
+                <td className='govuk-table__cell'>
+                  {location.floodData.updatedTime}
+                </td>
               </tr>
             )
           })}

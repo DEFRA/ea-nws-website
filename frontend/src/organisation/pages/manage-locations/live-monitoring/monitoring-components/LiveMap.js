@@ -545,7 +545,8 @@ export default function LiveMap ({
           {showFloodInformationData && (
             <FloodDataInformationPopup
               locationsFloodInformation={locationsFloodInformation}
-              onClose={() => {
+              onClose={(event) => {
+                event.preventDefault()
                 setShowFloodInformationData(false)
                 setLocationsFloodInformation([])
               }}

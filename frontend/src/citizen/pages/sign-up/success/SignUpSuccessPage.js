@@ -64,12 +64,12 @@ export default function SignUpSuccessPage () {
               </p>
               <ul>
                 <li>
-                  <Link to='/home' className='govuk-link'>
+                  <Link to='/home' className='govuk-link' style={{ cursor: 'pointer' }}>
                     locations
                   </Link>
                 </li>
                 <li>
-                  <Link to='/managecontacts' className='govuk-link'>
+                  <Link to='/managecontacts' className='govuk-link' style={{ cursor: 'pointer' }}>
                     email addresses or phone numbers
                   </Link>
                 </li>
@@ -77,7 +77,7 @@ export default function SignUpSuccessPage () {
               {servicePhase !== 'beta' && (
                 <p className='govuk-!-margin-top-6'>
                   {' '}
-                  <Link to='/signup/feedback' className='govuk-link'>
+                  <Link to='/signup/feedback' className='govuk-link' style={{ cursor: 'pointer' }}>
                     What do you think of the service?
                   </Link>
                   &nbsp; (takes 30 seconds)

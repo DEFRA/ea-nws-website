@@ -55,7 +55,8 @@ export default function SignUpValidationPage () {
     setCodeResent(false)
   }, [error])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
 
@@ -201,7 +202,8 @@ export default function SignUpValidationPage () {
                       className='govuk-link'
                       style={{
                         display: 'inline-block',
-                        padding: '8px 10px 7px'
+                        padding: '8px 10px 7px',
+                        cursor: 'pointer'
                       }}
                     >
                       Use a different email
@@ -211,7 +213,8 @@ export default function SignUpValidationPage () {
                         onClick={getNewCode}
                         className='govuk-link'
                         style={{
-                          display: 'inline-block'
+                          display: 'inline-block',
+                          cursor: 'pointer'
                         }}
                       >
                         Get a new code

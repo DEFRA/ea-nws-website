@@ -9,7 +9,8 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 export default function OptionalInformationPage () {
   const navigate = useNavigate()
 
-  const navigateToNextPage = () => {
+  const navigateToNextPage = (event) => {
+    event.preventDefault()
     navigate(orgManageLocationsUrls.add.optionalInformation.addKeywords)
   }
 

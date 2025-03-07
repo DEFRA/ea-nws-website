@@ -110,7 +110,8 @@ export default function DashboardHeader ({
                   <Button
                     text='Add contact'
                     className='govuk-button govuk-button--secondary'
-                    onClick={() => {
+                    onClick={(event) => {
+                      event.preventDefault()
                       dispatch(clearOrgCurrentContact())
                       navigate(urlManageContactsAdd)
                     }}
@@ -119,10 +120,12 @@ export default function DashboardHeader ({
                   <Button
                     text='Manage keywords'
                     className='govuk-button govuk-button--secondary'
-                    onClick={() =>
+                    onClick={(event) => {
+                      event.preventDefault()
                       navigate(urlManageKeywordsOrg, {
                         state: { type: 'contact' }
-                      })}
+                      })
+                    }}
                   />
                 </div>
               </div>

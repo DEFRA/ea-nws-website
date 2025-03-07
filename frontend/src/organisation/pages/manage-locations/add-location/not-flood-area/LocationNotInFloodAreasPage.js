@@ -7,8 +7,8 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import InsetText from '../../../../../common/components/gov-uk/InsetText'
 import { getLocationAdditional } from '../../../../../common/redux/userSlice'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationNotInFloodAreaPage () {
   const navigate = useNavigate()
@@ -125,11 +125,14 @@ export default function LocationNotInFloodAreaPage () {
             <Button
               className='govuk-button'
               text='Link to nearby flood areas'
-              onClick={() =>
-                navigate(
-                  orgManageLocationsUrls.add.notInFloodArea
-                    .selectNearbyFloodAreas
-                )}
+              onClick={(event) =>
+                {
+                  event.preventDefault()
+                  navigate(
+                    orgManageLocationsUrls.add.notInFloodArea
+                      .selectNearbyFloodAreas
+                  )
+                }}
             />
             &nbsp; &nbsp;
             <Link

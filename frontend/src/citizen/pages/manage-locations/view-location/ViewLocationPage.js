@@ -168,7 +168,8 @@ export default function ViewLocationPage () {
     processFloodHist()
   }, [alertArea, warningArea])
 
-  const deleteLocation = async () => {
+  const deleteLocation = async (event) => {
+    event.preventDefault()
     navigate('/manage-locations/remove', {
       state: {
         name: selectedLocation.address,
@@ -341,6 +342,7 @@ export default function ViewLocationPage () {
                         <Link
                           onClick={(e) => handleOptionalAlertSave(e)}
                           className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
+                          style={{ cursor: 'pointer' }}
                         >
                           Save
                         </Link>

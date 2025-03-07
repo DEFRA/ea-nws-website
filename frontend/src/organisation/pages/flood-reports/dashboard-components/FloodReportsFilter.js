@@ -62,7 +62,8 @@ export default function FloodReportsFilter ({
     })
   }
 
-  const filterWarnings = () => {
+  const filterWarnings = (event) => {
+    event.preventDefault()
     let filteredWarnings = [...warnings]
 
     // Apply location name filter
@@ -342,7 +343,7 @@ export default function FloodReportsFilter ({
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'
-            onClick={() => filterWarnings()}
+            onClick={(event) => filterWarnings(event)}
           />
         </div>
 

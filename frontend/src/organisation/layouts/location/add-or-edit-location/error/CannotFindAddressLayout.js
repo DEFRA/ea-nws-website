@@ -74,7 +74,7 @@ export default function CannotFindAddressLayout ({
                 <Button
                   className='govuk-button govuk-!-margin-top-4'
                   text='Continue'
-                  onClick={() => navigateToNextPage()}
+                  onClick={(event) => navigateToNextPage(event)}
                 />
               )}
             </div>

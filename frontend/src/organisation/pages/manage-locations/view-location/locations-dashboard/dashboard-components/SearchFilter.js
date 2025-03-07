@@ -125,7 +125,8 @@ export default function SearchFilter ({
     })
   }
 
-  const filterLocations = () => {
+  const filterLocations = (event) => {
+    event.preventDefault()
     let filteredLocations = locations
 
     // Apply Location name filter
@@ -417,7 +418,7 @@ export default function SearchFilter ({
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'
-            onClick={() => filterLocations()}
+            onClick={(event) => filterLocations(event)}
           />
         </div>
 

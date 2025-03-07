@@ -213,7 +213,8 @@ export default function LinkLocationsLayout ({
     return contactIds
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const childrenIDs = []
     const childrenAlertTypes = []
     for (const areaId of selectedTAs) {
@@ -570,7 +571,7 @@ export default function LinkLocationsLayout ({
             <Button
               text='Link to areas'
               className='govuk-button'
-              onClick={() => handleSubmit()}
+              onClick={(event) => handleSubmit(event)}
             />
           </div>
         </div>

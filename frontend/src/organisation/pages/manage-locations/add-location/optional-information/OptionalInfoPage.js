@@ -10,9 +10,9 @@ import {
   getLocationAdditional,
   getLocationOther
 } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
-import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
@@ -25,7 +25,8 @@ export default function OptionalLocationInformationPage () {
   )
   const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
   const orgId = useSelector((state) => state.session.orgId)
-  const navigateToNextPage = () => {
+  const navigateToNextPage = (event) => {
+    event.preventDefault()
     if (postcode) {
       navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
     } else {

@@ -94,7 +94,8 @@ export default function ManageDuplicateLocationsPage () {
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     // Might change but if there are still locations left go back to the options page
     navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
       state: {

@@ -372,7 +372,7 @@ export default function LocationInformationPage () {
                 )}
               </div>
               <div className='govuk-!-margin-bottom-1'>
-                {!additionalData.keywords && (
+                {(!keywords || keywords.length === 0) && (
                   <Link
                     className='govuk-link'
                     to={

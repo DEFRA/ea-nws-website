@@ -420,7 +420,7 @@ const listContacts = async (orgId) => {
   await Promise.all(
     contactKeys.map(async (key) => {
       const contact = await getJsonData(key)
-      contactArr.push(contact)
+      contact && contactArr.push(contact)
     })
   )
   return contactArr

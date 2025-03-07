@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setSigninType } from '../../../common/redux/userSlice'
 
-export default function ManageOrganisationDetailsPage () {
+export default function ManageOrganisationDetailsPage() {
   const dispatch = useDispatch()
-  const orgDetails = useSelector((state) => state?.session?.organization) || null
+  const orgDetails =
+    useSelector((state) => state?.session?.organization) || null
   const formattedOrg = JSON.parse(orgDetails?.description)
 
   useEffect(() => {
@@ -16,11 +17,12 @@ export default function ManageOrganisationDetailsPage () {
 
   return (
     <>
-
       <main className='govuk-main-wrapper'>
         <div Name='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
-            <h1 className='govuk-heading-l'>Manage your organisation's details</h1>
+            <h1 className='govuk-heading-l'>
+              Manage your organisation's details
+            </h1>
 
             <p className='govuk-!-margin-top-3'>
               To change these details, email us at{' '}
@@ -81,7 +83,9 @@ export default function ManageOrganisationDetailsPage () {
                   Name
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  {formattedOrg?.alternativeContact?.firstName + ' ' + formattedOrg?.alternativeContact?.lastName}
+                  {formattedOrg?.alternativeContact?.firstName +
+                    ' ' +
+                    formattedOrg?.alternativeContact?.lastName}
                 </td>
               </tr>
               <tr className='govuk-table__row'>
@@ -115,11 +119,12 @@ export default function ManageOrganisationDetailsPage () {
             </h2>
             <p>
               You'll need to email us at{' '}
-              <Link className='govuk-link'>{email}</Link>
-              {' '} to delete your account.
+              <Link className='govuk-link'>{email}</Link> to delete your
+              account.
             </p>
             <p>
-              Tell us the reason why you’d like to delete your account in your email.
+              Tell us the reason why you’d like to delete your account in your
+              email.
             </p>
           </div>
         </div>

@@ -200,21 +200,18 @@ export default function LocationMessagesPage () {
   }, [withinAreas, floodCounts])
 
   useEffect(() => {
-    if (withinAreas.length > 0) {
+    if (floodAreasInputs.length > 0) {
       const alertsArray = []
-      for (const area of withinAreas) {
+      for (const area of floodAreasInputs) {
         const typeMap = {
-          'Flood Warning': ['Flood warnings', 'Severe flood warnings'],
-          'Flood Warning Groundwater': ['Flood warnings', 'Severe flood warnings'],
-          'Flood Warning Rapid Response': ['Flood warnings', 'Severe flood warnings'],
-          'Flood Alert': ['Flood alerts'],
-          'Flood Alert Groundwater': ['Flood alerts']
+          'Flood warning area': ['Flood warnings', 'Severe flood warnings'],
+          'Flood alert area': ['Flood alerts']
         }
-        alertsArray.push(...(typeMap[area.properties.category] || []))
+        alertsArray.push(...(typeMap[area.areaType] || []))
       }
       setAvailableAlerts(alertsArray)
     }
-  }, [withinAreas])
+  }, [floodAreasInputs])
 
   useEffect(() => {
     if ((hasFetchedArea) || (floodAreasInputs.length > 0)) {
@@ -282,26 +279,30 @@ export default function LocationMessagesPage () {
       const updateData = { authToken, orgId, location: locationToUpdate }
       await backendCall(updateData, 'api/location/update', navigate)
 
-      const registerData = {
-        authToken,
-        locationId: locationToUpdate.id,
-        partnerId,
-        params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
-          channelMobileAppEnabled: true,
-          partnerCanView: true,
-          partnerCanEdit: true,
-          alertTypes: alertTypesDispatch
-        }
-      }
+      const locationIDsToUpdate = [locationToUpdate.id, ...childrenIDs.filter((child) => child?.id).map((child) => child.id)]
 
-      await backendCall(
-        registerData,
-        'api/location/update_registration',
-        navigate
-      )
+      for (const locationID of locationIDsToUpdate) {
+        const registerData = {
+          authToken,
+          locationId: locationID,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: alertTypesDispatch
+          }
+        }
+  
+        await backendCall(
+          registerData,
+          'api/location/update_registration',
+          navigate
+        )
+      }
     }
   }
 

@@ -25,7 +25,7 @@ export default function LocationAddConfirmPage () {
       navigate
     )
     if (!errorMessage) {
-      navigate(orgManageLocationsUrls.view.dashboard, {
+      navigate(orgManageLocationsUrls.add.contactLinkInfo, {
         state: {
           added: data.valid
         }

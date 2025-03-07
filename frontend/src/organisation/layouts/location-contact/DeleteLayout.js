@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -17,11 +17,9 @@ export default function DeleteLayout () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const isLocation = location.pathname.includes(orgManageLocationsUrls.delete)
-  const idToDelete = useSelector((state) =>
-    isLocation
-      ? state.session.currentLocation.id
-      : state.session.orgCurrentContact.id
-  )
+  const contactId = useSelector((state) => state.session.orgCurrentContact.id)
+  const currentLocation = useSelector((state) => state.session.currentLocation)
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
   const nameToDelete = useSelector((state) =>
     isLocation
       ? getLocationAdditionals(state).locationName
@@ -30,11 +28,50 @@ export default function DeleteLayout () {
         state.session.orgCurrentContact.lastname
   )
   const [error, setError] = useState(false)
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
+
+  const unregisterLocations = async (idsToDelete) => {
+    for (const locationID of idsToDelete) {
+      const unregisterData = {
+        authToken,
+        locationId: locationID,
+        partnerId
+      }
+
+      await backendCall(
+        unregisterData,
+        'api/location/unregister_from_partner',
+        navigate
+      )
+    }
+  }
+
 
   const handleDelete = async () => {
+    const idsToDelete = []
+    if (isLocation) {
+      idsToDelete.push(currentLocation.id)
+      const children = additionalData.childrenIDs
+      if (children && children.length > 0) {
+        children.forEach((child) => idsToDelete.push(child?.id))
+      }
+      await unregisterLocations(idsToDelete)
+    } else {
+      idsToDelete.push(contactId)
+    }
+
     const dataToSend = isLocation
-      ? { authToken, orgId, locationIds: [idToDelete] }
-      : { authToken, orgId, removeContactIDs: [idToDelete] }
+      ? { authToken, orgId, locationIds: idsToDelete }
+      : { authToken, orgId, removeContactIDs: idsToDelete }
 
     const { errorMessage } = await backendCall(
       dataToSend,

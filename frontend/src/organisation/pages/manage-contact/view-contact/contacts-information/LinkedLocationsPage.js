@@ -95,7 +95,7 @@ export default function LinkedLocationsPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      locationsUpdate.forEach(async function (location, idx) {
+      for (const location of locationsUpdate) {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -109,7 +109,7 @@ export default function LinkedLocationsPage () {
             location.linked_contacts.push(contactID)
           })
         }
-      })
+      }
 
       setLinkedLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)

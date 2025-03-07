@@ -18,7 +18,6 @@ import { Link } from 'react-router-dom'
 import boundaryKeyIcon from '../../../../../common/assets/images/boundary_already_added_icon.png'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
-import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
@@ -101,7 +100,7 @@ export default function LiveMap ({
     )
 
     const locations = []
-    if (locationsData) {
+    if (locationsData && !errorMessage) {
       locationsData.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
       })
@@ -152,20 +151,21 @@ export default function LiveMap ({
         'api/alert/list',
         navigate
       )
+      if (!errorMessage) {
+        // loop through live alerts - loop through all locations to find affected locations
+        for (const liveAlert of liveAlertsData?.alerts) {
+          const TA_CODE = getExtraInfo(
+            liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+            'TA_CODE'
+          )
 
-      // loop through live alerts - loop through all locations to find affected locations
-      for (const liveAlert of liveAlertsData?.alerts) {
-        const TA_CODE = getExtraInfo(
-          liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
-          'TA_CODE'
-        )
+          const severity = liveAlert.type
+          const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
+          const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
-        const severity = liveAlert.type
-        const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
-        const floodArea = await getFloodAreaByTaCode(TA_CODE)
-
-        for (const location of locations) {
-          processLocation(location, floodArea, severity, updatedTime)
+          for (const location of locations) {
+            processLocation(location, floodArea, severity, updatedTime)
+          }
         }
       }
     } else {
@@ -334,11 +334,11 @@ export default function LiveMap ({
     iconAnchor: [12, 41]
   })
 
-  const floodWarningRemovedMarker = L.icon({
+  /* const floodWarningRemovedMarker = L.icon({
     iconUrl: floodWarningRemovedIcon,
     iconSize: [45, 45],
     iconAnchor: [12, 41]
-  })
+  }) */
 
   async function getApiKey () {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
@@ -536,54 +536,56 @@ export default function LiveMap ({
 
   return (
     <>
-      {loading ? (
-        <>
-          <LoadingSpinner />
-        </>
-      ) : (
-        <>
-          {showFloodInformationData && (
-            <FloodDataInformationPopup
-              locationsFloodInformation={locationsFloodInformation}
-              onClose={() => {
-                setShowFloodInformationData(false)
-                setLocationsFloodInformation([])
-              }}
-            />
-          )}
-
-          <MapContainer
-            center={[52.7152, -1.17349]}
-            zoom={7}
-            zoomControl={false}
-            attributionControl={false}
-            minZoom={7}
-            maxBounds={maxBounds}
-            scrollWheelZoom={!isDisabled}
-            className='live-map-container'
-            style={{
-              filter: isDisabled ? 'grayscale(100%)' : 'none'
-            }}
-          >
-            <FeatureTracker />
-            {isDisabled && (
-              <div className='live-map-disabled'>
-                <Link
-                  to={orgManageLocationsUrls.add.options}
-                  className='govuk-link govuk-!-font-size-19'
-                >
-                  Add locations
-                </Link>
-              </div>
+      {loading
+        ? (
+          <>
+            <LoadingSpinner />
+          </>
+          )
+        : (
+          <>
+            {showFloodInformationData && (
+              <FloodDataInformationPopup
+                locationsFloodInformation={locationsFloodInformation}
+                onClose={() => {
+                  setShowFloodInformationData(false)
+                  setLocationsFloodInformation([])
+                }}
+              />
             )}
-            {osmTileLayer}
-            {apiKey && tileLayerWithHeader}
-            {!isDisabled && <ZoomControl position='bottomright' />}
-            <ZoomTracker />
-            {/* locations affected by live flood alert areas */}
-            {showAlertLocations && (
-              <>
-                {alertPoints.length > 0 &&
+
+            <MapContainer
+              center={[52.7152, -1.17349]}
+              zoom={7}
+              zoomControl={false}
+              attributionControl={false}
+              minZoom={7}
+              maxBounds={maxBounds}
+              scrollWheelZoom={!isDisabled}
+              className='live-map-container'
+              style={{
+                filter: isDisabled ? 'grayscale(100%)' : 'none'
+              }}
+            >
+              <FeatureTracker />
+              {isDisabled && (
+                <div className='live-map-disabled'>
+                  <Link
+                    to={orgManageLocationsUrls.add.options}
+                    className='govuk-link govuk-!-font-size-19'
+                  >
+                    Add locations
+                  </Link>
+                </div>
+              )}
+              {osmTileLayer}
+              {apiKey && tileLayerWithHeader}
+              {!isDisabled && <ZoomControl position='bottomright' />}
+              <ZoomTracker />
+              {/* locations affected by live flood alert areas */}
+              {showAlertLocations && (
+                <>
+                  {alertPoints.length > 0 &&
                   alertPoints.map((alertPoint, index) => (
                     <Marker
                       key={index}
@@ -607,7 +609,7 @@ export default function LiveMap ({
                     </Marker>
                   ))}
 
-                {alertFloodAreas.length > 0 &&
+                  {alertFloodAreas.length > 0 &&
                   zoomLevel >= 12 &&
                   alertFloodAreas.map((floodArea, index) => (
                     <GeoJSON
@@ -616,12 +618,12 @@ export default function LiveMap ({
                       style={{ color: '#ffa200' }}
                     />
                   ))}
-              </>
-            )}
-            {/* locations affected by live flood warning areas */}
-            {showWarningLocations && (
-              <>
-                {warningPoints.length > 0 &&
+                </>
+              )}
+              {/* locations affected by live flood warning areas */}
+              {showWarningLocations && (
+                <>
+                  {warningPoints.length > 0 &&
                   warningPoints.map((warningPoint, index) => (
                     <Marker
                       key={index}
@@ -645,7 +647,7 @@ export default function LiveMap ({
                     </Marker>
                   ))}
 
-                {warningFloodAreas.length > 0 &&
+                  {warningFloodAreas.length > 0 &&
                   zoomLevel >= 12 &&
                   warningFloodAreas.map((floodArea, index) => (
                     <GeoJSON
@@ -654,12 +656,12 @@ export default function LiveMap ({
                       style={{ color: '#f70202' }}
                     />
                   ))}
-              </>
-            )}
-            {/* locations affected by live flood severe warning areas */}
-            {showSevereLocations && (
-              <>
-                {severePoints.length > 0 &&
+                </>
+              )}
+              {/* locations affected by live flood severe warning areas */}
+              {showSevereLocations && (
+                <>
+                  {severePoints.length > 0 &&
                   severePoints.map((severePoint, index) => (
                     <Marker
                       key={index}
@@ -683,7 +685,7 @@ export default function LiveMap ({
                     </Marker>
                   ))}
 
-                {severeFloodAreas.length > 0 &&
+                  {severeFloodAreas.length > 0 &&
                   zoomLevel >= 12 &&
                   severeFloodAreas.map((floodArea, index) => (
                     <GeoJSON
@@ -692,77 +694,77 @@ export default function LiveMap ({
                       style={{ color: '#f70202' }}
                     />
                   ))}
+                </>
+              )}{' '}
+              {/* boundary's or shape files uploaded that are affected by live flood areas */}
+              {shapes.map((shape, index) => (
+                <GeoJSON
+                  key={index}
+                  data={shape}
+                  onEachFeature={onEachShapeFeature}
+                />
+              ))}
+            </MapContainer>
+
+            {locationsAffected.length > 0 && (
+              <>
+                <LiveMapKey /> <br />
               </>
-            )}{' '}
-            {/* boundary's or shape files uploaded that are affected by live flood areas */}
-            {shapes.map((shape, index) => (
-              <GeoJSON
-                key={index}
-                data={shape}
-                onEachFeature={onEachShapeFeature}
-              />
-            ))}
-          </MapContainer>
+            )}
 
-          {locationsAffected.length > 0 && (
-            <>
-              <LiveMapKey /> <br />
-            </>
-          )}
-
-          {locationsAffected.length > 0 && locationsAffected.length <= 20 && (
-            <>
-              <h3 class='govuk-heading-s'>Locations affected</h3>
-              {locationsAffected
-                .reduce((rows, location, index) => {
-                  if (index % 2 === 0) {
-                    rows.push([location]) // Start a new row
-                  } else {
-                    rows[rows.length - 1].push(location) // Add to the last row
-                  }
-                  return rows
-                }, [])
-                .map((row, rowIndex) => (
-                  <div
-                    className='govuk-grid-row govuk-!-margin-bottom-3'
-                    key={rowIndex}
-                  >
-                    {row.map((location, colIndex) => (
-                      <div
-                        className='govuk-grid-column-one-half'
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px'
-                        }}
-                        key={colIndex}
-                      >
-                        <img
-                          src={getLocationsAffectedFloodIcon(
-                            location.properties.floodData.type
-                          )}
-                          alt='Flood Icon'
+            {locationsAffected.length > 0 && locationsAffected.length <= 20 && (
+              <>
+                <h3 class='govuk-heading-s'>Locations affected</h3>
+                {locationsAffected
+                  .reduce((rows, location, index) => {
+                    if (index % 2 === 0) {
+                      rows.push([location]) // Start a new row
+                    } else {
+                      rows[rows.length - 1].push(location) // Add to the last row
+                    }
+                    return rows
+                  }, [])
+                  .map((row, rowIndex) => (
+                    <div
+                      className='govuk-grid-row govuk-!-margin-bottom-3'
+                      key={rowIndex}
+                    >
+                      {row.map((location, colIndex) => (
+                        <div
+                          className='govuk-grid-column-one-half'
                           style={{
-                            width: '55px',
-                            height: '40px',
-                            flexShrink: 0
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px'
                           }}
-                        />
-                        <Link
-                          onClick={() =>
-                            viewFloodInformationData(location.properties)}
-                          style={{ flex: 1 }}
+                          key={colIndex}
                         >
-                          {location.properties.floodData.name}
-                        </Link>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-            </>
+                          <img
+                            src={getLocationsAffectedFloodIcon(
+                              location.properties.floodData.type
+                            )}
+                            alt='Flood Icon'
+                            style={{
+                              width: '55px',
+                              height: '40px',
+                              flexShrink: 0
+                            }}
+                          />
+                          <Link
+                            onClick={() =>
+                              viewFloodInformationData(location.properties)}
+                            style={{ flex: 1 }}
+                          >
+                            {location.properties.floodData.name}
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+              </>
+            )}
+          </>
           )}
-        </>
-      )}
     </>
   )
 }

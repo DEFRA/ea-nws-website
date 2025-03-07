@@ -12,7 +12,7 @@ const wfsCallWithFilter = async (type, property, value) => {
     request: 'GetFeature',
     typename: type,
     srsname: 'EPSG:4326',
-    filter: filter,
+    filter,
     outputFormat: 'GEOJSON'
   }
   const result = await backendCall(WFSParams, 'api/wfs')

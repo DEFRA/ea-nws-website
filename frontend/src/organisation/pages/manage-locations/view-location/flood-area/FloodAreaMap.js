@@ -55,8 +55,6 @@ export default function FloodAreaMap ({
 
   // Display locations with alerts
   const displayLocationsWithAlerts = (location) => {
-    const { latitude, longitude } = location.coordinates
-    const isValidLocation = latitude && longitude
     const isInFloodArea =
       showLocationsWithinFloodAreas && location?.within === true
     const isOutsideFloodArea =
@@ -67,11 +65,11 @@ export default function FloodAreaMap ({
 
   const [apiKey, setApiKey] = useState(null)
   const alertArea = categoryToType(targetArea.properties.category) === 'alert' && targetArea
-  const warningArea =  categoryToType(targetArea.properties.category) === 'warning' && targetArea
+  const warningArea = categoryToType(targetArea.properties.category) === 'warning' && targetArea
   const [mapCenter, setMapCenter] = useState({
-          lat: initialPosition[0],
-          lng: initialPosition[1]
-        }
+    lat: initialPosition[0],
+    lng: initialPosition[1]
+  }
   )
   const [zoomLevel, setZoomLevel] = useState(initialZoom)
 
@@ -221,36 +219,41 @@ export default function FloodAreaMap ({
 
   const LocationInformation = () => {
     const formattedAddress = clickedLocation ? clickedLocation.address?.split(',') : ''
-    const title = clickedLocation ?
-    <Link
-        onClick={(e) => viewLocation(e, clickedLocation)}
-      >
-        {clickedLocation.additionals.locationName}
-      </Link>
+    const title = clickedLocation
+      ? (
+        <Link
+          onClick={(e) => viewLocation(e, clickedLocation)}
+        >
+          {clickedLocation.additionals.locationName}
+        </Link>
+        )
       : `${locations.length} location${locations.length === 1 ? ' is' : 's are'} in or linked to this flood ${categoryToType(targetArea.properties.category)} area`
-    const content = clickedLocation ?
-      <span style={{ padding: '0 15px 15px 15px', display: 'block'}}>
-      {clickedLocation.additionals.other.location_type && <p className='govuk-body'>{clickedLocation.additionals.other.location_type}</p>}
-      <p className='govuk-body'>
-        {formattedAddress.map((line, index) => {
-                    return (
-                      <span key={index}>
-                        {line}
-                        <br />
-                      </span>
-                    )
-                  })}
-      </p>
-      </span>
-      :
-      <span style={{ padding: '0 15px 15px 15px', display: 'block'}}>
-      <Link
-        onClick={(e) => onTAClick(e, targetArea.properties.TA_Name)}
-        className='govuk-body govuk-linkgovuk-!-margin-0'
-      >
-        {targetArea.properties.TA_Name}
-      </Link>
-      </span>
+    const content = clickedLocation
+      ? (
+        <span style={{ padding: '0 15px 15px 15px', display: 'block' }}>
+          {clickedLocation.additionals.other.location_type && <p className='govuk-body'>{clickedLocation.additionals.other.location_type}</p>}
+          <p className='govuk-body'>
+            {formattedAddress.map((line, index) => {
+              return (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              )
+            })}
+          </p>
+        </span>
+        )
+      : (
+        <span style={{ padding: '0 15px 15px 15px', display: 'block' }}>
+          <Link
+            onClick={(e) => onTAClick(e, targetArea.properties.TA_Name)}
+            className='govuk-body govuk-linkgovuk-!-margin-0'
+          >
+            {targetArea.properties.TA_Name}
+          </Link>
+        </span>
+        )
     return (
       <div style={
         {
@@ -260,43 +263,45 @@ export default function FloodAreaMap ({
           zIndex: 1000,
           backgroundColor: 'white',
           width: '400px'
+        }
+}
+      >
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
         }}
         >
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <span
-              className='govuk-heading-s govuk-!-margin-0'
-              style={{padding: '15px'}}
-            >
-              {title}
-            </span>
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={() => {
-                setLocationInformationActive(false)
-                setClickedLocation(null)
-              }}
-            >
-              <rect width="40" height="40" fill="white"/>
-              <g clip-path="url(#clip0_5588_113377)">
-              <path d="M20 18.6L25.6 13L27 14.4L21.4 20L27 25.6L25.6 27L20 21.4L14.4 27L13 25.6L18.6 20L13 14.4L14.4 13L20 18.6Z" fill="#0B0C0C" stroke="#0B0C0C" stroke-width="0.1"/>
-              </g>
-              <defs>
-              <clipPath id="clip0_5588_113377">
-              <rect width="14" height="14" fill="white" transform="translate(13 13)"/>
+          <span
+            className='govuk-heading-s govuk-!-margin-0'
+            style={{ padding: '15px' }}
+          >
+            {title}
+          </span>
+          <svg
+            width='40'
+            height='40'
+            viewBox='0 0 40 40'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+            onClick={() => {
+              setLocationInformationActive(false)
+              setClickedLocation(null)
+            }}
+          >
+            <rect width='40' height='40' fill='white' />
+            <g clip-path='url(#clip0_5588_113377)'>
+              <path d='M20 18.6L25.6 13L27 14.4L21.4 20L27 25.6L25.6 27L20 21.4L14.4 27L13 25.6L18.6 20L13 14.4L14.4 13L20 18.6Z' fill='#0B0C0C' stroke='#0B0C0C' stroke-width='0.1' />
+            </g>
+            <defs>
+              <clipPath id='clip0_5588_113377'>
+                <rect width='14' height='14' fill='white' transform='translate(13 13)' />
               </clipPath>
-              </defs>
-            </svg>
-          </div>
-          {content}
+            </defs>
+          </svg>
         </div>
+        {content}
+      </div>
     )
   }
 
@@ -313,21 +318,21 @@ export default function FloodAreaMap ({
           cursor: 'pointer',
           border: 'none',
           fontSize: '16px',
-          fontFamily: '"GDS Transport", arial, sans-serif',
+          fontFamily: '"GDS Transport", arial, sans-serif'
         }}
         onClick={handleCloseMap}
       >
         <span className='govuk-!-margin-right-2'>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_5588_113337)">
-        <path d="M4.828 11.0006L12.314 18.4856L10.899 19.8996L1 10.0006L10.899 0.101562L12.314 1.51556L4.828 9.00056H19V11.0006H4.828Z" fill="#0B0C0C" stroke="#0B0C0C" stroke-width="0.1"/>
-        </g>
-        <defs>
-        <clipPath id="clip0_5588_113337">
-        <rect width="20" height="20" fill="white"/>
-        </clipPath>
-        </defs>
-        </svg>
+          <svg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <g clip-path='url(#clip0_5588_113337)'>
+              <path d='M4.828 11.0006L12.314 18.4856L10.899 19.8996L1 10.0006L10.899 0.101562L12.314 1.51556L4.828 9.00056H19V11.0006H4.828Z' fill='#0B0C0C' stroke='#0B0C0C' stroke-width='0.1' />
+            </g>
+            <defs>
+              <clipPath id='clip0_5588_113337'>
+                <rect width='20' height='20' fill='white' />
+              </clipPath>
+            </defs>
+          </svg>
         </span>
 
         Exit map
@@ -336,6 +341,28 @@ export default function FloodAreaMap ({
   }
 
   const showWarningAreas = (feature, layer) => {
+    layer.setStyle({
+      opacity: 0.4,
+      color: '#E1414B',
+      weight: 2,
+      fillOpacity: 0.4,
+      stroke: false
+    })
+    layer.on({
+      click: () => {
+        setClickedLocation(false)
+        setLocationInformationActive(true)
+        layer.setStyle({
+          opacity: 1,
+          fillColor: '#E1414B',
+          fillOpacity: 0.4,
+          color: '#000000',
+          stroke: true,
+          weight: 3
+
+        })
+      },
+      mouseout: () => {
         layer.setStyle({
           opacity: 0.4,
           color: '#E1414B',
@@ -343,34 +370,33 @@ export default function FloodAreaMap ({
           fillOpacity: 0.4,
           stroke: false
         })
-        layer.on({
-          click: () => {
-            setClickedLocation(false)
-            setLocationInformationActive(true)
-            layer.setStyle({
-              opacity: 1,
-              fillColor: '#E1414B',
-              weight: 2,
-              fillOpacity: 0.4,
-              color: '#000000',
-              stroke: true,
-              weight: 3
-
-            })
-          },
-          mouseout: () => {
-            layer.setStyle({
-              opacity: 0.4,
-              color: '#E1414B',
-              weight: 2,
-              fillOpacity: 0.4,
-              stroke: false
-            })
-          }
-        })
+      }
+    })
   }
 
   const showAlertAreas = (feature, layer) => {
+    layer.setStyle({
+      opacity: 0.4,
+      color: '#ED9E4A',
+      weight: 2,
+      fillOpacity: 0.4,
+      stroke: false
+    })
+    layer.on({
+      click: () => {
+        setClickedLocation(false)
+        setLocationInformationActive(true)
+        layer.setStyle({
+          opacity: 1,
+          fillColor: '#ED9E4A',
+          fillOpacity: 0.4,
+          color: '#000000',
+          stroke: true,
+          weight: 3
+
+        })
+      },
+      mouseout: () => {
         layer.setStyle({
           opacity: 0.4,
           color: '#ED9E4A',
@@ -378,34 +404,9 @@ export default function FloodAreaMap ({
           fillOpacity: 0.4,
           stroke: false
         })
-        layer.on({
-          click: () => {
-            setClickedLocation(false)
-            setLocationInformationActive(true)
-            layer.setStyle({
-              opacity: 1,
-              fillColor: '#ED9E4A',
-              weight: 2,
-              fillOpacity: 0.4,
-              color: '#000000',
-              stroke: true,
-              weight: 3
-
-            })
-          },
-          mouseout: () => {
-            layer.setStyle({
-              opacity: 0.4,
-              color: '#ED9E4A',
-              weight: 2,
-              fillOpacity: 0.4,
-              stroke: false
-            })
-          }
-        })
-    }
-  
-
+      }
+    })
+  }
 
   const onEachShapefileFeature = (feature, layer, location) => {
     layer.options.className = 'shapefile-area-pattern-fill'
@@ -448,21 +449,19 @@ export default function FloodAreaMap ({
                   .map((location, index) => (
                     <div key={index}>
                       {location?.coordinates &&
-                      <Marker
-                        position={[
-                          location.coordinates.latitude,
-                          location.coordinates.longitude
-                        ]}
-                        icon={clickedLocation ? ClickedIcon : DefaultIcon}
-                        eventHandlers={{
-                          click: () => {
-                            setClickedLocation(location)
-                            setLocationInformationActive(true)
-                          }
-                        }}
-                      >
-                      </Marker>
-                      }
+                        <Marker
+                          position={[
+                            location.coordinates.latitude,
+                            location.coordinates.longitude
+                          ]}
+                          icon={clickedLocation ? ClickedIcon : DefaultIcon}
+                          eventHandlers={{
+                            click: () => {
+                              setClickedLocation(location)
+                              setLocationInformationActive(true)
+                            }
+                          }}
+                        />}
                       {location?.geometry?.geoJson && (
                         <GeoJSON
                           data={location.geometry.geoJson}

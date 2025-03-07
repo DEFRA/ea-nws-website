@@ -60,21 +60,20 @@ export default function FloodAreaMapKey ({
     </div>
   )
 
-
   return (
-<>    
-{/* Flood areas */}
+    <>
+      {/* Flood areas */}
       <div>
-      <span className='govuk-heading-m govuk-!-font-size-24 govuk-!-margin-bottom-2'>
-        Key
-      </span>
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
-      <div className='govuk-heading-m govuk-!-font-size-16 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
-        Flood areas
-      </div>
+        <span className='govuk-heading-m govuk-!-font-size-24 govuk-!-margin-bottom-2'>
+          Key
+        </span>
+        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+        <div className='govuk-heading-m govuk-!-font-size-16 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
+          Flood areas
+        </div>
         <div className='locations-map-key govuk-!-margin-top-2'>
           <div className='org-flood-warning-item'>
-            <span className='org-flood-warning-square warning-square' style={{alignSelf: 'flex-start'}} />
+            <span className='org-flood-warning-square warning-square' style={{ alignSelf: 'flex-start' }} />
             <span className='org-flood-warning-text'>
               Flood warning and <br />
               severe area
@@ -84,11 +83,11 @@ export default function FloodAreaMapKey ({
         </div>
         <div className='locations-map-key govuk-!-margin-top-2'>
           <div className='org-flood-alert-item'>
-            <div className='org-flood-warning-square alert-square' style={{alignSelf: 'flex-start'}} />
+            <div className='org-flood-warning-square alert-square' style={{ alignSelf: 'flex-start' }} />
             <span className='org-flood-warning-text'>Flood alert area</span>
           </div>
         </div>
-    </div>
+      </div>
 
       {/* Locations */}
       {locations && (
@@ -100,7 +99,7 @@ export default function FloodAreaMapKey ({
           {locationsOutsideFloodAreas()}
 
           <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
-          <div style={{marginTop: 'auto'}}>
+          <div style={{ marginTop: 'auto' }}>
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
               This is not a live flood map
             </span>

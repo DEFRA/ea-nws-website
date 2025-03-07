@@ -5,6 +5,7 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
+import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
   setNotFoundLocations,
   setNotInEnglandLocations
@@ -12,9 +13,8 @@ import {
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
-import LocationInformation from './duplicate-location-components/LocationInformation'
-import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { useVerifyLocationInFloodArea } from '../../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
+import LocationInformation from './duplicate-location-components/LocationInformation'
 
 export default function DuplicateLocationComparisonPage () {
   const location = useLocation()
@@ -92,13 +92,6 @@ export default function DuplicateLocationComparisonPage () {
           )
         } else if (newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_POLYGON ||
                    newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_LINE) {
-          const dataToSend = { orgId }
-          const { contactsData } = await backendCall(
-            dataToSend,
-            'api/elasticache/list_contacts',
-            navigate
-          )
-
           verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
         } else {
           navigate(orgManageLocationsUrls.add.contactLinkInfo)

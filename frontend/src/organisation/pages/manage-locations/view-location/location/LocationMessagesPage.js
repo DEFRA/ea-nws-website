@@ -296,7 +296,7 @@ export default function LocationMessagesPage () {
             alertTypes: alertTypesDispatch
           }
         }
-  
+
         await backendCall(
           registerData,
           'api/location/update_registration',

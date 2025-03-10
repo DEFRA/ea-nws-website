@@ -3,9 +3,12 @@ import ConfirmLocationLayout from '../../../../layouts/location/add-or-edit-loca
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 
-export default async function ConfirmShapefilePolygonPage () {
+export default function ConfirmShapefilePolygonPage () {
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
-  const navigateToNextPage = await verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
+
+  const navigateToNextPage = async () => {
+    await verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
+  }
 
   return (
     <ConfirmLocationLayout

@@ -64,7 +64,7 @@ export default function DuplicateLocationComparisonPage () {
     } else {
       // update location then navigate
       if (existingOrNew === 'New') {
-        const locationToUpdate = webToGeoSafeLocation(newLocation)
+        const locationToUpdate = webToGeoSafeLocation(JSON.parse(JSON.stringify(newLocation)))
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id
         const dataToSend = { authToken, orgId, location: locationToUpdate }
@@ -93,7 +93,7 @@ export default function DuplicateLocationComparisonPage () {
           )
         } else if (newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_POLYGON ||
                    newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_LINE) {
-          verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
+          await verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
         } else {
           navigate(orgManageLocationsUrls.add.contactLinkInfo)
         }

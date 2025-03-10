@@ -29,7 +29,8 @@ export default function AddressLayout ({
     }
   }, [address])
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (error) return
     dispatch(setCurrentLocationAddress(address))
     navigateToNextPage()

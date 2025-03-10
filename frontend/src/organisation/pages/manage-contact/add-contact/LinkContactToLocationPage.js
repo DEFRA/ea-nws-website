@@ -1,13 +1,13 @@
 import React from 'react'
-import { useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { setLinkContacts } from '../../../../common/redux/userSlice'
-import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
-import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import store from '../../../../common/redux/store'
+import { setLinkContacts } from '../../../../common/redux/userSlice'
+import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LinkContactToLocationPage () {
   const navigate = useNavigate()
@@ -15,7 +15,8 @@ export default function LinkContactToLocationPage () {
 
   const currentContact = store.getState().session.orgCurrentContact
 
-  const linkToLocations = () => {
+  const linkToLocations = (event) => {
+    event.preventDefault()
     const linkContacts = [currentContact.id]
     dispatch(setLinkContacts(linkContacts))
     navigate(orgManageLocationsUrls.view.dashboard, {

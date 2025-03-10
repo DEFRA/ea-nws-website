@@ -5,6 +5,7 @@ import floodWarningIcon from '../../../../../../common/assets/images/flood_warni
 import floodSevereWarningIcon from '../../../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../../../common/enums/AlertType'
+import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { getAdditional } from '../../../../../../common/redux/userSlice'
 
 export default function FloodReportsTable({
@@ -122,17 +123,27 @@ export default function FloodReportsTable({
   const [locationsFloodInformation, setLocationsFloodInformation] = useState([])
 
   const viewFloodInformationData = (location) => {
-    console.log('location selected', location)
     setShowFloodInformationData(true)
     setLocationsFloodInformation(findAllFloodAreasAffectingLocation(location))
   }
 
   const findAllFloodAreasAffectingLocation = (data) => {
-    const locations = [...locationsAffected]
-
-    return locations
-      .filter((location) => location.id === data.id)
-      .map((location) => location)
+    // adjust grouped locations into a single location for each flood area entry in the array
+    return [...locationsAffected]
+      .filter((location) => location.locationData.id === data.locationData.id)
+      .flatMap((location) => {
+        if (location.floodData.length === 1) {
+          return {
+            locationData: location.locationData,
+            floodData: location.floodData[0]
+          }
+        } else {
+          return location.floodData.map((floodEntry) => ({
+            locationData: location.locationData,
+            floodData: floodEntry
+          }))
+        }
+      })
   }
 
   return (
@@ -146,10 +157,7 @@ export default function FloodReportsTable({
           }}
         />
       )}
-      <p
-        className='govuk-!-margin-bottom-3'
-        style={{ display: 'flex', color: '#505a5f' }}
-      >
+      <p className='govuk-!-margin-bottom-3 warnings-reports-paragraph'>
         {filteredLocationsAffected.length !== locationsAffected.length &&
           'Showing ' + filteredLocationsAffected.length + ' of '}
         {locationsAffected.length}{' '}
@@ -267,12 +275,16 @@ export default function FloodReportsTable({
         </thead>
         <tbody className='govuk-table__body'>
           {displayedLocationsAffected.map((location, index) => {
+            const locationType =
+              location.locationData.additionals.other.location_data_type
             return (
               <tr key={index} className='govuk-table__row'>
                 <td className='govuk-table__cell'>
-                  <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
-                    {location.additionals.locationName}
-                  </p>
+                  {locationType != LocationDataType.X_AND_Y_COORDS && (
+                    <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
+                      {location.locationData.additionals.locationName}
+                    </p>
+                  )}
                   <Link
                     className='govuk-link'
                     onClick={(e) => {
@@ -280,52 +292,42 @@ export default function FloodReportsTable({
                       viewFloodInformationData(location)
                     }}
                   >
-                    {location.floodData.name}
+                    {locationType === LocationDataType.X_AND_Y_COORDS
+                      ? location.locationData.address
+                      : location.floodData[0].name}
                   </Link>
                 </td>
                 <td className='govuk-table__cell'>
                   <div className='reports-table-icon-position'>
-                    {location.floodData.types.map((type, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.5em',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          marginBottom: '0.5em'
-                        }}
-                      >
-                        <img
-                          src={warningTypeDisplay[type].icon}
-                          alt='Flood warning icon'
-                          style={{ width: '2.5em', height: '2.5em' }}
-                        />
-                        <span
-                          style={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis'
-                          }}
-                        >
-                          {warningTypeDisplay[type].text}
-                        </span>
-                      </div>
-                    ))}
+                    {location.floodData.map((floodArea, index) => {
+                      return (
+                        <div key={index} className='warnings-table-item'>
+                          <img
+                            src={warningTypeDisplay[floodArea.type].icon}
+                            alt='Flood warning icon'
+                            className='warnings-table-icon'
+                          />
+                          <span className='warnings-table-text'>
+                            {warningTypeDisplay[floodArea.type].text}
+                          </span>
+                        </div>
+                      )
+                    })}
                   </div>
                 </td>{' '}
                 <td className='govuk-table__cell'>
-                  {location.additionals.other.location_type || '-'}
+                  {location.locationData.additionals.other.location_type || '-'}
                 </td>
                 <td className='govuk-table__cell'>
-                  {location.additionals.other.business_criticality || '-'}
+                  {location.locationData.additionals.other
+                    .business_criticality || '-'}
                 </td>
                 <td className='govuk-table__cell'>
-                  {location.linked_contacts?.length}
+                  {location.locationData.linked_contacts?.length}
                 </td>
+                {/* should this get the most recent flood updated time? */}
                 <td className='govuk-table__cell'>
-                  {location.floodData.updatedTime}
+                  {location.floodData[0].updatedTime}
                 </td>
               </tr>
             )

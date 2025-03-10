@@ -71,7 +71,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
     return dataValid
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     const dataValid = validateData()
     if (dataValid) {
       dispatch(setOrgCurrentContactFirstName(firstname))

@@ -175,7 +175,8 @@ export default function ContactChannelsLayout ({
     return dataValid
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     const dataValid = validateData()
     if (dataValid) {
       const newEmails = []

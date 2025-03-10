@@ -70,7 +70,7 @@ export default function TermsAndConditionsPage () {
               <p>
                 The Environment Agency manages the flood warning systems. Our
                 {' '}
-                <Link to='/privacy' target='_blank'>privacy notice (open new window)
+                <Link to='/privacy' target='_blank' style={{ cursor: 'pointer' }}>privacy notice (open new window)
                 </Link>
                 {' '}explains how we treat your personal information.
               </p>

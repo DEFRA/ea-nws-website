@@ -1139,12 +1139,14 @@
   border-color: #b1b4b6;
 }
 
+.warnings-name-filter,
 .locations-name-filter,
 .contacts-name-filter {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
+.warnings-select-filter,
 .locations-select-filter,
 .contacts-select-filter {
   padding-left: 1rem;
@@ -1154,12 +1156,14 @@
   max-height: 11rem;
 }
 
+.warnings-selected-filter-panel,
 .locations-selected-filter-panel,
 .contacts-selected-filter-panel {
   background-color: #f3f2f1;
   padding: 0.1rem 1rem 0.1rem 1.3rem;
 }
 
+.warnings-selected-filter,
 .locations-selected-filter,
 .contacts-selected-filter {
   border-style: solid;
@@ -1185,6 +1189,7 @@
   padding-bottom: 1rem;
 }
 
+.warnings-selected-filters-section,
 .locations-selected-filters-section,
 .contacts-selected-filters-section {
   display: flex;
@@ -1195,6 +1200,7 @@
   padding-top: 0.5rem;
 }
 
+.warnings-apply-filters,
 .locations-apply-filters,
 .contacts-apply-filters {
   padding-left: 1.3rem;
@@ -1222,15 +1228,21 @@
   gap: 0.3rem;
 }
 
+.warnings-selected-filter-label,
 .locations-selected-filter-label,
 .contacts-selected-filter-label {
   font-size: 16px;
 }
 
+.warnings-selected-filter-icon,
 .locations-selected-filter-icon,
 .contacts-selected-filter-icon {
   width: 1rem;
   height: 1rem;
+}
+
+.filter-label {
+  color: #1d70b8;
 }
 
 .locations-table-panel,
@@ -1243,6 +1255,31 @@
 .contacts-table-header {
   display: flex;
   color: #505a5f;
+}
+
+.warnings-reports-paragraph {
+  display: flex;
+  color: #505a5f;
+}
+
+.warnings-table-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.5em;
+}
+
+.warnings-table-icon {
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.warnings-table-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .locations-map-key {

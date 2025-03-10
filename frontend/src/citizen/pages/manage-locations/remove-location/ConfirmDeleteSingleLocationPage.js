@@ -20,7 +20,8 @@ export default function ConfirmDeleteSingleLocationPage () {
     window.history.replaceState({}, location.pathname)
   }, [location])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const data = {
       authToken: session.authToken,
       locationId: location.state.locationId,
@@ -97,7 +98,8 @@ export default function ConfirmDeleteSingleLocationPage () {
               className='govuk-body govuk-link'
               style={{
                 display: 'inline-block',
-                padding: '8px 10px 7px'
+                padding: '8px 10px 7px',
+                cursor: 'pointer'
               }}
             >
               Cancel

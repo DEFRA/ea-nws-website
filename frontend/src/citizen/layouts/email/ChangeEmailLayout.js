@@ -22,6 +22,7 @@ export default function ChangeEmailLayout ({
   const authToken = session.authToken
 
   const handleSubmit = async (event) => {
+    event.preventDefault()
     const validationError = emailValidation(email)
     setError(validationError)
     const dataToSend = { email, authToken }
@@ -98,7 +99,7 @@ export default function ChangeEmailLayout ({
                 text='Save changes'
                 onClick={handleSubmit}
               />
-              <Link to='/account' className='govuk-link inline-link'>
+              <Link to='/account' className='govuk-link inline-link' style={{ cursor: 'pointer' }}>
                 Cancel
               </Link>
               <br />

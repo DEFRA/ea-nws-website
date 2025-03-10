@@ -98,7 +98,8 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     )
   }
 
-  const handleButton = () => {
+  const handleButton = (event) => {
+    event.preventDefault()
     navigate('/signup/review/addcontact')
   }
 

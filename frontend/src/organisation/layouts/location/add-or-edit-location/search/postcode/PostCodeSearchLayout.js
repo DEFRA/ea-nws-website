@@ -23,7 +23,8 @@ export default function PostCodeSearchLayout ({
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const postCodeValidationError = postCodeValidation(postCode)
     if (!postCodeValidationError) {
       // normalise postcode

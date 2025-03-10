@@ -319,7 +319,7 @@ export default function UnmatchedLocationsDashboardLayout ({
                       'checking')
                   } locations`}
                   className='govuk-button govuk-button'
-                  onClick={() => setShowPopup(true)}
+                  onClick={(event) => {event.preventDefault(); setShowPopup(true)}}
                 />
               </div>
 

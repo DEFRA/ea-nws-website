@@ -11,7 +11,8 @@ export default function SkipConfirmLandlinePhonePage () {
     (state) => state.session.profile.unverified.homePhones[0].address
   )
 
-  function skipConfirm () {
+  function skipConfirm (event) {
+    event.preventDefault()
     navigate('/signup/accountname/add')
   }
 
@@ -35,6 +36,7 @@ export default function SkipConfirmLandlinePhonePage () {
             <Link
               to='/signup/contactpreferences/landline/validate'
               className='govuk-body govuk-link inline-link'
+              style={{ cursor: 'pointer' }}
             >
               Confirm now
             </Link>

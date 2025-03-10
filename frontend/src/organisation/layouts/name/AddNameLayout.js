@@ -19,7 +19,8 @@ export default function AddNameLayout ({
     dispatch(setSigninType('org'))
   }, [])
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     const validationError = orgNameValidation(name)
 
     if (!validationError) {

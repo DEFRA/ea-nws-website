@@ -17,7 +17,8 @@ export default function LocationAddConfirmPage () {
   const orgId = useSelector((state) => state.session.orgId)
   const [error, setError] = useState(null)
 
-  const upload = async () => {
+  const upload = async (event) => {
+    event.preventDefault()
     const dataToSend = { authToken, orgId, fileName }
     const { data, errorMessage } = await backendCall(
       dataToSend,
@@ -37,7 +38,8 @@ export default function LocationAddConfirmPage () {
     }
   }
 
-  const cancel = () => {
+  const cancel = (event) => {
+    event.preventDefault()
     navigate(-2)
   }
 

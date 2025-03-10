@@ -18,7 +18,7 @@ export default function ManageContactsPage () {
       return (
         <>
           You need to{' '}
-          <Link to='/managecontacts/validate-email' className='govuk-link'>
+          <Link to='/managecontacts/validate-email' className='govuk-link' style={{ cursor: 'pointer' }}>
             confirm the email address
           </Link>{' '}
           first
@@ -28,7 +28,7 @@ export default function ManageContactsPage () {
       return (
         <>
           You need to{' '}
-          <Link to='/managecontacts/validate-mobile' className='govuk-link'>
+          <Link to='/managecontacts/validate-mobile' className='govuk-link' style={{ cursor: 'pointer' }}>
             confirm the number
           </Link>{' '}
           first
@@ -38,7 +38,7 @@ export default function ManageContactsPage () {
     return (
       <>
         You need to{' '}
-        <Link to='/managecontacts/validate-landline' className='govuk-link'>
+        <Link to='/managecontacts/validate-landline' className='govuk-link' style={{ cursor: 'pointer' }}>
           confirm the number
         </Link>{' '}
         first

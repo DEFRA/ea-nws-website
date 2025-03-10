@@ -33,7 +33,8 @@ export default function LiveFLoodMonitoringPage() {
     setFloodData(data)
   }
 
-  const applyFilter = () => {
+  const applyFilter = (event) => {
+    event.preventDefault()
     setFilters({
       severeAreas: showSevereLocations,
       warningAreas: showWarningLocations,

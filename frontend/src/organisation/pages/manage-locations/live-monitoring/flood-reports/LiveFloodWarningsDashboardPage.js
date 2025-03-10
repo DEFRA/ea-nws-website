@@ -155,12 +155,14 @@ export default function LiveFloodWarningsDashboardPage() {
     const createLocationWithFloodData = () => {
       const updatedLocation = {
         locationData: location,
-        floodData: {
-          types: [severity],
-          name: floodArea.properties.TA_Name,
-          code: floodArea.properties.TA_CODE,
-          updatedTime
-        }
+        floodData: [
+          {
+            type: severity,
+            name: floodArea.properties.TA_Name,
+            code: floodArea.properties.TA_CODE,
+            updatedTime
+          }
+        ]
       }
 
       return updatedLocation
@@ -177,23 +179,24 @@ export default function LiveFloodWarningsDashboardPage() {
       if (turf.booleanIntersects(point, floodArea.geometry)) {
         setLocationsAffected((prevLocations) => {
           const index = prevLocations.findIndex(
-            (loc) => loc.id === updatedLocation.id
+            (loc) => loc.locationData.id === updatedLocation.locationData.id
           )
 
           if (index !== -1) {
-            const existingTypes = prevLocations[index].floodData.types
-            const updatedTypes = updatedLocation.floodData.types
+            const existingFloodData = prevLocations[index].floodData
+            const updatedFloodData = updatedLocation.floodData
 
-            // merge the types and remove duplicates using set
-            const combinedTypes = [
-              ...new Set([...existingTypes, ...updatedTypes])
-            ]
+            const mergedFloodData = [...existingFloodData, ...updatedFloodData]
 
-            prevLocations[index].floodData.types = combinedTypes
+            // remove duplicates
+            prevLocations[index].floodData = mergedFloodData.filter(
+              (item, index, self) =>
+                index === self.findIndex((f) => f.code === item.code)
+            )
 
             return prevLocations
           } else {
-            // If location doesn't exist in array, add the new entry
+            // if location doesn't exist in array, add the new entry
             return [...prevLocations, updatedLocation]
           }
         })

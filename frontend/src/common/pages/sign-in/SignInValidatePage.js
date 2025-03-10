@@ -18,13 +18,14 @@ import {
   setOrganization,
   setProfile,
   setProfileId,
-  setRegistrations
+  setRegistrations,
+  setSigninType
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function SignInValidatePage() {
+export default function SignInValidatePage () {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -75,6 +76,7 @@ export default function SignInValidatePage() {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
+          dispatch(setSigninType('org'))
         }
         dispatch(setRegistrations(data.registrations))
         dispatch(
@@ -128,59 +130,61 @@ export default function SignInValidatePage() {
 
   return (
     <>
-      {codeExpired || signUpNotComplete ? (
-        (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
+      {codeExpired || signUpNotComplete
+        ? (
+            (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
         (signUpNotComplete && (
           <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />
         ))
-      ) : (
-        <>
-          <BackLink onClick={navigateBack} />
-          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                {codeResent && (
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={'New code sent at ' + codeResentTime}
-                  />
-                )}
-                {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Confirm email address </h2>
-                <div className='govuk-body'>
-                  We've sent an email with a code to:
-                  <InsetText text={location.state.email} />
-                  <Input
-                    className='govuk-input govuk-input--width-10'
-                    name='Enter code'
-                    inputType='text'
-                    value={code}
-                    error={error}
-                    onChange={(val) => setCode(val)}
-                  />
-                  <Button
-                    className='govuk-button'
-                    text='Continue'
-                    onClick={handleSubmit}
-                  />
+          )
+        : (
+          <>
+            <BackLink onClick={navigateBack} />
+            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  {codeResent && (
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={'New code sent at ' + codeResentTime}
+                    />
+                  )}
+                  {error && <ErrorSummary errorList={[error]} />}
+                  <h2 className='govuk-heading-l'>Confirm email address </h2>
+                  <div className='govuk-body'>
+                    We've sent an email with a code to:
+                    <InsetText text={location.state.email} />
+                    <Input
+                      className='govuk-input govuk-input--width-10'
+                      name='Enter code'
+                      inputType='text'
+                      value={code}
+                      error={error}
+                      onChange={(val) => setCode(val)}
+                    />
+                    <Button
+                      className='govuk-button'
+                      text='Continue'
+                      onClick={handleSubmit}
+                    />
                   &nbsp; &nbsp;
-                  <Link
-                    onClick={navigateBack}
-                    className='govuk-link inline-link'
-                  >
-                    Enter a different email
-                  </Link>
-                  <br />
-                  <Link onClick={getNewCode} className='govuk-link'>
-                    Get a new code
-                  </Link>
+                    <Link
+                      onClick={navigateBack}
+                      className='govuk-link inline-link'
+                    >
+                      Enter a different email
+                    </Link>
+                    <br />
+                    <Link onClick={getNewCode} className='govuk-link'>
+                      Get a new code
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </main>
-        </>
-      )}
+            </main>
+          </>
+          )}
     </>
   )
 }

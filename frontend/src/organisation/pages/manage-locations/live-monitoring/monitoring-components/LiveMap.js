@@ -33,7 +33,7 @@ import { createLiveMapShapePattern } from '../../../../components/custom/FloodAr
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodDataInformationPopup from './FloodDataInformationPopup'
 
-export default function LiveMap({
+export default function LiveMap ({
   showSevereLocations,
   showWarningLocations,
   showAlertLocations,
@@ -164,11 +164,11 @@ export default function LiveMap({
       )
       if (!errorMessage) {
       // loop through live alerts - loop through all locations to find affected locations
-      for (const liveAlert of liveAlertsData?.alerts) {
-        const TA_CODE = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
-          'TA_CODE'
-        )
+        for (const liveAlert of liveAlertsData?.alerts) {
+          const TA_CODE = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+            'TA_CODE'
+          )
           const severity = liveAlert.type
           const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
           const floodArea = await getFloodAreaByTaCode(TA_CODE)
@@ -339,7 +339,7 @@ export default function LiveMap({
     iconAnchor: [12, 41]
   }) */
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -601,8 +601,7 @@ export default function LiveMap({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(alertPoint.properties)
-                          }
+                            viewFloodInformationData(alertPoint.properties)}
                         >
                           {
                             alertPoint.properties.locationData.additionals
@@ -640,8 +639,7 @@ export default function LiveMap({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(warningPoint.properties)
-                          }
+                            viewFloodInformationData(warningPoint.properties)}
                         >
                           {
                             warningPoint.properties.locationData.additionals
@@ -679,8 +677,7 @@ export default function LiveMap({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(severePoint.properties)
-                          }
+                            viewFloodInformationData(severePoint.properties)}
                         >
                           {
                             severePoint.properties.locationData.additionals
@@ -744,7 +741,7 @@ export default function LiveMap({
                             gap: '10px'
                           }}
                           key={colIndex}
-                          >
+                        >
                           <img
                             src={getLocationsAffectedFloodIcon(
                               location.properties.floodData.type

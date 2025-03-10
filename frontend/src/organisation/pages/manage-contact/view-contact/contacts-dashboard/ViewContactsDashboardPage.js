@@ -30,7 +30,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewContactsDashboardPage() {
+export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -406,51 +406,54 @@ export default function ViewContactsDashboardPage() {
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        {contacts.length === 0 ? (
-          <NoContactsDisplay />
-        ) : (
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-full'>
-              {notificationText && (
-                <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='Success'
-                  text={notificationText}
-                />
-              )}
-              <DashboardHeader
-                contacts={contacts}
-                onClickLinked={onClickLinked}
-                linkLocations={location.state?.linkLocations}
-                selectedContacts={selectedContacts}
-                onOnlyShowSelected={onOnlyShowSelected}
-                linkSource={location.state?.linkSource}
-              />
-            </div>
-            <div className='govuk-grid-column-full govuk-body'>
-              {!isFilterVisible ? (
-                <>
-                  <Button
-                    text='Open filter'
-                    className='govuk-button govuk-button--secondary inline-block'
-                    onClick={() => onOpenCloseFilter()}
+        {contacts.length === 0
+          ? (
+            <NoContactsDisplay />
+            )
+          : (
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-full'>
+                {notificationText && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={notificationText}
                   />
-                  {(!location.state ||
+                )}
+                <DashboardHeader
+                  contacts={contacts}
+                  onClickLinked={onClickLinked}
+                  linkLocations={location.state?.linkLocations}
+                  selectedContacts={selectedContacts}
+                  onOnlyShowSelected={onOnlyShowSelected}
+                  linkSource={location.state?.linkSource}
+                />
+              </div>
+              <div className='govuk-grid-column-full govuk-body'>
+                {!isFilterVisible
+                  ? (
+                    <>
+                      <Button
+                        text='Open filter'
+                        className='govuk-button govuk-button--secondary inline-block'
+                        onClick={() => onOpenCloseFilter()}
+                      />
+                      {(!location.state ||
                     !location.state.linkLocations ||
                     location.state.linkLocations.length === 0) && (
-                    <>
+                      <>
                       &nbsp; &nbsp;
-                      <ButtonMenu
-                        title='More actions'
-                        options={moreActions}
-                        onSelect={(index) => onMoreAction(index)}
-                      />
+                        <ButtonMenu
+                          title='More actions'
+                          options={moreActions}
+                          onSelect={(index) => onMoreAction(index)}
+                        />
                       &nbsp; &nbsp;
-                      <Button
-                        text='Print'
-                        className='govuk-button govuk-button--secondary inline-block'
-                        onClick={(event) => onOpenCloseFilter(event)}
-                      />
+                        <Button
+                          text='Print'
+                          className='govuk-button govuk-button--secondary inline-block'
+                          onClick={(event) => onOpenCloseFilter(event)}
+                        />
                       </>
                       )}
                       <ContactsTable
@@ -555,25 +558,24 @@ export default function ViewContactsDashboardPage() {
                       </div>
                     </div>
                     )}
-              {dialog.show && (
-                <>
-                  <Popup
-                    onDelete={() => handleDelete()}
-                    onClose={() => setDialog({ ...dialog, show: false })}
-                    title={dialog.title}
-                    popupText={dialog.text}
-                    buttonText={dialog.buttonText}
-                    buttonClass={dialog.buttonClass}
-                    setError={(val) =>
-                      setDialog((dial) => ({ ...dial, error: val }))
-                    }
-                    defaultValue={dialog.input ? targetContact.name : ''}
-                  />
-                </>
-              )}
+                {dialog.show && (
+                  <>
+                    <Popup
+                      onDelete={() => handleDelete()}
+                      onClose={() => setDialog({ ...dialog, show: false })}
+                      title={dialog.title}
+                      popupText={dialog.text}
+                      buttonText={dialog.buttonText}
+                      buttonClass={dialog.buttonClass}
+                      setError={(val) =>
+                        setDialog((dial) => ({ ...dial, error: val }))}
+                      defaultValue={dialog.input ? targetContact.name : ''}
+                    />
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+            )}
       </main>
     </>
   )

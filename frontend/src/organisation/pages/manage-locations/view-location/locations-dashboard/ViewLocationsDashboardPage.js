@@ -31,7 +31,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewLocationsDashboardPage() {
+export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -78,7 +78,7 @@ export default function ViewLocationsDashboardPage() {
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId() {
+  async function getPartnerId () {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -791,13 +791,13 @@ export default function ViewLocationsDashboardPage() {
                   {(!location.state ||
                   !location.state.linkContacts ||
                   location.state.linkContacts.length === 0) && (
-                  <>
+                    <>
                     &nbsp; &nbsp;
-                    <ButtonMenu
-                      title='More actions'
-                      options={moreActions}
-                      onSelect={(index) => onMoreAction(index)}
-                    />
+                      <ButtonMenu
+                        title='More actions'
+                        options={moreActions}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
                     &nbsp; &nbsp;
                       <Button
                         text='Print'
@@ -937,7 +937,7 @@ export default function ViewLocationsDashboardPage() {
                     )}
                   </div>
                 </div>
-            )}
+                )}
             {dialog.show && (
               <>
                 <Popup
@@ -951,8 +951,7 @@ export default function ViewLocationsDashboardPage() {
                   options={dialog.options}
                   error={dialog.error}
                   setError={(val) =>
-                    setDialog((dial) => ({ ...dial, error: val }))
-                  }
+                    setDialog((dial) => ({ ...dial, error: val }))}
                   validateInput={() => validateInput()}
                   defaultValue={
                     dialog.input ? targetLocation.additionals.locationName : ''

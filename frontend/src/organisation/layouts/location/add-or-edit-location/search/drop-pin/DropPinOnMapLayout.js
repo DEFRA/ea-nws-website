@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import AlertType from '../../../../../../common/enums/AlertType'
 import store from '../../../../../../common/redux/store'
 import {
   getLocationAdditional,
@@ -23,7 +24,6 @@ import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
-import AlertType from '../../../../../../common/enums/AlertType'
 
 export default function DropPinOnMapLayout ({
   navigateToNextPage,
@@ -114,20 +114,20 @@ export default function DropPinOnMapLayout ({
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (!pinCoords) {
       setError('Click on the map to drop a pin')
     } else {
+      dispatch(setCurrentLocationCoordinates(pinCoords))
+      const locationToAdd = store.getState().session.currentLocation
       const inEngland = await locationInEngland(
         pinCoords.latitude,
         pinCoords.longitude
       )
       const duplicateLocation = await checkDuplicateLocation()
-      const locationToAdd = store.getState().session.currentLocation
 
       if (inEngland && !duplicateLocation) {
-        dispatch(setCurrentLocationCoordinates(pinCoords))
-
         // Set default alert types
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
         newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
@@ -309,7 +309,7 @@ export default function DropPinOnMapLayout ({
                 )}
               </div>
               <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                It shows fixed areas that we provide flood warnings and alerts
+                it shows fixed areas that that we provide flood warnings and alerts
                 for.
               </span>
             </div>

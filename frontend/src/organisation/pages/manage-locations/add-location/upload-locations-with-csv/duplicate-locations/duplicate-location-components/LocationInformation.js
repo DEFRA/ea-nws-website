@@ -67,7 +67,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
     const formatShapeArea = (area) => {
       return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
     }
-    
+
     return formatShapeArea(Math.round(area(location.geometry.geoJson) / 1000))
   }
 
@@ -97,7 +97,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
           <div
             style={
               comparedLocation &&
-              area(comparedLocation.geometry.geoJson) !== area(location.geometry.geoJson)
+              area(comparedLocation?.geometry?.geoJson) !== area(location?.geometry?.geoJson)
                 ? compareStyle
                 : {}
             }
@@ -174,7 +174,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
             This is not a live flood map
           </span>
           <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-padding-left-4 govuk-!-margin-bottom-4'>
-            It shows fixed areas we provide flood warnings and alerts for.
+            it shows fixed areas that we provide flood warnings and alerts for.
           </span>
         </div>
 

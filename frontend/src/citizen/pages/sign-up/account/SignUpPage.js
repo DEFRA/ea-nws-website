@@ -20,7 +20,8 @@ export default function SignUpPage () {
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const validationError = emailValidation(email)
     setError(validationError)
     if (validationError === '') {

@@ -66,7 +66,7 @@ export default function PrivacyNoticePage () {
                     <h3 className='govuk-heading-s'>Cookies and analytics</h3>
                     <p>
                       Read our full{' '}
-                      <Link to='cookies' className='govuk-link'>
+                      <Link to='cookies' className='govuk-link' style={{ cursor: 'pointer' }}>
                         cookie notice
                       </Link>{' '}
                       to find out how we use cookies.

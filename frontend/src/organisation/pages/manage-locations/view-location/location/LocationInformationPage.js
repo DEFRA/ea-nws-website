@@ -433,7 +433,7 @@ export default function LocationInformationPage () {
                   This is not a live flood map
                 </span>
                 <span className='govuk-caption-m govuk-!-font-size-16'>
-                  It shows fixed areas we provide flood warnings and alerts for
+                  it shows fixed areas that we provide flood warnings and alerts for
                 </span>
                 <div className=' govuk-!-margin-top-4' style={{ display: 'flex', marginLeft: '-0.5rem' }}>
                   <img src={locationPin} alt='Location pin icon' />

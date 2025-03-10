@@ -30,6 +30,7 @@ export default function LocationReviewTable ({ locations }) {
                 <Link
                   onClick={(e) => selectLocationToBeChanged(e, location)}
                   className='govuk-link'
+                  style={{ cursor: 'pointer' }}
                 >
                   Change
                 </Link>

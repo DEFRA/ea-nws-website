@@ -28,7 +28,8 @@ export default function LocationAddAddressInfoPage () {
     getTemplateUrl()
   }, [])
 
-  const handleButton = async () => {
+  const handleButton = async (event) => {
+    event.preventDefault()
     navigate(orgManageLocationsUrls.add.uploadFile)
   }
 

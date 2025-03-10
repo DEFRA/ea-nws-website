@@ -267,7 +267,8 @@ export default function ViewContactsDashboardPage() {
     }
   }
 
-  const onPrint = () => {
+  const onPrint = (event) => {
+    event.preventDefault()
     setContactsPerPage(null)
   }
 
@@ -298,7 +299,8 @@ export default function ViewContactsDashboardPage() {
     setResetPaging(!resetPaging)
   }
 
-  const onOpenCloseFilter = () => {
+  const onOpenCloseFilter = (event) => {
+    event.preventDefault()
     setHoldPage(currentPage)
     setIsFilterVisible(!isFilterVisible)
   }
@@ -388,7 +390,8 @@ export default function ViewContactsDashboardPage() {
           <Button
             text='Add contacts'
             className='govuk-button govuk-!-margin-top-6'
-            onClick={() => {
+            onClick={(event) => {
+              event.preventDefault()
               dispatch(clearOrgCurrentContact())
               navigate(urlManageContactsAdd)
             }}
@@ -446,111 +449,112 @@ export default function ViewContactsDashboardPage() {
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={() => onPrint()}
+                        onClick={(event) => onOpenCloseFilter(event)}
                       />
+                      </>
+                      )}
+                      <ContactsTable
+                        contacts={contacts}
+                        displayedContacts={displayedContacts}
+                        filteredContacts={filteredContacts}
+                        selectedContacts={selectedContacts}
+                        setContacts={setContacts}
+                        setSelectedContacts={setSelectedContacts}
+                        setFilteredContacts={setFilteredContacts}
+                        resetPaging={resetPaging}
+                        setResetPaging={setResetPaging}
+                        onAction={onAction}
+                        actionText='Delete'
+                      />
+                      {contactsPerPage && (
+                        <Pagination
+                          totalPages={Math.ceil(
+                            filteredContacts.length / contactsPerPage
+                          )}
+                          onPageChange={(val) => setCurrentPage(val)}
+                          holdPage={holdPage}
+                          setHoldPage={setHoldPage}
+                          pageList
+                          reset={resetPaging}
+                        />
+                      )}
                     </>
-                  )}
-                  <ContactsTable
-                    contacts={contacts}
-                    displayedContacts={displayedContacts}
-                    filteredContacts={filteredContacts}
-                    selectedContacts={selectedContacts}
-                    setContacts={setContacts}
-                    setSelectedContacts={setSelectedContacts}
-                    setFilteredContacts={setFilteredContacts}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                    onAction={onAction}
-                    actionText='Delete'
-                  />
-                  {contactsPerPage && (
-                    <Pagination
-                      totalPages={Math.ceil(
-                        filteredContacts.length / contactsPerPage
-                      )}
-                      onPageChange={(val) => setCurrentPage(val)}
-                      holdPage={holdPage}
-                      setHoldPage={setHoldPage}
-                      pageList
-                      reset={resetPaging}
-                    />
-                  )}
-                </>
-              ) : (
-                <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
-                    <SearchFilter
-                      contacts={contacts}
-                      setFilteredContacts={setFilteredContacts}
-                      resetPaging={resetPaging}
-                      setResetPaging={setResetPaging}
-                      selectedFilters={selectedFilters}
-                      setSelectedFilters={setSelectedFilters}
-                      contactNameFilter={contactNameFilter}
-                      setContactNameFilter={setContactNameFilter}
-                      selectedJobTitleFilters={selectedJobTitleFilters}
-                      setSelectedJobTitleFilters={setSelectedJobTitleFilters}
-                      selectedKeywordFilters={selectedKeywordFilters}
-                      setSelectedKeywordFilters={setSelectedKeywordFilters}
-                      selectedLinkedFilters={selectedLinkedFilters}
-                      setSelectedLinkedFilters={setSelectedLinkedFilters}
-                    />
-                  </div>
-
-                  <div className='govuk-grid-column-three-quarters'>
+                    )
+                  : (
                     <div className='govuk-grid-row'>
-                      <Button
-                        text='Close Filter'
-                        className='govuk-button govuk-button--secondary'
-                        onClick={() => onOpenCloseFilter()}
-                      />
-                      &nbsp; &nbsp;
-                      {(!location.state ||
-                        !location.state.linkLocations ||
-                        location.state.linkLocations.length === 0) && (
-                        <>
-                          <ButtonMenu
-                            title='More actions'
-                            options={moreActions}
-                            onSelect={(index) => onMoreAction(index)}
-                          />
-                          &nbsp; &nbsp;
+                      <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
+                        <SearchFilter
+                          contacts={contacts}
+                          setFilteredContacts={setFilteredContacts}
+                          resetPaging={resetPaging}
+                          setResetPaging={setResetPaging}
+                          selectedFilters={selectedFilters}
+                          setSelectedFilters={setSelectedFilters}
+                          contactNameFilter={contactNameFilter}
+                          setContactNameFilter={setContactNameFilter}
+                          selectedJobTitleFilters={selectedJobTitleFilters}
+                          setSelectedJobTitleFilters={setSelectedJobTitleFilters}
+                          selectedKeywordFilters={selectedKeywordFilters}
+                          setSelectedKeywordFilters={setSelectedKeywordFilters}
+                          selectedLinkedFilters={selectedLinkedFilters}
+                          setSelectedLinkedFilters={setSelectedLinkedFilters}
+                        />
+                      </div>
+
+                      <div className='govuk-grid-column-three-quarters'>
+                        <div className='govuk-grid-row'>
                           <Button
-                            text='Print'
-                            className='govuk-button govuk-button--secondary inline-block'
-                            onClick={() => onPrint()}
+                            text='Close Filter'
+                            className='govuk-button govuk-button--secondary'
+                            onClick={(event) => onOpenCloseFilter(event)}
                           />
-                        </>
-                      )}
-                    </div>
-                    <ContactsTable
-                      contacts={contacts}
-                      displayedContacts={displayedContacts}
-                      filteredContacts={filteredContacts}
-                      selectedContacts={selectedContacts}
-                      setContacts={setContacts}
-                      setSelectedContacts={setSelectedContacts}
-                      setFilteredContacts={setFilteredContacts}
-                      resetPaging={resetPaging}
-                      setResetPaging={setResetPaging}
-                      onAction={onAction}
-                      actionText='Delete'
-                    />
-                    {contactsPerPage && (
-                      <Pagination
-                        totalPages={Math.ceil(
-                          filteredContacts.length / contactsPerPage
+                        &nbsp; &nbsp;
+                          {(!location.state ||
+                          !location.state.linkLocations ||
+                          location.state.linkLocations.length === 0) && (
+                            <>
+                              <ButtonMenu
+                                title='More actions'
+                                options={moreActions}
+                                onSelect={(index) => onMoreAction(index)}
+                              />
+                            &nbsp; &nbsp;
+                              <Button
+                                text='Print'
+                                className='govuk-button govuk-button--secondary inline-block'
+                                onClick={(event) => onPrint(event)}
+                              />
+                            </>
+                          )}
+                        </div>
+                        <ContactsTable
+                          contacts={contacts}
+                          displayedContacts={displayedContacts}
+                          filteredContacts={filteredContacts}
+                          selectedContacts={selectedContacts}
+                          setContacts={setContacts}
+                          setSelectedContacts={setSelectedContacts}
+                          setFilteredContacts={setFilteredContacts}
+                          resetPaging={resetPaging}
+                          setResetPaging={setResetPaging}
+                          onAction={onAction}
+                          actionText='Delete'
+                        />
+                        {contactsPerPage && (
+                          <Pagination
+                            totalPages={Math.ceil(
+                              filteredContacts.length / contactsPerPage
+                            )}
+                            onPageChange={(val) => setCurrentPage(val)}
+                            holdPage={holdPage}
+                            setHoldPage={setHoldPage}
+                            pageList
+                            reset={resetPaging}
+                          />
                         )}
-                        onPageChange={(val) => setCurrentPage(val)}
-                        holdPage={holdPage}
-                        setHoldPage={setHoldPage}
-                        pageList
-                        reset={resetPaging}
-                      />
+                      </div>
+                    </div>
                     )}
-                  </div>
-                </div>
-              )}
               {dialog.show && (
                 <>
                   <Popup

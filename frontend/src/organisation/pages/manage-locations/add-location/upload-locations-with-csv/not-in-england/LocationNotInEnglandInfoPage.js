@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import {
-  getLocationAdditional,
-  getLocationOther
+    getLocationAdditional,
+    getLocationOther
 } from '../../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../components/custom/Map'
@@ -28,8 +28,9 @@ export default function LocationNotInEnglandInfoPage () {
   const xCoord = useSelector((state) => getLocationOther(state, 'x_coordinate'))
   const yCoord = useSelector((state) => getLocationOther(state, 'y_coordinate'))
 
-  const handleSubmit = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
+  const handleSubmit = (event) =>
+    event.preventDefault()
+  navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -108,7 +109,7 @@ export default function LocationNotInEnglandInfoPage () {
               This is not a live flood map
             </span>
             <span className='govuk-caption-m govuk-!-font-size-16'>
-              It shows fixed areas we provide flood warnings and alerts for
+              it shows fixed areas that we provide flood warnings and alerts for
             </span>
           </div>
         </div>

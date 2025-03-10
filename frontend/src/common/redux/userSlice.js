@@ -165,6 +165,7 @@ const userSlice = createSlice({
         }
       ]
     },
+    currentTA: null,
     // org data
     organization: {
       id: null,
@@ -319,6 +320,9 @@ const userSlice = createSlice({
       state.linkContacts = action.payload
     },
     // org location data
+    setCurrentTA: (state, action) => {
+      state.currentTA = action.payload
+    },
     setCurrentLocation: (state, action) => {
       state.currentLocation.id = action.payload.id
       state.currentLocation.enabled = action.payload.enabled
@@ -779,6 +783,7 @@ const userSlice = createSlice({
       state.consecutiveBoundariesAdded = 0
       state.predefinedBoundaryFlow = null
       // org location data
+      state.currentTA = null
       state.currentLocation = {
         id: null,
         enabled: true,
@@ -983,6 +988,7 @@ export const {
   setLinkLocations,
   setLinkContacts,
   // org location data
+  setCurrentTA,
   setCurrentLocation,
   setCurrentLocationId,
   setCurrentLocationEnabled,

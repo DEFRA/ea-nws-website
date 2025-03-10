@@ -141,7 +141,8 @@ export default function KeywordsLayout ({
     }
   }
 
-  const handleAddKeyword = () => {
+  const handleAddKeyword = (event) => {
+    event.preventDefault()
     if (searchInput) {
       if (searchInput.length > maxKeywordChar) {
         setKeywordError(maxKeywordCharError)
@@ -163,7 +164,8 @@ export default function KeywordsLayout ({
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     const keywordsArrayChecked = []
 
     // Loop over keywords array

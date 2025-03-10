@@ -174,6 +174,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       <Link
         className='govuk-link'
         onClick={(event) => selectCentreOfAllAreas(event)}
+        style={{ cursor: 'pointer' }}
       >
         near this postcode
       </Link>
@@ -205,6 +206,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                         <Link
                           onClick={() => navigate(-1)}
                           className='govuk-link govuk-!-padding-left-5'
+                          style={{ cursor: 'pointer' }}
                         >
                           Change postcode
                         </Link>
@@ -222,6 +224,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                                 className='govuk-link'
                                 onClick={(event) =>
                                   handleSelectedLocation(event, location)}
+                                style={{ cursor: 'pointer' }}
                               >
                                 {location.address}
                               </Link>
@@ -238,7 +241,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                         />
                         )
                       : (
-                        <Link onClick={() => navigate(-1)} className='govuk-link'>
+                        <Link onClick={() => navigate(-1)} className='govuk-link' style={{ cursor: 'pointer' }}>
                           Search using a different location
                         </Link>
                         )}

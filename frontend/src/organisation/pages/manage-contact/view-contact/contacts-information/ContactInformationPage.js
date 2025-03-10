@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import { getContactAdditional } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
-import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function ContactInformationPage () {
   const navigate = useNavigate()

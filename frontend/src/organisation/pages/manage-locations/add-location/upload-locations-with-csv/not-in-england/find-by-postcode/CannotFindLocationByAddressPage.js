@@ -6,8 +6,9 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 export default function CannotFindLocationByAddressPage () {
   const navigate = useNavigate()
 
-  const navigateToNextPage = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
+  const navigateToNextPage = (event) =>
+    event.preventDefault()
+  navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
 
   const navigateToDifferentPostCode = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.postcode)

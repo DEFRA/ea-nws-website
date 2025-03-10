@@ -128,7 +128,7 @@ export default function LinkedLocationsPage () {
         LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
-      location.coordinates.longtitude === null
+      location.coordinates.longitude === null
     ) {
       return null
     }
@@ -148,7 +148,8 @@ export default function LinkedLocationsPage () {
     return riskData[riskCategory]
   }
 
-  const linkToLocations = () => {
+  const linkToLocations = (event) => {
+    event.preventDefault()
     const linkContacts = [currentContact.id]
     navigate(orgManageLocationsUrls.view.dashboard, {
       state: {
@@ -233,7 +234,10 @@ export default function LinkedLocationsPage () {
         <Button
           text='Unlink selected'
           className='govuk-button govuk-button--secondary'
-          onClick={() => unlinkLocations(selectedLocations)}
+          onClick={(event) => {
+            event.preventDefault()
+            unlinkLocations(selectedLocations)
+          }}
         />}
     </>
   )

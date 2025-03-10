@@ -119,16 +119,15 @@ export default function DropPinOnMapLayout ({
     if (!pinCoords) {
       setError('Click on the map to drop a pin')
     } else {
+      dispatch(setCurrentLocationCoordinates(pinCoords))
+      const locationToAdd = store.getState().session.currentLocation
       const inEngland = await locationInEngland(
         pinCoords.latitude,
         pinCoords.longitude
       )
       const duplicateLocation = await checkDuplicateLocation()
-      const locationToAdd = store.getState().session.currentLocation
 
       if (inEngland && !duplicateLocation) {
-        dispatch(setCurrentLocationCoordinates(pinCoords))
-
         // Set default alert types
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
         newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]

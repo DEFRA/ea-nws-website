@@ -7,7 +7,7 @@ const liveAlerts = {
       // post code affected SW1A 0AA
       id: '1',
       version: 123456,
-      name: 'Flood Warning',
+      name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
       effectiveDate: 1734003781, // unix time
       expirationDate: 1734004381,
@@ -66,7 +66,7 @@ const liveAlerts = {
       // postcode affected EX2 6LL
       id: '2',
       version: 123456,
-      name: 'Severe Flood Warning',
+      name: 'Severe flood warning',
       description: { en: 'Flood', additionalLabels: [] },
       effectiveDate: 1734003781, // unix time
       expirationDate: 1734004381,
@@ -124,7 +124,7 @@ const liveAlerts = {
       // postcode affected LA12 7BX
       id: '3',
       version: 123456,
-      name: 'Flood Alert Warning',
+      name: 'Flood alert warning',
       description: { en: 'Flood', additionalLabels: [] },
       effectiveDate: 1734003781, // unix time
       expirationDate: 1734004381,
@@ -180,7 +180,7 @@ const liveAlerts = {
       // this is affecting a boundary - York
       id: '4',
       version: 123456,
-      name: 'Severe Flood Warning',
+      name: 'Severe flood warning',
       description: { en: 'Flood', additionalLabels: [] },
       effectiveDate: 1734003781, // unix time
       expirationDate: 1734004381,
@@ -572,7 +572,7 @@ const liveAlerts = {
       // this is affecting Liverpool
       id: '10',
       version: 123456,
-      name: 'Flood warning',
+      name: 'Severe flood warning',
       description: { en: 'Flood', additionalLabels: [] },
       effectiveDate: 1734003781, // unix time
       expirationDate: 1734004381,

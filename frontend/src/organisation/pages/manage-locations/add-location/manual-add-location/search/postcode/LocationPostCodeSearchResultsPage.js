@@ -16,9 +16,8 @@ export default function LocationPostCodeSearchResultsPage () {
   const navigateToFindPostcodePage = () =>
     navigate(orgManageLocationsUrls.add.search.postCodeSearch)
 
-  const navigateToCannotFindAddressPage = (event) =>
-    event.preventDefault()
-  navigate(orgManageLocationsUrls.add.error.cannotFindAddress)
+  const navigateToCannotFindAddressPage = () =>
+    navigate(orgManageLocationsUrls.add.error.cannotFindAddress)
 
   return (
     <AddressSearchLayout

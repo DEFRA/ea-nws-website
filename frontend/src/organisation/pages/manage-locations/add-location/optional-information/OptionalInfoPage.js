@@ -23,7 +23,6 @@ export default function OptionalLocationInformationPage () {
     getLocationOther(state, 'location_data_type')
   )
   const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
-
   const navigateToNextPage = (event) => {
     event.preventDefault()
     if (postcode) {
@@ -40,7 +39,6 @@ export default function OptionalLocationInformationPage () {
 
   const skipOptionalInformation = async (event) => {
     event.preventDefault()
-
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
       await verifyLocationInFloodAreaAndNavigate(
         orgManageLocationsUrls.add.linkLocationToContacts

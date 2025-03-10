@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
-  Marker, Popup,
+  Marker,
+  Popup,
   TileLayer,
   ZoomControl,
   useMap,
@@ -15,24 +16,24 @@ import L from 'leaflet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import boundaryKeyIcon from '../../../../../common/assets/images/boundary_already_added_icon.png'
-import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
-import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
-import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
-import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
-import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
-import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
-import AlertType from '../../../../../common/enums/AlertType'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { backendCall } from '../../../../../common/services/BackendService'
-import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
-import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { createLiveMapShapePattern } from '../../../../components/custom/FloodAreaPatterns'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import FloodDataInformationPopup from './FloodDataInformationPopup'
+import boundaryKeyIcon from '../../../../../../common/assets/images/boundary_already_added_icon.png'
+import floodAlertIcon from '../../../../../../common/assets/images/flood_alert.svg'
+import floodWarningIcon from '../../../../../../common/assets/images/flood_warning.svg'
+import floodSevereWarningIcon from '../../../../../../common/assets/images/severe_flood_warning.svg'
+import FloodDataInformationPopup from '../../../../../../common/components/custom/FloodDataInformationPopup'
+import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
+import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
+import AlertType from '../../../../../../common/enums/AlertType'
+import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import { getAdditional } from '../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../common/services/BackendService'
+import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
+import { getFloodAreaByTaCode } from '../../../../../../common/services/WfsFloodDataService'
+import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import { createLiveMapShapePattern } from '../../../../../components/custom/FloodAreaPatterns'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LiveMap ({
+export default function LiveMap({
   showSevereLocations,
   showWarningLocations,
   showAlertLocations,
@@ -101,7 +102,7 @@ export default function LiveMap ({
     )
 
     const locations = []
-    if (locationsData) {
+    if (locationsData && !errorMessage) {
       locationsData.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
       })
@@ -134,13 +135,22 @@ export default function LiveMap ({
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
 
-      const { data: partnerId } = await backendCall('data', 'api/service/get_partner_id')
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
 
       const options = {
         states: ['CURRENT'],
         boundingBox: {
-          southWest: { latitude: parseInt(bbox[1] * 10 ** 6), longitude: parseInt(bbox[0] * 10 ** 6) },
-          northEast: { latitude: parseInt(bbox[3] * 10 ** 6), longitude: parseInt(bbox[2] * 10 ** 6) }
+          southWest: {
+            latitude: parseInt(bbox[1] * 10 ** 6),
+            longitude: parseInt(bbox[0] * 10 ** 6)
+          },
+          northEast: {
+            latitude: parseInt(bbox[3] * 10 ** 6),
+            longitude: parseInt(bbox[2] * 10 ** 6)
+          }
         },
         channels: [],
         partnerId
@@ -152,20 +162,20 @@ export default function LiveMap ({
         'api/alert/list',
         navigate
       )
+      if (!errorMessage) {
+        // loop through live alerts - loop through all locations to find affected locations
+        for (const liveAlert of liveAlertsData?.alerts) {
+          const TA_CODE = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+            'TA_CODE'
+          )
+          const severity = liveAlert.type
+          const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
+          const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
-      // loop through live alerts - loop through all locations to find affected locations
-      for (const liveAlert of liveAlertsData?.alerts) {
-        const TA_CODE = getExtraInfo(
-          liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
-          'TA_CODE'
-        )
-
-        const severity = liveAlert.type
-        const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
-        const floodArea = await getFloodAreaByTaCode(TA_CODE)
-
-        for (const location of locations) {
-          processLocation(location, floodArea, severity, updatedTime)
+          for (const location of locations) {
+            processLocation(location, floodArea, severity, updatedTime)
+          }
         }
       }
     } else {
@@ -285,17 +295,6 @@ export default function LiveMap ({
     return `${time} on ${day} ${month} ${year}`
   }
 
-  const getExtraInfo = (extraInfo, id) => {
-    if (extraInfo) {
-      for (let i = 0; i < extraInfo.length; i++) {
-        if (extraInfo[i].id === id) {
-          return extraInfo[i].value?.s
-        }
-      }
-    }
-    return ''
-  }
-
   const ZoomTracker = () => {
     const map = useMapEvents({
       zoomend: () => {
@@ -334,13 +333,13 @@ export default function LiveMap ({
     iconAnchor: [12, 41]
   })
 
-  const floodWarningRemovedMarker = L.icon({
+  /* const floodWarningRemovedMarker = L.icon({
     iconUrl: floodWarningRemovedIcon,
     iconSize: [45, 45],
     iconAnchor: [12, 41]
-  })
+  }) */
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -431,7 +430,7 @@ export default function LiveMap ({
     useEffect(() => {
       // Run on initial load when the map is ready
       checkVisibleFeatures()
-    }, [map])
+    }, [])
 
     useMapEvents({
       moveend: () => checkVisibleFeatures(),
@@ -463,11 +462,14 @@ export default function LiveMap ({
         // handle all other geometry types
         return turf.booleanIntersects(feature, viewportGeoJSON)
       })
+
+      // Only update state if the result is different
       setVisibleFeatures(visibleFeatures)
     }
 
     return null
   }
+
   const keyTypes = {
     noKey: 'noKey',
     boundaryOrShape: 'boundaryOrShape',
@@ -597,7 +599,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(alertPoint.properties)}
+                            viewFloodInformationData(alertPoint.properties)
+                          }
                         >
                           {
                             alertPoint.properties.locationData.additionals
@@ -635,7 +638,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(warningPoint.properties)}
+                            viewFloodInformationData(warningPoint.properties)
+                          }
                         >
                           {
                             warningPoint.properties.locationData.additionals
@@ -673,7 +677,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(severePoint.properties)}
+                            viewFloodInformationData(severePoint.properties)
+                          }
                         >
                           {
                             severePoint.properties.locationData.additionals
@@ -751,7 +756,8 @@ export default function LiveMap ({
                         />
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(location.properties)}
+                            viewFloodInformationData(location.properties)
+                          }
                           style={{ flex: 1 }}
                         >
                           {location.properties.floodData.name}

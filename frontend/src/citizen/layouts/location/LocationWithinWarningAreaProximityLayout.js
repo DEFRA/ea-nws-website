@@ -250,7 +250,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                       className={`govuk-button govuk-button--secondary ${
                       isMobile ? 'custom-width-button' : ''
                     }`}
-                      onClick={continueToNearbyFloodAlertsPage}
+                      onClick={(event) => { event.preventDefault(); continueToNearbyFloodAlertsPage() }}
                     />
                   )}
                   <br />

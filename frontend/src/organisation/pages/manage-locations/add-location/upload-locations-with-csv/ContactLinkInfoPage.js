@@ -37,8 +37,8 @@ export default function ContactLinkInfoPage () {
                 <Link
                   className='govuk-link'
                   to={orgManageContactsUrls.view.dashboard}
-                  >
-                contacts
+                >
+                  contacts
                 </Link>
                 {' '}and then link them to these<br />
                 locations.

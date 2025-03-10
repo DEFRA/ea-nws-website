@@ -12,10 +12,10 @@ import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
-import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes, setCurrentLocationChildrenIDs } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes, setCurrentLocationChildrenIDs, setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
-import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaName, getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -125,18 +125,12 @@ export default function LocationMessagesPage () {
     setWithinAreas(result)
   }
 
-  /*   const onClick = async (e, area) => {
+  const onClick = async (e, areaName) => {
     e.preventDefault()
-    const alertKey = orgId + ':t_POIS:' + area.id
-    const { data } = await backendCall(
-      { key: alertKey },
-      'api/elasticache/get_data',
-      navigate
-    )
-    data && dispatch(setCurrentLocation(data))
-    // Will need a different page to view the nearby area but no figma?
-    navigate(orgManageLocationsUrls.view.viewLocation)
-  } */
+    const floodArea = await getFloodAreaByTaName(areaName)
+    dispatch(setCurrentTA(floodArea))
+    navigate(orgManageLocationsUrls.view.viewFloodArea)
+  }
 
   const categoryToMessageType = (type) => {
     const typeMap = {
@@ -343,7 +337,7 @@ export default function LocationMessagesPage () {
             alertTypes: alertTypesDispatch
           }
         }
-  
+
         await backendCall(
           registerData,
           'api/location/update_registration',
@@ -525,7 +519,7 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          <Link className='govuk-link'>
+                          <Link onClick={(e) => onClick(e, detail.areaName)} className='govuk-link'>
                             {detail.areaName}
                           </Link>
                         </td>

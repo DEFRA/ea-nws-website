@@ -12,15 +12,18 @@ import {
   getLocationAdditionals,
   getLocationOther,
   setCurrentLocation,
-  setCurrentLocationAlertTypes
+  setCurrentLocationAlertTypes,
+  setCurrentTA
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
+  getFloodAreaByTaName,
   getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
+import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LinkLocationsLayout ({
   navigateToPreviousPage,
@@ -32,7 +35,7 @@ export default function LinkLocationsLayout ({
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
-  
+
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
@@ -285,16 +288,16 @@ export default function LinkLocationsLayout ({
               channelMobileAppEnabled: true,
               partnerCanView: true,
               partnerCanEdit: true,
-              alertTypes: alertTypes
+              alertTypes
             }
           }
-    
+
           await backendCall(
             registerData,
             'api/location/register_to_partner',
             navigate
           )
-    
+
           childrenIDs.push({
             id: data.id,
             TA_Name: TargetAreaToAdd.properties.TA_Name,
@@ -320,13 +323,13 @@ export default function LinkLocationsLayout ({
     )
 
     if (data) {
-      //update alert types of orginal location to include any new ones from linked locations
+      // update alert types of orginal location to include any new ones from linked locations
       const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
       const alertTypes = []
       if (childrenAlertTypes.includes(allAlertTypes[0]) || additionalData.alertTypes.includes(allAlertTypes[0])) alertTypes.push(allAlertTypes[0])
       if (childrenAlertTypes.includes(allAlertTypes[1]) || additionalData.alertTypes.includes(allAlertTypes[1])) alertTypes.push(allAlertTypes[1])
       if (childrenAlertTypes.includes(allAlertTypes[2]) || additionalData.alertTypes.includes(allAlertTypes[2])) alertTypes.push(allAlertTypes[2])
-      
+
       const registerData = {
         authToken,
         locationId: currentLocation.id,
@@ -338,7 +341,7 @@ export default function LinkLocationsLayout ({
           channelMobileAppEnabled: true,
           partnerCanView: true,
           partnerCanEdit: true,
-          alertTypes: alertTypes
+          alertTypes
         }
       }
 
@@ -461,6 +464,13 @@ export default function LinkLocationsLayout ({
     }
   }, [currentLocation])
 
+  const onClick = async (e, areaName) => {
+    e.preventDefault()
+    const floodArea = await getFloodAreaByTaName(areaName)
+    dispatch(setCurrentTA(floodArea))
+    navigate(orgManageLocationsUrls.view.viewFloodArea)
+  }
+
   const table = (
     <>
       <table className='govuk-table'>
@@ -506,7 +516,7 @@ export default function LinkLocationsLayout ({
           {floodAreaInputs.map((area) => (
             <tr key={area.id} className='govuk-table__row'>
               <td className='govuk-table__cell'>
-                <Link to='#' className='govuk-link'>
+                <Link onClick={(e) => onClick(e, area.areaName)} className='govuk-link'>
                   {area.areaName}
                 </Link>
               </td>

@@ -120,11 +120,13 @@ function App () {
               key={route.path}
               path={route.path}
               element={
-                hasAuthCookie || isSignOutRoute() ? (
-                  route.component
-                ) : (
-                  <Navigate to={SignBackInLink()} />
-                )
+                hasAuthCookie || isSignOutRoute()
+                  ? (
+                      route.component
+                    )
+                  : (
+                    <Navigate to={SignBackInLink()} />
+                    )
               }
             />
           ))}

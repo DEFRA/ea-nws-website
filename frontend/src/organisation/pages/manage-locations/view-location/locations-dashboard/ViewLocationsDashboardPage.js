@@ -173,7 +173,6 @@ export default function ViewLocationsDashboardPage () {
           }
         }
       }
-    
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -191,7 +190,7 @@ export default function ViewLocationsDashboardPage () {
           LocationDataType.X_AND_Y_COORDS ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
-      location.coordinates.longtitude === null
+      location.coordinates.longitude === null
     ) {
       return null
     }
@@ -378,7 +377,7 @@ export default function ViewLocationsDashboardPage () {
 
     for (const location of selectedLocations) {
       const withinAreas = await getWithinAreas(location)
-      
+
       let isInWarningArea = false
       let isInAlertArea = false
 

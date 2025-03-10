@@ -64,7 +64,7 @@ const getCSV = async (fileName) => {
   try {
     const response = await client.send(command)
     data = await response.Body.transformToString()
-    result.data = data
+    result.data = data.replace(/^\uFEFF/, '')
   } catch (err) {
     logger.error(err)
     result.errorMessage = [{ errorType: 'S3 error', errorMessage: err }]

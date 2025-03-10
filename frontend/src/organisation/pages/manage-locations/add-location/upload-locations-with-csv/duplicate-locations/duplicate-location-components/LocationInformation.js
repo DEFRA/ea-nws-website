@@ -97,7 +97,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
           <div
             style={
               comparedLocation &&
-              area(comparedLocation.geometry.geoJson) !== area(location.geometry.geoJson)
+              area(comparedLocation?.geometry?.geoJson) !== area(location?.geometry?.geoJson)
                 ? compareStyle
                 : {}
             }

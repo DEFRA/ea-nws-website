@@ -84,8 +84,11 @@ export default function DashboardHeader ({
     if (type === 'floodMessages') {
       heading[0] = 'Locations that will get flood messages'
       count.push(
-        locations.filter((obj) => obj?.within === true)
-          .length
+        locations.filter(
+          (obj) =>
+            obj?.within === true &&
+            obj?.additionals?.other?.alertTypes?.length > 0
+        ).length
       )
       message[0] = 'in flood areas'
 
@@ -93,7 +96,8 @@ export default function DashboardHeader ({
         locations.filter(
           (item) =>
             item.additionals.other?.childrenIDs?.length > 0 &&
-            item.additionals.other?.alertTypes?.length > 0
+            item.additionals.other?.alertTypes?.length > 0 &&
+            item.within !== true
         ).length
       )
       message.push('linked to nearby flood areas')
@@ -318,12 +322,14 @@ export default function DashboardHeader ({
                   (item) =>
                     (item.riverSeaRisk?.title === 'Medium risk' ||
                     item.riverSeaRisk?.title === 'High risk') &&
-                  item.additionals.other?.alertTypes?.length === 0
+                    (item.additionals.other?.alertTypes?.length === 0 ||
+                      (!item.additionals.other?.childrenIDs?.length > 0 && item.within !== true))
                 ).length > 0 ||
                 locations.filter(
                   (item) =>
                     item.riverSeaRisk?.title === 'Low risk' &&
-                    item.additionals.other?.alertTypes?.length === 0
+                    (item.additionals.other?.alertTypes?.length === 0 ||
+                      (!item.additionals.other?.childrenIDs?.length > 0 && item.within !== true))
                 ).length > 0) && <FloodBanner type='noFloodMessages' />}
                 {locations.filter((item) => item.linked_contacts?.length === 0)
                   .length > 0 && <FloodBanner type='noContacts' />}

@@ -89,9 +89,32 @@ export default function OrganisationHeader () {
                 </span>
               </a>
             </div>
+            {/*this is just wrong it needs restructing */}
 
-            {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
+            <nav>
+              <ul>
+              {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
+            <li>
+              <button onClick={() => toggleMenu()}>
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+            </li>}
+            {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
+          pages.map((page, index) => (
+            <li key={index} className={`${!menuOpen && 'closed'}`}>
+              <Link
+                to={page.link}
+                className='sub-navigation__link'
+               
+              >
+                {page.title}
+              </Link>
+            </li>
+          ))}
+              </ul>
+            </nav>
 
+            {/* {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
               <button onClick={() => toggleMenu()} className='header-navigation-menu'>
                 Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
               </button>}
@@ -108,7 +131,7 @@ export default function OrganisationHeader () {
                   </Link>
                 </li>
               ))}
-            </ul>
+            </ul> */}
 
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>

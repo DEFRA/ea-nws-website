@@ -55,7 +55,6 @@ export default function DeleteLayout () {
     }
   }
 
-
   const handleDelete = async (event) => {
     event.preventDefault()
     const idsToDelete = []

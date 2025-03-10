@@ -14,8 +14,7 @@ export default function FindLocationByAddressPage () {
   const navigateToFindPostcodePage = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notFound.postcode)
 
-  const navigateToCannotFindAddressPage = (event) =>
-    event.preventDefault()
+  const navigateToCannotFindAddressPage = () =>
     navigate(
       orgManageLocationsUrls.unmatchedLocations.notFound.cannotFindAddress
     )

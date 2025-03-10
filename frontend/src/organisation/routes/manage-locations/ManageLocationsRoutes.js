@@ -25,12 +25,12 @@ import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-locat
 import LocationLoadingShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationLoadingShapefilePage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
 import NotInEnglandShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/NotInEnglandShapefilePage'
+import ContactLinkInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/ContactLinkInfoPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
-import ContactLinkInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/ContactLinkInfoPage'
 
 // Unmatched locations not found
 import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/ConfirmLocationNotFoundPage'
@@ -87,6 +87,7 @@ import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitorin
 
 // view imports
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
+import FloodAreaPage from '../../pages/manage-locations/view-location/flood-area/FloodAreaPage'
 import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
@@ -117,7 +118,8 @@ const orgManageLocationsUrls = {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
     viewMessages: urlManageOrgViewLocations + '/view-messages',
-    viewLinkedContacts: urlManageOrgViewLocations + '/view-linked-contacts'
+    viewLinkedContacts: urlManageOrgViewLocations + '/view-linked-contacts',
+    viewFloodArea: urlManageOrgViewLocations + '/view-flood-area'
   },
   monitoring: {
     view: urlManageOrgLiveMonitoring + '/view'
@@ -283,6 +285,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewFloodArea,
+    component: <FloodAreaPage />
   },
   {
     path: orgManageLocationsUrls.view.viewLinkedContacts,

@@ -119,16 +119,15 @@ export default function DropPinOnMapLayout ({
     if (!pinCoords) {
       setError('Click on the map to drop a pin')
     } else {
+      dispatch(setCurrentLocationCoordinates(pinCoords))
+      const locationToAdd = store.getState().session.currentLocation
       const inEngland = await locationInEngland(
         pinCoords.latitude,
         pinCoords.longitude
       )
       const duplicateLocation = await checkDuplicateLocation()
-      const locationToAdd = store.getState().session.currentLocation
 
       if (inEngland && !duplicateLocation) {
-        dispatch(setCurrentLocationCoordinates(pinCoords))
-
         // Set default alert types
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
         newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
@@ -310,7 +309,7 @@ export default function DropPinOnMapLayout ({
                 )}
               </div>
               <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                It shows fixed areas that we provide flood warnings and alerts
+                it shows fixed areas that that we provide flood warnings and alerts
                 for.
               </span>
             </div>

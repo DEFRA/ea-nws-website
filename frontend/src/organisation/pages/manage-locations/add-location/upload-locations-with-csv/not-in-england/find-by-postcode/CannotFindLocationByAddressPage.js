@@ -8,7 +8,7 @@ export default function CannotFindLocationByAddressPage () {
 
   const navigateToNextPage = (event) =>
     event.preventDefault()
-    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
+  navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
 
   const navigateToDifferentPostCode = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.postcode)

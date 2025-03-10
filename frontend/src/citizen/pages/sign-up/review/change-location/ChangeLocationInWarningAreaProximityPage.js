@@ -5,8 +5,7 @@ import LocationWithinWarningAreaProximityLayout from '../../../../layouts/locati
 export default function ChangeLocationInWarningAreaProximityPage () {
   const navigate = useNavigate()
 
-  const continueToNearbyFloodAlertsPage = (event) => {
-    event.preventDefault()
+  const continueToNearbyFloodAlertsPage = () => {
     navigate(`/signup/review/location-in-proximity-area/${'alert'}`)
   }
 

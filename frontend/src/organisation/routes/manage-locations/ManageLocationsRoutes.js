@@ -83,7 +83,7 @@ import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-in
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
 
 // monitoring imports
-import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
+import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/monitoring/LiveFloodMonitoringPage'
 
 // view imports
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'

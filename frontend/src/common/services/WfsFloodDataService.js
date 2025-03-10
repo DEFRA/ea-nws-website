@@ -20,8 +20,16 @@ const wfsCallWithFilter = async (type, property, value) => {
 }
 
 export const getFilteredFloodAreas = async (property, value) => {
-  const { data: filteredWarningAreas } = await wfsCallWithFilter('flood_warnings', property, value)
-  const { data: filteredAlertAreas } = await wfsCallWithFilter('flood_alerts', property, value)
+  const { data: filteredWarningAreas } = await wfsCallWithFilter(
+    'flood_warnings',
+    property,
+    value
+  )
+  const { data: filteredAlertAreas } = await wfsCallWithFilter(
+    'flood_alerts',
+    property,
+    value
+  )
   const alertAreasFeatures = filteredAlertAreas?.features || []
   const warningAreasFeatures = filteredWarningAreas?.features || []
   const allFilteredAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
@@ -78,7 +86,9 @@ export const getFloodAreasFromShape = async (geoJsonShape) => {
   const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
   const filteredWarningDataFeatures = filteredWarningData || []
   const filteredAlertDataFeatures = filteredAlertData || []
-  const withinAreas = filteredWarningDataFeatures.concat(filteredAlertDataFeatures)
+  const withinAreas = filteredWarningDataFeatures.concat(
+    filteredAlertDataFeatures
+  )
 
   return withinAreas
 }
@@ -144,10 +154,12 @@ const getIntersections = (areas, bufferedShape) => {
       let res = false
       if (bufferedShapeGeometry.type === 'MultiPolygon') {
         bufferedShapeGeometry.coordinates.forEach((poly) => {
-          res = res || turf.booleanContains(area.geometry, {
-            type: 'Polygon',
-            coordinates: poly
-          })
+          res =
+            res ||
+            turf.booleanContains(area.geometry, {
+              type: 'Polygon',
+              coordinates: poly
+            })
         })
       }
       res = res || turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
@@ -241,7 +253,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates (nestedArray) {
+function getFirstCoordinates(nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -249,7 +261,7 @@ function getFirstCoordinates (nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon (lat, lng, geojson) {
+function checkPointInPolygon(lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -266,7 +278,7 @@ function checkPointInPolygon (lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox (centerLat, centerLng, distanceKm) {
+function calculateBoundingBox(centerLat, centerLng, distanceKm) {
   const center = turf.point([centerLng, centerLat], { crs: 'EPSG:4326' })
   const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' })
   const bbox = turf.bbox(buffered)
@@ -344,7 +356,7 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
   }
 }
 
-function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
+function getHighestRiskRating(areas, ratingOrder, propertyToCheck) {
   // if there are no areas nearby, set to lowest risk rating
   let highestRating = null
 

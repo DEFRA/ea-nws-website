@@ -84,7 +84,7 @@ export default function DashboardHeader ({
     if (type === 'floodMessages') {
       heading[0] = 'Locations that will get flood messages'
       count.push(
-        locations.filter((obj) => obj.additionals.other?.alertTypes?.length > 0)
+        locations.filter((obj) => obj?.within === true)
           .length
       )
       message[0] = 'in flood areas'

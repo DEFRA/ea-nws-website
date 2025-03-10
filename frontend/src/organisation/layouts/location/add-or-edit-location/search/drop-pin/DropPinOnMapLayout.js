@@ -309,7 +309,7 @@ export default function DropPinOnMapLayout ({
                 )}
               </div>
               <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                It shows fixed areas that we provide flood warnings and alerts
+                it shows fixed areas that that we provide flood warnings and alerts
                 for.
               </span>
             </div>

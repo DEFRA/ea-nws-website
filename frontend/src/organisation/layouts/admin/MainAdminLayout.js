@@ -14,7 +14,8 @@ export default function MainAdminLayout ({
   const [adminDetails, addAdminDetails] = useState(null)
   const [error, setError] = useState('')
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (adminDetails === null) {
       setError('Select whether you will be the main administrator or not')
       return

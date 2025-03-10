@@ -261,7 +261,8 @@ export default function LocationMessagesPage () {
         )
   }, [floodHistoryUrl])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (
       alertTypesEnabledOriginal.every(
         (value, index) => value === alertTypesEnabled[index]
@@ -527,7 +528,10 @@ export default function LocationMessagesPage () {
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
             // TODO: Add link to nearby flood areas
-        onClick={() => navigate(orgManageLocationsUrls.add.linkToTargetArea)}
+        onClick={(event) => {
+          event.preventDefault()
+          navigate(orgManageLocationsUrls.add.linkToTargetArea)
+        }}
       />
     </>
   )

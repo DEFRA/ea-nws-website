@@ -55,7 +55,7 @@ export default function AccountDeleteConfirmPage () {
         <h2 className='govuk-heading-m'>If you change your mind</h2>
         <p className='govuk-body govuk-!-margin-bottom-6'>
           You'll need to{' '}
-          <Link to='/signup/service-selection' className='govuk-link'>
+          <Link to='/signup/service-selection' className='govuk-link' style={{ cursor: 'pointer' }}>
             sign up again
           </Link>
           .
@@ -63,7 +63,7 @@ export default function AccountDeleteConfirmPage () {
         {servicePhase !== 'beta' && (
           <div>
             <p className='govuk-body govuk-!-margin-bottom-6'>
-              <Link to='/survey' className='govuk-link'>
+              <Link to='/survey' className='govuk-link' style={{ cursor: 'pointer' }}>
                 What do you think of this service?
               </Link>{' '}
               Takes 30 seconds
@@ -71,7 +71,7 @@ export default function AccountDeleteConfirmPage () {
             <h2 className='govuk-heading-m'>More about flooding</h2>
             <p className='govuk-body govuk-!-margin-bottom-6'>
               Find out how to{' '}
-              <Link to='https://gov.uk/flood' className='govuk-link'>
+              <Link to='https://gov.uk/flood' className='govuk-link' style={{ cursor: 'pointer' }}>
                 protect yourself and your property online from flooding
               </Link>
               .
@@ -86,7 +86,8 @@ export default function AccountDeleteConfirmPage () {
             <Button
               text='Continue'
               className='govuk-button'
-              onClick={() => {
+              onClick={(event) => {
+                event.preventDefault()
                 window.location.href = 'https://forms.office.com/e/Rd76JZqNbV'
               }}
             />

@@ -33,13 +33,6 @@ export default function ActionPlanPage () {
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
 
-      const dataToSend = { orgId }
-      const { contactsData } = await backendCall(
-        dataToSend,
-        'api/elasticache/list_contacts',
-        navigate
-      )
-
       if (locationType === LocationDataType.X_AND_Y_COORDS) {
         await verifyLocationInFloodAreaAndNavigate(
           orgManageLocationsUrls.add.linkLocationToContacts

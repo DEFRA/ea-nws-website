@@ -24,7 +24,8 @@ export default function FindUnmatchedLocationsPage () {
     setError('')
   }, [unmatchedLocationOption])
 
-  const handleButton = async () => {
+  const handleButton = async (event) => {
+    event.preventDefault()
     if (!unmatchedLocationOption) {
       setError('Select if you want to manually find, or not add, locations')
     } else if (unmatchedLocationOption === unmatchedLocationsOptions[1].value) {

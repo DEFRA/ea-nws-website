@@ -17,7 +17,8 @@ export default function CheckYourAnswersPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const handleButton = async () => {
+  const handleButton = async (event) => {
+    event.preventDefault()
     // TODO once we have updated API
     // call to update profile with final profile here
     const dataToSend = { organization, authToken }

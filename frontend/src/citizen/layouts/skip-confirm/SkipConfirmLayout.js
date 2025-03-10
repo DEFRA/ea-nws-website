@@ -8,7 +8,8 @@ export default function SkipConfirmLayout (contactPreference) {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
 
-  function handleSubmit () {
+  function handleSubmit (event) {
+    event.preventDefault()
     // navigate through sign up flow
     if (session.contactPreferences.includes('Email')) {
       // navigate to email TODO - cameron add this once merged
@@ -39,6 +40,7 @@ export default function SkipConfirmLayout (contactPreference) {
             <Link
               to='/signup/contactpreferences/mobile/validate'
               className='govuk-body govuk-link inline-link'
+              style={{ cursor: 'pointer' }}
             >
               Confirm now
             </Link>

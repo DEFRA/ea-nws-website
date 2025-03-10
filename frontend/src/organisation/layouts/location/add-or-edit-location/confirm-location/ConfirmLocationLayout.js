@@ -94,7 +94,8 @@ export default function ConfirmLocationLayout ({
   }
 
   // Switch case to change the button/link logic depending on the location type
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const duplicateLocation = await checkDuplicateLocation()
 
     // Check for duplicates

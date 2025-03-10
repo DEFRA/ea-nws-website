@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 export default function Button ({
   text,
@@ -7,13 +7,15 @@ export default function Button ({
   imageSrc = null,
   imageHgt = '20px'
 }) {
+  const [cursor, setCursor] = useState('pointer')
   return (
     <>
       <button
         type='submit'
         className={className}
-        onClick={onClick}
+        onClick={(event) => {setCursor('wait'); onClick(event)}}
         data-module='govuk-button'
+        style={{ cursor: cursor }}
       >
         {imageSrc && (
           <img

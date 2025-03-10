@@ -12,7 +12,8 @@ export default function ConfirmAddressLayout ({
   const organizationAdditionals = JSON.parse(organization.description)
   const address = organizationAdditionals.address
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     // Correct address is already stored in
     navigateToNextPage()
   }

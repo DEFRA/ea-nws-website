@@ -11,7 +11,8 @@ export default function SkipConfirmMobilePhonePage () {
     (state) => state.session.profile.unverified.mobilePhones[0].address
   )
 
-  function skipConfirm () {
+  function skipConfirm (event) {
+    event.preventDefault()
     if (session.contactPreferences.includes('PhoneCall')) {
       navigate('/signup/contactpreferences/landline/add')
     } else {
@@ -39,6 +40,7 @@ export default function SkipConfirmMobilePhonePage () {
             <Link
               to='/signup/contactpreferences/mobile/validate'
               className='govuk-body govuk-link inline-link'
+              style={{ cursor: 'pointer' }}
             >
               Confirm now
             </Link>

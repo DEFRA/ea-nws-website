@@ -176,17 +176,18 @@ export default function ValidateLandlineLayout ({
                       className='govuk-link'
                       style={{
                         display: 'inline-block',
-                        padding: '8px 10px 7px'
+                        padding: '8px 10px 7px',
+                        cursor: 'pointer'
                       }}
                     >
                       Skip and confirm later
                     </Link>
                     <br />
-                    <Link onClick={getNewCode} className='govuk-link'>
+                    <Link onClick={getNewCode} className='govuk-link' style={{ cursor: 'pointer' }}>
                       Get a new code
                     </Link>
                     <br /> <br />
-                    <Link onClick={differentHomePhone} className='govuk-link'>
+                    <Link onClick={differentHomePhone} className='govuk-link' style={{ cursor: 'pointer' }}>
                       Enter a different telephone number
                     </Link>
                   </div>

@@ -19,6 +19,7 @@ export default function AccountDetailsTable ({ profile }) {
               <Link
                 to='/signup/review/change-account-name'
                 className='govuk-link'
+                style={{ cursor: 'pointer' }}
               >
                 Change
               </Link>
@@ -36,6 +37,7 @@ export default function AccountDetailsTable ({ profile }) {
               <Link
                 to='/signup/review/change-account-email'
                 className='govuk-link'
+                style={{ cursor: 'pointer' }}
               >
                 Change
               </Link>

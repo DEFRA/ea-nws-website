@@ -64,7 +64,8 @@ export default function LocationInSevereWarningAreaLayout ({
     getPartnerId()
   }, [])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     let updatedProfile
 
     if (isUserInNearbyTargetFlowpath) {
@@ -288,7 +289,8 @@ export default function LocationInSevereWarningAreaLayout ({
               className='govuk-link'
               style={{
                 display: 'inline-block',
-                padding: '8px 10px 7px'
+                padding: '8px 10px 7px',
+                cursor: 'pointer'
               }}
             >
               Choose different location

@@ -19,7 +19,8 @@ export default function ConfirmDeleteContactDetailsLayout ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
-  const removeContact = async () => {
+  const removeContact = async (event) => {
+    event.preventDefault()
     let updatedProfile = removeVerifiedContact(
       session.profile,
       location.state.contact
@@ -71,6 +72,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
             <Link
               onClick={handleCancelLink}
               className='govuk-body govuk-link inline-link'
+              style={{ cursor: 'pointer' }}
             >
               Cancel
             </Link>

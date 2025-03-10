@@ -524,7 +524,8 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
-  const onPrint = () => {
+  const onPrint = (event) => {
+    event.preventDefault()
     setLocationsPerPage(null)
   }
 
@@ -586,7 +587,8 @@ export default function ViewLocationsDashboardPage () {
     setResetPaging(!resetPaging)
   }
 
-  const onOpenCloseFilter = () => {
+  const onOpenCloseFilter = (event) => {
+    event.preventDefault()
     setHoldPage(currentPage)
     setIsFilterVisible(!isFilterVisible)
   }
@@ -779,7 +781,7 @@ export default function ViewLocationsDashboardPage () {
                   <Button
                     text='Open filter'
                     className='govuk-button govuk-button--secondary inline-block'
-                    onClick={() => onOpenCloseFilter()}
+                    onClick={(event) => onOpenCloseFilter(event)}
                   />
                   {(!location.state ||
                   !location.state.linkContacts ||
@@ -795,7 +797,7 @@ export default function ViewLocationsDashboardPage () {
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={() => onPrint()}
+                        onClick={(event) => onPrint(event)}
                       />
                     </>
                   )}
@@ -881,7 +883,7 @@ export default function ViewLocationsDashboardPage () {
                       <Button
                         text='Close Filter'
                         className='govuk-button govuk-button--secondary'
-                        onClick={() => onOpenCloseFilter()}
+                        onClick={(event) => onOpenCloseFilter(event)}
                       />
                       {(!location.state ||
                       !location.state.linkContacts ||
@@ -897,7 +899,7 @@ export default function ViewLocationsDashboardPage () {
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
-                            onClick={() => onPrint()}
+                            onClick={(event) => onPrint(event)}
                           />
                         </>
                       )}

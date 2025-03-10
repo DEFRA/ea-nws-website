@@ -41,7 +41,8 @@ export default function Popup ({
     setError('')
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (!input && !options) {
       onDelete()
     } else {

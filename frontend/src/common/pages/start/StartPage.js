@@ -57,7 +57,7 @@ export default function StartPage () {
               <Button
                 text='Sign up for the first time'
                 className='govuk-button'
-                onClick={() => navigate('/signup/service-selection')}
+                onClick={(event) => {event.preventDefault(); navigate('/signup/service-selection')}}
               />
               <br />
               <h2 className='govuk-heading-m'>If you've already signed up</h2>

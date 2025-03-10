@@ -1,11 +1,11 @@
 import React from 'react'
-import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
 import { setLinkLocations } from '../../../../common/redux/userSlice'
+import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -15,7 +15,8 @@ export default function LinkLocationToContactPage () {
 
   const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
 
-  const linkToContacts = () => {
+  const linkToContacts = (event) => {
+    event.preventDefault()
     const linkLocations = [currentLocation.id]
     dispatch(setLinkLocations(linkLocations))
     navigate(orgManageContactsUrls.view.dashboard, {

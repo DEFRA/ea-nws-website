@@ -15,7 +15,8 @@ export default function SelectOnMapLayout ({ fullAddress, navigateToNextPage, Na
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (pinCoords === '') {
       setError('Click on the map to drop a pin')
     } else {

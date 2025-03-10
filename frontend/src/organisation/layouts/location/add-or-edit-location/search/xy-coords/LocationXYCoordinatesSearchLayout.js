@@ -44,7 +44,8 @@ export default function LocationXYCoordinatesSearchLayout ({
     }
   }, [xCoordinate, yCoordinate])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
     if (xCoordinateValidationError) {
       setXCoordinateError(xCoordinateValidationError)

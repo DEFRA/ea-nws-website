@@ -16,9 +16,9 @@ export default function FindLocationByAddressPage () {
 
   const navigateToCannotFindAddressPage = (event) =>
     event.preventDefault()
-    navigate(
-      orgManageLocationsUrls.unmatchedLocations.notInEngland.cannotFindAddress
-    )
+  navigate(
+    orgManageLocationsUrls.unmatchedLocations.notInEngland.cannotFindAddress
+  )
 
   return (
     <AddressSearchLayout

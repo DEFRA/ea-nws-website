@@ -18,7 +18,7 @@ export default function LocationPostCodeSearchResultsPage () {
 
   const navigateToCannotFindAddressPage = (event) =>
     event.preventDefault()
-    navigate(orgManageLocationsUrls.add.error.cannotFindAddress)
+  navigate(orgManageLocationsUrls.add.error.cannotFindAddress)
 
   return (
     <AddressSearchLayout

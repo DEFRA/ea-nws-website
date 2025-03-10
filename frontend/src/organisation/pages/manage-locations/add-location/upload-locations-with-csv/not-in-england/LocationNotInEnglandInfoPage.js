@@ -30,7 +30,7 @@ export default function LocationNotInEnglandInfoPage () {
 
   const handleSubmit = (event) =>
     event.preventDefault()
-    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
+  navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
 
   const navigateBack = (e) => {
     e.preventDefault()

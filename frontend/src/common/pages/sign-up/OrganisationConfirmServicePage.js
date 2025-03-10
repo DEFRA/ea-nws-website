@@ -30,7 +30,7 @@ export default function OrganisationConfirmServicePage () {
                 <Button
                   className='govuk-button'
                   text='Continue'
-                  onClick={(event) => {event.preventDefault(); navigate('/organisation/sign-up')}}
+                  onClick={(event) => { event.preventDefault(); navigate('/organisation/sign-up') }}
                 />
                 &nbsp; &nbsp;
                 <Link

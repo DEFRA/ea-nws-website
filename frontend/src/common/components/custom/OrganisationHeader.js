@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { orgAccountUrls } from '../../../organisation/routes/account/AccountRoutes'
 import { urlManageKeywordsOrg } from '../../../organisation/routes/manage-keywords/ManageKeywordsRoutes'
+
 export default function OrganisationHeader () {
   const [activeHeader, setActiveHeader] = useState(null)
   const navigate = useNavigate()
@@ -50,11 +51,12 @@ export default function OrganisationHeader () {
   }
 
   const pages = [
-    { title: 'Organisation details', link: '/' },
+    { title: 'Organisation details', link: orgAccountUrls.organisation.orgDetails },
+    // ToDo add in this one
     { title: 'Manage administrators', link: '/' },
-    { title: 'Manage keywords', link: '/' },
-    { title: 'Administrator details', link: '/' },
-    { title: 'Sign out', link: '/' }
+    { title: 'Manage keywords', link: '/organisation/manage-keywords' },
+    { title: 'Administrator details', link: orgAccountUrls.admin.details },
+    { title: 'Sign out', link: '/organisation/signout' }
   ]
 
   return (

@@ -4,7 +4,7 @@ import Button from '../../../common/components/gov-uk/Button'
 export default function SignBackInPage () {
   const navigate = useNavigate()
 
-  function redirect(event) {
+  function redirect (event) {
     event.preventDefault()
     navigate('/sign-in')
   }

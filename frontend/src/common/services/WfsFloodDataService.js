@@ -42,8 +42,8 @@ export const getFloodAreasFromShape = async (geoJsonShape) => {
   // We only want intersections from the current shape to get areas within
   const filteredWarningData = getIntersections(wfsWarningData, geoJsonShape)
   const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
-  const filteredWarningDataFeatures = filteredWarningData?.features || []
-  const filteredAlertDataFeatures = filteredAlertData?.features || []
+  const filteredWarningDataFeatures = filteredWarningData || []
+  const filteredAlertDataFeatures = filteredAlertData || []
   const withinAreas = filteredWarningDataFeatures.concat(filteredAlertDataFeatures)
 
   return withinAreas
@@ -91,7 +91,17 @@ const getIntersections = (areas, bufferedShape) => {
   const bufferedShapeGeometry = bufferedShape.geometry
   const filteredTargetData = areas.features.filter((area) => {
       try {
-        return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
+        let res = false
+        if (bufferedShapeGeometry.type === 'MultiPolygon') {
+          bufferedShapeGeometry.coordinates.forEach((poly) => {
+            res = res || turf.booleanContains(area.geometry, {
+              type: 'Polygon',
+              coordinates: poly
+            })
+          })
+        }
+        res = res || turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
+        return res
       } catch (e) {
         console.error('Error during intersection', e)
         return false

@@ -6,7 +6,6 @@ import floodSevereWarningIcon from '../../../../../../common/assets/images/sever
 import FloodDataInformationPopup from '../../../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../../../common/enums/AlertType'
 import { getAdditional } from '../../../../../../common/redux/userSlice'
-import { formatDateTime } from '../../../../../../common/services/formatters/DateTimeFormatter'
 
 export default function FloodReportsTable({
   locationsAffected,
@@ -35,38 +34,6 @@ export default function FloodReportsTable({
     setLinkedContactsSort('none')
     setlastUpdatedSort('none')
   }, [locationsAffected])
-
-  // Popup logic
-  const openPopup = (affectedLocation) => {
-    const taCode = getAdditional(
-      affectedLocation.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
-      'TA_CODE'
-    )
-
-    const taName = getAdditional(
-      affectedLocation.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
-      'TA_NAME'
-    )
-
-    const floodInfo = {
-      locationData: {
-        address: affectedLocation.address
-      },
-      floodData: {
-        name: taName,
-        code: taCode,
-        type: affectedLocation.alert.type,
-        updatedTime: formatDateTime(affectedLocation.alert.effectiveDate)
-      }
-    }
-    setPopupWarning([floodInfo])
-    setPopupVisible(true)
-  }
-
-  const closePopup = () => {
-    setPopupWarning(null)
-    setPopupVisible(false)
-  }
 
   // Sort standard data
   const sortTableData = (sortType, setSort, data) => {
@@ -149,8 +116,36 @@ export default function FloodReportsTable({
     }
   }
 
+  // flood information popup
+  const [showFloodInformationData, setShowFloodInformationData] =
+    useState(false)
+  const [locationsFloodInformation, setLocationsFloodInformation] = useState([])
+
+  const viewFloodInformationData = (location) => {
+    console.log('location selected', location)
+    setShowFloodInformationData(true)
+    setLocationsFloodInformation(findAllFloodAreasAffectingLocation(location))
+  }
+
+  const findAllFloodAreasAffectingLocation = (data) => {
+    const locations = [...locationsAffected]
+
+    return locations
+      .filter((location) => location.id === data.id)
+      .map((location) => location)
+  }
+
   return (
     <>
+      {showFloodInformationData && (
+        <FloodDataInformationPopup
+          locationsFloodInformation={locationsFloodInformation}
+          onClose={() => {
+            setShowFloodInformationData(false)
+            setLocationsFloodInformation([])
+          }}
+        />
+      )}
       <p
         className='govuk-!-margin-bottom-3'
         style={{ display: 'flex', color: '#505a5f' }}
@@ -282,7 +277,7 @@ export default function FloodReportsTable({
                     className='govuk-link'
                     onClick={(e) => {
                       e.preventDefault()
-                      openPopup(location)
+                      viewFloodInformationData(location)
                     }}
                   >
                     {location.floodData.name}
@@ -337,12 +332,6 @@ export default function FloodReportsTable({
           })}
         </tbody>{' '}
       </table>
-      {popupVisible && popupWarning && (
-        <FloodDataInformationPopup
-          onClose={closePopup}
-          locationsFloodInformation={popupWarning}
-        />
-      )}
     </>
   )
 }

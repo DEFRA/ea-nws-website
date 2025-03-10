@@ -152,14 +152,19 @@ export default function LiveFloodWarningsDashboardPage() {
     const locationType = additionals.other.location_data_type
 
     // add required data to location row object
-    const createLocationWithFloodData = () => ({
-      ...location,
-      floodData: {
-        types: [severity],
-        name: floodArea.properties.TA_Name,
-        updatedTime
+    const createLocationWithFloodData = () => {
+      const updatedLocation = {
+        locationData: location,
+        floodData: {
+          types: [severity],
+          name: floodArea.properties.TA_Name,
+          code: floodArea.properties.TA_CODE,
+          updatedTime
+        }
       }
-    })
+
+      return updatedLocation
+    }
 
     // for xy coord locations
     const handleXYCoordinates = () => {

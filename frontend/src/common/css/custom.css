@@ -32,8 +32,7 @@
 }
 
 .sub-navigation__list {
-  display: flex;
-  align-items: baseline;
+  
   font-size: 0;
   list-style: none;
   margin: 0;

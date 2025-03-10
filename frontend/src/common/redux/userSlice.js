@@ -511,25 +511,28 @@ const userSlice = createSlice({
     setOrganization: (state, action) => {
       state.organization.id = action.payload?.id || null
       state.organization.name = action.payload?.name || null
-      state.organization.description = action.payload?.description || JSON.stringify({
-        name: null,
-        address: null,
-        compHouseNum: null,
-        emergencySector: null,
-        isAdminRegistering: null,
-        alternativeContact: {
-          firstName: null,
-          lastName: null,
-          email: null,
-          telephone: null,
-          jobTitle: null
-        }
-      })
+      state.organization.description =
+        action.payload?.description ||
+        JSON.stringify({
+          name: null,
+          address: null,
+          compHouseNum: null,
+          emergencySector: null,
+          isAdminRegistering: null,
+          alternativeContact: {
+            firstName: null,
+            lastName: null,
+            email: null,
+            telephone: null,
+            jobTitle: null
+          }
+        })
       state.organization.postalCode = action.payload?.postalCode || null
       state.organization.longName = action.payload?.longName || null
       state.organization.logoUrl = action.payload?.logoUrl || null
       state.organization.backgroundUrl = action.payload?.backgroundUrl || null
-      state.organization.alertDiffusionZone = action.payload?.alertDiffusionZone || null
+      state.organization.alertDiffusionZone =
+        action.payload?.alertDiffusionZone || null
       state.organization.alertDiffusionZoneBoundingBox =
         action.payload?.alertDiffusionZoneBoundingBox || null
       state.organization.urlSlug = action.payload?.urlSlug || null

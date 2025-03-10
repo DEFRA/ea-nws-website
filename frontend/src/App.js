@@ -137,18 +137,20 @@ function App () {
               element={
                 (route.path === '/sign-in' ||
                   route.path === '/signup/register-location/search') &&
-                hasAuthCookie ? (
-                  <Navigate
-                    to={
+                hasAuthCookie
+                  ? (
+                    <Navigate
+                      to={
                       signinType === 'org'
                         ? orgManageLocationsUrls.monitoring.view
                         : '/home'
                     }
-                    replace
-                  />
-                ) : (
-                  route.component
-                )
+                      replace
+                    />
+                    )
+                  : (
+                      route.component
+                    )
               }
             />
           ))}

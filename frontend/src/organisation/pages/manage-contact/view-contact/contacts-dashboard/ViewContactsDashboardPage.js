@@ -9,7 +9,10 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { clearOrgCurrentContact, setOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import {
+  clearOrgCurrentContact,
+  setOrgCurrentContact
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
@@ -19,7 +22,10 @@ import {
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import ContactsTable from '../../../../components/custom/ContactsTable'
-import { orgManageContactsUrls, urlManageContactsAdd } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import {
+  orgManageContactsUrls,
+  urlManageContactsAdd
+} from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
@@ -103,7 +109,9 @@ export default function ViewContactsDashboardPage () {
         'api/locations/download_flood_history'
       )
 
-      const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
+      const historyData = await fetch(historyFileUrl.data)
+        .then((response) => response.text())
+        .then((data) => csvToJson(data))
 
       for (const contact of contactsUpdate) {
         const contactsDataToSend = { authToken, orgId, contact }
@@ -121,7 +129,10 @@ export default function ViewContactsDashboardPage () {
             const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
             if (floodAreas && floodAreas.length > 0) {
               for (const area of floodAreas) {
-                contact.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
+                contact.message_count += getHistoricalData(
+                  area.properties.TA_CODE,
+                  historyData
+                ).length
               }
             }
           })
@@ -145,9 +156,13 @@ export default function ViewContactsDashboardPage () {
 
   const getWithinAreas = async (location) => {
     let result = []
-    if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+    if (
+      location.additionals.other.location_data_type ===
+      LocationDataType.X_AND_Y_COORDS
+    ) {
       result = await getFloodAreas(
-        location.coordinates.latitude, location.coordinates.longitude
+        location.coordinates.latitude,
+        location.coordinates.longitude
       )
     } else if (location.geometry?.geoJson) {
       const geoJson = location.geometry.geoJson
@@ -356,17 +371,21 @@ export default function ViewContactsDashboardPage () {
   const NoContactsDisplay = () => {
     return (
       <>
-        <h1 className='govuk-heading-l'>
-          Contacts
-        </h1>
+        <h1 className='govuk-heading-l'>Contacts</h1>
         <div className='govuk-body'>
           <p>
-            Contacts get sent flood messages that are available for their locations.<br />
-            Contacts do not have access to this account and cannot sign in to it.
+            Contacts get sent flood messages that are available for their
+            locations.
+            <br />
+            Contacts do not have access to this account and cannot sign in to
+            it.
           </p>
           <p>
-            As an admin you can add, edit and delete contacts. You can also decide how<br />
-            contacts get flood messages for the locations they're responsible for.
+            As an admin you can add, edit and delete contacts. You can also
+            decide how
+            <br />
+            contacts get flood messages for the locations they're responsible
+            for.
           </p>
           <Button
             text='Add contacts'
@@ -417,25 +436,25 @@ export default function ViewContactsDashboardPage () {
                       <Button
                         text='Open filter'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={(event) => onOpenCloseFilter(event)}
+                        onClick={() => onOpenCloseFilter()}
                       />
                       {(!location.state ||
-                      !location.state.linkLocations ||
-                      location.state.linkLocations.length === 0) && (
-                        <>
-                        &nbsp; &nbsp;
-                          <ButtonMenu
-                            title='More actions'
-                            options={moreActions}
-                            onSelect={(index) => onMoreAction(index)}
-                          />
-                        &nbsp; &nbsp;
-                          <Button
-                            text='Print'
-                            className='govuk-button govuk-button--secondary inline-block'
-                            onClick={(event) => onPrint(event)}
-                          />
-                        </>
+                    !location.state.linkLocations ||
+                    location.state.linkLocations.length === 0) && (
+                      <>
+                      &nbsp; &nbsp;
+                        <ButtonMenu
+                          title='More actions'
+                          options={moreActions}
+                          onSelect={(index) => onMoreAction(index)}
+                        />
+                      &nbsp; &nbsp;
+                        <Button
+                          text='Print'
+                          className='govuk-button govuk-button--secondary inline-block'
+                          onClick={(event) => onOpenCloseFilter(event)}
+                        />
+                      </>
                       )}
                       <ContactsTable
                         contacts={contacts}

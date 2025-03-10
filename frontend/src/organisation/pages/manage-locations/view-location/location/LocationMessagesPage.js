@@ -43,7 +43,6 @@ export default function LocationMessagesPage () {
   }
 
   const handleDelete = async () => {
-    
     // unregister and delete linked area
     const unregisterData = {
       authToken,
@@ -595,7 +594,7 @@ export default function LocationMessagesPage () {
           <NotificationBanner
             className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-8'
             title='Success'
-            text={'Flood area unlinked'}
+            text='Flood area unlinked'
           />
         )}
         <LocationHeader
@@ -614,15 +613,14 @@ export default function LocationMessagesPage () {
           </div>
         </div>
         {unlinkID &&
-        <Popup
+          <Popup
             onDelete={() => handleDelete()}
             onClose={() => handleClose()}
             title='Unlink flood area'
             popupText='If you continue flood messages will not be received for this flood area.'
             buttonText='Unlink flood area'
             buttonClass='govuk-button--warning'
-          />
-        }
+          />}
       </main>
     </>
   )

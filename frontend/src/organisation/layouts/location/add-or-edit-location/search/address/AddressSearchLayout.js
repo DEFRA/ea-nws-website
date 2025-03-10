@@ -124,7 +124,7 @@ export default function AddressSearchLayout ({
                     <Button
                       text='I cannot find the address'
                       className='govuk-button govuk-button--secondary'
-                      onClick={(event) => {event.preventDefault(); navigateToCannotFindAddressPage()}}
+                      onClick={(event) => { event.preventDefault(); navigateToCannotFindAddressPage() }}
                     />
                     <Pagination
                       totalPages={Math.ceil(locations.length / locationsPerPage)}

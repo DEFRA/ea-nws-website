@@ -28,10 +28,10 @@ export const getFilteredFloodAreas = async (property, value) => {
   return allFilteredAreas
 }
 
-const wfsCall = async (bbox, type) => {
+const wfsCall = async (bbox, map, type) => {
   const WFSParams = {
     service: 'WFS',
-    map: 'uk-nfws.qgz',
+    map,
     version: '1.1.0',
     request: 'GetFeature',
     typename: type,
@@ -44,7 +44,8 @@ const wfsCall = async (bbox, type) => {
 }
 
 export const getFloodAreas = async (lat, lng) => {
-  const { alertArea: alertAreas, warningArea: warningAreas } = await getSurroundingFloodAreas(lat, lng)
+  const { alertArea: alertAreas, warningArea: warningAreas } =
+    await getSurroundingFloodAreas(lat, lng)
   const alertAreasFeatures = alertAreas?.features || []
   const warningAreasFeatures = warningAreas?.features || []
   const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
@@ -62,8 +63,16 @@ export const getFloodAreasFromShape = async (geoJsonShape) => {
   const bboxInput =
     bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
   // warning areas
-  const { data: wfsWarningData } = await wfsCall(bboxInput, 'flood_warnings')
-  const { data: wfsAlertData } = await wfsCall(bboxInput, 'flood_alerts')
+  const { data: wfsWarningData } = await wfsCall(
+    bboxInput,
+    'uk-nfws.qgz',
+    'flood_warnings'
+  )
+  const { data: wfsAlertData } = await wfsCall(
+    bboxInput,
+    'uk-nfws.qgz',
+    'flood_alerts'
+  )
   // We only want intersections from the current shape to get areas within
   const filteredWarningData = getIntersections(wfsWarningData, geoJsonShape)
   const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
@@ -76,9 +85,17 @@ export const getFloodAreasFromShape = async (geoJsonShape) => {
 
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
-  const { data: wfsWarningData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_warnings')
+  const { data: wfsWarningData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'uk-nfws.qgz',
+    'flood_warnings'
+  )
   // alert area
-  const { data: wfsAlertData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_alerts')
+  const { data: wfsAlertData } = await wfsCall(
+    calculateBoundingBox(lat, lng, bboxKM),
+    'uk-nfws.qgz',
+    'flood_alerts'
+  )
   return {
     alertArea: wfsAlertData,
     warningArea: wfsWarningData
@@ -98,11 +115,19 @@ export const getSurroundingFloodAreasFromShape = async (
   const bboxInput =
     bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
   // warning areas
-  const { data: wfsWarningData } = await wfsCall(bboxInput, 'flood_warnings')
+  const { data: wfsWarningData } = await wfsCall(
+    bboxInput,
+    'uk-nfws.qgz',
+    'flood_warnings'
+  )
   // As the surrounding areas will be for square box, it might return data that is irrelevant to the original shape: we need to filter it
   const filteredWarningData = getIntersections(wfsWarningData, bufferedShape)
   // alert area
-  const { data: wfsAlertData } = await wfsCall(bboxInput, 'flood_alerts')
+  const { data: wfsAlertData } = await wfsCall(
+    bboxInput,
+    'uk-nfws.qgz',
+    'flood_alerts'
+  )
   const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
   return {
     alertArea: filteredAlertData,
@@ -115,22 +140,22 @@ const getIntersections = (areas, bufferedShape) => {
   if (!bufferedShapeValid) return
   const bufferedShapeGeometry = bufferedShape.geometry
   const filteredTargetData = areas.features.filter((area) => {
-      try {
-        let res = false
-        if (bufferedShapeGeometry.type === 'MultiPolygon') {
-          bufferedShapeGeometry.coordinates.forEach((poly) => {
-            res = res || turf.booleanContains(area.geometry, {
-              type: 'Polygon',
-              coordinates: poly
-            })
+    try {
+      let res = false
+      if (bufferedShapeGeometry.type === 'MultiPolygon') {
+        bufferedShapeGeometry.coordinates.forEach((poly) => {
+          res = res || turf.booleanContains(area.geometry, {
+            type: 'Polygon',
+            coordinates: poly
           })
-        }
-        res = res || turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
-        return res
-      } catch (e) {
-        console.error('Error during intersection', e)
-        return false
+        })
       }
+      res = res || turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
+      return res
+    } catch (e) {
+      console.error('Error during intersection', e)
+      return false
+    }
   })
   return filteredTargetData
 }
@@ -154,6 +179,7 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
   // alert area
   const { data: wfsAlertData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),
+    'uk-nfws.qgz',
     'flood_alerts'
   )
 
@@ -254,10 +280,11 @@ function calculateBoundingBox (centerLat, centerLng, distanceKm) {
 export const getLocationsNearbyRiversAndSeaFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.5
+  bboxKM = 0.2
 ) => {
   const { data: riversAndSeaFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),
+    'uk-rs.qgz',
     'risk-rivers-sea'
   )
 
@@ -267,10 +294,11 @@ export const getLocationsNearbyRiversAndSeaFloodAreas = async (
 export const getLocationsNearbyGroundWaterFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.5
+  bboxKM = 0.2
 ) => {
   const { data: groundwaterFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),
+    'uk-gf.qgz',
     'groundwater-flood-risk'
   )
 

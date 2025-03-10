@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
-  Marker, Popup,
+  Marker,
+  Popup,
   TileLayer,
   ZoomControl,
   useMap,
@@ -23,6 +24,7 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import { getAdditional } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
 import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
@@ -133,13 +135,22 @@ export default function LiveMap ({
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
 
-      const { data: partnerId } = await backendCall('data', 'api/service/get_partner_id')
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
 
       const options = {
         states: ['CURRENT'],
         boundingBox: {
-          southWest: { latitude: parseInt(bbox[1] * 10 ** 6), longitude: parseInt(bbox[0] * 10 ** 6) },
-          northEast: { latitude: parseInt(bbox[3] * 10 ** 6), longitude: parseInt(bbox[2] * 10 ** 6) }
+          southWest: {
+            latitude: parseInt(bbox[1] * 10 ** 6),
+            longitude: parseInt(bbox[0] * 10 ** 6)
+          },
+          northEast: {
+            latitude: parseInt(bbox[3] * 10 ** 6),
+            longitude: parseInt(bbox[2] * 10 ** 6)
+          }
         },
         channels: [],
         partnerId
@@ -152,13 +163,12 @@ export default function LiveMap ({
         navigate
       )
       if (!errorMessage) {
-        // loop through live alerts - loop through all locations to find affected locations
+      // loop through live alerts - loop through all locations to find affected locations
         for (const liveAlert of liveAlertsData?.alerts) {
-          const TA_CODE = getExtraInfo(
+          const TA_CODE = getAdditional(
             liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
             'TA_CODE'
           )
-
           const severity = liveAlert.type
           const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
           const floodArea = await getFloodAreaByTaCode(TA_CODE)
@@ -283,17 +293,6 @@ export default function LiveMap ({
     const year = date.getFullYear()
 
     return `${time} on ${day} ${month} ${year}`
-  }
-
-  const getExtraInfo = (extraInfo, id) => {
-    if (extraInfo) {
-      for (let i = 0; i < extraInfo.length; i++) {
-        if (extraInfo[i].id === id) {
-          return extraInfo[i].value?.s
-        }
-      }
-    }
-    return ''
   }
 
   const ZoomTracker = () => {
@@ -431,7 +430,7 @@ export default function LiveMap ({
     useEffect(() => {
       // Run on initial load when the map is ready
       checkVisibleFeatures()
-    }, [map])
+    }, [])
 
     useMapEvents({
       moveend: () => checkVisibleFeatures(),
@@ -463,11 +462,14 @@ export default function LiveMap ({
         // handle all other geometry types
         return turf.booleanIntersects(feature, viewportGeoJSON)
       })
+
+      // Only update state if the result is different
       setVisibleFeatures(visibleFeatures)
     }
 
     return null
   }
+
   const keyTypes = {
     noKey: 'noKey',
     boundaryOrShape: 'boundaryOrShape',

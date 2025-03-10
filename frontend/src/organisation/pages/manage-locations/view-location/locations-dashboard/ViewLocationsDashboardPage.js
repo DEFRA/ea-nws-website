@@ -121,14 +121,6 @@ export default function ViewLocationsDashboardPage () {
         })
       }
 
-      for (const location of locationsUpdate) {
-        if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
-          location.within = await getFloodAreas(location.coordinates.latitude, location.coordinates.longitude).length > 0 ? true : false
-        } else {
-          location.within = await getFloodAreasFromShape(location.geometry.geoJson).length > 0 ? true : false
-        }
-      }
-
       const riverSeaRisks = await Promise.all(
         locationsUpdate.map((location) =>
           getRiskCategory({
@@ -178,6 +170,7 @@ export default function ViewLocationsDashboardPage () {
 
         location.message_count = 0
         const floodAreas = await getWithinAreas(location)
+        location.within = floodAreas.length > 0 ? true : false
         if (floodAreas && floodAreas.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(

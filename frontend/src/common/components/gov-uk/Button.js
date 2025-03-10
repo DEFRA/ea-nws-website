@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 export default function Button ({
   text,
@@ -13,7 +13,7 @@ export default function Button ({
       <button
         type='submit'
         className={className}
-        onClick={(event) => { setCursor('wait'); onClick(event) }}
+        onClick={(event) => { setCursor('wait'); onClick(event);  setCursor('pointer')}}
         data-module='govuk-button'
         style={{ cursor }}
       >

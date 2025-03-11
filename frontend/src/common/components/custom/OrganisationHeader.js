@@ -21,6 +21,8 @@ export default function OrganisationHeader () {
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
   const location = useLocation()
+  const currentPage = location.pathname
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen)
   }
@@ -89,10 +91,9 @@ export default function OrganisationHeader () {
                 </span>
               </a>
             </div>
-            {/*this is just wrong it needs restructing */}
 
             <nav>
-              <ul>
+              <ul className='header-navigation-menu'>
               {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
             <li>
               <button onClick={() => toggleMenu()}>
@@ -101,11 +102,11 @@ export default function OrganisationHeader () {
             </li>}
             {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
           pages.map((page, index) => (
-            <li key={index} className={`${!menuOpen && 'closed'}`}>
+            <li key={index} className={`header-navigation-menu-pages ${!menuOpen && 'closed'}`}>
               <Link
                 to={page.link}
-                className='sub-navigation__link'
-               
+                
+                aria-current={currentPage === page.link ? 'page' : 'no'}
               >
                 {page.title}
               </Link>
@@ -113,25 +114,6 @@ export default function OrganisationHeader () {
           ))}
               </ul>
             </nav>
-
-            {/* {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
-              <button onClick={() => toggleMenu()} className='header-navigation-menu'>
-                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-              </button>}
-            <ul>
-              {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
-              pages.map((page, index) => (
-                <li key={index} className={` ${!menuOpen && 'closed'}`}>
-                  <Link
-                    to={page.link}
-                    className=''
-
-                  >
-                    {page.title}
-                  </Link>
-                </li>
-              ))}
-            </ul> */}
 
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>

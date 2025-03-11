@@ -169,7 +169,8 @@ export default function ManageKeywordsPage () {
     })
   }
 
-  const multiDeleteDialog = () => {
+  const multiDeleteDialog = (event) => {
+    event.preventDefault()
     const associatedLocations = selectedKeywords.reduce((total, keyword) => {
       return total + keyword.linked_ids.length
     }, 0)
@@ -442,7 +443,7 @@ export default function ManageKeywordsPage () {
                     <>
                       <Button
                         className='govuk-button govuk-button--secondary'
-                        onClick={() => multiDeleteDialog()}
+                        onClick={(event) => multiDeleteDialog(event)}
                         text='Delete selected keywords'
                       />
                       <KeywordsTable

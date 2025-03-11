@@ -5,7 +5,8 @@ import Button from '../../../common/components/gov-uk/Button'
 export default function NotCompletedSignUpLayout ({ nextPage }) {
   const navigate = useNavigate()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     navigate(nextPage)
   }
 

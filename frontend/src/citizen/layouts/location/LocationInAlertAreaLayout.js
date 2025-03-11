@@ -61,7 +61,8 @@ export default function LocationInAlertAreaLayout ({
     getPartnerId()
   }, [])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     let updatedProfile
 
     if (additionalAlerts && isChecked) {
@@ -337,6 +338,7 @@ export default function LocationInAlertAreaLayout ({
                     continueToSearchResultsPage()
                   }}
                   className='govuk-link inline-link'
+                  style={{ cursor: 'pointer' }}
                 >
                   Choose different location
                 </Link>
@@ -345,6 +347,7 @@ export default function LocationInAlertAreaLayout ({
                 <Link
                   className='govuk-link inline-link'
                   onClick={() => navigate(-1)}
+                  style={{ cursor: 'pointer' }}
                 >
                   Cancel
                 </Link>

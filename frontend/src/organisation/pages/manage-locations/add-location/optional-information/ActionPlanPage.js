@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import store from '../../../../../common/redux/store'
-import ActionPlanLayout from '../../../../layouts/optional-info/ActionPlanLayout'
-import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
-import { backendCall } from '../../../../../common/services/BackendService'
-import { setCurrentLocation, getLocationOther } from '../../../../../common/redux/userSlice'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import store from '../../../../../common/redux/store'
+import { getLocationOther, setCurrentLocation } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
+import ActionPlanLayout from '../../../../layouts/optional-info/ActionPlanLayout'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 
 export default function ActionPlanPage () {
   const dispatch = useDispatch()
@@ -30,15 +30,7 @@ export default function ActionPlanPage () {
       navigate
     )
     if (data) {
-      // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
-
-      const dataToSend = { orgId }
-      const { contactsData } = await backendCall(
-        dataToSend,
-        'api/elasticache/list_contacts',
-        navigate
-      )
 
       if (locationType === LocationDataType.X_AND_Y_COORDS) {
         await verifyLocationInFloodAreaAndNavigate(

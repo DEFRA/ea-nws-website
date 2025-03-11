@@ -129,6 +129,7 @@ export default function ViewLocationsDashboardPage () {
           })
         )
       )
+
       const groundWaterRisks = await Promise.all(
         locationsUpdate.map((location) =>
           getRiskCategory({
@@ -148,7 +149,9 @@ export default function ViewLocationsDashboardPage () {
         'api/locations/download_flood_history'
       )
 
-      const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
+      const historyData = await fetch(historyFileUrl.data)
+        .then((response) => response.text())
+        .then((data) => csvToJson(data))
 
       for (const location of locationsUpdate) {
         const contactsDataToSend = { authToken, orgId, location }
@@ -167,9 +170,12 @@ export default function ViewLocationsDashboardPage () {
 
         location.message_count = 0
         const floodAreas = await getWithinAreas(location)
-        if (floodAreas) {
+        if (floodAreas && floodAreas.length > 0) {
           for (const area of floodAreas) {
-            location.message_count += getHistoricalData(area.properties.TA_CODE, historyData).length
+            location.message_count += getHistoricalData(
+              area.properties.TA_CODE,
+              historyData
+            ).length
           }
         }
       }
@@ -177,7 +183,6 @@ export default function ViewLocationsDashboardPage () {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
-
     getPartnerId()
     getLocations()
   }, [])
@@ -186,13 +191,11 @@ export default function ViewLocationsDashboardPage () {
     let riskCategory = null
 
     if (
-      (location.additionals.other?.location_data_type !==
-        LocationDataType.ADDRESS &&
-        location.additionals.other?.location_data_type !==
-          LocationDataType.X_AND_Y_COORDS) ||
+      location.additionals.other?.location_data_type !==
+        LocationDataType.X_AND_Y_COORDS ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
-      location.coordinates.longtitude === null
+      location.coordinates.longitude === null
     ) {
       return null
     }
@@ -363,8 +366,12 @@ export default function ViewLocationsDashboardPage () {
         location.coordinates.longitude
       )
     } else {
-      const geoJson = JSON.parse(location.geometry.geoJson)
-      result = await getFloodAreasFromShape(geoJson)
+      const geoJson = location.geometry.geoJson
+      try {
+        result = await getFloodAreasFromShape(geoJson)
+      } catch {
+        result = null
+      }
     }
     return result
   }
@@ -379,12 +386,14 @@ export default function ViewLocationsDashboardPage () {
       let isInWarningArea = false
       let isInAlertArea = false
 
-      for (const area of withinAreas) {
-        const type = categoryToMessageType(area.properties.category)
-        if (type.includes('Flood Warning')) {
-          isInWarningArea = true
-        } else {
-          isInAlertArea = true
+      if (withinAreas && withinAreas.length > 0) {
+        for (const area of withinAreas) {
+          const type = categoryToMessageType(area.properties.category)
+          if (type.includes('Flood Warning')) {
+            isInWarningArea = true
+          } else {
+            isInAlertArea = true
+          }
         }
       }
 
@@ -520,7 +529,8 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
-  const onPrint = () => {
+  const onPrint = (event) => {
+    event.preventDefault()
     setLocationsPerPage(null)
   }
 
@@ -582,7 +592,8 @@ export default function ViewLocationsDashboardPage () {
     setResetPaging(!resetPaging)
   }
 
-  const onOpenCloseFilter = () => {
+  const onOpenCloseFilter = (event) => {
+    event.preventDefault()
     setHoldPage(currentPage)
     setIsFilterVisible(!isFilterVisible)
   }
@@ -775,7 +786,7 @@ export default function ViewLocationsDashboardPage () {
                   <Button
                     text='Open filter'
                     className='govuk-button govuk-button--secondary inline-block'
-                    onClick={() => onOpenCloseFilter()}
+                    onClick={(event) => onOpenCloseFilter(event)}
                   />
                   {(!location.state ||
                   !location.state.linkContacts ||
@@ -791,7 +802,7 @@ export default function ViewLocationsDashboardPage () {
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={() => onPrint()}
+                        onClick={(event) => onPrint(event)}
                       />
                     </>
                   )}
@@ -877,7 +888,7 @@ export default function ViewLocationsDashboardPage () {
                       <Button
                         text='Close Filter'
                         className='govuk-button govuk-button--secondary'
-                        onClick={() => onOpenCloseFilter()}
+                        onClick={(event) => onOpenCloseFilter(event)}
                       />
                       {(!location.state ||
                       !location.state.linkContacts ||
@@ -893,7 +904,7 @@ export default function ViewLocationsDashboardPage () {
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
-                            onClick={() => onPrint()}
+                            onClick={(event) => onPrint(event)}
                           />
                         </>
                       )}

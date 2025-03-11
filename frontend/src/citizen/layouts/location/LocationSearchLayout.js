@@ -29,7 +29,8 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
     setError('')
   }, [searchOption])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (!searchOption) {
       setError('Select how you want to search for your location')
     } else {

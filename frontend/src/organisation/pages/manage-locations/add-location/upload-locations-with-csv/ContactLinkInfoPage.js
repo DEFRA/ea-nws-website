@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ContactLinkInfoPage () {
   const dispatch = useDispatch()
@@ -57,7 +57,10 @@ export default function ContactLinkInfoPage () {
               <Button
                 text='Finish'
                 className='govuk-button govuk-!-margin-top-8'
-                onClick={() => navigate(orgManageLocationsUrls.monitoring.view)}
+                onClick={(event) => {
+                  event.preventDefault()
+                  navigate(orgManageLocationsUrls.monitoring.view)
+                }}
               />
             </div>
           </div>

@@ -38,7 +38,8 @@ export default function NotesLayout ({
     }
   }, [notes])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (error) return
 
     switch (keywordType) {

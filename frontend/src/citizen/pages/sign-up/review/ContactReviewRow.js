@@ -58,6 +58,7 @@ export default function ContactReviewRow ({
                 contact
               }}
               className='govuk-link right'
+              style={{ cursor: 'pointer' }}
             >
               Remove
             </Link>
@@ -66,7 +67,7 @@ export default function ContactReviewRow ({
             <>
               <br />
               <br />
-              <Link to={rowDetails().confirmLink} className='govuk-link right'>
+              <Link to={rowDetails().confirmLink} className='govuk-link right' style={{ cursor: 'pointer' }}>
                 Confirm
               </Link>
             </>

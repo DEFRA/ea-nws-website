@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 
@@ -30,7 +30,7 @@ export default function OrganisationConfirmServicePage () {
                 <Button
                   className='govuk-button'
                   text='Continue'
-                  onClick={() => navigate('/organisation/sign-up')}
+                  onClick={(event) => { event.preventDefault(); navigate('/organisation/sign-up') }}
                 />
                 &nbsp; &nbsp;
                 <Link

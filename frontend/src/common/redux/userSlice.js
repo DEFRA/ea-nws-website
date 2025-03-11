@@ -13,7 +13,7 @@ const setAdditional = (additionals, id, value) => {
   }
 }
 
-const getAdditional = (additionals, id) => {
+export const getAdditional = (additionals, id) => {
   for (let i = 0; i < additionals.length; i++) {
     if (additionals[i].id === id) {
       return additionals[i].value?.s
@@ -165,6 +165,7 @@ const userSlice = createSlice({
         }
       ]
     },
+    currentTA: null,
     // org data
     organization: {
       id: null,
@@ -319,6 +320,9 @@ const userSlice = createSlice({
       state.linkContacts = action.payload
     },
     // org location data
+    setCurrentTA: (state, action) => {
+      state.currentTA = action.payload
+    },
     setCurrentLocation: (state, action) => {
       state.currentLocation.id = action.payload.id
       state.currentLocation.enabled = action.payload.enabled
@@ -507,25 +511,28 @@ const userSlice = createSlice({
     setOrganization: (state, action) => {
       state.organization.id = action.payload?.id || null
       state.organization.name = action.payload?.name || null
-      state.organization.description = action.payload?.description || JSON.stringify({
-        name: null,
-        address: null,
-        compHouseNum: null,
-        emergencySector: null,
-        isAdminRegistering: null,
-        alternativeContact: {
-          firstName: null,
-          lastName: null,
-          email: null,
-          telephone: null,
-          jobTitle: null
-        }
-      })
+      state.organization.description =
+        action.payload?.description ||
+        JSON.stringify({
+          name: null,
+          address: null,
+          compHouseNum: null,
+          emergencySector: null,
+          isAdminRegistering: null,
+          alternativeContact: {
+            firstName: null,
+            lastName: null,
+            email: null,
+            telephone: null,
+            jobTitle: null
+          }
+        })
       state.organization.postalCode = action.payload?.postalCode || null
       state.organization.longName = action.payload?.longName || null
       state.organization.logoUrl = action.payload?.logoUrl || null
       state.organization.backgroundUrl = action.payload?.backgroundUrl || null
-      state.organization.alertDiffusionZone = action.payload?.alertDiffusionZone || null
+      state.organization.alertDiffusionZone =
+        action.payload?.alertDiffusionZone || null
       state.organization.alertDiffusionZoneBoundingBox =
         action.payload?.alertDiffusionZoneBoundingBox || null
       state.organization.urlSlug = action.payload?.urlSlug || null
@@ -776,6 +783,7 @@ const userSlice = createSlice({
       state.consecutiveBoundariesAdded = 0
       state.predefinedBoundaryFlow = null
       // org location data
+      state.currentTA = null
       state.currentLocation = {
         id: null,
         enabled: true,
@@ -980,6 +988,7 @@ export const {
   setLinkLocations,
   setLinkContacts,
   // org location data
+  setCurrentTA,
   setCurrentLocation,
   setCurrentLocationId,
   setCurrentLocationEnabled,

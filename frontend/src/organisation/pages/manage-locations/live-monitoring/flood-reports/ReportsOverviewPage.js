@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../common/components/custom/BackLink'
-import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
-import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import { orgFloodReportsUrls } from '../../../../routes/flood-reports/FloodReportsRoutes'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ReportsOverviewPage () {
   const navigate = useNavigate()

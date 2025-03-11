@@ -37,7 +37,8 @@ export default function AddLocationOptionsPage () {
     setAddLocationTypeError('')
   }, [addLocationType])
 
-  const handleButton = () => {
+  const handleButton = (event) => {
+    event.preventDefault()
     if (!addLocationType) {
       setAddLocationTypeError('Select how you want to add locations')
     } else {

@@ -29,8 +29,9 @@ export default function ServiceNavigation ({
             )}
             <nav aria-label='Menu' class='govuk-service-navigation__wrapper'>
               <ul class='govuk-service-navigation__list' id='navigation'>
-                {navLinks.map((link) => (
+                {navLinks.map((link, index) => (
                   <li
+                    key={index}
                     class={`govuk-service-navigation__item ${
                       currentPage === link.url &&
                       'govuk-service-navigation__item--active'

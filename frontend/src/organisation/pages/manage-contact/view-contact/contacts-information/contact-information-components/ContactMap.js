@@ -54,12 +54,12 @@ export default function ContactMap ({ locations }) {
             ])
             points.push(location.coordinates)
           } else {
-            feature = location.geometry.geoJson
+            feature = JSON.parse(location.geometry.geoJson)
             setGeoJsonShapes((prevShapes) => [
               ...prevShapes,
-              location.geometry.geoJson
+              feature
             ])
-            shapes.push(location.geometry.geoJson)
+            shapes.push(feature)
           }
 
           locationsCollection.push(feature)

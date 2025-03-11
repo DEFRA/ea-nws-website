@@ -12,7 +12,6 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
-import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
@@ -24,8 +23,8 @@ export default function OptionalLocationInformationPage () {
     getLocationOther(state, 'location_data_type')
   )
   const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
-  const orgId = useSelector((state) => state.session.orgId)
-  const navigateToNextPage = () => {
+  const navigateToNextPage = (event) => {
+    event.preventDefault()
     if (postcode) {
       navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
     } else {
@@ -40,14 +39,6 @@ export default function OptionalLocationInformationPage () {
 
   const skipOptionalInformation = async (event) => {
     event.preventDefault()
-
-    const dataToSend = { orgId }
-    const { data } = await backendCall(
-      dataToSend,
-      'api/elasticache/list_contacts',
-      navigate
-    )
-
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
       await verifyLocationInFloodAreaAndNavigate(
         orgManageLocationsUrls.add.linkLocationToContacts

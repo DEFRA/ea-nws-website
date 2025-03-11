@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 
-export default function SignBackInPage () {
+export default function SignBackInPage() {
   const navigate = useNavigate()
 
-  function redirect () {
+  function redirect(event) {
+    event.preventDefault()
     navigate('/sign-in')
   }
 

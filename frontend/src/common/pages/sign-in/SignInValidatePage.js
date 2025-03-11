@@ -18,7 +18,8 @@ import {
   setOrganization,
   setProfile,
   setProfileId,
-  setRegistrations
+  setRegistrations,
+  setSigninType
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
@@ -75,6 +76,7 @@ export default function SignInValidatePage () {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
+          dispatch(setSigninType('org'))
         }
         dispatch(setRegistrations(data.registrations))
         dispatch(

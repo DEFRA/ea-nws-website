@@ -6,9 +6,10 @@ import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
+import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { authenticatedRoutes, routes } from './routes'
 
-function App () {
+function App() {
   const auth = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
   const [isInactive, setIsInactive] = useState(false)
@@ -91,7 +92,8 @@ function App () {
     }
   }, [isPopUpOnScreen])
 
-  const handleStayLoggedIn = () => {
+  const handleStayLoggedIn = (event) => {
+    event.preventDefault()
     setIsInactive(false)
     setIsPopUpOnScreen(false)
     clearTimeout(redirectTimer.current)
@@ -118,13 +120,11 @@ function App () {
               key={route.path}
               path={route.path}
               element={
-                hasAuthCookie || isSignOutRoute()
-                  ? (
-                      route.component
-                    )
-                  : (
-                    <Navigate to={SignBackInLink()} />
-                    )
+                hasAuthCookie || isSignOutRoute() ? (
+                  route.component
+                ) : (
+                  <Navigate to={SignBackInLink()} />
+                )
               }
             />
           ))}
@@ -135,13 +135,18 @@ function App () {
               element={
                 (route.path === '/sign-in' ||
                   route.path === '/signup/register-location/search') &&
-                hasAuthCookie
-                  ? (
-                    <Navigate to='/home' replace />
-                    )
-                  : (
-                      route.component
-                    )
+                hasAuthCookie ? (
+                  <Navigate
+                    to={
+                      signinType === 'org'
+                        ? orgManageLocationsUrls.monitoring.view
+                        : '/home'
+                    }
+                    replace
+                  />
+                ) : (
+                  route.component
+                )
               }
             />
           ))}

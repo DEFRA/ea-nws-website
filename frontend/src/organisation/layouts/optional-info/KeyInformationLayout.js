@@ -45,7 +45,8 @@ export default function KeyInformationLayout ({
     setLocationNameError('')
   }, [locationName])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     // location name can be amended when a user is editing a locations key information
     if (flow === 'edit') {
       // only execute if location name has been changed

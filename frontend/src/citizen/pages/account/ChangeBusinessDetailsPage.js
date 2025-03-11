@@ -22,7 +22,8 @@ export default function ChangeBusinessDetailsPage () {
   const [businessName, setBusinessName] = useState(getAdditionals(profile, 'businessName'))
   const [jobTitle, setJobTitle] = useState(getAdditionals(profile, 'jobTitle'))
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const { validationErrorBusiness, validationErrorJob } = businessDetailsValidation(businessName, jobTitle)
     setBusinessNameError(validationErrorBusiness)
     setJobTitleError(validationErrorJob)
@@ -95,6 +96,7 @@ export default function ChangeBusinessDetailsPage () {
               <Link
                 to='/account'
                 className='govuk-body govuk-link inline-link'
+                style={{ cursor: 'pointer' }}
               >
                 Cancel
               </Link>

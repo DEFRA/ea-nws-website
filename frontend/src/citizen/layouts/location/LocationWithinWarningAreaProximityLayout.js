@@ -97,7 +97,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
     dispatch(setSevereFloodWarningCount(areaWarning.length))
   }
 
-  const handleConfirm = () => {
+  const handleConfirm = (event) => {
+    event.preventDefault()
     if (selectedFloodWarningArea || selectedFloodAlertArea) {
       if (type === 'severe') {
         dispatch(setAdditionalAlerts(true))
@@ -237,6 +238,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                           e.preventDefault()
                           setShowMobileMap(true)
                         }}
+                        style={{ cursor: 'pointer' }}
                       >
                         View and select on map
                       </Link>
@@ -248,7 +250,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                       className={`govuk-button govuk-button--secondary ${
                       isMobile ? 'custom-width-button' : ''
                     }`}
-                      onClick={continueToNearbyFloodAlertsPage}
+                      onClick={(event) => { event.preventDefault(); continueToNearbyFloodAlertsPage() }}
                     />
                   )}
                   <br />
@@ -257,6 +259,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                       e.preventDefault()
                       continueToSearchResultsPage()
                     }}
+                    style={{ cursor: 'pointer' }}
                   >
                     Choose different location
                   </Link>

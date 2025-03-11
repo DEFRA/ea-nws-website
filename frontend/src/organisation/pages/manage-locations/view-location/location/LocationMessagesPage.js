@@ -5,16 +5,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import linkIcon from '../../../../../common/assets/images/link.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
+import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
-import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes, setCurrentLocationChildrenIDs, setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
-import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaName, getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -25,12 +26,50 @@ export default function LocationMessagesPage () {
   const orgId = useSelector((state) => state.session.orgId)
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
+  const [locationUnlinked, setLocationUnlinked] = useState(false)
 
   const [loading, setLoading] = useState(true)
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
   const [partnerId, setPartnerId] = useState(false)
+  const [unlinkID, setUnlinkID] = useState(null)
+  const exisitingChildrenIDs = useSelector((state) =>
+    getLocationOther(state, 'childrenIDs')
+  )
+
+  const handleClose = () => {
+    setUnlinkID(null)
+  }
+
+  const handleDelete = async () => {
+    // unregister and delete linked area
+    const unregisterData = {
+      authToken,
+      locationId: unlinkID,
+      partnerId
+    }
+    await backendCall(
+      unregisterData,
+      'api/location/unregister_from_partner',
+      navigate
+    )
+    const dataToSend = { authToken, orgId, locationIds: [unlinkID] }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/remove',
+      navigate
+    )
+    if (!errorMessage) {
+      // update current location childrenIds
+      dispatch(setCurrentLocationChildrenIDs(exisitingChildrenIDs.filter(child => child.id !== unlinkID)))
+      const locationToUpdate = store.getState().session.currentLocation
+      const dataToSend = { authToken, orgId, location: locationToUpdate }
+      await backendCall(dataToSend, 'api/location/update', navigate)
+      setLocationUnlinked(true)
+      setUnlinkID(null)
+    }
+  }
 
   async function getPartnerId () {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -85,18 +124,12 @@ export default function LocationMessagesPage () {
     setWithinAreas(result)
   }
 
-  /*   const onClick = async (e, area) => {
+  const onClick = async (e, areaName) => {
     e.preventDefault()
-    const alertKey = orgId + ':t_POIS:' + area.id
-    const { data } = await backendCall(
-      { key: alertKey },
-      'api/elasticache/get_data',
-      navigate
-    )
-    data && dispatch(setCurrentLocation(data))
-    // Will need a different page to view the nearby area but no figma?
-    navigate(orgManageLocationsUrls.view.viewLocation)
-  } */
+    const floodArea = await getFloodAreaByTaName(areaName)
+    dispatch(setCurrentTA(floodArea))
+    navigate(orgManageLocationsUrls.view.viewFloodArea)
+  }
 
   const categoryToMessageType = (type) => {
     const typeMap = {
@@ -261,7 +294,8 @@ export default function LocationMessagesPage () {
         )
   }, [floodHistoryUrl])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (
       alertTypesEnabledOriginal.every(
         (value, index) => value === alertTypesEnabled[index]
@@ -484,7 +518,7 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          <Link className='govuk-link'>
+                          <Link onClick={(e) => onClick(e, detail.areaName)} className='govuk-link'>
                             {detail.areaName}
                           </Link>
                         </td>
@@ -511,7 +545,7 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          {detail.linked && <Link className='govuk-link'>Unlink</Link>}
+                          {detail.linked && <Link className='govuk-link' onClick={() => setUnlinkID(detail.linked)}>Unlink</Link>}
                         </td>
                       </tr>
                     ))}
@@ -527,7 +561,10 @@ export default function LocationMessagesPage () {
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
             // TODO: Add link to nearby flood areas
-        onClick={() => navigate(orgManageLocationsUrls.add.linkToTargetArea)}
+        onClick={(event) => {
+          event.preventDefault()
+          navigate(orgManageLocationsUrls.add.linkToTargetArea)
+        }}
       />
     </>
   )
@@ -553,6 +590,13 @@ export default function LocationMessagesPage () {
             }
           />
         )}
+        {locationUnlinked && (
+          <NotificationBanner
+            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-8'
+            title='Success'
+            text='Flood area unlinked'
+          />
+        )}
         <LocationHeader
           currentPage={orgManageLocationsUrls.view.viewMessages}
         />
@@ -568,6 +612,15 @@ export default function LocationMessagesPage () {
             {floodAreasSection}
           </div>
         </div>
+        {unlinkID &&
+          <Popup
+            onDelete={() => handleDelete()}
+            onClose={() => handleClose()}
+            title='Unlink flood area'
+            popupText='If you continue flood messages will not be received for this flood area.'
+            buttonText='Unlink flood area'
+            buttonClass='govuk-button--warning'
+          />}
       </main>
     </>
   )

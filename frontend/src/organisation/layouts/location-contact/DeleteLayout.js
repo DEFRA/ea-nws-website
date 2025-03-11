@@ -10,7 +10,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DeleteLayout () {
+export default function DeleteLayout() {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -30,7 +30,7 @@ export default function DeleteLayout () {
   const [error, setError] = useState(false)
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -55,7 +55,8 @@ export default function DeleteLayout () {
     }
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (event) => {
+    event.preventDefault()
     const idsToDelete = []
     if (isLocation) {
       idsToDelete.push(currentLocation.id)

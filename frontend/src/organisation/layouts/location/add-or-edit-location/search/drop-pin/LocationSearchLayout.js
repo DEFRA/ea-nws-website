@@ -65,7 +65,8 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     setPlaceNameTownOrPostcodeCoords(value.coordinates)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     const trimmedPlaceNameTownOrPostcode = placeNameTownOrPostcode.trim()
     if (trimmedPlaceNameTownOrPostcode === '') {
       setPlaceNameTownOrPostcodeError(placeNameTownOrPostcodeText)

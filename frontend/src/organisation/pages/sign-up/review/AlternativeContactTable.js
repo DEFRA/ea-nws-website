@@ -15,7 +15,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
+            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
               Change
             </Link>
           </td>
@@ -28,7 +28,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
             {alternativeContact.email}
           </td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
+            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
               Change
             </Link>
           </td>
@@ -41,7 +41,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
             {alternativeContact.telephone}
           </td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
+            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
               Change
             </Link>
           </td>
@@ -56,7 +56,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
               : '-'}
           </td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.altContact} className='govuk-link'>
+            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
               Change
             </Link>
           </td>

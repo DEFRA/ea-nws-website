@@ -4,7 +4,7 @@ import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
 export default function SectorPage () {
   const navigate = useNavigate()
-  const navigateToNextPage = () => navigate(orgSignUpUrls.admin.mainAdmin)
+  const navigateToNextPage = () => navigate(orgSignUpUrls.altContact)
 
   const NavigateToPreviousPage = () => {
     navigate(orgSignUpUrls.compHouseNum)

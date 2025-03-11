@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router'
-import AddNameLayout from '../../layouts/name/AddNameLayout'
-import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
+import AddNameLayout from '../../../../layouts/name/AddNameLayout'
+import { orgSignUpUrls } from '../../../../routes/sign-up/SignUpRoutes'
 
-export default function AddNamePage () {
+export default function ChangeOrgNamePage () {
   const navigate = useNavigate()
-  const navigateToNextPage = () => navigate(orgSignUpUrls.admin.mainAdmin)
+  const navigateToNextPage = () => navigate(orgSignUpUrls.review)
 
   const NavigateToPreviousPage = () => {
     navigate(-1)

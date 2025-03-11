@@ -8,6 +8,12 @@ import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetails
 import DuplicateAdminEmailPage from '../../pages/sign-up/mainAdministrator/DuplicateAdminEmailPage'
 import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
+import ChangeAddressPage from '../../pages/sign-up/review/change-details/ChangeAddressPage'
+import ChangeAdminDetailsPage from '../../pages/sign-up/review/change-details/ChangeAdminDetailsPage'
+import ChangeAlternativeContactDetailsPage from '../../pages/sign-up/review/change-details/ChangeAlternativeContactsDetailPage'
+import ChangeCompHouseNumPage from '../../pages/sign-up/review/change-details/ChangeCompHouseNumPage'
+import ChangeOrgNamePage from '../../pages/sign-up/review/change-details/ChangeOrgNamePage'
+import ChangeSectorPage from '../../pages/sign-up/review/change-details/ChangeSectorPage'
 import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
 import SectorPage from '../../pages/sign-up/SectorPage'
@@ -35,7 +41,15 @@ const orgSignUpUrls = {
   duplicateOrgName: orgSignUpUrl + '/duplicate',
   success: orgSignUpUrl + '/success',
   review: orgSignUpUrl + '/review',
-  termsAndConditions: orgSignUpUrl + '/declaration'
+  termsAndConditions: orgSignUpUrl + '/declaration',
+  change: {
+    name: orgSignUpUrl + '/change/name',
+    address: orgSignUpUrl + '/change/address',
+    compHouseNum: orgSignUpUrl + '/change/number',
+    sector: orgSignUpUrl + '/change/sector',
+    mainAdmin: orgSignUpUrl + '/change/admin-details',
+    altContact: orgSignUpUrl + '/change/alternative-contact'
+  }
 }
 
 const orgSignUpRoutes = [
@@ -92,6 +106,21 @@ const orgSignUpRoutes = [
   {
     path: orgSignUpUrls.termsAndConditions,
     component: <TermsAndConditionsPage />
+  },
+  { path: orgSignUpUrls.change.name, component: <ChangeOrgNamePage /> },
+  { path: orgSignUpUrls.change.address, component: <ChangeAddressPage /> },
+  {
+    path: orgSignUpUrls.change.compHouseNum,
+    component: <ChangeCompHouseNumPage />
+  },
+  { path: orgSignUpUrls.change.sector, component: <ChangeSectorPage /> },
+  {
+    path: orgSignUpUrls.change.mainAdmin,
+    component: <ChangeAdminDetailsPage />
+  },
+  {
+    path: orgSignUpUrls.change.altContact,
+    component: <ChangeAlternativeContactDetailsPage />
   }
 ]
 

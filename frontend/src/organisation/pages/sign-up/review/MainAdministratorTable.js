@@ -16,7 +16,7 @@ export default function ContactReviewTable ({ profile }) {
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.admin.details} className='govuk-link'>
+            <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
             </Link>
           </td>
@@ -29,7 +29,7 @@ export default function ContactReviewTable ({ profile }) {
             {profile.emails[0]}
           </td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.admin.details} className='govuk-link'>
+            <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
             </Link>
           </td>

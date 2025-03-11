@@ -18,7 +18,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to={orgSignUpUrls.signUp} className='govuk-link'>
+              <Link to={orgSignUpUrls.change.name} className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -32,7 +32,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to={orgSignUpUrls.address.add} className='govuk-link'>
+              <Link to={orgSignUpUrls.change.address} className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -45,7 +45,10 @@ export default function OrganisationDetailsTable ({ organisation }) {
               {organisation.compHouseNum ? 'Yes' : 'No'}
             </td>
             <td className='govuk-table__cell'>
-              <Link to={orgSignUpUrls.compHouseNum} className='govuk-link'>
+              <Link
+                to={orgSignUpUrls.change.compHouseNum}
+                className='govuk-link'
+              >
                 Change
               </Link>
             </td>
@@ -59,7 +62,10 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to={orgSignUpUrls.compHouseNum} className='govuk-link'>
+              <Link
+                to={orgSignUpUrls.change.compHouseNum}
+                className='govuk-link'
+              >
                 Change
               </Link>
             </td>
@@ -73,7 +79,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to={orgSignUpUrls.sector} className='govuk-link'>
+              <Link to={orgSignUpUrls.change.sector} className='govuk-link'>
                 Change
               </Link>
             </td>

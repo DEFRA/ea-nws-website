@@ -116,9 +116,13 @@ export default function LocationMessagesPage () {
         )
       } else if (currentLocation.geometry?.geoJson) {
         const geoJson = JSON.parse(currentLocation.geometry.geoJson)
-        result = await getFloodAreasFromShape(
-          geoJson
-        )
+        try {
+          result = await getFloodAreasFromShape(
+            geoJson
+          )
+        } catch {
+          result = []
+        }
       }
     }
     setWithinAreas(result)

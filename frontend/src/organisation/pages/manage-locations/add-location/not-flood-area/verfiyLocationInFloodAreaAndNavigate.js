@@ -25,7 +25,11 @@ export function useVerifyLocationInFloodArea () {
       )
     } else {
       const geoJson = JSON.parse(location.geometry.geoJson)
-      withinAreas = await getFloodAreasFromShape(geoJson)
+      try {
+        withinAreas = await getFloodAreasFromShape(geoJson)
+      } catch {
+        withinAreas = []
+      }
     }
 
     if (withinAreas.length === 0) {

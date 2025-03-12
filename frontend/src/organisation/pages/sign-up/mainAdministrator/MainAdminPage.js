@@ -10,7 +10,7 @@ export default function MainAdminPage () {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate(orgSignUpUrls.sector)
+    navigate(orgSignUpUrls.signUp)
   }
 
   return (

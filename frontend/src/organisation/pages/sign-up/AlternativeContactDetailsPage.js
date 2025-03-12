@@ -10,7 +10,7 @@ export default function AlternativeContactDetailsPage () {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate(orgSignUpUrls.admin.details)
+    navigate(orgSignUpUrls.sector)
   }
 
   return (

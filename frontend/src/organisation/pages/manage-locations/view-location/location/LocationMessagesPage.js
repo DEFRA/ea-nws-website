@@ -310,9 +310,7 @@ export default function LocationMessagesPage () {
         if (enabled) alertTypesDispatch.push(allAlertTypes[index])
       })
 
-      if (alertTypesDispatch.length > 0) {
-        dispatch(setCurrentLocationAlertTypes(alertTypesDispatch))
-      }
+      dispatch(setCurrentLocationAlertTypes(alertTypesDispatch))
 
       const locationToUpdate = store.getState().session.currentLocation
 

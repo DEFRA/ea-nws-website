@@ -199,6 +199,13 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+@media (min-width: 40.0625em) {
+  .header-navigation-menu  {
+    display: none;
+  }
+}
+
 .inline-link {
   display: inline-block;
   padding: 0.5rem 0.625rem 0.4375rem;

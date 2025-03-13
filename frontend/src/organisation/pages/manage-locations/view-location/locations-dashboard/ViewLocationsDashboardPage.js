@@ -170,6 +170,7 @@ export default function ViewLocationsDashboardPage () {
 
         location.message_count = 0
         const floodAreas = await getWithinAreas(location)
+        location.within = floodAreas.length > 0 ? true : false
         if (floodAreas && floodAreas.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(

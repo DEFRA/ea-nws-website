@@ -116,9 +116,13 @@ export default function LocationMessagesPage () {
         )
       } else if (currentLocation.geometry?.geoJson) {
         const geoJson = JSON.parse(currentLocation.geometry.geoJson)
-        result = await getFloodAreasFromShape(
-          geoJson
-        )
+        try {
+          result = await getFloodAreasFromShape(
+            geoJson
+          )
+        } catch {
+          result = []
+        }
       }
     }
     setWithinAreas(result)
@@ -310,9 +314,7 @@ export default function LocationMessagesPage () {
         if (enabled) alertTypesDispatch.push(allAlertTypes[index])
       })
 
-      if (alertTypesDispatch.length > 0) {
-        dispatch(setCurrentLocationAlertTypes(alertTypesDispatch))
-      }
+      dispatch(setCurrentLocationAlertTypes(alertTypesDispatch))
 
       const locationToUpdate = store.getState().session.currentLocation
 

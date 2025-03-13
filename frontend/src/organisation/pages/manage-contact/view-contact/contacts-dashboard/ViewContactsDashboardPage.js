@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
@@ -30,7 +31,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewContactsDashboardPage () {
+export default function ViewContactsDashboardPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -63,6 +64,7 @@ export default function ViewContactsDashboardPage () {
     charLimit: 0,
     error: ''
   })
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!contactsPerPage) {
@@ -126,7 +128,9 @@ export default function ViewContactsDashboardPage () {
         if (data && data.length > 0) {
           data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
-            const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
+            const floodAreas = await getWithinAreas(
+              geoSafeToWebLocation(location)
+            )
             if (floodAreas && floodAreas.length > 0) {
               for (const area of floodAreas) {
                 contact.message_count += getHistoricalData(
@@ -141,6 +145,7 @@ export default function ViewContactsDashboardPage () {
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
+      setLoading(false)
     }
 
     getContacts()
@@ -167,9 +172,7 @@ export default function ViewContactsDashboardPage () {
     } else if (location.geometry?.geoJson) {
       const geoJson = location.geometry.geoJson
       try {
-        result = await getFloodAreasFromShape(
-          geoJson
-        )
+        result = await getFloodAreasFromShape(geoJson)
       } catch {
         result = []
       }
@@ -406,32 +409,33 @@ export default function ViewContactsDashboardPage () {
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        {contacts.length === 0
-          ? (
-            <NoContactsDisplay />
-            )
-          : (
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-full'>
-                {notificationText && (
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={notificationText}
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            {contacts.length === 0 ? (
+              <NoContactsDisplay />
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-full'>
+                  {notificationText && (
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={notificationText}
+                    />
+                  )}
+                  <DashboardHeader
+                    contacts={contacts}
+                    onClickLinked={onClickLinked}
+                    linkLocations={location.state?.linkLocations}
+                    selectedContacts={selectedContacts}
+                    onOnlyShowSelected={onOnlyShowSelected}
+                    linkSource={location.state?.linkSource}
                   />
-                )}
-                <DashboardHeader
-                  contacts={contacts}
-                  onClickLinked={onClickLinked}
-                  linkLocations={location.state?.linkLocations}
-                  selectedContacts={selectedContacts}
-                  onOnlyShowSelected={onOnlyShowSelected}
-                  linkSource={location.state?.linkSource}
-                />
-              </div>
-              <div className='govuk-grid-column-full govuk-body'>
-                {!isFilterVisible
-                  ? (
+                </div>
+                <div className='govuk-grid-column-full govuk-body'>
+                  {!isFilterVisible ? (
                     <>
                       <Button
                         text='Open filter'
@@ -439,22 +443,22 @@ export default function ViewContactsDashboardPage () {
                         onClick={() => onOpenCloseFilter()}
                       />
                       {(!location.state ||
-                    !location.state.linkLocations ||
-                    location.state.linkLocations.length === 0) && (
-                      <>
-                      &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
-                      &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                      </>
+                        !location.state.linkLocations ||
+                        location.state.linkLocations.length === 0) && (
+                        <>
+                          &nbsp; &nbsp;
+                          <ButtonMenu
+                            title='More actions'
+                            options={moreActions}
+                            onSelect={(index) => onMoreAction(index)}
+                          />
+                          &nbsp; &nbsp;
+                          <Button
+                            text='Print'
+                            className='govuk-button govuk-button--secondary inline-block'
+                            onClick={(event) => onOpenCloseFilter(event)}
+                          />
+                        </>
                       )}
                       <ContactsTable
                         contacts={contacts}
@@ -482,8 +486,7 @@ export default function ViewContactsDashboardPage () {
                         />
                       )}
                     </>
-                    )
-                  : (
+                  ) : (
                     <div className='govuk-grid-row'>
                       <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
                         <SearchFilter
@@ -496,7 +499,9 @@ export default function ViewContactsDashboardPage () {
                           contactNameFilter={contactNameFilter}
                           setContactNameFilter={setContactNameFilter}
                           selectedJobTitleFilters={selectedJobTitleFilters}
-                          setSelectedJobTitleFilters={setSelectedJobTitleFilters}
+                          setSelectedJobTitleFilters={
+                            setSelectedJobTitleFilters
+                          }
                           selectedKeywordFilters={selectedKeywordFilters}
                           setSelectedKeywordFilters={setSelectedKeywordFilters}
                           selectedLinkedFilters={selectedLinkedFilters}
@@ -511,17 +516,17 @@ export default function ViewContactsDashboardPage () {
                             className='govuk-button govuk-button--secondary'
                             onClick={(event) => onOpenCloseFilter(event)}
                           />
-                        &nbsp; &nbsp;
+                          &nbsp; &nbsp;
                           {(!location.state ||
-                          !location.state.linkLocations ||
-                          location.state.linkLocations.length === 0) && (
+                            !location.state.linkLocations ||
+                            location.state.linkLocations.length === 0) && (
                             <>
                               <ButtonMenu
                                 title='More actions'
                                 options={moreActions}
                                 onSelect={(index) => onMoreAction(index)}
                               />
-                            &nbsp; &nbsp;
+                              &nbsp; &nbsp;
                               <Button
                                 text='Print'
                                 className='govuk-button govuk-button--secondary inline-block'
@@ -557,25 +562,28 @@ export default function ViewContactsDashboardPage () {
                         )}
                       </div>
                     </div>
-                    )}
-                {dialog.show && (
-                  <>
-                    <Popup
-                      onDelete={() => handleDelete()}
-                      onClose={() => setDialog({ ...dialog, show: false })}
-                      title={dialog.title}
-                      popupText={dialog.text}
-                      buttonText={dialog.buttonText}
-                      buttonClass={dialog.buttonClass}
-                      setError={(val) =>
-                        setDialog((dial) => ({ ...dial, error: val }))}
-                      defaultValue={dialog.input ? targetContact.name : ''}
-                    />
-                  </>
-                )}
+                  )}
+                  {dialog.show && (
+                    <>
+                      <Popup
+                        onDelete={() => handleDelete()}
+                        onClose={() => setDialog({ ...dialog, show: false })}
+                        title={dialog.title}
+                        popupText={dialog.text}
+                        buttonText={dialog.buttonText}
+                        buttonClass={dialog.buttonClass}
+                        setError={(val) =>
+                          setDialog((dial) => ({ ...dial, error: val }))
+                        }
+                        defaultValue={dialog.input ? targetContact.name : ''}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
             )}
+          </>
+        )}
       </main>
     </>
   )

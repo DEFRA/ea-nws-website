@@ -5,12 +5,13 @@ import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import { getContactAdditional } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
 
-export default function ContactInformationPage () {
+export default function ContactInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
@@ -24,7 +25,6 @@ export default function ContactInformationPage () {
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
-  const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -47,7 +47,10 @@ export default function ContactInformationPage () {
       )
 
       if (linkLocationsRes.data) {
-        setLocations(linkLocationsRes.data)
+        let convertedLocations = linkLocationsRes.data.map((loc) =>
+          geoSafeToWebLocation(loc)
+        )
+        setLocations(convertedLocations)
       }
     }
 
@@ -233,7 +236,7 @@ export default function ContactInformationPage () {
                 <FullscreenMap
                   showMap={showMap}
                   setShowMap={setShowMap}
-                  locations={[currentLocation]}
+                  locations={locations}
                 />
               )}
             </div>

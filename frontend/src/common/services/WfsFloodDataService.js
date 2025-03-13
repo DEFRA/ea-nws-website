@@ -54,6 +54,7 @@ const wfsCall = async (bbox, map, type) => {
 export const getFloodAreas = async (lat, lng) => {
   const { alertArea: alertAreas, warningArea: warningAreas } =
     await getSurroundingFloodAreas(lat, lng)
+
   const alertAreasFeatures = alertAreas?.features || []
   const warningAreasFeatures = warningAreas?.features || []
   const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
@@ -180,7 +181,6 @@ export const getFloodAreaByTaCode = async (code) => {
 
 export const getFloodAreaByTaName = async (name) => {
   const areas = await getFilteredFloodAreas('TA_Name', name)
-  console.log(areas)
   // TA_Name is unique so there will only be one element in the array
   return areas[0] || []
 }

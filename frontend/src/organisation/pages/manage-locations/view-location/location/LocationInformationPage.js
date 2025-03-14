@@ -422,9 +422,6 @@ export default function LocationInformationPage () {
             )}
           </div>
           {/* other half - map */}
-          {/* only show map if data allows */}
-          {currentLocation.coordinates?.latitude && currentLocation.coordinates?.longitude &&
-            (
               <div className='govuk-grid-column-one-half'>
                 <Map showMapControls={false} zoomLevel={14} />
                 <FloodWarningKey />
@@ -446,7 +443,6 @@ export default function LocationInformationPage () {
                   />
                 )}
               </div>
-            )}
         </div>
       </main>
     </>

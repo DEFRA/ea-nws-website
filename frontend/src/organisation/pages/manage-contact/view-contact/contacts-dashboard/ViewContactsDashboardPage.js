@@ -472,8 +472,8 @@ export default function ViewContactsDashboardPage () {
                       {contactsPerPage && (
                         <Pagination
                           totalPages={Math.ceil(
-                  filteredContacts.length / contactsPerPage
-                )}
+                            filteredContacts.length / contactsPerPage
+                          )}
                           onPageChange={(val) => setCurrentPage(val)}
                           holdPage={holdPage}
                           setHoldPage={setHoldPage}
@@ -507,10 +507,10 @@ export default function ViewContactsDashboardPage () {
                       <div className='govuk-grid-column-three-quarters'>
                         <div className='govuk-grid-row'>
                           <Button
-                  text='Close Filter'
-                  className='govuk-button govuk-button--secondary'
-                  onClick={(event) => onOpenCloseFilter(event)}
-                />
+                            text='Close Filter'
+                            className='govuk-button govuk-button--secondary'
+                            onClick={(event) => onOpenCloseFilter(event)}
+                          />
                       &nbsp; &nbsp;
                           {(!location.state ||
                         !location.state.linkLocations ||
@@ -528,7 +528,7 @@ export default function ViewContactsDashboardPage () {
                               onClick={(event) => onPrint(event)}
                             />
                           </>
-                )}
+                          )}
                         </div>
                         <ContactsTable
                           contacts={contacts}
@@ -545,15 +545,15 @@ export default function ViewContactsDashboardPage () {
                         />
                         {contactsPerPage && (
                           <Pagination
-                  totalPages={Math.ceil(
-                            filteredContacts.length / contactsPerPage
-                          )}
-                  onPageChange={(val) => setCurrentPage(val)}
-                  holdPage={holdPage}
-                  setHoldPage={setHoldPage}
-                  pageList
-                  reset={resetPaging}
-                />
+                            totalPages={Math.ceil(
+                              filteredContacts.length / contactsPerPage
+                            )}
+                            onPageChange={(val) => setCurrentPage(val)}
+                            holdPage={holdPage}
+                            setHoldPage={setHoldPage}
+                            pageList
+                            reset={resetPaging}
+                          />
                         )}
                       </div>
                     </div>

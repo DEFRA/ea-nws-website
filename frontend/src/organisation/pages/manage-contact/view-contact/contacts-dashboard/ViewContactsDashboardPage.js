@@ -340,9 +340,9 @@ export default function ViewContactsDashboardPage () {
     setResetPaging(!resetPaging)
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (targetContact) {
-      removeContacts([targetContact])
+      await removeContacts([targetContact])
       if (selectedContacts.length > 0) {
         const updatedSelectedContacts = selectedContacts.filter(
           (contact) => contact !== targetContact
@@ -351,7 +351,7 @@ export default function ViewContactsDashboardPage () {
       }
     } else if (selectedContacts.length > 0) {
       const contactsToRemove = [...selectedContacts]
-      removeContacts(contactsToRemove)
+      await removeContacts(contactsToRemove)
     }
   }
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import { orgFloodReportsUrls } from '../../../../routes/flood-reports/FloodReportsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ReportsOverviewPage () {
   const navigate = useNavigate()
@@ -53,7 +54,8 @@ export default function ReportsOverviewPage () {
             <br />
             <h2 className='govuk-heading-m'>Your contacts</h2>
             <p>
-              <Link to='#' className='govuk-link'>
+              <Link to={orgManageContactsUrls.view.dashboard}
+                className='govuk-link'>
                 Contacts dashboard
               </Link>{' '}
               has a filter to produce reports

@@ -126,7 +126,9 @@ export default function ViewContactsDashboardPage () {
         if (data && data.length > 0) {
           data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
-            const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
+            const floodAreas = await getWithinAreas(
+              geoSafeToWebLocation(location)
+            )
             if (floodAreas && floodAreas.length > 0) {
               for (const area of floodAreas) {
                 contact.message_count += getHistoricalData(
@@ -167,9 +169,7 @@ export default function ViewContactsDashboardPage () {
     } else if (location.geometry?.geoJson) {
       const geoJson = location.geometry.geoJson
       try {
-        result = await getFloodAreasFromShape(
-          geoJson
-        )
+        result = await getFloodAreasFromShape(geoJson)
       } catch {
         result = []
       }
@@ -436,7 +436,7 @@ export default function ViewContactsDashboardPage () {
                       <Button
                         text='Open filter'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={() => onOpenCloseFilter()}
+                        onClick={(event) => onOpenCloseFilter(event)}
                       />
                       {(!location.state ||
                     !location.state.linkLocations ||
@@ -472,8 +472,8 @@ export default function ViewContactsDashboardPage () {
                       {contactsPerPage && (
                         <Pagination
                           totalPages={Math.ceil(
-                            filteredContacts.length / contactsPerPage
-                          )}
+                  filteredContacts.length / contactsPerPage
+                )}
                           onPageChange={(val) => setCurrentPage(val)}
                           holdPage={holdPage}
                           setHoldPage={setHoldPage}
@@ -507,28 +507,28 @@ export default function ViewContactsDashboardPage () {
                       <div className='govuk-grid-column-three-quarters'>
                         <div className='govuk-grid-row'>
                           <Button
-                            text='Close Filter'
-                            className='govuk-button govuk-button--secondary'
-                            onClick={(event) => onOpenCloseFilter(event)}
-                          />
-                        &nbsp; &nbsp;
+                  text='Close Filter'
+                  className='govuk-button govuk-button--secondary'
+                  onClick={(event) => onOpenCloseFilter(event)}
+                />
+                      &nbsp; &nbsp;
                           {(!location.state ||
-                          !location.state.linkLocations ||
-                          location.state.linkLocations.length === 0) && (
-                            <>
-                              <ButtonMenu
-                                title='More actions'
-                                options={moreActions}
-                                onSelect={(index) => onMoreAction(index)}
-                              />
-                            &nbsp; &nbsp;
-                              <Button
-                                text='Print'
-                                className='govuk-button govuk-button--secondary inline-block'
-                                onClick={(event) => onPrint(event)}
-                              />
-                            </>
-                          )}
+                        !location.state.linkLocations ||
+                        location.state.linkLocations.length === 0) && (
+                          <>
+                            <ButtonMenu
+                              title='More actions'
+                              options={moreActions}
+                              onSelect={(index) => onMoreAction(index)}
+                            />
+                          &nbsp; &nbsp;
+                            <Button
+                              text='Print'
+                              className='govuk-button govuk-button--secondary inline-block'
+                              onClick={(event) => onPrint(event)}
+                            />
+                          </>
+                )}
                         </div>
                         <ContactsTable
                           contacts={contacts}
@@ -545,15 +545,15 @@ export default function ViewContactsDashboardPage () {
                         />
                         {contactsPerPage && (
                           <Pagination
-                            totalPages={Math.ceil(
-                              filteredContacts.length / contactsPerPage
-                            )}
-                            onPageChange={(val) => setCurrentPage(val)}
-                            holdPage={holdPage}
-                            setHoldPage={setHoldPage}
-                            pageList
-                            reset={resetPaging}
-                          />
+                  totalPages={Math.ceil(
+                            filteredContacts.length / contactsPerPage
+                          )}
+                  onPageChange={(val) => setCurrentPage(val)}
+                  holdPage={holdPage}
+                  setHoldPage={setHoldPage}
+                  pageList
+                  reset={resetPaging}
+                />
                         )}
                       </div>
                     </div>

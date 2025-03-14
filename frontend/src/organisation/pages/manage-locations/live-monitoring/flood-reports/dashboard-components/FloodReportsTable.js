@@ -8,7 +8,7 @@ import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { getAdditional } from '../../../../../../common/redux/userSlice'
 
-export default function FloodReportsTable({
+export default function FloodReportsTable ({
   locationsAffected,
   displayedLocationsAffected,
   filteredLocationsAffected,
@@ -178,8 +178,7 @@ export default function FloodReportsTable({
                     locationNameSort,
                     setLocationNameSort,
                     'locationName'
-                  )
-                }
+                  )}
               >
                 Location name
               </button>
@@ -196,8 +195,7 @@ export default function FloodReportsTable({
                     warningTypeSort,
                     setWarningTypeSort,
                     'alert.type'
-                  )
-                }
+                  )}
               >
                 Warning <br />
                 type
@@ -263,8 +261,7 @@ export default function FloodReportsTable({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     'alert.effectiveDate'
-                  )
-                }
+                  )}
               >
                 Last
                 <br /> updated

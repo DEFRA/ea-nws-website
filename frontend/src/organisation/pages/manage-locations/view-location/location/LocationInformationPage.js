@@ -65,8 +65,7 @@ export default function LocationInformationPage () {
         // code to return length of line
         return <>0.5km (dummy data)</>
       case LocationDataType.BOUNDARY:
-        // code to return boundary name
-        return <>Unitary Authority (dummy data)</>
+        return <>{additionalData.location_type}</>
     }
   }
 

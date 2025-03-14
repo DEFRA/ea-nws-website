@@ -19,12 +19,11 @@ export default function ContactUsLayout ({ email }) {
             {authToken
               ? (
                 <p> Get in touch with us, if you need help.</p>
-              )
+                )
               : (
                 <p> Get in touch with us at Floodline, if you need help signing up.</p>
-              )
-            }
-            
+                )}
+
             <h2 className='govuk-heading-m  govuk-!-margin-bottom-0'>Floodline</h2>
             <p>
               Telephone: 0345 988 1188

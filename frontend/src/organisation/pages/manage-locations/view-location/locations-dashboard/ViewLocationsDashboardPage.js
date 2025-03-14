@@ -170,8 +170,8 @@ export default function ViewLocationsDashboardPage () {
 
         location.message_count = 0
         const floodAreas = await getWithinAreas(location)
-        location.within = floodAreas.length > 0
-        if (floodAreas && floodAreas.length > 0) {
+        location.within = floodAreas?.length > 0
+        if (floodAreas?.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(
               area.properties.TA_CODE,

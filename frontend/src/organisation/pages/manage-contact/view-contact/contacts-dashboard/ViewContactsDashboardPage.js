@@ -14,13 +14,13 @@ import {
   setOrgCurrentContact
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
   getFloodAreas,
   getFloodAreasFromShape
 } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import ContactsTable from '../../../../components/custom/ContactsTable'
 import {
   orgManageContactsUrls,
@@ -63,6 +63,7 @@ export default function ViewContactsDashboardPage () {
     charLimit: 0,
     error: ''
   })
+  const historyData = useFetchAlerts()
 
   useEffect(() => {
     if (!contactsPerPage) {
@@ -103,15 +104,6 @@ export default function ViewContactsDashboardPage () {
           contactsUpdate.push(geoSafeToWebContact(contact))
         })
       }
-
-      const historyFileUrl = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-
-      const historyData = await fetch(historyFileUrl.data)
-        .then((response) => response.text())
-        .then((data) => csvToJson(data))
 
       for (const contact of contactsUpdate) {
         const contactsDataToSend = { authToken, orgId, contact }

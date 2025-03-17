@@ -29,8 +29,7 @@ import {
   getSurroundingFloodAreas
 } from '../../../common/services/WfsFloodDataService'
 import {
-  createAlertPattern,
-  createShapefilePattern,
+  createAlertPattern, createShapefilePattern,
   createWarningPattern
 } from './FloodAreaPatterns'
 import { createExistingBoundaryPattern } from './PredefinedBoundaryPattern'
@@ -240,6 +239,17 @@ export default function Map ({
     setShapeBounds(layer.getBounds())
   }
 
+  const onEachViewBoundaryFeature = (feature, layer) => {
+    layer.options.className = 'existing-boundary-area-pattern-fill'
+    layer.setStyle({
+      opacity: 1,
+      color: '#6d7475',
+      weight: 2,
+      fillOpacity: 0.6
+    })
+    setShapeBounds(layer.getBounds())
+  }
+
   const FitBounds = () => {
     const map = useMap()
 
@@ -335,7 +345,7 @@ export default function Map ({
     (state) => state.session.selectedBoundary
   )
 
-  // get boundary data
+  // get boundary data if on boundary page
   useEffect(() => {
     async function fetchBoundaries () {
       if (
@@ -352,14 +362,15 @@ export default function Map ({
         }
       }
     }
-
-    fetchBoundaries()
-    setBoundaryStyles()
+    if (type === 'boundary') {
+      fetchBoundaries()
+      setBoundaryStyles()
+    }
   }, [selectedBoundaryType])
 
   useEffect(() => {
     // loads new boundary layers onto map after user has updated boundary type
-    if (boundaryRefVisible && boundaryRef.current) {
+    if (type === 'boundary' && boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.clearLayers()
       boundaryRef.current.addData(boundaries)
       setBoundaryStyles()
@@ -542,6 +553,20 @@ export default function Map ({
                   <GeoJSON
                     data={JSON.parse(locationGeometry.geoJson)}
                     onEachFeature={onEachShapefileFeature}
+                    ref={(el) => {
+                      shapefileRef.current = el
+                    }}
+                  />
+                  <FitBounds />
+                </>
+              )}
+              {locationGeometry &&
+                currentLocationDataType === LocationDataType.BOUNDARY &&
+              (
+                <>
+                  <GeoJSON
+                    data={JSON.parse(locationGeometry.geoJson)}
+                    onEachFeature={onEachViewBoundaryFeature}
                     ref={(el) => {
                       shapefileRef.current = el
                     }}

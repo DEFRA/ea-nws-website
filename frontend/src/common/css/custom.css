@@ -193,11 +193,12 @@
   }
 }
 
+
 .header-navigation-menu {
   color: white !important;
   list-style:none ;
-  left:0
-  
+  text-align: left;
+  padding-left: 2;
 }
 
 .header-navigation-menu a:visited,
@@ -205,6 +206,7 @@
   color: white !important;
   list-style:none !important;
   text-decoration: none;
+  text-align: left;
 }
 
 @media (min-width: 40.0625em) {
@@ -250,6 +252,7 @@
 .header-navigation-submenu-pages {
   margin: 0;
   padding: 0;
+  text-align: left;
 }
 
 .header-navigation-submenu-link {

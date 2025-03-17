@@ -222,7 +222,7 @@
   color: white;
   position: relative;
   display: block;
-  padding: 12px 12px 12px ; /* Added left padding to make space for the bar */
+  padding: 12px 12px 12px ; 
   text-align: left;
 }
 
@@ -234,7 +234,7 @@
 
 .header-navigation-menu-link[aria-current='page']::before {
   content: '';
-  background-color: white; /* Same highlight color */
+  background-color: white; 
   display: block;
   position: absolute;
   left: 0;
@@ -242,10 +242,10 @@
   height: 60%;
   bottom: 20%;
 }
-/* Submenu: no bullets, white text, and nested style */
+
 .header-navigation-submenu {
   list-style: none;
-  padding-left: 12px; /* Indent for submenu items */
+  padding-left: 12px;
   margin: 0;
 }
 
@@ -260,11 +260,11 @@
   color: white;
   position: relative;
   display: block;
-  padding: 8px 12px; /* Slightly smaller padding for submenu */
+  padding: 8px 12px; 
   text-align: left;
 }
 
-/* Active subpage highlight */
+
 .header-navigation-submenu-link[aria-current='page'] {
   color: white;
   position: relative;
@@ -328,7 +328,7 @@
   padding: 0.5rem 1rem;
 }
 
-/* Close button */
+
 .popup-close-btn {
   font-size: 2.25rem;
   font-weight: bold;

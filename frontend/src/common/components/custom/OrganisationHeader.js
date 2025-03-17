@@ -53,13 +53,17 @@ export default function OrganisationHeader () {
   }
 
   const pages = [
-    { title: 'Organisation details', link: orgAccountUrls.organisation.orgDetails },
-    // ToDo add in this one
-    { title: 'Manage administrators', link: '/' },
-    { title: 'Manage keywords', link: '/organisation/manage-keywords' },
+    {
+      title: 'Organisation details',
+      link: orgAccountUrls.organisation.orgDetails,
+      subpages: [
+        { title: 'Manage administrators', link: '/' },
+        { title: 'Manage keywords', link: '/organisation/manage-keywords' },
+      ]
+    },
     { title: 'Administrator details', link: orgAccountUrls.admin.details },
     { title: 'Sign out', link: '/organisation/signout' }
-  ]
+  ];
 
   return (
     <>
@@ -100,11 +104,30 @@ export default function OrganisationHeader () {
     <ul className="header-navigation-menu">
       {pages.map((page, index) => (
         <li key={index} className="header-navigation-menu-pages">
-          <Link to={page.link}
+          <Link
+            to={page.link}
             className='header-navigation-menu-link'
-          aria-current={currentPage === page.link ? 'page' : 'no'}>
+            aria-current={currentPage === page.link ? 'page' : 'no'}
+          >
             {page.title}
           </Link>
+
+          {/* Check for subpages and render them */}
+          {page.subpages && (
+            <ul className="header-navigation-submenu">
+              {page.subpages.map((subpage, subIndex) => (
+                <li key={subIndex} className="header-navigation-submenu-pages">
+                  <Link
+                    to={subpage.link}
+                    className='header-navigation-submenu-link'
+                    aria-current={currentPage === subpage.link ? 'page' : 'no'}
+                  >
+                    {subpage.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
     </ul>

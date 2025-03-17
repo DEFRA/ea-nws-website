@@ -240,7 +240,43 @@
   height: 60%;
   bottom: 20%;
 }
+/* Submenu: no bullets, white text, and nested style */
+.header-navigation-submenu {
+  list-style: none;
+  padding-left: 12px; /* Indent for submenu items */
+  margin: 0;
+}
 
+.header-navigation-submenu-pages {
+  margin: 0;
+  padding: 0;
+}
+
+.header-navigation-submenu-link {
+  text-decoration: none;
+  color: white;
+  position: relative;
+  display: block;
+  padding: 8px 12px; /* Slightly smaller padding for submenu */
+  text-align: left;
+}
+
+/* Active subpage highlight */
+.header-navigation-submenu-link[aria-current='page'] {
+  color: white;
+  position: relative;
+}
+
+.header-navigation-submenu-link[aria-current='page']::before {
+  content: '';
+  background-color: white;
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 4px;
+  height: 60%;
+  bottom: 20%;
+}
 
 
 .inline-link {

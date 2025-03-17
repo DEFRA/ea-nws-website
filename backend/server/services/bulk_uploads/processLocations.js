@@ -74,9 +74,7 @@ const getCSV = async (fileName) => {
 }
 
 const processLocations = async (fileName) => {
-  console.time('getCSV')
   const { errorMessage, data } = await getCSV(fileName)
-  console.timeEnd('getCSV')
   if (!errorMessage) {
     // convert the CSV to JSON
     // The json is in the below format:
@@ -93,15 +91,11 @@ const processLocations = async (fileName) => {
     //      Notes: 'Notes',
     //      Keywords: [Array],
     //      Line_n
-    console.time('csvToJson')
     const jsonData = csvToJson(data)
-    console.timeEnd('csvToJson')
     if (jsonData.error) {
       return { errorMessage: jsonData.error }
     } else {
-      console.time('validateLocations')
       const locations = await validateLocations(jsonData.locations)
-      console.timeEnd('validateLocations')
       return { data: locations }
     }
   } else {

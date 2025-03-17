@@ -1,5 +1,6 @@
 import { faArrowLeft, faRedoAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import * as turf from '@turf/turf'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
@@ -16,34 +17,27 @@ import {
 } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import iconUrl from '../../../../common/assets/images/location_pin.svg'
+import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
+import LocationDataType from '../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../common/services/BackendService'
-import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
+import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
+import {
+  getFloodAreas,
+  getFloodAreasFromShape
+} from '../../../../common/services/WfsFloodDataService'
 import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
 
-export default function FullscreenMap ({
+export default function FullscreenMap({
   showMap,
   setShowMap,
+  // ensure locations passed to this component are in web format
   locations,
-  filteredLocations
+  filteredLocations = []
 }) {
-  const initialPosition = filteredLocations
-    ? [52.7152, -1.17349]
-    : [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
-  const initialZoom = filteredLocations ? 7 : 14
-
   const [apiKey, setApiKey] = useState(null)
-  const [alertArea, setAlertArea] = useState(null)
-  const [warningArea, setWarningArea] = useState(null)
-  const [mapCenter, setMapCenter] = useState(
-    filteredLocations
-      ? null
-      : {
-          lat: initialPosition[0],
-          lng: initialPosition[1]
-        }
-  )
-  const [zoomLevel, setZoomLevel] = useState(initialZoom)
+
+  const [zoomLevel, setZoomLevel] = useState(8)
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
@@ -57,50 +51,90 @@ export default function FullscreenMap ({
   const [showOnlyFilteredLocations, setShowOnlyFilteredLocations] =
     useState(true)
 
-  const [mapLocations, setMapLocations] = useState(
-    filteredLocations || locations
-  )
+  const [centre, setCentre] = useState(null)
+  const [bounds, setBounds] = useState(null)
+  const [warningAreas, setWarningArea] = useState(null)
+  const [alertAreas, setAlertArea] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (filteredLocations && showOnlyFilteredLocations) {
-      setMapLocations(filteredLocations)
-    } else {
-      setMapLocations(locations)
-    }
-  }, [showOnlyFilteredLocations])
-
-  useEffect(() => {
-    if (!filteredLocations) setShowLocationsOutsideFloodAreas(true)
+    loadMap()
   }, [])
+  const loadMap = async () => {
+    // load all locations user is connected to onto map
+    const locationsCollection = []
+    if (locations && locations.length > 0) {
+      // centre must be set to 0, 0 as map will be fit accordingly to locations loaded
+      setCentre([0, 0])
 
-  // Get flood area data
-  useEffect(() => {
-    async function fetchFloodAreaData () {
-      if (zoomLevel >= 12 && mapCenter) {
-        const { alertArea, warningArea } = await getSurroundingFloodAreas(
-          mapCenter.lat,
-          mapCenter.lng,
-          2
-        )
-        setAlertArea(alertArea)
-        setWarningArea(warningArea)
+      // convert each location to a geojson format
+      // we also need to check if the location is in a flood area for filtering purposes
+      for (const location of locations) {
+        let feature
+        let withinFloodAreas
+        const locationType = location.additionals.other.location_data_type
+
+        // we need to convert points to geojson so we can calculate the bbox
+
+        if (locationType === LocationDataType.X_AND_Y_COORDS) {
+          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+          feature = convertDataToGeoJsonFeature('Point', [
+            location.coordinates.longitude,
+            location.coordinates.latitude
+          ])
+
+          withinFloodAreas = await getFloodAreas(
+            location.coordinates.latitude,
+            location.coordinates.longitude
+          )
+        } else {
+          feature = location.geometry.geoJson
+
+          withinFloodAreas = await getFloodAreasFromShape(
+            location.geometry.geoJson
+          )
+        }
+
+        location.withinFloodArea = withinFloodAreas.length > 0
+
+        locationsCollection.push(feature)
       }
-    }
-    fetchFloodAreaData()
-  }, [mapCenter, zoomLevel])
 
-  useEffect(() => {
-    showAreas()
-  }, [showFloodWarningAreas, showFloodAlertAreas])
+      // fit map to all locations
+      if (locationsCollection && locationsCollection.length > 0) {
+        const geoJsonFeatureCollection =
+          turf.featureCollection(locationsCollection)
+
+        // calculate boundary around locations
+        const bbox = turf.bbox(geoJsonFeatureCollection)
+
+        const newBounds = [
+          [bbox[1], bbox[0]],
+          [bbox[3], bbox[2]]
+        ]
+        setBounds(newBounds)
+      }
+    } else {
+      // no  locations, setting to centre of England
+      setCentre([52.7152, -1.17349])
+    }
+    setLoading(false)
+  }
+
+  const FitBounds = () => {
+    const map = useMap()
+
+    useEffect(() => {
+      if (bounds) {
+        map.fitBounds(bounds)
+      }
+    }, [bounds])
+  }
 
   const ZoomTracker = () => {
     const map = useMapEvents({
       zoomend: () => {
         setZoomLevel(map.getZoom())
-      },
-      moveend: () => {
-        const center = map.getCenter()
-        setMapCenter({ lat: center.lat, lng: center.lng })
       }
     })
 
@@ -115,7 +149,7 @@ export default function FullscreenMap ({
   })
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -200,7 +234,7 @@ export default function FullscreenMap ({
     const map = useMap()
 
     const handleReset = () => {
-      map.setView(initialPosition, initialZoom)
+      map.setView(centre, 8)
     }
 
     return (
@@ -256,6 +290,15 @@ export default function FullscreenMap ({
         Exit map
       </button>
     )
+  }
+
+  const onEachShapefileFeature = (feature, layer) => {
+    layer.options.className = 'shapefile-area-pattern-fill'
+    layer.setStyle({
+      color: '#809095',
+      weight: 2,
+      fillOpacity: 1.0
+    })
   }
 
   const showWarningAreas = () => {
@@ -323,148 +366,154 @@ export default function FullscreenMap ({
     }
   }
 
-  // Check if location has alert type
-  const locationHasAlertType = (location) => {
-    const alertTypes = location.additionals.other?.alertTypes?.length
+  useEffect(() => {
+    showAreas()
+  }, [showFloodWarningAreas, showFloodAlertAreas])
 
-    // Needed to parse current location structure in redux
-    const parsedAlertTypes = location.additionals[4]
-      ? JSON.parse(location.additionals[4]?.value?.s).alertTypes?.length
-      : 0
-    return alertTypes || parsedAlertTypes
+  const isInFilteredLocations = (location) => {
+    if (showOnlyFilteredLocations || filteredLocations.length > 0) {
+      return filteredLocations.some((filtered) => filtered.id === location.id)
+    }
   }
 
-  // Display locations with alerts
-  const displayLocationsWithAlerts = (location) => {
-    const { latitude, longitude } = location.coordinates
-    const isValidLocation = latitude && longitude
-    const isInFloodArea =
-      showLocationsWithinFloodAreas && locationHasAlertType(location)
-    const isOutsideFloodArea =
-      showLocationsOutsideFloodAreas && !locationHasAlertType(location)
+  const isWithinFloodFilter = (location) => {
+    const isInFloodArea = showLocationsWithinFloodAreas && location.withinFloodArea
+    const isOutsideFloodArea = showLocationsOutsideFloodAreas && !location.withinFloodArea
 
-    return isValidLocation && (isInFloodArea || isOutsideFloodArea)
-  }
-
-  const onEachShapefileFeature = (feature, layer) => {
-    layer.options.className = 'shapefile-area-pattern-fill'
-    layer.setStyle({
-      color: '#809095',
-      weight: 2,
-      fillOpacity: 1.0
-    })
+    return (isInFloodArea || isOutsideFloodArea)
   }
 
   return (
-    <div>
-      <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
-        <Modal.Body className='p-0'>
-          <div style={{ display: 'flex', height: '100vh' }}>
-            <div style={{ height: '100vh', width: '85%' }}>
-              <MapContainer
-                center={initialPosition}
-                zoom={initialZoom}
-                zoomControl={false}
-                attributionControl={false}
-                minZoom={7}
-                maxBounds={maxBounds}
-                style={{ width: '100%', height: '100%' }}
-              >
-                {osmTileLayer}
-                {apiKey && tileLayerWithHeader}
-                <ZoomControl position='bottomright' />
-                <ZoomTracker />
-                <ResetMapButton />
-                <ExitMapButton />
-                {mapLocations
-                  .filter(displayLocationsWithAlerts)
-                  .map((location, index) => (
-                    <div key={index}>
-                      <Marker
-                        position={[
-                          location.coordinates.latitude,
-                          location.coordinates.longitude
-                        ]}
-                      >
-                        <Popup offset={[0, -25]}>
-                          <Link
-                            className='govuk-link'
-                            // onClick={(e) => viewLocation(e, location)}
-                          >
-                            {location.additionals.locationName ||
-                              location.additionals[0].value.s}
-                          </Link>
-                          <br />
-                          {filteredLocations
-                            ? location.additionals.other.location_type
-                            : JSON.parse(location.additionals[4]?.value?.s)
-                              .location_type}
-                          <br />
-                          {location.address}
-                        </Popup>
-                      </Marker>
-                      {location.geometry && (
+    <>
+      <div>
+        <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
+          <Modal.Body className='p-0'>
+            <div style={{ display: 'flex', height: '100vh' }}>
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <>
+                  <div style={{ height: '100vh', width: '85%' }}>
+                    <MapContainer
+                      center={centre}
+                      zoom={8}
+                      zoomControl={false}
+                      attributionControl={false}
+                      minZoom={7}
+                      maxBounds={maxBounds}
+                      style={{ width: '100%', height: '100%' }}
+                    >
+                      {osmTileLayer}
+                      {apiKey && tileLayerWithHeader}
+                      <FitBounds />
+                      <ZoomControl position='bottomright' />
+                      <ZoomTracker />
+                      <ResetMapButton />
+                      <ExitMapButton />
+                      {locations.length > 0 &&
+                        locations
+                          .filter(isInFilteredLocations)
+                          .filter(isWithinFloodFilter)
+                          .map((location, index) => (
+                            <div key={index}>
+                              {location.additionals.other.location_data_type ===
+                              LocationDataType.X_AND_Y_COORDS ? (
+                                <Marker
+                                  position={[
+                                    location.coordinates.latitude,
+                                    location.coordinates.longitude
+                                  ]}
+                                >
+                                  <Popup offset={[0, -25]}>
+                                    <Link
+                                      className='govuk-link'
+                                      // onClick={(e) => viewLocation(e, location)}
+                                    >
+                                      {location.additionals.locationName}
+                                    </Link>
+                                    <br />
+                                    {location.address}
+                                  </Popup>
+                                </Marker>
+                              ) : (
+                                <>
+                                  {location.geometry.geoJson && (
+                                    <GeoJSON
+                                      data={location.geometry.geoJson}
+                                      onEachFeature={onEachShapefileFeature}
+                                      ref={(el) => {
+                                        shapefileRef.current = el
+                                      }}
+                                    />
+                                  )}{' '}
+                                </>
+                              )}
+                            </div>
+                          ))}
+                      {warningAreas && (
                         <GeoJSON
-                          data={location.geometry}
-                          onEachFeature={onEachShapefileFeature}
+                          key={warningAreas}
+                          data={warningAreas}
+                          style={{ color: '#f70202' }}
                           ref={(el) => {
-                            shapefileRef.current = el
+                            warningAreaRef.current = el
+                            setWarningAreaRefVisible(true)
                           }}
                         />
                       )}
-                    </div>
-                  ))}
-                {warningArea && (
-                  <GeoJSON
-                    key={warningArea}
-                    data={warningArea}
-                    style={{ color: '#f70202' }}
-                    ref={(el) => {
-                      warningAreaRef.current = el
-                      setWarningAreaRefVisible(true)
-                    }}
-                  />
-                )}
-                {alertArea && (
-                  <GeoJSON
-                    key={alertArea}
-                    data={alertArea}
-                    style={{ color: '#ffa200' }}
-                    ref={(el) => {
-                      alertAreaRef.current = el
-                      setAlertAreaRefVisible(true)
-                    }}
-                  />
-                )}
-              </MapContainer>
-            </div>
+                      {alertAreas && (
+                        <GeoJSON
+                          key={alertAreas}
+                          data={alertAreas}
+                          style={{ color: '#ffa200' }}
+                          ref={(el) => {
+                            alertAreaRef.current = el
+                            setAlertAreaRefVisible(true)
+                          }}
+                        />
+                      )}
+                    </MapContainer>
+                  </div>
 
-            <div style={{ width: '15%', padding: '20px', overflowY: 'auto' }}>
-              <FullMapInteractiveKey
-                showFloodWarningAreas={showFloodWarningAreas}
-                setShowFloodWarningAreas={setShowFloodWarningAreas}
-                showFloodAlertAreas={showFloodAlertAreas}
-                setShowFloodAlertAreas={setShowFloodAlertAreas}
-                showFloodExtents={showFloodExtents}
-                setShowFloodExtents={setShowFloodExtents}
-                showLocationsWithinFloodAreas={showLocationsWithinFloodAreas}
-                setShowLocationsWithinFloodAreas={
-                  setShowLocationsWithinFloodAreas
-                }
-                showLocationsOutsideFloodAreas={showLocationsOutsideFloodAreas}
-                setShowLocationsOutsideFloodAreas={
-                  setShowLocationsOutsideFloodAreas
-                }
-                showOnlyFilteredLocations={showOnlyFilteredLocations}
-                setShowOnlyFilteredLocations={setShowOnlyFilteredLocations}
-                locations={
-                  showOnlyFilteredLocations ? filteredLocations : locations
-                }
-              />
+                  <div
+                    style={{ width: '15%', padding: '20px', overflowY: 'auto' }}
+                  >
+                    <FullMapInteractiveKey
+                      showFloodWarningAreas={showFloodWarningAreas}
+                      setShowFloodWarningAreas={setShowFloodWarningAreas}
+                      showFloodAlertAreas={showFloodAlertAreas}
+                      setShowFloodAlertAreas={setShowFloodAlertAreas}
+                      showFloodExtents={showFloodExtents}
+                      setShowFloodExtents={setShowFloodExtents}
+                      showLocationsWithinFloodAreas={
+                        showLocationsWithinFloodAreas
+                      }
+                      setShowLocationsWithinFloodAreas={
+                        setShowLocationsWithinFloodAreas
+                      }
+                      showLocationsOutsideFloodAreas={
+                        showLocationsOutsideFloodAreas
+                      }
+                      setShowLocationsOutsideFloodAreas={
+                        setShowLocationsOutsideFloodAreas
+                      }
+                      showOnlyFilteredLocations={showOnlyFilteredLocations}
+                      setShowOnlyFilteredLocations={
+                        setShowOnlyFilteredLocations
+                      }
+                      locations={
+                        showOnlyFilteredLocations
+                          ? filteredLocations
+                          : locations
+                      }
+                    />
+                  </div>
+                </>
+              )}
             </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-    </div>
+          </Modal.Body>
+        </Modal>
+      </div>
+    </>
   )
 }

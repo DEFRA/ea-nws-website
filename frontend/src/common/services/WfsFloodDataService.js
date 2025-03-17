@@ -53,17 +53,11 @@ const wfsCall = async (bbox, map, type) => {
 
 export const getFloodAreas = async (lat, lng) => {
   const { alertArea: alertAreas, warningArea: warningAreas } =
-    await getSurroundingFloodAreas(lat, lng)
+    await getSurroundingFloodAreas(lat, lng, 0.001)
   const alertAreasFeatures = alertAreas?.features || []
   const warningAreasFeatures = warningAreas?.features || []
   const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
-  const withinAreas = []
-  for (const feature of allAreas) {
-    if (turf.booleanPointInPolygon([lng, lat], feature)) {
-      withinAreas.push(feature)
-    }
-  }
-  return withinAreas
+  return allAreas
 }
 
 export const getFloodAreasFromShape = async (geoJsonShape) => {
@@ -146,9 +140,9 @@ export const getSurroundingFloodAreasFromShape = async (
 }
 
 const getIntersections = (areas, bufferedShape) => {
-  const bufferedShapeValid = turf.booleanValid(bufferedShape.geometry)
+  const bufferedShapeValid = turf.booleanValid(bufferedShape)
   if (!bufferedShapeValid) return
-  const bufferedShapeGeometry = bufferedShape.geometry
+  const bufferedShapeGeometry = bufferedShape
   const filteredTargetData = areas.features.filter((area) => {
     try {
       let res = false
@@ -180,7 +174,6 @@ export const getFloodAreaByTaCode = async (code) => {
 
 export const getFloodAreaByTaName = async (name) => {
   const areas = await getFilteredFloodAreas('TA_Name', name)
-  console.log(areas)
   // TA_Name is unique so there will only be one element in the array
   return areas[0] || []
 }
@@ -292,7 +285,7 @@ function calculateBoundingBox (centerLat, centerLng, distanceKm) {
 export const getLocationsNearbyRiversAndSeaFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.2
+  bboxKM = 0.001
 ) => {
   const { data: riversAndSeaFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),
@@ -306,7 +299,7 @@ export const getLocationsNearbyRiversAndSeaFloodAreas = async (
 export const getLocationsNearbyGroundWaterFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.2
+  bboxKM = 0.001
 ) => {
   const { data: groundwaterFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),

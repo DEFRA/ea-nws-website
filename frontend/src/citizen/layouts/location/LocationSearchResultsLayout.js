@@ -1,6 +1,6 @@
 import * as turf from '@turf/turf'
 import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -16,12 +16,11 @@ import {
   setSevereFloodWarningCount,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
-import { csvToJson } from '../../../common/services/CsvToJson'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
+import { useFetchAlerts } from '../../../common/services/hooks/GetHistoricalAlerts'
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -36,30 +35,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
-
-  const [floodHistoryUrl, setHistoryUrl] = useState(null)
-  const [floodHistoryData, setFloodHistoryData] = useState(null)
-
-  useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-      setHistoryUrl(data)
-    }
-
-    getHistoryUrl()
-    floodHistoryUrl &&
-      fetch(floodHistoryUrl)
-        .then((response) => response.text())
-        .then((data) => {
-          setFloodHistoryData(csvToJson(data))
-        })
-        .catch((e) =>
-          console.error('Could not fetch Historic Flood Warning file', e)
-        )
-  }, [floodHistoryUrl])
+  const floodHistoryData = useFetchAlerts()
 
   const setHistoricalAlertNumber = (AlertArea) => {
     const oneYearAgo = moment().subtract(1, 'years')

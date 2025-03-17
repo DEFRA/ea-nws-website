@@ -226,8 +226,9 @@ const listLocations = async (orgId) => {
   await Promise.all(
     locationKeys.map(async (key) => {
       const location = await getJsonData(key)
-      const hasParentID = location.additionals.find((additional) =>
-        additional.id === 'parentID')?.value?.s?.length > 0 || false
+      const hasParentID =
+        location.additionals.find((additional) => additional.id === 'parentID')
+          ?.value?.s?.length > 0 || false
       // We only want to return locations that aren't nearby areas
       if (!hasParentID) {
         locationArr.push(location)
@@ -295,6 +296,23 @@ const findLocationByName = async (orgId, locationName) => {
     })
   )
   return matchingLocations
+}
+
+const listLocationNames = async (orgId) => {
+  const locationKeys = await getLocationKeys(orgId)
+  const locationNames = []
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      location.additionals.forEach((additional) => {
+        if (additional.id === 'locationName') {
+          locationNames.push(additional.value.s)
+          
+        }
+      })
+    })
+  )
+  return locationNames
 }
 
 const findInvLocationByName = async (orgId, locationName) => {
@@ -434,16 +452,19 @@ const listLinkedContacts = async (orgId, locationID) => {
 
   if (arrExists) {
     const linkedArr = await getJsonData(key)
-    await Promise.all(linkedArr.map(async (link) => {
-      if (link.id === locationID) {
-        await Promise.all(
-          link.linkIDs.map(async (contactID) => {
-            const contactKey = orgId + ':t_Contacts:' + contactID
-            const contact = await getJsonData(contactKey)
-            contactArr.push(contact)
-          }))
-      }
-    }))
+    await Promise.all(
+      linkedArr.map(async (link) => {
+        if (link.id === locationID) {
+          await Promise.all(
+            link.linkIDs.map(async (contactID) => {
+              const contactKey = orgId + ':t_Contacts:' + contactID
+              const contact = await getJsonData(contactKey)
+              contact && contactArr.push(contact)
+            })
+          )
+        }
+      })
+    )
   }
 
   return contactArr
@@ -458,16 +479,19 @@ const listLinkedLocations = async (orgId, contactID) => {
   if (arrExists) {
     const linkedArr = await getJsonData(key)
 
-    await Promise.all(linkedArr.map(async (link) => {
-      if (link.id === contactID) {
-        await Promise.all(
-          link.linkIDs.map(async (locationID) => {
-            const locKey = orgId + ':t_POIS:' + locationID
-            const location = await getJsonData(locKey)
-            location && locationArr.push(location)
-          }))
-      }
-    }))
+    await Promise.all(
+      linkedArr.map(async (link) => {
+        if (link.id === contactID) {
+          await Promise.all(
+            link.linkIDs.map(async (locationID) => {
+              const locKey = orgId + ':t_POIS:' + locationID
+              const location = await getJsonData(locKey)
+              location && locationArr.push(location)
+            })
+          )
+        }
+      })
+    )
   }
 
   return locationArr
@@ -649,6 +673,7 @@ module.exports = {
   searchLocations,
   searchInvLocations,
   findLocationByName,
+  listLocationNames,
   findInvLocationByName,
   listLocations,
   listContacts,

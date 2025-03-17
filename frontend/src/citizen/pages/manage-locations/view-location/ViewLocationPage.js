@@ -11,13 +11,13 @@ import NotificationBanner from '../../../../common/components/gov-uk/Notificatio
 import AlertType from '../../../../common/enums/AlertType'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
   getLocationOtherAdditional,
   getRegistrationParams,
   updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
+import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
 
 const floodWarningCardDetails = (
   <>
@@ -58,7 +58,7 @@ export default function ViewLocationPage () {
   )
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
-  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const floodHistoryData = useFetchAlerts()
   const [floodAlertCount, setFloodAlertCount] = useState(null)
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
 
@@ -136,26 +136,8 @@ export default function ViewLocationPage () {
       }
     }
 
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-
-      data &&
-        fetch(data)
-          .then((response) => response.text())
-          .then((data) => {
-            setFloodHistoryData(csvToJson(data))
-          })
-          .catch((e) =>
-            console.error('Could not fetch Historic Flood Warning file', e)
-          )
-    }
 
     async function processFloodHist () {
-      await getHistoryUrl()
-
       if (floodHistoryData) {
         if (alertArea) {
           setHistoricalAlertNumber()

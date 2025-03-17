@@ -69,8 +69,7 @@ const apiCall = async (data, path) => {
         {
           type: 'Feature',
           properties: {},
-          geometry: JSON.parse(response.data.location.geometry.geoJson),
-          bbox: []
+          geometry: JSON.parse(response.data.location.geometry.geoJson)
         }
       )
     }
@@ -88,8 +87,7 @@ const apiCall = async (data, path) => {
             {
               type: 'Feature',
               properties: {},
-              geometry: JSON.parse(location.geometry.geoJson),
-              bbox: []
+              geometry: JSON.parse(location.geometry.geoJson)
             }
           )
         }

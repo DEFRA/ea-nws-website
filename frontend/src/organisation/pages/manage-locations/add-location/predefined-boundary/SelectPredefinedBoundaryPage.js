@@ -9,6 +9,7 @@ import AlertType from '../../../../../common/enums/AlertType'
 import store from '../../../../../common/redux/store'
 import {
   setConsecutiveBoundariesAdded, setCurrentLocation, setCurrentLocationGeometry, setCurrentLocationName,
+  setCurrentLocationType,
   setLocationBoundaries,
   setPredefinedBoundaryFlow,
   setSelectedBoundary,
@@ -123,13 +124,8 @@ export default function SelectPredefinedBoundaryPage () {
         })
       )
       // This might change at a later date, but store in the additional name field for now
-      dispatch(
-        setCurrentLocationName(
-          locationBoundary.boundary_type +
-            ', ' +
-            locationBoundary.boundary.properties.TA_Name
-        )
-      )
+      dispatch(setCurrentLocationName(locationBoundary.boundary.properties.TA_Name))
+      dispatch(setCurrentLocationType(locationBoundary.boundary_type))
       // since we added to currentLocation we need to get that information to pass to the api
       const locationToAdd = store.getState().session.currentLocation
 

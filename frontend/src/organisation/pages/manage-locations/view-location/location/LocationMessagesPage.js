@@ -14,8 +14,8 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
 import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes, setCurrentLocationChildrenIDs, setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getFloodAreaByTaName, getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
+import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -78,8 +78,7 @@ export default function LocationMessagesPage () {
 
   const [withinAreas, setWithinAreas] = useState([])
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
-  const [floodHistoryUrl, setHistoryUrl] = useState('')
-  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const floodHistoryData = useFetchAlerts()
   const [floodCounts, setFloodCounts] = useState([])
   const alertTypes = additionalData.alertTypes
   const [availableAlerts, setAvailableAlerts] = useState([])
@@ -277,26 +276,6 @@ export default function LocationMessagesPage () {
     }
     fetchAreas()
   }, [currentLocation])
-
-  useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-      setHistoryUrl(data)
-    }
-    getHistoryUrl()
-    floodHistoryUrl &&
-      fetch(floodHistoryUrl)
-        .then((response) => response.text())
-        .then((data) => {
-          setFloodHistoryData(csvToJson(data))
-        })
-        .catch((e) =>
-          console.error('Could not fetch Organisation Historic Flood Warning file', e)
-        )
-  }, [floodHistoryUrl])
 
   const handleSubmit = async (event) => {
     event.preventDefault()

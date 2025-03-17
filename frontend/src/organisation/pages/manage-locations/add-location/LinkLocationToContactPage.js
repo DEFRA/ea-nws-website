@@ -38,20 +38,14 @@ export default function LinkLocationToContactPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              If you want other people (contacts) to
-              get available flood messages for<br />
-              {currentLocation.additionals.locationName} you need to link them
+              If people in your organisation need
+              flood messages for this location
             </h1>
             <p className='govuk-body'>
-              As an admin you automatically get sent all available flood messages for
-              this location.
+              You'll need to add these people as contacts.
             </p>
             <p className='govuk-body'>
-              But contacts will not be able to get flood messages for this
-              location until they're linked to it.
-            </p>
-            <p className='govuk-body'>
-              Contacts do not have access to this account and cannot sign in to it.
+              Then link this location to these contacts.
             </p>
             <div className='govuk-!-margin-top-6'>
               <Button

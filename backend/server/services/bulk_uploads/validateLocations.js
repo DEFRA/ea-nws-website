@@ -111,8 +111,7 @@ const validateLocations = async (locations) => {
           // calculate X and Y based on address and postcode
           const { errorMessage, data } = await getCoords(location)
           if (errorMessage) {
-            errorMessage === 'No matches found' &&
-              (location.error = ['not found'])
+            location.error = ['not found']
             invalid.push(location)
           } else {
             location.coordinates = data[0].coordinates

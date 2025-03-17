@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
-  clearOrgCurrentContact,
   setOrgCurrentContact
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
@@ -23,14 +23,13 @@ import { geoSafeToWebLocation } from '../../../../../common/services/formatters/
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import ContactsTable from '../../../../components/custom/ContactsTable'
 import {
-  orgManageContactsUrls,
-  urlManageContactsAdd
+  orgManageContactsUrls
 } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewContactsDashboardPage () {
+export default function ViewContactsDashboardPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -63,6 +62,7 @@ export default function ViewContactsDashboardPage () {
     charLimit: 0,
     error: ''
   })
+  const [loading, setLoading] = useState(true)
   const historyData = useFetchAlerts()
 
   useEffect(() => {
@@ -135,6 +135,7 @@ export default function ViewContactsDashboardPage () {
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
+      setLoading(false)
     }
 
     getContacts()
@@ -360,70 +361,35 @@ export default function ViewContactsDashboardPage () {
     navigate(-1)
   }
 
-  const NoContactsDisplay = () => {
-    return (
-      <>
-        <h1 className='govuk-heading-l'>Contacts</h1>
-        <div className='govuk-body'>
-          <p>
-            Contacts get sent flood messages that are available for their
-            locations.
-            <br />
-            Contacts do not have access to this account and cannot sign in to
-            it.
-          </p>
-          <p>
-            As an admin you can add, edit and delete contacts. You can also
-            decide how
-            <br />
-            contacts get flood messages for the locations they're responsible
-            for.
-          </p>
-          <Button
-            text='Add contacts'
-            className='govuk-button govuk-!-margin-top-6'
-            onClick={(event) => {
-              event.preventDefault()
-              dispatch(clearOrgCurrentContact())
-              navigate(urlManageContactsAdd)
-            }}
-          />
-        </div>
-      </>
-    )
-  }
-
   return (
     <>
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        {contacts.length === 0
-          ? (
-            <NoContactsDisplay />
-            )
-          : (
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-full'>
-                {notificationText && (
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={notificationText}
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-full'>
+                  {notificationText && (
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={notificationText}
+                    />
+                  )}
+                  <DashboardHeader
+                    contacts={contacts}
+                    onClickLinked={onClickLinked}
+                    linkLocations={location.state?.linkLocations}
+                    selectedContacts={selectedContacts}
+                    onOnlyShowSelected={onOnlyShowSelected}
+                    linkSource={location.state?.linkSource}
                   />
-                )}
-                <DashboardHeader
-                  contacts={contacts}
-                  onClickLinked={onClickLinked}
-                  linkLocations={location.state?.linkLocations}
-                  selectedContacts={selectedContacts}
-                  onOnlyShowSelected={onOnlyShowSelected}
-                  linkSource={location.state?.linkSource}
-                />
-              </div>
-              <div className='govuk-grid-column-full govuk-body'>
-                {!isFilterVisible
-                  ? (
+                </div>
+                <div className='govuk-grid-column-full govuk-body'>
+                  {!isFilterVisible ? (
                     <>
                       <Button
                         text='Open filter'
@@ -431,22 +397,22 @@ export default function ViewContactsDashboardPage () {
                         onClick={(event) => onOpenCloseFilter(event)}
                       />
                       {(!location.state ||
-                    !location.state.linkLocations ||
-                    location.state.linkLocations.length === 0) && (
-                      <>
-                      &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
-                      &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                      </>
+                        !location.state.linkLocations ||
+                        location.state.linkLocations.length === 0) && (
+                        <>
+                          &nbsp; &nbsp;
+                          <ButtonMenu
+                            title='More actions'
+                            options={moreActions}
+                            onSelect={(index) => onMoreAction(index)}
+                          />
+                          &nbsp; &nbsp;
+                          <Button
+                            text='Print'
+                            className='govuk-button govuk-button--secondary inline-block'
+                            onClick={(event) => onOpenCloseFilter(event)}
+                          />
+                        </>
                       )}
                       <ContactsTable
                         contacts={contacts}
@@ -474,8 +440,7 @@ export default function ViewContactsDashboardPage () {
                         />
                       )}
                     </>
-                    )
-                  : (
+                  ) : (
                     <div className='govuk-grid-row'>
                       <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
                         <SearchFilter
@@ -488,7 +453,9 @@ export default function ViewContactsDashboardPage () {
                           contactNameFilter={contactNameFilter}
                           setContactNameFilter={setContactNameFilter}
                           selectedJobTitleFilters={selectedJobTitleFilters}
-                          setSelectedJobTitleFilters={setSelectedJobTitleFilters}
+                          setSelectedJobTitleFilters={
+                            setSelectedJobTitleFilters
+                          }
                           selectedKeywordFilters={selectedKeywordFilters}
                           setSelectedKeywordFilters={setSelectedKeywordFilters}
                           selectedLinkedFilters={selectedLinkedFilters}
@@ -549,25 +516,27 @@ export default function ViewContactsDashboardPage () {
                         )}
                       </div>
                     </div>
-                    )}
-                {dialog.show && (
-                  <>
-                    <Popup
-                      onDelete={() => handleDelete()}
-                      onClose={() => setDialog({ ...dialog, show: false })}
-                      title={dialog.title}
-                      popupText={dialog.text}
-                      buttonText={dialog.buttonText}
-                      buttonClass={dialog.buttonClass}
-                      setError={(val) =>
-                        setDialog((dial) => ({ ...dial, error: val }))}
-                      defaultValue={dialog.input ? targetContact.name : ''}
-                    />
-                  </>
-                )}
+                  )}
+                  {dialog.show && (
+                    <>
+                      <Popup
+                        onDelete={() => handleDelete()}
+                        onClose={() => setDialog({ ...dialog, show: false })}
+                        title={dialog.title}
+                        popupText={dialog.text}
+                        buttonText={dialog.buttonText}
+                        buttonClass={dialog.buttonClass}
+                        setError={(val) =>
+                          setDialog((dial) => ({ ...dial, error: val }))
+                        }
+                        defaultValue={dialog.input ? targetContact.name : ''}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-            )}
+          </>
+        )}
       </main>
     </>
   )

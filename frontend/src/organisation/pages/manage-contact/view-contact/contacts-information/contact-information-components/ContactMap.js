@@ -11,11 +11,10 @@ import locationPin from '../../../../../../common/assets/images/location_pin.svg
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
-import { getLocationOtherAdditional } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 
-export default function ContactMap ({ locations }) {
+export default function ContactMap({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
@@ -38,10 +37,7 @@ export default function ContactMap ({ locations }) {
       setCentre([0, 0])
       locations.forEach((location) => {
         let feature
-        const locationType = getLocationOtherAdditional(
-          location.additionals,
-          'location_data_type'
-        )
+        const locationType = location.additionals.other.location_data_type
 
         if (locationType) {
           // add all points to markers which can be represented on the map
@@ -54,11 +50,8 @@ export default function ContactMap ({ locations }) {
             ])
             points.push(location.coordinates)
           } else {
-            feature = JSON.parse(location.geometry.geoJson)
-            setGeoJsonShapes((prevShapes) => [
-              ...prevShapes,
-              feature
-            ])
+            feature = location.geometry.geoJson
+
             shapes.push(feature)
           }
 
@@ -97,7 +90,7 @@ export default function ContactMap ({ locations }) {
     }, [bounds])
   }
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -167,49 +160,48 @@ export default function ContactMap ({ locations }) {
 
   return (
     <>
-      {loading
-        ? (
-          <LoadingSpinner />
-          )
-        : (
-          <MapContainer
-            center={centre}
-            dragging
-            scrollWheelZoom
-            zoom={8}
-            minZoom={7}
-            zoomControl
-            attributionControl={false}
-            maxBounds={maxBounds}
-            className='contacts-map-container'
-          >
-            {apiKey && apiKey !== 'error'
-              ? (
-                <>
-                  {tileLayerWithHeader}
-                  {markers &&
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <MapContainer
+          center={centre}
+          dragging
+          scrollWheelZoom
+          zoom={8}
+          minZoom={7}
+          zoomControl
+          attributionControl={false}
+          maxBounds={maxBounds}
+          className='contacts-map-container'
+        >
+          {apiKey && apiKey !== 'error' ? (
+            <>
+              {tileLayerWithHeader}
+              {markers &&
                 markers.map((marker, index) => (
-                  <Marker key={index} position={[marker.latitude, marker.longitude]}>
+                  <Marker
+                    key={index}
+                    position={[marker.latitude, marker.longitude]}
+                  >
                     <Popup />
                   </Marker>
                 ))}
-                  {geoJsonShapes &&
+              {geoJsonShapes &&
                 geoJsonShapes.map((shape, index) => (
                   <GeoJSON key={index} data={shape} />
                 ))}
-                  <FitBounds />
-                </>
-                )
-              : (
-                <div className='map-error-container'>
-                  <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-                  <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                    Reload map
-                  </Link>
-                </div>
-                )}
-          </MapContainer>
+              <FitBounds />
+            </>
+          ) : (
+            <div className='map-error-container'>
+              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+              <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                Reload map
+              </Link>
+            </div>
           )}
+        </MapContainer>
+      )}
     </>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 import MapInteractiveKey from './MapInteractiveKey'
 
-export default function FullMapInteractiveKey ({
+export default function FullMapInteractiveKey({
   showFloodWarningAreas,
   setShowFloodWarningAreas,
   showFloodAlertAreas,
@@ -25,15 +25,15 @@ export default function FullMapInteractiveKey ({
       <CheckBox
         name='WithinFloodAreas'
         onChange={() =>
-          setShowLocationsWithinFloodAreas(!showLocationsWithinFloodAreas)}
+          setShowLocationsWithinFloodAreas(!showLocationsWithinFloodAreas)
+        }
         checked={showLocationsWithinFloodAreas}
       />
       <p style={{ fontSize: '14px', margin: '0px 0px 0px -15px' }}>
         Within flood areas (
         {
-          locations.filter(
-            (obj) => obj.additionals.other?.alertTypes?.length > 0
-          ).length
+          locations.filter((obj) => obj.withinFloodArea === true)
+            .length
         }
         )
       </p>
@@ -49,7 +49,8 @@ export default function FullMapInteractiveKey ({
       <CheckBox
         name='OutsideFloodAreas'
         onChange={() =>
-          setShowLocationsOutsideFloodAreas(!showLocationsOutsideFloodAreas)}
+          setShowLocationsOutsideFloodAreas(!showLocationsOutsideFloodAreas)
+        }
         checked={showLocationsOutsideFloodAreas}
       />
       <p
@@ -61,7 +62,7 @@ export default function FullMapInteractiveKey ({
         Outside flood areas (
         {
           locations.filter(
-            (obj) => obj.additionals.other?.alertTypes?.length === 0
+            (obj) => obj.withinFloodArea === false
           ).length
         }
         )

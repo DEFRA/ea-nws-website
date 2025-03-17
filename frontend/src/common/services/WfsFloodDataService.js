@@ -174,7 +174,6 @@ export const getFloodAreaByTaCode = async (code) => {
 
 export const getFloodAreaByTaName = async (name) => {
   const areas = await getFilteredFloodAreas('TA_Name', name)
-  console.log(areas)
   // TA_Name is unique so there will only be one element in the array
   return areas[0] || []
 }

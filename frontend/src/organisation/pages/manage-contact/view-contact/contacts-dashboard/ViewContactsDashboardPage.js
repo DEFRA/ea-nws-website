@@ -118,7 +118,9 @@ export default function ViewContactsDashboardPage () {
         if (data && data.length > 0) {
           data.forEach(async function (location) {
             contact.linked_locations.push(location.id)
-            const floodAreas = await getWithinAreas(geoSafeToWebLocation(location))
+            const floodAreas = await getWithinAreas(
+              geoSafeToWebLocation(location)
+            )
             if (floodAreas && floodAreas.length > 0) {
               for (const area of floodAreas) {
                 contact.message_count += getHistoricalData(
@@ -159,9 +161,7 @@ export default function ViewContactsDashboardPage () {
     } else if (location.geometry?.geoJson) {
       const geoJson = location.geometry.geoJson
       try {
-        result = await getFloodAreasFromShape(
-          geoJson
-        )
+        result = await getFloodAreasFromShape(geoJson)
       } catch {
         result = []
       }
@@ -332,9 +332,9 @@ export default function ViewContactsDashboardPage () {
     setResetPaging(!resetPaging)
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (targetContact) {
-      removeContacts([targetContact])
+      await removeContacts([targetContact])
       if (selectedContacts.length > 0) {
         const updatedSelectedContacts = selectedContacts.filter(
           (contact) => contact !== targetContact
@@ -343,7 +343,7 @@ export default function ViewContactsDashboardPage () {
       }
     } else if (selectedContacts.length > 0) {
       const contactsToRemove = [...selectedContacts]
-      removeContacts(contactsToRemove)
+      await removeContacts(contactsToRemove)
     }
   }
 
@@ -428,7 +428,7 @@ export default function ViewContactsDashboardPage () {
                       <Button
                         text='Open filter'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={() => onOpenCloseFilter()}
+                        onClick={(event) => onOpenCloseFilter(event)}
                       />
                       {(!location.state ||
                     !location.state.linkLocations ||
@@ -503,23 +503,23 @@ export default function ViewContactsDashboardPage () {
                             className='govuk-button govuk-button--secondary'
                             onClick={(event) => onOpenCloseFilter(event)}
                           />
-                        &nbsp; &nbsp;
+                      &nbsp; &nbsp;
                           {(!location.state ||
-                          !location.state.linkLocations ||
-                          location.state.linkLocations.length === 0) && (
-                            <>
-                              <ButtonMenu
-                                title='More actions'
-                                options={moreActions}
-                                onSelect={(index) => onMoreAction(index)}
-                              />
-                            &nbsp; &nbsp;
-                              <Button
-                                text='Print'
-                                className='govuk-button govuk-button--secondary inline-block'
-                                onClick={(event) => onPrint(event)}
-                              />
-                            </>
+                        !location.state.linkLocations ||
+                        location.state.linkLocations.length === 0) && (
+                          <>
+                            <ButtonMenu
+                              title='More actions'
+                              options={moreActions}
+                              onSelect={(index) => onMoreAction(index)}
+                            />
+                          &nbsp; &nbsp;
+                            <Button
+                              text='Print'
+                              className='govuk-button govuk-button--secondary inline-block'
+                              onClick={(event) => onPrint(event)}
+                            />
+                          </>
                           )}
                         </div>
                         <ContactsTable

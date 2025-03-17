@@ -18,18 +18,19 @@ export default function SubNavigation ({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <div>
-              <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
-                Get flood warnings
-              </a>
-              <br />
-              <span className='sub-navigation__subtitle'>Professional</span>
-            </div>
+            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+              Get flood warnings
+            </a>
           </li>
-          {
-            (authToken !== null && !location.pathname.includes('sign-up')) &&
+          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
+            <li className='sub-navigation__item'>
+              <button onClick={() => toggleMenu()} className='sub-navigation__menu'>
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+            </li>}
+          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
           pages.map((page, index) => (
-            <li key={index} className='sub-navigation__item'>
+            <li key={index} className={`sub-navigation__item ${!menuOpen && 'closed'}`}>
               <Link
                 to={page.link}
                 className='sub-navigation__link'
@@ -38,8 +39,7 @@ export default function SubNavigation ({ pages, currentPage, type }) {
                 {page.title}
               </Link>
             </li>
-          ))
-}
+          ))}
         </ul>
       </nav>
     )

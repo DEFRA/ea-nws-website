@@ -38,22 +38,9 @@ export default function LinkContactToLocationPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              If you want {currentContact.firstname + (currentContact.lastname.length > 0 ? ' ' + currentContact.lastname : '')} to get
-              available flood messages you need to link them to locations
+              If {currentContact.firstname + (currentContact.lastname.length > 0 ? ' ' + currentContact.lastname : '')} needs flood messages, you
+              need to link them to locations
             </h1>
-            <p className='govuk-body'>
-              As an admin you automatically get sent all available flood messages for
-              all locations.
-            </p>
-            <p className='govuk-body'>
-              But {currentContact.firstname + (currentContact.lastname.length > 0 ? ' ' + currentContact.lastname : '')} will not be able to get available flood messages for
-              any locations until they're linked to the locations you want them to get
-              messages for. Any contacts not linked to any locations will not get flood
-              messages.
-            </p>
-            <p className='govuk-body'>
-              Contacts do not have access to this account and cannot sign in to it.
-            </p>
             <Button
               className='govuk-button'
               text='Link to locations now'

@@ -67,13 +67,6 @@ export default function ManageAdminDetailsPage () {
               </tbody>
             </table>
             <p />
-
-            <p>
-              If you want to also get flood messages to a mobile or landline number,{' '}
-              <Link to={orgManageContactsUrls.add.details} className='govuk-link'>
-                add yourself as a contact.
-              </Link>
-            </p>
           </div>
         </div>
       </main>

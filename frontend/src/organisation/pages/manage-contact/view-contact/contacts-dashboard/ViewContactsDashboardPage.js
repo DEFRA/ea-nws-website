@@ -11,7 +11,6 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
-  clearOrgCurrentContact,
   setOrgCurrentContact
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
@@ -24,8 +23,7 @@ import { geoSafeToWebLocation } from '../../../../../common/services/formatters/
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import ContactsTable from '../../../../components/custom/ContactsTable'
 import {
-  orgManageContactsUrls,
-  urlManageContactsAdd
+  orgManageContactsUrls
 } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
@@ -363,39 +361,6 @@ export default function ViewContactsDashboardPage() {
     navigate(-1)
   }
 
-  const NoContactsDisplay = () => {
-    return (
-      <>
-        <h1 className='govuk-heading-l'>Contacts</h1>
-        <div className='govuk-body'>
-          <p>
-            Contacts get sent flood messages that are available for their
-            locations.
-            <br />
-            Contacts do not have access to this account and cannot sign in to
-            it.
-          </p>
-          <p>
-            As an admin you can add, edit and delete contacts. You can also
-            decide how
-            <br />
-            contacts get flood messages for the locations they're responsible
-            for.
-          </p>
-          <Button
-            text='Add contacts'
-            className='govuk-button govuk-!-margin-top-6'
-            onClick={(event) => {
-              event.preventDefault()
-              dispatch(clearOrgCurrentContact())
-              navigate(urlManageContactsAdd)
-            }}
-          />
-        </div>
-      </>
-    )
-  }
-
   return (
     <>
       <BackLink onClick={navigateBack} />
@@ -405,9 +370,6 @@ export default function ViewContactsDashboardPage() {
           <LoadingSpinner />
         ) : (
           <>
-            {contacts.length === 0 ? (
-              <NoContactsDisplay />
-            ) : (
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-full'>
                   {notificationText && (
@@ -573,7 +535,6 @@ export default function ViewContactsDashboardPage() {
                   )}
                 </div>
               </div>
-            )}
           </>
         )}
       </main>

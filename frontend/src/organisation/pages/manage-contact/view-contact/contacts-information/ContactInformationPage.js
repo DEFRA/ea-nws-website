@@ -11,7 +11,7 @@ import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
 
-export default function ContactInformationPage() {
+export default function ContactInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
@@ -47,7 +47,7 @@ export default function ContactInformationPage() {
       )
 
       if (linkLocationsRes.data) {
-        let convertedLocations = linkLocationsRes.data.map((loc) =>
+        const convertedLocations = linkLocationsRes.data.map((loc) =>
           geoSafeToWebLocation(loc)
         )
         setLocations(convertedLocations)

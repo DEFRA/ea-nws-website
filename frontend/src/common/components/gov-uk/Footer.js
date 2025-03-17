@@ -29,7 +29,8 @@ export default function Footer () {
                   </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <Link className='govuk-footer__link'
+                  <Link
+                    className='govuk-footer__link'
                     to={
                       location.pathname.includes('organisation') ? '/organisation/cookies' : '/cookies'
                     }

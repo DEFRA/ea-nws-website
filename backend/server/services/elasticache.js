@@ -297,6 +297,23 @@ const findLocationByName = async (orgId, locationName) => {
   return matchingLocations
 }
 
+const listLocationNames = async (orgId) => {
+  const locationKeys = await getLocationKeys(orgId)
+  const locationNames = []
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      location.additionals.forEach((additional) => {
+        if (additional.id === 'locationName') {
+          locationNames.push(additional.value.s)
+          
+        }
+      })
+    })
+  )
+  return locationNames
+}
+
 const findInvLocationByName = async (orgId, locationName) => {
   const locationKeys = await getInvLocationKeys(orgId)
   const matchingLocations = []
@@ -649,6 +666,7 @@ module.exports = {
   searchLocations,
   searchInvLocations,
   findLocationByName,
+  listLocationNames,
   findInvLocationByName,
   listLocations,
   listContacts,

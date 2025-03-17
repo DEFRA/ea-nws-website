@@ -83,9 +83,12 @@ export default function ManageKeywordsPage () {
   }, [keywordType])
 
   useEffect(() => {
-    setKeywords(cacheKeywords)
     setFilteredKeywords(keywords)
-  }, [cacheKeywords, keywords])
+  }, [keywords])
+
+  useEffect(() => {
+    setKeywords(cacheKeywords)
+  }, [cacheKeywords])
 
   const handleSearch = () => {
     if (searchInput) {

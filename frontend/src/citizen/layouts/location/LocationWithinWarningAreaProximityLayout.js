@@ -22,8 +22,7 @@ import {
   setSevereFloodWarningCount,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
-import { csvToJson } from '../../../common/services/CsvToJson'
+import { useFetchAlerts } from '../../../common/services/hooks/GetHistoricalAlerts'
 
 export default function LocationWithinWarningAreaProximityLayout ({
   continueToSelectedFloodWarningsPage,
@@ -46,7 +45,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
   const selectedFloodAlertArea = useSelector(
     (state) => state.session.selectedFloodAlertArea
   )
-  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const floodHistoryData = useFetchAlerts()
 
   useEffect(() => {
     dispatch(setSelectedFloodAlertArea(null))
@@ -56,24 +55,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
     setError(null)
   }, [type])
 
-  useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-
-      fetch(data)
-        .then((response) => response.text())
-        .then((data) => {
-          setFloodHistoryData(csvToJson(data))
-        })
-        .catch((e) =>
-          console.error('Could not fetch Historic Flood Warning file', e)
-        )
-    }
-    getHistoryUrl()
-  }, [])
 
   const setHistoricalAlertNumber = (AlertArea) => {
     const oneYearAgo = moment().subtract(1, 'years')

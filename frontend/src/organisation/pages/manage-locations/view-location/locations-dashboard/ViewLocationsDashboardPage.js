@@ -14,7 +14,6 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
   getFloodAreas,
   getFloodAreasFromShape,
@@ -25,6 +24,7 @@ import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
+import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -79,6 +79,7 @@ export default function ViewLocationsDashboardPage() {
   }, [displayedLocations])
 
   const [partnerId, setPartnerId] = useState(false)
+  const historyData = useFetchAlerts()
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -146,15 +147,6 @@ export default function ViewLocationsDashboardPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      const historyFileUrl = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-
-      const historyData = await fetch(historyFileUrl.data)
-        .then((response) => response.text())
-        .then((data) => csvToJson(data))
-
       for (const location of locationsUpdate) {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
@@ -172,8 +164,8 @@ export default function ViewLocationsDashboardPage() {
 
         location.message_count = 0
         const floodAreas = await getWithinAreas(location)
-        location.within = floodAreas.length > 0
-        if (floodAreas && floodAreas.length > 0) {
+        location.within = floodAreas?.length > 0
+        if (floodAreas?.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(
               area.properties.TA_CODE,

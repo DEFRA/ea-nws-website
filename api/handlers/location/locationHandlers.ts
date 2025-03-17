@@ -16,6 +16,11 @@ async function getLocationCreate(
 
   if (authToken !== 'WrongAuthToken' && location) {
     let updatedLocation = location
+    // act like geosafe and strip out the geoJson
+    if (updatedLocation?.geometry?.geoJson) {
+      let oldGeoJson = JSON.parse(updatedLocation.geometry.geoJson)
+      updatedLocation.geometry.geoJson = JSON.stringify(oldGeoJson.geometry)
+    }
     updatedLocation.id = uuidv4()
 
     return {
@@ -80,12 +85,18 @@ async function getLocationUpdate(
 ) {
   const { authToken, location } = req.payload as {
     authToken: string
-    location: Object
+    location: any
   }
   //location object must already contain location.id
   if (authToken !== 'WrongAuthToken' && location) {
+    let updatedLocation = location
+    // act like geosafe and strip out the geoJson
+    if (updatedLocation?.geometry?.geoJson) {
+      let oldGeoJson = JSON.parse(updatedLocation.geometry.geoJson)
+      updatedLocation.geometry.geoJson = JSON.stringify(oldGeoJson.geometry)
+    }
     return {
-      location: location
+      location: updatedLocation
     }
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)

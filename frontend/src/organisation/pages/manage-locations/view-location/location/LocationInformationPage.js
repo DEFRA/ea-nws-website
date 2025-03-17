@@ -70,8 +70,7 @@ export default function LocationInformationPage() {
         // code to return length of line
         return <>0.5km (dummy data)</>
       case LocationDataType.BOUNDARY:
-        // code to return boundary name
-        return <>Unitary Authority (dummy data)</>
+        return <>{additionalData.location_type}</>
     }
   }
 
@@ -427,9 +426,6 @@ export default function LocationInformationPage() {
             )}
           </div>
           {/* other half - map */}
-          {/* only show map if data allows */}
-          {currentLocation.coordinates?.latitude &&
-            currentLocation.coordinates?.longitude && (
               <div className='govuk-grid-column-one-half'>
                 <Map showMapControls={false} zoomLevel={14} />
                 <FloodWarningKey />
@@ -457,7 +453,6 @@ export default function LocationInformationPage() {
                   />
                 )}
               </div>
-            )}
         </div>
       </main>
     </>

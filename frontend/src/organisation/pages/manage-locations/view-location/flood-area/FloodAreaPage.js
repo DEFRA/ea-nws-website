@@ -8,9 +8,9 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodAreaMap from './FloodAreaMap'
@@ -21,8 +21,7 @@ export default function FloodAreaPage () {
   const area = useSelector((state) => state.session.currentTA)
   const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
-  const [floodHistoryUrl, setHistoryUrl] = useState('')
-  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const floodHistoryData = useFetchAlerts()
   const [historicalMessages, setHistoricalMessages] = useState([])
   const [floodCount, setFloodCount] = useState([])
   const orgId = useSelector((state) => state.session.orgId)
@@ -116,26 +115,6 @@ export default function FloodAreaPage () {
     }
     processFloodData()
   }, [floodHistoryData])
-
-  useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-      setHistoryUrl(data)
-    }
-    getHistoryUrl()
-    floodHistoryUrl &&
-      fetch(floodHistoryUrl)
-        .then((response) => response.text())
-        .then((data) => {
-          setFloodHistoryData(csvToJson(data))
-        })
-        .catch((e) =>
-          console.error('Could not fetch Organisation Historic Flood Warning file', e)
-        )
-  }, [floodHistoryUrl])
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
     let riskCategory = null

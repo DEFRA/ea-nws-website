@@ -29,11 +29,14 @@ export default function Header () {
     <>
       {isOrganisationPage && authToken
         ? (
-          <OrganisationHeader />
+          <>
+            {(servicePhase === 'beta' && <PrivateBetaHeader type='org' />)}
+            <OrganisationHeader />
+          </>
           )
         : (
           <div>
-            {(servicePhase === 'beta' && <PrivateBetaHeader />)}
+            {(servicePhase === 'beta' && <PrivateBetaHeader type='cit' />)}
             <header className='govuk-header govuk-header--full-width-border' data-module='govuk-header'>
               <div className='govuk-width-container govuk-header__container'>
                 <div className='govuk-header__logo'>

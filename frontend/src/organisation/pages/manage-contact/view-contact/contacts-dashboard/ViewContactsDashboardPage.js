@@ -15,13 +15,13 @@ import {
   setOrgCurrentContact
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
 import {
   getFloodAreas,
   getFloodAreasFromShape
 } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import ContactsTable from '../../../../components/custom/ContactsTable'
 import {
   orgManageContactsUrls,
@@ -65,6 +65,7 @@ export default function ViewContactsDashboardPage() {
     error: ''
   })
   const [loading, setLoading] = useState(true)
+  const historyData = useFetchAlerts()
 
   useEffect(() => {
     if (!contactsPerPage) {
@@ -105,15 +106,6 @@ export default function ViewContactsDashboardPage() {
           contactsUpdate.push(geoSafeToWebContact(contact))
         })
       }
-
-      const historyFileUrl = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-
-      const historyData = await fetch(historyFileUrl.data)
-        .then((response) => response.text())
-        .then((data) => csvToJson(data))
 
       for (const contact of contactsUpdate) {
         const contactsDataToSend = { authToken, orgId, contact }
@@ -343,9 +335,9 @@ export default function ViewContactsDashboardPage() {
     setResetPaging(!resetPaging)
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (targetContact) {
-      removeContacts([targetContact])
+      await removeContacts([targetContact])
       if (selectedContacts.length > 0) {
         const updatedSelectedContacts = selectedContacts.filter(
           (contact) => contact !== targetContact
@@ -354,7 +346,7 @@ export default function ViewContactsDashboardPage() {
       }
     } else if (selectedContacts.length > 0) {
       const contactsToRemove = [...selectedContacts]
-      removeContacts(contactsToRemove)
+      await removeContacts(contactsToRemove)
     }
   }
 
@@ -440,7 +432,7 @@ export default function ViewContactsDashboardPage() {
                       <Button
                         text='Open filter'
                         className='govuk-button govuk-button--secondary inline-block'
-                        onClick={() => onOpenCloseFilter()}
+                        onClick={(event) => onOpenCloseFilter(event)}
                       />
                       {(!location.state ||
                         !location.state.linkLocations ||
@@ -516,23 +508,23 @@ export default function ViewContactsDashboardPage() {
                             className='govuk-button govuk-button--secondary'
                             onClick={(event) => onOpenCloseFilter(event)}
                           />
-                          &nbsp; &nbsp;
+                      &nbsp; &nbsp;
                           {(!location.state ||
-                            !location.state.linkLocations ||
-                            location.state.linkLocations.length === 0) && (
-                            <>
-                              <ButtonMenu
-                                title='More actions'
-                                options={moreActions}
-                                onSelect={(index) => onMoreAction(index)}
-                              />
-                              &nbsp; &nbsp;
-                              <Button
-                                text='Print'
-                                className='govuk-button govuk-button--secondary inline-block'
-                                onClick={(event) => onPrint(event)}
-                              />
-                            </>
+                        !location.state.linkLocations ||
+                        location.state.linkLocations.length === 0) && (
+                          <>
+                            <ButtonMenu
+                              title='More actions'
+                              options={moreActions}
+                              onSelect={(index) => onMoreAction(index)}
+                            />
+                          &nbsp; &nbsp;
+                            <Button
+                              text='Print'
+                              className='govuk-button govuk-button--secondary inline-block'
+                              onClick={(event) => onPrint(event)}
+                            />
+                          </>
                           )}
                         </div>
                         <ContactsTable

@@ -32,7 +32,7 @@ const convertToPois = (locations) => {
               action_plan: location.Action_plan,
               notes: location.Notes,
               location_data_type: 'xycoords',
-              alertTypes: []
+              alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
             })
           }
         }

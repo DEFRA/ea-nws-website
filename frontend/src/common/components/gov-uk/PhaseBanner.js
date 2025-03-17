@@ -4,6 +4,20 @@ export default function Header ({
   type,
   phase
 }) {
+  const getFeedbackLink = () => {
+    let feedbackLink = '/signup/feedback'
+
+    if (phase === 'beta') {
+      if (type === 'org') {
+        feedbackLink = 'https://forms.office.com/e/XWwCaDWu6A'
+      } else {
+        feedbackLink = 'https://forms.office.com/e/YpBL2ecL2a'
+      }
+    }
+
+    return feedbackLink
+  }
+
   return (
     <>
       <div className='govuk-phase-banner govuk-body'>
@@ -22,7 +36,7 @@ export default function Header ({
               This is a new service. Help us improve it and {' '}
               <Link
                 className='govuk-link'
-                to={(phase === 'beta' ? 'https://forms.office.com/e/YpBL2ecL2a' : '/signup/feedback')}
+                to={getFeedbackLink()}
                 target='_blank'
               >
                 give your feedback (opens in new tab)

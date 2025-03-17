@@ -8,7 +8,7 @@ import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { getAdditional } from '../../../../../../common/redux/userSlice'
 
-export default function FloodReportsTable({
+export default function FloodReportsTable ({
   locationsAffected,
   displayedLocationsAffected,
   filteredLocationsAffected,
@@ -16,9 +16,6 @@ export default function FloodReportsTable({
   resetPaging,
   setResetPaging
 }) {
-  const [popupVisible, setPopupVisible] = useState(false)
-  const [popupWarning, setPopupWarning] = useState(null)
-
   const [locationNameSort, setLocationNameSort] = useState('none')
   const [warningTypeSort, setWarningTypeSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
@@ -178,8 +175,7 @@ export default function FloodReportsTable({
                     locationNameSort,
                     setLocationNameSort,
                     'locationName'
-                  )
-                }
+                  )}
               >
                 Location name
               </button>
@@ -196,8 +192,7 @@ export default function FloodReportsTable({
                     warningTypeSort,
                     setWarningTypeSort,
                     'alert.type'
-                  )
-                }
+                  )}
               >
                 Warning <br />
                 type
@@ -263,8 +258,7 @@ export default function FloodReportsTable({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     'alert.effectiveDate'
-                  )
-                }
+                  )}
               >
                 Last
                 <br /> updated
@@ -280,7 +274,7 @@ export default function FloodReportsTable({
             return (
               <tr key={index} className='govuk-table__row'>
                 <td className='govuk-table__cell'>
-                  {locationType != LocationDataType.X_AND_Y_COORDS && (
+                  {locationType !== LocationDataType.X_AND_Y_COORDS && (
                     <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
                       {location.locationData.additionals.locationName}
                     </p>

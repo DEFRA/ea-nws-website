@@ -53,18 +53,11 @@ const wfsCall = async (bbox, map, type) => {
 
 export const getFloodAreas = async (lat, lng) => {
   const { alertArea: alertAreas, warningArea: warningAreas } =
-    await getSurroundingFloodAreas(lat, lng)
-
+    await getSurroundingFloodAreas(lat, lng, 0.001)
   const alertAreasFeatures = alertAreas?.features || []
   const warningAreasFeatures = warningAreas?.features || []
   const allAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
-  const withinAreas = []
-  for (const feature of allAreas) {
-    if (turf.booleanPointInPolygon([lng, lat], feature)) {
-      withinAreas.push(feature)
-    }
-  }
-  return withinAreas
+  return allAreas
 }
 
 export const getFloodAreasFromShape = async (geoJsonShape) => {
@@ -147,9 +140,9 @@ export const getSurroundingFloodAreasFromShape = async (
 }
 
 const getIntersections = (areas, bufferedShape) => {
-  const bufferedShapeValid = turf.booleanValid(bufferedShape.geometry)
+  const bufferedShapeValid = turf.booleanValid(bufferedShape)
   if (!bufferedShapeValid) return
-  const bufferedShapeGeometry = bufferedShape.geometry
+  const bufferedShapeGeometry = bufferedShape
   const filteredTargetData = areas.features.filter((area) => {
     try {
       let res = false
@@ -253,7 +246,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates(nestedArray) {
+function getFirstCoordinates (nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -261,7 +254,7 @@ function getFirstCoordinates(nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon(lat, lng, geojson) {
+function checkPointInPolygon (lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -278,7 +271,7 @@ function checkPointInPolygon(lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox(centerLat, centerLng, distanceKm) {
+function calculateBoundingBox (centerLat, centerLng, distanceKm) {
   const center = turf.point([centerLng, centerLat], { crs: 'EPSG:4326' })
   const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' })
   const bbox = turf.bbox(buffered)
@@ -292,7 +285,7 @@ function calculateBoundingBox(centerLat, centerLng, distanceKm) {
 export const getLocationsNearbyRiversAndSeaFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.2
+  bboxKM = 0.001
 ) => {
   const { data: riversAndSeaFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),
@@ -306,7 +299,7 @@ export const getLocationsNearbyRiversAndSeaFloodAreas = async (
 export const getLocationsNearbyGroundWaterFloodAreas = async (
   lat,
   lng,
-  bboxKM = 0.2
+  bboxKM = 0.001
 ) => {
   const { data: groundwaterFloodRiskData } = await wfsCall(
     calculateBoundingBox(lat, lng, bboxKM),
@@ -356,7 +349,7 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
   }
 }
 
-function getHighestRiskRating(areas, ratingOrder, propertyToCheck) {
+function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
   // if there are no areas nearby, set to lowest risk rating
   let highestRating = null
 

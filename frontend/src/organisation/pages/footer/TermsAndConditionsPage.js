@@ -23,7 +23,8 @@ export default function TermsAndConditionsPage () {
               We make all reasonable efforts to send flood warnings for locations added to your organisation’s account.
             </p>
             <p>
-              However, we cannot guarantee they will be sent or arrive. For example, you may fail to receive a warning due to unplanned network disruption.</p>
+              However, we cannot guarantee they will be sent or arrive. For example, you may fail to receive a warning due to unplanned network disruption.
+            </p>
             <p>
               We aim to develop and issue flood warnings based on the best available data
               and as early as possible before flooding is likely. But we cannot guarantee

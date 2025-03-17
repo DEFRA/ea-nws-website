@@ -23,13 +23,15 @@ export default function PrivateBetaHeader ({
           type === 'org'
             ? 'private-beta-header cross-service-header'
             : 'private-beta-header govuk-header--full-width-border'
-        }`}>
+        }`}
+      >
         <div
           className={`${
             type === 'org'
               ? 'private-beta-header-container custom-width-container'
               : 'private-beta-header-container govuk-width-container'
-          }`}>
+          }`}
+        >
           <FontAwesomeIcon
             icon={faCircleExclamation}
             style={{ height: '35px', width: '35px' }}
@@ -47,11 +49,12 @@ export default function PrivateBetaHeader ({
         </div>
         {infoOpen && (
           <div
-          className={`${
+            className={`${
             type === 'org'
               ? 'private-beta-header-info-container custom-width-container'
               : 'private-beta-header-info-container govuk-width-container'
-          }`}>
+          }`}
+          >
             <p>Thank you for taking part in our trial for our new flood warning service.</p>
             <p>This site contains test content only.</p>
             <p className='govuk-!-font-weight-bold'>

@@ -161,7 +161,7 @@ export default function DuplicateLocationsOptionsPage () {
                 location: locationToUpdate
               }
               await backendCall(dataToSend, 'api/location/update', navigate)
-               // update registrations as the new location will have all alerts enabled by default
+              // update registrations as the new location will have all alerts enabled by default
               const registerData = {
                 authToken,
                 locationId: locationToUpdate.id,

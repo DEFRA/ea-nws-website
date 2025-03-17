@@ -51,6 +51,7 @@ export default function ContactInformationPage() {
           geoSafeToWebLocation(loc)
         )
         setLocations(convertedLocations)
+        console.log(convertedLocations)
       }
     }
 
@@ -237,6 +238,7 @@ export default function ContactInformationPage() {
                   showMap={showMap}
                   setShowMap={setShowMap}
                   locations={locations}
+                  filteredLocations={locations}
                 />
               )}
             </div>

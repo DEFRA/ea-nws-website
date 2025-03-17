@@ -370,24 +370,18 @@ export default function FullscreenMap({
     showAreas()
   }, [showFloodWarningAreas, showFloodAlertAreas])
 
-  // Add back in when filter is updated correctly - CP
-  // const isInFilteredLocations = (location) => {
-  //   if (showOnlyFilteredLocations || filteredLocations.length > 0) {
-  //     return filteredLocations.some((filtered) => filtered.id === location.id)
-  //   }
-  // }
+  const isInFilteredLocations = (location) => {
+    if (showOnlyFilteredLocations || filteredLocations.length > 0) {
+      return filteredLocations.some((filtered) => filtered.id === location.id)
+    }
+  }
 
-  // const isWithinFloodFilter = (location) => {
-  //   if (showLocationsWithinFloodAreas && !location.withinFloodAreas) {
-  //     return false // exclude locations that are NOT within flood areas
-  //   }
+  const isWithinFloodFilter = (location) => {
+    const isInFloodArea = showLocationsWithinFloodAreas && location.withinFloodArea
+    const isOutsideFloodArea = showLocationsOutsideFloodAreas && !location.withinFloodArea
 
-  //   if (showLocationsOutsideFloodAreas && location.withinFloodAreas) {
-  //     return false // exclude locations that ARE within flood areas
-  //   }
-
-  //   return true
-  // }
+    return (isInFloodArea || isOutsideFloodArea)
+  }
 
   return (
     <>
@@ -418,8 +412,8 @@ export default function FullscreenMap({
                       <ExitMapButton />
                       {locations.length > 0 &&
                         locations
-                          // .filter(isInFilteredLocations)
-                          // .filter(isWithinFloodFilter)
+                          .filter(isInFilteredLocations)
+                          .filter(isWithinFloodFilter)
                           .map((location, index) => (
                             <div key={index}>
                               {location.additionals.other.location_data_type ===

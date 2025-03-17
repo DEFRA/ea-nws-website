@@ -158,9 +158,6 @@
 }
 
 
-
-
-
 .sub-navigation__menu {
   font-weight: 700;
   border: none;
@@ -177,10 +174,29 @@
     display: none;
   }
 }
+.menu-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: inherit;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px;
+}
+
+@media (min-width: 40.0625em) {
+  .menu-button  {
+    display: none;
+  }
+}
 
 .header-navigation-menu {
   color: white !important;
   list-style:none ;
+  left:0
   
 }
 
@@ -190,21 +206,42 @@
   list-style:none !important;
   text-decoration: none;
 }
-.header-navigation-menu button{
-  background: none;
-  border: none;
-  padding: 0;
-  color:white;
-  font-size: inherit;
-  cursor: pointer;
-  font-weight: bold;
-}
 
 @media (min-width: 40.0625em) {
   .header-navigation-menu  {
     display: none;
   }
 }
+
+
+
+.header-navigation-menu-link {
+  text-decoration: none;
+  color: white;
+  position: relative;
+  display: block;
+  padding: 12px 12px 12px ; /* Added left padding to make space for the bar */
+  text-align: left;
+}
+
+/* Active page highlight */
+.header-navigation-menu-link[aria-current='page'] {
+  color: white;
+  position: relative;
+}
+
+.header-navigation-menu-link[aria-current='page']::before {
+  content: '';
+  background-color: white; /* Same highlight color */
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 4px;
+  height: 60%;
+  bottom: 20%;
+}
+
+
 
 .inline-link {
   display: inline-block;

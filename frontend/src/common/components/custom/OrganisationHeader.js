@@ -92,28 +92,25 @@ export default function OrganisationHeader () {
               </a>
             </div>
 
-            <nav>
-              <ul className='header-navigation-menu'>
-                {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
-                  <li>
-                    <button onClick={() => toggleMenu()}>
-                      Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-                    </button>
-                  </li>}
-                {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
-          pages.map((page, index) => (
-            <li key={index} className={`header-navigation-menu-pages ${!menuOpen && 'closed'}`}>
-              <Link
-                to={page.link}
+            <nav className="header-nav">
+  <button className="menu-button" onClick={() => toggleMenu()}>
+    Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+  </button>
+  {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
+    <ul className="header-navigation-menu">
+      {pages.map((page, index) => (
+        <li key={index} className="header-navigation-menu-pages">
+          <Link to={page.link}
+            className='header-navigation-menu-link'
+          aria-current={currentPage === page.link ? 'page' : 'no'}>
+            {page.title}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  }
+</nav>
 
-                aria-current={currentPage === page.link ? 'page' : 'no'}
-              >
-                {page.title}
-              </Link>
-            </li>
-          ))}
-              </ul>
-            </nav>
 
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>

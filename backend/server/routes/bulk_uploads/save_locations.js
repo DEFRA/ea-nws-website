@@ -13,6 +13,7 @@ const {
 const crypto = require('node:crypto')
 const { apiCall } = require('../../services/ApiService')
 const { logger } = require('../../plugins/logging')
+const { getPartnerId } = require('../../services/GetPartnerId')
 
 function uuidv4 () {
   return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
@@ -46,6 +47,32 @@ module.exports = [
               'location/create'
             )
             if (response.data.location) {
+              // Register locations
+              const { data: partnerId} = await getPartnerId()
+              const registerData = {
+                authToken,
+                locationId: response.data.location.id,
+                partnerId,
+                params: {
+                  channelVoiceEnabled: true,
+                  channelSmsEnabled: true,
+                  channelEmailEnabled: true,
+                  channelMobileAppEnabled: true,
+                  partnerCanView: true,
+                  partnerCanEdit: true,
+                  alertTypes: [
+                    'ALERT_LVL_1',
+                    'ALERT_LVL_2',
+                    'ALERT_LVL_3'
+                  ]
+                }
+              }
+
+              await apiCall(
+                registerData,
+                'location/registerToPartner'
+              )
+              // add to elasticache
               await addLocation(orgId, response.data.location)
             } else {
               return createGenericErrorResponse(h)

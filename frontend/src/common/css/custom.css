@@ -198,7 +198,9 @@
   color: white !important;
   list-style:none ;
   text-align: left;
-  padding-left: 2;
+  display:block;
+ 
+  left:0;
 }
 
 .header-navigation-menu a:visited,

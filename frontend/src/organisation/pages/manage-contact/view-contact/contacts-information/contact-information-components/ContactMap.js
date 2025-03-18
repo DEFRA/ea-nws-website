@@ -11,7 +11,6 @@ import locationPin from '../../../../../../common/assets/images/location_pin.svg
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
-import { getLocationOtherAdditional } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 
@@ -38,10 +37,7 @@ export default function ContactMap ({ locations }) {
       setCentre([0, 0])
       locations.forEach((location) => {
         let feature
-        const locationType = getLocationOtherAdditional(
-          location.additionals,
-          'location_data_type'
-        )
+        const locationType = location.additionals.other.location_data_type
 
         if (locationType) {
           // add all points to markers which can be represented on the map
@@ -54,11 +50,8 @@ export default function ContactMap ({ locations }) {
             ])
             points.push(location.coordinates)
           } else {
-            feature = JSON.parse(location.geometry.geoJson)
-            setGeoJsonShapes((prevShapes) => [
-              ...prevShapes,
-              feature
-            ])
+            feature = location.geometry.geoJson
+
             shapes.push(feature)
           }
 
@@ -189,7 +182,10 @@ export default function ContactMap ({ locations }) {
                   {tileLayerWithHeader}
                   {markers &&
                 markers.map((marker, index) => (
-                  <Marker key={index} position={[marker.latitude, marker.longitude]}>
+                  <Marker
+                    key={index}
+                    position={[marker.latitude, marker.longitude]}
+                  >
                     <Popup />
                   </Marker>
                 ))}

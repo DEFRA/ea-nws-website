@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
@@ -31,6 +32,7 @@ export default function LinkedLocationsPage () {
   const [resetPaging, setResetPaging] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [unlinkNotification, setUnlinkNotification] = useState('')
+  const [loading, setLoading] = useState(true)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
@@ -113,6 +115,7 @@ export default function LinkedLocationsPage () {
 
       setLinkedLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
+      setLoading(false)
     }
 
     getLinkedLocations()
@@ -124,8 +127,8 @@ export default function LinkedLocationsPage () {
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-       location.additionals.other?.location_data_type !==
-        LocationDataType.X_AND_Y_COORDS) ||
+        location.additionals.other?.location_data_type !==
+          LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longitude === null
@@ -153,7 +156,8 @@ export default function LinkedLocationsPage () {
     const linkContacts = [currentContact.id]
     navigate(orgManageLocationsUrls.view.dashboard, {
       state: {
-        linkContacts, linkSource: 'info'
+        linkContacts,
+        linkSource: 'info'
       }
     })
   }
@@ -162,7 +166,11 @@ export default function LinkedLocationsPage () {
     let unlinkText = ''
 
     if (locationsUnlinked.length > 0) {
-      unlinkText = locationsUnlinked.length + ' location' + (locationsUnlinked.length > 1 ? 's' : '') + ' unlinked'
+      unlinkText =
+        locationsUnlinked.length +
+        ' location' +
+        (locationsUnlinked.length > 1 ? 's' : '') +
+        ' unlinked'
     }
 
     return unlinkText
@@ -181,7 +189,12 @@ export default function LinkedLocationsPage () {
 
   const unlinkLocations = async (locationsToUnlink) => {
     for (const location of locationsToUnlink) {
-      const dataToSend = { authToken, orgId, locationId: location.id, contactIds: [currentContact.id] }
+      const dataToSend = {
+        authToken,
+        orgId,
+        locationId: location.id,
+        contactIds: [currentContact.id]
+      }
 
       const { errorMessage } = await backendCall(
         dataToSend,
@@ -215,22 +228,28 @@ export default function LinkedLocationsPage () {
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
         Linked locations
       </h2>
-      <div className='govuk-!-margin-top-2 govuk-!-margin-bottom-5' style={{ height: '2px', backgroundColor: 'black' }} />
-      {linkedLocations.length === 0 &&
+      <div
+        className='govuk-!-margin-top-2 govuk-!-margin-bottom-5'
+        style={{ height: '2px', backgroundColor: 'black' }}
+      />
+      {linkedLocations.length === 0 && (
         <div className='govuk-!-width-one-half govuk-!-margin-bottom-6'>
           <p className='govuk-body'>
-            This user is not currently getting any flood messages. You need to link them to the locations you want them to get messages for.
+            This user is not currently getting any flood messages. You need to
+            link them to the locations you want them to get messages for.
           </p>
           <p className='govuk-body'>
-            This user will then get sent flood messages for all the locations they're linked to.
+            This user will then get sent flood messages for all the locations
+            they're linked to.
           </p>
-        </div>}
+        </div>
+      )}
       <Button
         text='Link to locations'
         className='govuk-button govuk-button--secondary govuk-!-margin-right-2'
         onClick={linkToLocations}
       />
-      {linkedLocations.length > 0 &&
+      {linkedLocations.length > 0 && (
         <Button
           text='Unlink selected'
           className='govuk-button govuk-button--secondary'
@@ -238,7 +257,8 @@ export default function LinkedLocationsPage () {
             event.preventDefault()
             unlinkLocations(selectedLocations)
           }}
-        />}
+        />
+      )}
     </>
   )
 
@@ -249,7 +269,6 @@ export default function LinkedLocationsPage () {
 
   return (
     <>
-
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {unlinkNotification.length > 0 && (
@@ -263,32 +282,41 @@ export default function LinkedLocationsPage () {
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
         />
-        {linkedLocationsSection}
-        {linkedLocations.length > 0 &&
-          <>
-            <LocationsTable
-              locations={linkedLocations}
-              displayedLocations={displayedLocations}
-              filteredLocations={filteredLocations}
-              selectedLocations={selectedLocations}
-              setLocations={setLinkedLocations}
-              setSelectedLocations={setSelectedLocations}
-              setFilteredLocations={setFilteredLocations}
-              resetPaging={resetPaging}
-              setResetPaging={setResetPaging}
-              onAction={onAction}
-              actionText='Unlink'
-              locationPrefix='linked'
-            />
-            <Pagination
-              totalPages={Math.ceil(
-                filteredLocations.length / locationsPerPage
+        {loading
+          ? (
+            <LoadingSpinner />
+            )
+          : (
+            <>
+              {linkedLocationsSection}
+              {linkedLocations.length > 0 && (
+                <>
+                  <LocationsTable
+                    locations={linkedLocations}
+                    displayedLocations={displayedLocations}
+                    filteredLocations={filteredLocations}
+                    selectedLocations={selectedLocations}
+                    setLocations={setLinkedLocations}
+                    setSelectedLocations={setSelectedLocations}
+                    setFilteredLocations={setFilteredLocations}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    onAction={onAction}
+                    actionText='Unlink'
+                    locationPrefix='linked'
+                  />
+                  <Pagination
+                    totalPages={Math.ceil(
+                      filteredLocations.length / locationsPerPage
+                    )}
+                    onPageChange={(val) => setCurrentPage(val)}
+                    pageList
+                    reset={resetPaging}
+                  />
+                </>
               )}
-              onPageChange={(val) => setCurrentPage(val)}
-              pageList
-              reset={resetPaging}
-            />
-          </>}
+            </>
+            )}
       </main>
     </>
   )

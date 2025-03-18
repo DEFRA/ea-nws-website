@@ -31,9 +31,8 @@ export default function FullMapInteractiveKey ({
       <p style={{ fontSize: '14px', margin: '0px 0px 0px -15px' }}>
         Within flood areas (
         {
-          locations.filter(
-            (obj) => obj.additionals.other?.alertTypes?.length > 0
-          ).length
+          locations.filter((obj) => obj.withinFloodArea === true)
+            .length
         }
         )
       </p>
@@ -61,7 +60,7 @@ export default function FullMapInteractiveKey ({
         Outside flood areas (
         {
           locations.filter(
-            (obj) => obj.additionals.other?.alertTypes?.length === 0
+            (obj) => obj.withinFloodArea === false
           ).length
         }
         )

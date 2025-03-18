@@ -59,7 +59,7 @@ export default function LocationAddLoadingPage () {
   // Check the status of the processing and update state
   useEffect(() => {
     const interval = setInterval(async () => {
-      const dataToSend = { orgId, fileName }
+      const dataToSend = { fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_status',
@@ -120,7 +120,7 @@ export default function LocationAddLoadingPage () {
 
   useEffect(() => {
     const startProcessing = async () => {
-      const dataToSend = { Message: fileName }
+      const dataToSend = { Message: fileName, orgId }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_file',

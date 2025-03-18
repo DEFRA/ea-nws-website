@@ -13,8 +13,8 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link' to={
-                    location.pathname.includes('organisation') ? '/organisation/contact' : '/contact'
-                  }
+                      location.pathname.includes('organisation') ? '/organisation/contact' : '/contact'
+                    }
                   >
                     Contact
                   </Link>
@@ -22,21 +22,28 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link' to={
-                    location.pathname.includes('organisation') ? '/organisation/privacy' : '/privacy'
-}
+                      location.pathname.includes('organisation') ? '/organisation/privacy' : '/privacy'
+                    }
                   >
                     Privacy
                   </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <Link className='govuk-footer__link' to='/cookies'>
+                  <Link
+                    className='govuk-footer__link'
+                    to={
+                      location.pathname.includes('organisation') ? '/organisation/cookies' : '/cookies'
+                    }
+                  >
                     Cookies
                   </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link'
-                    to='/accessibility-statement'
+                    to={
+                      location.pathname.includes('organisation') ? '/organisation/accessibility-statement' : '/accessibility-statement'
+                    }
                   >
                     Accessibility statement
                   </Link>

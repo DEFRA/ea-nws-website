@@ -7,6 +7,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { getLocationAdditionals } from '../../../../../common/redux/userSlice'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -38,7 +39,11 @@ export default function LocationInformationPage () {
   }
 
   const getShapePolygonArea = () => {
-    if (!currentLocation.geometry || currentLocation.geometry.type !== 'Feature' || !currentLocation.geometry.geometry) {
+    if (
+      !currentLocation.geometry ||
+      currentLocation.geometry.type !== 'Feature' ||
+      !currentLocation.geometry.geometry
+    ) {
       return 0
     }
 
@@ -161,7 +166,6 @@ export default function LocationInformationPage () {
 
   return (
     <>
-
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <LocationHeader
@@ -429,17 +433,23 @@ export default function LocationInformationPage () {
               This is not a live flood map
             </span>
             <span className='govuk-caption-m govuk-!-font-size-16'>
-              it shows fixed areas that we provide flood warnings and alerts for
+              it shows fixed areas that we provide flood warnings and alerts
+              for
             </span>
-            <div className=' govuk-!-margin-top-4' style={{ display: 'flex', marginLeft: '-0.5rem' }}>
+            <div
+              className=' govuk-!-margin-top-4'
+              style={{ display: 'flex', marginLeft: '-0.5rem' }}
+            >
               <img src={locationPin} alt='Location pin icon' />
-              <Link className='govuk-link' onClick={openMap}>Open map</Link>
+              <Link className='govuk-link' onClick={openMap}>
+                Open map
+              </Link>
             </div>
             {showMap && (
               <FullscreenMap
                 showMap={showMap}
                 setShowMap={setShowMap}
-                locations={[currentLocation]}
+                locations={[geoSafeToWebLocation(currentLocation)]}
               />
             )}
           </div>

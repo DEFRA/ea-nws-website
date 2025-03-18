@@ -52,11 +52,12 @@ const osPostCodeApiCall = async (postCode) => {
 
 const osFindNameApiCall = async (name, filter) => {
   let responseData
+  const formattedName = name.replace('&', '%26')
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
-  let url = `https://api.os.uk/search/names/v1/find?query=${name}&key=${osApiKey}`
+  let url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
   if (filter !== null) {
     const filterStr = 'LOCAL_TYPE:' + filter.join(' LOCAL_TYPE:')
-    url = `https://api.os.uk/search/names/v1/find?query=${name}&fq=${filterStr}&key=${osApiKey}`
+    url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&fq=${filterStr}&key=${osApiKey}`
   }
   proj4.defs(
     'EPSG:27700',
@@ -107,8 +108,9 @@ const osFindNameApiCall = async (name, filter) => {
 
 const osFindApiCall = async (address, minmatch) => {
   let responseData
+  const formattedAddress = address.replace('&', '%26')
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
-  const url = `https://api.os.uk/search/places/v1/find?query=${address}&minmatch=${minmatch}&key=${osApiKey}`
+  const url = `https://api.os.uk/search/places/v1/find?query=${formattedAddress}&minmatch=${minmatch}&key=${osApiKey}`
 
   proj4.defs(
     'EPSG:27700',

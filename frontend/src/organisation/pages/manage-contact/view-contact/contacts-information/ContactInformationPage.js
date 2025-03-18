@@ -51,7 +51,6 @@ export default function ContactInformationPage () {
           geoSafeToWebLocation(loc)
         )
         setLocations(convertedLocations)
-        console.log(convertedLocations)
       }
     }
 

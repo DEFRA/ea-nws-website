@@ -932,8 +932,8 @@ export default function ViewLocationsDashboardPage () {
                           {locationsPerPage && (
                             <Pagination
                               totalPages={Math.ceil(
-                  filteredLocations.length / locationsPerPage
-                )}
+                                filteredLocations.length / locationsPerPage
+                              )}
                               onPageChange={(val) => setCurrentPage(val)}
                               holdPage={holdPage}
                               setHoldPage={setHoldPage}

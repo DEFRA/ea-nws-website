@@ -32,6 +32,13 @@ export default function DuplicateLocationsOptionsPage () {
     (state) => state.session.notInEnglandLocations
   )
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
   useEffect(() => {
     const getDupLocations = async () => {
       const dataToSend = { orgId }
@@ -53,6 +60,7 @@ export default function DuplicateLocationsOptionsPage () {
       setDupLocations(locations)
     }
     getDupLocations()
+    getPartnerId()
   }, [])
 
   const getLocation = async (orgId, locationName, type) => {
@@ -153,6 +161,27 @@ export default function DuplicateLocationsOptionsPage () {
                 location: locationToUpdate
               }
               await backendCall(dataToSend, 'api/location/update', navigate)
+              // update registrations as the new location will have all alerts enabled by default
+              const registerData = {
+                authToken,
+                locationId: locationToUpdate.id,
+                partnerId,
+                params: {
+                  channelVoiceEnabled: true,
+                  channelSmsEnabled: true,
+                  channelEmailEnabled: true,
+                  channelMobileAppEnabled: true,
+                  partnerCanView: true,
+                  partnerCanEdit: true,
+                  alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+                }
+              }
+
+              await backendCall(
+                registerData,
+                'api/location/update_registration',
+                navigate
+              )
               // remove location from invalid array
               const locationIdToRemove = location.id
               await backendCall(

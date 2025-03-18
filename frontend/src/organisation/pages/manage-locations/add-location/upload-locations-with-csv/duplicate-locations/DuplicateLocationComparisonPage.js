@@ -37,6 +37,17 @@ export default function DuplicateLocationComparisonPage () {
     (state) => state.session.notInEnglandLocations
   )
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
+
   // remove error if user changes selection
   useEffect(() => {
     if (error) {
@@ -64,11 +75,34 @@ export default function DuplicateLocationComparisonPage () {
     } else {
       // update location then navigate
       if (existingOrNew === 'New') {
+        // set default alert types of the new location incase not already set
+        newLocation.additionals.other.alertTypes = ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
         const locationToUpdate = webToGeoSafeLocation(JSON.parse(JSON.stringify(newLocation)))
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id
         const dataToSend = { authToken, orgId, location: locationToUpdate }
         await backendCall(dataToSend, 'api/location/update', navigate)
+        // update registrations as the new location will have all alerts enabled by default
+        const registerData = {
+          authToken,
+          locationId: locationToUpdate.id,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+          }
+        }
+
+        await backendCall(
+          registerData,
+          'api/location/update_registration',
+          navigate
+        )
       }
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id

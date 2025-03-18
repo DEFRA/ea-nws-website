@@ -9,7 +9,6 @@ import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContac
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LinkBanner ({
-  type,
   linkLocations,
   linkContacts,
   selectedLocations,
@@ -21,7 +20,9 @@ export default function LinkBanner ({
 
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
+  const currentLocation = geoSafeToWebLocation(
+    useSelector((state) => state.session.currentLocation)
+  )
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
 
@@ -40,14 +41,14 @@ export default function LinkBanner ({
       }
       if (selectedContacts && selectedContacts.length > 0) {
         if (selectedContacts.length > 1) {
-          beforeText =
-            selectedContacts.length + ' contacts linked to '
+          beforeText = selectedContacts.length + ' contacts linked to '
         } else {
           beforeText =
             selectedContacts[0].firstname +
             (selectedContacts[0].lastname.length > 0
               ? ' ' + selectedContacts[0].lastname
-              : '') + ' linked to '
+              : '') +
+            ' linked to '
         }
       }
     }
@@ -56,18 +57,17 @@ export default function LinkBanner ({
         beforeText = linkContacts.length + ' contacts linked to '
       } else if (currentContact) {
         beforeText =
-        currentContact.firstname +
-            (currentContact.lastname.length > 0
-              ? ' ' + currentContact.lastname
-              : '') + ' linked to '
+          currentContact.firstname +
+          (currentContact.lastname.length > 0
+            ? ' ' + currentContact.lastname
+            : '') +
+          ' linked to '
       }
       if (selectedLocations && selectedLocations.length > 0) {
         if (selectedLocations.length > 1) {
-          afterText =
-            selectedLocations.length + ' locations'
+          afterText = selectedLocations.length + ' locations'
         } else {
-          afterText =
-            selectedLocations[0].additionals.locationName
+          afterText = selectedLocations[0].additionals.locationName
         }
       }
     }
@@ -91,8 +91,14 @@ export default function LinkBanner ({
       })
     }
 
+    let errorFound = false
     for (const locationID of linkLocationIDs) {
-      const dataToSend = { authToken, orgId, locationId: locationID, contactIds: linkContactIDs }
+      const dataToSend = {
+        authToken,
+        orgId,
+        locationId: locationID,
+        contactIds: linkContactIDs
+      }
 
       const { errorMessage } = await backendCall(
         dataToSend,
@@ -100,39 +106,42 @@ export default function LinkBanner ({
         navigate
       )
 
-      if (!errorMessage) {
-        const successMessage = getSuccessMessage()
-        if (linkLocations) {
-          if (linkSource === 'dashboard') {
-            navigate(orgManageLocationsUrls.view.dashboard, {
-              state: {
-                successMessage
-              }
-            })
-          } else {
-            navigate(orgManageLocationsUrls.view.viewLinkedContacts, {
-              state: {
-                successMessage
-              }
-            })
-          }
-        } else if (linkContacts) {
-          if (linkSource === 'dashboard') {
-            navigate(orgManageContactsUrls.view.dashboard, {
-              state: {
-                successMessage
-              }
-            })
-          } else {
-            navigate(orgManageContactsUrls.view.viewLinkedLocations, {
-              state: {
-                successMessage
-              }
-            })
-          }
-        }
-      } else {
+      if (errorMessage) {
+        errorFound = true
         console.log(errorMessage)
+      }
+    }
+
+    if (!errorFound) {
+      const successMessage = getSuccessMessage()
+      if (linkLocations) {
+        if (linkSource === 'dashboard') {
+          navigate(orgManageLocationsUrls.view.dashboard, {
+            state: {
+              successMessage
+            }
+          })
+        } else {
+          navigate(orgManageLocationsUrls.view.viewLinkedContacts, {
+            state: {
+              successMessage
+            }
+          })
+        }
+      } else if (linkContacts) {
+        if (linkSource === 'dashboard') {
+          navigate(orgManageContactsUrls.view.dashboard, {
+            state: {
+              successMessage
+            }
+          })
+        } else {
+          navigate(orgManageContactsUrls.view.viewLinkedLocations, {
+            state: {
+              successMessage
+            }
+          })
+        }
       }
     }
   }
@@ -142,16 +151,13 @@ export default function LinkBanner ({
 
     if (linkLocations && linkLocations.length > 0) {
       if (linkLocations.length > 1) {
-        text =
-        linkLocations.length + ' locations'
+        text = linkLocations.length + ' locations'
       } else if (currentLocation) {
-        text =
-          currentLocation.additionals.locationName
+        text = currentLocation.additionals.locationName
       }
     } else if (linkContacts) {
       if (linkContacts.length > 1) {
-        text =
-        linkContacts.length + ' contacts'
+        text = linkContacts.length + ' contacts'
       } else if (currentContact) {
         text =
           currentContact.firstname +
@@ -175,16 +181,13 @@ export default function LinkBanner ({
 
     if (selectedLocations && selectedLocations.length > 0) {
       if (selectedLocations.length > 1) {
-        text =
-          selectedLocations.length + ' locations'
+        text = selectedLocations.length + ' locations'
       } else {
-        text =
-          selectedLocations[0].additionals.locationName
+        text = selectedLocations[0].additionals.locationName
       }
     } else if (selectedContacts && selectedContacts.length > 0) {
       if (selectedContacts.length > 1) {
-        text =
-          selectedContacts.length + ' contacts'
+        text = selectedContacts.length + ' contacts'
       } else {
         text =
           selectedContacts[0].firstname +
@@ -227,9 +230,7 @@ export default function LinkBanner ({
             gap: '15px'
           }}
         >
-          <span style={{ fontWeight: '700' }}>
-            Link
-          </span>
+          <span style={{ fontWeight: '700' }}>Link</span>
           <div
             style={{
               border: '1px solid #b1b4b6',
@@ -242,9 +243,7 @@ export default function LinkBanner ({
           >
             {firstFieldText()}
           </div>
-          <span style={{ fontWeight: '700' }}>
-            to
-          </span>
+          <span style={{ fontWeight: '700' }}>to</span>
           <div
             style={{
               border: '1px solid #b1b4b6',
@@ -257,28 +256,41 @@ export default function LinkBanner ({
           >
             {secondFieldText()}
           </div>
-          {((selectedContacts && selectedContacts.length > 0) || (selectedLocations && selectedLocations.length > 0)) && (
-            <div className='govuk-checkboxes--small' style={{ display: 'flex', alignItems: 'center' }}>
-              <Checkbox
-                label='Only show selected'
-                style={{ maxWidth: '100%' }}
-                checked={onlyShowSelectedOption}
-                onChange={() => {
-                  actionOnlyShowSelected()
-                }}
-              />
-            </div>
+          {((selectedContacts && selectedContacts.length > 0) ||
+            (selectedLocations && selectedLocations.length > 0)) && (
+              <div
+                className='govuk-checkboxes--small'
+                style={{ display: 'flex', alignItems: 'center' }}
+              >
+                <Checkbox
+                  label='Only show selected'
+                  style={{ maxWidth: '100%' }}
+                  checked={onlyShowSelectedOption}
+                  onChange={() => {
+                    actionOnlyShowSelected()
+                  }}
+                />
+              </div>
           )}
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{
+              marginLeft: 'auto',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
             <Button
-              text={linkLocations ? 'Link location to contacts' : 'Link contact to locations'}
+              text={
+                linkLocations
+                  ? 'Link location to contacts'
+                  : 'Link contact to locations'
+              }
               className='govuk-button govuk-!-margin-0'
               onClick={(event) => linkLocationsContacts(event)}
             />
           </div>
         </div>
       </div>
-
     </div>
   )
 }

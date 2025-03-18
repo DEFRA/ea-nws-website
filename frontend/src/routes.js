@@ -7,7 +7,6 @@ import citizenManageLocationRoutes from './citizen/routes/manage-locations/Manag
 import citizenSignupRoutes from './citizen/routes/sign-up/SignUpRoutes'
 import ErrorPage from './common/pages/ErrorPage'
 import Index from './common/pages/Index'
-import commonFooterRoutes from './common/routes/footer/FooterRoutes'
 import signinRoutes from './common/routes/sign-in/SignInRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
@@ -33,7 +32,6 @@ export const routes = [
   ...signinRoutes,
   ...citizenSignupRoutes,
   ...footerRoutes,
-  ...commonFooterRoutes,
   ...orgSignUpRoutes,
   ...orgFooterRoutes,
   ...infoRoutes,

@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../common/assets/images/location_pin.svg'
 import { setCurrentLocation } from '../../../common/redux/userSlice'
 import { webToGeoSafeLocation } from '../../../common/services/formatters/LocationFormatter'
-import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationsTable ({
+export default function LocationsTable({
   locations,
   displayedLocations,
   filteredLocations,
@@ -235,7 +235,8 @@ export default function LocationsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'additionals.locationName'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -252,7 +253,8 @@ export default function LocationsTable ({
                     locationTypeSort,
                     setLocationTypeSort,
                     'additionals.other.location_type'
-                  )}
+                  )
+                }
               >
                 Location type
               </button>
@@ -269,7 +271,8 @@ export default function LocationsTable ({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'additionals.other.business_criticality'
-                  )}
+                  )
+                }
               >
                 Business
                 <br /> criticality
@@ -307,7 +310,8 @@ export default function LocationsTable ({
                     riverSeaRisksSort,
                     setRiverSeaRisksSort,
                     'riverSeaRisk.title'
-                  )}
+                  )
+                }
               >
                 Rivers and sea
                 <br /> flood risk
@@ -325,7 +329,8 @@ export default function LocationsTable ({
                     groundWaterRisksSort,
                     setGroundWaterRisksSort,
                     'groundWaterRisk.title'
-                  )}
+                  )
+                }
               >
                 Groundwater
                 <br /> flood risk

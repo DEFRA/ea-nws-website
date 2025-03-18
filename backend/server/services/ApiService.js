@@ -64,6 +64,16 @@ const apiCall = async (data, path) => {
         response.data.location.coordinates.longitude / 10 ** 6
     }
 
+    if (response.data.location?.geometry?.geoJson) {
+      response.data.location.geometry.geoJson = JSON.stringify(
+        {
+          type: 'Feature',
+          properties: {},
+          geometry: JSON.parse(response.data.location.geometry.geoJson)
+        }
+      )
+    }
+
     if (response.data.locations) {
       response.data.locations.forEach((location) => {
         if (location.coordinates?.latitude && location.coordinates?.longitude) {
@@ -71,6 +81,15 @@ const apiCall = async (data, path) => {
             location.coordinates.latitude / 10 ** 6
           location.coordinates.longitude =
             location.coordinates.longitude / 10 ** 6
+        }
+        if (location?.geometry?.geoJson) {
+          location.geometry.geoJson = JSON.stringify(
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: JSON.parse(location.geometry.geoJson)
+            }
+          )
         }
       })
     }

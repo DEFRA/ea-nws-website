@@ -31,8 +31,6 @@ export default function LiveFloodWarningsDashboardPage () {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
-
-  // cammy stuff
   const [loading, setLoading] = useState(true)
   const [locationsAffected, setLocationsAffected] = useState([])
 

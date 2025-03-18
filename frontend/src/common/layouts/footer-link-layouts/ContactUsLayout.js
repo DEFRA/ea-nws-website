@@ -1,8 +1,11 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import BackLink from '../../components/custom/BackLink'
 export default function ContactUsLayout ({ email }) {
   const navigate = useNavigate()
+
+  const authToken = useSelector((state) => state.session.authToken)
 
   return (
     <>
@@ -13,7 +16,14 @@ export default function ContactUsLayout ({ email }) {
         <div className='govuk-grid-row'>
           <div className='govuk-body govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l '>Contact us</h1>
-            <p> Get in touch with us, if you need help.</p>
+            {authToken
+              ? (
+                <p> Get in touch with us, if you need help.</p>
+                )
+              : (
+                <p> Get in touch with us at Floodline, if you need help signing up.</p>
+                )}
+
             <h2 className='govuk-heading-m  govuk-!-margin-bottom-0'>Floodline</h2>
             <p>
               Telephone: 0345 988 1188
@@ -28,20 +38,24 @@ export default function ContactUsLayout ({ email }) {
               >
                 Find out about call charges
               </Link>
+            </p>
 
-            </p>
-            <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>Email queries</h3>
-            <p>
-              Email: {' '}
-              <Link
-                className='govuk-link'
-                onClick={() => { window.location = `mailto:${email}` }}
-              >
-                {email}
-              </Link>
-              <br />
-              Monday to Friday, 8am to 6pm
-            </p>
+            {authToken && (
+              <>
+                <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>Email queries</h3>
+                <p>
+                  Email: {' '}
+                  <Link
+                    className='govuk-link'
+                    onClick={() => { window.location = `mailto:${email}` }}
+                  >
+                    {email}
+                  </Link>
+                  <br />
+                  Monday to Friday, 8am to 6pm
+                </p>
+              </>
+            )}
           </div>
         </div>
       </main>

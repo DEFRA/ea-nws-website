@@ -11,6 +11,10 @@ import Details from '../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { backendCall } from '../../../common/services/BackendService'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../common/services/formatters/LocationFormatter'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
@@ -40,6 +44,11 @@ export default function ManageKeywordsPage () {
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
   const keywordsPerPage = 10
+
+  const [locations, setLocations] = useState([])
+  const [contacts, setContacts] = useState([])
+  const [error, setError] = useState('')
+  const authToken = useSelector((state) => state.session.authToken)
 
   const setTab = (tab) => {
     setKeywordType(tab)
@@ -80,6 +89,27 @@ export default function ManageKeywordsPage () {
       setCacheKeywords(orgKeywords)
     }
     getKeywords()
+  }, [keywordType])
+
+  useEffect(() => {
+    const getLocations = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/list_locations',
+        navigate
+      )
+
+      const locations = []
+      if (data) {
+        data.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
+      }
+      setLocations(locations)
+    }
+
+    keywordType == 'location' && getLocations()
   }, [keywordType])
 
   useEffect(() => {
@@ -235,11 +265,44 @@ export default function ManageKeywordsPage () {
       return keyword
     })
 
-    /* if (keywordType === 'location') {
-      // TODO: geosafe call and logic to update keywords then elasticache
-    } else {
-      // TODO: geosafe call and logic to update keywords then elasticache
-    } */
+    if (keywordType === 'location') {
+      // Loop over locations linked to edited keyword
+      for (const id of targetKeyword.linked_ids) {
+        // Loop over location keywords
+        const location = locations.filter((location) => location.id === id)[0]
+        const locationKeywords = location.additionals.keywords.map((keyword) => {
+          if (targetKeyword.name === keyword) {
+            return updatedKeyword
+          }
+          return keyword
+        })
+
+        const locationToUpdate = {
+          ...location,
+          additionals: {
+            ...location.additionals,
+            keywords: locationKeywords
+          }
+        }
+
+        const updateLocation = async () => {
+          const dataToSend = { authToken, orgId, location: webToGeoSafeLocation(locationToUpdate) }
+          const { data, errorMessage } = await backendCall(
+            dataToSend,
+            'api/location/update',
+            navigate
+          )
+
+          if (!data) {
+            errorMessage
+              ? setError(errorMessage)
+              : setError('Oops, something went wrong')
+          }
+        }
+
+        updateLocation()
+      }
+    }
 
     setKeywords([...updatedKeywords])
     setNotificationText('Keyword edited')

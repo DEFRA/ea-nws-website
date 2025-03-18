@@ -136,7 +136,6 @@ export default function ViewLocationPage () {
       }
     }
 
-
     async function processFloodHist () {
       if (floodHistoryData) {
         if (alertArea) {

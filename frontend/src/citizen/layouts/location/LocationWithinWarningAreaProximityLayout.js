@@ -55,7 +55,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
     setError(null)
   }, [type])
 
-
   const setHistoricalAlertNumber = (AlertArea) => {
     const oneYearAgo = moment().subtract(1, 'years')
 

@@ -9,10 +9,8 @@ import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
-import {
-  orgSignUpRoutes,
-  orgSignUpUrls
-} from '../../../routes/sign-up/SignUpRoutes'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
+
 export default function CheckYourAnswersPage () {
   const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)

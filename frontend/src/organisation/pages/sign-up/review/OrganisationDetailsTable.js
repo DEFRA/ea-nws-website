@@ -18,9 +18,10 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
+              {/* TODO: ability to change org name (compatibility with geosafe)
               <Link to={orgSignUpUrls.change.name} className='govuk-link'>
                 Change
-              </Link>
+              </Link> */}
             </td>
           </tr>
           <tr className='govuk-table__row'>

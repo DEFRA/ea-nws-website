@@ -14,10 +14,15 @@ export default function ChangeAddressPage () {
     navigate(navigate(-1))
   }
 
+  const navigateToConfirmPage = () => {
+    navigate(orgSignUpUrls.address.confirm, { state: { returnToReview: true } })
+  }
+
   return (
     <AddAddressLayout
       navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
+      navigateToConfirmPage={navigateToConfirmPage}
     />
   )
 }

@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
 export default function ContactReviewTable ({ profile }) {
   const fullName = `${profile.firstname} ${profile.lastname}`
@@ -16,9 +14,10 @@ export default function ContactReviewTable ({ profile }) {
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
+            {/* TODO: ability to change name (compatibility with geosafe)
             <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
-            </Link>
+            </Link> */}
           </td>
         </tr>
         <tr className='govuk-table__row'>
@@ -29,9 +28,10 @@ export default function ContactReviewTable ({ profile }) {
             {profile.emails[0]}
           </td>
           <td className='govuk-table__cell'>
+            {/* TODO: ability to change email (compatibility with geosafe)
             <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
-            </Link>
+            </Link> */}
           </td>
         </tr>
         <br />

@@ -1,13 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import AddAddressLayout from '../../layouts/address/AddAddressLayout'
-import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
+import AddAddressLayout from '../../../../layouts/address/AddAddressLayout'
+import { orgSignUpUrls } from '../../../../routes/sign-up/SignUpRoutes'
 
-export default function AddAddressPage () {
+export default function ChangeAddressPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgSignUpUrls.address.select)
+    navigate(orgSignUpUrls.address.select, { state: { returnToReview: true } })
   }
 
   const NavigateToPreviousPage = () => {
@@ -15,7 +15,7 @@ export default function AddAddressPage () {
   }
 
   const navigateToConfirmPage = () => {
-    navigate(orgSignUpUrls.address.confirm)
+    navigate(orgSignUpUrls.address.confirm, { state: { returnToReview: true } })
   }
 
   return (

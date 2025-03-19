@@ -37,6 +37,8 @@ export default function LocationNamePage () {
       } else {
         setError('Something went wrong, try again')
       }
+    } else {
+      setError('')
     }
   }
 

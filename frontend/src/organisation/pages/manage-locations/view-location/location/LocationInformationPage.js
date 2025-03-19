@@ -17,6 +17,7 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationInformationPage() {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const webLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(currentLocation)))
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const [showMap, setShowMap] = useState(false)
   const keywords = additionalData.keywords
@@ -51,7 +52,7 @@ export default function LocationInformationPage() {
       return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
     }
 
-    return formatShapeArea(Math.round(area(currentLocation.geometry) / 1000))
+    return formatShapeArea(Math.round(area(webLocation.geometry.geoJson) / 1000))
   }
 
   const LocationData = () => {
@@ -449,7 +450,8 @@ export default function LocationInformationPage() {
                   <FullscreenMap
                     showMap={showMap}
                     setShowMap={setShowMap}
-                    locations={[geoSafeToWebLocation(currentLocation)]}
+                    locations={[webLocation]}
+                    filteredLocations={[webLocation]}
                   />
                 )}
               </div>

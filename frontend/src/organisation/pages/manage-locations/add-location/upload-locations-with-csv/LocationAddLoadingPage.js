@@ -120,7 +120,7 @@ export default function LocationAddLoadingPage () {
 
   useEffect(() => {
     const startProcessing = async () => {
-      const dataToSend = { Message: fileName, orgId: orgId }
+      const dataToSend = { Message: fileName, orgId }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_file',

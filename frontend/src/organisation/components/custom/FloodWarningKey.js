@@ -20,10 +20,10 @@ export default function FloodWarningKey () {
           </div>
       )}
       {locationDataType === LocationDataType.BOUNDARY && (
-          <div className='org-flood-warning-item'>
-            <img src={boundaryIcon} alt='Shapefile' />
-            <span className='org-flood-warning-text'>Boundary</span>
-          </div>
+        <div className='org-flood-warning-item'>
+          <img src={boundaryIcon} alt='Shapefile' />
+          <span className='org-flood-warning-text'>Boundary</span>
+        </div>
       )}
       <div className='org-flood-warning-item'>
         <div className='org-flood-warning-square warning-square' />

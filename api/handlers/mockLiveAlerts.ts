@@ -26,20 +26,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '063FWT23WestminC' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'Tidal Thames at Westminster'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '063FWT23WestminC' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'Tidal Thames at Westminster'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -85,20 +85,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '113WACT1D' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'South Devon Estuaries'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '113WACT1D' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'South Devon Estuaries'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -143,20 +143,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '011WAFDU' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'Rivers Duddon, Crake and Mill Beck'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '011WAFDU' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'Rivers Duddon, Crake and Mill Beck'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -199,20 +199,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '122WAF946' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'River Ouse, Burdyke, Holgate Beck, Blue Beck, River Foss, The Fleet'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '122WAF946' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'River Ouse, Burdyke, Holgate Beck, Blue Beck, River Foss, The Fleet'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -255,20 +255,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '122WAF946' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'Upper River Ouse'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '122WAF946' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'Upper River Ouse'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -311,20 +311,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '122FWF776' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '122FWF776' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -367,20 +367,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '051FWFEF4B' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'The River Colne from Halstead to Lexden'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '051FWFEF4B' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'The River Colne from Halstead to Lexden'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -423,20 +423,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '055FWFPLNE01' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'The River Nene'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '055FWFPLNE01' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'The River Nene'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -479,20 +479,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '013FWTTME8' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'Irish Sea and Mersey estuary from the Head of the Wirral to Runcorn'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '013FWTTME8' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'Irish Sea and Mersey estuary from the Head of the Wirral to Runcorn'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -535,20 +535,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '013WAFWI' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '013WAFWI' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -591,20 +591,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '034FWFTRNOTTCITY' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'River Trent at Nottingham including The Meadows'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '034FWFTRNOTTCITY' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'River Trent at Nottingham including The Meadows'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -647,20 +647,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '034FWFDELITTLECH' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'River Derwent at Little Chester, Eastgate and Cattle Market'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '034FWFDELITTLECH' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'River Derwent at Little Chester, Eastgate and Cattle Market'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -703,20 +703,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '034WAF409' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'River Derwent from Rowsley to the River Trent at Shardlow'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '034WAF409' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'River Derwent from Rowsley to the River Trent at Shardlow'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -759,20 +759,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '031FWFWY110' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'River Wye in North Hereford'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '031FWFWY110' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'River Wye in North Hereford'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -815,20 +815,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '031WAF119' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'River Wye in North Hereford'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '031WAF119' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'River Wye in North Hereford'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -871,20 +871,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '065FWC0501' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'Itchen estuary'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '065FWC0501' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'Itchen estuary'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }
@@ -927,20 +927,20 @@ const liveAlerts = {
                 rings: [],
                 circles: [],
                 polygons: [],
-                geocodes: [],
-                extraInfo: [
-                  {
-                    id: 'TA_CODE',
-                    value: { s: '065WAC151' }
-                  },
-                  {
-                    id: 'TA_NAME',
-                    value: {
-                      s: 'Southampton Water and Hamble'
-                    }
+                geocodes: []
+              },
+              extraInfo: [
+                {
+                  id: 'TA_CODE',
+                  value: { s: '065WAC151' }
+                },
+                {
+                  id: 'TA_NAME',
+                  value: {
+                    s: 'Southampton Water and Hamble'
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }

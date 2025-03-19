@@ -272,7 +272,7 @@ export default function ManageKeywordsPage () {
     }
   }
 
-  const updateKeywords = (action) => {
+  const updateKeywords = async (action) => {
     // Loop over locations/contacts linked to edited keyword
     for (const id of targetKeyword.linked_ids) {
       // Loop over location/contact keywords
@@ -312,7 +312,7 @@ export default function ManageKeywordsPage () {
         }
       }
 
-      updateLocationOrContact()
+      await updateLocationOrContact()
     }
   }
 

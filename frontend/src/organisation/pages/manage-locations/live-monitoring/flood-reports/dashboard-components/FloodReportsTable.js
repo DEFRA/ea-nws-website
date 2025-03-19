@@ -39,7 +39,7 @@ export default function FloodReportsTable ({
       // Parse JSON string from other field to pull out relevant values
       const otherData = getAdditional(obj.additionals)
       const objLocationName = getAdditional(
-        obj.alert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+        obj.alert.mode.zoneDesc.placemarks[0].extraInfo,
         'TA_NAME'
       )
       const objLocationType = otherData.location_type || '-'

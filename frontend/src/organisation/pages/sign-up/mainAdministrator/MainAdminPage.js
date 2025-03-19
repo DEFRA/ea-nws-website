@@ -1,15 +1,16 @@
 import { useNavigate } from 'react-router'
 import MainAdminLayout from '../../../layouts/admin/MainAdminLayout'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
 export default function MainAdminPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate('/organisation/sign-up/admin-details')
+    navigate(orgSignUpUrls.admin.details)
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up')
+    navigate(orgSignUpUrls.signUp)
   }
 
   return (

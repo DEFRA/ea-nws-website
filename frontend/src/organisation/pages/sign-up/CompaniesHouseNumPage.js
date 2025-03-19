@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router'
 import CompaniesHouseNumLayout from '../../layouts/companies-house-num/CompaniesHouseNumLayout'
+import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
 export default function CompaniesHouseNumPage () {
   const navigate = useNavigate()
-  const navigateToNextPage = () => navigate('/organisation/sign-up/sector')
+  const navigateToNextPage = () => navigate(orgSignUpUrls.sector)
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/address-confirm')
+    navigate(orgSignUpUrls.address.confirm)
   }
 
   return (

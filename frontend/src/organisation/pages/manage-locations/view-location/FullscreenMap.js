@@ -24,7 +24,8 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
 import {
   getFloodAreas,
-  getFloodAreasFromShape
+  getFloodAreasFromShape,
+  getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
 import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
 
@@ -47,15 +48,16 @@ export default function FullscreenMap ({
   const [showLocationsWithinFloodAreas, setShowLocationsWithinFloodAreas] =
     useState(true)
   const [showLocationsOutsideFloodAreas, setShowLocationsOutsideFloodAreas] =
-    useState(false)
+    useState(true)
   const [showOnlyFilteredLocations, setShowOnlyFilteredLocations] =
     useState(true)
 
   const [centre, setCentre] = useState(null)
   const [bounds, setBounds] = useState(null)
-  const [warningAreas, setWarningArea] = useState(null)
-  const [alertAreas, setAlertArea] = useState(null)
+  const [warningAreas, setWarningArea] = useState([])
+  const [alertAreas, setAlertArea] = useState([])
   const [loading, setLoading] = useState(true)
+  const [mapLocations, setMapLocations] = useState([])
 
   useEffect(() => {
     loadMap()
@@ -99,9 +101,15 @@ export default function FullscreenMap ({
 
         locationsCollection.push(feature)
       }
+      setMapLocations(locations)
 
       // fit map to all locations
       if (locationsCollection && locationsCollection.length > 0) {
+        for (const location of locationsCollection) {
+          const { alertArea, warningArea } = await getSurroundingFloodAreasFromShape(location)
+          setAlertArea(...alertAreas, alertArea)
+          setWarningArea(...warningAreas, warningArea)
+        }
         const geoJsonFeatureCollection =
           turf.featureCollection(locationsCollection)
 
@@ -208,19 +216,6 @@ export default function FullscreenMap ({
     ),
     []
   )
-
-  useEffect(() => {
-    if (zoomLevel < 12) {
-      if (warningAreaRef.current) {
-        warningAreaRef.current.clearLayers()
-      }
-      if (alertAreaRef.current) {
-        alertAreaRef.current.clearLayers()
-      }
-      setAlertArea(null)
-      setWarningArea(null)
-    }
-  }, [zoomLevel])
 
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
@@ -410,8 +405,8 @@ export default function FullscreenMap ({
                       <ZoomTracker />
                       <ResetMapButton />
                       <ExitMapButton />
-                      {locations.length > 0 &&
-                        locations
+                      {mapLocations.length > 0 &&
+                        mapLocations
                           .filter(isInFilteredLocations)
                           .filter(isWithinFloodFilter)
                           .map((location, index) => (
@@ -503,8 +498,8 @@ export default function FullscreenMap ({
                       }
                       locations={
                         showOnlyFilteredLocations
-                          ? filteredLocations
-                          : locations
+                          ? mapLocations.filter(isInFilteredLocations)
+                          : mapLocations
                       }
                     />
                   </div>

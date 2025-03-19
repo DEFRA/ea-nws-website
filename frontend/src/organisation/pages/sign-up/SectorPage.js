@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router'
 import SectorLayout from '../../layouts/sector/SectorLayout'
+import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
 export default function SectorPage () {
   const navigate = useNavigate()
-  const navigateToNextPage = () => navigate('/organisation/sign-up/alternative-contact')
+  const navigateToNextPage = () => navigate(orgSignUpUrls.altContact)
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/number')
+    navigate(orgSignUpUrls.compHouseNum)
   }
 
   return (

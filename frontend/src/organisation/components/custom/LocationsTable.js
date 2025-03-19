@@ -377,7 +377,10 @@ export default function LocationsTable({
                   className='govuk-link'
                   onClick={(e) => updateMessageSettings(e, location)}
                 >
-                  {location.additionals.other?.alertTypes?.length > 0
+                  {(location.within === true &&
+                    location.additionals.other?.alertTypes?.length > 0) ||
+                    (location.additionals.other?.childrenIDs?.length > 0 &&
+                    location.additionals.other?.alertTypes?.length > 0)
                     ? 'Yes'
                     : 'No'}
                 </Link>

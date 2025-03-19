@@ -29,7 +29,7 @@ import {
 } from '../../../../common/services/WfsFloodDataService'
 import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
 
-export default function FullscreenMap({
+export default function FullscreenMap ({
   showMap,
   setShowMap,
   // ensure locations passed to this component are in web format
@@ -157,7 +157,7 @@ export default function FullscreenMap({
   })
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -430,19 +430,19 @@ export default function FullscreenMap({
                                     {location.address}
                                   </Popup>
                                 </Marker>
-                              ) : (
-                                <>
-                                  {location.geometry.geoJson && (
-                                    <GeoJSON
-                                      data={location.geometry.geoJson}
-                                      onEachFeature={onEachShapefileFeature}
-                                      ref={(el) => {
-                                        shapefileRef.current = el
-                                      }}
-                                    />
-                                  )}{' '}
-                                </>
-                              )}
+                                  ) : (
+                                    <>
+                                      {location.geometry.geoJson && (
+                                        <GeoJSON
+                                          data={location.geometry.geoJson}
+                                          onEachFeature={onEachShapefileFeature}
+                                          ref={(el) => {
+                                            shapefileRef.current = el
+                                          }}
+                                        />
+                                      )}{' '}
+                                    </>
+                                  )}
                             </div>
                           ))}
                       {warningAreas && (

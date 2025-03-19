@@ -11,6 +11,11 @@ import Details from '../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { backendCall } from '../../../common/services/BackendService'
+import { geoSafeToWebContact, webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../common/services/formatters/LocationFormatter'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
@@ -40,6 +45,11 @@ export default function ManageKeywordsPage () {
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
   const keywordsPerPage = 10
+
+  const [locations, setLocations] = useState([])
+  const [contacts, setContacts] = useState([])
+  const [error, setError] = useState('')
+  const authToken = useSelector((state) => state.session.authToken)
 
   const setTab = (tab) => {
     setKeywordType(tab)
@@ -83,9 +93,50 @@ export default function ManageKeywordsPage () {
   }, [keywordType])
 
   useEffect(() => {
-    setKeywords(cacheKeywords)
+    const getLocations = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/list_locations',
+        navigate
+      )
+
+      const locations = []
+      if (data) {
+        data.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
+      }
+      setLocations(locations)
+    }
+
+    const getContacts = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/list_contacts',
+        navigate
+      )
+
+      const contacts = []
+      if (data) {
+        data.forEach((contact) => {
+          contacts.push(geoSafeToWebContact(contact))
+        })
+      }
+      setContacts(contacts)
+    }
+
+    keywordType == 'location' ? getLocations() : getContacts()
+  }, [keywordType])
+
+  useEffect(() => {
     setFilteredKeywords(keywords)
-  }, [cacheKeywords, keywords])
+  }, [keywords])
+
+  useEffect(() => {
+    setKeywords(cacheKeywords)
+  }, [cacheKeywords])
 
   const handleSearch = () => {
     if (searchInput) {
@@ -221,6 +272,50 @@ export default function ManageKeywordsPage () {
     }
   }
 
+  const updateKeywords = async (action) => {
+    // Loop over locations/contacts linked to edited keyword
+    for (const id of targetKeyword.linked_ids) {
+      // Loop over location/contact keywords
+      const locationOrContact = keywordType === 'location'
+        ? locations.filter((location) => location.id === id)[0]
+        : contacts.filter((contact) => contact.id === id)[0]
+      const locationOrContactKeywords = locationOrContact.additionals.keywords.map((keyword) => {
+        if (targetKeyword.name === keyword) {
+          return action === 'edit' ? updatedKeyword : null
+        }
+        return keyword
+      }).filter((keyword) => keyword !== null)
+
+      const locationOrContactToUpdate = {
+        ...locationOrContact,
+        additionals: {
+          ...locationOrContact.additionals,
+          keywords: locationOrContactKeywords
+        }
+      }
+
+      const updateLocationOrContact = async () => {
+        const apiPath = keywordType === 'location' ? 'api/location/update' : 'api/organization/update_contact'
+        const dataToSend = keywordType === 'location'
+          ? { authToken, orgId, location: webToGeoSafeLocation(locationOrContactToUpdate) }
+          : { authToken, orgId, contact: webToGeoSafeContact(locationOrContactToUpdate) }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          apiPath,
+          navigate
+        )
+
+        if (!data) {
+          errorMessage
+            ? setError(errorMessage)
+            : setError('Oops, something went wrong')
+        }
+      }
+
+      await updateLocationOrContact()
+    }
+  }
+
   const editKeyword = () => {
     const updatedKeywords = keywords.map((keyword) => {
       if (targetKeyword === keyword) {
@@ -232,11 +327,7 @@ export default function ManageKeywordsPage () {
       return keyword
     })
 
-    /* if (keywordType === 'location') {
-      // TODO: geosafe call and logic to update keywords then elasticache
-    } else {
-      // TODO: geosafe call and logic to update keywords then elasticache
-    } */
+    updateKeywords('edit')
 
     setKeywords([...updatedKeywords])
     setNotificationText('Keyword edited')
@@ -250,11 +341,7 @@ export default function ManageKeywordsPage () {
       (keyword) => !keywordsToRemove.includes(keyword)
     )
 
-    /* if (keywordType === 'location') {
-      // TODO: geosafe call and logic to update keywords then elasticache
-    } else {
-      // TODO: geosafe call and logic to update keywords then elasticache
-    } */
+    updateKeywords('delete')
     setKeywords([...updatedKeywords])
 
     if (targetKeyword) {

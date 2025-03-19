@@ -2,7 +2,7 @@ import React from 'react'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 import MapInteractiveKey from './MapInteractiveKey'
 
-export default function FullMapInteractiveKey({
+export default function FullMapInteractiveKey ({
   showFloodWarningAreas,
   setShowFloodWarningAreas,
   showFloodAlertAreas,
@@ -25,8 +25,7 @@ export default function FullMapInteractiveKey({
       <CheckBox
         name='WithinFloodAreas'
         onChange={() =>
-          setShowLocationsWithinFloodAreas(!showLocationsWithinFloodAreas)
-        }
+          setShowLocationsWithinFloodAreas(!showLocationsWithinFloodAreas)}
         checked={showLocationsWithinFloodAreas}
       />
       <p style={{ fontSize: '14px', margin: '0px 0px 0px -15px' }}>
@@ -49,8 +48,7 @@ export default function FullMapInteractiveKey({
       <CheckBox
         name='OutsideFloodAreas'
         onChange={() =>
-          setShowLocationsOutsideFloodAreas(!showLocationsOutsideFloodAreas)
-        }
+          setShowLocationsOutsideFloodAreas(!showLocationsOutsideFloodAreas)}
         checked={showLocationsOutsideFloodAreas}
       />
       <p

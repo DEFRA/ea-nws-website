@@ -217,19 +217,6 @@ export default function FullscreenMap({
     []
   )
 
-/*   useEffect(() => {
-    if (zoomLevel < 12) {
-      if (warningAreaRef.current) {
-        warningAreaRef.current.clearLayers()
-      }
-      if (alertAreaRef.current) {
-        alertAreaRef.current.clearLayers()
-      }
-      setAlertArea(null)
-      setWarningArea(null)
-    }
-  }, [zoomLevel]) */
-
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
   const shapefileRef = useRef(null)

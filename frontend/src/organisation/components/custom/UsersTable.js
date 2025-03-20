@@ -5,7 +5,7 @@ import { setOrgCurrentContact } from '../../../common/redux/userSlice'
 import { webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function ContactsTable({
+export default function UsersTable ({
   contacts,
   displayedContacts,
   filteredContacts,
@@ -14,7 +14,8 @@ export default function ContactsTable({
   setFilteredContacts,
   onAction,
   actionText,
-  contactPrefix
+  contactPrefix,
+  filterVisible
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -208,8 +209,7 @@ export default function ContactsTable({
                     userTypeSort,
                     setUserTypeSort,
                     (contact) => contact.role || ''
-                  )
-                }
+                  )}
               >
                 User type
               </button>
@@ -224,8 +224,7 @@ export default function ContactsTable({
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
                     return contact.firstname + (contact.lastname || '')
-                  })
-                }
+                  })}
               >
                 Name
               </button>
@@ -240,8 +239,7 @@ export default function ContactsTable({
                 onClick={() =>
                   sortData(jobTitleSort, setJobTitleSort, (contact) => {
                     return contact.additionals.jobTitle
-                  })
-                }
+                  })}
               >
                 Job title
               </button>
@@ -256,31 +254,35 @@ export default function ContactsTable({
                 onClick={() =>
                   sortData(emailSort, setEmailSort, (contact) => {
                     return contact.emails[0]
-                  })
-                }
+                  })}
               >
                 Email
               </button>
             </th>
-            <th
-              scope='col'
-              className='govuk-table__header'
-              aria-sort={linkedLocationsSort}
-            >
-              <button type='button' onClick={() => sortLinkedLocations()}>
-                Linked locations
-              </button>
-            </th>
-            <th
-              scope='col'
-              className='govuk-table__header'
-              aria-sort={messagesReceivedSort}
-            >
-              <button type='button' onClick={() => sortMessagesReceived()}>
-                Messages received
-              </button>
-            </th>
-            <th scope='col' className='govuk-table__header' />
+            {/* Conditionally render these two columns only when filter panel is not open */}
+            {!filterVisible && (
+              <>
+                <th
+                  scope='col'
+                  className='govuk-table__header'
+                  aria-sort={linkedLocationsSort}
+                >
+                  <button type='button' onClick={() => sortLinkedLocations()}>
+                    Linked locations
+                  </button>
+                </th>
+                <th
+                  scope='col'
+                  className='govuk-table__header'
+                  aria-sort={messagesReceivedSort}
+                >
+                  <button type='button' onClick={() => sortMessagesReceived()}>
+                    Messages received
+                  </button>
+                </th>
+                <th scope='col' className='govuk-table__header' />
+              </>
+            )}
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
@@ -302,7 +304,17 @@ export default function ContactsTable({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>{contact.role}</td>
+              <td className='govuk-table__cell'>
+                {contact.role === 'Admin'
+                  ? (
+                    <strong className='govuk-tag govuk-tag--purple'>Admin</strong>
+                    )
+                  : (
+                    <strong className='govuk-tag govuk-tag--green'>
+                      Contact
+                    </strong>
+                    )}
+              </td>
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
@@ -316,18 +328,24 @@ export default function ContactsTable({
                 {contact.additionals.jobTitle}
               </td>
               <td className='govuk-table__cell'>{contact.emails[0]}</td>
-              <td className='govuk-table__cell'>
-                {contact.linked_locations?.length}
-              </td>
-              <td className='govuk-table__cell'>{contact.message_count}</td>
-              <td className='govuk-table__cell'>
-                <Link
-                  className='govuk-link'
-                  onClick={(e) => onAction(e, actionText, contact)}
-                >
-                  {actionText}
-                </Link>
-              </td>
+              {/* Conditionally render cells */}
+              {!filterVisible && (
+                <>
+                  <td className='govuk-table__cell'>
+                    {contact.linked_locations?.length}
+                  </td>
+                  <td className='govuk-table__cell'>{contact.message_count}</td>
+
+                  <td className='govuk-table__cell'>
+                    <Link
+                      className='govuk-link'
+                      onClick={(e) => onAction(e, actionText, contact)}
+                    >
+                      {actionText}
+                    </Link>
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

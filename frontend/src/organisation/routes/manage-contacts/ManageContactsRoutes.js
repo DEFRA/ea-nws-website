@@ -8,9 +8,9 @@ import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/Edi
 import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/EditContactKeywordsPage'
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
-import ViewContactsDashboardPage from '../../pages/manage-contact/view-contact/contacts-dashboard/ViewContactsDashboardPage'
 import ContactInformationPage from '../../pages/manage-contact/view-contact/contacts-information/ContactInformationPage'
 import LinkedLocationsPage from '../../pages/manage-contact/view-contact/contacts-information/LinkedLocationsPage'
+import ViewUsersDashboardPage from '../../pages/manage-contact/view-contact/users-dashboard/ViewUsersDashboardPage'
 
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
@@ -63,7 +63,7 @@ const orgManageContactsRoutes = [
   // View
   {
     path: orgManageContactsUrls.view.dashboard,
-    component: <ViewContactsDashboardPage />
+    component: <ViewUsersDashboardPage />
   },
   {
     path: orgManageContactsUrls.view.viewContact,

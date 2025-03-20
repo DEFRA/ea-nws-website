@@ -60,8 +60,8 @@ export default function FullscreenMap ({
   const [mapLocations, setMapLocations] = useState([])
 
   useEffect(() => {
-    loadMap()
-  }, [])
+    loading && loadMap()
+  }, [loading])
   const loadMap = async () => {
     // load all locations user is connected to onto map
     const locationsCollection = []
@@ -131,13 +131,12 @@ export default function FullscreenMap ({
 
   const FitBounds = () => {
     const map = useMap()
-
-    useEffect(() => {
       if (bounds) {
         map.fitBounds(bounds)
       }
-    }, [bounds])
   }
+
+  const fitBounds = useMemo(() => (<FitBounds />), [bounds])
 
   const ZoomTracker = () => {
     const map = useMapEvents({
@@ -152,8 +151,8 @@ export default function FullscreenMap ({
   // Leaflet Marker Icon
   const DefaultIcon = L.icon({
     iconUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    iconSize: [34, 40],
+    iconAnchor: [17, 20]
   })
   L.Marker.prototype.options.icon = DefaultIcon
 
@@ -400,7 +399,7 @@ export default function FullscreenMap ({
                     >
                       {osmTileLayer}
                       {apiKey && tileLayerWithHeader}
-                      <FitBounds />
+                      {fitBounds}
                       <ZoomControl position='bottomright' />
                       <ZoomTracker />
                       <ResetMapButton />

@@ -13,7 +13,7 @@ export default function Button ({
       <button
         type='submit'
         className={className}
-        onClick={async(event) => { setCursor('wait'); await onClick(event); setCursor('pointer') }}
+        onClick={async (event) => { setCursor('wait'); await onClick(event); setCursor('pointer') }}
         data-module='govuk-button'
         style={{ cursor }}
         disabled={cursor === 'wait'}

@@ -14,7 +14,7 @@ import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 
-export default function ContactMap ({ locations }) {
+export default function UserMap ({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)

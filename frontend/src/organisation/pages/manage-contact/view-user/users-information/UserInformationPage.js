@@ -8,10 +8,10 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
-import ContactHeader from './contact-information-components/ContactHeader'
-import ContactMap from './contact-information-components/ContactMap'
+import UserHeader from './user-information-components/UserHeader'
+import UserMap from './user-information-components/UserMap'
 
-export default function ContactInformationPage () {
+export default function UserInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
@@ -23,6 +23,7 @@ export default function ContactInformationPage () {
   )
   const keywords = contactKeywords ? JSON.parse(contactKeywords) : []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
+  const userType = currentContact?.role
   const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)
@@ -61,8 +62,9 @@ export default function ContactInformationPage () {
     <>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
-        <ContactHeader
+        <UserHeader
           contactName={contactName}
+          userType={userType}
           currentPage={orgManageContactsUrls.view.viewContact}
         />
         {/* details */}
@@ -218,7 +220,7 @@ export default function ContactInformationPage () {
 
           {/* other half - map */}
           <div className='govuk-grid-column-one-half'>
-            <ContactMap locations={locations} />
+            <UserMap locations={locations} />
 
             <div
               className='govuk-!-margin-top-4'

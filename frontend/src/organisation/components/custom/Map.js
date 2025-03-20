@@ -79,13 +79,13 @@ export default function Map ({
       if (currentLocationDataType === LocationDataType.BOUNDARY ||
         currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
         currentLocationDataType === LocationDataType.SHAPE_LINE) {
-          floodAreas = await getSurroundingFloodAreasFromShape(JSON.parse(locationGeometry.geoJson))
-        } else {
-          floodAreas = await getSurroundingFloodAreas(
-            latitude,
-            longitude
-          )
-        }
+        floodAreas = await getSurroundingFloodAreasFromShape(JSON.parse(locationGeometry.geoJson))
+      } else {
+        floodAreas = await getSurroundingFloodAreas(
+          latitude,
+          longitude
+        )
+      }
       const { alertArea, warningArea } = floodAreas
       setAlertArea(alertArea)
       setWarningArea(warningArea)

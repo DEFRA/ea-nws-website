@@ -14,7 +14,7 @@ const setAdditional = (additionals, id, value) => {
 }
 
 export const getAdditional = (additionals, id) => {
-  for (let i = 0; i < additionals.length; i++) {
+  for (let i = 0; i < additionals?.length; i++) {
     if (additionals[i].id === id) {
       return additionals[i].value?.s
     }

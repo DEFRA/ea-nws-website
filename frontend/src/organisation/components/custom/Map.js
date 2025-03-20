@@ -26,7 +26,8 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import {
   getBoundaries,
-  getSurroundingFloodAreas
+  getSurroundingFloodAreas,
+  getSurroundingFloodAreasFromShape
 } from '../../../common/services/WfsFloodDataService'
 import {
   createAlertPattern, createShapefilePattern,
@@ -74,14 +75,22 @@ export default function Map ({
   // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData () {
-      const { alertArea, warningArea } = await getSurroundingFloodAreas(
-        latitude,
-        longitude
-      )
+      let floodAreas
+      if (currentLocationDataType === LocationDataType.BOUNDARY ||
+        currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
+        currentLocationDataType === LocationDataType.SHAPE_LINE) {
+          floodAreas = await getSurroundingFloodAreasFromShape(JSON.parse(locationGeometry.geoJson))
+        } else {
+          floodAreas = await getSurroundingFloodAreas(
+            latitude,
+            longitude
+          )
+        }
+      const { alertArea, warningArea } = floodAreas
       setAlertArea(alertArea)
       setWarningArea(warningArea)
     }
-    fetchFloodAreaData()
+    type !== 'boundary' && fetchFloodAreaData()
   }, [])
 
   // reset the map to selected location

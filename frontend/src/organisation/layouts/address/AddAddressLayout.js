@@ -16,7 +16,8 @@ import { postCodeValidation } from '../../../common/services/validations/PostCod
 
 export default function AddAddressLayout ({
   navigateToNextPage,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  navigateToConfirmPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -51,7 +52,7 @@ export default function AddAddressLayout ({
           )
           if (address.length === 1) {
             dispatch(setOrganizationAddress(address[0].address))
-            navigate('/organisation/sign-up/address-confirm')
+            navigateToConfirmPage()
             return // Ensure none of the following code is executed
           } else {
             // Multiple addresses with buildingNum returned, take them to pagination to confirm

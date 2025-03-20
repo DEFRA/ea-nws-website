@@ -17,9 +17,9 @@ import { infoRoutes } from './organisation/routes/info/InfoRoutes'
 import { orgManageContactsRoutes } from './organisation/routes/manage-contacts/ManageContactsRoutes'
 import { orgManageKeywordsRoutes } from './organisation/routes/manage-keywords/ManageKeywordsRoutes'
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
+import { orgSignUpRoutes } from './organisation/routes/sign-up/SignUpRoutes'
 
 import privateBetaRoutes from './common/routes/private-beta/PrivateBetaRoutes'
-import orgSignupRoutes from './organisation/routes/sign-up/SignUpRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -32,7 +32,7 @@ export const routes = [
   ...signinRoutes,
   ...citizenSignupRoutes,
   ...footerRoutes,
-  ...orgSignupRoutes,
+  ...orgSignUpRoutes,
   ...orgFooterRoutes,
   ...infoRoutes,
   ...privateBetaRoutes

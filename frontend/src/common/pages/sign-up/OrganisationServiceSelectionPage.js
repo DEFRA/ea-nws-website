@@ -103,7 +103,7 @@ export default function OrganisationServiceSelectionPage () {
                   </div>
                   <div className='org-service-selection-footer govuk-!-padding-left-4'>
                     <Button
-                      text='Instant sign up'
+                      text='Apply (approval takes 3 to 5 days)'
                       className='govuk-button govuk-!-margin-bottom-1 '
                       onClick={(event) => { event.preventDefault(); navigate('/signup/organisation-service-confirm') }}
                     />

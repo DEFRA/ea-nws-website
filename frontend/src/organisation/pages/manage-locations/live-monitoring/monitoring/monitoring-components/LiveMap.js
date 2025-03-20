@@ -166,7 +166,7 @@ export default function LiveMap ({
         // loop through live alerts - loop through all locations to find affected locations
         for (const liveAlert of liveAlertsData?.alerts) {
           const TA_CODE = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
             'TA_CODE'
           )
           const severity = liveAlert.type

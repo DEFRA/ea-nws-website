@@ -20,7 +20,8 @@ export default function LocationNotInFloodAreaPage () {
     navigate(-1)
   }
 
-  const onSkipLink = async () => {
+  const onSkipLink = async (e) => {
+    e.preventDefault()
     navigate(orgManageLocationsUrls.add.linkLocationToContacts)
   }
 
@@ -127,7 +128,7 @@ export default function LocationNotInFloodAreaPage () {
             />
             &nbsp; &nbsp;
             <Link
-              onClick={() => onSkipLink()}
+              onClick={(e) => {onSkipLink(e)}}
               className='govuk-link inline-link'
             >
               I'll do this later

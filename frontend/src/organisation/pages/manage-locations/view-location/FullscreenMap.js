@@ -24,7 +24,8 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
 import {
   getFloodAreas,
-  getFloodAreasFromShape
+  getFloodAreasFromShape,
+  getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
 import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
 
@@ -47,19 +48,20 @@ export default function FullscreenMap ({
   const [showLocationsWithinFloodAreas, setShowLocationsWithinFloodAreas] =
     useState(true)
   const [showLocationsOutsideFloodAreas, setShowLocationsOutsideFloodAreas] =
-    useState(false)
+    useState(true)
   const [showOnlyFilteredLocations, setShowOnlyFilteredLocations] =
     useState(true)
 
   const [centre, setCentre] = useState(null)
   const [bounds, setBounds] = useState(null)
-  const [warningAreas, setWarningArea] = useState(null)
-  const [alertAreas, setAlertArea] = useState(null)
+  const [warningAreas, setWarningArea] = useState([])
+  const [alertAreas, setAlertArea] = useState([])
   const [loading, setLoading] = useState(true)
+  const [mapLocations, setMapLocations] = useState([])
 
   useEffect(() => {
-    loadMap()
-  }, [])
+    loading && loadMap()
+  }, [loading])
   const loadMap = async () => {
     // load all locations user is connected to onto map
     const locationsCollection = []
@@ -99,9 +101,15 @@ export default function FullscreenMap ({
 
         locationsCollection.push(feature)
       }
+      setMapLocations(locations)
 
       // fit map to all locations
       if (locationsCollection && locationsCollection.length > 0) {
+        for (const location of locationsCollection) {
+          const { alertArea, warningArea } = await getSurroundingFloodAreasFromShape(location)
+          setAlertArea(...alertAreas, alertArea)
+          setWarningArea(...warningAreas, warningArea)
+        }
         const geoJsonFeatureCollection =
           turf.featureCollection(locationsCollection)
 
@@ -123,13 +131,12 @@ export default function FullscreenMap ({
 
   const FitBounds = () => {
     const map = useMap()
-
-    useEffect(() => {
       if (bounds) {
         map.fitBounds(bounds)
       }
-    }, [bounds])
   }
+
+  const fitBounds = useMemo(() => (<FitBounds />), [bounds])
 
   const ZoomTracker = () => {
     const map = useMapEvents({
@@ -144,8 +151,8 @@ export default function FullscreenMap ({
   // Leaflet Marker Icon
   const DefaultIcon = L.icon({
     iconUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    iconSize: [34, 40],
+    iconAnchor: [17, 20]
   })
   L.Marker.prototype.options.icon = DefaultIcon
 
@@ -208,19 +215,6 @@ export default function FullscreenMap ({
     ),
     []
   )
-
-  useEffect(() => {
-    if (zoomLevel < 12) {
-      if (warningAreaRef.current) {
-        warningAreaRef.current.clearLayers()
-      }
-      if (alertAreaRef.current) {
-        alertAreaRef.current.clearLayers()
-      }
-      setAlertArea(null)
-      setWarningArea(null)
-    }
-  }, [zoomLevel])
 
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
@@ -405,13 +399,13 @@ export default function FullscreenMap ({
                     >
                       {osmTileLayer}
                       {apiKey && tileLayerWithHeader}
-                      <FitBounds />
+                      {fitBounds}
                       <ZoomControl position='bottomright' />
                       <ZoomTracker />
                       <ResetMapButton />
                       <ExitMapButton />
-                      {locations.length > 0 &&
-                        locations
+                      {mapLocations.length > 0 &&
+                        mapLocations
                           .filter(isInFilteredLocations)
                           .filter(isWithinFloodFilter)
                           .map((location, index) => (
@@ -503,8 +497,8 @@ export default function FullscreenMap ({
                       }
                       locations={
                         showOnlyFilteredLocations
-                          ? filteredLocations
-                          : locations
+                          ? mapLocations.filter(isInFilteredLocations)
+                          : mapLocations
                       }
                     />
                   </div>

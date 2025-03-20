@@ -184,12 +184,13 @@ const removeLocationFromKeywords = async (orgId, locationID) => {
   const arrExists = await checkKeyExists(key)
   if (arrExists) {
     const keywordArr = await getJsonData(key)
-    keywordArr.forEach((keyword) => {
-      let linkedIds = keyword.linked_ids
-      linkedIds = linkedIds.filter((id) => id !== locationID)
-      keyword.linked_ids = linkedIds
-    })
-    await setJsonData(key, keywordArr)
+    const updatedKeywordArr = keywordArr
+      .map((keyword) => {
+        keyword.linked_ids = keyword.linked_ids.filter((id) => id !== locationID)
+        return keyword
+      })
+      .filter((keyword) => keyword.linked_ids.length > 0)
+    await setJsonData(key, updatedKeywordArr)
   }
 }
 
@@ -307,7 +308,6 @@ const listLocationNames = async (orgId) => {
       location.additionals.forEach((additional) => {
         if (additional.id === 'locationName') {
           locationNames.push(additional.value.s)
-          
         }
       })
     })
@@ -423,12 +423,13 @@ const removeContactFromKeywords = async (orgId, contactID) => {
   const arrExists = await checkKeyExists(key)
   if (arrExists) {
     const keywordArr = await getJsonData(key)
-    keywordArr.forEach((keyword) => {
-      let linkedIds = keyword.linked_ids
-      linkedIds = linkedIds.filter((id) => id !== contactID)
-      keyword.linked_ids = linkedIds
-    })
-    await setJsonData(key, keywordArr)
+    const updatedKeywordArr = keywordArr
+      .map((keyword) => {
+        keyword.linked_ids = keyword.linked_ids.filter((id) => id !== contactID)
+        return keyword
+      })
+      .filter((keyword) => keyword.linked_ids.length > 0)
+    await setJsonData(key, updatedKeywordArr)
   }
 }
 

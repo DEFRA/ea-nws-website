@@ -17,6 +17,7 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationInformationPage () {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const webLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(currentLocation)))
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const [showMap, setShowMap] = useState(false)
   const keywords = additionalData.keywords
@@ -51,7 +52,7 @@ export default function LocationInformationPage () {
       return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
     }
 
-    return formatShapeArea(Math.round(area(currentLocation.geometry) / 1000))
+    return formatShapeArea(Math.round(area(webLocation.geometry.geoJson) / 1000))
   }
 
   const LocationData = () => {
@@ -426,33 +427,34 @@ export default function LocationInformationPage () {
             )}
           </div>
           {/* other half - map */}
-          <div className='govuk-grid-column-one-half'>
-            <Map showMapControls={false} zoomLevel={14} />
-            <FloodWarningKey />
-            <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-              This is not a live flood map
-            </span>
-            <span className='govuk-caption-m govuk-!-font-size-16'>
-              it shows fixed areas that we provide flood warnings and alerts
-              for
-            </span>
-            <div
-              className=' govuk-!-margin-top-4'
-              style={{ display: 'flex', marginLeft: '-0.5rem' }}
-            >
-              <img src={locationPin} alt='Location pin icon' />
-              <Link className='govuk-link' onClick={openMap}>
-                Open map
-              </Link>
-            </div>
-            {showMap && (
-              <FullscreenMap
-                showMap={showMap}
-                setShowMap={setShowMap}
-                locations={[geoSafeToWebLocation(currentLocation)]}
-              />
-            )}
-          </div>
+              <div className='govuk-grid-column-one-half'>
+                <Map showMapControls={false} zoomLevel={14} />
+                <FloodWarningKey />
+                <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                  This is not a live flood map
+                </span>
+                <span className='govuk-caption-m govuk-!-font-size-16'>
+                  it shows fixed areas that we provide flood warnings and alerts
+                  for
+                </span>
+                <div
+                  className=' govuk-!-margin-top-4'
+                  style={{ display: 'flex', marginLeft: '-0.5rem' }}
+                >
+                  <img src={locationPin} alt='Location pin icon' />
+                  <Link className='govuk-link' onClick={openMap}>
+                    Open map
+                  </Link>
+                </div>
+                {showMap && (
+                  <FullscreenMap
+                    showMap={showMap}
+                    setShowMap={setShowMap}
+                    locations={[webLocation]}
+                    filteredLocations={[webLocation]}
+                  />
+                )}
+              </div>
         </div>
       </main>
     </>

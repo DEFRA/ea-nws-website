@@ -20,6 +20,7 @@ export default function ContactsTable ({
   const dispatch = useDispatch()
 
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
+  const [userTypeSort, setUserTypeSort] = useState('none')
   const [contactNameSort, setContactNameSort] = useState('none')
   const [jobTitleSort, setJobTitleSort] = useState('none')
   const [emailSort, setEmailSort] = useState('none')
@@ -27,6 +28,7 @@ export default function ContactsTable ({
   const [messagesReceivedSort, setMessagesReceivedSort] = useState('none')
 
   useEffect(() => {
+    setUserTypeSort('none')
     setContactNameSort('none')
     setJobTitleSort('none')
     setEmailSort('none')
@@ -102,7 +104,10 @@ export default function ContactsTable ({
   }
 
   const sortMessagesReceived = () => {
-    if (messagesReceivedSort === 'none' || messagesReceivedSort === 'descending') {
+    if (
+      messagesReceivedSort === 'none' ||
+      messagesReceivedSort === 'descending'
+    ) {
       setMessagesReceivedSort('ascending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
@@ -165,11 +170,11 @@ export default function ContactsTable ({
         {filteredContacts.length !== contacts.length ? ' of ' : ''}
         {contacts.length}
         {contactPrefix ? ' ' + contactPrefix : ''}
-        {contacts.length === 1 ? ' contact' : ' contacts'}{' '}
+        {contacts.length === 1 ? ' user' : ' users'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedContacts.length}{' '}
-          {selectedContacts.length === 1 ? 'contact' : 'contacts'} selected{' '}
+          {selectedContacts.length === 1 ? 'user' : 'users'} selected{' '}
         </span>
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>
@@ -190,6 +195,23 @@ export default function ContactsTable ({
                   <label className='govuk-label govuk-checkboxes__label' />
                 </div>
               </div>
+            </th>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={userTypeSort}
+            >
+              <button
+                type='button'
+                onClick={() =>
+                  sortData(
+                    userTypeSort,
+                    setUserTypeSort,
+                    (contact) => contact.userType || ''
+                  )}
+              >
+                User type
+              </button>
             </th>
             <th
               scope='col'
@@ -251,9 +273,7 @@ export default function ContactsTable ({
               aria-sort={messagesReceivedSort}
             >
               <button type='button' onClick={() => sortMessagesReceived()}>
-                Messages received in
-                <br /> last 2 years for current
-                <br /> linked locations
+                Messages received
               </button>
             </th>
             <th scope='col' className='govuk-table__header' />
@@ -278,6 +298,7 @@ export default function ContactsTable ({
                   </div>
                 </div>
               </th>
+              <td className='govuk-table__cell'>{contact.userType}</td>
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
@@ -294,11 +315,12 @@ export default function ContactsTable ({
               <td className='govuk-table__cell'>
                 {contact.linked_locations?.length}
               </td>
+              <td className='govuk-table__cell'>{contact.message_count}</td>
               <td className='govuk-table__cell'>
-                {contact.message_count}
-              </td>
-              <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, actionText, contact)}>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => onAction(e, actionText, contact)}
+                >
                   {actionText}
                 </Link>
               </td>

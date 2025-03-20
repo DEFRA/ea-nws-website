@@ -36,20 +36,22 @@ export default function SearchFilter ({
   ]
 
   const keywords = [
-    ...new Set(
-      contacts.flatMap(contact => contact.additionals.keywords)
-    )
+    ...new Set(contacts.flatMap((contact) => contact.additionals.keywords))
   ]
 
-  const linkedLocations = [
-    ...new Set(['No', 'Yes'])
-  ]
+  const linkedLocations = [...new Set(['No', 'Yes'])]
 
   // search filters visibility
   const [contactNameVisible, setContactNameVisible] = useState(false)
-  const [jobTitleVisible, setJobTitleVisible] = useState(selectedJobTitleFilters.length > 0)
-  const [keywordVisible, setKeywordVisible] = useState(selectedKeywordFilters.length > 0)
-  const [linkedVisible, setLinkedVisible] = useState(selectedLinkedFilters.length > 0)
+  const [jobTitleVisible, setJobTitleVisible] = useState(
+    selectedJobTitleFilters.length > 0
+  )
+  const [keywordVisible, setKeywordVisible] = useState(
+    selectedKeywordFilters.length > 0
+  )
+  const [linkedVisible, setLinkedVisible] = useState(
+    selectedLinkedFilters.length > 0
+  )
 
   // handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -83,26 +85,27 @@ export default function SearchFilter ({
     // Apply job title filter
     if (selectedJobTitleFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
-        selectedJobTitleFilters.includes(
-          contact.additionals.jobTitle
-        )
+        selectedJobTitleFilters.includes(contact.additionals.jobTitle)
       )
     }
 
     // Apply keyword filter
     if (selectedKeywordFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
-        selectedKeywordFilters.some(
-          keyword => contact.additionals?.keywords.includes(keyword)
+        selectedKeywordFilters.some((keyword) =>
+          contact.additionals?.keywords.includes(keyword)
         )
       )
     }
 
     // Apply linked locations filter
     if (selectedLinkedFilters.length > 0) {
-      filteredContacts = filteredContacts.filter((contact) =>
-        (selectedLinkedFilters.includes('Yes') && contact.linked_locations.length > 0) ||
-        (selectedLinkedFilters.includes('No') && contact.linked_locations.length === 0)
+      filteredContacts = filteredContacts.filter(
+        (contact) =>
+          (selectedLinkedFilters.includes('Yes') &&
+            contact.linked_locations.length > 0) ||
+          (selectedLinkedFilters.includes('No') &&
+            contact.linked_locations.length === 0)
       )
     }
 
@@ -132,10 +135,7 @@ export default function SearchFilter ({
           icon={contactNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
-        <label
-          className='govuk-label'
-          style={{ color: '#1d70b8' }}
-        >
+        <label className='govuk-label' style={{ color: '#1d70b8' }}>
           Contact name
         </label>
       </div>
@@ -178,14 +178,11 @@ export default function SearchFilter ({
         >
           <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
           &nbsp;
-          <label
-            className='govuk-label'
-            style={{ color: '#1d70b8' }}
-          >
+          <label className='govuk-label' style={{ color: '#1d70b8' }}>
             {filterTitle}
           </label>
         </div>
-        {(visible) && (
+        {visible && (
           <div className='govuk-checkboxes govuk-checkboxes--small contacts-select-filter'>
             {filterType.map((option) => (
               <CheckBox
@@ -219,9 +216,12 @@ export default function SearchFilter ({
                   {filter}&nbsp;
                 </label>
                 <FontAwesomeIcon
-                  icon={faXmark} className='contacts-selected-filter-icon'
+                  icon={faXmark}
+                  className='contacts-selected-filter-icon'
                   onClick={() => {
-                    setFilterArray(filterArray.filter((item) => item !== filter))
+                    setFilterArray(
+                      filterArray.filter((item) => item !== filter)
+                    )
                   }}
                 />
               </div>

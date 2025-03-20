@@ -427,34 +427,34 @@ export default function LocationInformationPage () {
             )}
           </div>
           {/* other half - map */}
-              <div className='govuk-grid-column-one-half'>
-                <Map showMapControls={false} zoomLevel={14} />
-                <FloodWarningKey />
-                <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                  This is not a live flood map
-                </span>
-                <span className='govuk-caption-m govuk-!-font-size-16'>
-                  it shows fixed areas that we provide flood warnings and alerts
-                  for
-                </span>
-                <div
-                  className=' govuk-!-margin-top-4'
-                  style={{ display: 'flex', marginLeft: '-0.5rem' }}
-                >
-                  <img src={locationPin} alt='Location pin icon' />
-                  <Link className='govuk-link' onClick={openMap}>
-                    Open map
-                  </Link>
-                </div>
-                {showMap && (
-                  <FullscreenMap
-                    showMap={showMap}
-                    setShowMap={setShowMap}
-                    locations={[webLocation]}
-                    filteredLocations={[webLocation]}
-                  />
-                )}
-              </div>
+          <div className='govuk-grid-column-one-half'>
+            <Map showMapControls={false} zoomLevel={14} />
+            <FloodWarningKey />
+            <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+              This is not a live flood map
+            </span>
+            <span className='govuk-caption-m govuk-!-font-size-16'>
+              it shows fixed areas that we provide flood warnings and alerts
+              for
+            </span>
+            <div
+              className=' govuk-!-margin-top-4'
+              style={{ display: 'flex', marginLeft: '-0.5rem' }}
+            >
+              <img src={locationPin} alt='Location pin icon' />
+              <Link className='govuk-link' onClick={openMap}>
+                Open map
+              </Link>
+            </div>
+            {showMap && (
+              <FullscreenMap
+                showMap={showMap}
+                setShowMap={setShowMap}
+                locations={[webLocation]}
+                filteredLocations={[webLocation]}
+              />
+            )}
+          </div>
         </div>
       </main>
     </>

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter ({
+export default function SearchFilter({
   // TODO: Combine filter values into a single object
   contacts,
   setFilteredContacts,
@@ -20,6 +20,8 @@ export default function SearchFilter ({
   setSelectedFilters,
   contactNameFilter,
   setContactNameFilter,
+  selectedUserTypeFilters,
+  setSelectedUserTypeFilters,
   selectedJobTitleFilters,
   setSelectedJobTitleFilters,
   selectedKeywordFilters,
@@ -27,6 +29,7 @@ export default function SearchFilter ({
   selectedLinkedFilters,
   setSelectedLinkedFilters
 }) {
+  const userTypes = ['Admin', ' Contact']
   const jobTitles = [
     ...new Set(
       contacts
@@ -43,6 +46,9 @@ export default function SearchFilter ({
 
   // search filters visibility
   const [contactNameVisible, setContactNameVisible] = useState(false)
+  const [userTypeVisible, setUserTypeVisible] = useState(
+    selectedUserTypeFilters > 0
+  )
   const [jobTitleVisible, setJobTitleVisible] = useState(
     selectedJobTitleFilters.length > 0
   )
@@ -82,6 +88,12 @@ export default function SearchFilter ({
       )
     }
 
+    // Apply user type filter
+    if (selectedUserTypeFilters.length > 0) {
+      filteredContacts = filteredContacts.filter((contact) =>
+        selectedUserTypeFilters.includes(contact.role)
+      )
+    }
     // Apply job title filter
     if (selectedJobTitleFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
@@ -118,6 +130,7 @@ export default function SearchFilter ({
     setFilteredContacts(contacts)
     setSelectedFilters([])
     setContactNameFilter([])
+    setSelectedUserTypeFilters([])
     setSelectedJobTitleFilters([])
     setSelectedKeywordFilters([])
     setSelectedLinkedFilters([])
@@ -136,7 +149,7 @@ export default function SearchFilter ({
           size='lg'
         />
         <label className='govuk-label' style={{ color: '#1d70b8' }}>
-          Contact name
+          User name
         </label>
       </div>
       {(contactNameVisible || contactNameFilter.length > 0) && (
@@ -255,6 +268,11 @@ export default function SearchFilter ({
               </Link>
             </div>
             {selectedFilterContents(
+              'User type',
+              selectedUserTypeFilters,
+              setSelectedUserTypeFilters
+            )}
+            {selectedFilterContents(
               'Job title',
               selectedJobTitleFilters,
               setSelectedJobTitleFilters
@@ -282,6 +300,15 @@ export default function SearchFilter ({
 
         {/* Filters */}
         {contactNameSearchFilter}
+
+        {otherFilter(
+          'User type',
+          userTypes,
+          selectedUserTypeFilters,
+          setSelectedUserTypeFilters,
+          userTypeVisible,
+          setUserTypeVisible
+        )}
 
         {otherFilter(
           'Job title',

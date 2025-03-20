@@ -5,7 +5,7 @@ import { setOrgCurrentContact } from '../../../common/redux/userSlice'
 import { webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function ContactsTable ({
+export default function ContactsTable({
   contacts,
   displayedContacts,
   filteredContacts,
@@ -207,8 +207,9 @@ export default function ContactsTable ({
                   sortData(
                     userTypeSort,
                     setUserTypeSort,
-                    (contact) => contact.userType || ''
-                  )}
+                    (contact) => contact.role || ''
+                  )
+                }
               >
                 User type
               </button>
@@ -223,7 +224,8 @@ export default function ContactsTable ({
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
                     return contact.firstname + (contact.lastname || '')
-                  })}
+                  })
+                }
               >
                 Name
               </button>
@@ -238,7 +240,8 @@ export default function ContactsTable ({
                 onClick={() =>
                   sortData(jobTitleSort, setJobTitleSort, (contact) => {
                     return contact.additionals.jobTitle
-                  })}
+                  })
+                }
               >
                 Job title
               </button>
@@ -253,7 +256,8 @@ export default function ContactsTable ({
                 onClick={() =>
                   sortData(emailSort, setEmailSort, (contact) => {
                     return contact.emails[0]
-                  })}
+                  })
+                }
               >
                 Email
               </button>
@@ -298,7 +302,7 @@ export default function ContactsTable ({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>{contact.userType}</td>
+              <td className='govuk-table__cell'>{contact.role}</td>
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'

@@ -33,7 +33,7 @@ import { geoSafeToWebLocation } from '../../../../../../common/services/formatte
 import { createLiveMapShapePattern } from '../../../../../components/custom/FloodAreaPatterns'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LiveMap ({
+export default function LiveMap({
   showSevereLocations,
   showWarningLocations,
   showAlertLocations,
@@ -95,23 +95,41 @@ export default function LiveMap ({
     setShapes([])
 
     // get orgs locations
+    console.log('Starting loadMap...')
+    const startTime = performance.now() // Overall start time
+
+    let locationsStart = performance.now()
     const { data: locationsData, errorMessage } = await backendCall(
       { orgId },
       'api/elasticache/list_locations',
       navigate
     )
+    console.log(
+      `loacations loaded: ${(
+        (performance.now() - locationsStart) /
+        1000
+      ).toFixed(2)}s`
+    )
 
+    let convertStart = performance.now()
     const locations = []
     if (locationsData && !errorMessage) {
       locationsData.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
       })
     }
+    console.log(
+      `locations converted: ${(
+        (performance.now() - convertStart) /
+        1000
+      ).toFixed(2)}s`
+    )
 
     // loop through locations and convert points(xy coords locations) to geojson point to calculate bbox and compare
     // if a location is a shape or boundary, save the geojson
     const locationsCollection = []
     if (locations.length > 0) {
+      let bboxStart = performance.now()
       locations.forEach((location) => {
         let feature
         const locationType = location.additionals.other.location_data_type
@@ -125,7 +143,6 @@ export default function LiveMap ({
         } else {
           feature = location.geometry.geoJson
         }
-
         locationsCollection.push(feature)
       })
 
@@ -134,6 +151,11 @@ export default function LiveMap ({
         turf.featureCollection(locationsCollection)
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
+      console.log(
+        `bbox calculated: ${((performance.now() - bboxStart) / 1000).toFixed(
+          2
+        )}s`
+      )
 
       const { data: partnerId } = await backendCall(
         'data',
@@ -157,26 +179,53 @@ export default function LiveMap ({
       }
 
       // load live alerts
+
+      let livealertsstart = performance.now()
       const { data: liveAlertsData, errorMessage } = await backendCall(
         { options },
         'api/alert/list',
         navigate
       )
+      console.log(
+        `live alerts loaded: ${(
+          (performance.now() - livealertsstart) /
+          1000
+        ).toFixed(2)}s`
+      )
+
       if (!errorMessage) {
+        let processingAlerts = performance.now()
         // loop through live alerts - loop through all locations to find affected locations
-        for (const liveAlert of liveAlertsData?.alerts) {
+        const alertPromises = liveAlertsData?.alerts.map(async (liveAlert) => {
           const TA_CODE = getAdditional(
             liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
             'TA_CODE'
           )
           const severity = liveAlert.type
           const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
-          const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
-          for (const location of locations) {
+          return getFloodAreaByTaCode(TA_CODE).then((floodArea) => ({
+            floodArea,
+            severity,
+            updatedTime
+          }))
+        })
+
+        const alertResults = await Promise.all(alertPromises)
+
+        for (const { floodArea, severity, updatedTime } of alertResults) {
+          const locationPromises = locations.map((location) =>
             processLocation(location, floodArea, severity, updatedTime)
-          }
+          )
+          await Promise.all(locationPromises)
         }
+
+        console.log(
+          `processed alerts: ${(
+            (performance.now() - processingAlerts) /
+            1000
+          ).toFixed(2)}s`
+        )
       }
     } else {
       setAccountHasLocations(false)
@@ -186,68 +235,60 @@ export default function LiveMap ({
   const processLocation = (location, floodArea, severity, updatedTime) => {
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type
+    let locationIntersectsWithFloodArea = turf.booleanIntersects(
+      locationType === LocationDataType.X_AND_Y_COORDS
+        ? convertDataToGeoJsonFeature('Point', [
+            coordinates.longitude,
+            coordinates.latitude
+          ])
+        : geometry.geoJson,
 
-    // add required data to flood area point
-    const createPointWithProperties = (coords) => {
-      const point = convertDataToGeoJsonFeature('Point', coords)
-      const floodData = {
-        type: severity,
-        name: floodArea.properties.TA_Name,
-        code: floodArea.properties.TA_CODE,
-        updatedTime
-      }
+      floodArea.geometry
+    )
 
-      return {
-        ...point,
-        properties: {
-          ...point.properties,
-          locationData: location,
-          floodData
-        }
-      }
-    }
+    if (!locationIntersectsWithFloodArea) return
 
-    // for xy coord locations
-    const handleXYCoordinates = () => {
-      const point = createPointWithProperties([
-        coordinates.longitude,
-        coordinates.latitude
-      ])
-
-      if (turf.booleanIntersects(point, floodArea.geometry)) {
-        // for xycoord locations, we need to avoid overlapping warning icons on map
-        point.geometry.coordinates[0] = adjustCoords(
-          severity,
-          point.geometry.coordinates[0]
-        )
-
-        processFloodArea(severity, point, floodArea)
-      }
-    }
-
-    // for shapes or boundary's locations
-    const handleGeoJsonLocation = () => {
-      if (turf.booleanIntersects(geometry.geoJson, floodArea.geometry)) {
-        const point = createPointWithProperties([
-          floodArea.properties.longitude.replace(',', '.'),
-          floodArea.properties.latitude.replace(',', '.')
-        ])
-
-        geometry.geoJson.properties = {
-          ...geometry.geoJson.properties,
-          isShape: true
-        }
-
-        setShapes((prevShape) => [...prevShape, geometry.geoJson])
-        processFloodArea(severity, point, floodArea)
+    // create point with required data
+    // use exact location for x and y coord locations
+    // use the lat, lng given for the flood area for shape locations
+    const point = {
+      ...convertDataToGeoJsonFeature('Point', [
+        locationType === LocationDataType.X_AND_Y_COORDS
+          ? coordinates.longitude
+          : floodArea.properties.longitude.replace(',', '.'),
+        locationType === LocationDataType.X_AND_Y_COORDS
+          ? coordinates.latitude
+          : floodArea.properties.latitude.replace(',', '.')
+      ]),
+      properties: {
+        floodData: {
+          type: severity,
+          name: floodArea.properties.TA_Name,
+          code: floodArea.properties.TA_CODE,
+          updatedTime
+        },
+        locationData: location
       }
     }
 
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
-      handleXYCoordinates()
+      point.geometry.coordinates[0] = adjustCoords(
+        severity,
+        point.geometry.coordinates[0]
+      )
     } else {
-      handleGeoJsonLocation()
+      geometry.geoJson.properties = {
+        ...geometry.geoJson.properties,
+        isShape: true
+      }
+      setShapes((prevShape) => [...prevShape, geometry.geoJson])
     }
+
+    console.log('location affected', location.id)
+    console.log('flood area geojson', JSON.stringify(floodArea.properties))
+    console.log('flood area geojson', JSON.stringify(floodArea.geometry))
+
+    processFloodArea(severity, point, floodArea)
   }
 
   const processFloodArea = (severity, point, floodArea) => {
@@ -339,7 +380,7 @@ export default function LiveMap ({
     iconAnchor: [12, 41]
   }) */
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -393,7 +434,7 @@ export default function LiveMap ({
     () => (
       <TileLayer
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        attribution='© OpenStreetMap contributors'
+        attribution='� OpenStreetMap contributors'
       />
     ),
     []
@@ -599,7 +640,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(alertPoint.properties)}
+                            viewFloodInformationData(alertPoint.properties)
+                          }
                         >
                           {
                             alertPoint.properties.locationData.additionals
@@ -637,7 +679,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(warningPoint.properties)}
+                            viewFloodInformationData(warningPoint.properties)
+                          }
                         >
                           {
                             warningPoint.properties.locationData.additionals
@@ -675,7 +718,8 @@ export default function LiveMap ({
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(severePoint.properties)}
+                            viewFloodInformationData(severePoint.properties)
+                          }
                         >
                           {
                             severePoint.properties.locationData.additionals
@@ -753,7 +797,8 @@ export default function LiveMap ({
                         />
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(location.properties)}
+                            viewFloodInformationData(location.properties)
+                          }
                           style={{ flex: 1 }}
                         >
                           {location.properties.floodData.name}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function AdminInviteNotWorkingPage() {
+export default function AdminInviteNotWorkingPage () {
   return (
     <>
       <main className='govuk-main-wrapper'>

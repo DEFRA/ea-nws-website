@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AdminInvitePage() {
+export default function AdminInvitePage () {
   const navigate = useNavigate()
 
   return (

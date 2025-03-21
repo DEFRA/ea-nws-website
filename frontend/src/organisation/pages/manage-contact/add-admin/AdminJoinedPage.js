@@ -77,6 +77,7 @@ export default function AdminJoinedPage() {
               You've now joined as admin for your organisation and can manage
               the following.
             </h1>
+
             <Accordion id='admin-accordion' sections={infoSections} />
 
             <div

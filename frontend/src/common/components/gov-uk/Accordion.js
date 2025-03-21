@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function Accordion({ sections = [], id = 'accordion-default' }) {
+export default function Accordion ({ sections = [], id = 'accordion-default' }) {
   const [openSections, setOpenSections] = useState(sections.map(() => false))
 
   const toggleSection = (index) => {

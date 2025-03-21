@@ -1,3 +1,6 @@
+import AdminInviteNotWorkingPage from '../../pages/manage-contact/add-admin/AdminInviteNotWorkingPage'
+import AdminInvitePage from '../../pages/manage-contact/add-admin/AdminInvitePage'
+import AdminJoinedPage from '../../pages/manage-contact/add-admin/AdminJoinedPage'
 import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
 import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddContactKeywordsPage'
@@ -15,6 +18,7 @@ import LinkedLocationsPage from '../../pages/manage-contact/view-contact/contact
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
 const urlManageContactsEdit = urlManageContactsOrg + '/edit'
+const urlManageContactsAdmin = urlManageContactsOrg + '/admin'
 
 const orgManageContactsUrls = {
   add: {
@@ -35,7 +39,12 @@ const orgManageContactsUrls = {
     channels: urlManageContactsEdit + '/channels',
     notes: urlManageContactsEdit + '/notes'
   },
-  delete: urlManageContactsOrg + '/delete-contact'
+  delete: urlManageContactsOrg + '/delete-contact',
+  admin: {
+    invite: urlManageContactsAdmin + '/invite',
+    invalidInvite: urlManageContactsAdmin + '/invite-invalid',
+    joined: urlManageContactsAdmin + '/joined'
+  }
 }
 
 const orgManageContactsRoutes = [
@@ -94,7 +103,17 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.delete,
     component: <DeleteContactPage />
-  }
+  },
+  // Admin
+  {
+    path: orgManageContactsUrls.admin.invite,
+    component: <AdminInvitePage />
+  },
+  {
+    path: orgManageContactsUrls.admin.invalidInvite,
+    component: <AdminInviteNotWorkingPage />
+  },
+  { path: orgManageContactsUrls.admin.joined, component: <AdminJoinedPage /> }
 ]
 
 export { orgManageContactsRoutes, orgManageContactsUrls, urlManageContactsAdd }

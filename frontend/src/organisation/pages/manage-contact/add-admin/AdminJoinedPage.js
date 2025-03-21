@@ -7,7 +7,7 @@ import Radio from '../../../../common/components/gov-uk/Radio'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AdminJoinedPage() {
+export default function AdminJoinedPage () {
   const navigate = useNavigate()
   const [nextPage, setNextPage] = useState(null)
   const [errorText, setErrorText] = useState('')
@@ -100,16 +100,15 @@ export default function AdminJoinedPage() {
                     name='radios'
                     label='Check my profile and contact details'
                     onChange={() =>
-                      setNextPage(orgManageContactsUrls.view.viewContact)
-                    }
+                      setNextPage(orgManageContactsUrls.view.viewContact)}
                   />
                   <Radio
                     key='start'
                     name='radios'
                     label='Start using the service'
+                    hint='Check warnings, locations, users and reports'
                     onChange={() =>
-                      setNextPage(orgManageLocationsUrls.monitoring.view)
-                    }
+                      setNextPage(orgManageLocationsUrls.monitoring.view)}
                   />{' '}
                 </div>
               </fieldset>

@@ -14,7 +14,8 @@ export default function Radio ({
   conditional,
   conditionalQuestion,
   conditionalInput,
-  conditionalError
+  conditionalError,
+  hint
 }) {
   return (
     <>
@@ -24,9 +25,7 @@ export default function Radio ({
           <div className='govuk-radios govuk-radios--small'>{children}</div>
         )}
       >
-        <div
-          className='govuk-radios__item'
-        >
+        <div className='govuk-radios__item'>
           <input
             className='govuk-radios__input'
             type='radio'
@@ -41,6 +40,7 @@ export default function Radio ({
             htmlFor={'id' + label}
           >
             {label}
+            {hint && <div className='govuk-hint'>{hint}</div>}
           </label>
         </div>
         {conditional && (

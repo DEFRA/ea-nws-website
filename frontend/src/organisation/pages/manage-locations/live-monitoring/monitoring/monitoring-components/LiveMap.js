@@ -95,41 +95,24 @@ export default function LiveMap({
     setShapes([])
 
     // get orgs locations
-    console.log('Starting loadMap...')
-    const startTime = performance.now() // Overall start time
-
     let locationsStart = performance.now()
     const { data: locationsData, errorMessage } = await backendCall(
       { orgId },
       'api/elasticache/list_locations',
       navigate
     )
-    console.log(
-      `loacations loaded: ${(
-        (performance.now() - locationsStart) /
-        1000
-      ).toFixed(2)}s`
-    )
 
-    let convertStart = performance.now()
     const locations = []
     if (locationsData && !errorMessage) {
       locationsData.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
       })
     }
-    console.log(
-      `locations converted: ${(
-        (performance.now() - convertStart) /
-        1000
-      ).toFixed(2)}s`
-    )
 
     // loop through locations and convert points(xy coords locations) to geojson point to calculate bbox and compare
     // if a location is a shape or boundary, save the geojson
     const locationsCollection = []
     if (locations.length > 0) {
-      let bboxStart = performance.now()
       locations.forEach((location) => {
         let feature
         const locationType = location.additionals.other.location_data_type
@@ -151,11 +134,6 @@ export default function LiveMap({
         turf.featureCollection(locationsCollection)
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
-      console.log(
-        `bbox calculated: ${((performance.now() - bboxStart) / 1000).toFixed(
-          2
-        )}s`
-      )
 
       const { data: partnerId } = await backendCall(
         'data',
@@ -179,22 +157,13 @@ export default function LiveMap({
       }
 
       // load live alerts
-
-      let livealertsstart = performance.now()
       const { data: liveAlertsData, errorMessage } = await backendCall(
         { options },
         'api/alert/list',
         navigate
       )
-      console.log(
-        `live alerts loaded: ${(
-          (performance.now() - livealertsstart) /
-          1000
-        ).toFixed(2)}s`
-      )
 
       if (!errorMessage) {
-        let processingAlerts = performance.now()
         // loop through live alerts - loop through all locations to find affected locations
         const alertPromises = liveAlertsData?.alerts.map(async (liveAlert) => {
           const TA_CODE = getAdditional(
@@ -219,13 +188,6 @@ export default function LiveMap({
           )
           await Promise.all(locationPromises)
         }
-
-        console.log(
-          `processed alerts: ${(
-            (performance.now() - processingAlerts) /
-            1000
-          ).toFixed(2)}s`
-        )
       }
     } else {
       setAccountHasLocations(false)
@@ -283,10 +245,6 @@ export default function LiveMap({
       }
       setShapes((prevShape) => [...prevShape, geometry.geoJson])
     }
-
-    console.log('location affected', location.id)
-    console.log('flood area geojson', JSON.stringify(floodArea.properties))
-    console.log('flood area geojson', JSON.stringify(floodArea.geometry))
 
     processFloodArea(severity, point, floodArea)
   }

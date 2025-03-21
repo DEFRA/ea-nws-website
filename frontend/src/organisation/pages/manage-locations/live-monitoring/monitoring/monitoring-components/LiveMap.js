@@ -47,6 +47,9 @@ export default function LiveMap({
   const [loading, setLoading] = useState(true)
   const [zoomLevel, setZoomLevel] = useState(null)
 
+  //tracking locations affected
+  const [locationsAffected, setLocationsAffected] = useState([])
+
   // shapes and boundarys
   const [shapes, setShapes] = useState([])
   // Severe locations
@@ -70,6 +73,7 @@ export default function LiveMap({
 
   useEffect(() => {
     onFloodAreasUpdate({
+      locationsAffected: [...new Set(locationsAffected)].length,
       severeFloodAreasAmount: severeFloodAreas.length,
       warningFloodAreasAmount: warningFloodAreas.length,
       alertFloodAreasAmount: alertFloodAreas.length
@@ -93,9 +97,9 @@ export default function LiveMap({
     setAlertPoints([])
     setAlertFloodAreas([])
     setShapes([])
+    setLocationsAffected([])
 
     // get orgs locations
-    let locationsStart = performance.now()
     const { data: locationsData, errorMessage } = await backendCall(
       { orgId },
       'api/elasticache/list_locations',
@@ -209,6 +213,8 @@ export default function LiveMap({
     )
 
     if (!locationIntersectsWithFloodArea) return
+
+    setLocationsAffected((prevLoc) => [...prevLoc, location.id])
 
     // create point with required data
     // use exact location for x and y coord locations
@@ -522,7 +528,7 @@ export default function LiveMap({
   }
 
   // locations affected list under map when there are less than 20 affected locations
-  const locationsAffected = [...severePoints, ...warningPoints, ...alertPoints]
+  const totalAlerts = [...severePoints, ...warningPoints, ...alertPoints]
 
   const getLocationsAffectedFloodIcon = (alertLevel) => {
     switch (alertLevel) {
@@ -709,16 +715,16 @@ export default function LiveMap({
             ))}
           </MapContainer>
 
-          {locationsAffected.length > 0 && (
+          {totalAlerts.length > 0 && (
             <>
               <LiveMapKey /> <br />
             </>
           )}
 
-          {locationsAffected.length > 0 && locationsAffected.length <= 20 && (
+          {totalAlerts.length > 0 && totalAlerts.length <= 20 && (
             <>
               <h3 class='govuk-heading-s'>Locations affected</h3>
-              {locationsAffected
+              {totalAlerts
                 .reduce((rows, location, index) => {
                   if (index % 2 === 0) {
                     rows.push([location]) // Start a new row

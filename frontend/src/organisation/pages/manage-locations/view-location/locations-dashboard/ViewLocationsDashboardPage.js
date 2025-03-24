@@ -140,7 +140,7 @@ export default function ViewLocationsDashboardPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      for (const location of locationsUpdate) {
+      locationsUpdate.forEach(async (location) => {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -166,7 +166,7 @@ export default function ViewLocationsDashboardPage () {
             ).length
           }
         }
-      }
+      })
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)

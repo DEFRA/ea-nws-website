@@ -6,6 +6,7 @@ export const convertDataToGeoJsonFeature = (geoJsonType, geoJsonData) => {
   switch (geoJsonType) {
     case 'Point':
       shape = turf.point(geoJsonData)
+      shape = turf.buffer(shape, 0.001)
       break
     case 'MultiPoint':
       shape = turf.multiPoint(geoJsonData)

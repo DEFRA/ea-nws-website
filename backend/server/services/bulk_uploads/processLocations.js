@@ -3,6 +3,9 @@ const { validateLocations } = require('./validateLocations')
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../SecretsManager')
 const { logger } = require('../../plugins/logging')
+const { getWfsData } = require('../WfsData')
+const { findTAs } = require('../qgis/qgisFunctions')
+
 
 const convertToPois = (locations) => {
   const pois = []
@@ -32,7 +35,8 @@ const convertToPois = (locations) => {
               action_plan: location.Action_plan,
               notes: location.Notes,
               location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+              alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+              targetAreas: location.targetAreas
             })
           }
         }
@@ -96,6 +100,33 @@ const processLocations = async (fileName) => {
       return { errorMessage: jsonData.error }
     } else {
       const locations = await validateLocations(jsonData.locations)
+      // find and set the taget areas for validd bulk uploads (invalid might not have coords)
+      for (const location of locations?.valid) {
+        const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
+        location.targetAreas = []
+        TAs.forEach((area) => {
+          location.targetAreas.push({
+            TA_CODE: area.properties?.TA_CODE,
+            TA_Name: area.properties?.TA_Name,
+            category: area.properties?.category
+          })
+        })
+      }
+
+      for (const location of locations?.invalid) {
+        if (location?.coordinates) {
+          const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
+          location.targetAreas = []
+          TAs.forEach((area) => {
+            location.targetAreas.push({
+              TA_CODE: area.properties?.TA_CODE,
+              TA_Name: area.properties?.TA_Name,
+              category: area.properties?.category
+            })
+          })
+        } 
+      }
+      
       return { data: locations }
     }
   } else {

@@ -10,7 +10,6 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
     additionals: {
       locationName: null,
       parentID: null,
-      targetAreas: null,
       keywords: null,
       other: null
     }

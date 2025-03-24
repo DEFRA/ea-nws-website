@@ -18,6 +18,7 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
+import { getFloodAreas } from '../../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
@@ -131,6 +132,16 @@ export default function DropPinOnMapLayout ({
         // Set default alert types
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
         newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+        // get target areas
+        const TAs = await getFloodAreas(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+        newWebLocation.additionals.other.targetAreas = []
+        TAs.forEach((area) => {
+          newWebLocation.additionals.other.targetAreas.push({
+            TA_CODE: area.properties?.TA_CODE,
+            TA_Name: area.properties?.TA_Name,
+            category: area.properties?.category
+          })
+        })
         const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
         const dataToSend = { authToken, orgId, location: newGeosafeLocation }

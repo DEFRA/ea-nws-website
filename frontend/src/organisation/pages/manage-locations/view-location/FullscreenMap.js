@@ -23,8 +23,6 @@ import LocationDataType from '../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
 import {
-  getFloodAreas,
-  getFloodAreasFromShape,
   getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
 import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
@@ -73,7 +71,6 @@ export default function FullscreenMap ({
       // we also need to check if the location is in a flood area for filtering purposes
       for (const location of locations) {
         let feature
-        let withinFloodAreas
         const locationType = location.additionals.other.location_data_type
 
         // we need to convert points to geojson so we can calculate the bbox
@@ -85,19 +82,11 @@ export default function FullscreenMap ({
             location.coordinates.latitude
           ])
 
-          withinFloodAreas = await getFloodAreas(
-            location.coordinates.latitude,
-            location.coordinates.longitude
-          )
         } else {
           feature = location.geometry.geoJson
-
-          withinFloodAreas = await getFloodAreasFromShape(
-            location.geometry.geoJson
-          )
         }
 
-        location.withinFloodArea = withinFloodAreas.length > 0
+        location.withinFloodArea = location?.additionals?.other?.targetAreas?.length > 0
 
         locationsCollection.push(feature)
       }

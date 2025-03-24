@@ -15,8 +15,6 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
-  getFloodAreas,
-  getFloodAreasFromShape,
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
@@ -163,12 +161,12 @@ export default function ViewLocationsDashboardPage () {
         }
 
         location.message_count = 0
-        const floodAreas = await getWithinAreas(location)
+        const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
         if (floodAreas?.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(
-              area.properties.TA_CODE,
+              area.TA_CODE,
               historyData
             ).length
           }
@@ -351,40 +349,19 @@ export default function ViewLocationsDashboardPage () {
     return typeMap[type] || []
   }
 
-  const getWithinAreas = async (location) => {
-    let result
-    if (
-      location.additionals.other.location_data_type ===
-      LocationDataType.X_AND_Y_COORDS
-    ) {
-      result = await getFloodAreas(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
-    } else {
-      const geoJson = location.geometry.geoJson
-      try {
-        result = await getFloodAreasFromShape(geoJson)
-      } catch {
-        result = null
-      }
-    }
-    return result
-  }
-
   const getSelectedLocationsInformation = async (selectedLocations) => {
     const unavailableLocs = []
     const alertOnlyLocs = []
 
     for (const location of selectedLocations) {
-      const withinAreas = await getWithinAreas(location)
+      const withinAreas = location?.additionals?.other?.targetAreas || []
 
       let isInWarningArea = false
       let isInAlertArea = false
 
       if (withinAreas && withinAreas.length > 0) {
         for (const area of withinAreas) {
-          const type = categoryToMessageType(area.properties.category)
+          const type = categoryToMessageType(area.category)
           if (type.includes('Flood Warning')) {
             isInWarningArea = true
           } else {

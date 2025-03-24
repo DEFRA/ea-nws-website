@@ -753,6 +753,12 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 40.125em) { 
+  .one-login-header__container {
+    display: block;
+  }
+}
+
 .one-login-header__logo {
   min-width: max-content;
   padding-top: 10px;

@@ -15,7 +15,7 @@ import {
   setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreas, getFloodAreasFromShape, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
@@ -131,6 +131,8 @@ export default function ConfirmLocationLayout ({
           category: area.properties?.category
         })
       })
+      newWebLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+      newWebLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
     } else if (newWebLocation?.geometry?.geoJson) {
       const TAs = await getFloodAreasFromShape(newWebLocation?.geometry?.geoJson)
       newWebLocation.additionals.other.targetAreas = []
@@ -141,8 +143,12 @@ export default function ConfirmLocationLayout ({
           category: area.properties?.category
         })
       })
+      newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
+      newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
     } else {
       newWebLocation.additionals.other.targetAreas = []
+      newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
+      newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
     }
     const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 

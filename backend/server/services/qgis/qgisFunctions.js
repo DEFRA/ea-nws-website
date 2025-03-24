@@ -15,7 +15,78 @@ const wfsCall = async (bbox, map, type) => {
     }
     const result = await getWfsData(WFSParams, 'api/wfs')
     return result
+}
+
+const getLocationsNearbyRiversAndSeaFloodAreas = async (lat, lng, bboxKM = 0.001) => {
+    const { data: riversAndSeaFloodRiskData } = await wfsCall(
+      calculateBoundingBox(lat, lng, bboxKM),
+      'uk-rs.qgz',
+      'risk-rivers-sea'
+    )
+    return riversAndSeaFloodRiskData
+}
+  
+const getLocationsNearbyGroundWaterFloodAreas = async (lat, lng, bboxKM = 0.001) => {
+    const { data: groundwaterFloodRiskData } = await wfsCall(
+      calculateBoundingBox(lat, lng, bboxKM),
+      'uk-gf.qgz',
+      'groundwater-flood-risk'
+    )
+    return groundwaterFloodRiskData
+}
+
+function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
+    // if there are no areas nearby, set to lowest risk rating
+    let highestRating = null
+    areas?.forEach((area) => {
+      const rating = area.properties?.[propertyToCheck].toLowerCase()
+      if (ratingOrder[rating] > (highestRating ? ratingOrder[highestRating] : 0))
+        {
+        highestRating = rating
+      }
+    })
+    return highestRating
+}
+  
+  export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
+    const data = await getLocationsNearbyRiversAndSeaFloodAreas(lat, lng)
+  
+    const ratingOrder = {
+      'very low': 1,
+      low: 2,
+      medium: 3,
+      high: 4
+    }
+  
+    if (data) {
+      if (data.features && data.features.length > 0) {
+        return getHighestRiskRating(data.features, ratingOrder, 'prob_4band')
+      } else {
+        return 'very low'
+      }
+    } else {
+      return 'unavailable'
+    }
   }
+  
+  export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
+    const data = await getLocationsNearbyGroundWaterFloodAreas(lat, lng)
+  
+    const ratingOrder = {
+      unlikely: 1,
+      possible: 2
+    }
+    if (data) {
+      if (data.features && data.features.length > 0) {
+        return getHighestRiskRating(data.features, ratingOrder, 'FloodRisk')
+      } else {
+        return 'unlikely'
+      }
+    } else {
+      return 'unavailable'
+    }
+  }
+  
 
 export const findTAs = async (lng, lat) => {
     const center = turf.point([lng, lat], { crs: 'EPSG:4326' })

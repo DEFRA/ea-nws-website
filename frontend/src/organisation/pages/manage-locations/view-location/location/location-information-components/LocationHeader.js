@@ -67,8 +67,7 @@ export default function LocationHeader ({ currentPage }) {
                   </h3>
                   <div className='flood-risk-banner-label '>
                     <RiskCategoryLabel
-                      riskAreaType={RiskAreaType.RIVERS_AND_SEA}
-                      coordinates={coordinates}
+                      riskLevel={additionalData?.riverSeaRisk || 'unavailable'}
                     />
                   </div>
                 </div>
@@ -78,8 +77,7 @@ export default function LocationHeader ({ currentPage }) {
                   </h3>
                   <div className='flood-risk-banner-label '>
                     <RiskCategoryLabel
-                      riskAreaType={RiskAreaType.GROUNDWATER}
-                      coordinates={coordinates}
+                      riskLevel={additionalData?.groundWaterRisk || 'unavailable'}
                     />
                   </div>
                 </div>

@@ -159,7 +159,9 @@ const userSlice = createSlice({
               location_data_type: null,
               alertTypes: [],
               childrenIDs: [],
-              targetAreas: []
+              targetAreas: [],
+              riverSeaRisk: null,
+              groundWaterRisk: null
             })
           }
         }
@@ -367,7 +369,9 @@ const userSlice = createSlice({
                 location_data_type: null,
                 alertTypes: [],
                 childrenIDs: [],
-                targetAreas: []
+                targetAreas: [],
+                riverSeaRisk: null,
+                groundWaterRisk: null
               })
             }
           }
@@ -504,6 +508,20 @@ const userSlice = createSlice({
       setLocationOtherAdditionals(
         state.currentLocation.additionals,
         'targetAreas',
+        action.payload
+      )
+    },
+    setCurrentLocationRiverSeaRisk: (state, action) => {
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'riverSeaRisk',
+        action.payload
+      )
+    },
+    setCurrentLocationGroundWaterRisk: (state, action) => {
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'groundWaterRisk',
         action.payload
       )
     },
@@ -817,7 +835,9 @@ const userSlice = createSlice({
                 location_data_type: null,
                 alertTypes: [],
                 childrenIDs: [],
-                targetAreas: []
+                targetAreas: [],
+                riverSeaRisk: null,
+                groundWaterRisk: null
               })
             }
           }
@@ -934,6 +954,14 @@ const userSlice = createSlice({
         targetAreas: getLocationOtherAdditional(
           state.currentLocation.additionals,
           'targetAreas'
+        ),
+        riverSeaRisk: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'riverSeaRisk'
+        ),
+        groundWaterRisk: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'groundWaterRisk'
         )
       }
     },
@@ -1013,6 +1041,8 @@ export const {
   setCurrentLocationDataType,
   setCurrentLocationAlertTypes,
   setCurrentLocationChildrenIDs,
+  setCurrentLocationRiverSeaRisk,
+  setCurrentLocationGroundWaterRisk,
   // org data
   setOrganization,
   setOrganizationId,

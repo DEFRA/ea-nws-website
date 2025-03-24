@@ -18,7 +18,7 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
-import { getFloodAreas } from '../../../../../../common/services/WfsFloodDataService'
+import { getFloodAreas, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
@@ -142,6 +142,8 @@ export default function DropPinOnMapLayout ({
             category: area.properties?.category
           })
         })
+        newWebLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+        newWebLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
         const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
         const dataToSend = { authToken, orgId, location: newGeosafeLocation }

@@ -10,14 +10,9 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertType from '../../../../../common/enums/AlertType'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import {
-  getGroundwaterFloodRiskRatingOfLocation,
-  getRiversAndSeaFloodRiskRatingOfLocation
-} from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
@@ -183,27 +178,10 @@ export default function ViewLocationsDashboardPage () {
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
     let riskCategory = null
-
-    if (
-      location.additionals.other?.location_data_type !==
-        LocationDataType.X_AND_Y_COORDS ||
-      location.coordinates === null ||
-      location.coordinates.latitude === null ||
-      location.coordinates.longitude === null
-    ) {
-      return null
-    }
-
     if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
-      riskCategory = await getRiversAndSeaFloodRiskRatingOfLocation(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
+      riskCategory = location?.additionals?.other?.riverSeaRisk || 'unavailable'
     } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
-      riskCategory = await getGroundwaterFloodRiskRatingOfLocation(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
+      riskCategory = location?.additionals?.other?.groundWaterRisk || 'unavailable'
     }
 
     return riskData[riskCategory]

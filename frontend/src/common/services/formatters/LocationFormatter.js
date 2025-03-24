@@ -54,7 +54,6 @@ const webToGeoSafeLocation = (webLocation) => {
         value: { s: webLocation.additionals?.locationName }
       },
       { id: 'parentID', value: { s: webLocation.additionals?.parentID } },
-      { id: 'targetAreas', value: { s: webLocation.additionals?.targetAreas } },
       {
         id: 'keywords',
         value: { s: JSON.stringify(webLocation.additionals?.keywords) }

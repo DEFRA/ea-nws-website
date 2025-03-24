@@ -3,9 +3,7 @@ const { validateLocations } = require('./validateLocations')
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../SecretsManager')
 const { logger } = require('../../plugins/logging')
-const { getWfsData } = require('../WfsData')
-const { findTAs } = require('../qgis/qgisFunctions')
-
+const { findTAs, getRiversAndSeaFloodRiskRatingOfLocation, getGroundwaterFloodRiskRatingOfLocation } = require('../qgis/qgisFunctions')
 
 const convertToPois = (locations) => {
   const pois = []
@@ -19,7 +17,6 @@ const convertToPois = (locations) => {
       additionals: [
         { id: 'locationName', value: { s: location.Location_name } },
         { id: 'parentID', value: { s: '' } },
-        { id: 'targetAreas', value: { s: '' } },
         { id: 'keywords', value: { s: JSON.stringify(location.Keywords) } },
         {
           id: 'other',
@@ -36,7 +33,9 @@ const convertToPois = (locations) => {
               notes: location.Notes,
               location_data_type: 'xycoords',
               alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
-              targetAreas: location.targetAreas
+              targetAreas: location.targetAreas,
+              riverSeaRisk: location.riverSeaRisk,
+              groundWaterRisk: location.groundWaterRisk
             })
           }
         }
@@ -111,6 +110,8 @@ const processLocations = async (fileName) => {
             category: area.properties?.category
           })
         })
+        location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
+        location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
       }
 
       for (const location of locations?.invalid) {
@@ -124,6 +125,8 @@ const processLocations = async (fileName) => {
               category: area.properties?.category
             })
           })
+          location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
+          location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
         } 
       }
       

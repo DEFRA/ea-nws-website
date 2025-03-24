@@ -142,6 +142,8 @@ export default function SelectPredefinedBoundaryPage () {
           category: area.properties?.category
         })
       })
+      newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
+      newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
       
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 

@@ -111,7 +111,7 @@ export default function OrganisationHeader () {
                         {page.title}
                       </Link>
 
-                      {/* Check for subpages and render them */}
+                      
                       {page.subpages && (
                         <ul className='header-navigation-submenu'>
                           {page.subpages.map((subpage, subIndex) => (

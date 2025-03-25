@@ -1,4 +1,4 @@
-import { getWfsData } from '../WfsData'
+const { getWfsData } =require('../WfsData')
 
 const turf = require('@turf/turf')
 
@@ -18,8 +18,13 @@ const wfsCall = async (bbox, map, type) => {
 }
 
 const getLocationsNearbyRiversAndSeaFloodAreas = async (lat, lng, bboxKM = 0.001) => {
+    const center = turf.point([lng, lat], { crs: 'EPSG:4326' })
+    const buffered = turf.buffer(center, 0.001)
+    const bbox = turf.bbox(buffered)
+    const formattedbbox =
+        bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
     const { data: riversAndSeaFloodRiskData } = await wfsCall(
-      calculateBoundingBox(lat, lng, bboxKM),
+        formattedbbox,
       'uk-rs.qgz',
       'risk-rivers-sea'
     )
@@ -27,8 +32,13 @@ const getLocationsNearbyRiversAndSeaFloodAreas = async (lat, lng, bboxKM = 0.001
 }
   
 const getLocationsNearbyGroundWaterFloodAreas = async (lat, lng, bboxKM = 0.001) => {
+    const center = turf.point([lng, lat], { crs: 'EPSG:4326' })
+    const buffered = turf.buffer(center, 0.001)
+    const bbox = turf.bbox(buffered)
+    const formattedbbox =
+        bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
     const { data: groundwaterFloodRiskData } = await wfsCall(
-      calculateBoundingBox(lat, lng, bboxKM),
+        formattedbbox,
       'uk-gf.qgz',
       'groundwater-flood-risk'
     )
@@ -48,7 +58,7 @@ function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
     return highestRating
 }
   
-  export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
+const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
     const data = await getLocationsNearbyRiversAndSeaFloodAreas(lat, lng)
   
     const ratingOrder = {
@@ -69,7 +79,7 @@ function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
     }
   }
   
-  export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
+const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
     const data = await getLocationsNearbyGroundWaterFloodAreas(lat, lng)
   
     const ratingOrder = {
@@ -88,7 +98,7 @@ function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
   }
   
 
-export const findTAs = async (lng, lat) => {
+const findTAs = async (lng, lat) => {
     const center = turf.point([lng, lat], { crs: 'EPSG:4326' })
     const buffered = turf.buffer(center, 0.001)
     const bbox = turf.bbox(buffered)
@@ -112,3 +122,5 @@ export const findTAs = async (lng, lat) => {
 
     return allAreas
 }
+
+module.exports = { findTAs,  getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation}

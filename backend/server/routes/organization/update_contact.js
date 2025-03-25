@@ -22,6 +22,9 @@ module.exports = [
             if (contact[key] === null && key !== 'id' && key !== 'pois') {
               delete contact[key]
             }
+            if (key === 'pois') {
+              contact[key] = null
+            }
           })
 
           const response = await apiCall(

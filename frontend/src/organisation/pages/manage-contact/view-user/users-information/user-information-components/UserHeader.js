@@ -4,7 +4,7 @@ import NotificationBanner from '../../../../../../common/components/gov-uk/Notif
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader ({ contactName, userType, currentPage }) {
+export default function UserHeader({ contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -17,17 +17,15 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
           text={location.state.successMessage}
         />
       )}
-      {userType === 'Admin'
-        ? (
-          <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
-            Admin
-          </strong>
-          )
-        : (
-          <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
-            Contact
-          </strong>
-          )}
+      {userType === 'Admin' ? (
+        <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
+          Admin
+        </strong>
+      ) : (
+        <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+          Contact
+        </strong>
+      )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
           <h1 className='govuk-heading-l govuk-!-margin-bottom-1'>
@@ -45,7 +43,7 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
             text='Promote to admin'
             className='govuk-button govuk-button--secondary'
             onClick={() => {
-              // TODO: Implement promote to admin functionality
+              navigate(orgManageContactsUrls.promoteToAdmin)
             }}
           />
           &nbsp; &nbsp;

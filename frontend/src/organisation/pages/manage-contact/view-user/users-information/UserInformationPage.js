@@ -11,7 +11,7 @@ import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
 
-export default function UserInformationPage () {
+export default function UserInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
 

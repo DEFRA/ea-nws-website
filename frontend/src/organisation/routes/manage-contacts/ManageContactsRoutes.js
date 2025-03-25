@@ -8,6 +8,7 @@ import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/Edi
 import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/EditContactKeywordsPage'
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
+import PromoteToAdminPage from '../../pages/manage-contact/PromoteToAdminPage'
 import ViewContactsDashboardPage from '../../pages/manage-contact/view-user/contacts-dashboard/ViewContactsDashboardPage'
 import LinkedLocationsPage from '../../pages/manage-contact/view-user/users-information/LinkedLocationsPage'
 import UserInformationPage from '../../pages/manage-contact/view-user/users-information/UserInformationPage'
@@ -35,7 +36,8 @@ const orgManageContactsUrls = {
     channels: urlManageContactsEdit + '/channels',
     notes: urlManageContactsEdit + '/notes'
   },
-  delete: urlManageContactsOrg + '/delete-contact'
+  delete: urlManageContactsOrg + '/delete-contact',
+  promoteToAdmin: urlManageContactsOrg + '/promote-contact'
 }
 
 const orgManageContactsRoutes = [
@@ -94,6 +96,11 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.delete,
     component: <DeleteContactPage />
+  },
+  // Promote to Admin
+  {
+    path: orgManageContactsUrls.promoteToAdmin,
+    component: <PromoteToAdminPage />
   }
 ]
 

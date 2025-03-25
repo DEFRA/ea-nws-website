@@ -19,6 +19,13 @@ export default function AddContactNotesPage () {
   }
 
   const onAddContact = async () => {
+    const listDataToSend = { orgId }
+    const originalContacts = await backendCall(
+      listDataToSend,
+      'api/elasticache/list_contacts',
+      navigate
+    )
+
     const contactToAdd = store.getState().session.orgCurrentContact
     const dataToSend = { authToken, orgId, contacts: [contactToAdd] }
     const { errorMessage } = await backendCall(
@@ -28,6 +35,16 @@ export default function AddContactNotesPage () {
     )
 
     if (!errorMessage) {
+      const newContacts = await backendCall(
+        listDataToSend,
+        'api/elasticache/list_contacts',
+        navigate
+      )
+
+      const newContact = newContacts.data.filter(x => !originalContacts.data.includes(x));
+      if (newContact && newContact.length > 0) {
+        contactToAdd.id = newContact[0].id
+      }
       dispatch(setOrgCurrentContact(contactToAdd))
       navigateToNextPage()
     } else {

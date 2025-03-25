@@ -5,6 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import Input from '../../../common/components/gov-uk/Input'
 import Radio from '../../../common/components/gov-uk/Radio'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function PromoteToAdminPage() {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ export default function PromoteToAdminPage() {
       heading = `Add email address to invite ${contactName} as admin`
       break
     case emailCount > 1:
-      heading = `Confirm email address to invite ${contactName} as admin`
+      heading = `Which email address should we use to invite ${contactName} as admin?`
       emailRadios = (
         <div className='govuk-radios'>
           {contactEmails.map((email, index) => (
@@ -39,10 +40,20 @@ export default function PromoteToAdminPage() {
       )
       break
     default:
-      heading = `Which email address should we use to invite ${contactName} as admin?`
+      heading = `Confirm email address to invite ${contactName} as admin`
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    // TODO: Set contact's pendingRole to admin
+    navigate(orgManageContactsUrls.view.dashboard, {
+      state: {
+        successMessage: [
+          `Email invitation sent to ${selectedEmail}`,
+          "They'll be a pending admin until they accept the invitation and confirm their email address. Invitation is valid for 72 hours."
+        ]
+      }
+    })
+  }
 
   return (
     <>

@@ -39,14 +39,18 @@ export default function UserHeader({ contactName, userType, currentPage }) {
             justifyContent: 'flex-end'
           }}
         >
-          <Button
-            text='Promote to admin'
-            className='govuk-button govuk-button--secondary'
-            onClick={() => {
-              navigate(orgManageContactsUrls.promoteToAdmin)
-            }}
-          />
-          &nbsp; &nbsp;
+          {userType !== 'Admin' && (
+            <>
+              <Button
+                text='Promote to admin'
+                className='govuk-button govuk-button--secondary'
+                onClick={() => {
+                  navigate(orgManageContactsUrls.promoteToAdmin)
+                }}
+              />
+              &nbsp; &nbsp;
+            </>
+          )}
           <Button
             text='Delete user'
             className='govuk-button govuk-button--secondary'

@@ -18,6 +18,9 @@ export const getAdditional = (additionals, id) => {
     if (additionals[i].id === id) {
       return additionals[i].value?.s
     }
+    if (additionals[i].key === id) {
+      return additionals[i].value?.s
+    }
   }
   return ''
 }

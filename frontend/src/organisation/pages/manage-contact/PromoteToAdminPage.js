@@ -57,11 +57,6 @@ export default function PromoteToAdminPage() {
       navigate
     )
 
-    if (errorMessage) {
-      console.error(errorMessage)
-      return
-    }
-
     navigate(orgManageContactsUrls.view.dashboard, {
       state: {
         successMessage: [

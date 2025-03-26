@@ -8,7 +8,7 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import { backendCall } from '../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PromoteToAdminPage() {
+export default function PromoteToAdminPage () {
   const navigate = useNavigate()
   const [selectedEmail, setSelectedEmail] = useState('')
 
@@ -48,7 +48,7 @@ export default function PromoteToAdminPage() {
   }
 
   const handleSubmit = async () => {
-    const updatedContact = { ...currentContact, pendingRole: 'admin' }
+    const updatedContact = { ...currentContact, pendingRole: 'Admin' }
 
     const dataToSend = { authToken, orgId, contact: updatedContact }
     const { data, errorMessage } = await backendCall(
@@ -82,18 +82,20 @@ export default function PromoteToAdminPage() {
               receiving, as a contact.
             </p>
 
-            {emailCount > 1 ? (
-              emailRadios
-            ) : (
-              <Input
-                inputType='text'
-                value={selectedEmail}
-                name='Email address'
-                onChange={(val) => setSelectedEmail(val)}
-                className='govuk-input govuk-input--width-20'
-                isNameBold
-              />
-            )}
+            {emailCount > 1
+              ? (
+                  emailRadios
+                )
+              : (
+                <Input
+                  inputType='text'
+                  value={selectedEmail}
+                  name='Email address'
+                  onChange={(val) => setSelectedEmail(val)}
+                  className='govuk-input govuk-input--width-20'
+                  isNameBold
+                />
+                )}
             <Button
               text='Invite as admin'
               className='govuk-button'

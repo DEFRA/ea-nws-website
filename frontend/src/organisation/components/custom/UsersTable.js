@@ -305,15 +305,21 @@ export default function UsersTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>
-                {contact.role === 'Admin'
+                {contact.pendingRole === 'Admin'
                   ? (
-                    <strong className='govuk-tag govuk-tag--purple'>Admin</strong>
-                    )
-                  : (
-                    <strong className='govuk-tag govuk-tag--green'>
-                      Contact
+                    <strong className='govuk-tag govuk-tag--orange'>
+                      Pending admin
                     </strong>
-                    )}
+                    )
+                  : contact.role === 'Admin'
+                    ? (
+                      <strong className='govuk-tag govuk-tag--purple'>Admin</strong>
+                      )
+                    : (
+                      <strong className='govuk-tag govuk-tag--green'>
+                        Contact
+                      </strong>
+                      )}
               </td>
               <td className='govuk-table__cell'>
                 <Link

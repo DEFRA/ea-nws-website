@@ -11,7 +11,7 @@ import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
 
-export default function UserInformationPage() {
+export default function UserInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
@@ -23,7 +23,9 @@ export default function UserInformationPage() {
   )
   const keywords = contactKeywords ? JSON.parse(contactKeywords) : []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const userType = currentContact?.role
+  const userType = currentContact?.pendingRole
+    ? `Pending ${currentContact.pendingRole.toLowerCase()}`
+    : currentContact?.role
   const [locations, setLocations] = useState([])
   const [showMap, setShowMap] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)

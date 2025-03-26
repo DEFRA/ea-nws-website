@@ -4,7 +4,9 @@ import floodAlertIcon from '../../assets/images/flood_alert.svg'
 import floodWarningIcon from '../../assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../assets/images/severe_flood_warning.svg'
 import BackLink from '../../components/custom/BackLink'
-import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
+import ContactDetails, {
+  TelephoneNumber
+} from '../../layouts/footer-link-layouts/ContactDetails'
 
 export default function OptOutPage() {
   const navigate = useNavigate()
@@ -118,7 +120,7 @@ export default function OptOutPage() {
                   original text
                 </li>
                 <li>
-                  call Floodline on 0345 988 1188 (
+                  call Floodline on <TelephoneNumber /> (
                   <a class='govuk-link' href='https://www.gov.uk/call-charges'>
                     call charges
                   </a>{' '}

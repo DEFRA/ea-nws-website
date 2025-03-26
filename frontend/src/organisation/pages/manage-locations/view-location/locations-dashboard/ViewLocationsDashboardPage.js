@@ -166,6 +166,7 @@ export default function ViewLocationsDashboardPage () {
             ).length
           }
         }
+
       })
 
       setLocations(locationsUpdate)

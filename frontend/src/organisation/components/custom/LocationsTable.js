@@ -19,7 +19,7 @@ export default function LocationsTable ({
   onAction,
   actionText,
   linkContacts,
-  locationPrefix
+  locationPrefix,
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -169,6 +169,12 @@ export default function LocationsTable ({
   const openMap = () => {
     setShowMap(true)
   }
+
+  const LoadingDots = <div className='loading-dots'>
+  <span className='dot one'>.</span>
+  <span className='dot two'>.</span>
+  <span className='dot three'>.</span>
+</div>
 
   return (
     <>
@@ -381,7 +387,7 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.linked_contacts?.length}
+                {location.linked_contacts?.length !== undefined ? location.linked_contacts?.length : LoadingDots}
               </td>
               <td className='govuk-table__cell'>
                 <span

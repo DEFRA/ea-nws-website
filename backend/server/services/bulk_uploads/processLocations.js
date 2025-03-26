@@ -4,6 +4,7 @@ const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../SecretsManager')
 const { logger } = require('../../plugins/logging')
 const { findTAs, getRiversAndSeaFloodRiskRatingOfLocation, getGroundwaterFloodRiskRatingOfLocation } = require('../qgis/qgisFunctions')
+const { setJsonData } = require('../elasticache')
 
 const convertToPois = (locations) => {
   const pois = []
@@ -76,6 +77,41 @@ const getCSV = async (fileName) => {
   return result
 }
 
+const addFloodData = async (locations) => {
+  // find and set the taget areas for valid bulk uploads (invalid might not have coords)
+  await Promise.all(locations?.valid.map(async (location) => {
+    const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
+    location.targetAreas = []
+    TAs.forEach((area) => {
+      location.targetAreas.push({
+        TA_CODE: area.properties?.TA_CODE,
+        TA_Name: area.properties?.TA_Name,
+        category: area.properties?.category
+      })
+    })
+    location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
+    location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
+  }))
+
+  await Promise.all(locations?.invalid.map(async (location) =>{
+    if (location?.coordinates) {
+      const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
+      location.targetAreas = []
+      TAs.forEach((area) => {
+        location.targetAreas.push({
+          TA_CODE: area.properties?.TA_CODE,
+          TA_Name: area.properties?.TA_Name,
+          category: area.properties?.category
+        })
+      })
+      location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
+      location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
+    }
+  }))
+
+  return { data: locations }
+}
+
 const processLocations = async (fileName) => {
   const { errorMessage, data } = await getCSV(fileName)
   if (!errorMessage) {
@@ -98,38 +134,7 @@ const processLocations = async (fileName) => {
     if (jsonData.error) {
       return { errorMessage: jsonData.error }
     } else {
-      const locations = await validateLocations(jsonData.locations)
-      // find and set the taget areas for validd bulk uploads (invalid might not have coords)
-      for (const location of locations?.valid) {
-        const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
-        location.targetAreas = []
-        TAs.forEach((area) => {
-          location.targetAreas.push({
-            TA_CODE: area.properties?.TA_CODE,
-            TA_Name: area.properties?.TA_Name,
-            category: area.properties?.category
-          })
-        })
-        location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
-        location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
-      }
-
-      for (const location of locations?.invalid) {
-        if (location?.coordinates) {
-          const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
-          location.targetAreas = []
-          TAs.forEach((area) => {
-            location.targetAreas.push({
-              TA_CODE: area.properties?.TA_CODE,
-              TA_Name: area.properties?.TA_Name,
-              category: area.properties?.category
-            })
-          })
-          location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
-          location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
-        } 
-      }
-      
+      const locations = await validateLocations(jsonData.locations)      
       return { data: locations }
     }
   } else {
@@ -137,4 +142,4 @@ const processLocations = async (fileName) => {
   }
 }
 
-module.exports = { convertToPois, processLocations }
+module.exports = { convertToPois, processLocations, addFloodData }

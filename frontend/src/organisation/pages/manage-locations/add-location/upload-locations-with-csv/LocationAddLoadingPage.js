@@ -13,7 +13,7 @@ export default function LocationAddLoadingPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [status, setStatus] = useState('')
-  const [stage, setStage] = useState('Scanning Upload')
+  const [stage, setStage] = useState('Scanning upload')
   const [validLocations, setValidLocations] = useState(null)
   const [invalidLocations, setInvalidLocations] = useState(null)
   const [duplicateLocations, setDuplicateLocations] = useState(null)
@@ -58,7 +58,9 @@ export default function LocationAddLoadingPage () {
 
   // Check the status of the processing and update state
   useEffect(() => {
-    const interval = setInterval(async () => {
+    const interval = setInterval(async function getStatus() {
+      if (getStatus.isRunning) return
+      getStatus.isRunning = true
       const dataToSend = { fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
@@ -112,6 +114,7 @@ export default function LocationAddLoadingPage () {
       if (errorMessage) {
         // redirect to error page, something went wrong
       }
+      getStatus.isRunning = false
     }, 2000)
     return () => {
       clearInterval(interval)

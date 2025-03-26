@@ -20,7 +20,7 @@ export default function ContactDetails() {
 }
 
 export function TelephoneNumber() {
-  return '0345 988 118'
+  return '0345 988 1188'
 }
 
 export function TextphoneNumber() {

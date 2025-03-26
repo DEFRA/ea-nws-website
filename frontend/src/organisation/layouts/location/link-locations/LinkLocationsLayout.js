@@ -42,7 +42,6 @@ export default function LinkLocationsLayout ({
   const orgId = useSelector((state) => state.session.orgId)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
-  const [floodHistoryUrl, setHistoryUrl] = useState('')
   const floodHistoryData = useFetchAlerts()
   const [floodCounts, setFloodCounts] = useState([])
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
@@ -212,6 +211,11 @@ export default function LinkLocationsLayout ({
               ? [AlertType.FLOOD_ALERT]
               : []
         childrenAlertTypes.push(...alertTypes)
+        const targetAreas = [{
+          TA_CODE: TargetAreaToAdd.properties?.TA_CODE,
+          TA_Name: TargetAreaToAdd.properties?.TA_Name,
+          category: TargetAreaToAdd.properties?.category
+        }]
         const locationToAdd = {
           id: null,
           name: null,
@@ -233,7 +237,10 @@ export default function LinkLocationsLayout ({
             {
               id: 'other',
               value: {
-                s: JSON.stringify({ alertTypes })
+                s: JSON.stringify({
+                  alertTypes,
+                  targetAreas
+                })
               }
             }
           ]

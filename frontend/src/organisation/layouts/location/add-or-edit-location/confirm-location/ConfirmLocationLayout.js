@@ -15,6 +15,7 @@ import {
   setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { getFloodAreas, getFloodAreasFromShape, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
@@ -113,12 +114,42 @@ export default function ConfirmLocationLayout ({
     }
 
     // Set default alert types
-    const newWebLocation = geoSafeToWebLocation(currentLocation)
+    const newWebLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(currentLocation)))
     newWebLocation.additionals.other.alertTypes = [
       AlertType.SEVERE_FLOOD_WARNING,
       AlertType.FLOOD_WARNING,
       AlertType.FLOOD_ALERT
     ]
+    // set the Target areas
+    if (currentLocationDataType === LocationDataType.X_AND_Y_COORDS) {
+      const TAs = await getFloodAreas(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+      newWebLocation.additionals.other.targetAreas = []
+      TAs.forEach((area) => {
+        newWebLocation.additionals.other.targetAreas.push({
+          TA_CODE: area.properties?.TA_CODE,
+          TA_Name: area.properties?.TA_Name,
+          category: area.properties?.category
+        })
+      })
+      newWebLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+      newWebLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+    } else if (newWebLocation?.geometry?.geoJson) {
+      const TAs = await getFloodAreasFromShape(newWebLocation?.geometry?.geoJson)
+      newWebLocation.additionals.other.targetAreas = []
+      TAs.forEach((area) => {
+        newWebLocation.additionals.other.targetAreas.push({
+          TA_CODE: area.properties?.TA_CODE,
+          TA_Name: area.properties?.TA_Name,
+          category: area.properties?.category
+        })
+      })
+      newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
+      newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
+    } else {
+      newWebLocation.additionals.other.targetAreas = []
+      newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
+      newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
+    }
     const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
     // since we added to currentLocation we need to get that information to pass to the api

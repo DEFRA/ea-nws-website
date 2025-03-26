@@ -8,6 +8,7 @@ import Popup from '../../../common/components/custom/Popup'
 import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { backendCall } from '../../../common/services/BackendService'
@@ -272,51 +273,60 @@ export default function ManageKeywordsPage () {
     }
   }
 
-  const updateKeywords = async (action) => {
-    // Loop over locations/contacts linked to edited keyword
-    for (const id of targetKeyword.linked_ids) {
-      // Loop over location/contact keywords
-      const locationOrContact = keywordType === 'location'
-        ? locations.filter((location) => location.id === id)[0]
-        : contacts.filter((contact) => contact.id === id)[0]
-      const locationOrContactKeywords = locationOrContact.additionals.keywords.map((keyword) => {
-        if (targetKeyword.name === keyword) {
-          return action === 'edit' ? updatedKeyword : null
-        }
-        return keyword
-      }).filter((keyword) => keyword !== null)
+  const updateKeywords = async (action, keywordsToUpdate) => {
+    let locationsOrContactsInfo = keywordType === 'location' ? [...locations] : [...contacts]
 
-      const locationOrContactToUpdate = {
-        ...locationOrContact,
-        additionals: {
-          ...locationOrContact.additionals,
-          keywords: locationOrContactKeywords
+    // Loop over keywords to update (only useful for deleting multiple locations)
+    for (const keywordToUpdate of keywordsToUpdate){
+      // Loop over locations/contacts linked to edited keyword
+      for (const id of keywordToUpdate.linked_ids) {
+        // Get location or Contact info
+        const locationOrContact = locationsOrContactsInfo.filter((info) => info.id === id)[0]
+
+        const locationOrContactKeywords = locationOrContact.additionals.keywords.map((keyword) => {
+          if (keywordToUpdate.name === keyword) {
+            return action === 'edit' ? updatedKeyword : null
+          }
+          return keyword
+        }).filter((keyword) => keyword !== null)
+
+        const locationOrContactToUpdate = {
+          ...locationOrContact,
+          additionals: {
+            ...locationOrContact.additionals,
+            keywords: locationOrContactKeywords
+          }
+        }
+
+        const updateLocationOrContact = async () => {
+          const apiPath = keywordType === 'location' ? 'api/location/update' : 'api/organization/update_contact'
+          const dataToSend = keywordType === 'location'
+            ? { authToken, orgId, location: webToGeoSafeLocation(locationOrContactToUpdate) }
+            : { authToken, orgId, contact: webToGeoSafeContact(locationOrContactToUpdate) }
+          const { data, errorMessage } = await backendCall(
+            dataToSend,
+            apiPath,
+            navigate
+          )
+
+          if (!data) {
+            errorMessage
+              ? setError(errorMessage)
+              : setError('Oops, something went wrong')
+          }
+        }
+
+        await updateLocationOrContact()
+        if (action == "delete" && keywordsToUpdate.length > 1){
+          locationsOrContactsInfo = locationsOrContactsInfo.map(info =>
+            info.id === id ? locationOrContactToUpdate : info
+          )
         }
       }
-
-      const updateLocationOrContact = async () => {
-        const apiPath = keywordType === 'location' ? 'api/location/update' : 'api/organization/update_contact'
-        const dataToSend = keywordType === 'location'
-          ? { authToken, orgId, location: webToGeoSafeLocation(locationOrContactToUpdate) }
-          : { authToken, orgId, contact: webToGeoSafeContact(locationOrContactToUpdate) }
-        const { data, errorMessage } = await backendCall(
-          dataToSend,
-          apiPath,
-          navigate
-        )
-
-        if (!data) {
-          errorMessage
-            ? setError(errorMessage)
-            : setError('Oops, something went wrong')
-        }
-      }
-
-      await updateLocationOrContact()
     }
   }
 
-  const editKeyword = () => {
+  const editKeyword = async () => {
     const updatedKeywords = keywords.map((keyword) => {
       if (targetKeyword === keyword) {
         return {
@@ -327,7 +337,7 @@ export default function ManageKeywordsPage () {
       return keyword
     })
 
-    updateKeywords('edit')
+    await updateKeywords('edit', [targetKeyword])
 
     setKeywords([...updatedKeywords])
     setNotificationText('Keyword edited')
@@ -336,12 +346,12 @@ export default function ManageKeywordsPage () {
     setUpdatedKeyword('')
   }
 
-  const removeKeywords = (keywordsToRemove) => {
+  const removeKeywords = async (keywordsToRemove) => {
     const updatedKeywords = keywords.filter(
       (keyword) => !keywordsToRemove.includes(keyword)
     )
 
-    updateKeywords('delete')
+    await updateKeywords('delete', keywordsToRemove)
     setKeywords([...updatedKeywords])
 
     if (targetKeyword) {
@@ -445,6 +455,7 @@ export default function ManageKeywordsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
+            {error && <ErrorSummary errorList={[error]} />}
             {notificationText && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'

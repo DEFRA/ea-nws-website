@@ -10,11 +10,10 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
 import { getLocationAdditionals, getLocationOther, setCurrentLocationAlertTypes, setCurrentLocationChildrenIDs, setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreaByTaName, getFloodAreas, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -29,7 +28,7 @@ export default function LocationMessagesPage () {
   const [locationUnlinked, setLocationUnlinked] = useState(false)
 
   const [loading, setLoading] = useState(true)
-  const currentLocation = useSelector((state) => state.session.currentLocation)
+  const currentLocationTAs = useSelector((state) => getLocationOther(state, 'targetAreas')) || []
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
   const [partnerId, setPartnerId] = useState(false)
@@ -76,7 +75,6 @@ export default function LocationMessagesPage () {
     setPartnerId(data)
   }
 
-  const [withinAreas, setWithinAreas] = useState([])
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
   const floodHistoryData = useFetchAlerts()
   const [floodCounts, setFloodCounts] = useState([])
@@ -105,27 +103,6 @@ export default function LocationMessagesPage () {
     'Flood warnings',
     'Flood alerts'
   ]
-
-  const getWithinAreas = async () => {
-    let result = []
-    if (additionalData.location_data_type) {
-      if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS) {
-        result = await getFloodAreas(
-          currentLocation.coordinates.latitude, currentLocation.coordinates.longitude
-        )
-      } else if (currentLocation.geometry?.geoJson) {
-        const geoJson = JSON.parse(currentLocation.geometry.geoJson)
-        try {
-          result = await getFloodAreasFromShape(
-            geoJson
-          )
-        } catch {
-          result = []
-        }
-      }
-    }
-    setWithinAreas(result)
-  }
 
   const onClick = async (e, areaName) => {
     e.preventDefault()
@@ -170,8 +147,8 @@ export default function LocationMessagesPage () {
   useEffect(() => {
     const processFloodData = () => {
       if (floodHistoryData && hasFetchedArea) {
-        if (withinAreas.length > 0) {
-          withinAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
+        if (currentLocationTAs.length > 0) {
+          currentLocationTAs.forEach((area) => setHistoricalData(area.TA_CODE, area.category))
         }
         if (childrenIDs.length > 0) {
           childrenIDs.forEach((child) => setHistoricalData(child.TA_CODE, child.category))
@@ -179,7 +156,7 @@ export default function LocationMessagesPage () {
       }
     }
     processFloodData()
-  }, [floodHistoryData, withinAreas, hasFetchedArea])
+  }, [floodHistoryData, hasFetchedArea])
 
   const populateMessagesSent = (category, floodCount) => {
     const messageSent = []
@@ -208,15 +185,15 @@ export default function LocationMessagesPage () {
   }
 
   useEffect(() => {
-    const populateInputs = (withinAreas, childrenIDs, floodCounts) => {
+    const populateInputs = (currentLocationTAs, childrenIDs, floodCounts) => {
       const updatedFloodAreas = []
-      for (const area of withinAreas) {
-        const taCode = area.properties.TA_CODE
+      for (const area of currentLocationTAs) {
+        const taCode = area.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = floodCount ? populateMessagesSent(area.properties.category, floodCount) : []
-        const type = categoryToMessageType(area.properties.category)
+        const messageSent = floodCount ? populateMessagesSent(area.category, floodCount) : []
+        const type = categoryToMessageType(area.category)
         updatedFloodAreas.push({
-          areaName: area.properties.TA_Name,
+          areaName: area.TA_Name,
           areaType: `${type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'} area`,
           messagesSent: messageSent
         })
@@ -236,10 +213,10 @@ export default function LocationMessagesPage () {
       setFloodAreasInputs(updatedFloodAreas)
     }
 
-    if ((withinAreas.length > 0 || childrenIDs.length > 0) && floodCounts.length > 0) {
-      populateInputs(withinAreas, childrenIDs, floodCounts)
+    if ((currentLocationTAs.length > 0 || childrenIDs.length > 0) && floodCounts.length > 0) {
+      populateInputs(currentLocationTAs, childrenIDs, floodCounts)
     }
-  }, [withinAreas, floodCounts])
+  }, [floodCounts])
 
   useEffect(() => {
     if (floodAreasInputs.length > 0) {
@@ -259,23 +236,7 @@ export default function LocationMessagesPage () {
     if ((hasFetchedArea) || (floodAreasInputs.length > 0)) {
       setLoading(false)
     }
-  }, [withinAreas, floodAreasInputs, floodCounts, hasFetchedArea])
-
-  // it should reload the surrounding areas if the location is changed
-  useEffect(() => {
-    hasFetchedArea.current = false
-    const fetchAreas = async () => {
-      if (currentLocation && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
-        if (!hasFetchedArea.current) {
-          await getWithinAreas()
-          if (withinAreas.length > 0) {
-            hasFetchedArea.current = true
-          }
-        }
-      }
-    }
-    fetchAreas()
-  }, [currentLocation])
+  }, [floodAreasInputs, floodCounts, hasFetchedArea])
 
   const handleSubmit = async (event) => {
     event.preventDefault()

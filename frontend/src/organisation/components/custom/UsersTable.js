@@ -5,7 +5,7 @@ import { setOrgCurrentContact } from '../../../common/redux/userSlice'
 import { webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function UsersTable ({
+export default function UsersTable({
   contacts,
   displayedContacts,
   filteredContacts,
@@ -161,6 +161,14 @@ export default function UsersTable ({
     navigate(orgManageContactsUrls.view.viewContact)
   }
 
+  const LoadingDots = (
+    <div className='loading-dots'>
+      <span className='dot one'>.</span>
+      <span className='dot two'>.</span>
+      <span className='dot three'>.</span>
+    </div>
+  )
+
   return (
     <>
       <p className='govuk-!-margin-bottom-6 contacts-table-panel'>
@@ -209,7 +217,8 @@ export default function UsersTable ({
                     userTypeSort,
                     setUserTypeSort,
                     (contact) => contact.role || ''
-                  )}
+                  )
+                }
               >
                 User type
               </button>
@@ -224,7 +233,8 @@ export default function UsersTable ({
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
                     return contact.firstname + (contact.lastname || '')
-                  })}
+                  })
+                }
               >
                 Name
               </button>
@@ -239,7 +249,8 @@ export default function UsersTable ({
                 onClick={() =>
                   sortData(jobTitleSort, setJobTitleSort, (contact) => {
                     return contact.additionals.jobTitle
-                  })}
+                  })
+                }
               >
                 Job title
               </button>
@@ -254,7 +265,8 @@ export default function UsersTable ({
                 onClick={() =>
                   sortData(emailSort, setEmailSort, (contact) => {
                     return contact.emails[0]
-                  })}
+                  })
+                }
               >
                 Email
               </button>
@@ -305,21 +317,17 @@ export default function UsersTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>
-                {contact.pendingRole === 'Admin'
-                  ? (
-                    <strong className='govuk-tag govuk-tag--orange'>
-                      Pending admin
-                    </strong>
-                    )
-                  : contact.role === 'Admin'
-                    ? (
-                      <strong className='govuk-tag govuk-tag--purple'>Admin</strong>
-                      )
-                    : (
-                      <strong className='govuk-tag govuk-tag--green'>
-                        Contact
-                      </strong>
-                      )}
+                {contact.pendingRole === 'Admin' ? (
+                  <strong className='govuk-tag govuk-tag--orange'>
+                    Pending admin
+                  </strong>
+                ) : contact.role === 'Admin' ? (
+                  <strong className='govuk-tag govuk-tag--purple'>Admin</strong>
+                ) : (
+                  <strong className='govuk-tag govuk-tag--green'>
+                    Contact
+                  </strong>
+                )}
               </td>
               <td className='govuk-table__cell'>
                 <Link
@@ -338,9 +346,13 @@ export default function UsersTable ({
               {!filterVisible && (
                 <>
                   <td className='govuk-table__cell'>
-                    {contact.linked_locations?.length}
+                    {contact.linked_locations?.length !== undefined
+                      ? contact.linked_locations?.length
+                      : LoadingDots}
                   </td>
-                  <td className='govuk-table__cell'>{contact.message_count}</td>
+                  {contact.message_count !== undefined
+                    ? contact.message_count
+                    : LoadingDots}
 
                   <td className='govuk-table__cell'>
                     <Link

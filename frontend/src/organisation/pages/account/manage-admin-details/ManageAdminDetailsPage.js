@@ -4,7 +4,6 @@ import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
-import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ManageAdminDetailsPage () {
   const profile = useSelector((state) => state.session.profile)

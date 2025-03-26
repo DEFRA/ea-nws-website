@@ -140,7 +140,6 @@ const userSlice = createSlice({
       additionals: [
         { id: 'locationName', value: { s: '' } },
         { id: 'parentID', value: { s: '' } },
-        { id: 'targetAreas', value: { s: '' } },
         { id: 'keywords', value: { s: '[]' } },
         {
           id: 'other',
@@ -159,7 +158,10 @@ const userSlice = createSlice({
               notes: null,
               location_data_type: null,
               alertTypes: [],
-              childrenIDs: []
+              childrenIDs: [],
+              targetAreas: [],
+              riverSeaRisk: null,
+              groundWaterRisk: null
             })
           }
         }
@@ -348,7 +350,6 @@ const userSlice = createSlice({
         additionals: [
           { id: 'locationName', value: { s: '' } },
           { id: 'parentID', value: { s: '' } },
-          { id: 'targetAreas', value: { s: '' } },
           { id: 'keywords', value: { s: '[]' } },
           {
             id: 'other',
@@ -367,7 +368,10 @@ const userSlice = createSlice({
                 notes: null,
                 location_data_type: null,
                 alertTypes: [],
-                childrenIDs: []
+                childrenIDs: [],
+                targetAreas: [],
+                riverSeaRisk: null,
+                groundWaterRisk: null
               })
             }
           }
@@ -406,13 +410,6 @@ const userSlice = createSlice({
       setAdditional(
         state.currentLocation.additionals,
         'parentID',
-        action.payload
-      )
-    },
-    setCurrentLocationTargetAreas: (state, action) => {
-      setAdditional(
-        state.currentLocation.additionals,
-        'targetAreas',
         action.payload
       )
     },
@@ -504,6 +501,27 @@ const userSlice = createSlice({
       setLocationOtherAdditionals(
         state.currentLocation.additionals,
         'childrenIDs',
+        action.payload
+      )
+    },
+    setCurrentLocationTargetAreas: (state, action) => {
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'targetAreas',
+        action.payload
+      )
+    },
+    setCurrentLocationRiverSeaRisk: (state, action) => {
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'riverSeaRisk',
+        action.payload
+      )
+    },
+    setCurrentLocationGroundWaterRisk: (state, action) => {
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'groundWaterRisk',
         action.payload
       )
     },
@@ -798,7 +816,6 @@ const userSlice = createSlice({
         additionals: [
           { id: 'locationName', value: { s: '' } },
           { id: 'parentID', value: { s: '' } },
-          { id: 'targetAreas', value: { s: '' } },
           { id: 'keywords', value: { s: '[]' } },
           {
             id: 'other',
@@ -817,7 +834,10 @@ const userSlice = createSlice({
                 notes: null,
                 location_data_type: null,
                 alertTypes: [],
-                childrenIDs: []
+                childrenIDs: [],
+                targetAreas: [],
+                riverSeaRisk: null,
+                groundWaterRisk: null
               })
             }
           }
@@ -882,10 +902,6 @@ const userSlice = createSlice({
           'locationName'
         ),
         parentID: getAdditional(state.currentLocation.additionals, 'parentID'),
-        targetAreas: getAdditional(
-          state.currentLocation.additionals,
-          'targetAreas'
-        ),
         keywords: getAdditional(state.currentLocation.additionals, 'keywords'),
         full_address: getLocationOtherAdditional(
           state.currentLocation.additionals,
@@ -934,6 +950,18 @@ const userSlice = createSlice({
         childrenIDs: getLocationOtherAdditional(
           state.currentLocation.additionals,
           'childrenIDs'
+        ),
+        targetAreas: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'targetAreas'
+        ),
+        riverSeaRisk: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'riverSeaRisk'
+        ),
+        groundWaterRisk: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'groundWaterRisk'
         )
       }
     },
@@ -1013,6 +1041,8 @@ export const {
   setCurrentLocationDataType,
   setCurrentLocationAlertTypes,
   setCurrentLocationChildrenIDs,
+  setCurrentLocationRiverSeaRisk,
+  setCurrentLocationGroundWaterRisk,
   // org data
   setOrganization,
   setOrganizationId,

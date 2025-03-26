@@ -476,7 +476,6 @@ export default function IndexPage () {
     additionals: [
       { id: 'locationName', value: { s: '' } },
       { id: 'parentID', value: { s: '' } },
-      { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',

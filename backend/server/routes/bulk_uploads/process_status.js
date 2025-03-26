@@ -4,10 +4,8 @@ const {
 } = require('../../services/GenericErrorResponse')
 
 const {
-  getJsonData,
+  getJsonData
 } = require('../../services/elasticache')
-
-
 
 module.exports = [
   {

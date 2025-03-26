@@ -48,7 +48,7 @@ module.exports = [
             )
             if (response.data.location) {
               // Register locations
-              const { data: partnerId} = await getPartnerId()
+              const { data: partnerId } = await getPartnerId()
               const registerData = {
                 authToken,
                 locationId: response.data.location.id,

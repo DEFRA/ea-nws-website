@@ -16,11 +16,11 @@ module.exports = [
         if (request.payload.Message) {
           const fileName = request.payload.Message
           const elasticacheKey = 'shapefile:' + fileName.split('.')[0]
-          await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'working' })
+          await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'working' })
           const scanResult = await scanResults(request.payload.Message, 'zip-uploads/zip')
           if (scanResult?.data?.scanComplete === true) {
             if (scanResult?.data?.scanResult === 'THREATS_FOUND') {
-              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
+              await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
             } else if (scanResult?.data?.scanResult === 'NO_THREATS_FOUND') {
               await setJsonData(elasticacheKey, { stage: 'Processing', status: 'working' })
               const response = await processShapefile(request.payload.Message)
@@ -32,10 +32,10 @@ module.exports = [
                 await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Unknown error' }] })
               }
             } else {
-              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
+              await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
             }
           } else {
-            await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
+            await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
           }
 
           return h.response({ status: 200 })

@@ -10,16 +10,9 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertType from '../../../../../common/enums/AlertType'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import {
-  getFloodAreas,
-  getFloodAreasFromShape,
-  getGroundwaterFloodRiskRatingOfLocation,
-  getRiversAndSeaFloodRiskRatingOfLocation
-} from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
@@ -147,7 +140,7 @@ export default function ViewLocationsDashboardPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      for (const location of locationsUpdate) {
+      locationsUpdate.forEach(async (location) => {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -163,17 +156,17 @@ export default function ViewLocationsDashboardPage () {
         }
 
         location.message_count = 0
-        const floodAreas = await getWithinAreas(location)
+        const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
         if (floodAreas?.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(
-              area.properties.TA_CODE,
+              area.TA_CODE,
               historyData
             ).length
           }
         }
-      }
+      })
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -185,27 +178,10 @@ export default function ViewLocationsDashboardPage () {
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
     let riskCategory = null
-
-    if (
-      location.additionals.other?.location_data_type !==
-        LocationDataType.X_AND_Y_COORDS ||
-      location.coordinates === null ||
-      location.coordinates.latitude === null ||
-      location.coordinates.longitude === null
-    ) {
-      return null
-    }
-
     if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
-      riskCategory = await getRiversAndSeaFloodRiskRatingOfLocation(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
+      riskCategory = location?.additionals?.other?.riverSeaRisk || 'unavailable'
     } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
-      riskCategory = await getGroundwaterFloodRiskRatingOfLocation(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
+      riskCategory = location?.additionals?.other?.groundWaterRisk || 'unavailable'
     }
 
     return riskData[riskCategory]
@@ -351,40 +327,19 @@ export default function ViewLocationsDashboardPage () {
     return typeMap[type] || []
   }
 
-  const getWithinAreas = async (location) => {
-    let result
-    if (
-      location.additionals.other.location_data_type ===
-      LocationDataType.X_AND_Y_COORDS
-    ) {
-      result = await getFloodAreas(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
-    } else {
-      const geoJson = location.geometry.geoJson
-      try {
-        result = await getFloodAreasFromShape(geoJson)
-      } catch {
-        result = null
-      }
-    }
-    return result
-  }
-
   const getSelectedLocationsInformation = async (selectedLocations) => {
     const unavailableLocs = []
     const alertOnlyLocs = []
 
     for (const location of selectedLocations) {
-      const withinAreas = await getWithinAreas(location)
+      const withinAreas = location?.additionals?.other?.targetAreas || []
 
       let isInWarningArea = false
       let isInAlertArea = false
 
       if (withinAreas && withinAreas.length > 0) {
         for (const area of withinAreas) {
-          const type = categoryToMessageType(area.properties.category)
+          const type = categoryToMessageType(area.category)
           if (type.includes('Flood Warning')) {
             isInWarningArea = true
           } else {

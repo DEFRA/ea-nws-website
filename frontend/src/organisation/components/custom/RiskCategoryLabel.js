@@ -1,4 +1,3 @@
-
 export const riskData = {
   'very low': { className: 'very-low-risk', title: 'Very low risk' },
   low: { className: 'low-risk', title: 'Low risk' },
@@ -11,7 +10,6 @@ export const riskData = {
 }
 
 export default function RiskCategoryLabel ({ riskLevel }) {
-
   const { className, title } = riskData[riskLevel] || {
     className: '',
     title: 'Unavailable'

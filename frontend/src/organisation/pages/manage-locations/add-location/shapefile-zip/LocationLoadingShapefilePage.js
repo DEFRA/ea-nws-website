@@ -6,10 +6,10 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
 import {
-    setCurrentLocationCoordinates,
-    setCurrentLocationDataType,
-    setCurrentLocationGeometry,
-    setCurrentLocationName
+  setCurrentLocationCoordinates,
+  setCurrentLocationDataType,
+  setCurrentLocationGeometry,
+  setCurrentLocationName
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'

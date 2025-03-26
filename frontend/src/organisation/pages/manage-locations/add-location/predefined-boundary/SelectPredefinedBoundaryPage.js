@@ -144,7 +144,7 @@ export default function SelectPredefinedBoundaryPage () {
       })
       newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
       newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
-      
+
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
       const dataToSend = { authToken, orgId, location: newGeosafeLocation }

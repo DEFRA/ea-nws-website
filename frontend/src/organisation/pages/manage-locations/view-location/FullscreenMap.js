@@ -81,7 +81,6 @@ export default function FullscreenMap ({
             location.coordinates.longitude,
             location.coordinates.latitude
           ])
-
         } else {
           feature = location.geometry.geoJson
         }
@@ -120,9 +119,9 @@ export default function FullscreenMap ({
 
   const FitBounds = () => {
     const map = useMap()
-      if (bounds) {
-        map.fitBounds(bounds)
-      }
+    if (bounds) {
+      map.fitBounds(bounds)
+    }
   }
 
   const fitBounds = useMemo(() => (<FitBounds />), [bounds])

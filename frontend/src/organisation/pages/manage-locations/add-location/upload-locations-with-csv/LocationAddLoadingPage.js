@@ -58,7 +58,7 @@ export default function LocationAddLoadingPage () {
 
   // Check the status of the processing and update state
   useEffect(() => {
-    const interval = setInterval(async function getStatus() {
+    const interval = setInterval(async function getStatus () {
       if (getStatus.isRunning) return
       getStatus.isRunning = true
       const dataToSend = { fileName }

@@ -15,9 +15,6 @@ export default function LocationHeader ({ currentPage }) {
   const location = useLocation()
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const coordinates = useSelector(
-    (state) => state.session.currentLocation.coordinates
-  )
 
   return (
     <>

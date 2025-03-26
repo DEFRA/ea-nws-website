@@ -100,7 +100,7 @@ export default function ViewContactsDashboardPage () {
         })
       }
 
-      contactsUpdate.forEach(async(contact) => {
+      contactsUpdate.forEach(async (contact) => {
         const contactsDataToSend = { authToken, orgId, contact }
         const { data } = await backendCall(
           contactsDataToSend,

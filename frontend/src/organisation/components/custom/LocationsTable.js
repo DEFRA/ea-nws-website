@@ -19,7 +19,7 @@ export default function LocationsTable ({
   onAction,
   actionText,
   linkContacts,
-  locationPrefix,
+  locationPrefix
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -170,11 +170,13 @@ export default function LocationsTable ({
     setShowMap(true)
   }
 
-  const LoadingDots = <div className='loading-dots'>
-  <span className='dot one'>.</span>
-  <span className='dot two'>.</span>
-  <span className='dot three'>.</span>
-</div>
+  const LoadingDots = (
+    <div className='loading-dots'>
+      <span className='dot one'>.</span>
+      <span className='dot two'>.</span>
+      <span className='dot three'>.</span>
+    </div>
+  )
 
   return (
     <>

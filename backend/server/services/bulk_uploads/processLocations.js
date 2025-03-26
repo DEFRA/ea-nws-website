@@ -4,7 +4,6 @@ const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../SecretsManager')
 const { logger } = require('../../plugins/logging')
 const { findTAs, getRiversAndSeaFloodRiskRatingOfLocation, getGroundwaterFloodRiskRatingOfLocation } = require('../qgis/qgisFunctions')
-const { setJsonData } = require('../elasticache')
 
 const convertToPois = (locations) => {
   const pois = []
@@ -93,7 +92,7 @@ const addFloodData = async (locations) => {
     location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
   }))
 
-  await Promise.all(locations?.invalid.map(async (location) =>{
+  await Promise.all(locations?.invalid.map(async (location) => {
     if (location?.coordinates) {
       const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
       location.targetAreas = []
@@ -134,7 +133,7 @@ const processLocations = async (fileName) => {
     if (jsonData.error) {
       return { errorMessage: jsonData.error }
     } else {
-      const locations = await validateLocations(jsonData.locations)      
+      const locations = await validateLocations(jsonData.locations)
       return { data: locations }
     }
   } else {

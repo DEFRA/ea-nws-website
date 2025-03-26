@@ -155,11 +155,13 @@ export default function ContactsTable ({
     navigate(orgManageContactsUrls.view.viewContact)
   }
 
-  const LoadingDots = <div className='loading-dots'>
-  <span className='dot one'>.</span>
-  <span className='dot two'>.</span>
-  <span className='dot three'>.</span>
-</div>
+  const LoadingDots = (
+    <div className='loading-dots'>
+      <span className='dot one'>.</span>
+      <span className='dot two'>.</span>
+      <span className='dot three'>.</span>
+    </div>
+  )
 
   return (
     <>

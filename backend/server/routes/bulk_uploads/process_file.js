@@ -30,7 +30,7 @@ module.exports = [
               if (response.errorMessage) {
                 await setJsonData(elasticacheKey, { stage: 'Validating locations', status: 'rejected', error: response.errorMessage })
               } else if (response.data) {
-                await setJsonData(elasticacheKey, { stage: response.data?.invalid?.length + response.data?.valid?.length+' locations validated', status: 'working' })
+                await setJsonData(elasticacheKey, { stage: response.data?.invalid?.length + response.data?.valid?.length + ' locations validated', status: 'working' })
                 // Check invalid locations for duplicates
                 const locationNames = await listLocationNames(orgId)
                 for (const location of response.data.invalid) {

@@ -42,7 +42,6 @@ export default function LinkLocationsLayout ({
   const orgId = useSelector((state) => state.session.orgId)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
-  const [floodHistoryUrl, setHistoryUrl] = useState('')
   const floodHistoryData = useFetchAlerts()
   const [floodCounts, setFloodCounts] = useState([])
   const [floodAreaInputs, setFloodAreasInputs] = useState([])

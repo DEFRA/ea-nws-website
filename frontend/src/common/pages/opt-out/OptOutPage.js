@@ -86,10 +86,7 @@ export default function OptOutPage() {
               </h3>
               <p>
                 You can{' '}
-                <a
-                  class='govuk-link'
-                  href='https://www.fws.environment-agency.gov.uk/app/olr/register'
-                >
+                <a class='govuk-link' href='/signup/service-selection'>
                   fully register your details
                 </a>{' '}
                 to get the best experience of the flood warning service. The
@@ -148,10 +145,7 @@ export default function OptOutPage() {
               </p>
               <ul class='govuk-list govuk-list--bullet'>
                 <li>
-                  <a
-                    class='govuk-link'
-                    href='https://www.fws.environment-agency.gov.uk/app/olr/register'
-                  >
+                  <a class='govuk-link' href='/signup/service-selection'>
                     sign up for flood warnings
                   </a>
                 </li>

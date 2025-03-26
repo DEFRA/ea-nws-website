@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../components/gov-uk/Button'
+import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
 
-export default function StartPage () {
+export default function StartPage() {
   const navigate = useNavigate()
 
   return (
@@ -57,7 +58,10 @@ export default function StartPage () {
               <Button
                 text='Sign up for the first time'
                 className='govuk-button'
-                onClick={(event) => { event.preventDefault(); navigate('/signup/service-selection') }}
+                onClick={(event) => {
+                  event.preventDefault()
+                  navigate('/signup/service-selection')
+                }}
               />
               <br />
               <h2 className='govuk-heading-m'>If you've already signed up</h2>
@@ -107,18 +111,8 @@ export default function StartPage () {
                 your details or cancel your account by calling Floodline.
               </p>
               <h3 className='govuk-heading-s'>Floodline</h3>
-              <ul className='govuk-list'>
-                <li>Telephone: 0345 988 1188</li>
-                <li>Textphone: 0345 602 6340</li>
-                <li>24 hour service</li>
-              </ul>
               <p className='govuk-body'>
-                <a
-                  href='https://www.gov.uk/call-charges'
-                  className='govuk-link'
-                >
-                  Find out about call charges
-                </a>
+                <ContactDetails />
               </p>
             </div>
           </div>

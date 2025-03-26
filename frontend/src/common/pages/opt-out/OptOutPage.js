@@ -4,6 +4,7 @@ import floodAlertIcon from '../../assets/images/flood_alert.svg'
 import floodWarningIcon from '../../assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../assets/images/severe_flood_warning.svg'
 import BackLink from '../../components/custom/BackLink'
+import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
 
 export default function OptOutPage() {
   const navigate = useNavigate()
@@ -28,10 +29,7 @@ export default function OptOutPage() {
               <div class='govuk-inset-text'>
                 <p>
                   You can provide{' '}
-                  <a
-                    class='govuk-link'
-                    href='https://defragroup.eu.qualtrics.com/jfe/form/SV_dg4npnetp6NfAEK'
-                  >
+                  <a class='govuk-link' href='/signup/feedback'>
                     feedback on this service.
                   </a>
                 </p>
@@ -62,7 +60,7 @@ export default function OptOutPage() {
               <p>
                 They do not give us the names or addresses associated with those
                 numbers. We store the numbers securely, in line with our{' '}
-                <a class='govuk-link' href='/edw/privacy' target='_'>
+                <a class='govuk-link' href='/privacy' target='_blank'>
                   privacy notice.
                 </a>
               </p>
@@ -311,19 +309,7 @@ export default function OptOutPage() {
                 <p>
                   <b>Floodline</b>
                 </p>
-                <ul class='govuk-list'>
-                  <li>Telephone: 0345 988 1188</li>
-                  <li>Textphone: 0345 602 6340</li>
-                  <li>24 hour service</li>
-                  <li>
-                    <a
-                      class='govuk-link'
-                      href='https://www.gov.uk/call-charges'
-                    >
-                      Find out about call charges
-                    </a>
-                  </li>
-                </ul>
+                <ContactDetails />
               </div>
               <h2 className='govuk-heading-m'>Get help with your account</h2>
               <p>
@@ -331,18 +317,7 @@ export default function OptOutPage() {
                   Floodline helpline
                   <br />
                 </span>
-                Telephone: 0345 988 1188
-                <br />
-                Textphone: 0345 602 6340
-                <br />
-                24 hour service
-                <br />
-                <a
-                  href='https://www.gov.uk/call-charges'
-                  className='govuk-link'
-                >
-                  Find out more about call charges
-                </a>
+                <ContactDetails />
               </p>
             </div>
           </div>

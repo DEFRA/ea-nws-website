@@ -5,11 +5,15 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import Input from '../../../common/components/gov-uk/Input'
 import Radio from '../../../common/components/gov-uk/Radio'
+import { backendCall } from '../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function PromoteToAdminPage() {
   const navigate = useNavigate()
   const [selectedEmail, setSelectedEmail] = useState('')
+
+  const authToken = useSelector((state) => state.session.token)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
@@ -43,8 +47,21 @@ export default function PromoteToAdminPage() {
       heading = `Confirm email address to invite ${contactName} as admin`
   }
 
-  const handleSubmit = () => {
-    // TODO: Set contact's pendingRole to admin
+  const handleSubmit = async () => {
+    const updatedContact = { ...currentContact, pendingRole: 'admin' }
+
+    const dataToSend = { authToken, orgId, contact: updatedContact }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/organization/update_contact',
+      navigate
+    )
+
+    if (errorMessage) {
+      console.error(errorMessage)
+      return
+    }
+
     navigate(orgManageContactsUrls.view.dashboard, {
       state: {
         successMessage: [

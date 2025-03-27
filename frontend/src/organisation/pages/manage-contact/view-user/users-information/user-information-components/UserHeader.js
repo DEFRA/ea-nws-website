@@ -8,9 +8,16 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const handleSubmit = () => {
+    if (userType === 'Admin') {
+    } else {
+      navigate(orgManageContactsUrls.promoteToAdmin)
+    }
+  }
+
   return (
     <>
-      {location.state && (
+      {location.state.successMessage && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success'
           title='Success'
@@ -47,18 +54,18 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
             justifyContent: 'flex-end'
           }}
         >
-          {userType !== 'Admin' && (
-            <>
-              <Button
-                text='Promote to admin'
-                className='govuk-button govuk-button--secondary'
-                onClick={() => {
-                  navigate(orgManageContactsUrls.promoteToAdmin)
-                }}
-              />
-              &nbsp; &nbsp;
-            </>
-          )}
+          <>
+            <Button
+              text={
+                userType === 'Admin' ? 'Remove as admin' : 'Promote to admin'
+              }
+              className='govuk-button govuk-button--secondary'
+              onClick={() => {
+                handleSubmit()
+              }}
+            />
+            &nbsp; &nbsp;
+          </>
           <Button
             text='Delete user'
             className='govuk-button govuk-button--secondary'

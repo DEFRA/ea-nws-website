@@ -240,7 +240,6 @@ export default function LiveMap({
     }
 
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
-      console.log(JSON.stringify(point.geometry))
       point.geometry.coordinates[0][0][0] = adjustCoords(
         severity,
         point.geometry.coordinates[0][0][0]

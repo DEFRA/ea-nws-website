@@ -575,7 +575,8 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'boundary',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            surroundingFloodAreas: [{ geometry: {}, properties: {} }]
           })
         }
       }

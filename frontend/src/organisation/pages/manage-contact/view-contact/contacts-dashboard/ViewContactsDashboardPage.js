@@ -9,15 +9,10 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
   setOrgCurrentContact
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import {
-  getFloodAreas,
-  getFloodAreasFromShape
-} from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
@@ -105,7 +100,7 @@ export default function ViewContactsDashboardPage () {
         })
       }
 
-      for (const contact of contactsUpdate) {
+      contactsUpdate.forEach(async (contact) => {
         const contactsDataToSend = { authToken, orgId, contact }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -124,14 +119,14 @@ export default function ViewContactsDashboardPage () {
             if (floodAreas && floodAreas.length > 0) {
               for (const area of floodAreas) {
                 contact.message_count += getHistoricalData(
-                  area.properties.TA_CODE,
+                  area.TA_CODE,
                   historyData
                 ).length
               }
             }
           })
         }
-      }
+      })
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
@@ -150,24 +145,7 @@ export default function ViewContactsDashboardPage () {
   const [selectedLinkedFilters, setSelectedLinkedFilters] = useState([])
 
   const getWithinAreas = async (location) => {
-    let result = []
-    if (
-      location.additionals.other.location_data_type ===
-      LocationDataType.X_AND_Y_COORDS
-    ) {
-      result = await getFloodAreas(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
-    } else if (location.geometry?.geoJson) {
-      const geoJson = location.geometry.geoJson
-      try {
-        result = await getFloodAreasFromShape(geoJson)
-      } catch {
-        result = []
-      }
-    }
-    return result
+    return location?.additionals?.other?.targetAreas || []
   }
 
   const getHistoricalData = (taCode, floodHistoryData) => {

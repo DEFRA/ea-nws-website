@@ -151,6 +151,7 @@ export default function DuplicateLocationsOptionsPage () {
                 location.additionals.locationName,
                 'valid'
               )
+
               const locationToUpdate = webToGeoSafeLocation(location)
               // change the location ID to the existing ID in geosafe
               locationToUpdate.id = existingLocation.id

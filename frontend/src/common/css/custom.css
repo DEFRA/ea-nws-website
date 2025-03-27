@@ -1991,3 +1991,29 @@ govuk-menu-toggle.button-menu > button {
     content: none !important;
   }
 }
+
+.loading-dots {
+  text-align: center;
+  z-index: 5;
+
+  .dot {
+    display: inline;
+    position: relative;
+    font-size: 2.5rem;
+    line-height: 0.625;
+    opacity: 0;
+    animation: showHideDot 2.5s ease-in-out infinite;
+    top: -0.5rem;
+
+    &.one { animation-delay: 0.2s; }
+    &.two { animation-delay: 0.4s; }
+    &.three { animation-delay: 0.6s; }
+  }
+}
+
+@keyframes showHideDot {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  60% { opacity: 1; }
+  100% { opacity: 0; }
+}

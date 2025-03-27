@@ -1,7 +1,6 @@
 import {
   faAngleDown,
-  faAngleUp,
-  faL
+  faAngleUp
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
@@ -111,7 +110,6 @@ export default function OrganisationHeader () {
                         {page.title}
                       </Link>
 
-                      
                       {page.subpages && (
                         <ul className='header-navigation-submenu'>
                           {page.subpages.map((subpage, subIndex) => (

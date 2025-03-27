@@ -26,7 +26,7 @@ export default function AddContactNotesPage () {
       navigate
     )
 
-    const contactToAdd = store.getState().session.orgCurrentContact
+    const contactToAdd = JSON.parse(JSON.stringify(store.getState().session.orgCurrentContact))
     const dataToSend = { authToken, orgId, contacts: [contactToAdd] }
     const { errorMessage } = await backendCall(
       dataToSend,

@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 import BackLink from '../../components/custom/BackLink'
+import LoadingSpinner from '../../components/custom/LoadingSpinner'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
 import Input from '../../components/gov-uk/Input'
@@ -39,6 +40,47 @@ export default function SignInValidatePage () {
   const [lastAccessedUrl, setLastAccessedUrl] = useState('')
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
+  const [orgData, setOrgData] = useState(null)
+  const [stage, setStage] = useState('Retrieving locations')
+
+  useEffect(() => {
+    if (orgData) {
+      const startProcessing = async () => {
+        const dataToSend = { orgData }
+        await backendCall(
+          dataToSend,
+          'api/org_signin',
+          navigate
+        )
+      }
+      startProcessing()
+      const interval = setInterval(async function getStatus () {
+        if (getStatus.isRunning) return
+        getStatus.isRunning = true
+        const dataToSend = { authToken: orgData.authToken }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/org_signin_status',
+          navigate
+        )
+        if (data) {
+          if (data?.stage !== stage) {
+            setStage(data.stage)
+          }
+          if (data?.status === 'complete') {
+            navigate(orgManageLocationsUrls.monitoring.view)
+          }
+        }
+        if (errorMessage) {
+          setError(errorMessage)
+        }
+        getStatus.isRunning = false
+      }, 2000)
+      return () => {
+        clearInterval(interval)
+      }
+    }
+  }, [orgData])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -95,7 +137,7 @@ export default function SignInValidatePage () {
           setSignUpNotComplete(true)
         } else {
           if (data.organization) {
-            navigate(orgManageLocationsUrls.monitoring.view)
+            setOrgData(data)
           } else {
             navigate('/home')
           }
@@ -183,6 +225,14 @@ export default function SignInValidatePage () {
                 </div>
               </div>
             </main>
+            {orgData && error === '' &&
+              <div className='popup-dialog'>
+                <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+                  <LoadingSpinner
+                  loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                  />
+                </div>
+              </div>}
           </>
           )}
     </>

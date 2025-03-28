@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
-import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
-import { webToGeoSafeContact } from '../../../../common/services/formatters/ContactFormatter'
-import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import { webToGeoSafeContact } from '../../../../../common/services/formatters/ContactFormatter'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function PendingAdminsPage() {
   const navigate = useNavigate()
@@ -48,8 +48,6 @@ export default function PendingAdminsPage() {
       }
     })
   }
-
-  const handleResend = () => {}
 
   const handleWithdraw = () => {}
 
@@ -115,7 +113,11 @@ export default function PendingAdminsPage() {
                   </td>
                   <td className='govuk-table__cell'>PLACEHOLDER</td>
                   <td className='govuk-table__cell'>
-                    <Link className='govuk-link' onClick={handleResend}>
+                    <Link
+                      className='govuk-link'
+                      to={orgManageContactsUrls.admin.resendInvite}
+                      state={{ pendingAdmin: admin }}
+                    >
                       Resend invitation
                     </Link>
                   </td>

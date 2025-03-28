@@ -180,15 +180,16 @@ export default function LiveMap({
           return getFloodAreaByTaCode(TA_CODE).then((floodArea) => ({
             floodArea,
             severity,
-            updatedTime
+            updatedTime,
+            TA_CODE
           }))
         })
 
         const alertResults = await Promise.all(alertPromises)
 
-        for (const { floodArea, severity, updatedTime } of alertResults) {
+        for (const { floodArea, severity, updatedTime, TA_CODE } of alertResults) {
           const locationPromises = locations.map((location) =>
-            processLocation(location, floodArea, severity, updatedTime)
+            processLocation(location, floodArea, severity, updatedTime, TA_CODE)
           )
           await Promise.all(locationPromises)
         }
@@ -198,19 +199,10 @@ export default function LiveMap({
     }
   }
 
-  const processLocation = (location, floodArea, severity, updatedTime) => {
+  const processLocation = (location, floodArea, severity, updatedTime, TA_CODE) => {
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type
-    let locationIntersectsWithFloodArea = turf.booleanIntersects(
-      locationType === LocationDataType.X_AND_Y_COORDS
-        ? convertDataToGeoJsonFeature('Point', [
-            coordinates.longitude,
-            coordinates.latitude
-          ])
-        : geometry.geoJson,
-
-      floodArea.geometry
-    )
+    let locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some((targetArea => targetArea.TA_CODE === TA_CODE))
 
     if (!locationIntersectsWithFloodArea) return
 

@@ -354,10 +354,11 @@ export default function UsersTable ({
                       ? contact.linked_locations?.length
                       : LoadingDots}
                   </td>
-                  {contact.message_count !== undefined
-                    ? contact.message_count
-                    : LoadingDots}
-
+                  <td className='govuk-table__cell'>
+                    {contact.message_count !== undefined
+                      ? contact.message_count
+                      : LoadingDots}
+                  </td>
                   <td className='govuk-table__cell'>
                     <Link
                       className='govuk-link'

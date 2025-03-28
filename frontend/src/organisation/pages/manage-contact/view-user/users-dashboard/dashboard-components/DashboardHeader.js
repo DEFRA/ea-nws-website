@@ -97,9 +97,12 @@ export default function DashboardHeader({
               </h1>
               <Link
                 className='govuk-link'
-                onClick={() =>
-                  navigate(orgManageContactsUrls.admin.pendingInvites)
-                }
+                to={orgManageContactsUrls.admin.pendingInvites}
+                state={{
+                  pendingAdmins: contacts.filter(
+                    (c) => c.pendingRole === 'Admin'
+                  )
+                }}
               >
                 pending admins
               </Link>
@@ -116,9 +119,13 @@ export default function DashboardHeader({
           )}
           {type === 'pendingAdmins' && (
             <Link
-              onClick={() => navigate('#')}
-              className='govuk-body govuk-link inline-link'
+              className='govuk-link'
+              to={orgManageContactsUrls.admin.pendingInvites}
+              state={{
+                pendingAdmins: contacts.filter((c) => c.pendingRole === 'Admin')
+              }}
             >
+              {' '}
               Manage pending admin invitations
             </Link>
           )}

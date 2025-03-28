@@ -41,7 +41,7 @@ export default function AddContactNotesPage () {
         navigate
       )
 
-      const newContact = newContacts.data.filter(x => !originalContacts.data.includes(x));
+      const newContact = newContacts.data.filter(x => !originalContacts.data.some(c => c.id === x.id));
       if (newContact && newContact.length > 0) {
         contactToAdd.id = newContact[0].id
       }

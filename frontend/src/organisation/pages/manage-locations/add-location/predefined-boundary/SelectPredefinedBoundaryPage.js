@@ -130,7 +130,7 @@ export default function SelectPredefinedBoundaryPage () {
       const locationToAdd = store.getState().session.currentLocation
 
       // Set default alert types
-      const newWebLocation = geoSafeToWebLocation(locationToAdd)
+      const newWebLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(locationToAdd)))
       newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
       // get the target areas
       const TAs = await getFloodAreasFromShape(newWebLocation?.geometry?.geoJson)

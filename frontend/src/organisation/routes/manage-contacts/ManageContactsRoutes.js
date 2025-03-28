@@ -8,6 +8,7 @@ import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/Edi
 import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/EditContactKeywordsPage'
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
+import PendingAdminsPage from '../../pages/manage-contact/manage-admin/PendingAdminsPage'
 import PromoteToAdminPage from '../../pages/manage-contact/manage-admin/PromoteToAdminPage'
 import RemoveAdminPage from '../../pages/manage-contact/manage-admin/RemoveAdminPage'
 import ViewUsersDashboardPage from '../../pages/manage-contact/view-user/users-dashboard/ViewUsersDashboardPage'
@@ -40,7 +41,8 @@ const orgManageContactsUrls = {
   delete: urlManageContactsOrg + '/delete-contact',
   admin: {
     promote: urlManageContactsOrg + '/promote-contact',
-    remove: urlManageContactsOrg + '/remove-admin'
+    remove: urlManageContactsOrg + '/remove-admin',
+    pendingInvites: urlManageContactsOrg + '/pending-admins'
   }
 }
 
@@ -110,6 +112,11 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.admin.remove,
     component: <RemoveAdminPage />
+  },
+  // Pending Admin Invitations
+  {
+    path: orgManageContactsUrls.admin.pendingInvites,
+    component: <PendingAdminsPage />
   }
 ]
 

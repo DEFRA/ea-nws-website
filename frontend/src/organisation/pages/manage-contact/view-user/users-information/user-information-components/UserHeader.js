@@ -10,8 +10,9 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
 
   const handleSubmit = () => {
     if (userType === 'Admin') {
+      navigate(orgManageContactsUrls.admin.remove)
     } else {
-      navigate(orgManageContactsUrls.promoteToAdmin)
+      navigate(orgManageContactsUrls.admin.promote)
     }
   }
 

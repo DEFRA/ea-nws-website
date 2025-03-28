@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
-import Input from '../../../common/components/gov-uk/Input'
-import Radio from '../../../common/components/gov-uk/Radio'
-import { backendCall } from '../../../common/services/BackendService'
-import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
+import BackLink from '../../../../common/components/custom/BackLink'
+import Button from '../../../../common/components/gov-uk/Button'
+import Input from '../../../../common/components/gov-uk/Input'
+import Radio from '../../../../common/components/gov-uk/Radio'
+import { backendCall } from '../../../../common/services/BackendService'
+import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function PromoteToAdminPage () {
   const navigate = useNavigate()

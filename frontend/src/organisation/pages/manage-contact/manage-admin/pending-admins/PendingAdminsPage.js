@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 import { webToGeoSafeContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
@@ -11,13 +13,36 @@ export default function PendingAdminsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
+  const orgId = useSelector((state) => state.session.orgId)
 
   const [nameSort, setNameSort] = useState('none')
   const [statusSort, setStatusSort] = useState('none')
 
-  const [pendingAdmins, setPendingAdmins] = useState(
-    location.state?.pendingAdmins || []
-  )
+  const [pendingAdmins, setPendingAdmins] = useState([])
+
+  const [successMessage] = useState(location.state?.successMessage) || ''
+
+  useEffect(() => {
+    const getPendingAdmins = async () => {
+      const dataToSend = { orgId }
+      const contactsData = await backendCall(
+        dataToSend,
+        'api/elasticache/list_contacts',
+        navigate
+      )
+
+      const pendingAdminList = contactsData.data
+        .filter((c) => c.pendingRole === 'Admin')
+        // Randomly assign a status to each admin --- Mock value (should be removed at a later date)
+        .map((admin) => ({
+          ...admin,
+          inviteStatus: Math.random() < 0.5 ? 'Expired' : 'Active'
+        }))
+
+      setPendingAdmins(pendingAdminList)
+    }
+    getPendingAdmins()
+  }, [])
 
   const sortData = (sortType, setSort, key) => {
     const sorted = [...pendingAdmins]
@@ -56,6 +81,14 @@ export default function PendingAdminsPage() {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
+          {successMessage && (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              heading={successMessage[0]}
+              text={successMessage[1]}
+            />
+          )}
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>
               Pending admins who still need to accept their invitation
@@ -111,7 +144,17 @@ export default function PendingAdminsPage() {
                       {admin?.lastname?.length > 0 ? ' ' + admin?.lastname : ''}
                     </Link>{' '}
                   </td>
-                  <td className='govuk-table__cell'>PLACEHOLDER</td>
+                  <td className='govuk-table__cell'>
+                    {admin.inviteStatus === 'Expired' ? (
+                      <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
+                        Expired
+                      </strong>
+                    ) : (
+                      <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+                        Active
+                      </strong>
+                    )}
+                  </td>
                   <td className='govuk-table__cell'>
                     <Link
                       className='govuk-link'

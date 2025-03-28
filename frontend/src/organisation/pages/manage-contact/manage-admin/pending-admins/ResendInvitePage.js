@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ResendInvitePage() {
   const navigate = useNavigate()
@@ -12,7 +13,21 @@ export default function ResendInvitePage() {
 
   console.log(pendingAdmin)
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    // TODO - sort out email logic
+    navigate(orgManageContactsUrls.admin.pendingInvites, {
+      state: {
+        successMessage: [
+          `Email invitation sent to ${pendingAdmin.emails[0]}`,
+          `${pendingAdmin.firstname}${
+            pendingAdmin?.lastname?.length > 0
+              ? ' ' + pendingAdmin?.lastname
+              : ''
+          } will be a pending admin until they accept the invitation and confirm their email address. Invitation valid for 72 hours.`
+        ]
+      }
+    })
+  }
 
   return (
     <>

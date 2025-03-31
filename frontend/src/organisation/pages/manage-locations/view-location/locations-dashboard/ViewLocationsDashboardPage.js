@@ -24,6 +24,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -51,6 +52,7 @@ export default function ViewLocationsDashboardPage () {
   const [loading, setLoading] = useState(true)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -721,6 +723,9 @@ export default function ViewLocationsDashboardPage () {
                 text={notificationText}
               />
             )}
+            {(errorMessage) && (
+              <ErrorSummary errorList={[errorMessage]} />
+            )}
             <DashboardHeader
               locations={locations}
               linkContacts={location.state?.linkContacts}
@@ -728,6 +733,7 @@ export default function ViewLocationsDashboardPage () {
               onClickLinked={onClickLinked}
               onOnlyShowSelected={onOnlyShowSelected}
               linkSource={location.state?.linkSource}
+              setErrorMessage={setErrorMessage}
             />
           </div>
           <div className='govuk-grid-column-full govuk-body'>

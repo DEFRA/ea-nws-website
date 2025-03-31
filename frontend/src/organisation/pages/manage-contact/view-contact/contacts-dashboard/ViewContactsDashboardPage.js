@@ -23,6 +23,7 @@ import {
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
@@ -58,6 +59,7 @@ export default function ViewContactsDashboardPage () {
     error: ''
   })
   const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
   const historyData = useFetchAlerts()
 
   useEffect(() => {
@@ -359,6 +361,9 @@ export default function ViewContactsDashboardPage () {
                       text={notificationText}
                     />
                   )}
+                  {(errorMessage) && (
+                    <ErrorSummary errorList={[errorMessage]} />
+                  )}
                   <DashboardHeader
                     contacts={contacts}
                     onClickLinked={onClickLinked}
@@ -366,6 +371,7 @@ export default function ViewContactsDashboardPage () {
                     selectedContacts={selectedContacts}
                     onOnlyShowSelected={onOnlyShowSelected}
                     linkSource={location.state?.linkSource}
+                    setErrorMessage={setErrorMessage}
                   />
                 </div>
                 <div className='govuk-grid-column-full govuk-body'>

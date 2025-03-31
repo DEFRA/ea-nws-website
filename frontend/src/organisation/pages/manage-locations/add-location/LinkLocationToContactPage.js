@@ -55,7 +55,7 @@ export default function LinkLocationToContactPage () {
               />
               &nbsp; &nbsp;
               <Link
-                to={orgManageLocationsUrls.monitoring.view}
+                to={orgManageLocationsUrls.view.dashboard}
                 className='govuk-link inline-link'
               >
                 I'll do this later

@@ -14,7 +14,8 @@ export default function LinkBanner ({
   selectedLocations,
   selectedContacts,
   onOnlyShowSelected,
-  linkSource
+  linkSource,
+  setErrorMessage
 }) {
   const navigate = useNavigate()
 
@@ -79,40 +80,54 @@ export default function LinkBanner ({
     let linkLocationIDs = []
     let linkContactIDs = []
 
-    if (linkLocations) {
-      linkLocationIDs = [...linkLocations]
-      selectedContacts.forEach((contact) => {
-        linkContactIDs.push(contact.id)
-      })
-    } else if (linkContacts) {
-      linkContactIDs = [...linkContacts]
-      selectedLocations.forEach((location) => {
-        linkLocationIDs.push(location.id)
-      })
-    }
-
     let errorFound = false
-    for (const locationID of linkLocationIDs) {
-      const dataToSend = {
-        authToken,
-        orgId,
-        locationId: locationID,
-        contactIds: linkContactIDs
-      }
 
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/location/attach_contacts',
-        navigate
-      )
-
-      if (errorMessage) {
+    if (linkLocations) {
+      if (selectedContacts && selectedContacts.length > 0) {
+        linkLocationIDs = [...linkLocations]
+        selectedContacts.forEach((contact) => {
+          linkContactIDs.push(contact.id)
+        })
+      } else {
         errorFound = true
-        console.log(errorMessage)
+        setErrorMessage('No contacts selected')
+      }
+    } else if (linkContacts) {
+      if (selectedLocations && selectedLocations.length > 0) {
+        linkContactIDs = [...linkContacts]
+        selectedLocations.forEach((location) => {
+          linkLocationIDs.push(location.id)
+        })
+      } else {
+        errorFound = true
+        setErrorMessage('No locations selected')
       }
     }
 
     if (!errorFound) {
+      for (const locationID of linkLocationIDs) {
+        const dataToSend = {
+          authToken,
+          orgId,
+          locationId: locationID,
+          contactIds: linkContactIDs
+        }
+
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/location/attach_contacts',
+          navigate
+        )
+
+        if (errorMessage) {
+          errorFound = true
+          console.log(errorMessage)
+        }
+      }
+    }
+
+    if (!errorFound) {
+      setErrorMessage('')
       const successMessage = getSuccessMessage()
       if (linkLocations) {
         if (linkSource === 'dashboard') {
@@ -143,6 +158,8 @@ export default function LinkBanner ({
           })
         }
       }
+    } else {
+
     }
   }
 

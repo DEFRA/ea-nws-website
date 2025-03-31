@@ -13,7 +13,8 @@ export default function DashboardHeader ({
   linkContacts,
   selectedLocations,
   onOnlyShowSelected,
-  linkSource
+  linkSource,
+  setErrorMessage
 }) {
   const navigate = useNavigate()
 
@@ -354,6 +355,7 @@ export default function DashboardHeader ({
                 selectedLocations={selectedLocations}
                 onOnlyShowSelected={onOnlyShowSelected}
                 linkSource={linkSource}
+                setErrorMessage={setErrorMessage}
               />
             </>
             )}

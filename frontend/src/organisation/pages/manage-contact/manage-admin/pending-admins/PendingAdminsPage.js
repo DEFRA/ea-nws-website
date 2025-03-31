@@ -9,7 +9,7 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { webToGeoSafeContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PendingAdminsPage() {
+export default function PendingAdminsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -122,14 +122,13 @@ export default function PendingAdminsPage() {
                   <button
                     type='button'
                     onClick={() =>
-                      sortData(statusSort, setStatusSort, 'status')
-                    }
+                      sortData(statusSort, setStatusSort, 'status')}
                   >
                     Invitation status
                   </button>
                 </th>
-                <th scope='col' className='govuk-table__header'></th>
-                <th scope='col' className='govuk-table__header'></th>
+                <th scope='col' className='govuk-table__header' />
+                <th scope='col' className='govuk-table__header' />
               </tr>
             </thead>
             <tbody className='govuk-table__body'>
@@ -145,15 +144,17 @@ export default function PendingAdminsPage() {
                     </Link>{' '}
                   </td>
                   <td className='govuk-table__cell'>
-                    {admin.inviteStatus === 'Expired' ? (
-                      <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
-                        Expired
-                      </strong>
-                    ) : (
-                      <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
-                        Active
-                      </strong>
-                    )}
+                    {admin.inviteStatus === 'Expired'
+                      ? (
+                        <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
+                          Expired
+                        </strong>
+                        )
+                      : (
+                        <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+                          Active
+                        </strong>
+                        )}
                   </td>
                   <td className='govuk-table__cell'>
                     <Link

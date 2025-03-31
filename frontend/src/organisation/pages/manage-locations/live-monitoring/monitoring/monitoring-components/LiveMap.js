@@ -180,15 +180,16 @@ export default function LiveMap({
           return getFloodAreaByTaCode(TA_CODE).then((floodArea) => ({
             floodArea,
             severity,
-            updatedTime
+            updatedTime,
+            TA_CODE
           }))
         })
 
         const alertResults = await Promise.all(alertPromises)
 
-        for (const { floodArea, severity, updatedTime } of alertResults) {
+        for (const { floodArea, severity, updatedTime, TA_CODE } of alertResults) {
           const locationPromises = locations.map((location) =>
-            processLocation(location, floodArea, severity, updatedTime)
+            processLocation(location, floodArea, severity, updatedTime, TA_CODE)
           )
           await Promise.all(locationPromises)
         }
@@ -198,19 +199,10 @@ export default function LiveMap({
     }
   }
 
-  const processLocation = (location, floodArea, severity, updatedTime) => {
+  const processLocation = (location, floodArea, severity, updatedTime, TA_CODE) => {
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type
-    let locationIntersectsWithFloodArea = turf.booleanIntersects(
-      locationType === LocationDataType.X_AND_Y_COORDS
-        ? convertDataToGeoJsonFeature('Point', [
-            coordinates.longitude,
-            coordinates.latitude
-          ])
-        : geometry.geoJson,
-
-      floodArea.geometry
-    )
+    let locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some((targetArea => targetArea.TA_CODE === TA_CODE))
 
     if (!locationIntersectsWithFloodArea) return
 
@@ -223,10 +215,10 @@ export default function LiveMap({
       ...convertDataToGeoJsonFeature('Point', [
         locationType === LocationDataType.X_AND_Y_COORDS
           ? coordinates.longitude
-          : floodArea.properties.longitude.replace(',', '.'),
+          : Number(floodArea.properties.longitude.replace(',', '.')),
         locationType === LocationDataType.X_AND_Y_COORDS
           ? coordinates.latitude
-          : floodArea.properties.latitude.replace(',', '.')
+          : Number(floodArea.properties.latitude.replace(',', '.'))
       ]),
       properties: {
         floodData: {
@@ -240,9 +232,9 @@ export default function LiveMap({
     }
 
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
-      point.geometry.coordinates[0] = adjustCoords(
+      point.geometry.coordinates[0][0][0] = adjustCoords(
         severity,
-        point.geometry.coordinates[0]
+        point.geometry.coordinates[0][0][0]
       )
     } else {
       geometry.geoJson.properties = {
@@ -279,9 +271,9 @@ export default function LiveMap({
       case AlertType.SEVERE_FLOOD_WARNING:
         return longitude
       case AlertType.FLOOD_WARNING:
-        return (parseFloat(longitude) - 0.003).toFixed(6)
+        return (Number((parseFloat(longitude) - 0.003).toFixed(6)))
       case AlertType.FLOOD_ALERT:
-        return (parseFloat(longitude) + 0.003).toFixed(6)
+        return (Number((parseFloat(longitude) + 0.003).toFixed(6)))
     }
   }
 
@@ -596,8 +588,8 @@ export default function LiveMap({
                     <Marker
                       key={index}
                       position={[
-                        alertPoint.geometry.coordinates[1],
-                        alertPoint.geometry.coordinates[0]
+                        alertPoint.geometry.coordinates[0][0][1],
+                        alertPoint.geometry.coordinates[0][0][0]
                       ]}
                       icon={floodAlertMarker}
                     >
@@ -635,8 +627,8 @@ export default function LiveMap({
                     <Marker
                       key={index}
                       position={[
-                        warningPoint.geometry.coordinates[1],
-                        warningPoint.geometry.coordinates[0]
+                        warningPoint.geometry.coordinates[0][0][1],
+                        warningPoint.geometry.coordinates[0][0][0]
                       ]}
                       icon={floodWarningMarker}
                     >
@@ -674,8 +666,8 @@ export default function LiveMap({
                     <Marker
                       key={index}
                       position={[
-                        severePoint.geometry.coordinates[1],
-                        severePoint.geometry.coordinates[0]
+                        severePoint.geometry.coordinates[0][0][1],
+                        severePoint.geometry.coordinates[0][0][0]
                       ]}
                       icon={floodSevereWarningMarker}
                     >

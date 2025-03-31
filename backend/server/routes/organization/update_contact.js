@@ -19,11 +19,11 @@ module.exports = [
         if (authToken && orgId && contact) {
           // remove any null fields from each contact
           Object.keys(contact).forEach((key) => {
-            if (contact[key] === null && key !== 'id' && key !== 'pois') {
+            if (contact[key] === null && key !== 'id') {
               delete contact[key]
             }
             if (key === 'pois') {
-              contact[key] = null
+              delete contact[key]
             }
           })
 

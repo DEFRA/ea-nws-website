@@ -44,7 +44,7 @@ function convertCoords (X, Y) {
   return { latitude: latitude, longitude: longitude }
 }
 
-const isCoordInEngland = async (lat, lng) => {
+const nationalBoundary = async () => {
   const WFSParams = {
     service: 'WFS',
     map: 'uk-ob.qgz',
@@ -55,6 +55,10 @@ const isCoordInEngland = async (lat, lng) => {
     outputFormat: 'GEOJSON'
   }
   const { data: geojson } = await getWfsData(WFSParams)
+  return geojson
+}
+
+const isCoordInEngland = (geojson, lat, lng) => {
   const point = turf.point([lng, lat])
   const poly = turf.multiPolygon(geojson.features[0].geometry.coordinates)
   return turf.booleanPointInPolygon(point, poly)
@@ -77,6 +81,9 @@ const validateLocations = async (locations) => {
 
   // if there is location data we need to process it
   if (locations) {
+    // we need to get the national boundary once, for england check
+    const england = await nationalBoundary()
+
     await Promise.all(
       locations.map(async (location) => {
         // Location coords/address is mandatory
@@ -94,6 +101,7 @@ const validateLocations = async (locations) => {
 
             // Check if coordinate is in England
             const coordInEngland = await isCoordInEngland(
+              england,
               location.coordinates.latitude,
               location.coordinates.longitude
             )

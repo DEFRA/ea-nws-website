@@ -145,6 +145,25 @@ export default function SelectPredefinedBoundaryPage () {
       newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
       newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
 
+      // Set alert types
+      newWebLocation.additionals.other.alertTypes = []
+      const categoryToType = (type) => {
+        const typeMap = {
+          'Flood Warning': 'warning',
+          'Flood Warning Groundwater': 'warning',
+          'Flood Warning Rapid Response': 'warning',
+          'Flood Alert': 'alert',
+          'Flood Alert Groundwater': 'alert'
+        }
+        return typeMap[type] || []
+      }
+      newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
+        newWebLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
+        newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+
+      newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
+        newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
       const dataToSend = { authToken, orgId, location: newGeosafeLocation }
@@ -165,7 +184,7 @@ export default function SelectPredefinedBoundaryPage () {
             channelMobileAppEnabled: true,
             partnerCanView: true,
             partnerCanEdit: true,
-            alertTypes: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+            alertTypes: newWebLocation.additionals.other.alertTypes
           }
         }
 

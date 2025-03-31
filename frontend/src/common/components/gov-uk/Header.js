@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import OrganisationHeader from '../custom/OrganisationHeader'
 import PrivateBetaHeader from '../../pages/private-beta/PrivateBetaHeader'
 import { backendCall } from '../../services/BackendService'
+import OrganisationHeader from '../custom/OrganisationHeader'
 
 export default function Header () {
   const location = useLocation()
@@ -11,7 +11,7 @@ export default function Header () {
   const signinType = useSelector((state) => state.session.signinType) // Assuming signinType is a different state property
   const [servicePhase, setServicePhase] = useState(false)
 
-  const isOrganisationPage = location.pathname.includes('organisation')
+  const isOrganisationPage = location.pathname.includes('organisation') && !location.pathname.includes('sign-up')
 
   async function getServicePhase () {
     const { data } = await backendCall(

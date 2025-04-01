@@ -21,11 +21,11 @@ const convertToPois = (locations) => {
       }
       return typeMap[type] || []
     }
-    location.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
+    location.targetAreas?.some((area) => categoryToType(area.category) === 'warning') &&
       alertTypes.push('ALERT_LVL_1') &&
       alertTypes.push('ALERT_LVL_2')
 
-    location.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
+    location.targetAreas?.some((area) => categoryToType(area.category) === 'alert') &&
       alertTypes.push('ALERT_LVL_3')
 
     const poi = {

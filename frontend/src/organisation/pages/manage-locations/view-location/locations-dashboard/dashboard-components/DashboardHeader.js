@@ -76,6 +76,7 @@ export default function DashboardHeader ({
     navigate(infoUrls.floodAreas)
   }
 
+
   const FloodBanner = ({ type }) => {
     const count = []
     const message = []
@@ -107,19 +108,25 @@ export default function DashboardHeader ({
       const mediumHighRisk = locations.filter(
         (obj) =>
           (obj.riverSeaRisk?.title === 'Medium risk' ||
-            obj.riverSeaRisk?.title === 'High risk') &&
+            obj.riverSeaRisk?.title === 'High risk' ||
+            obj.groundWaterRisk?.title === 'Possible') &&
           obj.additionals.other?.alertTypes?.length === 0
       ).length
       count.push(mediumHighRisk)
-      message[0] = 'at medium or high flood risk'
+      message[0] = 'at flood risk'
 
       const lowRisk = locations.filter(
         (obj) =>
-          obj.riverSeaRisk?.title === 'Low risk' &&
+          ((obj.riverSeaRisk?.title === 'Low risk' ||
+            obj.riverSeaRisk?.title === 'Very low risk' ||
+            obj.riverSeaRisk?.title === 'Unavailable') &&
+            (obj.groundWaterRisk?.title === 'Unlikely' ||
+            obj.groundWaterRisk?.title === 'Unavailable')
+          ) &&
           obj.additionals.other?.alertTypes?.length === 0
       ).length
       count.push(lowRisk)
-      message.push('at low flood risk')
+      message.push('at low or unknown flood risk')
     } else if (type === 'noContacts') {
       heading[0] = 'Locations not linked to contacts'
       count.push(
@@ -167,7 +174,8 @@ export default function DashboardHeader ({
               {locations.filter(
                 (item) =>
                   item.additionals.other?.childrenIDs?.length > 0 &&
-                  item.additionals.other?.alertTypes?.length > 0
+                  item.additionals.other?.alertTypes?.length > 0 &&
+                  item.within !== true
               ).length > 0 && (
                 <div
                   style={{
@@ -194,7 +202,8 @@ export default function DashboardHeader ({
               {locations.filter(
                 (item) =>
                   (item.riverSeaRisk?.title === 'Medium risk' ||
-                    item.riverSeaRisk?.title === 'High risk') &&
+                    item.riverSeaRisk?.title === 'High risk' ||
+                    item.groundWaterRisk?.title === 'Possible') &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
@@ -212,12 +221,18 @@ export default function DashboardHeader ({
               {locations.filter(
                 (item) =>
                   (item.riverSeaRisk?.title === 'Medium risk' ||
-                    item.riverSeaRisk?.title === 'High risk') &&
+                    item.riverSeaRisk?.title === 'High risk' ||
+                    item.groundWaterRisk?.title === 'Possible') &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 &&
                 locations.filter(
                   (item) =>
-                    item.riverSeaRisk?.title === 'Low risk' &&
+                    ((item.riverSeaRisk?.title === 'Low risk' ||
+                      item.riverSeaRisk?.title === 'Very low risk' ||
+                      item.riverSeaRisk?.title === 'Unavailable') &&
+                      (item.groundWaterRisk?.title === 'Unlikely' ||
+                      item.groundWaterRisk?.title === 'Unavailable')
+                    ) &&
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0 && (
                   <div
@@ -228,7 +243,12 @@ export default function DashboardHeader ({
               )}
               {locations.filter(
                 (item) =>
-                  item.riverSeaRisk?.title === 'Low risk' &&
+                  ((item.riverSeaRisk?.title === 'Low risk' ||
+                    item.riverSeaRisk?.title === 'Very low risk' ||
+                    item.riverSeaRisk?.title === 'Unavailable') &&
+                    (item.groundWaterRisk?.title === 'Unlikely' ||
+                    item.groundWaterRisk?.title === 'Unavailable')
+                  ) &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
@@ -321,15 +341,19 @@ export default function DashboardHeader ({
                 {(locations.filter(
                   (item) =>
                     (item.riverSeaRisk?.title === 'Medium risk' ||
-                    item.riverSeaRisk?.title === 'High risk') &&
-                    (item.additionals.other?.alertTypes?.length === 0 ||
-                      (!item.additionals.other?.childrenIDs?.length > 0 && item.within !== true))
+                    item.riverSeaRisk?.title === 'High risk' ||
+                    item.groundWaterRisk?.title === 'Possible') &&
+                    item.additionals.other?.alertTypes?.length === 0
                 ).length > 0 ||
                 locations.filter(
                   (item) =>
-                    item.riverSeaRisk?.title === 'Low risk' &&
-                    (item.additionals.other?.alertTypes?.length === 0 ||
-                      (!item.additionals.other?.childrenIDs?.length > 0 && item.within !== true))
+                    ((item.riverSeaRisk?.title === 'Low risk' ||
+                      item.riverSeaRisk?.title === 'Very low risk' ||
+                      item.riverSeaRisk?.title === 'Unavailable') &&
+                      (item.groundWaterRisk?.title === 'Unlikely' ||
+                      item.groundWaterRisk?.title === 'Unavailable')
+                    ) &&
+                    item.additionals.other?.alertTypes?.length === 0
                 ).length > 0) && <FloodBanner type='noFloodMessages' />}
                 {locations.filter((item) => item.linked_contacts?.length === 0)
                   .length > 0 && <FloodBanner type='noContacts' />}

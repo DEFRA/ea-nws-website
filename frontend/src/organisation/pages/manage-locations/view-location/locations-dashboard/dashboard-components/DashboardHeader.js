@@ -109,7 +109,9 @@ export default function DashboardHeader ({
         (obj) =>
           (obj.riverSeaRisk?.title === 'Medium risk' ||
             obj.riverSeaRisk?.title === 'High risk' ||
-            obj.groundWaterRisk?.title === 'Possible') &&
+            obj.riverSeaRisk?.title === 'Unavailable' ||
+            obj.groundWaterRisk?.title === 'Possible' ||
+            obj.groundWaterRisk?.title === 'Unavailable') &&
           obj.additionals.other?.alertTypes?.length === 0
       ).length
       count.push(mediumHighRisk)
@@ -118,15 +120,13 @@ export default function DashboardHeader ({
       const lowRisk = locations.filter(
         (obj) =>
           ((obj.riverSeaRisk?.title === 'Low risk' ||
-            obj.riverSeaRisk?.title === 'Very low risk' ||
-            obj.riverSeaRisk?.title === 'Unavailable') &&
-            (obj.groundWaterRisk?.title === 'Unlikely' ||
-            obj.groundWaterRisk?.title === 'Unavailable')
+            obj.riverSeaRisk?.title === 'Very low risk') &&
+            (obj.groundWaterRisk?.title === 'Unlikely')
           ) &&
           obj.additionals.other?.alertTypes?.length === 0
       ).length
       count.push(lowRisk)
-      message.push('at low or unknown flood risk')
+      message.push('potentially at flood risk')
     } else if (type === 'noContacts') {
       heading[0] = 'Locations not linked to contacts'
       count.push(
@@ -203,7 +203,9 @@ export default function DashboardHeader ({
                 (item) =>
                   (item.riverSeaRisk?.title === 'Medium risk' ||
                     item.riverSeaRisk?.title === 'High risk' ||
-                    item.groundWaterRisk?.title === 'Possible') &&
+                    item.riverSeaRisk?.title === 'Unavailable' ||
+                    item.groundWaterRisk?.title === 'Possible' ||
+                    item.groundWaterRisk?.title === 'Unavailable') &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
@@ -222,16 +224,16 @@ export default function DashboardHeader ({
                 (item) =>
                   (item.riverSeaRisk?.title === 'Medium risk' ||
                     item.riverSeaRisk?.title === 'High risk' ||
-                    item.groundWaterRisk?.title === 'Possible') &&
+                    item.riverSeaRisk?.title === 'Unavailable' ||
+                    item.groundWaterRisk?.title === 'Possible' ||
+                    item.groundWaterRisk?.title === 'Unavailable') &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 &&
                 locations.filter(
                   (item) =>
                     ((item.riverSeaRisk?.title === 'Low risk' ||
-                      item.riverSeaRisk?.title === 'Very low risk' ||
-                      item.riverSeaRisk?.title === 'Unavailable') &&
-                      (item.groundWaterRisk?.title === 'Unlikely' ||
-                      item.groundWaterRisk?.title === 'Unavailable')
+                      item.riverSeaRisk?.title === 'Very low risk') &&
+                      (item.groundWaterRisk?.title === 'Unlikely')
                     ) &&
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0 && (
@@ -244,10 +246,8 @@ export default function DashboardHeader ({
               {locations.filter(
                 (item) =>
                   ((item.riverSeaRisk?.title === 'Low risk' ||
-                    item.riverSeaRisk?.title === 'Very low risk' ||
-                    item.riverSeaRisk?.title === 'Unavailable') &&
-                    (item.groundWaterRisk?.title === 'Unlikely' ||
-                    item.groundWaterRisk?.title === 'Unavailable')
+                    item.riverSeaRisk?.title === 'Very low risk') &&
+                    (item.groundWaterRisk?.title === 'Unlikely')
                   ) &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
@@ -342,16 +342,16 @@ export default function DashboardHeader ({
                   (item) =>
                     (item.riverSeaRisk?.title === 'Medium risk' ||
                     item.riverSeaRisk?.title === 'High risk' ||
-                    item.groundWaterRisk?.title === 'Possible') &&
+                    item.riverSeaRisk?.title === 'Unavailable' ||
+                    item.groundWaterRisk?.title === 'Possible' ||
+                    item.groundWaterRisk?.title === 'Unavailable') &&
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0 ||
                 locations.filter(
                   (item) =>
                     ((item.riverSeaRisk?.title === 'Low risk' ||
-                      item.riverSeaRisk?.title === 'Very low risk' ||
-                      item.riverSeaRisk?.title === 'Unavailable') &&
-                      (item.groundWaterRisk?.title === 'Unlikely' ||
-                      item.groundWaterRisk?.title === 'Unavailable')
+                      item.riverSeaRisk?.title === 'Very low risk') &&
+                      (item.groundWaterRisk?.title === 'Unlikely')
                     ) &&
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0) && <FloodBanner type='noFloodMessages' />}

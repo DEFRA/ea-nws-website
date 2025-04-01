@@ -519,27 +519,27 @@ export default function ViewLocationsDashboardPage () {
       updatedFilteredLocations = locations.filter(
         (location) =>
           (location.riverSeaRisk?.title === 'Medium risk' ||
-            location.riverSeaRisk?.title === 'High risk' ||
-            location.groundWaterRisk?.title === 'Possible') &&
+          location.riverSeaRisk?.title === 'High risk' ||
+          location.riverSeaRisk?.title === 'Unavailable' ||
+          location.groundWaterRisk?.title === 'Possible' ||
+          location.groundWaterRisk?.title === 'Unavailable') &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedGroundWaterRiskFilters(['Possible'])
-      setSelectedRiverSeaRiskFilters(['Medium risk', 'High risk'])
+      setSelectedGroundWaterRiskFilters(['Possible', 'Unavailable'])
+      setSelectedRiverSeaRiskFilters(['Medium risk', 'High risk', 'Unavailable'])
       setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'low-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
           ((location.riverSeaRisk?.title === 'Low risk' ||
-            location.riverSeaRisk?.title === 'Very low risk' ||
-            location.riverSeaRisk?.title === 'Unavailable') &&
-            (location.groundWaterRisk?.title === 'Unlikely' ||
-            location.groundWaterRisk?.title === 'Unavailable')
+            location.riverSeaRisk?.title === 'Very low risk') &&
+            (location.groundWaterRisk?.title === 'Unlikely')
           ) &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedGroundWaterRiskFilters(['Possible', 'Very low risk', 'Unavailable'])
-      setSelectedRiverSeaRiskFilters(['Unlikely', 'Unavailable'])
+      setSelectedGroundWaterRiskFilters(['Possible', 'Very low risk'])
+      setSelectedRiverSeaRiskFilters(['Unlikely'])
       setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {

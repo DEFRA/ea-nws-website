@@ -5,7 +5,6 @@ const {
 const {
   getJsonData,
   addInvLocation,
-  addLocation,
   addLocations
 } = require('../../services/elasticache')
 const {
@@ -53,6 +52,7 @@ module.exports = [
                 'location/create'
               )
               if (response.data.location) {
+                // Register locations
                 const registerData = {
                   authToken,
                   locationId: response.data.location.id,
@@ -64,13 +64,10 @@ module.exports = [
                     channelMobileAppEnabled: true,
                     partnerCanView: true,
                     partnerCanEdit: true,
-                    alertTypes: [
-                      'ALERT_LVL_1',
-                      'ALERT_LVL_2',
-                      'ALERT_LVL_3'
-                    ]
+                    alertTypes: JSON.parse(location?.additionals?.filter((additional) => additional.id === 'other')[0]?.value?.s)?.alertTypes || []
                   }
                 }
+
                 await apiCall(
                   registerData,
                   'location/registerToPartner'

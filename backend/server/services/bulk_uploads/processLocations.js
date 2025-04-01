@@ -8,6 +8,26 @@ const { findTAs, getRiversAndSeaFloodRiskRatingOfLocation, getGroundwaterFloodRi
 const convertToPois = (locations) => {
   const pois = []
   locations.forEach((location) => {
+
+    // Set alert types
+    const alertTypes = []
+    const categoryToType = (type) => {
+      const typeMap = {
+        'Flood Warning': 'warning',
+        'Flood Warning Groundwater': 'warning',
+        'Flood Warning Rapid Response': 'warning',
+        'Flood Alert': 'alert',
+        'Flood Alert Groundwater': 'alert'
+      }
+      return typeMap[type] || []
+    }
+    location.targetAreas?.some((area) => categoryToType(area.category) === 'warning') &&
+      alertTypes.push('ALERT_LVL_1') &&
+      alertTypes.push('ALERT_LVL_2')
+
+    location.targetAreas?.some((area) => categoryToType(area.category) === 'alert') &&
+      alertTypes.push('ALERT_LVL_3')
+
     const poi = {
       name: null,
       address: location.address,
@@ -32,7 +52,7 @@ const convertToPois = (locations) => {
               action_plan: location.Action_plan,
               notes: location.Notes,
               location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+              alertTypes: alertTypes,
               targetAreas: location.targetAreas,
               riverSeaRisk: location.riverSeaRisk,
               groundWaterRisk: location.groundWaterRisk

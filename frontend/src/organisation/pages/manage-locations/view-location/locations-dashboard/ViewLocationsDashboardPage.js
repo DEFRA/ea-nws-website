@@ -500,7 +500,9 @@ export default function ViewLocationsDashboardPage () {
 
     if (type === 'messages') {
       updatedFilteredLocations = locations.filter(
-        (location) => location.additionals.other?.alertTypes?.length > 0
+        (location) => 
+          location.additionals.other?.alertTypes?.length > 0 &&
+          location.within === true
       )
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
@@ -508,26 +510,37 @@ export default function ViewLocationsDashboardPage () {
       updatedFilteredLocations = locations.filter(
         (location) =>
           location.additionals.other?.childrenIDs?.length > 0 &&
-          location.additionals.other?.alertTypes?.length > 0
+          location.additionals.other?.alertTypes?.length > 0 &&
+          location.within !== true
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedLinkedFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'high-medium-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
           (location.riverSeaRisk?.title === 'Medium risk' ||
-            location.riverSeaRisk?.title === 'High risk') &&
+          location.riverSeaRisk?.title === 'High risk' ||
+          location.riverSeaRisk?.title === 'Unavailable' ||
+          location.groundWaterRisk?.title === 'Possible' ||
+          location.groundWaterRisk?.title === 'Unavailable') &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedGroundWaterRiskFilters(['Possible', 'Unavailable'])
+      setSelectedRiverSeaRiskFilters(['Medium risk', 'High risk', 'Unavailable'])
+      setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'low-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
-          location.riverSeaRisk?.title === 'Low risk' &&
+          ((location.riverSeaRisk?.title === 'Low risk' ||
+            location.riverSeaRisk?.title === 'Very low risk') &&
+            (location.groundWaterRisk?.title === 'Unlikely')
+          ) &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedGroundWaterRiskFilters(['Possible', 'Very low risk'])
+      setSelectedRiverSeaRiskFilters(['Unlikely'])
+      setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
       updatedFilteredLocations = locations.filter(

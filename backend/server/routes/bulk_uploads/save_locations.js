@@ -60,11 +60,7 @@ module.exports = [
                   channelMobileAppEnabled: true,
                   partnerCanView: true,
                   partnerCanEdit: true,
-                  alertTypes: [
-                    'ALERT_LVL_1',
-                    'ALERT_LVL_2',
-                    'ALERT_LVL_3'
-                  ]
+                  alertTypes: JSON.parse(location?.additionals?.filter((additional) => additional.id === 'other')[0]?.value?.s)?.alertTypes || []
                 }
               }
 

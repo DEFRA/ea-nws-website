@@ -5,12 +5,14 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
+import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
   setNotFoundLocations,
   setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import { getFloodAreas, getFloodAreasFromShape, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../../common/services/WfsFloodDataService'
 import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
@@ -75,8 +77,55 @@ export default function DuplicateLocationComparisonPage () {
     } else {
       // update location then navigate
       if (existingOrNew === 'New') {
-        // set default alert types of the new location incase not already set
-        newLocation.additionals.other.alertTypes = ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+        if (newLocation.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+          const TAs = await getFloodAreas(newLocation.coordinates.latitude, newLocation.coordinates.longitude)
+          newLocation.additionals.other.targetAreas = []
+          TAs.forEach((area) => {
+            newLocation.additionals.other.targetAreas.push({
+              TA_CODE: area.properties?.TA_CODE,
+              TA_Name: area.properties?.TA_Name,
+              category: area.properties?.category
+            })
+          })
+          newLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newLocation.coordinates.latitude, newLocation.coordinates.longitude)
+          newLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newLocation.coordinates.latitude, newLocation.coordinates.longitude)
+        } else if (newLocation?.geometry?.geoJson) {
+          const TAs = await getFloodAreasFromShape(newLocation?.geometry?.geoJson)
+          newLocation.additionals.other.targetAreas = []
+          TAs.forEach((area) => {
+            newLocation.additionals.other.targetAreas.push({
+              TA_CODE: area.properties?.TA_CODE,
+              TA_Name: area.properties?.TA_Name,
+              category: area.properties?.category
+            })
+          })
+          newLocation.additionals.other.riverSeaRisk = 'unavailable'
+          newLocation.additionals.other.groundWaterRisk = 'unavailable'
+        } else {
+          newLocation.additionals.other.targetAreas = []
+          newLocation.additionals.other.riverSeaRisk = 'unavailable'
+          newLocation.additionals.other.groundWaterRisk = 'unavailable'
+        }
+    
+        // Set alert types
+        newLocation.additionals.other.alertTypes = []
+        const categoryToType = (type) => {
+          const typeMap = {
+            'Flood Warning': 'warning',
+            'Flood Warning Groundwater': 'warning',
+            'Flood Warning Rapid Response': 'warning',
+            'Flood Alert': 'alert',
+            'Flood Alert Groundwater': 'alert'
+          }
+          return typeMap[type] || []
+        }
+        newLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
+          newLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
+          newLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+    
+        newLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
+          newLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+        
         const locationToUpdate = webToGeoSafeLocation(JSON.parse(JSON.stringify(newLocation)))
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id
@@ -94,7 +143,7 @@ export default function DuplicateLocationComparisonPage () {
             channelMobileAppEnabled: true,
             partnerCanView: true,
             partnerCanEdit: true,
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: newLocation.additionals.other.alertTypes
           }
         }
 

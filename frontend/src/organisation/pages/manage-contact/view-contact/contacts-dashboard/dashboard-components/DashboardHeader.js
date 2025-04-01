@@ -84,15 +84,6 @@ export default function DashboardHeader ({
             </>
           )}
         </div>
-
-        <p className='govuk-!-margin-top-2'>
-          {type === 'notLinked' && (
-            <Details
-              title='Linking locations to contacts so that they can get flood messages'
-              text={noContactsDetails}
-            />
-          )}
-        </p>
       </div>
     )
   }
@@ -134,8 +125,18 @@ export default function DashboardHeader ({
                 {contacts.filter((item) => item.linked_locations?.length > 0)
                   .length > 0 && <ContactsBanner type='linked' />}
                 {contacts.filter((item) => item.linked_locations?.length === 0)
-                  .length > 0 && <ContactsBanner type='notLinked' />}
+                  .length > 0 && 
+                  <div style={{width: '100%'}}>
+                    <ContactsBanner type='notLinked' />
+                    <div className='govuk-!-margin-top-2'>
+                      <Details
+                        title='Linking locations to contacts so that they can get flood messages'
+                        text={noContactsDetails} />
+                      </div>
+                  </div>
+                }
               </div>
+              
             </>
             )
           : (

@@ -696,9 +696,7 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
     }
   } else {
     await setJsonData(organization.id + ':org_data', organization)
-    for (const location of locations) {
-      await addLocations(organization.id, [location])
-    }
+    await addLocations(organization.id, locations)
     for (const contact of contacts) {
       await addContact(organization.id, contact)
     }

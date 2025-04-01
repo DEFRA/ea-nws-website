@@ -13,7 +13,8 @@ export default function DashboardHeader ({
   linkContacts,
   selectedLocations,
   onOnlyShowSelected,
-  linkSource
+  linkSource,
+  setErrorMessage
 }) {
   const navigate = useNavigate()
 
@@ -292,13 +293,6 @@ export default function DashboardHeader ({
               Link these locations to nearby flood areas to get flood messages
             </Link>
           )}
-          {type === 'noContacts' && (
-            <Details
-              // TODO: Reduce text font to match others
-              title='Linking locations to contacts so that they can get flood messages'
-              text={noContactsDetails}
-            />
-          )}
         </p>
       </div>
     )
@@ -356,7 +350,17 @@ export default function DashboardHeader ({
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0) && <FloodBanner type='noFloodMessages' />}
                 {locations.filter((item) => item.linked_contacts?.length === 0)
-                  .length > 0 && <FloodBanner type='noContacts' />}
+                  .length > 0 && 
+                  <div style={{width: '100%'}}>
+                    <FloodBanner type='noContacts' />
+                    <div style={{paddingLeft: '0.5rem'}}>
+                      <Details
+                        title='Linking locations to contacts so that they can get flood messages'
+                        text={noContactsDetails}
+                      />
+                    </div>
+                  </div>
+                }
               </span>
 
               <div className='govuk-grid-column-one-half'>
@@ -378,6 +382,7 @@ export default function DashboardHeader ({
                 selectedLocations={selectedLocations}
                 onOnlyShowSelected={onOnlyShowSelected}
                 linkSource={linkSource}
+                setErrorMessage={setErrorMessage}
               />
             </>
             )}

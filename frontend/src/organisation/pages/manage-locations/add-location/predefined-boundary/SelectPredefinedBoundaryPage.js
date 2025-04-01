@@ -197,8 +197,7 @@ export default function SelectPredefinedBoundaryPage () {
         dispatch(setCurrentLocation(data))
         dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
         dispatch(setPredefinedBoundaryFlow(true))
-        // TODO: This needs to navigate to optional info page once it has been developed
-        navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+        navigate(orgManageLocationsUrls.add.optionalInformation.optionalInfo)
       }
     }
   }

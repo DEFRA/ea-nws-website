@@ -757,7 +757,7 @@ export default function LiveMap({
                           }
                           style={{ flex: 1 }}
                         >
-                          {location.properties.floodData.name}
+                          {location.locationData.additionals.locationName}
                         </Link>
                       </div>
                     ))}

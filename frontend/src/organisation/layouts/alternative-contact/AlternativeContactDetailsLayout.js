@@ -50,18 +50,19 @@ export default function AlternativeContactDetailsLayout ({
       'mobileAndLandline'
     )
 
-    const dataToSend = { email }
-    const { errorMessage } = await backendCall(
-      dataToSend,
-      'api/sign_up_start',
-      navigate
-    )
+    // const dataToSend = { email }
+    // const { errorMessage } = await backendCall(
+    //   dataToSend,
+    //   'api/sign_up_start',
+    //   navigate
+    // )
 
-    if (errorMessage === 'email already registered') {
-      setErrorEmail(
-        'The email address you entered is already being used. Enter a different email address.'
-      )
-    } else if (
+    // if (errorMessage === 'email already registered') {
+    //   setErrorEmail(
+    //     'The email address you entered is already being used. Enter a different email address.'
+    //   )
+    // } else if (
+    if (
       fullNameValidationError !== '' ||
       emailValidationError !== '' ||
       telephoneValidationError !== ''

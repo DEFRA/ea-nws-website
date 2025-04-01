@@ -98,7 +98,7 @@ const getCSV = async (fileName) => {
 
 const addFloodData = async (locations) => {
   // find and set the taget areas for valid bulk uploads (invalid might not have coords)
-  await Promise.all(locations?.valid.map(async (location) => {
+  await Promise.all(locations?.map(async (location) => {
     const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
     location.targetAreas = []
     TAs.forEach((area) => {
@@ -111,23 +111,7 @@ const addFloodData = async (locations) => {
     location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
     location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
   }))
-
-  await Promise.all(locations?.invalid.map(async (location) => {
-    if (location?.coordinates) {
-      const TAs = await findTAs(location.coordinates.longitude, location.coordinates.latitude)
-      location.targetAreas = []
-      TAs.forEach((area) => {
-        location.targetAreas.push({
-          TA_CODE: area.properties?.TA_CODE,
-          TA_Name: area.properties?.TA_Name,
-          category: area.properties?.category
-        })
-      })
-      location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
-      location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
-    }
-  }))
-
+  
   return { data: locations }
 }
 

@@ -14,6 +14,7 @@ export default function LinkLocationToContactPage () {
   const dispatch = useDispatch()
 
   const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
+  const predefinedBoundaryFlow = useSelector((state) => state.session.predefinedBoundaryFlow)
 
   const linkToContacts = (event) => {
     event.preventDefault()
@@ -24,6 +25,16 @@ export default function LinkLocationToContactPage () {
         linkLocations, linkSource: 'info'
       }
     })
+  }
+
+  const navigateSkip = (event) => {
+    event.preventDefault()
+
+    if (predefinedBoundaryFlow) {
+      navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
+    } else {
+      navigate(orgManageLocationsUrls.view.dashboard)
+    }
   }
 
   const navigateBack = (event) => {
@@ -55,8 +66,8 @@ export default function LinkLocationToContactPage () {
               />
               &nbsp; &nbsp;
               <Link
-                to={orgManageLocationsUrls.view.dashboard}
                 className='govuk-link inline-link'
+                onClick={navigateSkip}
               >
                 I'll do this later
               </Link>

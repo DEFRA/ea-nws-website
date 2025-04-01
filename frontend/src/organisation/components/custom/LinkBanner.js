@@ -25,6 +25,7 @@ export default function LinkBanner ({
     useSelector((state) => state.session.currentLocation)
   )
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
+  const predefinedBoundaryFlow = useSelector((state) => state.session.predefinedBoundaryFlow)
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
 
   const getSuccessMessage = () => {
@@ -34,7 +35,7 @@ export default function LinkBanner ({
       if (linkLocations.length > 1) {
         afterText = linkLocations.length + ' locations'
       } else if (currentLocation) {
-        if (linkSource === 'dashboard') {
+        if (predefinedBoundaryFlow || linkSource === 'dashboard') {
           afterText = currentLocation.additionals.locationName
         } else {
           afterText = 'this location'
@@ -130,7 +131,13 @@ export default function LinkBanner ({
       setErrorMessage('')
       const successMessage = getSuccessMessage()
       if (linkLocations) {
-        if (linkSource === 'dashboard') {
+        if (predefinedBoundaryFlow) {
+          navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother, {
+            state: {
+              successMessage
+            }
+          })
+        } else if (linkSource === 'dashboard') {
           navigate(orgManageLocationsUrls.view.dashboard, {
             state: {
               successMessage
@@ -145,6 +152,7 @@ export default function LinkBanner ({
         }
       } else if (linkContacts) {
         if (linkSource === 'dashboard') {
+          // if ()
           navigate(orgManageContactsUrls.view.dashboard, {
             state: {
               successMessage

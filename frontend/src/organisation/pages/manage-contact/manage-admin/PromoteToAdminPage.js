@@ -12,7 +12,7 @@ export default function PromoteToAdminPage () {
   const navigate = useNavigate()
   const [selectedEmail, setSelectedEmail] = useState('')
 
-  const authToken = useSelector((state) => state.session.token)
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
@@ -50,21 +50,29 @@ export default function PromoteToAdminPage () {
   const handleSubmit = async () => {
     const updatedContact = { ...currentContact, pendingRole: 'Admin' }
 
-    const dataToSend = { authToken, orgId, contact: updatedContact }
-    const { data, errorMessage } = await backendCall(
-      dataToSend,
-      'api/organization/update_contact',
-      navigate
-    )
+    try {
+      const dataToSend = { authToken, orgId, contact: updatedContact }
+      const { data, errorMessage } = await backendCall(
+        dataToSend,
+        'api/organization/update_contact',
+        navigate
+      )
 
-    navigate(orgManageContactsUrls.view.dashboard, {
-      state: {
-        successMessage: [
-          `Email invitation sent to ${selectedEmail}`,
-          "They'll be a pending admin until they accept the invitation and confirm their email address. Invitation is valid for 72 hours."
-        ]
+      if (errorMessage) {
+        throw new Error(errorMessage)
       }
-    })
+
+      navigate(orgManageContactsUrls.view.dashboard, {
+        state: {
+          successMessage: [
+            `Email invitation sent to ${selectedEmail}`,
+            "They'll be a pending admin until they accept the invitation and confirm their email address. Invitation is valid for 72 hours."
+          ]
+        }
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (

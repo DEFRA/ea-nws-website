@@ -7,7 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function WithdrawInvitePage() {
+export default function WithdrawInvitePage () {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -23,7 +23,6 @@ export default function WithdrawInvitePage() {
 
     try {
       const dataToSend = { authToken, orgId, contact: updatedContact }
-      console.log(dataToSend)
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/organization/update_contact',

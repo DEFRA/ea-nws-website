@@ -33,7 +33,7 @@ import { geoSafeToWebLocation } from '../../../../../../common/services/formatte
 import { createLiveMapShapePattern } from '../../../../../components/custom/FloodAreaPatterns'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LiveMap ({
+export default function LiveMap({
   showSevereLocations,
   showWarningLocations,
   showAlertLocations,
@@ -46,6 +46,9 @@ export default function LiveMap ({
   const [apiKey, setApiKey] = useState(null)
   const [loading, setLoading] = useState(true)
   const [zoomLevel, setZoomLevel] = useState(null)
+
+  //tracking locations affected
+  const [locationsAffected, setLocationsAffected] = useState([])
 
   // shapes and boundarys
   const [shapes, setShapes] = useState([])
@@ -70,6 +73,7 @@ export default function LiveMap ({
 
   useEffect(() => {
     onFloodAreasUpdate({
+      locationsAffected: [...new Set(locationsAffected)].length,
       severeFloodAreasAmount: severeFloodAreas.length,
       warningFloodAreasAmount: warningFloodAreas.length,
       alertFloodAreasAmount: alertFloodAreas.length
@@ -93,6 +97,7 @@ export default function LiveMap ({
     setAlertPoints([])
     setAlertFloodAreas([])
     setShapes([])
+    setLocationsAffected([])
 
     // get orgs locations
     const { data: locationsData, errorMessage } = await backendCall(
@@ -125,7 +130,6 @@ export default function LiveMap ({
         } else {
           feature = location.geometry.geoJson
         }
-
         locationsCollection.push(feature)
       })
 
@@ -162,20 +166,32 @@ export default function LiveMap ({
         'api/alert/list',
         navigate
       )
+
       if (!errorMessage) {
         // loop through live alerts - loop through all locations to find affected locations
-        for (const liveAlert of liveAlertsData?.alerts) {
+        const alertPromises = liveAlertsData?.alerts.map(async (liveAlert) => {
           const TA_CODE = getAdditional(
             liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
             'TA_CODE'
           )
           const severity = liveAlert.type
           const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
-          const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
-          for (const location of locations) {
-            processLocation(location, floodArea, severity, updatedTime)
-          }
+          return getFloodAreaByTaCode(TA_CODE).then((floodArea) => ({
+            floodArea,
+            severity,
+            updatedTime,
+            TA_CODE
+          }))
+        })
+
+        const alertResults = await Promise.all(alertPromises)
+
+        for (const { floodArea, severity, updatedTime, TA_CODE } of alertResults) {
+          const locationPromises = locations.map((location) =>
+            processLocation(location, floodArea, severity, updatedTime, TA_CODE)
+          )
+          await Promise.all(locationPromises)
         }
       }
     } else {
@@ -183,71 +199,52 @@ export default function LiveMap ({
     }
   }
 
-  const processLocation = (location, floodArea, severity, updatedTime) => {
+  const processLocation = (location, floodArea, severity, updatedTime, TA_CODE) => {
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type
+    let locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some((targetArea => targetArea.TA_CODE === TA_CODE))
 
-    // add required data to flood area point
-    const createPointWithProperties = (coords) => {
-      const point = convertDataToGeoJsonFeature('Point', coords)
-      const floodData = {
-        type: severity,
-        name: floodArea.properties.TA_Name,
-        code: floodArea.properties.TA_CODE,
-        updatedTime
-      }
+    if (!locationIntersectsWithFloodArea) return
 
-      return {
-        ...point,
-        properties: {
-          ...point.properties,
-          locationData: location,
-          floodData
-        }
-      }
-    }
+    setLocationsAffected((prevLoc) => [...prevLoc, location.id])
 
-    // for xy coord locations
-    const handleXYCoordinates = () => {
-      const point = createPointWithProperties([
-        coordinates.longitude,
-        coordinates.latitude
-      ])
-
-      if (turf.booleanIntersects(point, floodArea.geometry)) {
-        // for xycoord locations, we need to avoid overlapping warning icons on map
-        point.geometry.coordinates[0] = adjustCoords(
-          severity,
-          point.geometry.coordinates[0]
-        )
-
-        processFloodArea(severity, point, floodArea)
-      }
-    }
-
-    // for shapes or boundary's locations
-    const handleGeoJsonLocation = () => {
-      if (turf.booleanIntersects(geometry.geoJson, floodArea.geometry)) {
-        const point = createPointWithProperties([
-          floodArea.properties.longitude.replace(',', '.'),
-          floodArea.properties.latitude.replace(',', '.')
-        ])
-
-        geometry.geoJson.properties = {
-          ...geometry.geoJson.properties,
-          isShape: true
-        }
-
-        setShapes((prevShape) => [...prevShape, geometry.geoJson])
-        processFloodArea(severity, point, floodArea)
+    // create point with required data
+    // use exact location for x and y coord locations
+    // use the lat, lng given for the flood area for shape locations
+    const point = {
+      ...convertDataToGeoJsonFeature('Point', [
+        locationType === LocationDataType.X_AND_Y_COORDS
+          ? coordinates.longitude
+          : Number(floodArea.properties.longitude.replace(',', '.')),
+        locationType === LocationDataType.X_AND_Y_COORDS
+          ? coordinates.latitude
+          : Number(floodArea.properties.latitude.replace(',', '.'))
+      ]),
+      properties: {
+        floodData: {
+          type: severity,
+          name: floodArea.properties.TA_Name,
+          code: floodArea.properties.TA_CODE,
+          updatedTime
+        },
+        locationData: location
       }
     }
 
     if (locationType === LocationDataType.X_AND_Y_COORDS) {
-      handleXYCoordinates()
+      point.geometry.coordinates[0][0][0] = adjustCoords(
+        severity,
+        point.geometry.coordinates[0][0][0]
+      )
     } else {
-      handleGeoJsonLocation()
+      geometry.geoJson.properties = {
+        ...geometry.geoJson.properties,
+        isShape: true
+      }
+      setShapes((prevShape) => [...prevShape, geometry.geoJson])
     }
+
+    processFloodArea(severity, point, floodArea)
   }
 
   const processFloodArea = (severity, point, floodArea) => {
@@ -274,9 +271,9 @@ export default function LiveMap ({
       case AlertType.SEVERE_FLOOD_WARNING:
         return longitude
       case AlertType.FLOOD_WARNING:
-        return (parseFloat(longitude) - 0.003).toFixed(6)
+        return (Number((parseFloat(longitude) - 0.003).toFixed(6)))
       case AlertType.FLOOD_ALERT:
-        return (parseFloat(longitude) + 0.003).toFixed(6)
+        return (Number((parseFloat(longitude) + 0.003).toFixed(6)))
     }
   }
 
@@ -339,7 +336,7 @@ export default function LiveMap ({
     iconAnchor: [12, 41]
   }) */
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -393,7 +390,7 @@ export default function LiveMap ({
     () => (
       <TileLayer
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        attribution='© OpenStreetMap contributors'
+        attribution='� OpenStreetMap contributors'
       />
     ),
     []
@@ -523,7 +520,7 @@ export default function LiveMap ({
   }
 
   // locations affected list under map when there are less than 20 affected locations
-  const locationsAffected = [...severePoints, ...warningPoints, ...alertPoints]
+  const totalAlerts = [...severePoints, ...warningPoints, ...alertPoints]
 
   const getLocationsAffectedFloodIcon = (alertLevel) => {
     switch (alertLevel) {
@@ -591,15 +588,16 @@ export default function LiveMap ({
                     <Marker
                       key={index}
                       position={[
-                        alertPoint.geometry.coordinates[1],
-                        alertPoint.geometry.coordinates[0]
+                        alertPoint.geometry.coordinates[0][0][1],
+                        alertPoint.geometry.coordinates[0][0][0]
                       ]}
                       icon={floodAlertMarker}
                     >
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(alertPoint.properties)}
+                            viewFloodInformationData(alertPoint.properties)
+                          }
                         >
                           {
                             alertPoint.properties.locationData.additionals
@@ -629,15 +627,16 @@ export default function LiveMap ({
                     <Marker
                       key={index}
                       position={[
-                        warningPoint.geometry.coordinates[1],
-                        warningPoint.geometry.coordinates[0]
+                        warningPoint.geometry.coordinates[0][0][1],
+                        warningPoint.geometry.coordinates[0][0][0]
                       ]}
                       icon={floodWarningMarker}
                     >
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(warningPoint.properties)}
+                            viewFloodInformationData(warningPoint.properties)
+                          }
                         >
                           {
                             warningPoint.properties.locationData.additionals
@@ -667,15 +666,16 @@ export default function LiveMap ({
                     <Marker
                       key={index}
                       position={[
-                        severePoint.geometry.coordinates[1],
-                        severePoint.geometry.coordinates[0]
+                        severePoint.geometry.coordinates[0][0][1],
+                        severePoint.geometry.coordinates[0][0][0]
                       ]}
                       icon={floodSevereWarningMarker}
                     >
                       <Popup offset={[17, -20]}>
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(severePoint.properties)}
+                            viewFloodInformationData(severePoint.properties)
+                          }
                         >
                           {
                             severePoint.properties.locationData.additionals
@@ -707,16 +707,16 @@ export default function LiveMap ({
             ))}
           </MapContainer>
 
-          {locationsAffected.length > 0 && (
+          {totalAlerts.length > 0 && (
             <>
               <LiveMapKey /> <br />
             </>
           )}
 
-          {locationsAffected.length > 0 && locationsAffected.length <= 20 && (
+          {totalAlerts.length > 0 && totalAlerts.length <= 20 && (
             <>
               <h3 class='govuk-heading-s'>Locations affected</h3>
-              {locationsAffected
+              {totalAlerts
                 .reduce((rows, location, index) => {
                   if (index % 2 === 0) {
                     rows.push([location]) // Start a new row
@@ -753,10 +753,11 @@ export default function LiveMap ({
                         />
                         <Link
                           onClick={() =>
-                            viewFloodInformationData(location.properties)}
+                            viewFloodInformationData(location.properties)
+                          }
                           style={{ flex: 1 }}
                         >
-                          {location.properties.floodData.name}
+                          {location.locationData.additionals.locationName}
                         </Link>
                       </div>
                     ))}

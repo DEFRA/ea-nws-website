@@ -30,9 +30,9 @@ export default function LocationXYCoordinatesSearchLayout ({
   const currentYCoordinate = useSelector((state) =>
     getLocationOther(state, 'y_coordinate')
   )
-  const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')
+  const [xCoordinate, setXCoordinate] = useState(Math.trunc(currentXCoordinate) || '')
   const [xCoordinateError, setXCoordinateError] = useState('')
-  const [yCoordinate, setYCoordinate] = useState(currentYCoordinate || '')
+  const [yCoordinate, setYCoordinate] = useState(Math.trunc(currentYCoordinate) || '')
   const [yCoordinateError, setYCoordinateError] = useState('')
 
   useEffect(() => {

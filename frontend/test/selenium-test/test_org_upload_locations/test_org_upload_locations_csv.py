@@ -55,5 +55,5 @@ def test_empty_file(get_browser):
 #     file_input.send_keys(validFilePath)
 #     click_button(browser, "Upload", nextPage)
 
-#     assert "Scanning Upload" in browser.page_source
+#     assert "Scanning upload" in browser.page_source
 #     assert browser.current_url == nextPage

@@ -3,7 +3,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { processLocations } = require('../../services/bulk_uploads/processLocations')
+const { processLocations, addFloodData } = require('../../services/bulk_uploads/processLocations')
 const { scanResults } = require('../../services/bulk_uploads/scanResults')
 const { setJsonData, listLocationNames } = require('../../services/elasticache')
 
@@ -19,17 +19,18 @@ module.exports = [
           const fileName = request.payload.Message
           const orgId = request.payload.orgId
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
-          await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'working' })
+          await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'working' })
           const scanResult = await scanResults(request.payload.Message, 'csv-uploads')
           if (scanResult?.data?.scanComplete === true) {
             if (scanResult?.data?.scanResult === 'THREATS_FOUND') {
-              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
+              await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
             } else if (scanResult?.data?.scanResult === 'NO_THREATS_FOUND') {
-              await setJsonData(elasticacheKey, { stage: 'Processing', status: 'working' })
+              await setJsonData(elasticacheKey, { stage: 'Validating locations', status: 'working' })
               const response = await processLocations(request.payload.Message)
               if (response.errorMessage) {
-                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
+                await setJsonData(elasticacheKey, { stage: 'Validating locations', status: 'rejected', error: response.errorMessage })
               } else if (response.data) {
+                await setJsonData(elasticacheKey, { stage: response.data?.invalid?.length + response.data?.valid?.length + ' locations validated', status: 'working' })
                 // Check invalid locations for duplicates
                 const locationNames = await listLocationNames(orgId)
                 for (const location of response.data.invalid) {
@@ -59,15 +60,28 @@ module.exports = [
                     --i
                   }
                 }
-                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'complete', data: response.data })
+                await setJsonData(elasticacheKey, { stage: 'Associating flood data', status: 'working' })
+                const validWithData = []
+                const validLength = response.data?.valid?.length
+                let showProgress = false
+                validLength > 50 ? showProgress = true : showProgress = false
+                for (let i = 0; i < validLength; i += 25) {
+                  showProgress && setJsonData(elasticacheKey, { stage: `Associating flood data (${Math.round((i/validLength)*100)}%)`, status: 'working' })
+                  const chunk = response.data?.valid?.slice(i, i + 25)
+                  const chunkResult = await addFloodData(chunk)
+                  validWithData.push(...chunkResult.data)
+                }
+                response.data.valid = validWithData
+
+                await setJsonData(elasticacheKey, { stage: 'Associating flood data', status: 'complete', data: response.data })
               } else {
-                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Unknown error' }] })
+                await setJsonData(elasticacheKey, { stage: 'Validating locations', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Unknown error' }] })
               }
             } else {
-              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
+              await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
             }
           } else {
-            await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
+            await setJsonData(elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
           }
 
           return h.response({ status: 200 })

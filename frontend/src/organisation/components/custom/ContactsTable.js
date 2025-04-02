@@ -155,6 +155,14 @@ export default function ContactsTable ({
     navigate(orgManageContactsUrls.view.viewContact)
   }
 
+  const LoadingDots = (
+    <div className='loading-dots'>
+      <span className='dot one'>.</span>
+      <span className='dot two'>.</span>
+      <span className='dot three'>.</span>
+    </div>
+  )
+
   return (
     <>
       <p className='govuk-!-margin-bottom-6 contacts-table-panel'>
@@ -292,10 +300,10 @@ export default function ContactsTable ({
               </td>
               <td className='govuk-table__cell'>{contact.emails[0]}</td>
               <td className='govuk-table__cell'>
-                {contact.linked_locations?.length}
+                {contact.linked_locations?.length !== undefined ? contact.linked_locations?.length : LoadingDots}
               </td>
               <td className='govuk-table__cell'>
-                {contact.message_count}
+                {contact.message_count !== undefined ? contact.message_count : LoadingDots}
               </td>
               <td className='govuk-table__cell'>
                 <Link className='govuk-link' onClick={(e) => onAction(e, actionText, contact)}>

@@ -128,7 +128,7 @@ export default function LocationNotInFloodAreaPage () {
             />
             &nbsp; &nbsp;
             <Link
-              onClick={(e) => {onSkipLink(e)}}
+              onClick={(e) => { onSkipLink(e) }}
               className='govuk-link inline-link'
             >
               I'll do this later

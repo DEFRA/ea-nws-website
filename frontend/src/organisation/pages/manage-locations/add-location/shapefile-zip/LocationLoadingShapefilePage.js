@@ -20,7 +20,7 @@ export default function LocationLoadingShapefilePage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [status, setStatus] = useState('')
-  const [stage, setStage] = useState('Scanning Upload')
+  const [stage, setStage] = useState('Scanning upload')
   const [geojsonData, setGeojsonData] = useState(null)
   const location = useLocation()
   const orgId = useSelector((state) => state.session.orgId)

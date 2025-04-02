@@ -10,17 +10,16 @@ const {
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/bulk_uploads/process_status',
+    path: '/api/org_signin_status',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { fileName } = request.payload
+        const { authToken } = request.payload
 
-        if (fileName) {
-          const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
-
+        if (authToken) {
+          const elasticacheKey = 'signin_status:' + authToken
           const result = await getJsonData(elasticacheKey)
           if (result) {
             return h.response({ status: 200, data: result })

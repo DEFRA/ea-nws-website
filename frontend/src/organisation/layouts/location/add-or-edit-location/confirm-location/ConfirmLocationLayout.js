@@ -171,21 +171,20 @@ export default function ConfirmLocationLayout ({
           : dispatch(setNotFoundLocations(notFoundLocations - 1))
       }
 
-      if (
-        flow?.includes('not-found') &&
-        notFoundLocations - 1 === 0 &&
-        notInEnglandLocations > 0
-      ) {
-        // Find locations not in England
-        navigate(
-          orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
-        )
+      if (flow?.includes('not-found') && notFoundLocations - 1 === 0) {
+        if (notInEnglandLocations > 0) {
+          // Find locations not in England
+          navigate(
+            orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
+          )
+        } else {
+          navigate(orgManageLocationsUrls.add.contactLinkInfo)
+        }
       } else if (
         flow?.includes('not-in-england') &&
         notInEnglandLocations - 1 === 0
       ) {
-        // TODO: Navigate to correct page once created
-        navigate(orgManageLocationsUrls.view.dashboard)
+        navigate(orgManageLocationsUrls.add.contactLinkInfo)
       } else {
         navigateToNextPage()
       }

@@ -12,7 +12,7 @@ export default function PromoteToAdminPage () {
   const navigate = useNavigate()
   const [selectedEmail, setSelectedEmail] = useState('')
 
-  const authToken = useSelector((state) => state.session.token)
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)

@@ -10,6 +10,7 @@ import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/Edi
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
 import PendingAdminsPage from '../../pages/manage-contact/manage-admin/pending-admins/PendingAdminsPage'
 import ResendInvitePage from '../../pages/manage-contact/manage-admin/pending-admins/ResendInvitePage'
+import WithdrawInvitePage from '../../pages/manage-contact/manage-admin/pending-admins/WithdrawInvitePage'
 import PromoteToAdminPage from '../../pages/manage-contact/manage-admin/PromoteToAdminPage'
 import RemoveAdminPage from '../../pages/manage-contact/manage-admin/RemoveAdminPage'
 import ViewUsersDashboardPage from '../../pages/manage-contact/view-user/users-dashboard/ViewUsersDashboardPage'
@@ -44,7 +45,8 @@ const orgManageContactsUrls = {
     promote: urlManageContactsOrg + '/promote-contact',
     remove: urlManageContactsOrg + '/remove-admin',
     pendingInvites: urlManageContactsOrg + '/pending-admins',
-    resendInvite: urlManageContactsOrg + '/resend-invite'
+    resendInvite: urlManageContactsOrg + '/resend-invite',
+    withdrawInvite: urlManageContactsOrg + '/withdraw-invite'
   }
 }
 
@@ -115,15 +117,18 @@ const orgManageContactsRoutes = [
     path: orgManageContactsUrls.admin.remove,
     component: <RemoveAdminPage />
   },
-  // Pending Admin Invitations
+  // Admin Invitation Links
   {
     path: orgManageContactsUrls.admin.pendingInvites,
     component: <PendingAdminsPage />
   },
-  // Resend Admin Invitation
   {
     path: orgManageContactsUrls.admin.resendInvite,
     component: <ResendInvitePage />
+  },
+  {
+    path: orgManageContactsUrls.admin.withdrawInvite,
+    component: <WithdrawInvitePage />
   }
 ]
 

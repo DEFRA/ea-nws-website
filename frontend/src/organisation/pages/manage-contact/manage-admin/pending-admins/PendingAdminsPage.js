@@ -9,7 +9,7 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { webToGeoSafeContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PendingAdminsPage () {
+export default function PendingAdminsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -74,8 +74,6 @@ export default function PendingAdminsPage () {
     })
   }
 
-  const handleWithdraw = () => {}
-
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
@@ -122,7 +120,8 @@ export default function PendingAdminsPage () {
                   <button
                     type='button'
                     onClick={() =>
-                      sortData(statusSort, setStatusSort, 'status')}
+                      sortData(statusSort, setStatusSort, 'status')
+                    }
                   >
                     Invitation status
                   </button>
@@ -144,17 +143,15 @@ export default function PendingAdminsPage () {
                     </Link>{' '}
                   </td>
                   <td className='govuk-table__cell'>
-                    {admin.inviteStatus === 'Expired'
-                      ? (
-                        <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
-                          Expired
-                        </strong>
-                        )
-                      : (
-                        <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
-                          Active
-                        </strong>
-                        )}
+                    {admin.inviteStatus === 'Expired' ? (
+                      <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
+                        Expired
+                      </strong>
+                    ) : (
+                      <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+                        Active
+                      </strong>
+                    )}
                   </td>
                   <td className='govuk-table__cell'>
                     <Link
@@ -166,7 +163,11 @@ export default function PendingAdminsPage () {
                     </Link>
                   </td>
                   <td className='govuk-table__cell'>
-                    <Link className='govuk-link' onClick={handleWithdraw}>
+                    <Link
+                      className='govuk-link'
+                      to={orgManageContactsUrls.admin.withdrawInvite}
+                      state={{ pendingAdmin: admin }}
+                    >
                       Withdraw invitation
                     </Link>
                   </td>

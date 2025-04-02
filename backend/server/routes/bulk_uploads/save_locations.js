@@ -80,16 +80,17 @@ module.exports = [
             }))
 
             await addLocations(orgId, geosafeLocations)
-
           }
-          
+
           for (let i = 0; i < invalid.length; i += 25) {
-            const chunk = valid.slice(i, i + 25)
+            const chunk = invalid.slice(i, i + 25)
             // Add invalid just to elasticache
-            await Promise.all(chunk.map(async (location) => {
-              location.id = uuidv4()
-              await addInvLocation(orgId, location)
-            }))
+            await Promise.all(
+              chunk.map(async (location) => {
+                location.id = uuidv4()
+                await addInvLocation(orgId, location)
+              })
+            )
           }
 
           const invalidReasons = {

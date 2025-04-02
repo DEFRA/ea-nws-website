@@ -10,7 +10,7 @@ import { setProfile } from '../../../common/redux/userSlice'
 import { addAccountName } from '../../../common/services/ProfileServices'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
-export default function AddAccountNameLayout ({
+export default function AddAccountNameLayout({
   navigateToNextPage,
   NavigateToPreviousPage,
   buttonText,
@@ -35,7 +35,7 @@ export default function AddAccountNameLayout ({
     setError(validationError)
 
     if (validationError === '') {
-      // Split the full name into first name and last name assuming they are separeted by a space.
+      // Split the full name into first name and last name assuming they are separated by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')
       const lastname = lastnameParts.join(' ')
@@ -60,12 +60,14 @@ export default function AddAccountNameLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            {location?.state?.banner && <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              heading={location?.state?.banner?.heading}
-              text={location?.state?.banner?.text}
-                                        />}
+            {location?.state?.banner && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                heading={location?.state?.banner?.heading}
+                text={location?.state?.banner?.text}
+              />
+            )}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>

@@ -61,8 +61,19 @@ module.exports = [
                   }
                 }
                 await setJsonData(elasticacheKey, { stage: 'Associating flood data', status: 'working' })
-                const finalResult = await addFloodData(response.data)
-                await setJsonData(elasticacheKey, { stage: 'Associating flood data', status: 'complete', data: finalResult.data })
+                const validWithData = []
+                const validLength = response.data?.valid?.length
+                let showProgress = false
+                validLength > 50 ? showProgress = true : showProgress = false
+                for (let i = 0; i < validLength; i += 25) {
+                  showProgress && setJsonData(elasticacheKey, { stage: `Associating flood data (${Math.round((i/validLength)*100)}%)`, status: 'working' })
+                  const chunk = response.data?.valid?.slice(i, i + 25)
+                  const chunkResult = await addFloodData(chunk)
+                  validWithData.push(...chunkResult.data)
+                }
+                response.data.valid = validWithData
+
+                await setJsonData(elasticacheKey, { stage: 'Associating flood data', status: 'complete', data: response.data })
               } else {
                 await setJsonData(elasticacheKey, { stage: 'Validating locations', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Unknown error' }] })
               }

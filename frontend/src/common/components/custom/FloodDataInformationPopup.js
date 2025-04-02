@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
@@ -10,6 +10,7 @@ import { setCurrentLocation } from '../../redux/userSlice'
 import { webToGeoSafeLocation } from '../../services/formatters/LocationFormatter'
 import Button from '../gov-uk/Button'
 import ServiceNavigation from '../gov-uk/ServiceNavigation'
+import { backendCall } from '../../services/BackendService'
 
 export default function FloodDataInformationPopup ({
   locationsFloodInformation,
@@ -17,6 +18,20 @@ export default function FloodDataInformationPopup ({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const [servicePhase, setServicePhase] = useState(false)
+
+  async function getServicePhase () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_service_phase'
+    )
+    setServicePhase(data)
+  }
+
+  useEffect(() => {
+    getServicePhase()
+  }, [])
 
   const FLOOD_WARNING_CONFIG = {
     [AlertType.SEVERE_FLOOD_WARNING]: {
@@ -90,12 +105,34 @@ export default function FloodDataInformationPopup ({
     )
   }
 
-  const FloodAreaLink = ({ code, linkText }) => (
+  const getFloodLink = (code, type) => {
+    let floodLink = ''
+
+    if (servicePhase === 'beta') {
+      switch (type) {
+        case AlertType.SEVERE_FLOOD_WARNING:
+          floodLink = '/private-beta/flood-severe-warning'
+          break
+        case AlertType.FLOOD_WARNING:
+          floodLink = '/private-beta/flood-warning'
+          break
+      case AlertType.FLOOD_ALERT:
+        floodLink = '/private-beta/flood-alert'
+        break
+      }
+    } else {
+      floodLink = `https://check-for-flooding.service.gov.uk/target-area/${code}`
+    }
+
+    return floodLink
+  }
+
+  const FloodAreaLink = ({ code, linkText, type }) => (
     <a
       className='govuk-link'
       target='_blank'
       rel='noopener noreferrer'
-      href={`https://check-for-flooding.service.gov.uk/target-area/${code}`}
+      href={getFloodLink(code, type)}
     >
       {linkText} (opens in new tab)
     </a>
@@ -170,6 +207,7 @@ export default function FloodDataInformationPopup ({
                     FLOOD_WARNING_CONFIG[floodInformation.floodData.type]
                       .linkText
                   }
+                  type={floodInformation.floodData.type}
                 />
                 <br />
                 <br />

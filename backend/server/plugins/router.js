@@ -27,6 +27,7 @@ const routes = [].concat(
   require('../routes/sign_out/sign_out'),
   require('../routes/bulk_uploads/process_status'),
   require('../routes/bulk_uploads/save_locations'),
+  require('../routes/bulk_uploads/save_locations_status'),
   require('../routes/bulk_uploads/get_invalid_locations'),
   require('../routes/bulk_uploads/remove_invalid_location'),
   require('../routes/shapefile/process_file'),

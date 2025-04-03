@@ -16,9 +16,10 @@ module.exports = [
         }
 
         const { orgId, contact } = request.payload
+        const { redis } = request.server.app
 
         if (orgId) {
-          const result = await listLinkedLocations(orgId, contact.id)
+          const result = await listLinkedLocations(redis, orgId, contact.id)
 
           if (result) {
             return h.response({ status: 200, data: result })

@@ -16,6 +16,8 @@ module.exports = [
         }
 
         const { authToken, orgId, contact } = request.payload
+        const { redis } = request.server.app
+
         if (authToken && orgId && contact) {
           // remove any null fields from each contact
           Object.keys(contact).forEach((key) => {
@@ -32,7 +34,7 @@ module.exports = [
             'organization/updateContact'
           )
           if (response.data.contact) {
-            await updateContact(orgId, response.data.contact)
+            await updateContact(redis, orgId, response.data.contact)
             return h.response({ status: 200, data: response.data.contact })
           } else {
             return createGenericErrorResponse(h)

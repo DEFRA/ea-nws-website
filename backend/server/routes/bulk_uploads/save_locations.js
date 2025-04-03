@@ -34,10 +34,11 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { authToken, orgId, fileName } = request.payload
+        const { redis } = request.server.app
 
         if (fileName && orgId && authToken) {
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
-          const result = await getJsonData(elasticacheKey)
+          const result = await getJsonData(redis, elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
           const { data: partnerId } = await getPartnerId()
@@ -79,7 +80,7 @@ module.exports = [
               }
             }))
 
-            await addLocations(orgId, geosafeLocations)
+            await addLocations(redis, orgId, geosafeLocations)
           }
 
           for (let i = 0; i < invalid.length; i += 25) {
@@ -88,7 +89,7 @@ module.exports = [
             await Promise.all(
               chunk.map(async (location) => {
                 location.id = uuidv4()
-                await addInvLocation(orgId, location)
+                await addInvLocation(redis, orgId, location)
               })
             )
           }

@@ -14,9 +14,10 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { orgId, locationId } = request.payload
+        const { redis } = request.server.app
 
         if (orgId && locationId) {
-          const result = await removeInvLocation(orgId, locationId)
+          const result = await removeInvLocation(redis, orgId, locationId)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

@@ -17,10 +17,11 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { authToken } = request.payload
+        const { redis } = request.server.app
 
         if (authToken) {
           const elasticacheKey = 'signin_status:' + authToken
-          const result = await getJsonData(elasticacheKey)
+          const result = await getJsonData(redis, elasticacheKey)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

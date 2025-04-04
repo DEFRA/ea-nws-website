@@ -757,7 +757,7 @@ export default function LiveMap({
                           }
                           style={{ flex: 1 }}
                         >
-                          {location.locationData.additionals.locationName}
+                          {location.properties.locationData.additionals.locationName}
                         </Link>
                       </div>
                     ))}

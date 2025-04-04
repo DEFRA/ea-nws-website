@@ -5,7 +5,8 @@ const {
 const {
   getJsonData,
   addInvLocation,
-  addLocations
+  addLocation,
+  setJsonData
 } = require('../../services/elasticache')
 const {
   convertToPois
@@ -37,17 +38,22 @@ module.exports = [
         const { redis } = request.server.app
 
         if (fileName && orgId && authToken) {
+          const statusKey = 'bulk_save_status:' + authToken
+          await setJsonData(redis, statusKey, { stage: 'Adding locations', status: 'working' })
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
           const result = await getJsonData(redis, elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
           const { data: partnerId } = await getPartnerId()
           // split the locations into groups of 25
+          const validLength = valid.length
           for (let i = 0; i < valid.length; i += 25) {
+            setJsonData(redis, statusKey, { stage: `Adding locations (${Math.round((i/validLength)*100)}%)`, status: 'working' })
             const chunk = valid.slice(i, i + 25)
             const geosafeLocations = []
             // Add all valid to geosafe and elasticache
             await Promise.all(chunk.map(async (location) => {
+              
               const response = await apiCall(
                 { authToken: authToken, location: location },
                 'location/create'
@@ -79,11 +85,14 @@ module.exports = [
                 return createGenericErrorResponse(h)
               }
             }))
-
-            await addLocations(redis, orgId, geosafeLocations)
+            for (const location of geosafeLocations) {
+              await addLocation(redis, orgId, location)
+            }
           }
 
+          const invalidLength = invalid.length
           for (let i = 0; i < invalid.length; i += 25) {
+            setJsonData(redis, statusKey, { stage: `storing locations (${Math.round((i/invalidLength)*100)}%)`, status: 'working' })
             const chunk = invalid.slice(i, i + 25)
             // Add invalid just to elasticache
             await Promise.all(
@@ -93,6 +102,7 @@ module.exports = [
               })
             )
           }
+          
 
           const invalidReasons = {
             duplicate: invalid.filter((location) =>
@@ -106,9 +116,9 @@ module.exports = [
             ).length
           }
 
+          setJsonData(redis, statusKey, { stage: `storing locations`, status: 'complete', data: { valid: valid.length, invalid: invalidReasons }})
           return h.response({
-            status: 200,
-            data: { valid: valid.length, invalid: invalidReasons }
+            status: 200
           })
         } else {
           return createGenericErrorResponse(h)

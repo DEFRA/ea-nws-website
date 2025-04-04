@@ -135,8 +135,8 @@ export default function LiveFloodMonitoringPage() {
                   <Button
                     text='Apply filter'
                     className='govuk-button govuk-button--primary govuk-!-margin-top-3'
-                    onClick={() => {
-                      applyFilter()
+                    onClick={(event) => {
+                      applyFilter(event)
                     }}
                   />
                 </>

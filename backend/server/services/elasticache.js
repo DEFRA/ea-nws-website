@@ -115,83 +115,6 @@ const addToAlert = async (client, orgId, location) => {
     await client.json.arrAppend(key, '.noAlert', location.id)
   }
 }
-const addLocations = async (client, orgId, locations) => {
-  // only store data for 24 hours in the event the browser is closed without signing out
-  const time = 60 * 60 * 24
-  await Promise.all(locations.map(async(location) => {
-    const locationID = location.id
-    await client.json.set(orgId + ':t_POIS:' + locationID, '$', location)
-    await client.expire(orgId + ':t_POIS:' + locationID, time)
-    // add location ID to list
-    await client.lPush(orgId + ':t_POIS_locID', locationID)
-    await client.expire(orgId + ':t_POIS_locID', time)
-    let keywords = []
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'keywords') {
-        keywords = JSON.parse(additional.value?.s)
-      }
-    })
-    for (const keyword of keywords) {
-      const key = orgId + ':t_Keywords_location'
-      const value = {
-        name: keyword,
-        linked_ids: [locationID]
-      }
-      const arrExists = await client.exists(key)
-      if (arrExists) {
-        const keywordArr = await client.json.get(key)
-        let keywordExists = false
-        keywordArr.forEach((keyword) => {
-          if (keyword.name === value.name) {
-            keywordExists = true
-            keyword.linked_ids.push(value.linked_ids[0])
-          }
-        })
-        if (keywordExists) {
-          await client.json.set(key, '$', keywordArr)
-          await client.expire(key, time)
-        } else {
-          await client.json.arrAppend(key, '.', value)
-        }
-      } else {
-        await client.json.set(key, '$', [value])
-        await client.expire(key, time)
-      }
-    }
-    await addToAlert(client, orgId, location)
-    const key = orgId + ':alertLocations'
-    const exists = client.exists(key)
-    if (!exists) {
-      const struct = {
-        severeWarningAlert: [],
-        severeWarning: [],
-        alert: [],
-        noAlert: []
-      }
-      await client.json.set(key, '$', struct)
-      await client.expire(key, time)
-    }
-    let alertTypes = []
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'other') {
-        const other = JSON.parse(additional.value?.s)
-        alertTypes = other.alertTypes
-        if (!alertTypes) {
-          alertTypes = []
-        }
-      }
-    })
-    if (alertTypes.length === 3) {
-      await client.json.arrAppend(key, '.severeWarningAlert', location.id)
-    } else if (alertTypes.length === 2) {
-      await client.json.arrAppend(key, '.severeWarning', location.id)
-    } else if (alertTypes.length === 1) {
-      await client.json.arrAppend(key, '.alert', location.id)
-    } else {
-      await client.json.arrAppend(key, '.noAlert', location.id)
-    }
-  }))
-}
 
 const addLocation = async (client, orgId, location) => {
   const locationID = location.id
@@ -639,7 +562,7 @@ const orgSignIn = async (client, profile, organization, locations, contacts) => 
     )
     for (const location of locations) {
       if (!existingLocationIds.includes(location.id)) {
-        await addLocations(client, organization.id, [location])
+        await addLocation(client, organization.id, location)
       }
     }
     const existingContacts = await getContactKeys(client, organization.id)
@@ -653,7 +576,9 @@ const orgSignIn = async (client, profile, organization, locations, contacts) => 
     }
   } else {
     await setJsonData(client, organization.id + ':org_data', organization)
-    await addLocations(client, organization.id, locations)
+    for (const location of locations) {
+      await addLocation(client, organization.id, location)
+    }
     for (const contact of contacts) {
       await addContact(client, organization.id, contact)
     }
@@ -724,6 +649,5 @@ module.exports = {
   addLinkedContacts,
   removeLinkedContacts,
   orgSignIn,
-  orgSignOut,
-  addLocations
+  orgSignOut
 }

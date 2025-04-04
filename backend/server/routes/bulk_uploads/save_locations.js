@@ -5,7 +5,7 @@ const {
 const {
   getJsonData,
   addInvLocation,
-  addLocations,
+  addLocation,
   setJsonData
 } = require('../../services/elasticache')
 const {
@@ -85,8 +85,9 @@ module.exports = [
                 return createGenericErrorResponse(h)
               }
             }))
-
-            await addLocations(redis, orgId, geosafeLocations)
+            for (const location of geosafeLocations) {
+              await addLocation(redis, orgId, location)
+            }
           }
 
           const invalidLength = invalid.length

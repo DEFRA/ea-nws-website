@@ -21,7 +21,11 @@ import {
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../common/services/hooks/GetHistoricalAlerts'
-export default function LocationSearchResultsLayout ({ continueToNextPage }) {
+
+export default function LocationSearchResultsLayout ({
+  continueToNextPage,
+  returnToSearchPage
+}) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
@@ -163,71 +167,76 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
-            {loading
-              ? (
-                <LoadingSpinner />
-                )
-              : (
-                <div className='govuk-grid-column-two-thirds'>
-                  <div className='govuk-body'>
-                    <h1 className='govuk-heading-l'>
-                      {locationPostCode
-                        ? 'Select an address'
-                        : 'Select a location'}
-                    </h1>
-                    {locationPostCode && (
-                      <p className='govuk-body'>
-                        Postcode: {locationPostCode}
-                        {'   '}
-                        <Link
-                          onClick={() => navigate(-1)}
-                          className='govuk-link govuk-!-padding-left-5'
-                          style={{ cursor: 'pointer' }}
-                        >
-                          Change postcode
-                        </Link>
-                      </p>
-                    )}
-                    <table className='govuk-table'>
-                      <tbody className='govuk-table__body'>
-                        <tr className='govuk-table__row'>
-                          <td className='govuk-table__cell' />
-                        </tr>
-                        {displayedLocations.map((location, index) => (
-                          <tr key={index} className='govuk-table__row'>
-                            <td className='govuk-table__cell'>
-                              <Link
-                                className='govuk-link'
-                                onClick={(event) =>
-                                  handleSelectedLocation(event, location)}
-                                style={{ cursor: 'pointer' }}
-                              >
-                                {location.address}
-                              </Link>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className='govuk-grid-column-two-thirds'>
+                <div className='govuk-body'>
+                  <h1 className='govuk-heading-l'>
                     {locationPostCode
-                      ? (
-                        <Details
-                          title='I cannot find my address here'
-                          text={detailsMessage}
-                        />
-                        )
-                      : (
-                        <Link onClick={() => navigate(-1)} className='govuk-link' style={{ cursor: 'pointer' }}>
-                          Search using a different location
-                        </Link>
-                        )}
-                    <Pagination
-                      totalPages={Math.ceil(locations.length / locationsPerPage)}
-                      onPageChange={(val) => setCurrentPage(val)}
+                      ? 'Select an address'
+                      : 'Select a location'}
+                  </h1>
+                  {locationPostCode && (
+                    <p className='govuk-body'>
+                      Postcode: {locationPostCode}
+                      {'   '}
+                      <Link
+                        onClick={() =>
+                          returnToSearchPage
+                            ? returnToSearchPage()
+                            : navigate(-1)
+                        }
+                        className='govuk-link govuk-!-padding-left-5'
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Change postcode
+                      </Link>
+                    </p>
+                  )}
+                  <table className='govuk-table'>
+                    <tbody className='govuk-table__body'>
+                      <tr className='govuk-table__row'>
+                        <td className='govuk-table__cell' />
+                      </tr>
+                      {displayedLocations.map((location, index) => (
+                        <tr key={index} className='govuk-table__row'>
+                          <td className='govuk-table__cell'>
+                            <Link
+                              className='govuk-link'
+                              onClick={(event) =>
+                                handleSelectedLocation(event, location)
+                              }
+                              style={{ cursor: 'pointer' }}
+                            >
+                              {location.address}
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {locationPostCode ? (
+                    <Details
+                      title='I cannot find my address here'
+                      text={detailsMessage}
                     />
-                  </div>
+                  ) : (
+                    <Link
+                      onClick={() => navigate(-1)}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Search using a different location
+                    </Link>
+                  )}
+                  <Pagination
+                    totalPages={Math.ceil(locations.length / locationsPerPage)}
+                    onPageChange={(val) => setCurrentPage(val)}
+                  />
                 </div>
-                )}
+              </div>
+            )}
           </div>
         </div>
       </main>

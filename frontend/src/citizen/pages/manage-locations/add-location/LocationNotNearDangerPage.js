@@ -5,7 +5,7 @@ export default function LocationNotNearDangerPage () {
   const navigate = useNavigate()
 
   const continueToSearchResultsPage = () => {
-    navigate('/manage-locations/add/search-results')
+    navigate('/manage-locations/add/search')
   }
 
   return (

@@ -4,7 +4,7 @@ import NotificationBanner from '../../../../../../common/components/gov-uk/Notif
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader({ contactName, userType, currentPage }) {
+export default function UserHeader ({ contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -24,19 +24,23 @@ export default function UserHeader({ contactName, userType, currentPage }) {
           text={location.state.successMessage}
         />
       )}
-      {userType === 'Pending admin' ? (
-        <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
-          Pending admin
-        </strong>
-      ) : userType === 'ADMIN' ? (
-        <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
-          Admin
-        </strong>
-      ) : (
-        <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
-          Contact
-        </strong>
-      )}
+      {userType === 'Pending admin'
+        ? (
+          <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
+            Pending admin
+          </strong>
+          )
+        : userType === 'ADMIN'
+          ? (
+            <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
+              Admin
+            </strong>
+            )
+          : (
+            <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+              Contact
+            </strong>
+            )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
           <h1 className='govuk-heading-l govuk-!-margin-bottom-1'>

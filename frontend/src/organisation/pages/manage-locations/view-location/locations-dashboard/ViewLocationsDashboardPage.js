@@ -7,6 +7,7 @@ import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertType from '../../../../../common/enums/AlertType'
@@ -51,6 +52,7 @@ export default function ViewLocationsDashboardPage () {
   const [loading, setLoading] = useState(true)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -500,7 +502,9 @@ export default function ViewLocationsDashboardPage () {
 
     if (type === 'messages') {
       updatedFilteredLocations = locations.filter(
-        (location) => location.additionals.other?.alertTypes?.length > 0
+        (location) => 
+          location.additionals.other?.alertTypes?.length > 0 &&
+          location.within === true
       )
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
@@ -508,26 +512,37 @@ export default function ViewLocationsDashboardPage () {
       updatedFilteredLocations = locations.filter(
         (location) =>
           location.additionals.other?.childrenIDs?.length > 0 &&
-          location.additionals.other?.alertTypes?.length > 0
+          location.additionals.other?.alertTypes?.length > 0 &&
+          location.within !== true
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedLinkedFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'high-medium-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
           (location.riverSeaRisk?.title === 'Medium risk' ||
-            location.riverSeaRisk?.title === 'High risk') &&
+          location.riverSeaRisk?.title === 'High risk' ||
+          location.riverSeaRisk?.title === 'Unavailable' ||
+          location.groundWaterRisk?.title === 'Possible' ||
+          location.groundWaterRisk?.title === 'Unavailable') &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedGroundWaterRiskFilters(['Possible', 'Unavailable'])
+      setSelectedRiverSeaRiskFilters(['Medium risk', 'High risk', 'Unavailable'])
+      setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'low-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
-          location.riverSeaRisk?.title === 'Low risk' &&
+          ((location.riverSeaRisk?.title === 'Low risk' ||
+            location.riverSeaRisk?.title === 'Very low risk') &&
+            (location.groundWaterRisk?.title === 'Unlikely')
+          ) &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedGroundWaterRiskFilters(['Unlikely'])
+      setSelectedRiverSeaRiskFilters(['Low risk', 'Very low risk'])
+      setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
       updatedFilteredLocations = locations.filter(
@@ -721,6 +736,9 @@ export default function ViewLocationsDashboardPage () {
                 text={notificationText}
               />
             )}
+            {(errorMessage) && (
+              <ErrorSummary errorList={[errorMessage]} />
+            )}
             <DashboardHeader
               locations={locations}
               linkContacts={location.state?.linkContacts}
@@ -728,6 +746,7 @@ export default function ViewLocationsDashboardPage () {
               onClickLinked={onClickLinked}
               onOnlyShowSelected={onOnlyShowSelected}
               linkSource={location.state?.linkSource}
+              setErrorMessage={setErrorMessage}
             />
           </div>
           <div className='govuk-grid-column-full govuk-body'>

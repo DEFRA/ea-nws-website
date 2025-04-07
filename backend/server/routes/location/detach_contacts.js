@@ -16,11 +16,12 @@ module.exports = [
         }
 
         const { authToken, orgId, locationId, contactIds } = request.payload
+        const { redis } = request.server.app
 
         if (authToken && orgId && locationId && contactIds) {
           // get the whole location object to detach contacts to linked areas
           const key = orgId + ':t_POIS:' + locationId
-          const location = await getJsonData(key)
+          const location = await getJsonData(redis, key)
           if (location) {
             const childrenIds = JSON.parse(location.additionals.filter((additional) => additional?.id === 'other')[0]?.value?.s)?.childrenIDs?.map((child) => child?.id)
             if (childrenIds && childrenIds.length > 0) {
@@ -38,7 +39,7 @@ module.exports = [
           )
 
           if (response.status === 200) {
-            await removeLinkedContacts(orgId, locationId, contactIds)
+            await removeLinkedContacts(redis, orgId, locationId, contactIds)
             return h.response({ status: 200 })
           } else {
             return createGenericErrorResponse(h)

@@ -5,7 +5,6 @@ const {
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { orgSignIn, addLinkedLocations } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
 module.exports = [
@@ -38,48 +37,7 @@ module.exports = [
                 errorMessage: 'account pending'
               })
             }
-
-            const locationRes = await apiCall(
-              { authToken: response.data.authToken },
-              'location/list'
-            )
-
-            const contactRes = await apiCall(
-              { authToken: response.data.authToken },
-              'organization/listContacts'
-            )
-
-            // Send the profile to elasticache
-            await orgSignIn(
-              response.data.profile,
-              response.data.organization,
-              locationRes.data.locations,
-              contactRes.data.contacts
-            )
-
-            for (const contact of contactRes.data.contacts) {
-              const options = { contactId: contact.id }
-              const linkLocationsRes = await apiCall(
-                {
-                  authToken: response.data.authToken,
-                  options: options
-                },
-                'location/list'
-              )
-
-              const locationIDs = []
-              linkLocationsRes.data.locations.forEach(function (location) {
-                locationIDs.push(location.id)
-              })
-
-              await addLinkedLocations(
-                response.data.organization.id,
-                contact.id,
-                locationIDs
-              )
-            }
           }
-
           return h.response(response)
         } else {
           return h.response({

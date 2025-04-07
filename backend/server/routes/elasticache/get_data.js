@@ -15,13 +15,14 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { key, paths } = request.payload
+        const { redis } = request.server.app
 
         if (key) {
           let result
           if (paths) {
-            result = await getJsonData(key, paths)
+            result = await getJsonData(redis, key, paths)
           } else {
-            result = await getJsonData(key)
+            result = await getJsonData(redis, key)
           }
           if (result) {
             return h.response({ status: 200, data: result })

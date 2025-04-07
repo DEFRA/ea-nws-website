@@ -17,6 +17,7 @@ module.exports = [
         }
 
         const { authToken, orgId, contacts } = request.payload
+        const { redis } = request.server.app
 
         if (authToken && orgId && contacts) {
           // remove any null fields from each contact
@@ -54,7 +55,7 @@ module.exports = [
 
             if (contactRes.data.contacts) {
               await Promise.all(contactRes.data.contacts.map(async (contact) => {
-                await addContact(orgId, contact)
+                await addContact(redis, orgId, contact)
               }))
             } else {
               return createGenericErrorResponse(h)

@@ -16,6 +16,7 @@ module.exports = [
         }
 
         const { authToken, orgId, removeContactIDs } = request.payload
+        const { redis } = request.server.app
 
         if (authToken && orgId && removeContactIDs) {
           const response = await apiCall(
@@ -25,7 +26,7 @@ module.exports = [
 
           if (response.status === 200) {
             await Promise.all(removeContactIDs.map(async (contactID) => {
-              await removeContact(orgId, contactID)
+              await removeContact(redis, orgId, contactID)
             }))
             return h.response({ status: 200 })
           } else {

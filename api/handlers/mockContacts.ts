@@ -24,7 +24,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'Admin',
+    role: 'ADMIN',
     pendingRole: null
   },
   {
@@ -52,7 +52,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'Contact',
+    role: 'SELF',
     pendingRole: null
   },
   {
@@ -80,7 +80,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'Contact',
+    role: 'SELF',
     pendingRole: null
   },
   {
@@ -108,7 +108,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'Admin',
+    role: 'ADMIN',
     pendingRole: null
   }
 ]

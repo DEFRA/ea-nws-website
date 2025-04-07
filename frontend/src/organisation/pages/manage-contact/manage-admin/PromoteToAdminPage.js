@@ -48,7 +48,7 @@ export default function PromoteToAdminPage () {
   }
 
   const handleSubmit = async () => {
-    const updatedContact = { ...currentContact, pendingRole: 'Admin' }
+    const updatedContact = { ...currentContact, pendingRole: 'ADMIN' }
 
     try {
       const dataToSend = { authToken, orgId, contact: updatedContact }

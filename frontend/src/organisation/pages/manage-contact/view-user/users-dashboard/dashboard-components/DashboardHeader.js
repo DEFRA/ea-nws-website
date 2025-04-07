@@ -58,7 +58,7 @@ export default function DashboardHeader ({
       message = ' not linked to locations'
     } else if (type === 'pendingAdmins') {
       heading = 'Pending admins who have not accepted invitation'
-      count = contacts.filter((item) => item.pendingRole === 'Admin').length
+      count = contacts.filter((item) => item.pendingRole === 'ADMIN').length
 
       message = ' pending admins'
     }
@@ -100,7 +100,7 @@ export default function DashboardHeader ({
                 to={orgManageContactsUrls.admin.pendingInvites}
                 state={{
                   pendingAdmins: contacts.filter(
-                    (c) => c.pendingRole === 'Admin'
+                    (c) => c.pendingRole === 'ADMIN'
                   )
                 }}
               >
@@ -122,7 +122,7 @@ export default function DashboardHeader ({
               className='govuk-link'
               to={orgManageContactsUrls.admin.pendingInvites}
               state={{
-                pendingAdmins: contacts.filter((c) => c.pendingRole === 'Admin')
+                pendingAdmins: contacts.filter((c) => c.pendingRole === 'ADMIN')
               }}
             >
               {' '}
@@ -172,7 +172,7 @@ export default function DashboardHeader ({
                   .length > 0 && <ContactsBanner type='linked' />}
                 {contacts.filter((item) => item.linked_locations?.length === 0)
                   .length > 0 && <ContactsBanner type='notLinked' />}
-                {contacts.filter((item) => item.pendingRole === 'Admin').length >
+                {contacts.filter((item) => item.pendingRole === 'ADMIN').length >
                 0 && <ContactsBanner type='pendingAdmins' />}
               </div>
             </>

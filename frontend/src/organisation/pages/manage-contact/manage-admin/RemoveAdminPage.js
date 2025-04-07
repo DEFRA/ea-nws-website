@@ -23,7 +23,7 @@ export default function RemoveAdminPage () {
   const adminEmail = useSelector((state) => state.session.profile.emails[0])
 
   const handleSubmit = async () => {
-    const updatedContact = { ...currentContact, role: 'Contact' }
+    const updatedContact = { ...currentContact, role: 'SELF' }
 
     try {
       const dataToSend = { authToken, orgId, contact: updatedContact }

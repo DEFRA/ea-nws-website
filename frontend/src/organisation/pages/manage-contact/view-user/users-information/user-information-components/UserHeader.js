@@ -9,7 +9,7 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
   const navigate = useNavigate()
 
   const handleSubmit = () => {
-    if (userType === 'Admin') {
+    if (userType === 'ADMIN') {
       navigate(orgManageContactsUrls.admin.remove)
     } else {
       navigate(orgManageContactsUrls.admin.promote)
@@ -31,7 +31,7 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
             Pending admin
           </strong>
           )
-        : userType === 'Admin'
+        : userType === 'ADMIN'
           ? (
             <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
               Admin
@@ -58,7 +58,7 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
           <>
             <Button
               text={
-                userType === 'Admin' ? 'Remove as admin' : 'Promote to admin'
+                userType === 'ADMIN' ? 'Remove as admin' : 'Promote to admin'
               }
               className='govuk-button govuk-button--secondary'
               onClick={() => {

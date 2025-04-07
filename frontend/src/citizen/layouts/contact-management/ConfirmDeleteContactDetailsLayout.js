@@ -23,11 +23,13 @@ export default function ConfirmDeleteContactDetailsLayout ({
     event.preventDefault()
     let updatedProfile = removeVerifiedContact(
       session.profile,
-      location.state.contact
+      location.state.contact,
+      location.state.type
     )
     updatedProfile = removeUnverifiedContact(
       updatedProfile,
-      location.state.contact
+      location.state.contact,
+      location.state.type
     )
 
     const data = {
@@ -54,7 +56,6 @@ export default function ConfirmDeleteContactDetailsLayout ({
 
   return (
     <>
-
       <BackLink onClick={handleCancelLink} />
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
@@ -68,7 +69,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
               text='Remove'
               onClick={removeContact}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               onClick={handleCancelLink}
               className='govuk-body govuk-link inline-link'

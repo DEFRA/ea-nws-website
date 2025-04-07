@@ -34,7 +34,7 @@ const liveAlerts = {
                   value: { s: '063FWT23WestminC' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'Tidal Thames at Westminster'
                   }
@@ -93,7 +93,7 @@ const liveAlerts = {
                   value: { s: '113WACT1D' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'South Devon Estuaries'
                   }
@@ -151,7 +151,7 @@ const liveAlerts = {
                   value: { s: '011WAFDU' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'Rivers Duddon, Crake and Mill Beck'
                   }
@@ -207,7 +207,7 @@ const liveAlerts = {
                   value: { s: '122WAF946' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'River Ouse, Burdyke, Holgate Beck, Blue Beck, River Foss, The Fleet'
                   }
@@ -263,7 +263,7 @@ const liveAlerts = {
                   value: { s: '122WAF946' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'Upper River Ouse'
                   }
@@ -319,7 +319,7 @@ const liveAlerts = {
                   value: { s: '122FWF776' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly'
                   }
@@ -375,7 +375,7 @@ const liveAlerts = {
                   value: { s: '051FWFEF4B' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'The River Colne from Halstead to Lexden'
                   }
@@ -431,7 +431,7 @@ const liveAlerts = {
                   value: { s: '055FWFPLNE01' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'The River Nene'
                   }
@@ -487,7 +487,7 @@ const liveAlerts = {
                   value: { s: '013FWTTME8' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'Irish Sea and Mersey estuary from the Head of the Wirral to Runcorn'
                   }
@@ -543,7 +543,7 @@ const liveAlerts = {
                   value: { s: '013WAFWI' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey'
                   }
@@ -599,7 +599,7 @@ const liveAlerts = {
                   value: { s: '034FWFTRNOTTCITY' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'River Trent at Nottingham including The Meadows'
                   }
@@ -655,7 +655,7 @@ const liveAlerts = {
                   value: { s: '034FWFDELITTLECH' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'River Derwent at Little Chester, Eastgate and Cattle Market'
                   }
@@ -711,7 +711,7 @@ const liveAlerts = {
                   value: { s: '034WAF409' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'River Derwent from Rowsley to the River Trent at Shardlow'
                   }
@@ -767,7 +767,7 @@ const liveAlerts = {
                   value: { s: '031FWFWY110' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'River Wye in North Hereford'
                   }
@@ -823,7 +823,7 @@ const liveAlerts = {
                   value: { s: '031WAF119' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'River Wye in North Hereford'
                   }
@@ -879,7 +879,7 @@ const liveAlerts = {
                   value: { s: '065FWC0501' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'Itchen estuary'
                   }
@@ -935,7 +935,7 @@ const liveAlerts = {
                   value: { s: '065WAC151' }
                 },
                 {
-                  key: 'TA_NAME',
+                  key: 'TA_Name',
                   value: {
                     s: 'Southampton Water and Hamble'
                   }

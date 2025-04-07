@@ -1,16 +1,13 @@
-import * as turf from '@turf/turf'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink.js'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner.js'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import LocationDataType from '../../../../../common/enums/LocationDataType.js'
+import AlertType from '../../../../../common/enums/AlertType.js'
 import { getAdditional } from '../../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../../common/services/BackendService.js'
-import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler.js'
-import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService.js'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
@@ -44,111 +41,81 @@ export default function LiveFloodWarningsDashboardPage () {
   const loadLiveWarnings = async () => {
     setLocationsAffected([])
 
-    // get orgs locations
-    const { data: locationsData } = await backendCall(
-      { orgId },
-      'api/elasticache/list_locations',
+    const { data: partnerId } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+
+    const options = {
+      states: ['CURRENT'],
+      channels: [],
+      partnerId
+    }
+
+    // load live alerts
+    const { data: liveAlertsData } = await backendCall(
+      { options },
+      'api/alert/list',
       navigate
     )
 
-    // convert each location to a web format
-    const locations = []
-    if (locationsData) {
-      for (const location of locationsData) {
-        locations.push(geoSafeToWebLocation(location))
-      }
-
-      // attach linked contacts to each location and convert x and y coords to geojson points
-      const locationsCollection = []
-      for (const location of locations) {
-        // linked contacts
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
-
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contact) => {
-            location.linked_contacts.push(contact.id)
-          })
-        }
-
-        // x and y coord conversion
-        let feature
-        const locationType = location.additionals.other.location_data_type
-
-        if (locationType === LocationDataType.X_AND_Y_COORDS) {
-          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
-          feature = convertDataToGeoJsonFeature('Point', [
-            location.coordinates.longitude,
-            location.coordinates.latitude
-          ])
-        } else {
-          feature = location.geometry.geoJson
-        }
-
-        locationsCollection.push(feature)
-      }
-
-      // calculate boundary around locations
-      const geoJsonFeatureCollection =
-        turf.featureCollection(locationsCollection)
-
-      const bbox = turf.bbox(geoJsonFeatureCollection)
-
-      const { data: partnerId } = await backendCall(
-        'data',
-        'api/service/get_partner_id'
-      )
-
-      const options = {
-        states: ['CURRENT'],
-        boundingBox: {
-          southWest: {
-            latitude: parseInt(bbox[1] * 10 ** 6),
-            longitude: parseInt(bbox[0] * 10 ** 6)
-          },
-          northEast: {
-            latitude: parseInt(bbox[3] * 10 ** 6),
-            longitude: parseInt(bbox[2] * 10 ** 6)
-          }
-        },
-        channels: [],
-        partnerId
-      }
-
-      // load live alerts
-      const { data: liveAlertsData } = await backendCall(
-        { options },
-        'api/alert/list',
+    // if there are live alerts, get org locations
+    if (liveAlertsData?.alerts?.length > 0) {
+      // get orgs locations
+      const { data: locationsData } = await backendCall(
+        { orgId },
+        'api/elasticache/list_locations',
         navigate
       )
 
-      // loop through live alerts - loop through all locations to find affected locations
-      for (const liveAlert of liveAlertsData?.alerts) {
-        const TA_CODE = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'TA_CODE'
-        )
+      // convert each location to a web format
+      const locations = []
+      if (locationsData) {
+        for (const location of locationsData) {
+          locations.push(geoSafeToWebLocation(location))
+        }
+        // attach linked contacts to each location
+        locations.forEach(async (location) => {
+          // linked contacts
+          const contactsDataToSend = { authToken, orgId, location }
+          const { data } = await backendCall(
+            contactsDataToSend,
+            'api/elasticache/list_linked_contacts',
+            navigate
+          )
 
-        const severity = liveAlert.type
-        const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
-        const floodArea = await getFloodAreaByTaCode(TA_CODE)
+          location.linked_contacts = []
+          if (data) {
+            data.forEach((contact) => {
+              location.linked_contacts.push(contact.id)
+            })
+          }
+        })
 
-        for (const location of locations) {
-          processLocation(location, floodArea, severity, updatedTime)
+        // loop through live alerts - loop through all locations to find affected locations
+        for (const liveAlert of liveAlertsData?.alerts) {
+          const TA_CODE = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'TA_CODE'
+          )
+          const TA_Name = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'TA_Name'
+          )
+
+          const severity = liveAlert.type
+          const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
+          const floodArea = {TA_CODE, TA_Name}
+
+          for (const location of locations) {
+            processLocation(location, floodArea, severity, updatedTime)
+          }
         }
       }
     }
   }
 
   const processLocation = (location, floodArea, severity, updatedTime) => {
-    const { coordinates, geometry, additionals } = location
-    const locationType = additionals.other.location_data_type
-
     // add required data to location row object
     const createLocationWithFloodData = () => {
       const updatedLocation = {
@@ -156,8 +123,8 @@ export default function LiveFloodWarningsDashboardPage () {
         floodData: [
           {
             type: severity,
-            name: floodArea.properties.TA_Name,
-            code: floodArea.properties.TA_CODE,
+            name: floodArea.TA_Name,
+            code: floodArea.TA_CODE,
             updatedTime
           }
         ]
@@ -166,15 +133,11 @@ export default function LiveFloodWarningsDashboardPage () {
       return updatedLocation
     }
 
-    // for xy coord locations
-    const handleXYCoordinates = () => {
+    const associateAlerts = () => {
       const updatedLocation = createLocationWithFloodData()
-      const point = convertDataToGeoJsonFeature('Point', [
-        coordinates.longitude,
-        coordinates.latitude
-      ])
+      let locationIntersectsWithFloodArea = updatedLocation.locationData?.additionals?.other?.targetAreas?.some((targetArea => targetArea.TA_CODE === floodArea.TA_CODE))
 
-      if (turf.booleanIntersects(point, floodArea.geometry)) {
+      if (locationIntersectsWithFloodArea) {
         setLocationsAffected((prevLocations) => {
           const index = prevLocations.findIndex(
             (loc) => loc.locationData.id === updatedLocation.locationData.id
@@ -201,19 +164,7 @@ export default function LiveFloodWarningsDashboardPage () {
       }
     }
 
-    // for shapes or boundary's locations
-    const handleGeoJsonLocation = () => {
-      const updatedLocation = createLocationWithFloodData()
-      if (turf.booleanIntersects(geometry.geoJson, floodArea.geometry)) {
-        setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
-      }
-    }
-
-    if (locationType === LocationDataType.X_AND_Y_COORDS) {
-      handleXYCoordinates()
-    } else {
-      handleGeoJsonLocation()
-    }
+    associateAlerts()
   }
 
   // required to convert the unix time from geosafe
@@ -262,6 +213,7 @@ export default function LiveFloodWarningsDashboardPage () {
 
   // Selected filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
+  const location = useLocation()
   const [selectedWarningTypeFilters, setSelectedWarningTypeFilters] = useState(
     []
   )
@@ -275,6 +227,22 @@ export default function LiveFloodWarningsDashboardPage () {
   const onPrint = () => {
     setLocationsAffectedPerPage(filteredLocationsAffected.length)
   }
+
+  useEffect(() => {
+    if (location?.state?.filter && !loading) {
+      let initialFilter = [...locationsAffected]
+      const filterMap = {
+        'Severe flood warnings': AlertType.SEVERE_FLOOD_WARNING,
+        'Flood warnings': AlertType.FLOOD_WARNING,
+        'Flood alerts': AlertType.FLOOD_ALERT
+      }
+
+      initialFilter = initialFilter.filter((item) => 
+          item.floodData.some((data) => data.type.includes(filterMap[location?.state?.filter]))
+      )
+      setFilteredLocationsAffected(initialFilter)
+    }
+  }, [loading, locationsAffected])
 
   const table = (
     <>
@@ -341,18 +309,18 @@ export default function LiveFloodWarningsDashboardPage () {
                           setLocationNameFilter={setLocationNameFilter}
                           selectedWarningTypeFilters={selectedWarningTypeFilters}
                           setSelectedWarningTypeFilters={
-                      setSelectedWarningTypeFilters
-                    }
+                            setSelectedWarningTypeFilters
+                          }
                           selectedLocationTypeFilters={selectedLocationTypeFilters}
                           setSelectedLocationTypeFilters={
-                      setSelectedLocationTypeFilters
-                    }
+                            setSelectedLocationTypeFilters
+                          }
                           selectedBusinessCriticalityFilters={
-                      selectedBusinessCriticalityFilters
-                    }
+                            selectedBusinessCriticalityFilters
+                          }
                           setSelectedBusinessCriticalityFilters={
-                      setSelectedBusinessCriticalityFilters
-                    }
+                            setSelectedBusinessCriticalityFilters
+                          }
                         />
                       </div>
                       <div className='govuk-grid-column-three-quarters'>{table}</div>

@@ -5,7 +5,6 @@ import floodWarningIcon from '../../../../../../common/assets/images/flood_warni
 import floodSevereWarningIcon from '../../../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../../../common/enums/AlertType'
-import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { getAdditional } from '../../../../../../common/redux/userSlice'
 
 export default function FloodReportsTable ({
@@ -274,11 +273,6 @@ export default function FloodReportsTable ({
             return (
               <tr key={index} className='govuk-table__row'>
                 <td className='govuk-table__cell'>
-                  {locationType !== LocationDataType.X_AND_Y_COORDS && (
-                    <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
-                      {location.locationData.additionals.locationName}
-                    </p>
-                  )}
                   <Link
                     className='govuk-link'
                     onClick={(e) => {
@@ -286,9 +280,7 @@ export default function FloodReportsTable ({
                       viewFloodInformationData(location)
                     }}
                   >
-                    {locationType === LocationDataType.X_AND_Y_COORDS
-                      ? location.locationData.address
-                      : location.floodData[0].name}
+                    {location.locationData.additionals.locationName}
                   </Link>
                 </td>
                 <td className='govuk-table__cell'>

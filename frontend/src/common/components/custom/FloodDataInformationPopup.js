@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
@@ -7,10 +7,10 @@ import floodWarningIcon from '../../assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../assets/images/severe_flood_warning.svg'
 import AlertType from '../../enums/AlertType'
 import { setCurrentLocation } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import { webToGeoSafeLocation } from '../../services/formatters/LocationFormatter'
 import Button from '../gov-uk/Button'
 import ServiceNavigation from '../gov-uk/ServiceNavigation'
-import { backendCall } from '../../services/BackendService'
 
 export default function FloodDataInformationPopup ({
   locationsFloodInformation,
@@ -107,7 +107,7 @@ export default function FloodDataInformationPopup ({
 
   const getFloodLink = (code, type) => {
     let floodLink = ''
-
+    
     if (servicePhase === 'beta') {
       switch (type) {
         case AlertType.SEVERE_FLOOD_WARNING:
@@ -127,16 +127,19 @@ export default function FloodDataInformationPopup ({
     return floodLink
   }
 
-  const FloodAreaLink = ({ code, linkText, type }) => (
-    <a
-      className='govuk-link'
-      target='_blank'
-      rel='noopener noreferrer'
-      href={getFloodLink(code, type)}
-    >
-      {linkText} (opens in new tab)
-    </a>
-  )
+  const FloodAreaLink = ({ code, linkText, type }) => {
+    const link = getFloodLink(code, type)
+    return (
+      <a
+        className='govuk-link'
+        target='_blank'
+        rel='noopener noreferrer'
+        href={link}
+      >
+        {linkText} (opens in new tab)
+      </a>
+    )
+  }
 
   const viewLocation = (e, location) => {
     e.preventDefault()

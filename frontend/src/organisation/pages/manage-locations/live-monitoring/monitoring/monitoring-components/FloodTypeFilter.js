@@ -1,6 +1,7 @@
 // FloodTypeFilter.jsx
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { orgFloodReportsUrls } from '../../../../../routes/flood-reports/FloodReportsRoutes'
 
 export default function FloodTypeFilter ({
   iconSrc,
@@ -38,7 +39,11 @@ export default function FloodTypeFilter ({
         <span className='live-map-filter-locations'>locations</span>
       </div>
       <div className='live-map-filter-description'>
-        <Link className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-16 text-nowrap govuk-!-margin-bottom-1'>
+        <Link
+          className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-16 text-nowrap govuk-!-margin-bottom-1'
+          to={orgFloodReportsUrls.live}
+          state={{filter: `${warningText}s`}}
+        >
           {warningText}
         </Link>
         <span className='live-map-filter-caption govuk-caption-m'>

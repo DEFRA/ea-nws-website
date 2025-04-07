@@ -113,14 +113,15 @@ export default function LocationInAlertAreaLayout ({
     // accomodates additional alerts path incase user chooses not to select the additional alerts
     if (location) {
       let alertTypes = additionalAlerts
-        ? [
-            AlertType.SEVERE_FLOOD_WARNING,
-            AlertType.FLOOD_WARNING,
-            AlertType.FLOOD_ALERT
-          ]
-        : [AlertType.FLOOD_ALERT]
-
-      if (isUserInNearbyTargetFlowpath) {
+      if (additionalAlerts) {
+        alertTypes = isChecked
+          ? [
+              AlertType.SEVERE_FLOOD_WARNING,
+              AlertType.FLOOD_WARNING,
+              AlertType.FLOOD_ALERT
+            ]
+          : [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_ALERT]
+      } else if (isUserInNearbyTargetFlowpath) {
         alertTypes = [AlertType.FLOOD_ALERT]
       }
 
@@ -131,15 +132,12 @@ export default function LocationInAlertAreaLayout ({
         params: getRegistrationParams(profile, alertTypes)
       }
 
-      const backendRoute = (additionalAlerts && !isUserInNearbyTargetFlowpath)
-        ? 'api/partner/update_location_registration'
-        : 'api/partner/register_location_to_partner'
+      const backendRoute =
+        additionalAlerts && !isUserInNearbyTargetFlowpath
+          ? 'api/partner/update_location_registration'
+          : 'api/partner/register_location_to_partner'
 
-      await backendCall(
-        data,
-        backendRoute,
-        navigate
-      )
+      await backendCall(data, backendRoute, navigate)
     }
   }
 

@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { setOrgCurrentContact } from '../../../common/redux/userSlice'
 import { webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ContactsTable ({
   contacts,
@@ -102,7 +103,10 @@ export default function ContactsTable ({
   }
 
   const sortMessagesReceived = () => {
-    if (messagesReceivedSort === 'none' || messagesReceivedSort === 'descending') {
+    if (
+      messagesReceivedSort === 'none' ||
+      messagesReceivedSort === 'descending'
+    ) {
       setMessagesReceivedSort('ascending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
@@ -300,13 +304,29 @@ export default function ContactsTable ({
               </td>
               <td className='govuk-table__cell'>{contact.emails[0]}</td>
               <td className='govuk-table__cell'>
-                {contact.linked_locations?.length !== undefined ? contact.linked_locations?.length : LoadingDots}
+                {contact.linked_locations?.length !== undefined
+                  ? (
+                    <Link
+                      className='govuk-link'
+                      to={orgManageLocationsUrls.view.viewLinkedContacts}
+                    >
+                      {contact.linked_locations?.length}
+                    </Link>
+                    )
+                  : (
+                      LoadingDots
+                    )}
               </td>
               <td className='govuk-table__cell'>
-                {contact.message_count !== undefined ? contact.message_count : LoadingDots}
+                {contact.message_count !== undefined
+                  ? contact.message_count
+                  : LoadingDots}
               </td>
               <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, actionText, contact)}>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => onAction(e, actionText, contact)}
+                >
                   {actionText}
                 </Link>
               </td>

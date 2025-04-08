@@ -50,6 +50,7 @@ export default function PromoteToAdminPage () {
   const handleSubmit = async () => {
     const updatedContact = { ...currentContact, pendingRole: 'ADMIN' }
 
+    // TODO: Change this to proper admin backend call once created
     const dataToSend = { authToken, orgId, contact: updatedContact }
     const { data, errorMessage } = await backendCall(
       dataToSend,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
+import NotCompletedSignUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 import BackLink from '../../components/custom/BackLink'
 import LoadingSpinner from '../../components/custom/LoadingSpinner'
@@ -47,11 +47,7 @@ export default function SignInValidatePage () {
     if (orgData) {
       const startProcessing = async () => {
         const dataToSend = { orgData }
-        await backendCall(
-          dataToSend,
-          'api/org_signin',
-          navigate
-        )
+        await backendCall(dataToSend, 'api/org_signin', navigate)
       }
       startProcessing()
       const interval = setInterval(async function getStatus () {
@@ -176,7 +172,7 @@ export default function SignInValidatePage () {
         ? (
             (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
         (signUpNotComplete && (
-          <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />
+          <NotCompletedSignUpLayout nextPage={lastAccessedUrl} />
         ))
           )
         : (
@@ -225,14 +221,15 @@ export default function SignInValidatePage () {
                 </div>
               </div>
             </main>
-            {orgData && error === '' &&
+            {orgData && error === '' && (
               <div className='popup-dialog'>
                 <div className='popup-dialog-container govuk-!-padding-bottom-6'>
                   <LoadingSpinner
-                  loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                    loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
                   />
                 </div>
-              </div>}
+              </div>
+            )}
           </>
           )}
     </>

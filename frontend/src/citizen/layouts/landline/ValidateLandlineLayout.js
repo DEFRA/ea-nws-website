@@ -13,7 +13,8 @@ import { backendCall } from '../../../common/services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  updateAdditionals
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 
@@ -21,7 +22,8 @@ export default function ValidateLandlineLayout ({
   navigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  isSignUpJourney = false
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -41,7 +43,8 @@ export default function ValidateLandlineLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { error: validationError, code: formattedCode } = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { authToken, msisdn: homePhone, code: formattedCode }
@@ -60,7 +63,24 @@ export default function ValidateLandlineLayout ({
           setError(errorMessage)
         }
       } else {
-        dispatch(setProfile(data.profile))
+        let updatedProfile = data.profile
+
+        if (isSignUpJourney) {
+          // Set lastAccessedUrl explicitly for signup journey
+          updatedProfile = updateAdditionals(updatedProfile, [
+            { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          ])
+
+          const profileUpdateResponse = await backendCall(
+            { profile: updatedProfile, authToken },
+            'api/profile/update',
+            navigate
+          )
+
+          dispatch(setProfile(profileUpdateResponse.data.profile))
+        } else {
+          dispatch(setProfile(data.profile))
+        }
         navigateToNextPage(homePhone)
       }
     }
@@ -134,7 +154,6 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
-
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />
@@ -183,11 +202,19 @@ export default function ValidateLandlineLayout ({
                       Skip and confirm later
                     </Link>
                     <br />
-                    <Link onClick={getNewCode} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={getNewCode}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Get a new code
                     </Link>
                     <br /> <br />
-                    <Link onClick={differentHomePhone} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={differentHomePhone}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Enter a different telephone number
                     </Link>
                   </div>

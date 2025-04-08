@@ -13,7 +13,8 @@ import { backendCall } from '../../../common/services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  updateAdditionals
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 
@@ -21,7 +22,8 @@ export default function ValidateMobileLayout ({
   navigateToNextPage,
   SkipValidation,
   DifferentMobile,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  isSignUpJourney = false
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -42,7 +44,8 @@ export default function ValidateMobileLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { error: validationError, code: formattedCode } = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { authToken, code: formattedCode, msisdn: mobile }
@@ -61,7 +64,23 @@ export default function ValidateMobileLayout ({
           setError(errorMessage)
         }
       } else {
-        dispatch(setProfile(data.profile))
+        let updatedProfile = data.profile
+        if (isSignUpJourney) {
+          // Set lastAccessedUrl explicitly for signup journey
+          updatedProfile = updateAdditionals(updatedProfile, [
+            { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          ])
+
+          const profileUpdateResponse = await backendCall(
+            { profile: updatedProfile, authToken },
+            'api/profile/update',
+            navigate
+          )
+
+          dispatch(setProfile(profileUpdateResponse.data.profile))
+        } else {
+          dispatch(setProfile(data.profile))
+        }
         navigateToNextPage(mobile)
       }
     }
@@ -134,7 +153,6 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
-
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />
@@ -183,11 +201,19 @@ export default function ValidateMobileLayout ({
                       Skip and confirm later
                     </Link>
                     <br />
-                    <Link onClick={getNewCode} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={getNewCode}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Get a new code
                     </Link>
                     <br /> <br />
-                    <Link onClick={differentMobile} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={differentMobile}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Enter a different mobile
                     </Link>
                   </div>

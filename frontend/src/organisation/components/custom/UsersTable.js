@@ -364,6 +364,11 @@ export default function UsersTable ({
                         )}
                   </td>
                   <td className='govuk-table__cell'>
+                    {contact.message_count !== undefined
+                      ? contact.message_count
+                      : LoadingDots}
+                  </td>
+                  <td className='govuk-table__cell'>
                     <Link
                       className='govuk-link'
                       onClick={(e) => onAction(e, actionText, contact)}

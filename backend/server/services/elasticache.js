@@ -603,13 +603,13 @@ const orgSignIn = async (client, profile, organization, locations, contacts, aut
 }
 
 const orgSignOut = async (client, profileId, orgId, authToken) => {
+  // delete profile
+  await deleteJsonData(client, profileId + ':profile')
   await removeOrgActiveAdmins(client, orgId, authToken)
   // get the new list to see if there are any admins still logged in
   const activeAdmins = await getOrgActiveAdmins(client, orgId)
   // delete all data from elasticache if there are no org Admins logged in
   if (activeAdmins.length === 0) {
-    // delete profile
-    await deleteJsonData(client, profileId + ':profile')
     // delete org
     await deleteJsonData(client, orgId + ':org_data')
     // delete locations
@@ -672,5 +672,7 @@ module.exports = {
   addLinkedContacts,
   removeLinkedContacts,
   orgSignIn,
-  orgSignOut
+  orgSignOut,
+  checkKeyExists,
+  addOrgActiveAdmins
 }

@@ -59,7 +59,8 @@ export default function AdminJoinedPage () {
     }
   ]
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (!nextPage) {
       setErrorText('Select what you would like to do first')
     } else {
@@ -116,7 +117,7 @@ export default function AdminJoinedPage () {
             <Button
               className='govuk-button'
               text='Continue'
-              onClick={handleSubmit}
+              onClick={(event) => handleSubmit(event)}
             />
           </div>
         </div>

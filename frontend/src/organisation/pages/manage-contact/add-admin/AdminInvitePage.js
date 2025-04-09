@@ -18,7 +18,10 @@ export default function AdminInvitePage () {
               <Button
                 text='Accept invitation'
                 className='govuk-button'
-                onClick={() => navigate(orgManageContactsUrls.admin.joined)}
+                onClick={(event) => {
+                  event.preventDefault()
+                  navigate(orgManageContactsUrls.admin.joined)
+                }}
               />
             </div>
           </div>

@@ -14,7 +14,7 @@ import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import ContactHeader from './contact-information-components/ContactHeader'
+import UserHeader from './user-information-components/UserHeader'
 
 export default function LinkedLocationsPage () {
   const navigate = useNavigate()
@@ -254,7 +254,7 @@ export default function LinkedLocationsPage () {
             text={unlinkNotification}
           />
         )}
-        <ContactHeader
+        <UserHeader
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
         />

@@ -19,17 +19,25 @@ export default function ConfirmDeleteContactDetailsLayout ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
+
+  const contactTypeMapping = {
+    homePhone: 'telephone number',
+    mobilePhone: 'mobile telephone number',
+    email: 'email address'
+  }
+  const contactType = contactTypeMapping[location.state.type]
+
   const removeContact = async (event) => {
     event.preventDefault()
     let updatedProfile = removeVerifiedContact(
       session.profile,
       location.state.contact,
-      location.state.type
+      contactType
     )
     updatedProfile = removeUnverifiedContact(
       updatedProfile,
       location.state.contact,
-      location.state.type
+      contactType
     )
 
     const data = {

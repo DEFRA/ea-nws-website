@@ -272,8 +272,16 @@ export default function LiveFloodWarningsDashboardPage () {
     setSelectedBusinessCriticalityFilters
   ] = useState([])
 
-  const onPrint = () => {
-    setLocationsAffectedPerPage(filteredLocationsAffected.length)
+  useEffect(() => {
+    if (locationsAffectedPerPage === null) {
+      window.print()
+      setLocationsAffectedPerPage(defaultAlertsPerPage)
+    }
+  }, [locationsAffectedPerPage, defaultAlertsPerPage])
+
+  const onPrint = (event) => {
+    event.preventDefault()
+    setLocationsAffectedPerPage(null)
   }
 
   const table = (
@@ -287,7 +295,7 @@ export default function LiveFloodWarningsDashboardPage () {
       <Button
         text='Print'
         className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => onPrint()}
+        onClick={(event) => onPrint(event)}
       />
       <FloodReportsTable
         locationsAffected={locationsAffected}

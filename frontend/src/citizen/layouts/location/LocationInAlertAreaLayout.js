@@ -120,7 +120,7 @@ export default function LocationInAlertAreaLayout ({
               AlertType.FLOOD_WARNING,
               AlertType.FLOOD_ALERT
             ]
-          : [AlertType.FLOOD_ALERT]
+          : [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
       } else if (isUserInNearbyTargetFlowpath) {
         alertTypes = [AlertType.FLOOD_ALERT]
       }

@@ -9,8 +9,8 @@ const {
   setJsonData
 } = require('../../services/elasticache')
 
-const isDuplicate = async (orgId, locationName) => {
-  const locationArr = await findLocationByName(orgId, locationName)
+const isDuplicate = async (redis, orgId, locationName) => {
+  const locationArr = await findLocationByName(redis, orgId, locationName)
   return locationArr.length !== 0
 }
 
@@ -38,7 +38,7 @@ module.exports = [
               const locationName = result.data.properties?.name ||
               result.data.properties?.lrf15nm ||
               result.data.properties?.fileName
-              if (await isDuplicate(orgId, locationName)) {
+              if (await isDuplicate(redis, orgId, locationName)) {
                 // An invalid location should already have at least one error
                 // but do not assume this is the case
                 if (Array.isArray(result.data.properties.error)) {

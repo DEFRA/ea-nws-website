@@ -56,6 +56,8 @@ export default function ViewLocationPage () {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const canRemoveLocation = profile.pois.length > 1
+  console.log(canRemoveLocation)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const floodHistoryData = useFetchAlerts()
@@ -76,10 +78,7 @@ export default function ViewLocationPage () {
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
@@ -347,14 +346,18 @@ export default function ViewLocationPage () {
                 </div>
               )}
 
-              <h2 className='govuk-heading-m'>
-                To stop all flood messages for this location
-              </h2>
-              <Button
-                onClick={deleteLocation}
-                className='govuk-button govuk-button--warning'
-                text='Remove location'
-              />
+              {canRemoveLocation && (
+                <>
+                  <h2 className='govuk-heading-m'>
+                    To stop all flood messages for this location
+                  </h2>
+                  <Button
+                    onClick={deleteLocation}
+                    className='govuk-button govuk-button--warning'
+                    text='Remove location'
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

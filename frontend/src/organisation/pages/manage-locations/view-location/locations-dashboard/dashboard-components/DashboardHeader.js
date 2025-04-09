@@ -77,7 +77,6 @@ export default function DashboardHeader ({
     navigate(infoUrls.floodAreas)
   }
 
-
   const FloodBanner = ({ type }) => {
     const count = []
     const message = []
@@ -350,17 +349,16 @@ export default function DashboardHeader ({
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0) && <FloodBanner type='noFloodMessages' />}
                 {locations.filter((item) => item.linked_contacts?.length === 0)
-                  .length > 0 && 
-                  <div style={{width: '100%'}}>
-                    <FloodBanner type='noContacts' />
-                    <div style={{paddingLeft: '0.5rem'}}>
-                      <Details
-                        title='Linking locations to contacts so that they can get flood messages'
-                        text={noContactsDetails}
-                      />
-                    </div>
-                  </div>
-                }
+                  .length > 0 &&
+                    <div style={{ width: '100%' }}>
+                      <FloodBanner type='noContacts' />
+                      <div style={{ paddingLeft: '0.5rem' }}>
+                        <Details
+                          title='Linking locations to contacts so that they can get flood messages'
+                          text={noContactsDetails}
+                        />
+                      </div>
+                    </div>}
               </span>
 
               <div className='govuk-grid-column-one-half'>

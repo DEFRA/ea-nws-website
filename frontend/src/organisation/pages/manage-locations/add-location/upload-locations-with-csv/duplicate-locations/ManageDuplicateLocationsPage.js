@@ -17,11 +17,16 @@ export default function ManageDuplicateLocationsPage () {
   const [currentPage, setCurrentPage] = useState(1)
   const location = useLocation()
 
-  const locationsPerPage = 20
-  const displayedLocations = duplicateLocations.slice(
-    (currentPage - 1) * locationsPerPage,
-    currentPage * locationsPerPage
+  const defaultLocationsPerPage = 20
+  const [locationsPerPage, setLocationsPerPage] = useState(
+    defaultLocationsPerPage
   )
+  const displayedLocations = locationsPerPage
+    ? duplicateLocations.slice(
+      (currentPage - 1) * locationsPerPage,
+      currentPage * locationsPerPage
+    )
+    : duplicateLocations
 
   useEffect(() => {
     const getDupLocations = async () => {
@@ -46,8 +51,16 @@ export default function ManageDuplicateLocationsPage () {
     getDupLocations()
   }, [])
 
-  const handlePrint = () => {
-    // TODO
+  useEffect(() => {
+    if (!locationsPerPage) {
+      window.print()
+      setLocationsPerPage(defaultLocationsPerPage)
+    }
+  }, [locationsPerPage])
+
+  const handlePrint = (event) => {
+    event.preventDefault()
+    setLocationsPerPage(null)
   }
 
   const getLocation = async (orgId, locationName, type) => {
@@ -134,7 +147,7 @@ export default function ManageDuplicateLocationsPage () {
             <Button
               className='govuk-button govuk-button--secondary'
               text='Print duplicate locations'
-              onClick={handlePrint}
+              onClick={(event) => handlePrint(event)}
             />
             <p className='govuk-caption-m govuk-!-margin-bottom-0'>
               {duplicateLocations.length} location

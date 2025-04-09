@@ -2,24 +2,45 @@ import { useLocation, useNavigate } from 'react-router'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
-import ViewContactSubNavigation from './ViewContactSubNavigation'
+import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function ContactHeader ({ contactName, currentPage }) {
+export default function UserHeader ({ contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const handleSubmit = () => {
+    if (userType === 'ADMIN') {
+    } else {
+      navigate(orgManageContactsUrls.promoteToAdmin)
+    }
+  }
+
   return (
     <>
-      {location.state && (
+      {location.state.successMessage && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success'
           title='Success'
           text={location.state.successMessage}
         />
       )}
-      <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
-        Contact
-      </strong>
+      {userType === 'Pending admin'
+        ? (
+          <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
+            Pending admin
+          </strong>
+          )
+        : userType === 'ADMIN'
+          ? (
+            <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
+              Admin
+            </strong>
+            )
+          : (
+            <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+              Contact
+            </strong>
+            )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
           <h1 className='govuk-heading-l govuk-!-margin-bottom-1'>
@@ -33,8 +54,20 @@ export default function ContactHeader ({ contactName, currentPage }) {
             justifyContent: 'flex-end'
           }}
         >
+          <>
+            <Button
+              text={
+                userType === 'ADMIN' ? 'Remove as admin' : 'Promote to admin'
+              }
+              className='govuk-button govuk-button--secondary'
+              onClick={() => {
+                handleSubmit()
+              }}
+            />
+            &nbsp; &nbsp;
+          </>
           <Button
-            text='Delete contact'
+            text='Delete user'
             className='govuk-button govuk-button--secondary'
             onClick={(event) => {
               event.preventDefault()
@@ -44,9 +77,9 @@ export default function ContactHeader ({ contactName, currentPage }) {
         </div>
       </div>
 
-      {/* view contact navigation */}
+      {/* view user navigation */}
       <div className='govuk-!-margin-top-2 govuk-!-margin-bottom-9'>
-        <ViewContactSubNavigation currentPage={currentPage} type='sub' />
+        <ViewUserSubNavigation currentPage={currentPage} type='sub' />
       </div>
     </>
   )

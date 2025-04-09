@@ -7,19 +7,13 @@ import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertType from '../../../../../common/enums/AlertType'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import {
-  getFloodAreas,
-  getFloodAreasFromShape,
-  getGroundwaterFloodRiskRatingOfLocation,
-  getRiversAndSeaFloodRiskRatingOfLocation
-} from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
@@ -58,6 +52,7 @@ export default function ViewLocationsDashboardPage () {
   const [loading, setLoading] = useState(true)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -147,7 +142,7 @@ export default function ViewLocationsDashboardPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      for (const location of locationsUpdate) {
+      locationsUpdate.forEach(async (location) => {
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -163,17 +158,17 @@ export default function ViewLocationsDashboardPage () {
         }
 
         location.message_count = 0
-        const floodAreas = await getWithinAreas(location)
+        const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
         if (floodAreas?.length > 0) {
           for (const area of floodAreas) {
             location.message_count += getHistoricalData(
-              area.properties.TA_CODE,
+              area.TA_CODE,
               historyData
             ).length
           }
         }
-      }
+      })
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -185,27 +180,10 @@ export default function ViewLocationsDashboardPage () {
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
     let riskCategory = null
-
-    if (
-      location.additionals.other?.location_data_type !==
-        LocationDataType.X_AND_Y_COORDS ||
-      location.coordinates === null ||
-      location.coordinates.latitude === null ||
-      location.coordinates.longitude === null
-    ) {
-      return null
-    }
-
     if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
-      riskCategory = await getRiversAndSeaFloodRiskRatingOfLocation(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
+      riskCategory = location?.additionals?.other?.riverSeaRisk || 'unavailable'
     } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
-      riskCategory = await getGroundwaterFloodRiskRatingOfLocation(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
+      riskCategory = location?.additionals?.other?.groundWaterRisk || 'unavailable'
     }
 
     return riskData[riskCategory]
@@ -351,40 +329,19 @@ export default function ViewLocationsDashboardPage () {
     return typeMap[type] || []
   }
 
-  const getWithinAreas = async (location) => {
-    let result
-    if (
-      location.additionals.other.location_data_type ===
-      LocationDataType.X_AND_Y_COORDS
-    ) {
-      result = await getFloodAreas(
-        location.coordinates.latitude,
-        location.coordinates.longitude
-      )
-    } else {
-      const geoJson = location.geometry.geoJson
-      try {
-        result = await getFloodAreasFromShape(geoJson)
-      } catch {
-        result = null
-      }
-    }
-    return result
-  }
-
   const getSelectedLocationsInformation = async (selectedLocations) => {
     const unavailableLocs = []
     const alertOnlyLocs = []
 
     for (const location of selectedLocations) {
-      const withinAreas = await getWithinAreas(location)
+      const withinAreas = location?.additionals?.other?.targetAreas || []
 
       let isInWarningArea = false
       let isInAlertArea = false
 
       if (withinAreas && withinAreas.length > 0) {
         for (const area of withinAreas) {
-          const type = categoryToMessageType(area.properties.category)
+          const type = categoryToMessageType(area.category)
           if (type.includes('Flood Warning')) {
             isInWarningArea = true
           } else {
@@ -545,7 +502,9 @@ export default function ViewLocationsDashboardPage () {
 
     if (type === 'messages') {
       updatedFilteredLocations = locations.filter(
-        (location) => location.additionals.other?.alertTypes?.length > 0
+        (location) => 
+          location.additionals.other?.alertTypes?.length > 0 &&
+          location.within === true
       )
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
@@ -553,26 +512,37 @@ export default function ViewLocationsDashboardPage () {
       updatedFilteredLocations = locations.filter(
         (location) =>
           location.additionals.other?.childrenIDs?.length > 0 &&
-          location.additionals.other?.alertTypes?.length > 0
+          location.additionals.other?.alertTypes?.length > 0 &&
+          location.within !== true
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedLinkedFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'high-medium-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
           (location.riverSeaRisk?.title === 'Medium risk' ||
-            location.riverSeaRisk?.title === 'High risk') &&
+          location.riverSeaRisk?.title === 'High risk' ||
+          location.riverSeaRisk?.title === 'Unavailable' ||
+          location.groundWaterRisk?.title === 'Possible' ||
+          location.groundWaterRisk?.title === 'Unavailable') &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedGroundWaterRiskFilters(['Possible', 'Unavailable'])
+      setSelectedRiverSeaRiskFilters(['Medium risk', 'High risk', 'Unavailable'])
+      setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'low-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
-          location.riverSeaRisk?.title === 'Low risk' &&
+          ((location.riverSeaRisk?.title === 'Low risk' ||
+            location.riverSeaRisk?.title === 'Very low risk') &&
+            (location.groundWaterRisk?.title === 'Unlikely')
+          ) &&
           location.additionals.other?.alertTypes?.length === 0
       )
-      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedGroundWaterRiskFilters(['Unlikely'])
+      setSelectedRiverSeaRiskFilters(['Low risk', 'Very low risk'])
+      setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
       updatedFilteredLocations = locations.filter(
@@ -766,6 +736,9 @@ export default function ViewLocationsDashboardPage () {
                 text={notificationText}
               />
             )}
+            {(errorMessage) && (
+              <ErrorSummary errorList={[errorMessage]} />
+            )}
             <DashboardHeader
               locations={locations}
               linkContacts={location.state?.linkContacts}
@@ -773,6 +746,7 @@ export default function ViewLocationsDashboardPage () {
               onClickLinked={onClickLinked}
               onOnlyShowSelected={onOnlyShowSelected}
               linkSource={location.state?.linkSource}
+              setErrorMessage={setErrorMessage}
             />
           </div>
           <div className='govuk-grid-column-full govuk-body'>

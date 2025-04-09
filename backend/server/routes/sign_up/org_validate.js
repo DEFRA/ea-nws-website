@@ -17,6 +17,7 @@ module.exports = [
         }
 
         const { code, orgRegisterToken } = request.payload
+        const { redis } = request.server.app
         const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && orgRegisterToken) {
@@ -24,7 +25,7 @@ module.exports = [
             { orgRegisterToken: orgRegisterToken, code: formattedCode },
             'organization/registerValidate'
           )
-          await setJsonData(response.data.organization.id + ':org_data', response.data.organization)
+          await setJsonData(redis, response.data.organization.id + ':org_data', response.data.organization)
           return h.response(response)
         } else {
           return h.response({

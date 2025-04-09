@@ -7,6 +7,7 @@ import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummar
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
+import AlertType from '../../../../../../common/enums/AlertType'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import {
   geoSafeToWebLocation,
@@ -151,6 +152,26 @@ export default function DuplicateLocationsOptionsPage () {
                 location.additionals.locationName,
                 'valid'
               )
+
+              // Set alert types
+              location.additionals.other.alertTypes = []
+              const categoryToType = (type) => {
+                const typeMap = {
+                  'Flood Warning': 'warning',
+                  'Flood Warning Groundwater': 'warning',
+                  'Flood Warning Rapid Response': 'warning',
+                  'Flood Alert': 'alert',
+                  'Flood Alert Groundwater': 'alert'
+                }
+                return typeMap[type] || []
+              }
+              location.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
+                location.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
+                location.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+
+              location.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
+                location.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+
               const locationToUpdate = webToGeoSafeLocation(location)
               // change the location ID to the existing ID in geosafe
               locationToUpdate.id = existingLocation.id
@@ -173,7 +194,7 @@ export default function DuplicateLocationsOptionsPage () {
                   channelMobileAppEnabled: true,
                   partnerCanView: true,
                   partnerCanEdit: true,
-                  alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+                  alertTypes: location.additionals.other.alertTypes
                 }
               }
 

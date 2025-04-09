@@ -26,11 +26,12 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { orgId, fileName } = request.payload
+        const { redis } = request.server.app
 
         if (fileName) {
           const elasticacheKey = 'shapefile:' + fileName.split('.')[0]
 
-          const result = await getJsonData(elasticacheKey)
+          const result = await getJsonData(redis, elasticacheKey)
           if (result) {
             if (result.data) {
               // Check invalid locations for duplicates
@@ -48,7 +49,7 @@ module.exports = [
               }
 
               // Write any changes back to elasticache
-              await setJsonData(elasticacheKey, result)
+              await setJsonData(redis, elasticacheKey, result)
             }
             return h.response({ status: 200, data: result })
           } else {

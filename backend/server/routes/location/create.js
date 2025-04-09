@@ -16,13 +16,15 @@ module.exports = [
         }
 
         const { authToken, orgId, location } = request.payload
+        const { redis } = request.server.app
+
         if (authToken && location && orgId) {
           const response = await apiCall(
             { authToken: authToken, location: location },
             'location/create'
           )
           if (response.data.location) {
-            await addLocation(orgId, response.data.location)
+            await addLocation(redis, orgId, response.data.location)
             return h.response({ status: 200, data: response.data.location })
           } else {
             return createGenericErrorResponse(h)

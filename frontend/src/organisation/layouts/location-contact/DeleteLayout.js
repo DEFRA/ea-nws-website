@@ -108,7 +108,7 @@ export default function DeleteLayout () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              Delete {!isLocation && 'contact'} {nameToDelete}
+              Delete {!isLocation && 'user'} {nameToDelete}
             </h1>
             <div className='govuk-body'>
               <p className='govuk-!-margin-bottom-8'>

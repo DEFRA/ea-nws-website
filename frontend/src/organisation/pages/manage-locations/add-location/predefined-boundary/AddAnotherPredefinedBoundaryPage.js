@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import {
@@ -8,12 +9,18 @@ import {
   setPredefinedBoundaryFlow
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 
 export default function AddAnotherPredefinedBoundaryPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
+
   const consecutiveBoundariesAdded = useSelector(
     (state) => state.session.consecutiveBoundariesAdded
+  )
+  const [notificationText, setNotificationText] = useState(
+    location.state?.successMessage
   )
 
   const navigateBack = (event) => {
@@ -40,6 +47,13 @@ export default function AddAnotherPredefinedBoundaryPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
+            {notificationText && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={notificationText}
+              />
+            )}
             <h1 className='govuk-heading-l'>Add another predefined boundary</h1>
             <div className='govuk-body'>
               <Button

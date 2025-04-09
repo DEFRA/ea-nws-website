@@ -9,6 +9,7 @@ createServer()
     } catch {
       console.log(err)
     } finally {
+      server.app.redis.disconnect()
       process.exit(1)
     }
   })

@@ -5,11 +5,14 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import { setLinkLocations, setOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import {
+  setLinkLocations,
+  setOrgCurrentContact
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import ContactsTable from '../../../../components/custom/ContactsTable'
+import UsersTable from '../../../../components/custom/UsersTable'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -26,7 +29,9 @@ export default function LinkedContactsPage () {
   const [currentPage, setCurrentPage] = useState(1)
   const [unlinkNotification, setUnlinkNotification] = useState('')
 
-  const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
+  const currentLocation = geoSafeToWebLocation(
+    useSelector((state) => state.session.currentLocation)
+  )
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -95,7 +100,8 @@ export default function LinkedContactsPage () {
     dispatch(setLinkLocations(linkLocations))
     navigate(orgManageContactsUrls.view.dashboard, {
       state: {
-        linkLocations, linkSource: 'info'
+        linkLocations,
+        linkSource: 'info'
       }
     })
   }
@@ -104,7 +110,11 @@ export default function LinkedContactsPage () {
     let unlinkText = ''
 
     if (contactsUnlinked.length > 0) {
-      unlinkText = contactsUnlinked.length + ' contact' + (contactsUnlinked.length > 1 ? 's' : '') + ' unlinked'
+      unlinkText =
+        contactsUnlinked.length +
+        ' contact' +
+        (contactsUnlinked.length > 1 ? 's' : '') +
+        ' unlinked'
     }
 
     return unlinkText
@@ -123,7 +133,12 @@ export default function LinkedContactsPage () {
 
   const unlinkContacts = async (contactsToUnlink) => {
     for (const contact of contactsToUnlink) {
-      const dataToSend = { authToken, orgId, locationId: currentLocation.id, contactIds: [contact.id] }
+      const dataToSend = {
+        authToken,
+        orgId,
+        locationId: currentLocation.id,
+        contactIds: [contact.id]
+      }
 
       const { errorMessage } = await backendCall(
         dataToSend,
@@ -157,29 +172,38 @@ export default function LinkedContactsPage () {
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
         Linked contacts
       </h2>
-      <div className='govuk-!-margin-top-2 govuk-!-margin-bottom-5' style={{ height: '2px', backgroundColor: 'black' }} />
-      {linkedContacts.length === 0 &&
+      <div
+        className='govuk-!-margin-top-2 govuk-!-margin-bottom-5'
+        style={{ height: '2px', backgroundColor: 'black' }}
+      />
+      {linkedContacts.length === 0 && (
         <div className='govuk-!-width-one-half govuk-!-margin-bottom-6'>
           <p className='govuk-body'>
-            No contacts have been linked to this location. This means there are currently no flood messages sent to contacts for this location.
+            No contacts have been linked to this location. This means there are
+            currently no flood messages sent to contacts for this location.
           </p>
           <p className='govuk-body'>
-            To enable contacts to get flood messages, you need to link them to the locations you want them to get messages for. Any contacts not linked to locations will not get flood messages.
+            To enable contacts to get flood messages, you need to link them to
+            the locations you want them to get messages for. Any contacts not
+            linked to locations will not get flood messages.
           </p>
-        </div>}
+        </div>
+      )}
       <Button
         text='Link to contacts'
         className='govuk-button govuk-button--secondary govuk-!-margin-right-2'
         onClick={linkToContacts}
       />
-      {linkedContacts.length > 0 && <Button
-        text='Unlink selected'
-        className='govuk-button govuk-button--secondary'
-        onClick={(event) => {
-          event.preventDefault()
-          unlinkContacts(selectedContacts)
-        }}
-                                    />}
+      {linkedContacts.length > 0 && (
+        <Button
+          text='Unlink selected'
+          className='govuk-button govuk-button--secondary'
+          onClick={(event) => {
+            event.preventDefault()
+            unlinkContacts(selectedContacts)
+          }}
+        />
+      )}
     </>
   )
 
@@ -190,7 +214,6 @@ export default function LinkedContactsPage () {
 
   return (
     <>
-
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {unlinkNotification.length > 0 && (
@@ -204,9 +227,9 @@ export default function LinkedContactsPage () {
           currentPage={orgManageLocationsUrls.view.viewLinkedContacts}
         />
         {linkedContactsSection}
-        {linkedContacts.length > 0 &&
+        {linkedContacts.length > 0 && (
           <>
-            <ContactsTable
+            <UsersTable
               contacts={linkedContacts}
               displayedContacts={displayedContacts}
               filteredContacts={filteredContacts}
@@ -221,14 +244,13 @@ export default function LinkedContactsPage () {
               contactPrefix='linked'
             />
             <Pagination
-              totalPages={Math.ceil(
-                filteredContacts.length / contactsPerPage
-              )}
+              totalPages={Math.ceil(filteredContacts.length / contactsPerPage)}
               onPageChange={(val) => setCurrentPage(val)}
               pageList
               reset={resetPaging}
             />
-          </>}
+          </>
+        )}
       </main>
     </>
   )

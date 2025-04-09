@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import { orgFloodReportsUrls } from '../../../../routes/flood-reports/FloodReportsRoutes'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ReportsOverviewPage () {
   const navigate = useNavigate()
@@ -47,9 +47,9 @@ export default function ReportsOverviewPage () {
               has a filter to produce reports
             </p>
             <p>
-              <Link to={orgFloodReportsUrls.summary} className='govuk-link'>
-                Summary of flood messages sent to your locations
-              </Link>
+              {/* <Link to={orgFloodReportsUrls.summary} className='govuk-link'> */}
+              Summary of flood messages sent to your locations (not yet available)
+              {/* </Link> */}
             </p>
             <br />
             <h2 className='govuk-heading-m'>Your contacts</h2>

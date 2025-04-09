@@ -15,27 +15,29 @@ module.exports = [
       try {
         if (request.payload.Message) {
           const fileName = request.payload.Message
+          const { redis } = request.server.app
+
           const elasticacheKey = 'shapefile:' + fileName.split('.')[0]
-          await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'working' })
+          await setJsonData(redis, elasticacheKey, { stage: 'Scanning upload', status: 'working' })
           const scanResult = await scanResults(request.payload.Message, 'zip-uploads/zip')
           if (scanResult?.data?.scanComplete === true) {
             if (scanResult?.data?.scanResult === 'THREATS_FOUND') {
-              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
+              await setJsonData(redis, elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
             } else if (scanResult?.data?.scanResult === 'NO_THREATS_FOUND') {
-              await setJsonData(elasticacheKey, { stage: 'Processing', status: 'working' })
+              await setJsonData(redis, elasticacheKey, { stage: 'Processing', status: 'working' })
               const response = await processShapefile(request.payload.Message)
               if (response.errorMessage) {
-                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
+                await setJsonData(redis, elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
               } else if (response.data) {
-                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'complete', data: response.data })
+                await setJsonData(redis, elasticacheKey, { stage: 'Processing', status: 'complete', data: response.data })
               } else {
-                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Unknown error' }] })
+                await setJsonData(redis, elasticacheKey, { stage: 'Processing', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Unknown error' }] })
               }
             } else {
-              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
+              await setJsonData(redis, elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
             }
           } else {
-            await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
+            await setJsonData(redis, elasticacheKey, { stage: 'Scanning upload', status: 'rejected', error: [{ errorType: 'generic', errorMessage: 'Error Scanning File' }] })
           }
 
           return h.response({ status: 200 })

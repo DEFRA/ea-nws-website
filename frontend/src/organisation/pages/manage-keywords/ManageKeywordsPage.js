@@ -277,7 +277,7 @@ export default function ManageKeywordsPage () {
     let locationsOrContactsInfo = keywordType === 'location' ? [...locations] : [...contacts]
 
     // Loop over keywords to update (only useful for deleting multiple locations)
-    for (const keywordToUpdate of keywordsToUpdate){
+    for (const keywordToUpdate of keywordsToUpdate) {
       // Loop over locations/contacts linked to edited keyword
       for (const id of keywordToUpdate.linked_ids) {
         // Get location or Contact info
@@ -317,7 +317,7 @@ export default function ManageKeywordsPage () {
         }
 
         await updateLocationOrContact()
-        if (action == "delete" && keywordsToUpdate.length > 1){
+        if (action == 'delete' && keywordsToUpdate.length > 1) {
           locationsOrContactsInfo = locationsOrContactsInfo.map(info =>
             info.id === id ? locationOrContactToUpdate : info
           )

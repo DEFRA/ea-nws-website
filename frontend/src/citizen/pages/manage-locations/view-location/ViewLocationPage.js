@@ -57,7 +57,6 @@ export default function ViewLocationPage () {
     (state) => state.session.selectedLocation
   )
   const canRemoveLocation = profile.pois.length > 1
-  console.log(canRemoveLocation)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const floodHistoryData = useFetchAlerts()

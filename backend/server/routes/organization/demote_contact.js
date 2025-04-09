@@ -15,15 +15,15 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, contactId } = request.payload
+        const { authToken, contactId, orgId } = request.payload
         const { redis } = request.server.app
 
-        if (authToken && contactId) {
+        if (authToken && contactId && orgId) {
           const response = await apiCall(
             { authToken: authToken, contactId: contactId },
             'organization/demoteContact'
           )
-          if (response.data.contact) {
+          if (response?.data?.contact) {
             await updateContact(redis, orgId, response.data.contact)
             return h.response({ status: 200, data: response.data.contact })
           } else {

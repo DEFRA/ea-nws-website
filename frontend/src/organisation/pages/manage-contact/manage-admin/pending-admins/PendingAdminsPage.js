@@ -32,7 +32,7 @@ export default function PendingAdminsPage () {
       )
 
       const pendingAdminList = contactsData.data
-        .filter((c) => c.pendingRole === 'Admin')
+        .filter((c) => c.pendingRole === 'ADMIN')
         // Randomly assign a status to each admin --- Mock value (should be removed at a later date)
         .map((admin) => ({
           ...admin,

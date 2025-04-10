@@ -22,6 +22,7 @@ export default function WithdrawInvitePage () {
     const updatedContact = { ...pendingAdmin, pendingRole: null }
 
     try {
+      // TODO: Change to correct backend admin invite withdrawal riute (once created)
       const dataToSend = { authToken, orgId, contact: updatedContact }
       const { data, errorMessage } = await backendCall(
         dataToSend,

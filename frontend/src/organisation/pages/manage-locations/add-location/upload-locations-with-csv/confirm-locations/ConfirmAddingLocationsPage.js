@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import { backendCall } from '../../../../../../common/services/BackendService'
@@ -27,6 +28,94 @@ export default function ConfirmAddingLocationsPage () {
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
+  const [saveLocations, setSaveLocations] = useState(false)
+  const [stage, setStage] = useState('Adding locations')
+
+  useEffect(() => {
+    if (saveLocations) {
+      const upload = async () => {
+        const dataToSend = { authToken, orgId, fileName }
+        await backendCall(
+          dataToSend,
+          'api/bulk_uploads/save_locations',
+          navigate
+        )
+      }
+      upload()
+      const interval = setInterval(async function getStatus () {
+        if (getStatus.isRunning) return
+        getStatus.isRunning = true
+        const dataToSend = { authToken: authToken }
+        const { data } = await backendCall(
+          dataToSend,
+          'api/bulk_uploads/save_locations_status',
+          navigate
+        )
+        if (data) {
+          if (data?.stage !== stage) {
+            setStage(data.stage)
+          }
+          if (data?.status === 'complete') {
+            if (data?.data) {
+              if (duplicateLocations > 0) {
+                if (duplicateLocations === 1) {
+                  const location = await getDupLocation()
+        
+                  // Get the existing location (note type is 'valid')
+                  const existingLocation = geoSafeToWebLocation(
+                    await getLocation(orgId, location.additionals.locationName, 'valid')
+                  )
+        
+                  // Set the new, duplicate location
+                  const newLocation = location
+        
+                  if (existingLocation && newLocation) {
+                    // Now compare the two and let the use choose one
+                    navigate(
+                      orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+                      {
+                        state: {
+                          existingLocation,
+                          newLocation,
+                          numDuplicates: duplicateLocations
+                        }
+                      }
+                    )
+                  }
+                } else {
+                  navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
+                    state: {
+                      addedLocations: data.data.valid,
+                      numDuplicates: duplicateLocations
+                    }
+                  })
+                }
+              } else if (notFoundLocations > 0) {
+                navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
+                  state: {
+                    addedLocations: data.data.valid
+                  }
+                })
+              } else if (notInEnglandLocations > 0) {
+                navigate(
+                  orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
+                  {
+                    state: {
+                      addedLocations: data.data.valid
+                    }
+                  }
+                )
+              }
+            }
+          }
+        }
+        getStatus.isRunning = false
+      }, 2000)
+      return () => {
+        clearInterval(interval)
+      }
+    }
+  }, [saveLocations])
 
   const getLocation = async (orgId, locationName, type) => {
     const dataToSend = {
@@ -65,71 +154,6 @@ export default function ConfirmAddingLocationsPage () {
       })
     }
     return locations[0]
-  }
-
-  const handleLocations = async (event) => {
-    event.preventDefault()
-
-    const dataToSend = { authToken, orgId, fileName }
-    const { data, errorMessage } = await backendCall(
-      dataToSend,
-      'api/bulk_uploads/save_locations',
-      navigate
-    )
-
-    if (!errorMessage && data) {
-      if (duplicateLocations > 0) {
-        if (duplicateLocations === 1) {
-          const location = await getDupLocation()
-
-          // Get the existing location (note type is 'valid')
-          const existingLocation = geoSafeToWebLocation(
-            await getLocation(orgId, location.additionals.locationName, 'valid')
-          )
-
-          // Set the new, duplicate location
-          const newLocation = location
-
-          if (existingLocation && newLocation) {
-            // Now compare the two and let the use choose one
-            navigate(
-              orgManageLocationsUrls.add.duplicateLocationComparisonPage,
-              {
-                state: {
-                  existingLocation,
-                  newLocation,
-                  numDuplicates: duplicateLocations
-                }
-              }
-            )
-          }
-        } else {
-          navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
-            state: {
-              addedLocations: data.valid,
-              numDuplicates: duplicateLocations
-            }
-          })
-        }
-      } else if (notFoundLocations > 0) {
-        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
-          state: {
-            addedLocations: data.valid
-          }
-        })
-      } else if (notInEnglandLocations > 0) {
-        navigate(
-          orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
-          {
-            state: {
-              addedLocations: data.valid
-            }
-          }
-        )
-      }
-    } else {
-      // got to some sort of error page
-    }
   }
 
   const handleCancel = async (event) => {
@@ -239,7 +263,10 @@ export default function ConfirmAddingLocationsPage () {
                   : 'Continue'
               }
               className='govuk-button govuk-button'
-              onClick={handleLocations}
+              onClick={(event) => {
+                event.preventDefault()
+                setSaveLocations(true)
+              }}
             />
             &nbsp; &nbsp;
             <Button
@@ -250,6 +277,14 @@ export default function ConfirmAddingLocationsPage () {
           </div>
         </div>
       </main>
+      {saveLocations &&
+      <div className='popup-dialog'>
+        <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+          <LoadingSpinner
+            loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+          />
+        </div>
+      </div>}
     </>
   )
 }

@@ -382,14 +382,25 @@ export default function LocationsTable ({
                 >
                   {(location.within === true &&
                     location.additionals.other?.alertTypes?.length > 0) ||
-                    (location.additionals.other?.childrenIDs?.length > 0 &&
+                  (location.additionals.other?.childrenIDs?.length > 0 &&
                     location.additionals.other?.alertTypes?.length > 0)
                     ? 'Yes'
                     : 'No'}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.linked_contacts?.length !== undefined ? location.linked_contacts?.length : LoadingDots}
+                {location.linked_contacts?.length !== undefined
+                  ? (
+                    <Link
+                      className='govuk-link'
+                      to={orgManageLocationsUrls.view.viewLinkedContacts}
+                    >
+                      {location.linked_contacts?.length}
+                    </Link>
+                    )
+                  : (
+                      LoadingDots
+                    )}
               </td>
               <td className='govuk-table__cell'>
                 <span

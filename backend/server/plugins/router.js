@@ -27,6 +27,7 @@ const routes = [].concat(
   require('../routes/sign_out/sign_out'),
   require('../routes/bulk_uploads/process_status'),
   require('../routes/bulk_uploads/save_locations'),
+  require('../routes/bulk_uploads/save_locations_status'),
   require('../routes/bulk_uploads/get_invalid_locations'),
   require('../routes/bulk_uploads/remove_invalid_location'),
   require('../routes/shapefile/process_file'),
@@ -62,7 +63,9 @@ const routes = [].concat(
   require('../routes/gov_uk_notify/organisation/admin_invited'),
   require('../routes/gov_uk_notify/organisation/admin_removed'),
   require('../routes/live-alerts/list'),
-  require('../routes/live-alerts/get')
+  require('../routes/live-alerts/get'),
+  require('../routes/sign_in/org_signin'),
+  require('../routes/sign_in/org_signin_status')
 )
 
 module.exports = {

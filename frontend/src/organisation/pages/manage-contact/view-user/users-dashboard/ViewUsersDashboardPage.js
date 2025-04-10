@@ -19,6 +19,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 
 export default function ViewUsersDashboardPage () {
   const navigate = useNavigate()
@@ -54,6 +55,7 @@ export default function ViewUsersDashboardPage () {
     error: ''
   })
   const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
   const historyData = useFetchAlerts()
 
   useEffect(() => {
@@ -353,8 +355,18 @@ export default function ViewUsersDashboardPage () {
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
-                      text={notificationText}
+                      heading={
+                      notificationText.length === 2 ? notificationText[0] : null
+                    }
+                      text={
+                      notificationText.length === 2
+                        ? notificationText[1]
+                        : notificationText[0]
+                    }
                     />
+                  )}
+                  {(errorMessage) && (
+                    <ErrorSummary errorList={[errorMessage]} />
                   )}
                   <DashboardHeader
                     contacts={contacts}
@@ -363,6 +375,7 @@ export default function ViewUsersDashboardPage () {
                     selectedContacts={selectedContacts}
                     onOnlyShowSelected={onOnlyShowSelected}
                     linkSource={location.state?.linkSource}
+                    setErrorMessage={setErrorMessage}
                   />
                 </div>
                 <div className='govuk-grid-column-full govuk-body'>

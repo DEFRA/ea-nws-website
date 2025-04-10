@@ -11,7 +11,10 @@ import {
   setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { addVerifiedContact, removeVerifiedContact } from '../../../../common/services/ProfileServices'
+import {
+  addVerifiedContact,
+  removeVerifiedContact
+} from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 export default function SignUpPage () {
   const navigate = useNavigate()
@@ -43,7 +46,11 @@ export default function SignUpPage () {
       } else {
         let updatedProfile = profile
         if (profile.emails[0]) {
-          updatedProfile = removeVerifiedContact(updatedProfile, profile.emails[0])
+          updatedProfile = removeVerifiedContact(
+            updatedProfile,
+            profile.emails[0],
+            'email address'
+          )
         }
         updatedProfile = addVerifiedContact(updatedProfile, 'email', email)
         dispatch(setProfile(updatedProfile))
@@ -55,19 +62,14 @@ export default function SignUpPage () {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
-              Enter an email address
-            </h2>
+            <h2 className='govuk-heading-l'>Enter an email address</h2>
             <div className='govuk-body'>
-              <p>
-                We'll send flood messages to this address.{' '}
-              </p>
+              <p>We'll send flood messages to this address. </p>
               <p>
                 You'll also use this to signin to your account to update your
                 locations, flood messages or contact details.{' '}

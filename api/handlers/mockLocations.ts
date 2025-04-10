@@ -30,7 +30,12 @@ const locations = [
             notes:
               'Kier starmer has the flood plan for this location. His contact number is 01234 567 890',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [{
+              TA_CODE: '063FWT23WestminC',
+              TA_Name: 'Tidal Thames at Westminster',
+              category: 'Flood Warning'
+            }]
           })
         }
       }

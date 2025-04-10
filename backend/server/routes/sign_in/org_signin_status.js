@@ -3,22 +3,25 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { listContacts } = require('../../services/elasticache')
+const {
+  getJsonData
+} = require('../../services/elasticache')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/elasticache/list_contacts',
+    path: '/api/org_signin_status',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId } = request.payload
+        const { authToken } = request.payload
         const { redis } = request.server.app
 
-        if (orgId) {
-          const result = await listContacts(redis, orgId)
+        if (authToken) {
+          const elasticacheKey = 'signin_status:' + authToken
+          const result = await getJsonData(redis, elasticacheKey)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

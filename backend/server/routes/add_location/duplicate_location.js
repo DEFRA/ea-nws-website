@@ -15,9 +15,10 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { orgId, locationName } = request.payload
+        const { redis } = request.server.app
 
         if (locationName && orgId) {
-          const duplicate = await findLocationByName(orgId, locationName)
+          const duplicate = await findLocationByName(redis, orgId, locationName)
           if (duplicate.length !== 0) {
             return h.response({ status: 500, errorMessage: 'duplicate location' })
           } else {

@@ -39,29 +39,19 @@ const addUnverifiedContact = (profile, type, contact) => {
   }
 }
 
-const removeUnverifiedContact = (profile, contact) => {
+const removeUnverifiedContact = (profile, contact, type) => {
   let unverifiedContactListKey
 
   // need to check if there are any unverified
   if (profile.unverified) {
-    if (
-      profile.unverified.emails &&
-      profile.unverified.emails.some((email) => email.address === contact)
-    ) {
+    if (type === 'email address' && profile.unverified.emails) {
       unverifiedContactListKey = 'emails'
     } else if (
-      profile.unverified.mobilePhones &&
-      profile.unverified.mobilePhones.some(
-        (mobilePhone) => mobilePhone.address === contact
-      )
+      type === 'mobile telephone number' &&
+      profile.unverified.mobilePhones
     ) {
       unverifiedContactListKey = 'mobilePhones'
-    } else if (
-      profile.unverified.homePhones &&
-      profile.unverified.homePhones.some(
-        (homePhone) => homePhone.address === contact
-      )
-    ) {
+    } else if (type === 'telephone number' && profile.unverified.homePhones) {
       unverifiedContactListKey = 'homePhones'
     } else {
       // contact not found in any unverified contacts list
@@ -129,14 +119,14 @@ const addVerifiedContact = (profile, type, contact) => {
   }
 }
 
-const removeVerifiedContact = (profile, contact) => {
+const removeVerifiedContact = (profile, contact, type) => {
   let verifiedContactListKey
 
-  if (profile.emails.includes(contact)) {
+  if (type === 'email address') {
     verifiedContactListKey = 'emails'
-  } else if (profile.mobilePhones.includes(contact)) {
+  } else if (type === 'mobile telephone number') {
     verifiedContactListKey = 'mobilePhones'
-  } else if (profile.homePhones.includes(contact)) {
+  } else if (type === 'telephone number') {
     verifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list

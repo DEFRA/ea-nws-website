@@ -19,15 +19,25 @@ export default function ConfirmDeleteContactDetailsLayout ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
+
+  const contactTypeMapping = {
+    homePhone: 'telephone number',
+    mobilePhone: 'mobile telephone number',
+    email: 'email address'
+  }
+  const contactType = contactTypeMapping[location.state.type]
+
   const removeContact = async (event) => {
     event.preventDefault()
     let updatedProfile = removeVerifiedContact(
       session.profile,
-      location.state.contact
+      location.state.contact,
+      contactType
     )
     updatedProfile = removeUnverifiedContact(
       updatedProfile,
-      location.state.contact
+      location.state.contact,
+      contactType
     )
 
     const data = {
@@ -54,7 +64,6 @@ export default function ConfirmDeleteContactDetailsLayout ({
 
   return (
     <>
-
       <BackLink onClick={handleCancelLink} />
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
@@ -68,7 +77,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
               text='Remove'
               onClick={removeContact}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               onClick={handleCancelLink}
               className='govuk-body govuk-link inline-link'

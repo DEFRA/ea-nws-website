@@ -53,7 +53,7 @@ const contacts = [
     metatdata: null,
     pois: null,
     role: 'SELF',
-    pendingRole: null
+    pendingRole: 'ADMIN'
   },
   {
     id: '3',
@@ -81,7 +81,7 @@ const contacts = [
     metatdata: null,
     pois: null,
     role: 'SELF',
-    pendingRole: 'ADMIN'
+    pendingRole: null
   },
   {
     id: '4',

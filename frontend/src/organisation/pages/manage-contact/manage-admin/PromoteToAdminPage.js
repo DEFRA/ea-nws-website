@@ -49,8 +49,8 @@ export default function PromoteToAdminPage () {
 
   const handleSubmit = async () => {
     const updatedContact = { ...currentContact, pendingRole: 'ADMIN' }
-
     try {
+      // TODO: Change this to proper admin backend call once created
       const dataToSend = { authToken, orgId, contact: updatedContact }
       const { data, errorMessage } = await backendCall(
         dataToSend,
@@ -90,20 +90,18 @@ export default function PromoteToAdminPage () {
               receiving, as a contact.
             </p>
 
-            {emailCount > 1
-              ? (
-                  emailRadios
-                )
-              : (
-                <Input
-                  inputType='text'
-                  value={selectedEmail}
-                  name='Email address'
-                  onChange={(val) => setSelectedEmail(val)}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                />
-                )}
+            {emailCount > 1 ? (
+              emailRadios
+            ) : (
+              <Input
+                inputType='text'
+                value={selectedEmail}
+                name='Email address'
+                onChange={(val) => setSelectedEmail(val)}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+              />
+            )}
             <Button
               text='Invite as admin'
               className='govuk-button'

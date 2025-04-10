@@ -16,13 +16,14 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { authToken, organization } = request.payload
+        const { redis } = request.server.app
 
         if (Object.keys(organization).length !== 0 && authToken) {
           const response = await apiCall(
             { authToken: authToken, organization: organization },
             'organization/update'
           )
-          await setJsonData(response.data.organization.id + ':org_data', response.data.organization)
+          await setJsonData(redis, response.data.organization.id + ':org_data', response.data.organization)
           return h.response(response)
         } else {
           return createGenericErrorResponse(h)

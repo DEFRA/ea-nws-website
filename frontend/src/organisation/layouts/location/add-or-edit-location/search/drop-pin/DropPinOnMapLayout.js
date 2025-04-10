@@ -129,9 +129,7 @@ export default function DropPinOnMapLayout ({
       const duplicateLocation = await checkDuplicateLocation()
 
       if (inEngland && !duplicateLocation) {
-        // Set default alert types
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
-        newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
         // get target areas
         const TAs = await getFloodAreas(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
         newWebLocation.additionals.other.targetAreas = []
@@ -144,6 +142,26 @@ export default function DropPinOnMapLayout ({
         })
         newWebLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
         newWebLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+        
+        // Set alert types
+        newWebLocation.additionals.other.alertTypes = []
+        const categoryToType = (type) => {
+          const typeMap = {
+            'Flood Warning': 'warning',
+            'Flood Warning Groundwater': 'warning',
+            'Flood Warning Rapid Response': 'warning',
+            'Flood Alert': 'alert',
+            'Flood Alert Groundwater': 'alert'
+          }
+          return typeMap[type] || []
+        }
+        newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
+          newWebLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
+          newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+
+        newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
+          newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+
         const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
         const dataToSend = { authToken, orgId, location: newGeosafeLocation }
@@ -165,7 +183,7 @@ export default function DropPinOnMapLayout ({
               channelMobileAppEnabled: true,
               partnerCanView: true,
               partnerCanEdit: true,
-              alertTypes: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+              alertTypes: newWebLocation.additionals.other.alertTypes
             }
           }
 

@@ -20,6 +20,7 @@ import UserInformationPage from '../../pages/manage-contact/view-user/users-info
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
 const urlManageContactsEdit = urlManageContactsOrg + '/edit'
+const urlManageContactsAdmin = urlManageContactsOrg + '/admin'
 
 const orgManageContactsUrls = {
   add: {

@@ -67,19 +67,17 @@ export default function ViewLocationPage () {
     'alertTypes'
   )
 
-  const [optionalAlerts, setOptionalAlerts] = useState(
-    alertTypes.includes(AlertType.FLOOD_ALERT)
-  )
+  const initialAlerts = alertTypes.includes(AlertType.FLOOD_ALERT)
+  const [savedOptionalAlerts, setSavedOptionalAlerts] = useState(initialAlerts)
+  const [pendingOptionalAlerts, setPendingOptionalAlerts] =
+    useState(initialAlerts)
 
   const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
 
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
@@ -164,7 +162,7 @@ export default function ViewLocationPage () {
     e.preventDefault()
     let updatedProfile
 
-    if (optionalAlerts) {
+    if (pendingOptionalAlerts) {
       if (!alertTypes.includes(AlertType.FLOOD_ALERT)) {
         alertTypes = [...alertTypes, AlertType.FLOOD_ALERT]
       }
@@ -191,9 +189,11 @@ export default function ViewLocationPage () {
       await updateGeosafeProfile(updatedProfile)
 
       const message = `You've turned ${
-        optionalAlerts ? 'on' : 'off'
+        pendingOptionalAlerts ? 'on' : 'off'
       } early flood alerts`
+
       setSuccessMessage(message)
+      setSavedOptionalAlerts(pendingOptionalAlerts)
     }
   }
 
@@ -291,8 +291,8 @@ export default function ViewLocationPage () {
                               name='alert'
                               type='radio'
                               value='on'
-                              checked={optionalAlerts === true}
-                              onChange={() => setOptionalAlerts(true)}
+                              checked={pendingOptionalAlerts === true}
+                              onChange={() => setPendingOptionalAlerts(true)}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -308,8 +308,8 @@ export default function ViewLocationPage () {
                               name='alert'
                               type='radio'
                               value='off'
-                              checked={optionalAlerts === false}
-                              onChange={() => setOptionalAlerts(false)}
+                              checked={pendingOptionalAlerts === false}
+                              onChange={() => setPendingOptionalAlerts(false)}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -332,7 +332,7 @@ export default function ViewLocationPage () {
                   </div>
                   <div className='govuk-summary-card__content'>
                     <p className='govuk-body'>
-                      {optionalAlerts
+                      {savedOptionalAlerts
                         ? 'You currently get these early flood alerts.'
                         : 'You turned these early flood alerts off.'}
                     </p>

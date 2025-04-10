@@ -74,9 +74,9 @@ export default function LiveMap({
   useEffect(() => {
     onFloodAreasUpdate({
       locationsAffected: [...new Set(locationsAffected)].length,
-      severeFloodAreasAmount: severeFloodAreas.length,
-      warningFloodAreasAmount: warningFloodAreas.length,
-      alertFloodAreasAmount: alertFloodAreas.length
+      severeFloodAreasAmount: severePoints.length,
+      warningFloodAreasAmount: warningPoints.length,
+      alertFloodAreasAmount: alertPoints.length
     })
   }, [loading])
 
@@ -546,6 +546,19 @@ export default function LiveMap({
     }
   }
 
+  const FloodInfoMemo = useMemo(() => {
+    return (
+      <FloodDataInformationPopup
+        locationsFloodInformation={locationsFloodInformation}
+        onClose={(event) => {
+          event.preventDefault()
+          setShowFloodInformationData(false)
+          setLocationsFloodInformation([])
+        }}
+        />
+    )
+  }, [locationsFloodInformation])
+
   return (
     <>
       {loading ? (
@@ -554,16 +567,7 @@ export default function LiveMap({
         </>
       ) : (
         <>
-          {showFloodInformationData && (
-            <FloodDataInformationPopup
-              locationsFloodInformation={locationsFloodInformation}
-              onClose={(event) => {
-                event.preventDefault()
-                setShowFloodInformationData(false)
-                setLocationsFloodInformation([])
-              }}
-            />
-          )}
+          {showFloodInformationData && FloodInfoMemo}
 
           <MapContainer
             center={[52.7152, -1.17349]}

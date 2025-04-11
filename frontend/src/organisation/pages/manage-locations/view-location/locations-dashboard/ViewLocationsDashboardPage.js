@@ -710,7 +710,9 @@ export default function ViewLocationsDashboardPage () {
       const locationsToBeEdited = [...selectedLocations]
       await editLocations(locationsToBeEdited)
       setNotificationText(
-        `Message settings changed for ${selectedLocations.length} locations`
+        `Message settings changed for ${selectedLocations.length} location${
+          selectedLocations.length > 1 ? 's' : ''
+        }`
       )
     }
   }

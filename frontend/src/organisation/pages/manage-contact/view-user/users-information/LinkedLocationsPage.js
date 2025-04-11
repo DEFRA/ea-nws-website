@@ -16,7 +16,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import UserHeader from './user-information-components/UserHeader'
 
-export default function LinkedLocationsPage () {
+export default function LinkedLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -121,7 +121,8 @@ export default function LinkedLocationsPage () {
     if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
       riskCategory = location?.additionals?.other?.riverSeaRisk || 'unavailable'
     } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
-      riskCategory = location?.additionals?.other?.groundWaterRisk || 'unavailable'
+      riskCategory =
+        location?.additionals?.other?.groundWaterRisk || 'unavailable'
     }
 
     return riskData[riskCategory]
@@ -258,41 +259,40 @@ export default function LinkedLocationsPage () {
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
         />
-        {loading
-          ? (
-            <LoadingSpinner />
-            )
-          : (
-            <>
-              {linkedLocationsSection}
-              {linkedLocations.length > 0 && (
-                <>
-                  <LocationsTable
-                    locations={linkedLocations}
-                    displayedLocations={displayedLocations}
-                    filteredLocations={filteredLocations}
-                    selectedLocations={selectedLocations}
-                    setLocations={setLinkedLocations}
-                    setSelectedLocations={setSelectedLocations}
-                    setFilteredLocations={setFilteredLocations}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                    onAction={onAction}
-                    actionText='Unlink'
-                    locationPrefix='linked'
-                  />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredLocations.length / locationsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    pageList
-                    reset={resetPaging}
-                  />
-                </>
-              )}
-            </>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            {linkedLocationsSection}
+            {linkedLocations.length > 0 && (
+              <>
+                <LocationsTable
+                  locations={linkedLocations}
+                  displayedLocations={displayedLocations}
+                  filteredLocations={filteredLocations}
+                  selectedLocations={selectedLocations}
+                  setLocations={setLinkedLocations}
+                  setSelectedLocations={setSelectedLocations}
+                  setFilteredLocations={setFilteredLocations}
+                  resetPaging={resetPaging}
+                  setResetPaging={setResetPaging}
+                  onAction={onAction}
+                  actionText='Unlink'
+                  locationPrefix='linked'
+                  isLinkedLocations={true}
+                />
+                <Pagination
+                  totalPages={Math.ceil(
+                    filteredLocations.length / locationsPerPage
+                  )}
+                  onPageChange={(val) => setCurrentPage(val)}
+                  pageList
+                  reset={resetPaging}
+                />
+              </>
             )}
+          </>
+        )}
       </main>
     </>
   )

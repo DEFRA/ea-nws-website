@@ -7,7 +7,7 @@ import { webToGeoSafeLocation } from '../../../common/services/formatters/Locati
 import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationsTable ({
+export default function LocationsTable({
   locations,
   displayedLocations,
   filteredLocations,
@@ -19,7 +19,8 @@ export default function LocationsTable ({
   onAction,
   actionText,
   linkContacts,
-  locationPrefix
+  locationPrefix,
+  isLinkedLocations
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -243,7 +244,8 @@ export default function LocationsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'additionals.locationName'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -260,7 +262,8 @@ export default function LocationsTable ({
                     locationTypeSort,
                     setLocationTypeSort,
                     'additionals.other.location_type'
-                  )}
+                  )
+                }
               >
                 Location type
               </button>
@@ -277,7 +280,8 @@ export default function LocationsTable ({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'additionals.other.business_criticality'
-                  )}
+                  )
+                }
               >
                 Business
                 <br /> criticality
@@ -303,42 +307,56 @@ export default function LocationsTable ({
                 <br /> contacts
               </button>
             </th>
-            <th
-              scope='col'
-              className='govuk-table__header'
-              aria-sort={riverSeaRisksSort}
-            >
-              <button
-                type='button'
-                onClick={() =>
-                  sortData(
-                    riverSeaRisksSort,
-                    setRiverSeaRisksSort,
-                    'riverSeaRisk.title'
-                  )}
-              >
-                Rivers and sea
-                <br /> flood risk
-              </button>
-            </th>
-            <th
-              scope='col'
-              className='govuk-table__header'
-              aria-sort={groundWaterRisksSort}
-            >
-              <button
-                type='button'
-                onClick={() =>
-                  sortData(
-                    groundWaterRisksSort,
-                    setGroundWaterRisksSort,
-                    'groundWaterRisk.title'
-                  )}
-              >
-                Groundwater
-                <br /> flood risk
-              </button>
-            </th>
+            {/* Conditionally render flood-related columns */}
+            {isLinkedLocations ? (
+              <>
+                <th scope='col' className='govuk-table__header'>
+                  Flood messages <br />
+                  received in last two years
+                </th>
+              </>
+            ) : (
+              <>
+                <th
+                  scope='col'
+                  className='govuk-table__header'
+                  aria-sort={riverSeaRisksSort}
+                >
+                  <button
+                    type='button'
+                    onClick={() =>
+                      sortData(
+                        riverSeaRisksSort,
+                        setRiverSeaRisksSort,
+                        'riverSeaRisk.title'
+                      )
+                    }
+                  >
+                    Rivers and sea
+                    <br /> flood risk
+                  </button>
+                </th>
+                <th
+                  scope='col'
+                  className='govuk-table__header'
+                  aria-sort={groundWaterRisksSort}
+                >
+                  <button
+                    type='button'
+                    onClick={() =>
+                      sortData(
+                        groundWaterRisksSort,
+                        setGroundWaterRisksSort,
+                        'groundWaterRisk.title'
+                      )
+                    }
+                  >
+                    Groundwater
+                    <br /> flood risk
+                  </button>
+                </th>
+              </>
+            )}
             <th scope='col' className='govuk-table__header' />
           </tr>
         </thead>
@@ -389,33 +407,41 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.linked_contacts?.length !== undefined
-                  ? (
-                    <Link
-                      className='govuk-link'
-                      to={orgManageLocationsUrls.view.viewLinkedContacts}
+                {location.linked_contacts?.length !== undefined ? (
+                  <Link
+                    className='govuk-link'
+                    to={orgManageLocationsUrls.view.viewLinkedContacts}
+                  >
+                    {location.linked_contacts?.length}
+                  </Link>
+                ) : (
+                  LoadingDots
+                )}
+              </td>
+              {/* Conditionally render flood-related cells */}
+              {isLinkedLocations ? (
+                <>
+                  <td className='govuk-table__cell'>0</td>
+                </>
+              ) : (
+                <>
+                  {' '}
+                  <td className='govuk-table__cell'>
+                    <span
+                      className={`flood-risk-container ${location.riverSeaRisk?.className}`}
                     >
-                      {location.linked_contacts?.length}
-                    </Link>
-                    )
-                  : (
-                      LoadingDots
-                    )}
-              </td>
-              <td className='govuk-table__cell'>
-                <span
-                  className={`flood-risk-container ${location.riverSeaRisk?.className}`}
-                >
-                  {location.riverSeaRisk?.title}
-                </span>
-              </td>
-              <td className='govuk-table__cell'>
-                <span
-                  className={`flood-risk-container ${location.groundWaterRisk?.className}`}
-                >
-                  {location.groundWaterRisk?.title}
-                </span>
-              </td>
+                      {location.riverSeaRisk?.title}
+                    </span>
+                  </td>
+                  <td className='govuk-table__cell'>
+                    <span
+                      className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                    >
+                      {location.groundWaterRisk?.title}
+                    </span>
+                  </td>
+                </>
+              )}
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'

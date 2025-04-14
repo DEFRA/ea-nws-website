@@ -46,7 +46,8 @@ export default function ValidateEmailLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { error: validationError, code: formattedCode } = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { authToken, email, code: formattedCode }
@@ -55,7 +56,10 @@ export default function ValidateEmailLayout ({
         'api/add_contact/email/validate'
       )
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+        if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -93,7 +97,11 @@ export default function ValidateEmailLayout ({
     event.preventDefault()
     // remove email from verified list if user is going back after validating
 
-    const updatedProfile = removeVerifiedContact(session.profile, email)
+    const updatedProfile = removeVerifiedContact(
+      session.profile,
+      email,
+      'email address'
+    )
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'email', email)))
@@ -114,16 +122,40 @@ export default function ValidateEmailLayout ({
 
   const removeEmailFromProfile = async () => {
     let updatedProfile
-    if (session.profile.unverified.emails.some(unverifiedEmail => unverifiedEmail.address === email)) {
-      updatedProfile = removeUnverifiedContact(session.profile, email)
-      dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
+    if (
+      session.profile.unverified.emails.some(
+        (unverifiedEmail) => unverifiedEmail.address === email
+      )
+    ) {
+      updatedProfile = removeUnverifiedContact(
+        session.profile,
+        email,
+        'email address'
+      )
+      dispatch(
+        setProfile(
+          removeUnverifiedContact(session.profile, email, 'email address')
+        )
+      )
     }
     if (session.profile.emails.includes(email)) {
-      updatedProfile = removeVerifiedContact(session.profile, email)
-      dispatch(setProfile(removeVerifiedContact(session.profile, email)))
+      updatedProfile = removeVerifiedContact(
+        session.profile,
+        email,
+        'email address'
+      )
+      dispatch(
+        setProfile(
+          removeVerifiedContact(session.profile, email, 'email address')
+        )
+      )
     }
 
-    const dataToSend = { profile: updatedProfile, authToken: session.authToken, signinType }
+    const dataToSend = {
+      profile: updatedProfile,
+      authToken: session.authToken,
+      signinType
+    }
 
     const { errorMessage } = await backendCall(
       dataToSend,
@@ -137,27 +169,30 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
-
       {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        ? (
+          <ExpiredCodeLayout getNewCode={getNewCode} />
+          )
         : (
           <>
             <BackLink onClick={backLink} />
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={'New code sent at ' + codeResentTime}
-                                 />}
+                  {codeResent && (
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={'New code sent at ' + codeResentTime}
+                    />
+                  )}
                   {error && <ErrorSummary errorList={[error]} />}
                   <h2 className='govuk-heading-l'>Check your email</h2>
                   <div className='govuk-body'>
                     {changeSignIn && (
                       <p className='govuk-body'>
                         You need to confirm your email address.
-                      </p>
+                    </p>
                     )}
                     <p className='govuk-body govuk-!-margin-bottom-5'>
                       We've sent an email with a code to:
@@ -180,35 +215,35 @@ export default function ValidateEmailLayout ({
                     {changeSignIn
                       ? (
                         <>
-                          <Link
-                            onClick={differentEmail}
-                            className='govuk-link inline-link'
-                          >
-                            Enter a different email
-                          </Link>
-                          <br />
-                          <Link onClick={getNewCode} className='govuk-link'>
-                            Get a new code
-                          </Link>
-                        </>
+                  <Link
+                          onClick={differentEmail}
+                          className='govuk-link inline-link'
+                        >
+                          Enter a different email
+                        </Link>
+                  <br />
+                  <Link onClick={getNewCode} className='govuk-link'>
+                          Get a new code
+                        </Link>
+                </>
                         )
                       : (
                         <>
-                          <Link
-                            onClick={skipValidation}
-                            className='govuk-link inline-link'
-                          >
-                            Skip and confirm later
-                          </Link>
-                          <br />
-                          <Link onClick={getNewCode} className='govuk-link'>
-                            Get a new code
-                          </Link>
-                          <br /> <br />
-                          <Link onClick={differentEmail} className='govuk-link'>
-                            Enter a different email
-                          </Link>
-                        </>
+                  <Link
+                          onClick={skipValidation}
+                          className='govuk-link inline-link'
+                        >
+                          Skip and confirm later
+                        </Link>
+                  <br />
+                  <Link onClick={getNewCode} className='govuk-link'>
+                          Get a new code
+                        </Link>
+                  <br /> <br />
+                  <Link onClick={differentEmail} className='govuk-link'>
+                          Enter a different email
+                        </Link>
+                </>
                         )}
                   </div>
                 </div>

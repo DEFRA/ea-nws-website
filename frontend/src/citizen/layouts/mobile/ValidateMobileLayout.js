@@ -42,7 +42,8 @@ export default function ValidateMobileLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { error: validationError, code: formattedCode } = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { authToken, code: formattedCode, msisdn: mobile }
@@ -87,7 +88,11 @@ export default function ValidateMobileLayout ({
   const skipValidation = (event) => {
     event.preventDefault()
     // remove email from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(profile, mobile)
+    const updatedProfile = removeVerifiedContact(
+      profile,
+      mobile,
+      'mobile telephone number'
+    )
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
@@ -113,12 +118,28 @@ export default function ValidateMobileLayout ({
         (unverifiedMobilePhone) => unverifiedMobilePhone.address === mobile
       )
     ) {
-      updatedProfile = removeUnverifiedContact(profile, mobile)
-      dispatch(setProfile(removeUnverifiedContact(profile, mobile)))
+      updatedProfile = removeUnverifiedContact(
+        profile,
+        mobile,
+        'mobile telephone number'
+      )
+      dispatch(
+        setProfile(
+          removeUnverifiedContact(profile, mobile, 'mobile telephone number')
+        )
+      )
     }
     if (profile.mobilePhones.includes(mobile)) {
-      updatedProfile = removeVerifiedContact(profile, mobile)
-      dispatch(setProfile(removeVerifiedContact(profile, mobile)))
+      updatedProfile = removeVerifiedContact(
+        profile,
+        mobile,
+        'mobile telephone number'
+      )
+      dispatch(
+        setProfile(
+          removeVerifiedContact(profile, mobile, 'mobile telephone number')
+        )
+      )
     }
 
     const dataToSend = { profile: updatedProfile, authToken }
@@ -134,7 +155,6 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
-
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />
@@ -183,11 +203,19 @@ export default function ValidateMobileLayout ({
                       Skip and confirm later
                     </Link>
                     <br />
-                    <Link onClick={getNewCode} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={getNewCode}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Get a new code
                     </Link>
                     <br /> <br />
-                    <Link onClick={differentMobile} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={differentMobile}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Enter a different mobile
                     </Link>
                   </div>

@@ -351,8 +351,17 @@ export default function UsersTable ({
                 <>
                   <td className='govuk-table__cell'>
                     {contact.linked_locations?.length !== undefined
-                      ? contact.linked_locations?.length
-                      : LoadingDots}
+                      ? (
+                        <Link
+                          className='govuk-link'
+                          to={orgManageContactsUrls.view.viewLinkedLocations}
+                        >
+                          {contact.linked_locations?.length}
+                        </Link>
+                        )
+                      : (
+                          LoadingDots
+                        )}
                   </td>
                   <td className='govuk-table__cell'>
                     {contact.message_count !== undefined

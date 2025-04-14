@@ -5,7 +5,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { orgAccountUrls } from '../../../organisation/routes/account/AccountRoutes'
 import { urlManageKeywordsOrg } from '../../../organisation/routes/manage-keywords/ManageKeywordsRoutes'
 
@@ -16,6 +16,15 @@ export default function OrganisationHeader () {
   const lastname = useSelector((state) => state?.session?.profile?.lastname) || null
   const formattedName = firstname && lastname ? firstname.charAt(0) + '.' + lastname : ''
   const orgName = useSelector((state) => state?.session?.organization?.name) || null
+  const [menuOpen, setMenuOpen] = useState(false)
+  const session = useSelector((state) => state.session)
+  const authToken = session.authToken
+  const location = useLocation()
+  const currentPage = location.pathname
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen)
+  }
 
   const handleActiveHeader = (item) => {
     if (item === activeHeader) {
@@ -41,6 +50,18 @@ export default function OrganisationHeader () {
     setActiveHeader(null)
     navigate(link)
   }
+
+  const pages = [
+    {
+      title: 'Organisation details',
+      link: orgAccountUrls.organisation.orgDetails,
+      subpages: [
+        { title: 'Manage keywords', link: '/organisation/manage-keywords' }
+      ]
+    },
+    { title: 'Administrator details', link: orgAccountUrls.admin.details },
+    { title: 'Sign out', link: '/organisation/signout' }
+  ]
 
   return (
     <>
@@ -72,6 +93,42 @@ export default function OrganisationHeader () {
                 </span>
               </a>
             </div>
+
+            <nav className='header-nav'>
+              <button className='menu-button' onClick={() => toggleMenu()}>
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+              {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration') && menuOpen) &&
+                <ul className='header-navigation-menu'>
+                  {pages.map((page, index) => (
+                    <li key={index} className='header-navigation-menu-pages'>
+                      <Link
+                        to={page.link}
+                        className='header-navigation-menu-link'
+                        aria-current={currentPage === page.link ? 'page' : 'no'}
+                      >
+                        {page.title}
+                      </Link>
+
+                      {page.subpages && (
+                        <ul className='header-navigation-submenu'>
+                          {page.subpages.map((subpage, subIndex) => (
+                            <li key={subIndex} className='header-navigation-submenu-pages'>
+                              <Link
+                                to={subpage.link}
+                                className='header-navigation-submenu-link'
+                                aria-current={currentPage === subpage.link ? 'page' : 'no'}
+                              >
+                                {subpage.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>}
+            </nav>
 
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>

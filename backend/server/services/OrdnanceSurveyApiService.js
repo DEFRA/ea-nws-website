@@ -18,9 +18,6 @@ const osPostCodeApiCall = async (postCode) => {
     if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
       responseData = response.data.results.map((result) => {
         const formattedAddress = addressFormatter(result.DPA.ADDRESS)
-        console.log('---------------------------------------')
-        console.log('result ')
-        console.log(result)
         return {
           name: result.DPA.UPRN,
           address: formattedAddress,

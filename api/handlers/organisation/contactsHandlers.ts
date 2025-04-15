@@ -48,8 +48,11 @@ async function getOrgDemoteContact(
   }
 
   if (authToken !== 'WrongAuthToken' && contactId) {
+    const contact = mockContacts.allContacts.filter((contact: any) => contact.id === contactId)[0]
+    contact.role = null
+    contact.pendingRole = null
     // geosafe returns the contact
-    return res.response(responseCodes.SUCCESS)
+    return res.response({ contact: contact })
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
   }
@@ -88,8 +91,14 @@ async function getOrgPromoteContact(
     contactId &&
     (role === 'SELF' || role === 'ADMIN' || role === 'READONLY')
   ) {
+    const contact = mockContacts.allContacts.filter((contact: any) => contact.id === contactId)[0]
+    if (contact.role) {
+      contact.role = role
+    } else {
+      contact.pendingRole = role
+    }
     // geosafe returns the contact
-    return res.response(responseCodes.SUCCESS)
+    return res.response({ contact: contact })
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
   }

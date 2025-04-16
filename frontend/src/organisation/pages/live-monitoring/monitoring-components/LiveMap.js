@@ -16,10 +16,10 @@ import L from 'leaflet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import boundaryKeyIcon from '../../../../../../common/assets/images/boundary_already_added_icon.png'
-import floodAlertIcon from '../../../../../../common/assets/images/flood_alert.svg'
-import floodWarningIcon from '../../../../../../common/assets/images/flood_warning.svg'
-import floodSevereWarningIcon from '../../../../../../common/assets/images/severe_flood_warning.svg'
+import boundaryKeyIcon from '../../../../common/assets/images/boundary_already_added_icon.png'
+import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
+import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
+import floodSevereWarningIcon from '../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../common/components/custom/FloodDataInformationPopup'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
@@ -393,6 +393,16 @@ export default function LiveMap({
     ),
     []
   )
+
+  const ZoomTracker = () => {
+    const map = useMapEvents({
+      zoomend: () => {
+        setZoomLevel(map.getZoom())
+      }
+    })
+
+    return null
+  }
 
   // flood information popup
   const viewFloodInformationData = (data) => {

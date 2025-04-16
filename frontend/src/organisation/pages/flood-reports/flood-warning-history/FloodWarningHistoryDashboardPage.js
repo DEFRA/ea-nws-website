@@ -6,9 +6,10 @@ import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary.js'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
-import AlertState from '../../../../common/enums/AlertState'
+import AlertState from '../../../../common/enums/AlertState.js'
 import { getAdditional } from '../../../../common/redux/userSlice.js'
-import { getAlertsAffectingOrganisationsLocations } from '../../../../common/services/GetAlertsAffectingOrganisationsLocations'
+import { backendCall } from '../../../../common/services/BackendService.js'
+import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter'
 import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodReportsTable'
 
@@ -43,49 +44,77 @@ export default function FloodWarningHistoryDashboardPage() {
     setLocationsAffected([])
     setDisplayedLocationsAffected([])
 
-    const getAlerts = getAlertsAffectingOrganisationsLocations()
+    const { data: partnerId } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
 
-    const { alerts, locations } = await getAlerts(navigate, orgId, [
-      AlertState.PAST,
-      AlertState.CURRENT
-    ])
+    const options = {
+      states: [AlertState.PAST],
+      boundingBox: {},
+      channels: [],
+      partnerId
+    }
 
-    if (locations) {
-      for (const liveAlert of alerts?.alerts) {
-        const TA_CODE = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'TA_CODE'
-        )
-        const TA_NAME = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'TA_NAME'
-        )
+    // load alerts
+    const { data: alerts } = await backendCall(
+      { options },
+      'api/alert/list',
+      navigate
+    )
 
-        const severity = liveAlert.type
+    if (alerts) {
+      // get orgs locations
+      const { data: locationsData } = await backendCall(
+        { orgId },
+        'api/elasticache/list_locations',
+        navigate
+      )
 
-        let [day, month, year, hour, minute] = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'createddate'
-        ).split(/[:\/\s]+/)
+      const locations = []
+      if (locationsData) {
+        for (const location of locationsData) {
+          locations.push(geoSafeToWebLocation(location))
+        }
+      }
 
-        const startDate = new Date(year, month - 1, day, hour, minute)
-
-        ;[day, month, year, hour, minute] = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'lastmodifieddate'
-        ).split(/[:\/\s]+/)
-
-        const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
-
-        for (const location of locations) {
-          processLocation(
-            location,
-            severity,
-            TA_CODE,
-            TA_NAME,
-            startDate,
-            lastUpdatedTime
+      if (locations) {
+        for (const liveAlert of alerts?.alerts) {
+          const TA_CODE = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'TA_CODE'
           )
+          const TA_NAME = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'TA_NAME'
+          )
+
+          const severity = liveAlert.type
+
+          let [day, month, year, hour, minute] = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'createddate'
+          ).split(/[:\/\s]+/)
+
+          const startDate = new Date(year, month - 1, day, hour, minute)
+
+          ;[day, month, year, hour, minute] = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'lastmodifieddate'
+          ).split(/[:\/\s]+/)
+
+          const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
+
+          for (const location of locations) {
+            processLocation(
+              location,
+              severity,
+              TA_CODE,
+              TA_NAME,
+              startDate,
+              lastUpdatedTime
+            )
+          }
         }
       }
     }

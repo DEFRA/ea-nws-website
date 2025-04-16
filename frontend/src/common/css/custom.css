@@ -1508,6 +1508,12 @@
   border-color: #005a30;
 }
 
+.input-with-icon {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
 .input-search-icon {
   position: absolute;
   left: 8px;

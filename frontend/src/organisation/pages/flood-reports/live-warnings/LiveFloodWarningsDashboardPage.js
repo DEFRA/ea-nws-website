@@ -8,7 +8,7 @@ import Pagination from '../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../common/enums/AlertState.js'
 import { getAdditional } from '../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
-import { getAlertsAffectingOrganisationsLocations } from '../../../../common/services/GetAlertsAffectingOrganisationsLocations.js'
+import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
 
@@ -43,15 +43,36 @@ export default function LiveFloodWarningsDashboardPage() {
     setLocationsAffected([])
     setDisplayedLocationsAffected([])
 
-    const getAlerts = getAlertsAffectingOrganisationsLocations()
+    const { data: partnerId } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
 
-    const { alerts, locations } = await getAlerts(navigate, orgId, [
-      AlertState.CURRENT
-    ])
+    const options = {
+      states: [AlertState.PAST],
+      boundingBox: {},
+      channels: [],
+      partnerId
+    }
 
-    if (locations) {
-      // link contacts
-      for (const location of locations) {
+    // load alerts
+    const { data: alerts } = await backendCall(
+      { options },
+      'api/alert/list',
+      navigate
+    )
+
+    if (alerts) {
+      const { data: locationsData } = await backendCall(
+        { orgId },
+        'api/elasticache/list_locations',
+        navigate
+      )
+
+      const locations = []
+      // link contacts and convert to web format
+      for (let location of locationsData) {
+        location = geoSafeToWebLocation(location)
         const contactsDataToSend = { authToken, orgId, location }
         const { data } = await backendCall(
           contactsDataToSend,
@@ -65,28 +86,37 @@ export default function LiveFloodWarningsDashboardPage() {
             location.linked_contacts.push(contact.id)
           })
         }
+        locations.push(location)
       }
 
-      // loop through live alerts - loop through all locations to find affected locations
-      for (const liveAlert of alerts?.alerts) {
-        const TA_CODE = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'TA_CODE'
-        )
-        const TA_NAME = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'TA_NAME'
-        )
+      if (locations) {
+        // loop through live alerts - loop through all locations to find affected locations
+        for (const liveAlert of alerts?.alerts) {
+          const TA_CODE = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'TA_CODE'
+          )
+          const TA_NAME = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'TA_NAME'
+          )
 
-        const severity = liveAlert.type
-        const [day, month, year, hour, minute] = getAdditional(
-          liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-          'lastmodifieddate'
-        ).split(/[:\/\s]+/)
-        const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
+          const severity = liveAlert.type
+          const [day, month, year, hour, minute] = getAdditional(
+            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+            'lastmodifieddate'
+          ).split(/[:\/\s]+/)
+          const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
 
-        for (const location of locations) {
-          processLocation(location, severity, lastUpdatedTime, TA_CODE, TA_NAME)
+          for (const location of locations) {
+            processLocation(
+              location,
+              severity,
+              lastUpdatedTime,
+              TA_CODE,
+              TA_NAME
+            )
+          }
         }
       }
     }

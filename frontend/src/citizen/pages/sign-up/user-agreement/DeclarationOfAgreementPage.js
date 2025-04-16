@@ -52,7 +52,7 @@ export default function DeclarationOfAgreementPage () {
       }
       dispatch(setRegistrations(registrations))
       const updatedProfile = updateAdditionals(session.profile, [
-        { id: 'lastAccessedUrl', value: { s: '/home' } }
+        { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
       ])
       dispatch(setProfile(updatedProfile))
       updateBackendProfile(updatedProfile)
@@ -70,7 +70,6 @@ export default function DeclarationOfAgreementPage () {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -137,9 +136,11 @@ export default function DeclarationOfAgreementPage () {
                 <a
                   href='https://www.fws.environment-agency.gov.uk/app/olr/privacy'
                   className='govuk-link'
-                  target='_blank' rel='noreferrer'
+                  target='_blank'
+                  rel='noreferrer'
                 >
-                  {' '}privacy notice (open new window){' '}
+                  {' '}
+                  privacy notice (open new window){' '}
                 </a>
                 explains how we treat your personal information.
               </p>

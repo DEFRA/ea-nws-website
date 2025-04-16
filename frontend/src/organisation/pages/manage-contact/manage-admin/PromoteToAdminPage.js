@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { backendCall } from '../../../../common/services/BackendService'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import { emailValidation } from '../../../common/services/validations/EmailValidation'
+import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PromoteToAdminPage() {
+export default function PromoteToAdminPage () {
   const navigate = useNavigate()
 
   const authToken = useSelector((state) => state.session.authToken)
@@ -109,18 +109,20 @@ export default function PromoteToAdminPage() {
               receiving, as a contact.
             </p>
 
-            {emailCount > 1 ? (
-              emailRadios
-            ) : (
-              <Input
-                inputType='text'
-                value={selectedEmail}
-                name='Email address'
-                onChange={(val) => setSelectedEmail(val)}
-                className='govuk-input govuk-input--width-20'
-                isNameBold
-              />
-            )}
+            {emailCount > 1
+              ? (
+                  emailRadios
+                )
+              : (
+                <Input
+                  inputType='text'
+                  value={selectedEmail}
+                  name='Email address'
+                  onChange={(val) => setSelectedEmail(val)}
+                  className='govuk-input govuk-input--width-20'
+                  isNameBold
+                />
+                )}
             <Button
               text='Invite as admin'
               className='govuk-button'

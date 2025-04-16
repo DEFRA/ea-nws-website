@@ -46,6 +46,25 @@ const floodAlertCardDetails = (
   </>
 )
 
+const removeLocationdetails = (
+  <>
+    <p>You must keep at least one location on your account.</p>
+    <p>
+      <Link className='govuk-link' to='/manage-locations/add/search'>
+        Add a new location
+      </Link>{' '}
+      before removing any you do not need.
+    </p>
+    <p>
+      Or you could{' '}
+      <Link className='govuk-link' to='/account/delete'>
+        delete your account
+      </Link>{' '}
+      instead.
+    </p>
+  </>
+)
+
 export default function ViewLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -64,7 +83,7 @@ export default function ViewLocationPage () {
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
 
   let alertTypes = getLocationOtherAdditional(
-    selectedLocation.additionals,
+    selectedLocation?.additionals || [],
     'alertTypes'
   )
 
@@ -345,18 +364,27 @@ export default function ViewLocationPage () {
                 </div>
               )}
 
-              {canRemoveLocation && (
-                <>
-                  <h2 className='govuk-heading-m'>
-                    To stop all flood messages for this location
-                  </h2>
-                  <Button
-                    onClick={deleteLocation}
-                    className='govuk-button govuk-button--warning'
-                    text='Remove location'
-                  />
-                </>
-              )}
+              {canRemoveLocation
+                ? (
+                  <>
+                    <h2 className='govuk-heading-m'>
+                      To stop all flood messages for this location
+                    </h2>
+                    <Button
+                      onClick={deleteLocation}
+                      className='govuk-button govuk-button--warning'
+                      text='Remove location'
+                    />
+                  </>
+                  )
+                : (
+                  <>
+                    <Details
+                      title='If you want to remove this location'
+                      text={removeLocationdetails}
+                    />
+                  </>
+                  )}
             </div>
           </div>
         </div>

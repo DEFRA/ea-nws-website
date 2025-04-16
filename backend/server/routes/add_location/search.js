@@ -17,12 +17,13 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { orgId, locationName, type } = request.payload
+        const { redis } = request.server.app
 
         if (locationName && orgId) {
           const result =
             type === 'valid'
-              ? await findLocationByName(orgId, locationName)
-              : await findInvLocationByName(orgId, locationName)
+              ? await findLocationByName(redis, orgId, locationName)
+              : await findInvLocationByName(redis, orgId, locationName)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

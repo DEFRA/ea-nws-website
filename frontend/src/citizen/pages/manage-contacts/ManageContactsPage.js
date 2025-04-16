@@ -18,7 +18,11 @@ export default function ManageContactsPage () {
       return (
         <>
           You need to{' '}
-          <Link to='/managecontacts/validate-email' className='govuk-link' style={{ cursor: 'pointer' }}>
+          <Link
+            to='/managecontacts/validate-email'
+            className='govuk-link'
+            style={{ cursor: 'pointer' }}
+          >
             confirm the email address
           </Link>{' '}
           first
@@ -28,7 +32,11 @@ export default function ManageContactsPage () {
       return (
         <>
           You need to{' '}
-          <Link to='/managecontacts/validate-mobile' className='govuk-link' style={{ cursor: 'pointer' }}>
+          <Link
+            to='/managecontacts/validate-mobile'
+            className='govuk-link'
+            style={{ cursor: 'pointer' }}
+          >
             confirm the number
           </Link>{' '}
           first
@@ -38,7 +46,11 @@ export default function ManageContactsPage () {
     return (
       <>
         You need to{' '}
-        <Link to='/managecontacts/validate-landline' className='govuk-link' style={{ cursor: 'pointer' }}>
+        <Link
+          to='/managecontacts/validate-landline'
+          className='govuk-link'
+          style={{ cursor: 'pointer' }}
+        >
           confirm the number
         </Link>{' '}
         first
@@ -61,11 +73,11 @@ export default function ManageContactsPage () {
   const detailsMessage = (
     <div>
       You must keep at least one contact on your account.&nbsp;
-      <a href='#' className='govuk-link'>
+      <a href='/managecontacts/add-email' className='govuk-link'>
         Add a new contact
       </a>
       &nbsp; before removing any you do not need. Or you could&nbsp;
-      <a href='#' className='govuk-link'>
+      <a href='/account/delete' className='govuk-link'>
         Delete your account
       </a>
       &nbsp; instead.
@@ -74,7 +86,6 @@ export default function ManageContactsPage () {
 
   return (
     <>
-
       {location.state !== null && location.state.removedContact
         ? (
           <NotificationBanner

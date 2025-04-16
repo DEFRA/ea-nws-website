@@ -47,7 +47,7 @@ export default function LiveMap({
   const [loading, setLoading] = useState(true)
   const [zoomLevel, setZoomLevel] = useState(null)
 
-  //tracking locations affected
+  // tracking locations affected
   const [locationsAffected, setLocationsAffected] = useState([])
 
   // shapes and boundarys
@@ -74,9 +74,9 @@ export default function LiveMap({
   useEffect(() => {
     onFloodAreasUpdate({
       locationsAffected: [...new Set(locationsAffected)].length,
-      severeFloodAreasAmount: severeFloodAreas.length,
-      warningFloodAreasAmount: warningFloodAreas.length,
-      alertFloodAreasAmount: alertFloodAreas.length
+      severeFloodAreasAmount: severePoints.length,
+      warningFloodAreasAmount: warningPoints.length,
+      alertFloodAreasAmount: alertPoints.length
     })
   }, [loading])
 
@@ -187,7 +187,12 @@ export default function LiveMap({
 
         const alertResults = await Promise.all(alertPromises)
 
-        for (const { floodArea, severity, updatedTime, TA_CODE } of alertResults) {
+        for (const {
+          floodArea,
+          severity,
+          updatedTime,
+          TA_CODE
+        } of alertResults) {
           const locationPromises = locations.map((location) =>
             processLocation(location, floodArea, severity, updatedTime, TA_CODE)
           )
@@ -199,10 +204,18 @@ export default function LiveMap({
     }
   }
 
-  const processLocation = (location, floodArea, severity, updatedTime, TA_CODE) => {
+  const processLocation = (
+    location,
+    floodArea,
+    severity,
+    updatedTime,
+    TA_CODE
+  ) => {
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type
-    let locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some((targetArea => targetArea.TA_CODE === TA_CODE))
+    let locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
+      (targetArea) => targetArea.TA_CODE === TA_CODE
+    )
 
     if (!locationIntersectsWithFloodArea) return
 
@@ -271,9 +284,9 @@ export default function LiveMap({
       case AlertType.SEVERE_FLOOD_WARNING:
         return longitude
       case AlertType.FLOOD_WARNING:
-        return (Number((parseFloat(longitude) - 0.003).toFixed(6)))
+        return Number((parseFloat(longitude) - 0.003).toFixed(6))
       case AlertType.FLOOD_ALERT:
-        return (Number((parseFloat(longitude) + 0.003).toFixed(6)))
+        return Number((parseFloat(longitude) + 0.003).toFixed(6))
     }
   }
 
@@ -533,6 +546,19 @@ export default function LiveMap({
     }
   }
 
+  const FloodInfoMemo = useMemo(() => {
+    return (
+      <FloodDataInformationPopup
+        locationsFloodInformation={locationsFloodInformation}
+        onClose={(event) => {
+          event.preventDefault()
+          setShowFloodInformationData(false)
+          setLocationsFloodInformation([])
+        }}
+        />
+    )
+  }, [locationsFloodInformation])
+
   return (
     <>
       {loading ? (
@@ -541,16 +567,7 @@ export default function LiveMap({
         </>
       ) : (
         <>
-          {showFloodInformationData && (
-            <FloodDataInformationPopup
-              locationsFloodInformation={locationsFloodInformation}
-              onClose={(event) => {
-                event.preventDefault()
-                setShowFloodInformationData(false)
-                setLocationsFloodInformation([])
-              }}
-            />
-          )}
+          {showFloodInformationData && FloodInfoMemo}
 
           <MapContainer
             center={[52.7152, -1.17349]}
@@ -757,7 +774,10 @@ export default function LiveMap({
                           }
                           style={{ flex: 1 }}
                         >
-                          {location.properties.floodData.name}
+                          {
+                            location.properties.locationData.additionals
+                              .locationName
+                          }
                         </Link>
                       </div>
                     ))}

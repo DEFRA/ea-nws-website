@@ -14,9 +14,11 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { profileId, orgId } = request.payload
+        const { profileId, orgId, authToken } = request.payload
+        const { redis } = request.server.app
+
         if (profileId && orgId) {
-          await orgSignOut(profileId, orgId)
+          await orgSignOut(redis, profileId, orgId, authToken)
           return h.response({
             status: 200
           })

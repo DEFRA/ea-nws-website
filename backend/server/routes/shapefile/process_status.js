@@ -9,8 +9,8 @@ const {
   setJsonData
 } = require('../../services/elasticache')
 
-const isDuplicate = async (orgId, locationName) => {
-  const locationArr = await findLocationByName(orgId, locationName)
+const isDuplicate = async (redis, orgId, locationName) => {
+  const locationArr = await findLocationByName(redis, orgId, locationName)
   return locationArr.length !== 0
 }
 
@@ -26,18 +26,19 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { orgId, fileName } = request.payload
+        const { redis } = request.server.app
 
         if (fileName) {
           const elasticacheKey = 'shapefile:' + fileName.split('.')[0]
 
-          const result = await getJsonData(elasticacheKey)
+          const result = await getJsonData(redis, elasticacheKey)
           if (result) {
             if (result.data) {
               // Check invalid locations for duplicates
               const locationName = result.data.properties?.name ||
               result.data.properties?.lrf15nm ||
               result.data.properties?.fileName
-              if (await isDuplicate(orgId, locationName)) {
+              if (await isDuplicate(redis, orgId, locationName)) {
                 // An invalid location should already have at least one error
                 // but do not assume this is the case
                 if (Array.isArray(result.data.properties.error)) {
@@ -48,7 +49,7 @@ module.exports = [
               }
 
               // Write any changes back to elasticache
-              await setJsonData(elasticacheKey, result)
+              await setJsonData(redis, elasticacheKey, result)
             }
             return h.response({ status: 200, data: result })
           } else {

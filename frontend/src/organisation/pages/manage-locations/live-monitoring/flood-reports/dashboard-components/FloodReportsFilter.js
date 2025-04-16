@@ -75,8 +75,7 @@ export default function FloodReportsFilter ({
     })
   }
 
-  const filterLocationsAffected = (event) => {
-    event.preventDefault()
+  const filterLocationsAffected = () => {
     let filteredLocationsAffected = [...locationsAffected]
 
     // Apply location name filter
@@ -95,9 +94,9 @@ export default function FloodReportsFilter ({
         'Flood alerts': AlertType.FLOOD_ALERT
       }
 
-      filteredLocationsAffected = filteredLocationsAffected.filter((location) =>
+      filteredLocationsAffected = filteredLocationsAffected.filter((location) => 
         selectedWarningTypeFilters.some((filter) =>
-          location.floodData.types.includes(filterMap[filter])
+          location.floodData.some((data) => data.type.includes(filterMap[filter]))
         )
       )
     }
@@ -126,6 +125,12 @@ export default function FloodReportsFilter ({
 
     setResetPaging(!resetPaging)
     setFilteredLocationsAffected(filteredLocationsAffected)
+  }
+
+
+  const filterLocationsAffectedButton = (event) => {
+    event.preventDefault()
+    filterLocationsAffected()
   }
 
   // Clear all filters
@@ -285,7 +290,7 @@ export default function FloodReportsFilter ({
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'
-            onClick={(event) => filterLocationsAffected(event)}
+            onClick={(event) => filterLocationsAffectedButton(event)}
           />
         </div>
 

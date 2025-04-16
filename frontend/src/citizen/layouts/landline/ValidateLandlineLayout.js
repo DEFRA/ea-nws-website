@@ -13,7 +13,8 @@ import { backendCall } from '../../../common/services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  updateAdditionals
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 
@@ -21,7 +22,8 @@ export default function ValidateLandlineLayout ({
   navigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  isSignUpJourney = false
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -41,7 +43,8 @@ export default function ValidateLandlineLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { error: validationError, code: formattedCode } = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { authToken, msisdn: homePhone, code: formattedCode }
@@ -60,7 +63,24 @@ export default function ValidateLandlineLayout ({
           setError(errorMessage)
         }
       } else {
-        dispatch(setProfile(data.profile))
+        let updatedProfile = data.profile
+
+        if (isSignUpJourney) {
+          // Set lastAccessedUrl explicitly for signup journey
+          updatedProfile = updateAdditionals(updatedProfile, [
+            { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          ])
+
+          const profileUpdateResponse = await backendCall(
+            { profile: updatedProfile, authToken },
+            'api/profile/update',
+            navigate
+          )
+
+          dispatch(setProfile(profileUpdateResponse.data.profile))
+        } else {
+          dispatch(setProfile(data.profile))
+        }
         navigateToNextPage(homePhone)
       }
     }
@@ -86,7 +106,11 @@ export default function ValidateLandlineLayout ({
   const skipValidation = (event) => {
     event.preventDefault()
     // remove homephone from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(profile, homePhone)
+    const updatedProfile = removeVerifiedContact(
+      profile,
+      homePhone,
+      'telephone number'
+    )
     // we will need to add the homephone back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(
@@ -114,12 +138,28 @@ export default function ValidateLandlineLayout ({
         (unverifiedHomePhone) => unverifiedHomePhone.address === homePhone
       )
     ) {
-      updatedProfile = removeUnverifiedContact(profile, homePhone)
-      dispatch(setProfile(removeUnverifiedContact(profile, homePhone)))
+      updatedProfile = removeUnverifiedContact(
+        profile,
+        homePhone,
+        'telephone number'
+      )
+      dispatch(
+        setProfile(
+          removeUnverifiedContact(profile, homePhone, 'telephone number')
+        )
+      )
     }
     if (profile.homePhones.includes(homePhone)) {
-      updatedProfile = removeVerifiedContact(profile, homePhone)
-      dispatch(setProfile(removeVerifiedContact(profile, homePhone)))
+      updatedProfile = removeVerifiedContact(
+        profile,
+        homePhone,
+        'telephone number'
+      )
+      dispatch(
+        setProfile(
+          removeVerifiedContact(profile, homePhone, 'telephone number')
+        )
+      )
     }
     const dataToSend = { profile: updatedProfile, authToken }
     const { errorMessage } = await backendCall(
@@ -134,7 +174,6 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
-
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />
@@ -183,11 +222,19 @@ export default function ValidateLandlineLayout ({
                       Skip and confirm later
                     </Link>
                     <br />
-                    <Link onClick={getNewCode} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={getNewCode}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Get a new code
                     </Link>
                     <br /> <br />
-                    <Link onClick={differentHomePhone} className='govuk-link' style={{ cursor: 'pointer' }}>
+                    <Link
+                      onClick={differentHomePhone}
+                      className='govuk-link'
+                      style={{ cursor: 'pointer' }}
+                    >
                       Enter a different telephone number
                     </Link>
                   </div>

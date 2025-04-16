@@ -1,3 +1,4 @@
+import { initAll } from 'govuk-frontend'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
@@ -15,15 +16,13 @@ function Layout () {
   const [servicePhase, setServicePhase] = useState(false)
 
   async function getServicePhase () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_service_phase'
-    )
+    const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
   }
 
   useEffect(() => {
     getServicePhase()
+    initAll()
   }, [])
 
   return (
@@ -31,13 +30,31 @@ function Layout () {
       <Header />
       <div className='sub-navigation'>
         {location.pathname.includes('organisation') && auth
-          ? <div className='custom-width-container'><OrganisationAccountNavigation currentPage={location.pathname} /></div>
-          : <div className='govuk-width-container'><CitizenAccountNavigation currentPage={location.pathname} /></div>}
+          ? (
+            <div className='custom-width-container'>
+              <OrganisationAccountNavigation currentPage={location.pathname} />
+            </div>
+            )
+          : (
+            <div className='govuk-width-container'>
+              <CitizenAccountNavigation currentPage={location.pathname} />
+            </div>
+            )}
       </div>
-      <div className={(servicePhase === 'beta' ? 'private-beta-watermark govuk-!-padding-bottom-9' : 'govuk-!-padding-bottom-9')}>
+      <div
+        className={
+          servicePhase === 'beta'
+            ? 'private-beta-watermark govuk-!-padding-bottom-9'
+            : 'govuk-!-padding-bottom-9'
+        }
+      >
         {location.pathname.includes('organisation') && auth
-          ? <PhaseBanner type='org' phase={servicePhase} />
-          : <PhaseBanner phase={servicePhase} />}
+          ? (
+            <PhaseBanner type='org' phase={servicePhase} />
+            )
+          : (
+            <PhaseBanner phase={servicePhase} />
+            )}
         <div
           className={`${
             location.pathname.includes('organisation') && auth

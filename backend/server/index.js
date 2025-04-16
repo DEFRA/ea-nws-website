@@ -2,6 +2,8 @@ const hapi = require('@hapi/hapi')
 const config = require('./config')
 const schedule = require('node-schedule')
 const { scheduledLPMTransfer } = require('./services/LPM-S3-Transfer')
+const redis = require('redis')
+const getSecretKeyValue = require('./services/SecretsManager')
 
 async function createServer () {
   // Create the hapi server
@@ -18,6 +20,19 @@ async function createServer () {
       }
     }
   })
+
+  const redisEndpoint = await getSecretKeyValue('nws/aws', 'redisEndpoint')
+  // Create the client
+  const redisClient = redis.createClient({ url: 'rediss://' + redisEndpoint })
+  redisClient.on('error', (error) => {
+    logger.error(`Redis Client Error: ${error}`)
+    throw error
+  })
+  // Connect to the redis elasticache
+  await redisClient.connect()
+  console.log('redis connected')
+
+  server.app.redis = redisClient
 
   // Register the plugins
   await server.register(require('@hapi/inert'))

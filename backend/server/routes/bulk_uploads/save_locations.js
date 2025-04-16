@@ -5,7 +5,8 @@ const {
 const {
   getJsonData,
   addInvLocation,
-  addLocation
+  addLocation,
+  setJsonData
 } = require('../../services/elasticache')
 const {
   convertToPois
@@ -34,56 +35,74 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { authToken, orgId, fileName } = request.payload
+        const { redis } = request.server.app
 
         if (fileName && orgId && authToken) {
+          const statusKey = 'bulk_save_status:' + authToken
+          await setJsonData(redis, statusKey, { stage: 'Adding locations', status: 'working' })
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
-          const result = await getJsonData(elasticacheKey)
+          const result = await getJsonData(redis, elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
-          // Add all valid to geosafe and elasticache
-          await Promise.all(valid.map(async (location) => {
-            const response = await apiCall(
-              { authToken: authToken, location: location },
-              'location/create'
-            )
-            if (response.data.location) {
-              // Register locations
-              const { data: partnerId } = await getPartnerId()
-              const registerData = {
-                authToken,
-                locationId: response.data.location.id,
-                partnerId,
-                params: {
-                  channelVoiceEnabled: true,
-                  channelSmsEnabled: true,
-                  channelEmailEnabled: true,
-                  channelMobileAppEnabled: true,
-                  partnerCanView: true,
-                  partnerCanEdit: true,
-                  alertTypes: [
-                    'ALERT_LVL_1',
-                    'ALERT_LVL_2',
-                    'ALERT_LVL_3'
-                  ]
-                }
-              }
-
-              await apiCall(
-                registerData,
-                'location/registerToPartner'
+          const { data: partnerId } = await getPartnerId()
+          // split the locations into groups of 25
+          const validLength = valid.length
+          for (let i = 0; i < valid.length; i += 25) {
+            setJsonData(redis, statusKey, { stage: `Adding locations (${Math.round((i/validLength)*100)}%)`, status: 'working' })
+            const chunk = valid.slice(i, i + 25)
+            const geosafeLocations = []
+            // Add all valid to geosafe and elasticache
+            await Promise.all(chunk.map(async (location) => {
+              
+              const response = await apiCall(
+                { authToken: authToken, location: location },
+                'location/create'
               )
-              // add to elasticache
-              await addLocation(orgId, response.data.location)
-            } else {
-              return createGenericErrorResponse(h)
-            }
-          }))
+              if (response.data.location) {
+                // Register locations
+                const registerData = {
+                  authToken,
+                  locationId: response.data.location.id,
+                  partnerId,
+                  params: {
+                    channelVoiceEnabled: true,
+                    channelSmsEnabled: true,
+                    channelEmailEnabled: true,
+                    channelMobileAppEnabled: true,
+                    partnerCanView: true,
+                    partnerCanEdit: true,
+                    alertTypes: JSON.parse(location?.additionals?.filter((additional) => additional.id === 'other')[0]?.value?.s)?.alertTypes || []
+                  }
+                }
 
-          // Add invalid just to elasticache
-          await Promise.all(invalid.map(async (location) => {
-            location.id = uuidv4()
-            await addInvLocation(orgId, location)
-          }))
+                await apiCall(
+                  registerData,
+                  'location/registerToPartner'
+                )
+                // add to array of geosafe locations
+                geosafeLocations.push(response.data.location)
+              } else {
+                return createGenericErrorResponse(h)
+              }
+            }))
+            for (const location of geosafeLocations) {
+              await addLocation(redis, orgId, location)
+            }
+          }
+
+          const invalidLength = invalid.length
+          for (let i = 0; i < invalid.length; i += 25) {
+            setJsonData(redis, statusKey, { stage: `storing locations (${Math.round((i/invalidLength)*100)}%)`, status: 'working' })
+            const chunk = invalid.slice(i, i + 25)
+            // Add invalid just to elasticache
+            await Promise.all(
+              chunk.map(async (location) => {
+                location.id = uuidv4()
+                await addInvLocation(redis, orgId, location)
+              })
+            )
+          }
+          
 
           const invalidReasons = {
             duplicate: invalid.filter((location) =>
@@ -97,9 +116,9 @@ module.exports = [
             ).length
           }
 
+          setJsonData(redis, statusKey, { stage: `storing locations`, status: 'complete', data: { valid: valid.length, invalid: invalidReasons }})
           return h.response({
-            status: 200,
-            data: { valid: valid.length, invalid: invalidReasons }
+            status: 200
           })
         } else {
           return createGenericErrorResponse(h)

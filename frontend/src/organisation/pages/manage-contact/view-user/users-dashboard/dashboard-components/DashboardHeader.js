@@ -14,7 +14,8 @@ export default function DashboardHeader ({
   linkLocations,
   selectedContacts,
   onOnlyShowSelected,
-  linkSource
+  linkSource,
+  setErrorMessage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -40,14 +41,14 @@ export default function DashboardHeader ({
     let heading = ''
 
     if (type === 'linked') {
-      heading = 'Contacts linked to locations'
+      heading = 'Users linked to locations'
       count = contacts.filter(
         (item) => item.linked_locations?.length > 0
       ).length
 
       message = ' linked to locations'
     } else if (type === 'notLinked') {
-      heading = 'Contacts not linked to locations'
+      heading = 'Users not linked to locations'
       count = contacts.filter(
         (item) => item.linked_locations?.length === 0
       ).length
@@ -78,7 +79,7 @@ export default function DashboardHeader ({
                 <strong>{count}</strong>
               </h1>
               <Link className='govuk-link' onClick={() => onClickLinked(type)}>
-                {Number(count) === 1 ? 'contact' : 'contacts'} {message}
+                {Number(count) === 1 ? 'user' : 'users'} {message}
               </Link>
             </>
           )}
@@ -87,7 +88,7 @@ export default function DashboardHeader ({
         <p className='govuk-!-margin-top-2'>
           {type === 'notLinked' && (
             <Details
-              title='Linking locations to contacts so that they can get flood messages'
+              title='How to link users to locations so they can get flood messages'
               text={noContactsDetails}
             />
           )}
@@ -104,11 +105,11 @@ export default function DashboardHeader ({
             <>
               <div style={{ display: 'flex' }}>
                 <h1 className='govuk-heading-l'>
-                  Manage your organisation's {contacts.length} contacts
+                  Your organisation's users ({contacts.length})
                 </h1>
                 <div style={{ marginLeft: 'auto' }}>
                   <Button
-                    text='Add contact'
+                    text='Add new user'
                     className='govuk-button govuk-button--secondary'
                     onClick={(event) => {
                       event.preventDefault()
@@ -133,24 +134,35 @@ export default function DashboardHeader ({
                 {contacts.filter((item) => item.linked_locations?.length > 0)
                   .length > 0 && <ContactsBanner type='linked' />}
                 {contacts.filter((item) => item.linked_locations?.length === 0)
-                  .length > 0 && <ContactsBanner type='notLinked' />}
+                  .length > 0 && (
+                    <div style={{ width: '100%' }}>
+                      <ContactsBanner type='notLinked' />
+                      <div className='govuk-!-margin-top-2'>
+                        <Details
+                          title='Linking locations to contacts so that they can get flood messages'
+                          text={noContactsDetails}
+                        />
+                      </div>
+                    </div>
+                )}
               </div>
             </>
             )
           : (
             <>
-              <h1 className='govuk-heading-l'>Link location to contacts</h1>
+              <h1 className='govuk-heading-l'>Link location to users</h1>
               <p>
-                Select the contacts you want to link to this location from the
-                list. Then select
+                Select the users you want to link to this location from the list.
+                Then select
                 <br />
-                Link location to contacts.
+                Link location to users.
               </p>
               <LinkBanner
                 linkLocations={linkLocations}
                 selectedContacts={selectedContacts}
                 onOnlyShowSelected={onOnlyShowSelected}
                 linkSource={linkSource}
+                setErrorMessage={setErrorMessage}
               />
             </>
             )}

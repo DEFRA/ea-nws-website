@@ -1,7 +1,8 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../../common/services/BackendService'
@@ -16,27 +17,53 @@ export default function LocationAddConfirmPage () {
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
   const [error, setError] = useState(null)
+  const [saveLocations, setSaveLocations] = useState(false)
+  const [stage, setStage] = useState('Adding locations')
 
-  const upload = async (event) => {
-    event.preventDefault()
-    const dataToSend = { authToken, orgId, fileName }
-    const { data, errorMessage } = await backendCall(
-      dataToSend,
-      'api/bulk_uploads/save_locations',
-      navigate
-    )
-    if (!errorMessage) {
-      navigate(orgManageLocationsUrls.add.contactLinkInfo, {
-        state: {
-          added: data.valid
+  useEffect(() => {
+    if (saveLocations) {
+      const upload = async () => {
+        const dataToSend = { authToken, orgId, fileName }
+        await backendCall(
+          dataToSend,
+          'api/bulk_uploads/save_locations',
+          navigate
+        )
+      }
+      upload()
+      const interval = setInterval(async function getStatus () {
+        if (getStatus.isRunning) return
+        getStatus.isRunning = true
+        const dataToSend = { authToken: authToken }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/bulk_uploads/save_locations_status',
+          navigate
+        )
+        if (data) {
+          if (data?.stage !== stage) {
+            setStage(data.stage)
+          }
+          if (data?.status === 'complete') {
+            if (data?.data) {
+              navigate(orgManageLocationsUrls.add.contactLinkInfo, {
+                state: {
+                  added: data.data.valid
+                }
+              })
+            }
+          }
         }
-      })
-    } else {
-      errorMessage
-        ? setError(errorMessage)
-        : setError('Oops, something went wrong')
+        if (errorMessage) {
+          setError(errorMessage)
+        }
+        getStatus.isRunning = false
+      }, 2000)
+      return () => {
+        clearInterval(interval)
+      }
     }
-  }
+  }, [saveLocations])
 
   const cancel = (event) => {
     event.preventDefault()
@@ -55,7 +82,10 @@ export default function LocationAddConfirmPage () {
           <Button
             text='Add and continue'
             className='govuk-button'
-            onClick={upload}
+            onClick={(event) => {
+              event.preventDefault()
+              setSaveLocations(true)
+            }}
           />
           <Button
             text='Cancel upload'
@@ -64,6 +94,14 @@ export default function LocationAddConfirmPage () {
           />
         </div>
       </main>
+      {saveLocations && error === null &&
+      <div className='popup-dialog'>
+        <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+          <LoadingSpinner
+            loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+          />
+        </div>
+      </div>}
     </>
   )
 }

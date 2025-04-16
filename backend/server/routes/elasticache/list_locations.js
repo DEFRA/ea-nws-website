@@ -15,9 +15,10 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { orgId } = request.payload
+        const { redis } = request.server.app
 
         if (orgId) {
-          const result = await listLocations(orgId)
+          const result = await listLocations(redis, orgId)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

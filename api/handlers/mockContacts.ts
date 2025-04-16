@@ -25,7 +25,7 @@ const contacts = [
     metatdata: null,
     pois: null,
     role: null,
-    pendingRole: null
+    pendingRole: 'ADMIN'
   },
   {
     id: '2',
@@ -108,7 +108,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: null,
+    role: 'ADMIN',
     pendingRole: null
   }
 ]

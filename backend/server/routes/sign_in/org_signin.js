@@ -16,27 +16,30 @@ module.exports = [
         }
 
         const { orgData } = request.payload
+        const { redis } = request.server.app
 
         if (orgData) {
             const elasticacheKey = 'signin_status:' + orgData.authToken
-            await setJsonData(elasticacheKey, { stage: 'Retrieving locations', status: 'working' })   
+            await setJsonData(redis, elasticacheKey, { stage: 'Retrieving locations', status: 'working' })   
             const locationRes = await apiCall(
               { authToken: orgData.authToken },
               'location/list'
             )
-            await setJsonData(elasticacheKey, { stage: 'Retrieving contacts', status: 'working' })   
+            await setJsonData(redis, elasticacheKey, { stage: 'Retrieving contacts', status: 'working' })   
             const contactRes = await apiCall(
               { authToken: orgData.authToken },
               'organization/listContacts'
             )
 
-            await setJsonData(elasticacheKey, { stage: 'Populating account', status: 'working' })   
+            await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'working' })   
             // Send the profile to elasticache
             await orgSignIn(
+              redis,
               orgData.profile,
               orgData.organization,
               locationRes.data.locations,
-              contactRes.data.contacts
+              contactRes.data.contacts,
+              orgData.authToken
             )
 
             for (const contact of contactRes.data.contacts) {
@@ -55,12 +58,13 @@ module.exports = [
               })
 
               await addLinkedLocations(
+                redis,
                 orgData.organization.id,
                 contact.id,
                 locationIDs
               )
             }
-            await setJsonData(elasticacheKey, { stage: 'Populating account', status: 'complete' })
+            await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'complete' })
 
           return h.response({ status: 200 })
         } else {

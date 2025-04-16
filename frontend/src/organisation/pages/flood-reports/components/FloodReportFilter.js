@@ -98,7 +98,6 @@ export default function FloodReportFilter({
             location.floodData.lastUpdatedTime <= dateTo
         )
 
-        console.log('filtered', filtered)
         resetErrors()
       } else {
         setDateFromError(dateFromErrorMessage)

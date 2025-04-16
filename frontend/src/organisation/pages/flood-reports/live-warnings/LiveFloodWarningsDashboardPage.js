@@ -98,7 +98,7 @@ export default function LiveFloodWarningsDashboardPage() {
           )
           const TA_NAME = getAdditional(
             liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_NAME'
+            'TA_Name'
           )
 
           const severity = liveAlert.type

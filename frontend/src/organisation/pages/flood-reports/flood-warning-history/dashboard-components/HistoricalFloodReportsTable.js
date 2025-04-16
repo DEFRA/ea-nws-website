@@ -28,7 +28,7 @@ export default function HistoricalFloodReportsTable({
     setLocationTypeSort('none')
     setStartDateSort('none')
     setLastUpdatedSort('none')
-  }, [locationsAffected])
+  }, [])
 
   // Sort standard data
   const sortTableData = (sortType, setSort, path) => {
@@ -64,7 +64,7 @@ export default function HistoricalFloodReportsTable({
     if (sortType === 'none' || sortType === 'descending') {
       setSort('ascending')
       setDisplayedLocationsAffected(
-        [...filteredLocationsAffected].sort((a, b) => {
+        [...displayedLocationsAffected].sort((a, b) => {
           const valueA = getValue(a)
           const valueB = getValue(b)
 
@@ -94,7 +94,7 @@ export default function HistoricalFloodReportsTable({
     if (sortType === 'ascending') {
       setSort('descending')
       setDisplayedLocationsAffected(
-        [...filteredLocationsAffected].sort((a, b) => {
+        [...displayedLocationsAffected].sort((a, b) => {
           const valueA = getValue(a)
           const valueB = getValue(b)
 

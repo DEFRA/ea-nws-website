@@ -1,17 +1,20 @@
+import PromoteToAdminPage from '../../pages/manage-contact/PromoteToAdminPage'
 import AdminInviteNotWorkingPage from '../../pages/manage-contact/add-admin/AdminInviteNotWorkingPage'
 import AdminInvitePage from '../../pages/manage-contact/add-admin/AdminInvitePage'
 import AdminJoinedPage from '../../pages/manage-contact/add-admin/AdminJoinedPage'
+import AddContactAdditionalInformationPage from '../../pages/manage-contact/add-contact/AddContactAdditionalInformationPage'
 import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
+import AddContactEmailPage from '../../pages/manage-contact/add-contact/AddContactEmailPage'
 import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddContactKeywordsPage'
 import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
+import AddContactTypePage from '../../pages/manage-contact/add-contact/AddContactTypePage'
 import LinkContactToLocationPage from '../../pages/manage-contact/add-contact/LinkContactToLocationPage'
 import DeleteContactPage from '../../pages/manage-contact/delete/DeleteContactPage'
 import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/EditContactChannelsPage'
 import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/EditContactKeywordsPage'
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
-import PromoteToAdminPage from '../../pages/manage-contact/PromoteToAdminPage'
 import ViewUsersDashboardPage from '../../pages/manage-contact/view-user/users-dashboard/ViewUsersDashboardPage'
 import LinkedLocationsPage from '../../pages/manage-contact/view-user/users-information/LinkedLocationsPage'
 import UserInformationPage from '../../pages/manage-contact/view-user/users-information/UserInformationPage'
@@ -23,7 +26,10 @@ const urlManageContactsAdmin = urlManageContactsOrg + '/admin'
 
 const orgManageContactsUrls = {
   add: {
-    details: urlManageContactsAdd,
+    typeSelection: urlManageContactsAdd + '/type',
+    details: urlManageContactsAdd + '/details',
+    email: urlManageContactsAdd + '/email',
+    additionalInformation: urlManageContactsAdd + '/additional-information',
     keywords: urlManageContactsAdd + '/keywords',
     channels: urlManageContactsAdd + '/channels',
     notes: urlManageContactsAdd + '/notes',
@@ -70,6 +76,18 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.add.linkContactToLocations,
     component: <LinkContactToLocationPage />
+  },
+  {
+    path: orgManageContactsUrls.add.typeSelection,
+    component: <AddContactTypePage />
+  },
+  {
+    path: orgManageContactsUrls.add.email,
+    component: <AddContactEmailPage />
+  },
+  {
+    path: orgManageContactsUrls.add.additionalInformation,
+    component: <AddContactAdditionalInformationPage />
   },
   // View
   {

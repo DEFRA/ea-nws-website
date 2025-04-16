@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import Radio from '../../../common/components/gov-uk/Radio'
+import { setOrgCurrentContact } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function PromoteToAdminPage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -57,9 +59,9 @@ export default function PromoteToAdminPage () {
     if (validationError === '') {
       const updatedContact = JSON.parse(JSON.stringify(currentContact))
       updatedContact.emails = [selectedEmail, ...updatedContact.emails]
-      
+
       const dataToSend = { authToken, orgId, contact: updatedContact }
-      const {errorMessage: updateError } = await backendCall(
+      const { errorMessage: updateError } = await backendCall(
         dataToSend,
         'api/organization/update_contact',
         navigate
@@ -72,12 +74,14 @@ export default function PromoteToAdminPage () {
           role: 'ADMIN',
           orgId
         }
-        const {errorMessage: promoteError } = await backendCall(
+        const { errorMessage: promoteError, data: contactData } = await backendCall(
           promoteData,
           'api/organization/promote_contact',
           navigate
         )
         if (!promoteError) {
+          // update currentContact since it will now be a pending admin
+          dispatch(setOrgCurrentContact(contactData))
           navigate(orgManageContactsUrls.view.dashboard, {
             state: {
               successMessage: [
@@ -86,12 +90,12 @@ export default function PromoteToAdminPage () {
               ]
             }
           })
-        } else (
+        } else {
           setErrorMessage(promoteError)
-        )
-      } else (
+        }
+      } else {
         setErrorMessage(updateError)
-      )
+      }
     }
   }
 
@@ -101,9 +105,9 @@ export default function PromoteToAdminPage () {
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-          {(errorMessage) && (
-            <ErrorSummary errorList={[errorMessage]} />
-          )}
+            {(errorMessage) && (
+              <ErrorSummary errorList={[errorMessage]} />
+            )}
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>{heading}</h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.

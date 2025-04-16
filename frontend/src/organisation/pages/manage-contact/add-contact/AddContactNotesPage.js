@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import store from '../../../../common/redux/store'
 import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -13,9 +13,34 @@ export default function AddContactNotesPage () {
   const orgId = useSelector((state) => state.session.orgId)
   const dispatch = useDispatch()
   const [error, setError] = useState('')
+  const location = useLocation()
+  const userType = location?.state?.type || 'contact'
 
   const navigateToNextPage = () => {
-    navigate(orgManageContactsUrls.add.linkContactToLocations)
+    navigate(orgManageContactsUrls.add.linkContactToLocations, {
+      state: {
+        type: userType
+      }
+    })
+  }
+
+  const updateContact = async () => {
+    const contact = JSON.parse(JSON.stringify(store.getState().session.orgCurrentContact))
+    const dataToSend = { authToken, orgId, contact }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/organization/update_contact',
+      navigate
+    )
+
+    if (data) {
+      dispatch(setOrgCurrentContact(data))
+      navigateToNextPage()
+    } else {
+      errorMessage
+        ? setError(errorMessage)
+        : setError('Oops, something went wrong')
+    }
   }
 
   const onAddContact = async () => {
@@ -70,7 +95,7 @@ export default function AddContactNotesPage () {
         keywordType='contact'
         instructionText={instructionText}
         buttonText='Add contact'
-        onSubmit={onAddContact}
+        onSubmit={userType === 'admin' ? updateContact : onAddContact}
         error={error}
         setError={setError}
       />

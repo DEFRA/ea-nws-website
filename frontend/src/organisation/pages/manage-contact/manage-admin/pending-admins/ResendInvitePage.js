@@ -1,10 +1,8 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ResendInvitePage () {
@@ -16,22 +14,9 @@ export default function ResendInvitePage () {
   const pendingAdminName =
     pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
 
-  const adminName =
-    useSelector((state) => state.session.profile.firstname) +
-    ' ' +
-    useSelector((state) => state.session.profile.lastname)
-  const adminEmail = useSelector((state) => state.session.profile.emails[0])
-
   const handleSubmit = async () => {
     try {
-      const emailParams = {
-        email: pendingAdminEmail,
-        name: pendingAdminName,
-        adminName,
-        adminEmail
-      }
-
-      await backendCall(emailParams, 'api/notify/admin_invited', navigate)
+      // TODO: Trigger proper backend route to resend invite (once created)
 
       navigate(orgManageContactsUrls.admin.pendingInvites, {
         state: {

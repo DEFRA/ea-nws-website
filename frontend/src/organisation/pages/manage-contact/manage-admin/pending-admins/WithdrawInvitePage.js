@@ -22,7 +22,7 @@ export default function WithdrawInvitePage () {
     const updatedContact = { ...pendingAdmin, pendingRole: null }
 
     try {
-      // TODO: Change to correct backend admin invite withdrawal riute (once created)
+      // TODO: Change to correct backend admin invite withdrawal route (once created)
       const dataToSend = { authToken, orgId, contact: updatedContact }
       const { data, errorMessage } = await backendCall(
         dataToSend,
@@ -54,8 +54,8 @@ export default function WithdrawInvitePage () {
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>
-              Do you want to withdraw the admin invitation to {pendingAdminName}
-              ?
+              Do you want to withdraw the admin invitation for{' '}
+              {pendingAdminName}?
             </h1>
             <p className='govuk-body'>
               They will no longer be able to join as admin.
@@ -65,11 +65,11 @@ export default function WithdrawInvitePage () {
 
             <ul className='govuk-list govuk-list--bullet govuk-!-margin-bottom-8'>
               <li>stay in this service as a contact</li>
-              <li>still get the same flood messages as before, if any.</li>
+              <li>still get the same flood messages as before, if any</li>
             </ul>
 
             <Button
-              text='Yes, resend invitation'
+              text='Yes, withdraw invitation'
               className='govuk-button'
               onClick={handleSubmit}
             />

@@ -27,6 +27,7 @@ export default function RemoveAdminPage () {
 
     try {
       const dataToSend = { authToken, orgId, contact: updatedContact }
+      // TODO: Change to correct backend route for demoting admin
       await backendCall(dataToSend, 'api/organization/update_contact', navigate)
 
       const emailParams = {

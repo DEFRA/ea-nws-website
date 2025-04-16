@@ -502,7 +502,7 @@ export default function ViewLocationsDashboardPage () {
 
     if (type === 'messages') {
       updatedFilteredLocations = locations.filter(
-        (location) => 
+        (location) =>
           location.additionals.other?.alertTypes?.length > 0 &&
           location.within === true
       )

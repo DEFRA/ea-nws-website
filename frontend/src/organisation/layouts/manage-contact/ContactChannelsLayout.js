@@ -259,7 +259,7 @@ export default function ContactChannelsLayout ({
                       name='Additionals email address (optional)'
                       inputType='text'
                       onChange={(val) =>
-                        setEmailInput((inputs) => [inputs[0], vale])}
+                        setEmailInput((inputs) => [inputs[0], val])}
                       value={emailInput[1]}
                       error={emailError[1]}
                       className='govuk-input govuk-input--width-20'

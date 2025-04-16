@@ -105,7 +105,7 @@ export default function LiveFloodWarningsDashboardPage () {
 
           const severity = liveAlert.type
           const updatedTime = getUpdatedTime(liveAlert.effectiveDate)
-          const floodArea = {TA_CODE, TA_Name}
+          const floodArea = { TA_CODE, TA_Name }
 
           for (const location of locations) {
             processLocation(location, floodArea, severity, updatedTime)
@@ -135,7 +135,7 @@ export default function LiveFloodWarningsDashboardPage () {
 
     const associateAlerts = () => {
       const updatedLocation = createLocationWithFloodData()
-      let locationIntersectsWithFloodArea = updatedLocation.locationData?.additionals?.other?.targetAreas?.some((targetArea => targetArea.TA_CODE === floodArea.TA_CODE))
+      const locationIntersectsWithFloodArea = updatedLocation.locationData?.additionals?.other?.targetAreas?.some(targetArea => targetArea.TA_CODE === floodArea.TA_CODE)
 
       if (locationIntersectsWithFloodArea) {
         setLocationsAffected((prevLocations) => {
@@ -237,8 +237,8 @@ export default function LiveFloodWarningsDashboardPage () {
         'Flood alerts': AlertType.FLOOD_ALERT
       }
 
-      initialFilter = initialFilter.filter((item) => 
-          item.floodData.some((data) => data.type.includes(filterMap[location?.state?.filter]))
+      initialFilter = initialFilter.filter((item) =>
+        item.floodData.some((data) => data.type.includes(filterMap[location?.state?.filter]))
       )
       setFilteredLocationsAffected(initialFilter)
     }

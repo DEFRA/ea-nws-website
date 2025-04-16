@@ -107,7 +107,7 @@ export default function FloodDataInformationPopup ({
 
   const getFloodLink = (code, type) => {
     let floodLink = ''
-    
+
     if (servicePhase === 'beta') {
       switch (type) {
         case AlertType.SEVERE_FLOOD_WARNING:
@@ -116,9 +116,9 @@ export default function FloodDataInformationPopup ({
         case AlertType.FLOOD_WARNING:
           floodLink = '/private-beta/flood-warning'
           break
-      case AlertType.FLOOD_ALERT:
-        floodLink = '/private-beta/flood-alert'
-        break
+        case AlertType.FLOOD_ALERT:
+          floodLink = '/private-beta/flood-alert'
+          break
       }
     } else {
       floodLink = `https://check-for-flooding.service.gov.uk/target-area/${code}`

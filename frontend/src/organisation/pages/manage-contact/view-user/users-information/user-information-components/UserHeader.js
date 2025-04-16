@@ -9,8 +9,7 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
   const navigate = useNavigate()
 
   const handleSubmit = () => {
-    if (userType === 'ADMIN') {
-    } else {
+    if (userType !== 'ADMIN') {
       navigate(orgManageContactsUrls.promoteToAdmin)
     }
   }

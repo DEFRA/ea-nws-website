@@ -114,7 +114,7 @@ export default function ConfirmLocationLayout ({
     }
 
     const newWebLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(currentLocation)))
-    //set the Target areas
+    // set the Target areas
     if (currentLocationDataType === LocationDataType.X_AND_Y_COORDS) {
       const TAs = await getFloodAreas(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
       newWebLocation.additionals.other.targetAreas = []

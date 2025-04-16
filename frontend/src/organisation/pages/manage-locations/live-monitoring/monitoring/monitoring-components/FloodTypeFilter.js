@@ -42,7 +42,7 @@ export default function FloodTypeFilter ({
         <Link
           className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-16 text-nowrap govuk-!-margin-bottom-1'
           to={orgFloodReportsUrls.live}
-          state={{filter: `${warningText}s`}}
+          state={{ filter: `${warningText}s` }}
         >
           {warningText}
         </Link>

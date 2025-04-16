@@ -94,7 +94,7 @@ export default function FloodReportsFilter ({
         'Flood alerts': AlertType.FLOOD_ALERT
       }
 
-      filteredLocationsAffected = filteredLocationsAffected.filter((location) => 
+      filteredLocationsAffected = filteredLocationsAffected.filter((location) =>
         selectedWarningTypeFilters.some((filter) =>
           location.floodData.some((data) => data.type.includes(filterMap[filter]))
         )
@@ -126,7 +126,6 @@ export default function FloodReportsFilter ({
     setResetPaging(!resetPaging)
     setFilteredLocationsAffected(filteredLocationsAffected)
   }
-
 
   const filterLocationsAffectedButton = (event) => {
     event.preventDefault()

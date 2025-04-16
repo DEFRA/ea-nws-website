@@ -229,7 +229,7 @@ export default function SignInValidatePage () {
               <div className='popup-dialog'>
                 <div className='popup-dialog-container govuk-!-padding-bottom-6'>
                   <LoadingSpinner
-                  loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                    loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
                   />
                 </div>
               </div>}

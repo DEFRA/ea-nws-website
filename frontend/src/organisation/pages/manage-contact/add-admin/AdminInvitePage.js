@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { setAuthToken, setContactPreferences, setOrgId, setOrganization, setProfile, setProfileId, setSigninType } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
@@ -16,6 +17,7 @@ export default function AdminInvitePage () {
   const dispatch = useDispatch()
   const [orgData, setOrgData] = useState(null)
   const [stage, setStage] = useState('Retrieving locations')
+  const [error, setError] = useState('')
 
   const useQuery = () => {
     return new URLSearchParams(location.search)
@@ -64,8 +66,8 @@ export default function AdminInvitePage () {
     event.preventDefault()
     const query = useQuery()
     const inviteToken = query.get('inviteToken')
-    const dataToSend = {inviteToken}
-    const {errorMessage, data} = await backendCall(
+    const dataToSend = { inviteToken }
+    const { errorMessage, data } = await backendCall(
       dataToSend,
       'api/organization/validate_invitation',
       navigate
@@ -99,7 +101,8 @@ export default function AdminInvitePage () {
     <>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-one-half'>
+          <div className='govuk-grid-column-two-thirds'>
+            {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
               You've been invited to join as an admin for your organisation
             </h1>
@@ -108,20 +111,21 @@ export default function AdminInvitePage () {
                 text='Accept invitation'
                 className='govuk-button'
                 onClick={(event) => {
-                  handleSubmit(event)}}
+                  handleSubmit(event)
+                }}
               />
             </div>
           </div>
         </div>
       </main>
       {orgData && error === '' &&
-              <div className='popup-dialog'>
-                <div className='popup-dialog-container govuk-!-padding-bottom-6'>
-                  <LoadingSpinner
-                  loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
-                  />
-                </div>
-              </div>}
+        <div className='popup-dialog'>
+          <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+            <LoadingSpinner
+              loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+            />
+          </div>
+        </div>}
     </>
   )
 }

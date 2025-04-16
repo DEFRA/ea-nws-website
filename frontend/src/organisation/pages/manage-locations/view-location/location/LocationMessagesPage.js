@@ -68,6 +68,9 @@ export default function LocationMessagesPage () {
       setLocationUnlinked(true)
       setUnlinkID(null)
     }
+
+    // Directly remove flood area from the table state so it can be reflected on page (without refreshing)
+    setFloodAreasInputs(prevInputs => prevInputs.filter(input => input.linked !== unlinkID))
   }
 
   async function getPartnerId () {
@@ -313,7 +316,7 @@ export default function LocationMessagesPage () {
           <>
             <p>
               Flood messages are currently unavailable for this location. This may
-              be because there are no measurement guages in the area of the
+              be because there are no measurement gauges in the area of the
               location. Or the location is in an area where not many people live
               or work.
             </p>

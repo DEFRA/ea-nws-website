@@ -24,8 +24,8 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'ADMIN',
-    pendingRole: null
+    role: null,
+    pendingRole: 'ADMIN'
   },
   {
     id: '2',
@@ -80,7 +80,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'SELF',
+    role: null,
     pendingRole: null
   },
   {

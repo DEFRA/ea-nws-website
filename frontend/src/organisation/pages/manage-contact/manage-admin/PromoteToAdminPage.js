@@ -6,11 +6,12 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Input from '../../../../common/components/gov-uk/Input'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { backendCall } from '../../../../common/services/BackendService'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PromoteToAdminPage () {
+export default function PromoteToAdminPage() {
   const navigate = useNavigate()
-  const [selectedEmail, setSelectedEmail] = useState('')
 
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -20,6 +21,11 @@ export default function PromoteToAdminPage () {
   const contactEmails = currentContact?.emails
 
   const emailCount = contactEmails?.length || 0
+
+  const [selectedEmail, setSelectedEmail] = useState(
+    emailCount === 1 ? contactEmails[0] : ''
+  )
+  const [errorMessage, setErrorMessage] = useState('')
 
   let heading, emailRadios
   switch (true) {
@@ -48,30 +54,42 @@ export default function PromoteToAdminPage () {
   }
 
   const handleSubmit = async () => {
-    const updatedContact = { ...currentContact, pendingRole: 'ADMIN' }
-    try {
-      // TODO: Change this to proper admin backend call once created
+    const validationError = emailValidation(selectedEmail)
+    setErrorMessage(validationError)
+    if (validationError === '') {
+      const updatedContact = JSON.parse(JSON.stringify(currentContact))
+      updatedContact.emails = [selectedEmail, ...updatedContact.emails]
+
       const dataToSend = { authToken, orgId, contact: updatedContact }
-      const { data, errorMessage } = await backendCall(
+      const { errorMessage: updateError } = await backendCall(
         dataToSend,
         'api/organization/update_contact',
         navigate
       )
 
-      if (errorMessage) {
-        throw new Error(errorMessage)
-      }
-
-      navigate(orgManageContactsUrls.view.dashboard, {
-        state: {
-          successMessage: [
-            `Email invitation sent to ${selectedEmail}`,
-            "They'll be a pending admin until they accept the invitation and confirm their email address. Invitation is valid for 72 hours."
-          ]
+      if (!updateError) {
+        const promoteData = {
+          authToken,
+          contactId: updatedContact.id,
+          role: 'ADMIN',
+          orgId
         }
-      })
-    } catch (e) {
-      console.error(e)
+        const { errorMessage: promoteError } = await backendCall(
+          promoteData,
+          'api/organization/promote_contact',
+          navigate
+        )
+        if (!promoteError) {
+          navigate(orgManageContactsUrls.view.dashboard, {
+            state: {
+              successMessage: [
+                `Email invitation sent to ${selectedEmail}`,
+                "They'll be a pending admin until they accept the invitation and confirm their email address. Invitation is valid for 72 hours."
+              ]
+            }
+          })
+        } else setErrorMessage(promoteError)
+      } else setErrorMessage(updateError)
     }
   }
 
@@ -81,6 +99,7 @@ export default function PromoteToAdminPage () {
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
+            {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>{heading}</h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.

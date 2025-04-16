@@ -38,7 +38,8 @@ module.exports = [
               orgData.profile,
               orgData.organization,
               locationRes.data.locations,
-              contactRes.data.contacts
+              contactRes.data.contacts,
+              orgData.authToken
             )
 
             for (const contact of contactRes.data.contacts) {

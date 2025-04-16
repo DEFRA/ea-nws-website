@@ -4,7 +4,7 @@ import floodWarningIcon from '../../assets/images/flood_warning.svg'
 import BackLink from '../../components/custom/BackLink'
 import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
 
-export default function PrivateBetaMockFloodWarningPage() {
+export default function PrivateBetaMockFloodWarningPage () {
   const navigate = useNavigate()
 
   return (

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
 
-export default function PrivateBetaMockFloodWarningRemovedPage() {
+export default function PrivateBetaMockFloodWarningRemovedPage () {
   const navigate = useNavigate()
 
   return (

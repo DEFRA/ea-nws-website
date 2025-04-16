@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../components/gov-uk/Button'
 import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
 
-export default function StartPage() {
+export default function StartPage () {
   const navigate = useNavigate()
 
   return (

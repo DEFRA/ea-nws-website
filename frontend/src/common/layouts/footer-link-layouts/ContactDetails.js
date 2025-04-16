@@ -1,4 +1,4 @@
-export default function ContactDetails() {
+export default function ContactDetails () {
   return (
     <>
       <ul class='govuk-list'>
@@ -19,10 +19,10 @@ export default function ContactDetails() {
   )
 }
 
-export function TelephoneNumber() {
+export function TelephoneNumber () {
   return '0345 988 1188'
 }
 
-export function TextphoneNumber() {
+export function TextphoneNumber () {
   return '0345 602 6340'
 }

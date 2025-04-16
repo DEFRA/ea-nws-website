@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 
-export default function PrivateBetaPrivacyNoticePage() {
+export default function PrivateBetaPrivacyNoticePage () {
   const navigate = useNavigate()
 
   return (

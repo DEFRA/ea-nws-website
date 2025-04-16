@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ContactDetails from '../layouts/footer-link-layouts/ContactDetails'
 
-export default function ErrorPage() {
+export default function ErrorPage () {
   return (
     <>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

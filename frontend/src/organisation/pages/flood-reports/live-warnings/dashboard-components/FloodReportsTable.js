@@ -32,9 +32,7 @@ export default function FloodReportsTable({
 
   // Sort standard data
   const sortTableData = (sortType, setSort, path) => {
-    console.log('yes this is called')
     const getValue = (obj) => {
-      console.log('we get in here')
       const objLocationName = obj.locationData.additionals.locationName
       const objLocationType =
         obj.locationData.additionals.other.location_type || '-'
@@ -42,8 +40,6 @@ export default function FloodReportsTable({
         obj.locationData.additionals.other.business_criticality || '-'
       const objLastUpdatedTime = obj.floodData.lastUpdatedTime
       const objFloodWarningType = obj.floodData.type
-
-      console.log('objLastUpdatedTime', objLastUpdatedTime)
 
       if (path === 'locationName') {
         return objLocationName
@@ -62,21 +58,12 @@ export default function FloodReportsTable({
       }
     }
 
-    console.log('sort type', sortType)
-
     if (sortType === 'none' || sortType === 'descending') {
-      console.log('inside sorting')
       setSort('ascending')
       setDisplayedLocationsAffected(
         [...displayedLocationsAffected].sort((a, b) => {
-          console.log('a', a)
-          console.log('b', b)
           const valueA = getValue(a)
           const valueB = getValue(b)
-
-          console.log('----------------------------')
-          console.log('valueA', valueA)
-          console.log('valueB', valueB)
 
           // Place empty strings at the end
           if (

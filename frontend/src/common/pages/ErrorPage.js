@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import ContactDetails from '../layouts/footer-link-layouts/ContactDetails'
 
 export default function ErrorPage () {
   return (
@@ -13,17 +14,12 @@ export default function ErrorPage () {
             <p>Try again later.</p>
 
             <p className='govuk-!-padding-top-6'>
-              <b>Contact us, if you need help</b><br />
-              Telephone: 0345 988 1188<br />
-              Textphone: 0345 602 6340<br />
-              Open 24 hours a day, 7 days a week
+              <b>Contact us, if you need help</b>
+              <br />
+              <ContactDetails />
             </p>
-
             <p>
-              Email: {' '}
-              <Link>
-                getfloodwarnings@environment-agency.gov.uk
-              </Link>
+              Email: <Link>getfloodwarnings@environment-agency.gov.uk</Link>
               <br />
               Monday to Friday, 8am to 6pm
             </p>

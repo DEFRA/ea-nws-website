@@ -58,16 +58,16 @@ export default function AddAccountNameLayout({
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
+          {location?.state?.banner && (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              heading={location?.state?.banner?.heading}
+              text={location?.state?.banner?.text}
+            />
+          )}
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            {location?.state?.banner && (
-              <NotificationBanner
-                className='govuk-notification-banner govuk-notification-banner--success'
-                title='Success'
-                heading={location?.state?.banner?.heading}
-                text={location?.state?.banner?.text}
-              />
-            )}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
@@ -10,7 +10,7 @@ import { setContactPreferences } from '../../../../common/redux/userSlice'
 export default function WarningContactsPreferencePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const loginEmail = useSelector((state) => state.session.profile.emails[0])
+  const location = useLocation()
   const [selectedContactPreferences, setSelectedContactPreferences] = useState(
     []
   )
@@ -47,16 +47,18 @@ export default function WarningContactsPreferencePage() {
       <BackLink to='/signup/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          {location?.state && (
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success'
               title='Success'
               heading='Email address confirmed'
               text={
-                loginEmail +
+                location.state.loginEmail +
                 ' is your sign in email and you’ll also get flood messages at this address'
               }
             />
+          )}
+          <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               Would you like to get flood messages in any other way? (optional)
             </h1>

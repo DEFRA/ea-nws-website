@@ -8,7 +8,10 @@ import Select from '../../../../../common/components/gov-uk/Select'
 import AlertType from '../../../../../common/enums/AlertType'
 import store from '../../../../../common/redux/store'
 import {
-  setConsecutiveBoundariesAdded, setCurrentLocation, setCurrentLocationGeometry, setCurrentLocationName,
+  setConsecutiveBoundariesAdded,
+  setCurrentLocation,
+  setCurrentLocationGeometry,
+  setCurrentLocationName,
   setCurrentLocationType,
   setLocationBoundaries,
   setPredefinedBoundaryFlow,
@@ -16,8 +19,14 @@ import {
   setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getBoundaryTypes, getFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import {
+  getBoundaryTypes,
+  getFloodAreasFromShape
+} from '../../../../../common/services/WfsFloodDataService'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -51,6 +60,12 @@ export default function SelectPredefinedBoundaryPage () {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
+
+  // Clear any previous boundary selection
+  useEffect(() => {
+    dispatch(setSelectedBoundary(null))
+    dispatch(setSelectedBoundaryType(null))
+  }, [dispatch])
 
   // Get boundary types
   useEffect(() => {
@@ -124,16 +139,26 @@ export default function SelectPredefinedBoundaryPage () {
         })
       )
       // This might change at a later date, but store in the additional name field for now
-      dispatch(setCurrentLocationName(locationBoundary.boundary.properties.TA_Name))
+      dispatch(
+        setCurrentLocationName(locationBoundary.boundary.properties.TA_Name)
+      )
       dispatch(setCurrentLocationType(locationBoundary.boundary_type))
       // since we added to currentLocation we need to get that information to pass to the api
       const locationToAdd = store.getState().session.currentLocation
 
       // Set default alert types
-      const newWebLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(locationToAdd)))
-      newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+      const newWebLocation = geoSafeToWebLocation(
+        JSON.parse(JSON.stringify(locationToAdd))
+      )
+      newWebLocation.additionals.other.alertTypes = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.FLOOD_ALERT
+      ]
       // get the target areas
-      const TAs = await getFloodAreasFromShape(newWebLocation?.geometry?.geoJson)
+      const TAs = await getFloodAreasFromShape(
+        newWebLocation?.geometry?.geoJson
+      )
       newWebLocation.additionals.other.targetAreas = []
       TAs.forEach((area) => {
         newWebLocation.additionals.other.targetAreas.push({
@@ -157,11 +182,19 @@ export default function SelectPredefinedBoundaryPage () {
         }
         return typeMap[type] || []
       }
-      newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
-        newWebLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
-        newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+      newWebLocation.additionals.other.targetAreas.some(
+        (area) => categoryToType(area.category) === 'warning'
+      ) &&
+        newWebLocation.additionals.other.alertTypes.push(
+          AlertType.SEVERE_FLOOD_WARNING
+        ) &&
+        newWebLocation.additionals.other.alertTypes.push(
+          AlertType.FLOOD_WARNING
+        )
 
-      newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
+      newWebLocation.additionals.other.targetAreas.some(
+        (area) => categoryToType(area.category) === 'alert'
+      ) &&
         newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
 
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)

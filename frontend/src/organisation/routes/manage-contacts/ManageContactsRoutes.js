@@ -1,7 +1,3 @@
-import PromoteToAdminPage from '../../pages/manage-contact/PromoteToAdminPage'
-import AdminInviteNotWorkingPage from '../../pages/manage-contact/add-admin/AdminInviteNotWorkingPage'
-import AdminInvitePage from '../../pages/manage-contact/add-admin/AdminInvitePage'
-import AdminJoinedPage from '../../pages/manage-contact/add-admin/AdminJoinedPage'
 import AddContactAdditionalInformationPage from '../../pages/manage-contact/add-contact/AddContactAdditionalInformationPage'
 import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
@@ -15,6 +11,11 @@ import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/Edi
 import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/EditContactKeywordsPage'
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
+import PendingAdminsPage from '../../pages/manage-contact/manage-admin/pending-admins/PendingAdminsPage'
+import ResendInvitePage from '../../pages/manage-contact/manage-admin/pending-admins/ResendInvitePage'
+import WithdrawInvitePage from '../../pages/manage-contact/manage-admin/pending-admins/WithdrawInvitePage'
+import RemoveAdminPage from '../../pages/manage-contact/manage-admin/RemoveAdminPage'
+import PromoteToAdminPage from '../../pages/manage-contact/PromoteToAdminPage'
 import ViewUsersDashboardPage from '../../pages/manage-contact/view-user/users-dashboard/ViewUsersDashboardPage'
 import LinkedLocationsPage from '../../pages/manage-contact/view-user/users-information/LinkedLocationsPage'
 import UserInformationPage from '../../pages/manage-contact/view-user/users-information/UserInformationPage'
@@ -47,11 +48,12 @@ const orgManageContactsUrls = {
     notes: urlManageContactsEdit + '/notes'
   },
   delete: urlManageContactsOrg + '/delete-contact',
-  promoteToAdmin: urlManageContactsOrg + '/promote-contact',
   admin: {
-    invite: urlManageContactsAdmin + '/invite',
-    invalidInvite: urlManageContactsAdmin + '/invite-invalid',
-    joined: urlManageContactsAdmin + '/joined'
+    promote: urlManageContactsOrg + '/promote-contact',
+    remove: urlManageContactsOrg + '/remove-admin',
+    pendingInvites: urlManageContactsOrg + '/pending-admins',
+    resendInvite: urlManageContactsOrg + '/resend-invite',
+    withdrawInvite: urlManageContactsOrg + '/withdraw-invite'
   }
 }
 
@@ -126,19 +128,27 @@ const orgManageContactsRoutes = [
   },
   // Promote to Admin
   {
-    path: orgManageContactsUrls.promoteToAdmin,
+    path: orgManageContactsUrls.admin.promote,
     component: <PromoteToAdminPage />
   },
-  // Admin pages
+  // Remove Admin
   {
-    path: orgManageContactsUrls.admin.invite,
-    component: <AdminInvitePage />
+    path: orgManageContactsUrls.admin.remove,
+    component: <RemoveAdminPage />
+  },
+  // Admin Invitation Links
+  {
+    path: orgManageContactsUrls.admin.pendingInvites,
+    component: <PendingAdminsPage />
   },
   {
-    path: orgManageContactsUrls.admin.invalidInvite,
-    component: <AdminInviteNotWorkingPage />
+    path: orgManageContactsUrls.admin.resendInvite,
+    component: <ResendInvitePage />
   },
-  { path: orgManageContactsUrls.admin.joined, component: <AdminJoinedPage /> }
+  {
+    path: orgManageContactsUrls.admin.withdrawInvite,
+    component: <WithdrawInvitePage />
+  }
 ]
 
 export { orgManageContactsRoutes, orgManageContactsUrls, urlManageContactsAdd }

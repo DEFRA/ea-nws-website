@@ -24,7 +24,9 @@ export default function PromoteToAdminPage () {
 
   const emailCount = contactEmails?.length || 0
 
-  const [selectedEmail, setSelectedEmail] = useState(emailCount === 1 ? contactEmails[0] : '')
+  const [selectedEmail, setSelectedEmail] = useState(
+    emailCount === 1 ? contactEmails[0] : ''
+  )
   const [errorMessage, setErrorMessage] = useState('')
 
   let heading, emailRadios
@@ -74,11 +76,12 @@ export default function PromoteToAdminPage () {
           role: 'ADMIN',
           orgId
         }
-        const { errorMessage: promoteError, data: contactData } = await backendCall(
-          promoteData,
-          'api/organization/promote_contact',
-          navigate
-        )
+        const { errorMessage: promoteError, data: contactData } =
+          await backendCall(
+            promoteData,
+            'api/organization/promote_contact',
+            navigate
+          )
         if (!promoteError) {
           // update currentContact since it will now be a pending admin
           dispatch(setOrgCurrentContact(contactData))
@@ -105,9 +108,7 @@ export default function PromoteToAdminPage () {
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {(errorMessage) && (
-              <ErrorSummary errorList={[errorMessage]} />
-            )}
+            {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>{heading}</h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.

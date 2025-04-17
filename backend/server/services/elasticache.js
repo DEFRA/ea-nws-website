@@ -643,7 +643,6 @@ const orgSignOut = async (client, profileId, orgId, authToken) => {
     await deleteJsonData(client, orgId + ':t_Linked_locations')
     await deleteJsonData(client, orgId + ':t_Linked_contacts')
   }
-  
 }
 
 module.exports = {

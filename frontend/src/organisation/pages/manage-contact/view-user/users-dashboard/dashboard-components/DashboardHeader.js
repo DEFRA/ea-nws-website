@@ -5,7 +5,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import { clearOrgCurrentContact } from '../../../../../../common/redux/userSlice'
 import LinkBanner from '../../../../../components/custom/LinkBanner'
-import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 
 export default function DashboardHeader ({
@@ -114,7 +114,7 @@ export default function DashboardHeader ({
                     onClick={(event) => {
                       event.preventDefault()
                       dispatch(clearOrgCurrentContact())
-                      navigate(urlManageContactsAdd)
+                      navigate(orgManageContactsUrls.add.typeSelection)
                     }}
                   />
                 &nbsp; &nbsp;

@@ -1,7 +1,6 @@
 import { React } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import { getLocationAdditional } from '../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'

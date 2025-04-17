@@ -30,18 +30,18 @@ module.exports = [
             const signupCompleteIndex = contactToUpdate.additionals.findIndex(additional => additional.id === 'signupComplete')
             const lastAcessedUrlIndex = contactToUpdate.additionals.findIndex(additional => additional.id === 'lastAccessedUrl')
             if (signupCompleteIndex !== -1) {
-              contactToUpdate.additionals[signupCompleteIndex].value = {s: 'true'} 
+              contactToUpdate.additionals[signupCompleteIndex].value = { s: 'true' }
             } else {
-              contactToUpdate.additionals.push({id: 'signupComplete', value: { s: 'true' }})
+              contactToUpdate.additionals.push({ id: 'signupComplete', value: { s: 'true' } })
             }
             if (lastAcessedUrlIndex !== -1) {
-              contactToUpdate.additionals[lastAcessedUrlIndex].value = {s: '/organisation/sign-up/success'}
+              contactToUpdate.additionals[lastAcessedUrlIndex].value = { s: '/organisation/sign-up/success' }
             } else {
-              contactToUpdate.additionals.push({id: 'lastAccessedUrl', value :{ s: '/organisation/sign-up/success' }})
+              contactToUpdate.additionals.push({ id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/success' } })
             }
 
             const updateResponse = await apiCall(
-              { authToken: authToken, contact: contactToUpdate },
+              { authToken: response.data.authToken, contact: contactToUpdate },
               'organization/updateContact'
             )
 
@@ -50,22 +50,22 @@ module.exports = [
               // if the org exists update the contact and set the profile and active admins
               // if not, org sign in will be called by the frontend to populate elasticache with the updated contact
               if (orgExists) {
-                  await updateContact(redis, response.data.organization.id, updateResponse.data.contact)
-                  await setJsonData(redis, updateResponse.data.contact.id + ':profile', profile)
-                  await addOrgActiveAdmins(redis, response.data.organization.id, response.data.authToken)
+                await updateContact(redis, response.data.organization.id, updateResponse.data.contact)
+                await setJsonData(redis, updateResponse.data.contact.id + ':profile', response.data.contact)
+                await addOrgActiveAdmins(redis, response.data.organization.id, response.data.authToken)
               }
               return h.response({
-                  status: 200,
-                  data: {
-                      profile: updateResponse.data.contact,
-                      organization: response.data.organization,
-                      authToken: response.data.authToken,
-                      orgExists: orgExists
-                  }
+                status: 200,
+                data: {
+                  profile: updateResponse.data.contact,
+                  organization: response.data.organization,
+                  authToken: response.data.authToken,
+                  orgExists: orgExists
+                }
               })
             } else {
               return createGenericErrorResponse(h)
-            } 
+            }
           } else {
             return createGenericErrorResponse(h)
           }

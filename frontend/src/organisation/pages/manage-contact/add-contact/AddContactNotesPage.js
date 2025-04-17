@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import store from '../../../../common/redux/store'
 import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -13,9 +13,35 @@ export default function AddContactNotesPage () {
   const orgId = useSelector((state) => state.session.orgId)
   const dispatch = useDispatch()
   const [error, setError] = useState('')
+  const location = useLocation()
+  const userType = location?.state?.type || 'contact'
+  const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
   const navigateToNextPage = () => {
-    navigate(orgManageContactsUrls.add.linkContactToLocations)
+    navigate(orgManageContactsUrls.add.linkContactToLocations, {
+      state: {
+        type: userType
+      }
+    })
+  }
+
+  const updateContact = async () => {
+    const contact = JSON.parse(JSON.stringify(store.getState().session.orgCurrentContact))
+    const dataToSend = { authToken, orgId, contact }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/organization/update_contact',
+      navigate
+    )
+
+    if (data) {
+      dispatch(setOrgCurrentContact(data))
+      navigateToNextPage()
+    } else {
+      errorMessage
+        ? setError(errorMessage)
+        : setError('Oops, something went wrong')
+    }
   }
 
   const onAddContact = async () => {
@@ -56,10 +82,12 @@ export default function AddContactNotesPage () {
     }
   }
 
+  const notesTitle = `Notes about ${currentContact?.firstname} ${currentContact?.lastname} (optional)`
+
   const instructionText = (
     <>
-      Any notes that may be helpful to someone not familiar with this person or
-      why they need to get flood messages.
+      For example, annual leave dates or locations they look after.<br />
+      All admins in your organisation will see these notes.
     </>
   )
 
@@ -69,8 +97,9 @@ export default function AddContactNotesPage () {
         navigateToNextPage={navigateToNextPage}
         keywordType='contact'
         instructionText={instructionText}
-        buttonText='Add contact'
-        onSubmit={onAddContact}
+        title={notesTitle}
+        buttonText='Continue'
+        onSubmit={userType === 'admin' ? updateContact : onAddContact}
         error={error}
         setError={setError}
       />

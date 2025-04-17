@@ -142,7 +142,7 @@ export default function DropPinOnMapLayout ({
         })
         newWebLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
         newWebLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
-        
+
         // Set alert types
         newWebLocation.additionals.other.alertTypes = []
         const categoryToType = (type) => {

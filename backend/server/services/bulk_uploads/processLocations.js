@@ -8,7 +8,6 @@ const { findTAs, getRiversAndSeaFloodRiskRatingOfLocation, getGroundwaterFloodRi
 const convertToPois = (locations) => {
   const pois = []
   locations.forEach((location) => {
-
     // Set alert types
     const alertTypes = []
     const categoryToType = (type) => {
@@ -111,7 +110,7 @@ const addFloodData = async (locations) => {
     location.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
     location.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(location.coordinates.latitude, location.coordinates.longitude)
   }))
-  
+
   return { data: locations }
 }
 

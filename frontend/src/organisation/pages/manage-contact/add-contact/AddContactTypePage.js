@@ -39,7 +39,7 @@ export default function AddContactTypePage () {
   const promoteDetails = (
     <>
       <p className='govuk-!-font-weight-bold'>
-        How to promote an exisiting contact to admin
+        How to promote an existing contact to admin
       </p>
       <p>
         1. Go to your <Link to={orgManageContactsUrls.view.dashboard}>users dashboard</Link>

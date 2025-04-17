@@ -19,6 +19,7 @@ import { orgManageKeywordsRoutes } from './organisation/routes/manage-keywords/M
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { orgSignUpRoutes } from './organisation/routes/sign-up/SignUpRoutes'
 
+import optOutRoutes from './common/routes/opt-out/OptOutRoutes'
 import privateBetaRoutes from './common/routes/private-beta/PrivateBetaRoutes'
 
 // index routes
@@ -35,7 +36,8 @@ export const routes = [
   ...orgSignUpRoutes,
   ...orgFooterRoutes,
   ...infoRoutes,
-  ...privateBetaRoutes
+  ...privateBetaRoutes,
+  ...optOutRoutes
 ]
 
 export const authenticatedRoutes = [

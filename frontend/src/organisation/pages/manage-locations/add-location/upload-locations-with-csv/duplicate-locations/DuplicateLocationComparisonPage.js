@@ -106,7 +106,7 @@ export default function DuplicateLocationComparisonPage () {
           newLocation.additionals.other.riverSeaRisk = 'unavailable'
           newLocation.additionals.other.groundWaterRisk = 'unavailable'
         }
-    
+
         // Set alert types
         newLocation.additionals.other.alertTypes = []
         const categoryToType = (type) => {
@@ -122,10 +122,10 @@ export default function DuplicateLocationComparisonPage () {
         newLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
           newLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
           newLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
-    
+
         newLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
           newLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
-        
+
         const locationToUpdate = webToGeoSafeLocation(JSON.parse(JSON.stringify(newLocation)))
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id

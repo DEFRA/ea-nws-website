@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -33,12 +34,8 @@ export default function ContactChannelsLayout ({
   const [homeInput, setHomeInput] = useState(
     useSelector((state) => state.session.orgCurrentContact.homePhones || [])
   )
-  const firstname = useSelector(
-    (state) => state.session.orgCurrentContact.firstname
-  )
-  const lastname = useSelector(
-    (state) => state.session.orgCurrentContact.lastname
-  )
+  const location = useLocation()
+  const userType = location?.state?.type || 'contact'
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -226,20 +223,15 @@ export default function ContactChannelsLayout ({
                 />
             )}
             <h1 className='govuk-heading-l'>
-              Choose how you want {firstname || 'first'} {lastname || 'last'} to
-              get flood messages
+              Email addresses and numbers
             </h1>
             <div className='govuk-body'>
               <div>
-                You can add up to 2 email addresses, 2 mobile numbers and 2
-                telephone numbers for each contact. Flood messages will be sent
-                to all the emails and numbers provided.
-                <br />
-                <br />
-                You need to add at least 1 way for contacts to get sent flood
-                messages.
-                <br />
-                <br />
+                <p>We'll send flood messages to all the emails and numbers provided.</p>
+                {userType === 'contact' &&
+                  <p>You need to add at least one way for contacts to get flood
+                    messages.
+                  </p>}
               </div>
               <div
                 className={error && 'govuk-form-group govuk-form-group--error'}
@@ -252,25 +244,52 @@ export default function ContactChannelsLayout ({
                     {error}
                   </p>
                 )}
-                <Input
-                  name='Email addresses (optional)'
-                  inputType='text'
-                  onChange={(val) =>
-                    setEmailInput((inputs) => [val, inputs[1]])}
-                  value={emailInput[0]}
-                  error={emailError[0]}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                  labelSize='s'
-                />
-                <Input
-                  inputType='text'
-                  onChange={(val) =>
-                    setEmailInput((inputs) => [inputs[0], val])}
-                  value={emailInput[1]}
-                  error={emailError[1]}
-                  className='govuk-input govuk-input--width-20'
-                />
+                {userType === 'admin'
+                  ? <>
+                    <div className='govuk-inset-text'>
+                      <strong>
+                        Main email address
+                      </strong>
+                      <br />
+                      {emailInput[0]}
+                      <br />
+                      <br />
+                      <div className='govuk-hint'>For sign in and flood messages</div>
+                    </div>
+                    <Input
+                      name='Additionals email address (optional)'
+                      inputType='text'
+                      onChange={(val) =>
+                        setEmailInput((inputs) => [inputs[0], val])}
+                      value={emailInput[1]}
+                      error={emailError[1]}
+                      className='govuk-input govuk-input--width-20'
+                      isNameBold
+                      labelSize='s'
+                    />
+                  </>
+                  : <>
+                    <Input
+                      name='Email addresses (optional)'
+                      inputType='text'
+                      onChange={(val) =>
+                        setEmailInput((inputs) => [val, inputs[1]])}
+                      value={emailInput[0]}
+                      error={emailError[0]}
+                      className='govuk-input govuk-input--width-20'
+                      isNameBold
+                      labelSize='s'
+                    />
+                    <Input
+                      inputType='text'
+                      onChange={(val) =>
+                        setEmailInput((inputs) => [inputs[0], val])}
+                      value={emailInput[1]}
+                      error={emailError[1]}
+                      className='govuk-input govuk-input--width-20'
+                    />
+                  </>}
+
                 <Input
                   name='UK mobile numbers for text messages (optional)'
                   inputType='text'

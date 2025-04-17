@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import BackLink from '../../../../common/components/custom/BackLink'
-import Button from '../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../../common/components/gov-uk/Input'
-import Radio from '../../../../common/components/gov-uk/Radio'
-import { backendCall } from '../../../../common/services/BackendService'
-import { emailValidation } from '../../../../common/services/validations/EmailValidation'
-import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+import BackLink from '../../../common/components/custom/BackLink'
+import Button from '../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../common/components/gov-uk/Input'
+import Radio from '../../../common/components/gov-uk/Radio'
+import { setOrgCurrentContact } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
+import { emailValidation } from '../../../common/services/validations/EmailValidation'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PromoteToAdminPage () {
+export default function PromoteToAdminPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -74,12 +76,15 @@ export default function PromoteToAdminPage () {
           role: 'ADMIN',
           orgId
         }
-        const { errorMessage: promoteError } = await backendCall(
-          promoteData,
-          'api/organization/promote_contact',
-          navigate
-        )
+        const { errorMessage: promoteError, data: contactData } =
+          await backendCall(
+            promoteData,
+            'api/organization/promote_contact',
+            navigate
+          )
         if (!promoteError) {
+          // update currentContact since it will now be a pending admin
+          dispatch(setOrgCurrentContact(contactData))
           navigate(orgManageContactsUrls.view.dashboard, {
             state: {
               successMessage: [
@@ -88,8 +93,12 @@ export default function PromoteToAdminPage () {
               ]
             }
           })
-        } else setErrorMessage(promoteError)
-      } else setErrorMessage(updateError)
+        } else {
+          setErrorMessage(promoteError)
+        }
+      } else {
+        setErrorMessage(updateError)
+      }
     }
   }
 
@@ -109,20 +118,18 @@ export default function PromoteToAdminPage () {
               receiving, as a contact.
             </p>
 
-            {emailCount > 1
-              ? (
-                  emailRadios
-                )
-              : (
-                <Input
-                  inputType='text'
-                  value={selectedEmail}
-                  name='Email address'
-                  onChange={(val) => setSelectedEmail(val)}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                />
-                )}
+            {emailCount > 1 ? (
+              emailRadios
+            ) : (
+              <Input
+                inputType='text'
+                value={selectedEmail}
+                name='Email address'
+                onChange={(val) => setSelectedEmail(val)}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+              />
+            )}
             <Button
               text='Invite as admin'
               className='govuk-button'

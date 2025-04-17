@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { setOrganizationAlternativeContact } from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
@@ -15,7 +13,6 @@ export default function AlternativeContactDetailsLayout ({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
@@ -50,18 +47,6 @@ export default function AlternativeContactDetailsLayout ({
       'mobileAndLandline'
     )
 
-    // const dataToSend = { email }
-    // const { errorMessage } = await backendCall(
-    //   dataToSend,
-    //   'api/sign_up_start',
-    //   navigate
-    // )
-
-    // if (errorMessage === 'email already registered') {
-    //   setErrorEmail(
-    //     'The email address you entered is already being used. Enter a different email address.'
-    //   )
-    // } else if (
     if (
       fullNameValidationError !== '' ||
       emailValidationError !== '' ||

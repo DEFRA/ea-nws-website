@@ -7,6 +7,7 @@ import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
@@ -19,7 +20,6 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
-import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 
 export default function ViewUsersDashboardPage () {
   const navigate = useNavigate()

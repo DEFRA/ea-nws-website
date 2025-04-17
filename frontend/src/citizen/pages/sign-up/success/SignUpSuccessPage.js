@@ -91,7 +91,7 @@ export default function SignUpSuccessPage () {
                   <a
                     className='govuk-link'
                     href='https://forms.office.com/e/XgucY9mkPV'
-                    target='_blank'
+                    target='_blank' rel='noreferrer'
                   >
                     <Button text='Continue' className='govuk-button' />
                   </a>

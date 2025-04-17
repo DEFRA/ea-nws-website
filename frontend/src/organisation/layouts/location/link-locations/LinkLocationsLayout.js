@@ -1,5 +1,6 @@
 import { distance, point, pointToPolygonDistance } from '@turf/turf'
 import moment from 'moment'
+import { toWords } from 'number-to-words'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -28,8 +29,7 @@ import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageL
 export default function LinkLocationsLayout ({
   navigateToPreviousPage,
   navigateToNextPage
-}
-) {
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentLocation = useSelector((state) => state.session.currentLocation)
@@ -89,7 +89,9 @@ export default function LinkLocationsLayout ({
     const processFloodData = () => {
       if (floodHistoryData && floodAreas) {
         if (floodAreas.length > 0) {
-          floodAreas.forEach((area) => setHistoricalData(area.properties.TA_CODE, area.properties.category))
+          floodAreas.forEach((area) =>
+            setHistoricalData(area.properties.TA_CODE, area.properties.category)
+          )
         }
       }
     }
@@ -103,15 +105,23 @@ export default function LinkLocationsLayout ({
       let count
       switch (messageType) {
         case 'Severe Flood Warning':
-          count = floodCount.counts.find((count) => count.type === messageType)?.count
-          messageSent.push(`${count} severe flood warning${count === 1 ? '' : 's'}`)
+          count = floodCount.counts.find(
+            (count) => count.type === messageType
+          )?.count
+          messageSent.push(
+            `${count} severe flood warning${count === 1 ? '' : 's'}`
+          )
           break
         case 'Flood Warning':
-          count = floodCount.counts.find((count) => count.type === messageType)?.count
+          count = floodCount.counts.find(
+            (count) => count.type === messageType
+          )?.count
           messageSent.push(`${count} flood warning${count === 1 ? '' : 's'}`)
           break
         case 'Flood Alert':
-          count = floodCount.counts.find((count) => count.type === messageType)?.count
+          count = floodCount.counts.find(
+            (count) => count.type === messageType
+          )?.count
           messageSent.push(`${count} flood alert${count === 1 ? '' : 's'}`)
           break
         case 'default':
@@ -128,13 +138,17 @@ export default function LinkLocationsLayout ({
       for (const area of floodAreas) {
         const taCode = area.properties.TA_CODE
         const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = floodCount ? populateMessagesSent(area.properties.category, floodCount) : []
+        const messageSent = floodCount
+          ? populateMessagesSent(area.properties.category, floodCount)
+          : []
         const type = categoryToMessageType(area.properties.category)
         updatedFloodAreas.push({
           areaCode: area.properties.TA_CODE,
           areaName: area.properties.TA_Name,
           areaDistance: area.properties.distance,
-          areaType: `${type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'} area`,
+          areaType: `${
+            type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'
+          } area`,
           messagesSent: messageSent
         })
       }
@@ -205,17 +219,20 @@ export default function LinkLocationsLayout ({
       )
       if (TargetAreaToAdd) {
         const alertTypes =
-          TargetAreaToAdd.properties.category === 'Flood Warning' || TargetAreaToAdd.properties.category === 'Flood Warning Rapid Response'
+          TargetAreaToAdd.properties.category === 'Flood Warning' ||
+          TargetAreaToAdd.properties.category === 'Flood Warning Rapid Response'
             ? [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
             : TargetAreaToAdd.properties.category === 'Flood Alert'
               ? [AlertType.FLOOD_ALERT]
               : []
         childrenAlertTypes.push(...alertTypes)
-        const targetAreas = [{
-          TA_CODE: TargetAreaToAdd.properties?.TA_CODE,
-          TA_Name: TargetAreaToAdd.properties?.TA_Name,
-          category: TargetAreaToAdd.properties?.category
-        }]
+        const targetAreas = [
+          {
+            TA_CODE: TargetAreaToAdd.properties?.TA_CODE,
+            TA_Name: TargetAreaToAdd.properties?.TA_Name,
+            category: TargetAreaToAdd.properties?.category
+          }
+        ]
         const locationToAdd = {
           id: null,
           name: null,
@@ -256,7 +273,12 @@ export default function LinkLocationsLayout ({
           // link the contacts from the parent location
           const linkedContacts = await getParentLinkedContacts(currentLocation)
           if (linkedContacts && linkedContacts.length > 0) {
-            const dataToSend = { authToken, orgId, locationId: data.id, contactIds: linkedContacts }
+            const dataToSend = {
+              authToken,
+              orgId,
+              locationId: data.id,
+              contactIds: linkedContacts
+            }
             await backendCall(
               dataToSend,
               'api/location/attach_contacts',
@@ -311,11 +333,30 @@ export default function LinkLocationsLayout ({
 
     if (data) {
       // update alert types of orginal location to include any new ones from linked locations
-      const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+      const allAlertTypes = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.FLOOD_ALERT
+      ]
       const alertTypes = []
-      if (childrenAlertTypes.includes(allAlertTypes[0]) || additionalData.alertTypes.includes(allAlertTypes[0])) alertTypes.push(allAlertTypes[0])
-      if (childrenAlertTypes.includes(allAlertTypes[1]) || additionalData.alertTypes.includes(allAlertTypes[1])) alertTypes.push(allAlertTypes[1])
-      if (childrenAlertTypes.includes(allAlertTypes[2]) || additionalData.alertTypes.includes(allAlertTypes[2])) alertTypes.push(allAlertTypes[2])
+      if (
+        childrenAlertTypes.includes(allAlertTypes[0]) ||
+        additionalData.alertTypes.includes(allAlertTypes[0])
+      ) {
+        alertTypes.push(allAlertTypes[0])
+      }
+      if (
+        childrenAlertTypes.includes(allAlertTypes[1]) ||
+        additionalData.alertTypes.includes(allAlertTypes[1])
+      ) {
+        alertTypes.push(allAlertTypes[1])
+      }
+      if (
+        childrenAlertTypes.includes(allAlertTypes[2]) ||
+        additionalData.alertTypes.includes(allAlertTypes[2])
+      ) {
+        alertTypes.push(allAlertTypes[2])
+      }
 
       const registerData = {
         authToken,
@@ -339,7 +380,11 @@ export default function LinkLocationsLayout ({
       )
       dispatch(setCurrentLocation(data))
       dispatch(setCurrentLocationAlertTypes(alertTypes))
-      navigateToNextPage() // TODO: Navigate to correct next page
+      navigateToNextPage(
+        `${additionalData.locationName} linked to ${toWords(
+          childrenIDs.length
+        )} nearby flood areas`
+      )
     } else {
       // TODO set an error
       console.log(errorMessage)
@@ -378,7 +423,10 @@ export default function LinkLocationsLayout ({
       let warningAreas = []
       if (currentLocation.geometry) {
         const { alertArea, warningArea } =
-          await getSurroundingFloodAreasFromShape(JSON.parse(currentLocation.geometry.geoJson), 1.0)
+          await getSurroundingFloodAreasFromShape(
+            JSON.parse(currentLocation.geometry.geoJson),
+            1.0
+          )
 
         alertAreas = alertArea.features.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)
@@ -503,17 +551,21 @@ export default function LinkLocationsLayout ({
           {floodAreaInputs.map((area) => (
             <tr key={area.id} className='govuk-table__row'>
               <td className='govuk-table__cell'>
-                <Link onClick={(e) => onClick(e, area.areaName)} className='govuk-link'>
+                <Link
+                  onClick={(e) => onClick(e, area.areaName)}
+                  className='govuk-link'
+                >
                   {area.areaName}
                 </Link>
               </td>
-              <td className='govuk-table__cell'>
-                {area.areaDistance ?? 'Xm'}
-              </td>
+              <td className='govuk-table__cell'>{area.areaDistance ?? 'Xm'}</td>
               <td className='govuk-table__cell'>{area.areaType}</td>
               <td className='govuk-table__cell'>
                 {area.messagesSent.map((messageSent, index) => (
-                  <span key={index}>{messageSent}<br /></span>
+                  <span key={index}>
+                    {messageSent}
+                    <br />
+                  </span>
                 ))}
               </td>
               <td className='govuk-table__cell'>
@@ -526,8 +578,7 @@ export default function LinkLocationsLayout ({
                 >
                   <Checkbox
                     value={area.areaCode}
-                    onChange={() =>
-                      handleCheckboxChange(area.areaCode)}
+                    onChange={() => handleCheckboxChange(area.areaCode)}
                     checked={selectedTAs.includes(area.areaCode)}
                   />
                 </div>

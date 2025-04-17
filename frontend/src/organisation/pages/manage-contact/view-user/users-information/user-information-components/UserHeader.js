@@ -4,15 +4,15 @@ import NotificationBanner from '../../../../../../common/components/gov-uk/Notif
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader({ contactName, userType, currentPage }) {
+export default function UserHeader ({ contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
 
   const handleSubmit = () => {
-    if (userType === 'ADMIN') {
-      navigate(orgManageContactsUrls.admin.remove)
-    } else {
+    if (userType !== 'ADMIN') {
       navigate(orgManageContactsUrls.admin.promote)
+    } else {
+      navigate(orgManageContactsUrls.admin.remove)
     }
   }
 

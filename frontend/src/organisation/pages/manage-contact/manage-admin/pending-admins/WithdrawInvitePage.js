@@ -19,14 +19,11 @@ export default function WithdrawInvitePage () {
     pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
 
   const handleSubmit = async () => {
-    const updatedContact = { ...pendingAdmin, pendingRole: null }
-
     try {
-      // TODO: Change to correct backend admin invite withdrawal route (once created)
-      const dataToSend = { authToken, orgId, contact: updatedContact }
-      const { data, errorMessage } = await backendCall(
+      const dataToSend = { authToken, orgId, contactId: pendingAdmin.id }
+      const { errorMessage } = await backendCall(
         dataToSend,
-        'api/organization/update_contact',
+        'api/organization/demote_contact',
         navigate
       )
 

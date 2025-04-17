@@ -23,12 +23,17 @@ export default function RemoveAdminPage () {
   const adminEmail = useSelector((state) => state.session.profile.emails[0])
 
   const handleSubmit = async () => {
-    const updatedContact = { ...currentContact, role: 'SELF' }
-
     try {
-      const dataToSend = { authToken, orgId, contact: updatedContact }
-      // TODO: Change to correct backend route for demoting admin
-      await backendCall(dataToSend, 'api/organization/update_contact', navigate)
+      const dataToSend = { authToken, orgId, contactId: currentContact.id }
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/organization/demote_contact',
+        navigate
+      )
+
+      if (errorMessage) {
+        throw new Error(errorMessage)
+      }
 
       const emailParams = {
         email: contactEmail,

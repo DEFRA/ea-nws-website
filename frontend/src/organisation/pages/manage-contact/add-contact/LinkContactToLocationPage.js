@@ -64,9 +64,9 @@ export default function LinkContactToLocationPage () {
             <Link
               to={orgManageContactsUrls.view.dashboard}
               state={{
-                sucessMessage: successMessage()
+                successMessage: successMessage()
               }}
-              className='govuk-link inline-link'
+              className='govuk-link inline-link govuk-body'
             >
               Skip - do this later
             </Link>

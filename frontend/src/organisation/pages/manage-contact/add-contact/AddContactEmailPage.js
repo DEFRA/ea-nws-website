@@ -34,7 +34,7 @@ export default function AddContactEmailPage () {
   const checkMandatory = () => {
     let mandatoryMissing = false
     if (!emailInput) {
-      setEmailError('Enter email')
+      setEmailError('Enter email address')
       mandatoryMissing = true
     }
     return mandatoryMissing
@@ -144,7 +144,7 @@ export default function AddContactEmailPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {(emailError || errors) && (
+            {(emailError || errors.length > 0) && (
               <ErrorSummary
                 errorList={[
                   emailError,
@@ -154,10 +154,10 @@ export default function AddContactEmailPage () {
             )}
             <h1 className='govuk-heading-l'>Enter email address</h1>
             <div className='govuk-body'>
-              <p>
+              <p className='govuk-!-margin-bottom-5'>
                 We'll invite them by email to join as an admin.
               </p>
-              <p>
+              <p className='govuk-!-margin-bottom-5'>
                 This will also be their sign in email address.
               </p>
               <div
@@ -166,8 +166,11 @@ export default function AddContactEmailPage () {
                 <Input
                   name='Email address'
                   inputType='text'
-                  onChange={(val) =>
-                    setEmailInput(val)}
+                  onChange={(val) => {
+                    setErrors([])
+                    setEmailError('')
+                    setEmailInput(val)
+                  }}
                   value={emailInput}
                   error={emailError}
                   className='govuk-input govuk-input--width-20'

@@ -253,6 +253,7 @@ export default function ContactChannelsLayout ({
                       <br />
                       {emailInput[0]}
                       <br />
+                      <br />
                       <div className='govuk-hint'>For sign in and flood messages</div>
                     </div>
                     <Input

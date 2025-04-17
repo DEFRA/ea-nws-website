@@ -114,7 +114,7 @@ export default function DashboardHeader ({
                     onClick={(event) => {
                       event.preventDefault()
                       dispatch(clearOrgCurrentContact())
-                      navigate(orgManageContactsUrls.add.type)
+                      navigate(orgManageContactsUrls.add.typeSelection)
                     }}
                   />
                 &nbsp; &nbsp;

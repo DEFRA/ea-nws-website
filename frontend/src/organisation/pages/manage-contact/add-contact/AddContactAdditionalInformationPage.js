@@ -7,7 +7,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactAdditionalInformationPage () {
-  const currentContact = useSelector((state) => state.session.currentContact)
+  const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const navigate = useNavigate()
   const location = useLocation()
   const userType = location?.state?.type || 'contact'
@@ -60,11 +60,12 @@ export default function AddContactAdditionalInformationPage () {
                   className='govuk-button'
                   onClick={handleSubmit}
                 />
+                &nbsp; &nbsp;
                 <Link
                   className='govuk-link inline-link'
                   onClick={skipOptionalInformation}
                 >
-                  No, skip - do thsi later
+                  No, skip - do this later
                 </Link>
               </div>
             </div>

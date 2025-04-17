@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
@@ -23,7 +23,7 @@ export default function AddContactTypePage () {
 
     // Check if reason is selected
     if (!userType) {
-      setReasonError('Select the type of new user')
+      setReasonError('Select type of new user')
       isValidInput = false
     }
 
@@ -36,13 +36,30 @@ export default function AddContactTypePage () {
     }
   }
 
+  const promoteDetails = (
+    <>
+      <p className='govuk-!-font-weight-bold'>
+        How to promote an exisiting contact to admin
+      </p>
+      <p>
+        1. Go to your <Link to={orgManageContactsUrls.view.dashboard}>users dashboard</Link>
+      </p>
+      <p>
+        2. Choose the contact you want to promote
+      </p>
+      <p>
+        3. On the contact's profile page, select button 'Promote to admin'
+      </p>
+    </>
+  )
+
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
+          <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
             {(reasonError) && (
               <ErrorSummary
@@ -55,27 +72,31 @@ export default function AddContactTypePage () {
             <div className='govuk-body'>
               <div>
                 <div className='govuk-radios' data-module='govuk-radios'>
-                  {reasonError && (
-                    <p className='govuk-error-message'>{reasonError}</p>
-                  )}
-                  <Radio
-                    key='contact'
-                    name='userTypeSelectionRadios'
-                    label='Contact'
-                    value='contact'
-                    hint='Gets flood messages by email, text or phone call.'
-                    onChange={(e) =>
-                      setUserType(e.target.value)}
-                  />
-                  <Radio
-                    key='admin'
-                    name='serviceSelectionRadios'
-                    label='Admin'
-                    value='admin'
-                    hint='Manages contacts, locations and organisation account. Can get flood messages by email, text or phone call.'
-                    onChange={(e) =>
-                      setUserType(e.target.value)}
-                  />
+                  <div
+                    className={reasonError && 'govuk-form-group govuk-form-group--error'}
+                  >
+                    {reasonError && (
+                      <p className='govuk-error-message'>{reasonError}</p>
+                    )}
+                    <Radio
+                      key='contact'
+                      name='userTypeSelectionRadios'
+                      label='Contact'
+                      value='contact'
+                      hint='Gets flood messages by email, text or phone call.'
+                      onChange={(e) =>
+                        setUserType(e.target.value)}
+                    />
+                    <Radio
+                      key='admin'
+                      name='serviceSelectionRadios'
+                      label='Admin'
+                      value='admin'
+                      hint='Manages contacts, locations and organisation account. Can get flood messages by email, text or phone call.'
+                      onChange={(e) =>
+                        setUserType(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
               <br />
@@ -86,7 +107,7 @@ export default function AddContactTypePage () {
               />
               <Details
                 title='I want to promote an existing contact to admin'
-                text='placeholder'
+                text={promoteDetails}
               />
             </div>
           </div>

@@ -11,13 +11,13 @@ export default function AddContactDetailsPage () {
     if (userType === 'admin') {
       navigate(orgManageContactsUrls.add.email, {
         state: {
-          userType
+          type: userType
         }
       })
     } else {
       navigate(orgManageContactsUrls.add.channels, {
         state: {
-          userType
+          type: userType
         }
       })
     }

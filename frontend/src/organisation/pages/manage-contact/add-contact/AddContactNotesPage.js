@@ -15,6 +15,7 @@ export default function AddContactNotesPage () {
   const [error, setError] = useState('')
   const location = useLocation()
   const userType = location?.state?.type || 'contact'
+  const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
   const navigateToNextPage = () => {
     navigate(orgManageContactsUrls.add.linkContactToLocations, {
@@ -81,10 +82,12 @@ export default function AddContactNotesPage () {
     }
   }
 
+  const notesTitle = `Notes about ${currentContact?.firstname} ${currentContact?.lastname} (optional)`
+
   const instructionText = (
     <>
-      Any notes that may be helpful to someone not familiar with this person or
-      why they need to get flood messages.
+      For example, annual leave dates or locations they look after.<br />
+      All admins in your organisation will see these notes.
     </>
   )
 
@@ -94,7 +97,8 @@ export default function AddContactNotesPage () {
         navigateToNextPage={navigateToNextPage}
         keywordType='contact'
         instructionText={instructionText}
-        buttonText='Add contact'
+        title={notesTitle}
+        buttonText='Continue'
         onSubmit={userType === 'admin' ? updateContact : onAddContact}
         error={error}
         setError={setError}

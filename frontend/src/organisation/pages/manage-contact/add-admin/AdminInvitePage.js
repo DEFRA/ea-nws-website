@@ -23,6 +23,8 @@ export default function AdminInvitePage () {
     return new URLSearchParams(location.search)
   }
 
+  const query = useQuery()
+
   useEffect(() => {
     if (orgData) {
       const startProcessing = async () => {
@@ -64,7 +66,6 @@ export default function AdminInvitePage () {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const query = useQuery()
     const inviteToken = query.get('inviteToken')
     const dataToSend = { inviteToken }
     const { errorMessage, data } = await backendCall(

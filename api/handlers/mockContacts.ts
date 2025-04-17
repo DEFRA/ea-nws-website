@@ -52,7 +52,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'SELF',
+    role: null,
     pendingRole: 'ADMIN'
   },
   {

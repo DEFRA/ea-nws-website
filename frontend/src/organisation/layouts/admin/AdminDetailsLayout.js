@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -23,6 +23,7 @@ export default function AdminDetailsLayout ({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const location = useLocation()
   const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
@@ -90,8 +91,15 @@ export default function AdminDetailsLayout ({
         setErrorEmail(errorMessage)
       }
     } else {
-      // add email to  emails list
-      const updatedProfile = addVerifiedContact(profile, 'email', email)
+      let updatedProfile
+      if (location.state?.returnToReview) {
+        // If coming from CheckYourAnswers page, replace the array entirely
+        // Over-writing whatever email was initially given (rather than just appending new one)
+        updatedProfile = { ...profile, emails: [email] }
+      } else {
+        // Normal "first time" flow through sign-up
+        updatedProfile = addVerifiedContact(profile, 'email', email)
+      }
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))

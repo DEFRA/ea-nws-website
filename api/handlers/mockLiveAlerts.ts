@@ -25,9 +25,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -84,9 +84,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -142,9 +142,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -201,6 +201,7 @@ const liveAlerts = {
                 polygons: [],
                 geocodes: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -254,9 +255,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -310,9 +311,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -366,9 +367,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -422,9 +423,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -478,9 +479,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -534,9 +535,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -590,9 +591,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -646,9 +647,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -702,9 +703,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -758,9 +759,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -814,9 +815,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -870,9 +871,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',
@@ -926,9 +927,9 @@ const liveAlerts = {
               geometry: {
                 rings: [],
                 circles: [],
-                polygons: [],
-                geocodes: []
+                polygons: []
               },
+              geocodes: [],
               extraInfo: [
                 {
                   key: 'TA_CODE',

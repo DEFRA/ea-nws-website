@@ -31,11 +31,13 @@ const locations = [
               'Kier starmer has the flood plan for this location. His contact number is 01234 567 890',
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
-            targetAreas: [{
-              TA_CODE: '063FWT23WestminC',
-              TA_Name: 'Tidal Thames at Westminster',
-              category: 'Flood Warning'
-            }]
+            targetAreas: [
+              {
+                TA_CODE: '063FWT23WestminC',
+                TA_Name: 'Tidal Thames at Westminster',
+                category: 'Flood Warning'
+              }
+            ]
           })
         }
       }
@@ -71,7 +73,20 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [
+              {
+                TA_CODE: '113WACT1D',
+                TA_NAME: 'South Devon Estuaries',
+                category: 'Severe flood warning'
+              },
+
+              {
+                TA_CODE: '011WAFDU',
+                TA_NAME: 'South Devon Estuaries',
+                category: 'Alert flood warning'
+              }
+            ]
           })
         }
       }
@@ -107,7 +122,8 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: []
           })
         }
       }
@@ -156,7 +172,21 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: [
+              {
+                TA_CODE: '122WAF946',
+                TA_Name:
+                  'River Ouse, Burdyke, Holgate Beck, Blue Beck, River Foss, The Fleet',
+                category: 'Severe flood Warning'
+              },
+              {
+                TA_CODE: '122FWF776',
+                TA_Name:
+                  'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly',
+                category: 'Flood Warning'
+              }
+            ]
           })
         }
       }
@@ -213,7 +243,8 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: []
           })
         }
       }
@@ -262,7 +293,14 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'line',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: [
+              {
+                TA_CODE: '051FWFEF4B',
+                TA_Name: 'The River Colne from Halstead to Lexden',
+                category: 'Flood Warning'
+              }
+            ]
           })
         }
       }
@@ -312,7 +350,14 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: [
+              {
+                TA_CODE: '055FWFPLNE01',
+                TA_Name: 'The River Nene',
+                category: 'Severe flood Warning'
+              }
+            ]
           })
         }
       }
@@ -366,7 +411,8 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: []
           })
         }
       }
@@ -426,7 +472,21 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: [
+              {
+                TA_CODE: '013FWTTME8',
+                TA_Name:
+                  'Irish Sea and Mersey estuary from the Head of the Wirral to Runcorn',
+                category: 'Flood Warning'
+              },
+              {
+                TA_CODE: '013WAFWI',
+                TA_Name:
+                  'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey',
+                category: 'Alert flood Warning'
+              }
+            ]
           })
         }
       }
@@ -484,7 +544,20 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            targetAreas: [
+              {
+                TA_CODE: '034FWFTRNOTTCITY',
+                TA_Name: 'River Trent at Nottingham including The Meadows',
+                category: 'Severe flood Warning'
+              },
+              {
+                TA_CODE: '034WAF409',
+                TA_Name:
+                  'River Derwent from Rowsley to the River Trent at Shardlow',
+                category: 'Alert flood Warning'
+              }
+            ]
           })
         }
       }
@@ -520,7 +593,19 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [
+              {
+                TA_CODE: '031FWFWY110',
+                TA_Name: 'River Wye in North Hereford',
+                category: 'Flood Warning'
+              },
+              {
+                TA_CODE: '031WAF119',
+                TA_Name: 'River Wye in North Hereford',
+                category: 'Flood Warning'
+              }
+            ]
           })
         }
       }
@@ -581,7 +666,18 @@ const locations = [
             notes: '',
             location_data_type: 'boundary',
             alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
-            surroundingFloodAreas: [{ geometry: {}, properties: {} }]
+            targetAreas: [
+              {
+                TA_CODE: '065FWC0501',
+                TA_Name: 'Itchen estuary',
+                category: 'Flood Warning'
+              },
+              {
+                TA_CODE: '065WAC151',
+                TA_Name: 'Southampton Water and Hamble',
+                category: 'Alert flood Warning'
+              }
+            ]
           })
         }
       }
@@ -617,7 +713,15 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [
+              {
+                TA_CODE: '034FWFDELITTLECH',
+                TA_Name:
+                  'River Derwent at Little Chester, Eastgate and Cattle Market',
+                category: 'Flood Warning'
+              }
+            ]
           })
         }
       }

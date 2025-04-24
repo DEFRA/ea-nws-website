@@ -137,9 +137,6 @@ export default function SelectAlternativeLandlineLayout ({
                 }
               >
                 <fieldset className='govuk-fieldset'>
-                  {/* {validationError && (
-                    <p className='govuk-error-message'>{validationError}</p>
-                  )} */}
                   {mobileNumbers.map((mobileNumber, index) => (
                     <div
                       style={{ display: 'block' }}

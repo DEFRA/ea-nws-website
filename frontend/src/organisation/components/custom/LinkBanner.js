@@ -166,8 +166,6 @@ export default function LinkBanner ({
           })
         }
       }
-    } else {
-
     }
   }
 

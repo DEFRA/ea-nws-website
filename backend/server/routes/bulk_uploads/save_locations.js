@@ -48,12 +48,11 @@ module.exports = [
           // split the locations into groups of 25
           const validLength = valid.length
           for (let i = 0; i < valid.length; i += 25) {
-            setJsonData(redis, statusKey, { stage: `Adding locations (${Math.round((i/validLength)*100)}%)`, status: 'working' })
+            setJsonData(redis, statusKey, { stage: `Adding locations (${Math.round((i / validLength) * 100)}%)`, status: 'working' })
             const chunk = valid.slice(i, i + 25)
             const geosafeLocations = []
             // Add all valid to geosafe and elasticache
             await Promise.all(chunk.map(async (location) => {
-              
               const response = await apiCall(
                 { authToken: authToken, location: location },
                 'location/create'
@@ -92,7 +91,7 @@ module.exports = [
 
           const invalidLength = invalid.length
           for (let i = 0; i < invalid.length; i += 25) {
-            setJsonData(redis, statusKey, { stage: `storing locations (${Math.round((i/invalidLength)*100)}%)`, status: 'working' })
+            setJsonData(redis, statusKey, { stage: `storing locations (${Math.round((i / invalidLength) * 100)}%)`, status: 'working' })
             const chunk = invalid.slice(i, i + 25)
             // Add invalid just to elasticache
             await Promise.all(
@@ -102,7 +101,6 @@ module.exports = [
               })
             )
           }
-          
 
           const invalidReasons = {
             duplicate: invalid.filter((location) =>
@@ -116,7 +114,7 @@ module.exports = [
             ).length
           }
 
-          setJsonData(redis, statusKey, { stage: `storing locations`, status: 'complete', data: { valid: valid.length, invalid: invalidReasons }})
+          setJsonData(redis, statusKey, { stage: 'storing locations', status: 'complete', data: { valid: valid.length, invalid: invalidReasons } })
           return h.response({
             status: 200
           })

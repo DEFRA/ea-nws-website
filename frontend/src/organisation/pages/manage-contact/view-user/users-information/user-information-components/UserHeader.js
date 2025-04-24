@@ -9,9 +9,10 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
   const navigate = useNavigate()
 
   const handleSubmit = () => {
-    if (userType === 'ADMIN') {
+    if (userType !== 'ADMIN') {
+      navigate(orgManageContactsUrls.admin.promote)
     } else {
-      navigate(orgManageContactsUrls.promoteToAdmin)
+      navigate(orgManageContactsUrls.admin.remove)
     }
   }
 
@@ -24,23 +25,19 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
           text={location.state.successMessage}
         />
       )}
-      {userType === 'Pending admin'
-        ? (
-          <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
-            Pending admin
-          </strong>
-          )
-        : userType === 'ADMIN'
-          ? (
-            <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
-              Admin
-            </strong>
-            )
-          : (
-            <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
-              Contact
-            </strong>
-            )}
+      {userType === 'Pending admin' ? (
+        <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
+          Pending admin
+        </strong>
+      ) : userType === 'ADMIN' ? (
+        <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
+          Admin
+        </strong>
+      ) : (
+        <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+          Contact
+        </strong>
+      )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
           <h1 className='govuk-heading-l govuk-!-margin-bottom-1'>

@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { useLocation } from 'react-router'
+import { useLocation, Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import {
   setConsecutiveBoundariesAdded,
   setPredefinedBoundaryFlow
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 
 export default function AddAnotherPredefinedBoundaryPage () {
   const dispatch = useDispatch()
@@ -19,9 +18,7 @@ export default function AddAnotherPredefinedBoundaryPage () {
   const consecutiveBoundariesAdded = useSelector(
     (state) => state.session.consecutiveBoundariesAdded
   )
-  const [notificationText, setNotificationText] = useState(
-    location.state?.successMessage
-  )
+  const notificationText = location.state?.successMessage
 
   const navigateBack = (event) => {
     event.preventDefault()

@@ -34,7 +34,7 @@ export default function LocationAddConfirmPage () {
       const interval = setInterval(async function getStatus () {
         if (getStatus.isRunning) return
         getStatus.isRunning = true
-        const dataToSend = { authToken: authToken }
+        const dataToSend = { authToken }
         const { data, errorMessage } = await backendCall(
           dataToSend,
           'api/bulk_uploads/save_locations_status',
@@ -95,13 +95,13 @@ export default function LocationAddConfirmPage () {
         </div>
       </main>
       {saveLocations && error === null &&
-      <div className='popup-dialog'>
-        <div className='popup-dialog-container govuk-!-padding-bottom-6'>
-          <LoadingSpinner
-            loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
-          />
-        </div>
-      </div>}
+        <div className='popup-dialog'>
+          <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+            <LoadingSpinner
+              loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+            />
+          </div>
+        </div>}
     </>
   )
 }

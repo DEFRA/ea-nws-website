@@ -83,7 +83,7 @@ import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-in
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
 
 // monitoring imports
-import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/monitoring/LiveFloodMonitoringPage'
+import LiveFloodMonitoringPage from '../../pages/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
 import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
@@ -146,7 +146,8 @@ const orgManageLocationsUrls = {
       urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
     duplicateLocationComparisonPage:
       urlManageOrgAddLocations + '/upload-file/duplicate-location-comparison',
-    contactLinkInfo: urlManageOrgAddLocations + '/upload-file/contact-link-info',
+    contactLinkInfo:
+      urlManageOrgAddLocations + '/upload-file/contact-link-info',
     confirm: urlManageOrgAddLocations + '/bulk/confirm',
     name: urlManageOrg + '/add/name',
     error: {

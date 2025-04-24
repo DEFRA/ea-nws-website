@@ -32,7 +32,10 @@ export default function SelectAlternativeLandlineLayout ({
   const location = useLocation()
 
   const unverifiedMobileNumbers = []
-  profile.unverified && profile.unverified?.mobilePhones?.forEach((entry) => { unverifiedMobileNumbers.push(entry.address) })
+  profile.unverified &&
+    profile.unverified?.mobilePhones?.forEach((entry) => {
+      unverifiedMobileNumbers.push(entry.address)
+    })
   const verifiedMobileNumbers = profile.mobilePhones
   const mobileNumbers = [...unverifiedMobileNumbers, ...verifiedMobileNumbers]
 
@@ -42,6 +45,7 @@ export default function SelectAlternativeLandlineLayout ({
       selectedNumber,
       'mobileAndLandline'
     )
+
     setValidationError(
       phoneValidationErrors === 'Enter a UK landline or mobile telephone number'
         ? 'Which telephone number do you want to use?'
@@ -50,12 +54,20 @@ export default function SelectAlternativeLandlineLayout ({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
       if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
-        const updatedProfile = addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+        const updatedProfile = addVerifiedContact(
+          profile,
+          'homePhones',
+          normalisedPhoneNumber
+        )
         dispatch(setProfile(updatedProfile))
         updateBackEndProfile(updatedProfile)
         NextPageWithoutValidation()
       } else {
-        const updatedProfile = addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+        const updatedProfile = addUnverifiedContact(
+          profile,
+          'homePhones',
+          normalisedPhoneNumber
+        )
         dispatch(setProfile(updatedProfile))
         const updateProfileError = await updateBackEndProfile(updatedProfile)
         if (updateProfileError !== null) {
@@ -94,21 +106,22 @@ export default function SelectAlternativeLandlineLayout ({
 
   return (
     <>
-
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error, validationError]} />}
-            {location?.state?.banner && <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              heading={location?.state?.banner?.heading}
-              text={location?.state?.banner?.text}
-                                        />}
+            {error && <ErrorSummary errorList={[error]} />}
+            {location?.state?.banner && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                heading={location?.state?.banner?.heading}
+                text={location?.state?.banner?.text}
+              />
+            )}
             <h2 className='govuk-heading-l'>
-              Which telephone number do you want to use to get flood messages
-              by phone call?
+              Which telephone number do you want to use to get flood messages by
+              phone call?
             </h2>
             <div className='govuk-body'>
               <p>
@@ -118,17 +131,20 @@ export default function SelectAlternativeLandlineLayout ({
 
               <div
                 className={
-                    validationError
-                      ? 'govuk-form-group govuk-form-group--error'
-                      : 'govuk-form-group'
-                  }
+                  validationError
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
+                }
               >
                 <fieldset className='govuk-fieldset'>
-                  {validationError && (
+                  {/* {validationError && (
                     <p className='govuk-error-message'>{validationError}</p>
-                  )}
+                  )} */}
                   {mobileNumbers.map((mobileNumber, index) => (
-                    <div style={{ display: 'block' }} key={mobileNumber + '.' + index}>
+                    <div
+                      style={{ display: 'block' }}
+                      key={mobileNumber + '.' + index}
+                    >
                       <div
                         className='govuk-!-padding-bottom-4'
                         style={{
@@ -147,7 +163,10 @@ export default function SelectAlternativeLandlineLayout ({
                           }}
                           conditional={selectedOption === 'mobileNumber'}
                         />
-                        {unverifiedMobileNumbers.some(unverifiedMobileNumber => unverifiedMobileNumber.address === mobileNumber) && (
+                        {unverifiedMobileNumbers.some(
+                          (unverifiedMobileNumber) =>
+                            unverifiedMobileNumber.address === mobileNumber
+                        ) && (
                           <strong className='govuk-tag govuk-tag--red'>
                             Unconfirmed
                           </strong>
@@ -166,7 +185,7 @@ export default function SelectAlternativeLandlineLayout ({
                     conditional={selectedOption === 'otherNumber'}
                     conditionalQuestion='UK landline or mobile telephone number'
                     conditionalInput={(val) => setSelectedNumber(val)}
-                    conditionalError={error}
+                    conditionalError={validationError}
                   />
                 </fieldset>
               </div>

@@ -45,7 +45,7 @@ export default function ConfirmAddingLocationsPage () {
       const interval = setInterval(async function getStatus () {
         if (getStatus.isRunning) return
         getStatus.isRunning = true
-        const dataToSend = { authToken: authToken }
+        const dataToSend = { authToken }
         const { data } = await backendCall(
           dataToSend,
           'api/bulk_uploads/save_locations_status',
@@ -60,15 +60,15 @@ export default function ConfirmAddingLocationsPage () {
               if (duplicateLocations > 0) {
                 if (duplicateLocations === 1) {
                   const location = await getDupLocation()
-        
+
                   // Get the existing location (note type is 'valid')
                   const existingLocation = geoSafeToWebLocation(
                     await getLocation(orgId, location.additionals.locationName, 'valid')
                   )
-        
+
                   // Set the new, duplicate location
                   const newLocation = location
-        
+
                   if (existingLocation && newLocation) {
                     // Now compare the two and let the use choose one
                     navigate(
@@ -278,13 +278,13 @@ export default function ConfirmAddingLocationsPage () {
         </div>
       </main>
       {saveLocations &&
-      <div className='popup-dialog'>
-        <div className='popup-dialog-container govuk-!-padding-bottom-6'>
-          <LoadingSpinner
-            loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
-          />
-        </div>
-      </div>}
+        <div className='popup-dialog'>
+          <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+            <LoadingSpinner
+              loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+            />
+          </div>
+        </div>}
     </>
   )
 }

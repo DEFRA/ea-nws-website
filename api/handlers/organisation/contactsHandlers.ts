@@ -92,7 +92,7 @@ async function getOrgPromoteContact(
     (role === 'SELF' || role === 'ADMIN' || role === 'READONLY')
   ) {
     const contact = mockContacts.allContacts.filter((contact: any) => contact.id === contactId)[0]
-    if (contact.role) {
+    if (contact?.role) {
       contact.role = role
     } else {
       contact.pendingRole = role

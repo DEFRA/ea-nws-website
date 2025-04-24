@@ -46,6 +46,25 @@ const floodAlertCardDetails = (
   </>
 )
 
+const removeLocationdetails = (
+  <>
+    <p>You must keep at least one location on your account.</p>
+    <p>
+      <Link className='govuk-link' to='/manage-locations/add/search'>
+        Add a new location
+      </Link>{' '}
+      before removing any you do not need.
+    </p>
+    <p>
+      Or you could{' '}
+      <Link className='govuk-link' to='/account/delete'>
+        delete your account
+      </Link>{' '}
+      instead.
+    </p>
+  </>
+)
+
 export default function ViewLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -56,6 +75,7 @@ export default function ViewLocationPage () {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const canRemoveLocation = profile.pois.length > 1
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const floodHistoryData = useFetchAlerts()
@@ -63,23 +83,21 @@ export default function ViewLocationPage () {
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
 
   let alertTypes = getLocationOtherAdditional(
-    selectedLocation.additionals,
+    selectedLocation?.additionals || [],
     'alertTypes'
   )
 
-  const [optionalAlerts, setOptionalAlerts] = useState(
-    alertTypes.includes(AlertType.FLOOD_ALERT)
-  )
+  const initialAlerts = alertTypes.includes(AlertType.FLOOD_ALERT)
+  const [savedOptionalAlerts, setSavedOptionalAlerts] = useState(initialAlerts)
+  const [pendingOptionalAlerts, setPendingOptionalAlerts] =
+    useState(initialAlerts)
 
   const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
 
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
@@ -164,7 +182,7 @@ export default function ViewLocationPage () {
     e.preventDefault()
     let updatedProfile
 
-    if (optionalAlerts) {
+    if (pendingOptionalAlerts) {
       if (!alertTypes.includes(AlertType.FLOOD_ALERT)) {
         alertTypes = [...alertTypes, AlertType.FLOOD_ALERT]
       }
@@ -191,9 +209,11 @@ export default function ViewLocationPage () {
       await updateGeosafeProfile(updatedProfile)
 
       const message = `You've turned ${
-        optionalAlerts ? 'on' : 'off'
+        pendingOptionalAlerts ? 'on' : 'off'
       } early flood alerts`
+
       setSuccessMessage(message)
+      setSavedOptionalAlerts(pendingOptionalAlerts)
     }
   }
 
@@ -291,8 +311,8 @@ export default function ViewLocationPage () {
                               name='alert'
                               type='radio'
                               value='on'
-                              checked={optionalAlerts === true}
-                              onChange={() => setOptionalAlerts(true)}
+                              checked={pendingOptionalAlerts === true}
+                              onChange={() => setPendingOptionalAlerts(true)}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -308,8 +328,8 @@ export default function ViewLocationPage () {
                               name='alert'
                               type='radio'
                               value='off'
-                              checked={optionalAlerts === false}
-                              onChange={() => setOptionalAlerts(false)}
+                              checked={pendingOptionalAlerts === false}
+                              onChange={() => setPendingOptionalAlerts(false)}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -332,7 +352,7 @@ export default function ViewLocationPage () {
                   </div>
                   <div className='govuk-summary-card__content'>
                     <p className='govuk-body'>
-                      {optionalAlerts
+                      {savedOptionalAlerts
                         ? 'You currently get these early flood alerts.'
                         : 'You turned these early flood alerts off.'}
                     </p>
@@ -347,14 +367,27 @@ export default function ViewLocationPage () {
                 </div>
               )}
 
-              <h2 className='govuk-heading-m'>
-                To stop all flood messages for this location
-              </h2>
-              <Button
-                onClick={deleteLocation}
-                className='govuk-button govuk-button--warning'
-                text='Remove location'
-              />
+              {canRemoveLocation
+                ? (
+                  <>
+                    <h2 className='govuk-heading-m'>
+                      To stop all flood messages for this location
+                    </h2>
+                    <Button
+                      onClick={deleteLocation}
+                      className='govuk-button govuk-button--warning'
+                      text='Remove location'
+                    />
+                  </>
+                  )
+                : (
+                  <>
+                    <Details
+                      title='If you want to remove this location'
+                      text={removeLocationdetails}
+                    />
+                  </>
+                  )}
             </div>
           </div>
         </div>

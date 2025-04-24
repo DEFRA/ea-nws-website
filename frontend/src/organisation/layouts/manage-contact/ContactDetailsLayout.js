@@ -99,7 +99,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 ]}
               />
             )}
-            <h1 className='govuk-heading-l'>Contact details</h1>
+            <h1 className='govuk-heading-l'>User details</h1>
             <div className='govuk-body'>
               <Input
                 name='First name'
@@ -115,6 +115,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 error={firstnameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
+                nameSize='s'
               />
               <Input
                 name='Last name'
@@ -130,6 +131,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 error={lastnameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
+                nameSize='s'
               />
               <Input
                 name='Job title (optional)'
@@ -145,6 +147,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
+                nameSize='s'
               />
               <div className='govuk-!-margin-top-8'>
                 <Button

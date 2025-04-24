@@ -170,6 +170,15 @@ export default function ViewLocationsDashboardPage () {
         }
       })
 
+      // Sort objects by location name alphabetically
+      locationsUpdate.sort((a, b) => {
+        const nameA = (a.additionals.locationName || '').toLowerCase()
+        const nameB = (b.additionals.locationName || '').toLowerCase()
+        if (nameA < nameB) return -1
+        if (nameA > nameB) return 1
+        return 0
+      })
+
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
       setLoading(false)
@@ -183,7 +192,8 @@ export default function ViewLocationsDashboardPage () {
     if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
       riskCategory = location?.additionals?.other?.riverSeaRisk || 'unavailable'
     } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
-      riskCategory = location?.additionals?.other?.groundWaterRisk || 'unavailable'
+      riskCategory =
+        location?.additionals?.other?.groundWaterRisk || 'unavailable'
     }
 
     return riskData[riskCategory]
@@ -502,7 +512,7 @@ export default function ViewLocationsDashboardPage () {
 
     if (type === 'messages') {
       updatedFilteredLocations = locations.filter(
-        (location) => 
+        (location) =>
           location.additionals.other?.alertTypes?.length > 0 &&
           location.within === true
       )
@@ -521,23 +531,26 @@ export default function ViewLocationsDashboardPage () {
       updatedFilteredLocations = locations.filter(
         (location) =>
           (location.riverSeaRisk?.title === 'Medium risk' ||
-          location.riverSeaRisk?.title === 'High risk' ||
-          location.riverSeaRisk?.title === 'Unavailable' ||
-          location.groundWaterRisk?.title === 'Possible' ||
-          location.groundWaterRisk?.title === 'Unavailable') &&
+            location.riverSeaRisk?.title === 'High risk' ||
+            location.riverSeaRisk?.title === 'Unavailable' ||
+            location.groundWaterRisk?.title === 'Possible' ||
+            location.groundWaterRisk?.title === 'Unavailable') &&
           location.additionals.other?.alertTypes?.length === 0
       )
       setSelectedGroundWaterRiskFilters(['Possible', 'Unavailable'])
-      setSelectedRiverSeaRiskFilters(['Medium risk', 'High risk', 'Unavailable'])
+      setSelectedRiverSeaRiskFilters([
+        'Medium risk',
+        'High risk',
+        'Unavailable'
+      ])
       setSelectedFloodMessagesAvailableFilters(['No'])
       setSelectedFilters(['Yes'])
     } else if (type === 'low-risk') {
       updatedFilteredLocations = locations.filter(
         (location) =>
-          ((location.riverSeaRisk?.title === 'Low risk' ||
+          (location.riverSeaRisk?.title === 'Low risk' ||
             location.riverSeaRisk?.title === 'Very low risk') &&
-            (location.groundWaterRisk?.title === 'Unlikely')
-          ) &&
+          location.groundWaterRisk?.title === 'Unlikely' &&
           location.additionals.other?.alertTypes?.length === 0
       )
       setSelectedGroundWaterRiskFilters(['Unlikely'])
@@ -701,10 +714,15 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     if (selectedLocations.length > 0) {
       const locationsToBeEdited = [...selectedLocations]
-      editLocations(locationsToBeEdited)
+      await editLocations(locationsToBeEdited)
+      setNotificationText(
+        `Message settings changed for ${selectedLocations.length} location${
+          selectedLocations.length > 1 ? 's' : ''
+        }`
+      )
     }
   }
 
@@ -736,9 +754,7 @@ export default function ViewLocationsDashboardPage () {
                 text={notificationText}
               />
             )}
-            {(errorMessage) && (
-              <ErrorSummary errorList={[errorMessage]} />
-            )}
+            {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
             <DashboardHeader
               locations={locations}
               linkContacts={location.state?.linkContacts}
@@ -906,8 +922,8 @@ export default function ViewLocationsDashboardPage () {
                           {locationsPerPage && (
                             <Pagination
                               totalPages={Math.ceil(
-                                filteredLocations.length / locationsPerPage
-                              )}
+                  filteredLocations.length / locationsPerPage
+                )}
                               onPageChange={(val) => setCurrentPage(val)}
                               holdPage={holdPage}
                               setHoldPage={setHoldPage}

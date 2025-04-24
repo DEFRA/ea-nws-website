@@ -39,10 +39,7 @@ export default function SignUpValidationPage () {
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
@@ -57,7 +54,8 @@ export default function SignUpValidationPage () {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const { error: validationError, code: formattedCode } = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
 
     if (validationError === '') {
@@ -85,7 +83,7 @@ export default function SignUpValidationPage () {
         setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         let updatedProfile = updateAdditionals(profile, [
-          { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          { id: 'lastAccessedUrl', value: { s: '/signup/contactpreferences' } }
         ])
 
         updatedProfile = await updateGeosafeProfile(
@@ -154,7 +152,6 @@ export default function SignUpValidationPage () {
 
   return (
     <>
-
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

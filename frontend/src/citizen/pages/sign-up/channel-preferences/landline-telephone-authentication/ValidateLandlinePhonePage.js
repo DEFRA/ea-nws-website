@@ -5,7 +5,11 @@ export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = (homePhone) => {
-    navigate('/signup/accountname/add', { state: { banner: { heading: 'Telephone number confirmed', text: homePhone } } })
+    navigate('/signup/accountname/add', {
+      state: {
+        banner: { heading: 'Telephone number confirmed', text: homePhone }
+      }
+    })
   }
 
   const SkipValidation = () => {
@@ -22,6 +26,7 @@ export default function ValidateLandlinePhonePage () {
       NavigateToPreviousPage={DifferentHomePhone}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomePhone}
+      isSignUpJourney
     />
   )
 }

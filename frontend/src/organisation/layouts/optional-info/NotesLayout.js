@@ -18,7 +18,8 @@ export default function NotesLayout ({
   buttonText = 'Continue',
   onSubmit,
   error,
-  setError
+  setError,
+  title = null
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -67,12 +68,11 @@ export default function NotesLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <br />
-            <h1 className='govuk-heading-l'>Notes (optional)</h1>
+            <h1 className='govuk-heading-l'>{title || 'Notes (optional)'}</h1>
             <div className='govuk-body'>
               <p className='govuk-hint'>{instructionText}</p>
               <TextArea

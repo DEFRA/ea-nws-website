@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useState } from 'react'
-import { GeoJSON, MapContainer, Marker, Popup, useMap } from 'react-leaflet'
+import { GeoJSON, MapContainer, Marker, Popup, useMap, TileLayer } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 // Leaflet Marker Icon fix
 import * as turf from '@turf/turf'
@@ -158,29 +158,38 @@ export default function UserMap ({ locations }) {
     [apiKey]
   )
 
+  const osmTileLayer = useMemo(
+    () => (
+      <TileLayer
+        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        attribution='© OpenStreetMap contributors'
+      />
+    ),
+    []
+  )
+
   return (
     <>
-      {loading
-        ? (
-          <LoadingSpinner />
-          )
-        : (
-          <MapContainer
-            center={centre}
-            dragging
-            scrollWheelZoom
-            zoom={8}
-            minZoom={7}
-            zoomControl
-            attributionControl={false}
-            maxBounds={maxBounds}
-            className='contacts-map-container'
-          >
-            {apiKey && apiKey !== 'error'
-              ? (
-                <>
-                  {tileLayerWithHeader}
-                  {markers &&
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <MapContainer
+          zoom={6.5}
+          zoomSnap={0.1} // Allow fractional zoom
+          center={centre}
+          dragging={false}
+          scrollWheelZoom={false}
+          zoomControl={false}
+          attributionControl={false}
+          maxBounds={maxBounds}
+          className='contacts-map-container'
+        >
+          {osmTileLayer}
+          {apiKey && apiKey !== 'error'
+            ? (
+              <>
+                {tileLayerWithHeader}
+                {markers &&
                 markers.map((marker, index) => (
                   <Marker
                     key={index}
@@ -189,23 +198,22 @@ export default function UserMap ({ locations }) {
                     <Popup />
                   </Marker>
                 ))}
-                  {geoJsonShapes &&
+                {geoJsonShapes &&
                 geoJsonShapes.map((shape, index) => (
                   <GeoJSON key={index} data={shape} />
                 ))}
-                  <FitBounds />
-                </>
-                )
-              : (
-                <div className='map-error-container'>
-                  <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-                  <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                    Reload map
-                  </Link>
-                </div>
-                )}
-          </MapContainer>
-          )}
+              </>
+              )
+            : (
+              <div className='map-error-container'>
+                <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+                <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                  Reload map
+                </Link>
+              </div>
+              )}
+        </MapContainer>
+      )}
     </>
   )
 }

@@ -174,7 +174,7 @@ export default function UserMap ({ locations }) {
         <LoadingSpinner />
       ) : (
         <MapContainer
-          zoom={6.5}
+          zoom={6.7}
           zoomSnap={0.1} // Allow fractional zoom
           center={centre}
           dragging={false}

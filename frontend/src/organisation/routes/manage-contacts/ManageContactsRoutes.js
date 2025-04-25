@@ -15,7 +15,7 @@ import PendingAdminsPage from '../../pages/manage-contact/manage-admin/pending-a
 import ResendInvitePage from '../../pages/manage-contact/manage-admin/pending-admins/ResendInvitePage'
 import WithdrawInvitePage from '../../pages/manage-contact/manage-admin/pending-admins/WithdrawInvitePage'
 import RemoveAdminPage from '../../pages/manage-contact/manage-admin/RemoveAdminPage'
-import PromoteToAdminPage from '../../pages/manage-contact/PromoteToAdminPage'
+import PromoteToAdminPage from '../../pages/manage-contact/manage-admin/PromoteToAdminPage'
 import ViewUsersDashboardPage from '../../pages/manage-contact/view-user/users-dashboard/ViewUsersDashboardPage'
 import LinkedLocationsPage from '../../pages/manage-contact/view-user/users-information/LinkedLocationsPage'
 import UserInformationPage from '../../pages/manage-contact/view-user/users-information/UserInformationPage'

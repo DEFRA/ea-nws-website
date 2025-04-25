@@ -4,7 +4,7 @@ import NotificationBanner from '../../../../../../common/components/gov-uk/Notif
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader ({ contactName, userType, currentPage }) {
+export default function UserHeader({ contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -18,11 +18,11 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
 
   return (
     <>
-      {location.state.successMessage && (
+      {location?.state?.successMessage && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success'
           title='Success'
-          text={location.state.successMessage}
+          text={location?.state?.successMessage}
         />
       )}
       {userType === 'Pending admin' ? (

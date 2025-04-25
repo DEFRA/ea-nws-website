@@ -3,38 +3,253 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
+import AlertState from '../../../../common/enums/AlertState'
+import { getAdditional } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 
 export default function FloodMessagesSentSummaryPage() {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
-  const [alertData, setAlertData] = useState()
-  const [totalLocations, setTotalLocations] = useState(null)
+  // Search filter visibility
+  const [data, setData] = useState({
+    all: {
+      locations: 0,
+      severeMessagesCount: 0,
+      warningMessagesCount: 0,
+      alertMessagesCount: 0
+    },
+    severeWarningsOnly: {
+      locations: 0,
+      severeMessagesCount: 0,
+      warningMessagesCount: 0
+    },
+    alertsOnly: { locations: 0, alertMessagesCount: 0 },
+    noneAvailable: 0,
+    messagesTurnedOff: { locations: 0, messagesCount: 0 }
+  })
+  const [locationsCount, setLocationsCount] = useState(0)
 
-  useEffect(() => {
-    const getData = async () => {
-      const alertKey = orgId + ':alertLocations'
-      const { data } = await backendCall(
-        { key: alertKey },
-        'api/elasticache/get_data',
+  useEffect(async () => {
+    const loadData = async () => {
+      setData({
+        all: {
+          locations: 0,
+          severeMessagesCount: 0,
+          warningMessagesCount: 0,
+          alertMessagesCount: 0
+        },
+        severeWarningsOnly: {
+          locations: 0,
+          severeMessagesCount: 0,
+          warningMessagesCount: 0
+        },
+        alertsOnly: { locations: 0, alertMessagesCount: 0 },
+        noneAvailable: 0,
+        messagesTurnedOff: { locations: 0, messagesCount: 0 }
+      })
+
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
+
+      const options = {
+        states: [AlertState.CURRENT, AlertState.PAST],
+        boundingBox: {},
+        channels: [],
+        partnerId
+      }
+
+      // need to filter alertsData.alerts so that it is only last 2 years brought back
+      // load alertsData.alerts
+      const { data: alertsData } = await backendCall(
+        { options },
+        'api/alert/list',
         navigate
       )
-      data && setAlertData(data)
+
+      // get orgs locations
+      const { data: locationsData, errorMessage } = await backendCall(
+        { orgId },
+        'api/elasticache/list_locations',
+        navigate
+      )
+      setLocationsCount(locationsData.length)
+
+      const locations = []
+      if (locationsData && !errorMessage) {
+        locationsData.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
+      }
+      locations.forEach((location) => {
+        const { targetAreas, alertTypes } = location.additionals.other
+
+        // get locations with no available messages
+        if (targetAreas.length === 0) {
+          setData((prev) => ({
+            ...prev,
+            noneAvailable: prev.noneAvailable + 1
+          }))
+          return
+        }
+
+        // get locations affected with severe and warning messages only
+        if (alertTypes.length === 3) {
+          setData((prev) => ({
+            ...prev,
+            all: {
+              ...prev.all,
+              locations: prev.all.locations + 1
+            }
+          }))
+
+          targetAreas?.forEach((ta) => {
+            alertsData.alerts.forEach((alert) => {
+              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
+              const taCode = getAdditional(extraInfo, 'TA_CODE')
+
+              if (taCode === ta.TA_CODE) {
+                // PAUL Chester - please confirm the below validation is ok?
+                if (ta.category === 'Severe flood warning') {
+                  setData((prev) => ({
+                    ...prev,
+                    all: {
+                      ...prev.all,
+                      severeMessagesCount: prev.all.severeMessagesCount + 1
+                    }
+                  }))
+                } else if (ta.category === 'Flood warning') {
+                  setData((prev) => ({
+                    ...prev,
+                    all: {
+                      ...prev.all,
+                      warningMessagesCount: prev.all.warningMessagesCount + 1
+                    }
+                  }))
+                } else if (ta.category === 'Alert flood warning') {
+                  setData((prev) => ({
+                    ...prev,
+                    all: {
+                      ...prev.all,
+                      alertMessagesCount: prev.all.alertMessagesCount + 1
+                    }
+                  }))
+                }
+              }
+            })
+          })
+          return
+        }
+
+        // get locations affected with severe and warning messages only
+        if (alertTypes.length === 2) {
+          setData((prev) => ({
+            ...prev,
+            severeWarningsOnly: {
+              ...prev.severeWarningsOnly,
+              locations: prev.severeWarningsOnly.locations + 1
+            }
+          }))
+
+          targetAreas?.forEach((ta) => {
+            alertsData.alerts.forEach((alert) => {
+              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
+              const taCode = getAdditional(extraInfo, 'TA_CODE')
+
+              if (taCode === ta.TA_CODE) {
+                // PAUL Chester - please confirm the below validation is ok?
+                if (ta.category === 'Severe flood warning') {
+                  setData((prev) => ({
+                    ...prev,
+                    severeWarningsOnly: {
+                      ...prev.severeWarningsOnly,
+                      severeMessagesCount:
+                        prev.severeWarningsOnly.severeMessagesCount + 1
+                    }
+                  }))
+                } else if (ta.category === 'Flood warning') {
+                  setData((prev) => ({
+                    ...prev,
+                    severeWarningsOnly: {
+                      ...prev.severeWarningsOnly,
+                      warningMessagesCount:
+                        prev.severeWarningsOnly.warningMessagesCount + 1
+                    }
+                  }))
+                }
+              }
+            })
+          })
+          return
+        }
+
+        // get locations affected with  alert messages only
+        if (alertTypes.length === 1) {
+          setData((prev) => ({
+            ...prev,
+            alertsOnly: {
+              ...prev.alertsOnly,
+              locations: prev.alertsOnly.locations + 1
+            }
+          }))
+
+          targetAreas?.forEach((ta) => {
+            alertsData.alerts.forEach((alert) => {
+              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
+              const taCode = getAdditional(extraInfo, 'TA_CODE')
+
+              if (taCode === ta.TA_CODE) {
+                setData((prev) => ({
+                  ...prev,
+                  alertsOnly: {
+                    ...prev.alertsOnly,
+                    alertMessagesCount: prev.alertsOnly.alertMessagesCount + 1
+                  }
+                }))
+              }
+            })
+          })
+          return
+        }
+
+        // get locations affected with messages turned off
+        if (alertTypes.length === 0) {
+          setData((prev) => ({
+            ...prev,
+            messagesTurnedOff: {
+              ...prev.messagesTurnedOff,
+              locations: prev.messagesTurnedOff.locations + 1
+            }
+          }))
+
+          targetAreas?.forEach((ta) => {
+            alertsData.alerts.forEach((alert) => {
+              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
+              const taCode = getAdditional(extraInfo, 'TA_CODE')
+
+              if (taCode === ta.TA_CODE) {
+                setData((prev) => ({
+                  ...prev,
+                  messagesTurnedOff: {
+                    ...prev.messagesTurnedOff,
+                    messagesCount: prev.messagesTurnedOff.messagesCount + 1
+                  }
+                }))
+              }
+            })
+          })
+          return
+        }
+      })
     }
-    getData()
+
+    loadData()
   }, [])
 
-  useEffect(() => {
-    setTotalLocations(
-      alertData?.severeWarningAlert.length +
-        alertData?.severeWarning.length +
-        alertData?.alert.length +
-        alertData?.noAlert.length
-    )
-  }, [alertData])
-
-  const locationTableMessagesBody = (alertData) => (
+  const locationTableMessagesBody = () => (
     <>
       <tbody className='govuk-table__body'>
         <tr className='govuk-table__row'>
@@ -43,7 +258,7 @@ export default function FloodMessagesSentSummaryPage() {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData?.severeWarningAlert.length}
+              {data.all.locations}
             </Link>
           </td>
           <td
@@ -60,10 +275,11 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            5<br />
-            795
+            {data.all.severeMessagesCount}
             <br />
-            1,484
+            {data.all.warningMessagesCount}
+            <br />
+            {data.all.alertMessagesCount}
           </td>
         </tr>
         <tr className='govuk-table__row'>
@@ -72,22 +288,24 @@ export default function FloodMessagesSentSummaryPage() {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData?.severeWarning.length}
+              {data.severeWarningsOnly.locations}
             </Link>
           </td>
           <td
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            Flood warnings
+            Severe flood warnings
             <br />
-            Flood alerts
+            Flood warnings
           </td>
           <td
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            0<br />5
+            {data.severeWarningsOnly.severeMessagesCount}
+            <br />
+            {data.severeWarningsOnly.warningMessagesCount}
           </td>
         </tr>
         <tr className='govuk-table__row'>
@@ -96,7 +314,7 @@ export default function FloodMessagesSentSummaryPage() {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData?.alert.length}
+              {data.alertsOnly.locations}
             </Link>
           </td>
           <td
@@ -109,17 +327,14 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            100
+            {data.alertsOnly.alertMessagesCount}
           </td>
         </tr>
       </tbody>
     </>
   )
 
-  /* ToDo get data for no alerts properly and how many messages for each
-  however this feature cant be implimented yet so dummy data and hard code
-  needed for this table */
-  const locationTableNoMessages = (alertData) => (
+  const locationTableNoMessages = () => (
     <>
       <tbody className='govuk-table__body'>
         <tr className='govuk-table__row'>
@@ -128,7 +343,7 @@ export default function FloodMessagesSentSummaryPage() {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData?.noAlert.length - 1}
+              {data.noneAvailable}
             </Link>
           </td>
           <td
@@ -143,7 +358,7 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            0
+            {data.noneAvailable}
           </td>
         </tr>
         <tr className='govuk-table__row'>
@@ -152,7 +367,7 @@ export default function FloodMessagesSentSummaryPage() {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              1
+              {data.messagesTurnedOff.locations}
             </Link>
           </td>
           <td
@@ -165,18 +380,20 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            16
+            {data.messagesTurnedOff.messagesCount}
           </td>
         </tr>
       </tbody>
     </>
   )
 
+  console.log(data)
+
   const locationTableHead = (
     title,
     paragraph,
     locationTableBody,
-    numberMessages
+    locationsAffectedCount
   ) => (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-5 govuk-!-display-inline-block'>
@@ -188,7 +405,7 @@ export default function FloodMessagesSentSummaryPage() {
         What are the different types of flood messages?
       </Link>
       <p className='govuk-!-margin-top-5'>
-        {numberMessages} of {totalLocations} locations
+        {locationsAffectedCount} of {locationsCount} locations
       </p>
 
       <table className='govuk-table govuk-table--small-text-until-tablet'>
@@ -238,14 +455,16 @@ export default function FloodMessagesSentSummaryPage() {
               {locationTableHead(
                 'Locations that get flood messages',
                 paragraphMessages,
-                locationTableMessagesBody(alertData),
-                totalLocations - alertData?.noAlert.length
+                locationTableMessagesBody(),
+                data.all.locations +
+                  data.severeWarningsOnly.locations +
+                  data.alertsOnly.locations
               )}
               {locationTableHead(
                 'Locations that will not get flood messages',
                 paragraphNoMessages,
-                locationTableNoMessages(alertData),
-                alertData?.noAlert.length
+                locationTableNoMessages(),
+                data.noneAvailable + data.messagesTurnedOff.locations
               )}
             </div>
           </div>

@@ -12,8 +12,7 @@ import { infoUrls } from '../../../routes/info/InfoRoutes'
 export default function FloodMessagesSentSummaryPage() {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
-  // Search filter visibility
-  const [data, setData] = useState({
+  const initialData = {
     all: {
       locations: 0,
       severeMessagesCount: 0,
@@ -25,30 +24,22 @@ export default function FloodMessagesSentSummaryPage() {
       severeMessagesCount: 0,
       warningMessagesCount: 0
     },
-    alertsOnly: { locations: 0, alertMessagesCount: 0 },
+    alertsOnly: {
+      locations: 0,
+      alertMessagesCount: 0
+    },
     noneAvailable: 0,
-    messagesTurnedOff: { locations: 0, messagesCount: 0 }
-  })
+    messagesTurnedOff: {
+      locations: 0,
+      messagesCount: 0
+    }
+  }
+  const [data, setData] = useState(initialData)
   const [locationsCount, setLocationsCount] = useState(0)
 
   useEffect(async () => {
     const loadData = async () => {
-      setData({
-        all: {
-          locations: 0,
-          severeMessagesCount: 0,
-          warningMessagesCount: 0,
-          alertMessagesCount: 0
-        },
-        severeWarningsOnly: {
-          locations: 0,
-          severeMessagesCount: 0,
-          warningMessagesCount: 0
-        },
-        alertsOnly: { locations: 0, alertMessagesCount: 0 },
-        noneAvailable: 0,
-        messagesTurnedOff: { locations: 0, messagesCount: 0 }
-      })
+      setData(initialData)
 
       const { data: partnerId } = await backendCall(
         'data',
@@ -76,178 +67,104 @@ export default function FloodMessagesSentSummaryPage() {
         'api/elasticache/list_locations',
         navigate
       )
-      setLocationsCount(locationsData.length)
+      setLocationsCount(locationsData?.length || 0)
 
-      const locations = []
-      if (locationsData && !errorMessage) {
-        locationsData.forEach((location) => {
-          locations.push(geoSafeToWebLocation(location))
-        })
-      }
-      locations.forEach((location) => {
-        const { targetAreas, alertTypes } = location.additionals.other
-
-        // get locations with no available messages
-        if (targetAreas.length === 0) {
-          setData((prev) => ({
-            ...prev,
-            noneAvailable: prev.noneAvailable + 1
-          }))
-          return
-        }
-
-        // get locations affected with severe and warning messages only
-        if (alertTypes.length === 3) {
-          setData((prev) => ({
-            ...prev,
-            all: {
-              ...prev.all,
-              locations: prev.all.locations + 1
-            }
-          }))
-
-          targetAreas?.forEach((ta) => {
-            alertsData.alerts.forEach((alert) => {
-              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-              const taCode = getAdditional(extraInfo, 'TA_CODE')
-
-              if (taCode === ta.TA_CODE) {
-                // PAUL Chester - please confirm the below validation is ok?
-                if (ta.category === 'Severe flood warning') {
-                  setData((prev) => ({
-                    ...prev,
-                    all: {
-                      ...prev.all,
-                      severeMessagesCount: prev.all.severeMessagesCount + 1
-                    }
-                  }))
-                } else if (ta.category === 'Flood warning') {
-                  setData((prev) => ({
-                    ...prev,
-                    all: {
-                      ...prev.all,
-                      warningMessagesCount: prev.all.warningMessagesCount + 1
-                    }
-                  }))
-                } else if (ta.category === 'Alert flood warning') {
-                  setData((prev) => ({
-                    ...prev,
-                    all: {
-                      ...prev.all,
-                      alertMessagesCount: prev.all.alertMessagesCount + 1
-                    }
-                  }))
-                }
-              }
-            })
-          })
-          return
-        }
-
-        // get locations affected with severe and warning messages only
-        if (alertTypes.length === 2) {
-          setData((prev) => ({
-            ...prev,
-            severeWarningsOnly: {
-              ...prev.severeWarningsOnly,
-              locations: prev.severeWarningsOnly.locations + 1
-            }
-          }))
-
-          targetAreas?.forEach((ta) => {
-            alertsData.alerts.forEach((alert) => {
-              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-              const taCode = getAdditional(extraInfo, 'TA_CODE')
-
-              if (taCode === ta.TA_CODE) {
-                // PAUL Chester - please confirm the below validation is ok?
-                if (ta.category === 'Severe flood warning') {
-                  setData((prev) => ({
-                    ...prev,
-                    severeWarningsOnly: {
-                      ...prev.severeWarningsOnly,
-                      severeMessagesCount:
-                        prev.severeWarningsOnly.severeMessagesCount + 1
-                    }
-                  }))
-                } else if (ta.category === 'Flood warning') {
-                  setData((prev) => ({
-                    ...prev,
-                    severeWarningsOnly: {
-                      ...prev.severeWarningsOnly,
-                      warningMessagesCount:
-                        prev.severeWarningsOnly.warningMessagesCount + 1
-                    }
-                  }))
-                }
-              }
-            })
-          })
-          return
-        }
-
-        // get locations affected with  alert messages only
-        if (alertTypes.length === 1) {
-          setData((prev) => ({
-            ...prev,
-            alertsOnly: {
-              ...prev.alertsOnly,
-              locations: prev.alertsOnly.locations + 1
-            }
-          }))
-
-          targetAreas?.forEach((ta) => {
-            alertsData.alerts.forEach((alert) => {
-              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-              const taCode = getAdditional(extraInfo, 'TA_CODE')
-
-              if (taCode === ta.TA_CODE) {
-                setData((prev) => ({
-                  ...prev,
-                  alertsOnly: {
-                    ...prev.alertsOnly,
-                    alertMessagesCount: prev.alertsOnly.alertMessagesCount + 1
-                  }
-                }))
-              }
-            })
-          })
-          return
-        }
-
-        // get locations affected with messages turned off
-        if (alertTypes.length === 0) {
-          setData((prev) => ({
-            ...prev,
-            messagesTurnedOff: {
-              ...prev.messagesTurnedOff,
-              locations: prev.messagesTurnedOff.locations + 1
-            }
-          }))
-
-          targetAreas?.forEach((ta) => {
-            alertsData.alerts.forEach((alert) => {
-              const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-              const taCode = getAdditional(extraInfo, 'TA_CODE')
-
-              if (taCode === ta.TA_CODE) {
-                setData((prev) => ({
-                  ...prev,
-                  messagesTurnedOff: {
-                    ...prev.messagesTurnedOff,
-                    messagesCount: prev.messagesTurnedOff.messagesCount + 1
-                  }
-                }))
-              }
-            })
-          })
-          return
-        }
-      })
+      const locations = locationsData?.map(geoSafeToWebLocation) || []
+      processLocations(locations, alertsData?.alerts || [])
     }
 
     loadData()
   }, [])
+
+  const processLocations = (locations, alerts) => {
+    locations.forEach((location) => {
+      const { targetAreas, alertTypes } = location.additionals.other
+
+      if (targetAreas.length === 0) {
+        setData((prev) => ({
+          ...prev,
+          noneAvailable: prev.noneAvailable + 1
+        }))
+        return
+      }
+
+      processLocationByAlertTypes(location, alertTypes, targetAreas, alerts)
+    })
+  }
+
+  const processLocationByAlertTypes = (
+    location,
+    alertTypes,
+    targetAreas,
+    alerts
+  ) => {
+    // all alert types
+    if (alertTypes.length === 3) {
+      updateLocationStats('all', targetAreas, alerts)
+    }
+    // severe and warning messages only
+    else if (alertTypes.length === 2) {
+      updateLocationStats('severeWarningsOnly', targetAreas, alerts)
+    }
+    // alert messages only
+    else if (alertTypes.length === 1) {
+      updateLocationStats('alertsOnly', targetAreas, alerts)
+    }
+    // messages turned off
+    else if (alertTypes.length === 0) {
+      updateLocationStats('messagesTurnedOff', targetAreas, alerts)
+    }
+  }
+
+  const updateLocationStats = (category, targetAreas, alerts) => {
+    setData((prev) => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        locations: prev[category].locations + 1
+      }
+    }))
+
+    // process all target areas for this location
+    targetAreas?.forEach((targetArea) => {
+      alerts.forEach((alert) => {
+        const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
+        const taCode = getAdditional(extraInfo, 'TA_CODE')
+
+        if (taCode === targetArea.TA_CODE) {
+          updateMessageCounts(category, targetArea.category)
+        }
+      })
+    })
+  }
+
+  const updateMessageCounts = (locationCategory, messageCategory) => {
+    setData((prev) => {
+      const newData = { ...prev }
+
+      if (locationCategory === 'all') {
+        if (messageCategory === 'Severe flood warning') {
+          newData.all.severeMessagesCount++
+        } else if (messageCategory === 'Flood warning') {
+          newData.all.warningMessagesCount++
+        } else if (messageCategory === 'Alert flood warning') {
+          newData.all.alertMessagesCount++
+        }
+      } else if (locationCategory === 'severeWarningsOnly') {
+        if (messageCategory === 'Severe flood warning') {
+          newData.severeWarningsOnly.severeMessagesCount++
+        } else if (messageCategory === 'Flood warning') {
+          newData.severeWarningsOnly.warningMessagesCount++
+        }
+      } else if (locationCategory === 'alertsOnly') {
+        newData.alertsOnly.alertMessagesCount++
+      } else if (locationCategory === 'messagesTurnedOff') {
+        newData.messagesTurnedOff.messagesCount++
+      }
+
+      return newData
+    })
+  }
 
   const locationTableMessagesBody = () => (
     <>

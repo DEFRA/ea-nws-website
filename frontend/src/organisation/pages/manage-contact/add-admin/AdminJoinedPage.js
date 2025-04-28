@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Accordion from '../../../../common/components/gov-uk/Accordion'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
+import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -11,6 +13,8 @@ export default function AdminJoinedPage () {
   const navigate = useNavigate()
   const [nextPage, setNextPage] = useState(null)
   const [errorText, setErrorText] = useState('')
+  const profile = useSelector((state) => state.session.profile)
+  const dispatch = useDispatch()
 
   const infoSections = [
     {
@@ -64,6 +68,9 @@ export default function AdminJoinedPage () {
     if (!nextPage) {
       setErrorText('Select what you would like to do first')
     } else {
+      if (nextPage === orgManageContactsUrls.view.viewContact) {
+        dispatch(setOrgCurrentContact(profile))
+      }
       navigate(nextPage)
     }
   }

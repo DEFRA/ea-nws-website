@@ -9,7 +9,7 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 
 export default function RemoveAdminPage () {
   const navigate = useNavigate()
-  const authToken = useSelector((state) => state.session.token)
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)

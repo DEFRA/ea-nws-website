@@ -7,7 +7,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { setAuthToken, setContactPreferences, setOrgId, setOrganization, setProfile, setProfileId, setSigninType } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgInviteUrls } from '../../../routes/invite/InviteRoutes'
 
 export default function AdminInvitePage () {
   const navigate = useNavigate()
@@ -50,7 +50,7 @@ export default function AdminInvitePage () {
             setStage(data.stage)
           }
           if (data?.status === 'complete') {
-            navigate(orgManageContactsUrls.admin.joined)
+            navigate(orgInviteUrls.admin.joined)
           }
         }
         if (errorMessage) {
@@ -91,7 +91,7 @@ export default function AdminInvitePage () {
       if (data?.orgExists === false) {
         setOrgData(data)
       } else {
-        navigate(orgManageContactsUrls.admin.joined)
+        navigate(orgInviteUrls.admin.joined)
       }
     } else if (errorMessage) {
       console.log(errorMessage)

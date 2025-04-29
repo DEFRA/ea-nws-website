@@ -70,8 +70,14 @@ export default function AdminJoinedPage () {
     } else {
       if (nextPage === orgManageContactsUrls.view.viewContact) {
         dispatch(setOrgCurrentContact(profile))
+        navigate(nextPage, {
+          state: {
+            userType: 'ADMIN'
+          }
+        })
+      } else {
+        navigate(nextPage)
       }
-      navigate(nextPage)
     }
   }
 

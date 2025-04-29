@@ -18,7 +18,7 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
 
   return (
     <>
-      {location.state.successMessage && (
+      {location.state?.successMessage && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success'
           title='Success'

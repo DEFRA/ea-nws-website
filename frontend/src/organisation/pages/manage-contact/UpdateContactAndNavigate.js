@@ -24,7 +24,7 @@ export default function UpdateContactAndNavigate (setError, message) {
       dispatch(setCurrentContact(data))
       message
         ? navigate(orgManageContactsUrls.view.viewContact, {
-          state: { successMessage: message }
+          state: { successMessage: [message] }
         })
         : navigate(orgManageContactsUrls.view.viewContact)
     } else {

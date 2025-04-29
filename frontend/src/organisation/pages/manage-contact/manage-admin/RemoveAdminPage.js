@@ -46,7 +46,7 @@ export default function RemoveAdminPage () {
 
       navigate(orgManageContactsUrls.view.dashboard, {
         state: {
-          successMessage: `${contactName} is no longer and admin but is now a contact. They'll still get the same flood messages as before.`
+          successMessage: [`${contactName} is no longer and admin but is now a contact. They'll still get the same flood messages as before.`]
         }
       })
     } catch (e) {

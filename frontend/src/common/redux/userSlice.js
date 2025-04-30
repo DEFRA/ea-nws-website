@@ -676,6 +676,8 @@ const userSlice = createSlice({
       state.orgCurrentContact.additionals = action.payload.additionals
       state.orgCurrentContact.comments = action.payload.comments
       state.orgCurrentContact.pois = action.payload.pois
+      state.orgCurrentContact.role = action.payload.role
+      state.orgCurrentContact.pendingRole = action.payload.pendingRole
     },
     setOrgCurrentContactId: (state, action) => {
       state.orgCurrentContact.id = action.payload
@@ -723,6 +725,12 @@ const userSlice = createSlice({
         'jobTitle',
         action.payload
       )
+    },
+    setOrgCurrentContactRole: (state, action) => {
+      state.orgCurrentContact.role = action.payload
+    },
+    setOrgCurrentContactPendingRole: (state, action) => {
+      state.orgCurrentContact.pendingRole = action.payload
     },
     clearOrgCurrentContact: (state) => {
       state.orgCurrentContact = {
@@ -1083,6 +1091,8 @@ export const {
   setOrgCurrentContactJobTitle,
   setOrgCurrentContactNotes,
   setOrgCurrentContactPois,
+  setOrgCurrentContactRole,
+  setOrgCurrentContactPendingRole,
   setContacts,
   // clear state
   clearAuth,

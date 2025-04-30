@@ -9,7 +9,7 @@ import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AdminJoinedPage () {
+export default function AdminJoinedPage() {
   const navigate = useNavigate()
   const [nextPage, setNextPage] = useState(null)
   const [errorText, setErrorText] = useState('')
@@ -70,11 +70,7 @@ export default function AdminJoinedPage () {
     } else {
       if (nextPage === orgManageContactsUrls.view.viewContact) {
         dispatch(setOrgCurrentContact(profile))
-        navigate(nextPage, {
-          state: {
-            userType: 'ADMIN'
-          }
-        })
+        navigate(nextPage)
       } else {
         navigate(nextPage)
       }
@@ -114,7 +110,8 @@ export default function AdminJoinedPage () {
                     name='radios'
                     label='Check my profile and contact details'
                     onChange={() =>
-                      setNextPage(orgManageContactsUrls.view.viewContact)}
+                      setNextPage(orgManageContactsUrls.view.viewContact)
+                    }
                   />
                   <Radio
                     key='start'
@@ -122,7 +119,8 @@ export default function AdminJoinedPage () {
                     label='Start using the service'
                     hint='Check warnings, locations, users and reports'
                     onChange={() =>
-                      setNextPage(orgManageLocationsUrls.monitoring.view)}
+                      setNextPage(orgManageLocationsUrls.monitoring.view)
+                    }
                   />{' '}
                 </div>
               </fieldset>

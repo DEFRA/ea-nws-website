@@ -15,13 +15,12 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactEmailPage () {
+export default function AddContactEmailPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [emailError, setEmailError] = useState('')
   const [emailInput, setEmailInput] = useState('')
   const location = useLocation()
-  const userType = location?.state?.type || 'contact'
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
   const [errors, setErrors] = useState([])
@@ -48,7 +47,9 @@ export default function AddContactEmailPage () {
     } else {
       const emailValidationError = emailValidation(emailInput)
       if (emailValidationError) {
-        setEmailError('Enter an email address in the correct format, like name@example.com')
+        setEmailError(
+          'Enter an email address in the correct format, like name@example.com'
+        )
         dataValid = false
       }
     }
@@ -124,11 +125,7 @@ export default function AddContactEmailPage () {
       const addContactError = await addContact()
       const inviteContactError = await inviteContact()
       if (!addContactError && !inviteContactError) {
-        navigate(orgManageContactsUrls.add.additionalInformation, {
-          state: {
-            type: userType
-          }
-        })
+        navigate(orgManageContactsUrls.add.additionalInformation)
       } else {
         const errorArray = []
         addContactError && errorArray.push(addContactError)
@@ -145,12 +142,7 @@ export default function AddContactEmailPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(emailError || errors.length > 0) && (
-              <ErrorSummary
-                errorList={[
-                  emailError,
-                  ...errors
-                ]}
-              />
+              <ErrorSummary errorList={[emailError, ...errors]} />
             )}
             <h1 className='govuk-heading-l'>Enter email address</h1>
             <div className='govuk-body'>
@@ -161,7 +153,9 @@ export default function AddContactEmailPage () {
                 This will also be their sign in email address.
               </p>
               <div
-                className={emailError && 'govuk-form-group govuk-form-group--error'}
+                className={
+                  emailError && 'govuk-form-group govuk-form-group--error'
+                }
               >
                 <Input
                   name='Email address'

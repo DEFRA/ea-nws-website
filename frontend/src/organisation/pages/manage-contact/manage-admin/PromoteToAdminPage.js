@@ -14,10 +14,8 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function PromoteToAdminPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const contactEmails = currentContact?.emails

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
+import UserType from '../../../../common/enums/UserType'
+import { setOrgCurrentContactRole } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactTypePage () {
+export default function AddContactTypePage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [userType, setUserType] = useState('')
   const [reasonError, setReasonError] = useState('')
@@ -27,12 +31,10 @@ export default function AddContactTypePage () {
       isValidInput = false
     }
 
+    dispatch(setOrgCurrentContactRole(userType))
+
     if (isValidInput) {
-      navigate(orgManageContactsUrls.add.details, {
-        state: {
-          type: userType
-        }
-      })
+      navigate(orgManageContactsUrls.add.details)
     }
   }
 
@@ -42,14 +44,11 @@ export default function AddContactTypePage () {
         How to promote an existing contact to admin
       </p>
       <p>
-        1. Go to your <Link to={orgManageContactsUrls.view.dashboard}>users dashboard</Link>
+        1. Go to your{' '}
+        <Link to={orgManageContactsUrls.view.dashboard}>users dashboard</Link>
       </p>
-      <p>
-        2. Choose the contact you want to promote
-      </p>
-      <p>
-        3. On the contact's profile page, select button 'Promote to admin'
-      </p>
+      <p>2. Choose the contact you want to promote</p>
+      <p>3. On the contact's profile page, select button 'Promote to admin'</p>
     </>
   )
 
@@ -61,19 +60,15 @@ export default function AddContactTypePage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
-            {(reasonError) && (
-              <ErrorSummary
-                errorList={[reasonError]}
-              />
-            )}
-            <h1 className='govuk-heading-l'>
-              Select type of new user
-            </h1>
+            {reasonError && <ErrorSummary errorList={[reasonError]} />}
+            <h1 className='govuk-heading-l'>Select type of new user</h1>
             <div className='govuk-body'>
               <div>
                 <div className='govuk-radios' data-module='govuk-radios'>
                   <div
-                    className={reasonError && 'govuk-form-group govuk-form-group--error'}
+                    className={
+                      reasonError && 'govuk-form-group govuk-form-group--error'
+                    }
                   >
                     {reasonError && (
                       <p className='govuk-error-message'>{reasonError}</p>
@@ -82,19 +77,17 @@ export default function AddContactTypePage () {
                       key='contact'
                       name='userTypeSelectionRadios'
                       label='Contact'
-                      value='contact'
+                      value={UserType.Contact}
                       hint='Gets flood messages by email, text or phone call.'
-                      onChange={(e) =>
-                        setUserType(e.target.value)}
+                      onChange={(e) => setUserType(e.target.value)}
                     />
                     <Radio
                       key='admin'
                       name='serviceSelectionRadios'
                       label='Admin'
-                      value='admin'
+                      value={UserType.Admin}
                       hint='Manages contacts, locations and organisation account. Can get flood messages by email, text or phone call.'
-                      onChange={(e) =>
-                        setUserType(e.target.value)}
+                      onChange={(e) => setUserType(e.target.value)}
                     />
                   </div>
                 </div>

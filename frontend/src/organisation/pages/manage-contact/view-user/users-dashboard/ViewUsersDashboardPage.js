@@ -301,7 +301,7 @@ export default function ViewUsersDashboardPage () {
     setContacts([...updatedContacts])
     setFilteredContacts([...updatedFilteredContacts])
 
-    setNotificationText(deleteContactsText(contactsToRemove) + ' deleted')
+    setNotificationText([deleteContactsText(contactsToRemove) + ' deleted'])
 
     setDialog({ ...dialog, show: false })
     setTargetContact(null)

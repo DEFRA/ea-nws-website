@@ -88,7 +88,7 @@ export default function AdminInvitePage () {
           data.profile.mobilePhones.length !== 0 && 'Text'
         ])
       )
-      if (data?.orgExists === false) {
+      if (data?.orgExists === 0) {
         setOrgData(data)
       } else {
         navigate(orgInviteUrls.admin.joined)

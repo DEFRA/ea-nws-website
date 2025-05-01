@@ -7,7 +7,7 @@ import Details from '../../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import UserType from '../../../../common/enums/UserType'
-import { setOrgCurrentContactRole } from '../../../../common/redux/userSlice'
+import { setAddingAdminFlow } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactTypePage() {
@@ -31,7 +31,11 @@ export default function AddContactTypePage() {
       isValidInput = false
     }
 
-    dispatch(setOrgCurrentContactRole(userType))
+    if (userType === UserType.Admin) {
+      dispatch(setAddingAdminFlow(true))
+    } else {
+      dispatch(setAddingAdminFlow(false))
+    }
 
     if (isValidInput) {
       navigate(orgManageContactsUrls.add.details)

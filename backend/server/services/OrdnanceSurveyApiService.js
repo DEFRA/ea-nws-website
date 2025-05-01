@@ -75,6 +75,7 @@ const osFindNameApiCall = async (name, filter) => {
     // Check that location is in England
     if (response.data.results?.[0].GAZETTEER_ENTRY.COUNTRY === 'England') {
       responseData = response.data.results.map((result) => {
+        console.log('result', result)
         const formattedLocationName = locationNameFormatter(
           result.GAZETTEER_ENTRY
         )

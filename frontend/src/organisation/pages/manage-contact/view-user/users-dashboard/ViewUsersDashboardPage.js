@@ -126,8 +126,6 @@ export default function ViewUsersDashboardPage() {
         }
       })
 
-      console.log('contactsUpdate', contactsUpdate)
-
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
       setLoading(false)

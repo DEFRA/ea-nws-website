@@ -732,6 +732,9 @@ const userSlice = createSlice({
     setOrgCurrentContactPendingRole: (state, action) => {
       state.orgCurrentContact.pendingRole = action.payload
     },
+    setAddingAdminFlow: (state, action) => {
+      state.addingAdminFlow = action.payload
+    },
     clearOrgCurrentContact: (state) => {
       state.orgCurrentContact = {
         id: null,
@@ -880,6 +883,7 @@ const userSlice = createSlice({
         alertDiffusionZoneBoundingBox: null,
         urlSlug: null
       }
+      state.addingAdminFlow = null
       state.orgCurrentContact = {
         id: null,
         enabled: true,
@@ -1094,6 +1098,8 @@ export const {
   setOrgCurrentContactRole,
   setOrgCurrentContactPendingRole,
   setContacts,
+  // flow
+  setAddingAdminFlow,
   // clear state
   clearAuth,
   clearCurrentLocation,

@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -15,14 +15,12 @@ import {
 } from '../../../common/redux/userSlice'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ContactChannelsLayout({
   navigateToNextPage,
   error,
   setError
 }) {
-  const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [emailError, setEmailError] = useState(['', ''])
@@ -42,6 +40,8 @@ export default function ContactChannelsLayout({
     (state) => state.session.orgCurrentContact.pendingRole
   )
   const userType = role || pendingRole
+  const addingAdmin = useSelector((state) => state.session.addingAdminFlow)
+  console.log('addingAdmin', addingAdmin)
   const profile = useSelector((state) => state.session.profile)
   const firstname = useSelector(
     (state) => state.session.orgCurrentContact.firstname
@@ -227,7 +227,8 @@ export default function ContactChannelsLayout({
 
   const renderFirstEmail = () => {
     // admin user being added
-    if (location.pathname.includes(orgManageContactsUrls.add.channels)) {
+    console.log('addingAdmin', addingAdmin)
+    if (addingAdmin) {
       return (
         <div className='govuk-inset-text'>
           <strong>Main email address</strong>
@@ -340,7 +341,8 @@ export default function ContactChannelsLayout({
                     {error}
                   </p>
                 )}
-                {userType === UserType.Admin ||
+                {addingAdmin ||
+                userType === UserType.Admin ||
                 userType === UserType.PendingAdmin ? (
                   <>
                     {renderFirstEmail()}

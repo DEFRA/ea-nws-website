@@ -103,6 +103,7 @@ export default function AddContactEmailPage() {
       role: 'ADMIN',
       orgId
     }
+
     const { errorMessage: promoteError, data: contactData } = await backendCall(
       promoteData,
       'api/organization/promote_contact',

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import { backendCall } from '../../../../../common/services/BackendService'
-import { infoUrls } from '../../../../routes/info/InfoRoutes'
+import BackLink from '../../../../common/components/custom/BackLink'
+import { backendCall } from '../../../../common/services/BackendService'
+import { infoUrls } from '../../../routes/info/InfoRoutes'
 
-export default function ViewLocationSummaryPage () {
+export default function FloodMessagesSentSummaryPage() {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
   const [alertData, setAlertData] = useState()

@@ -126,6 +126,21 @@ export default function ViewUsersDashboardPage () {
         }
       })
 
+      // Sort objects by contact name alphabetically
+      contactsUpdate.sort((a, b) => {
+        const first = (a.firstname || '').localeCompare(
+          b.firstname || '',
+          undefined,
+          { sensitivity: 'base' }
+        )
+        if (first !== 0) return first
+
+        // If first names match, compare second names
+        return (a.lastname || '').localeCompare(b.lastname || '', undefined, {
+          sensitivity: 'base'
+        })
+      })
+
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
       setLoading(false)

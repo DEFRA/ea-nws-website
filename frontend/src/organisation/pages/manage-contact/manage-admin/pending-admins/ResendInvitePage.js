@@ -7,7 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function ResendInvitePage () {
+export default function ResendInvitePage() {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -15,7 +15,7 @@ export default function ResendInvitePage () {
   const orgId = useSelector((state) => state.session.orgId)
 
   const pendingAdmin = location.state?.pendingAdmin
-  const pendingAdminEmail = pendingAdmin.emails[0]
+  const pendingAdminEmail = pendingAdmin?.emails[0]
   const pendingAdminName =
     pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
 

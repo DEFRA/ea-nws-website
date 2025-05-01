@@ -3,6 +3,8 @@
 // https://stackoverflow.com/a/71779604/3717718
 export function removeHoverIosSafari() {
   if (!isIosSafari()) return
+
+  console.log('is ios')
   // Tags of interest: Only process certain interactive elements
   function shouldPrevent(target) {
     var tagName = target.tagName.toLowerCase()
@@ -10,7 +12,9 @@ export function removeHoverIosSafari() {
     var preventFilter =
       (datasetBind && datasetBind.indexOf('click') > -1) ||
       tagName == 'a' ||
-      tagName == 'button'
+      tagName == 'button' ||
+      (tagName == 'input' &&
+        (target.type === 'radio' || target.type === 'checkbox'))
     return preventFilter
   }
   var eventSelector = {

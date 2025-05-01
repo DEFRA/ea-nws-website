@@ -1,9 +1,8 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useState } from 'react'
-import { GeoJSON, MapContainer, Marker, Popup, useMap, TileLayer } from 'react-leaflet'
+import { GeoJSON, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 // Leaflet Marker Icon fix
-import * as turf from '@turf/turf'
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
@@ -17,7 +16,6 @@ import { convertDataToGeoJsonFeature } from '../../../../../../common/services/G
 export default function UserMap ({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
-  const [bounds, setBounds] = useState(null)
   const [markers, setMarkers] = useState([])
   const [geoJsonShapes, setGeoJsonShapes] = useState([])
   const [centre, setCentre] = useState([])
@@ -62,32 +60,10 @@ export default function UserMap ({ locations }) {
       if (locationsCollection) {
         setMarkers(points)
         setGeoJsonShapes(shapes)
-
-        const geoJsonFeatureCollection =
-          turf.featureCollection(locationsCollection)
-
-        // calculate boundary around locations
-        const bbox = turf.bbox(geoJsonFeatureCollection)
-
-        const newBounds = [
-          [bbox[1], bbox[0]],
-          [bbox[3], bbox[2]]
-        ]
-        setBounds(newBounds)
       }
     }
     // no linked locations, setting to centre of England
     setCentre([52.7152, -1.17349])
-  }
-
-  const FitBounds = () => {
-    const map = useMap()
-
-    useEffect(() => {
-      if (bounds) {
-        map.fitBounds(bounds)
-      }
-    }, [bounds])
   }
 
   async function getApiKey () {

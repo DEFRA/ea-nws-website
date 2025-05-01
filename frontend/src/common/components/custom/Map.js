@@ -83,8 +83,12 @@ export default function Map ({
 
   // outline the selected flood area - used when user has chosen flood area from proximity
   useEffect(() => {
+    if (!alertAreaRef.current && !warningAreaRef.current) return
     showAreas()
   }, [
+    types,
+    alertArea,
+    warningArea,
     selectedFloodWarningArea,
     selectedFloodAlertArea,
     showOnlySelectedFloodArea,

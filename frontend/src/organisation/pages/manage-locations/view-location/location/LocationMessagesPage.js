@@ -36,6 +36,7 @@ export default function LocationMessagesPage () {
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
+  const isPredefinedBoundary = additionalData.location_data_type === 'boundary'
 
   const handleClose = () => {
     setUnlinkID(null)
@@ -552,11 +553,16 @@ export default function LocationMessagesPage () {
             {messageSettingsSection}
           </div>
         </div>
-        <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full govuk-!-margin-top-9'>
-            {floodAreasSection}
+
+        {/* Only render flood areas section if location is not a predefined boundary */}
+        {!isPredefinedBoundary && (
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-full govuk-!-margin-top-9'>
+              {floodAreasSection}
+            </div>
           </div>
-        </div>
+        )}
+
         {unlinkID &&
           <Popup
             onDelete={() => handleDelete()}

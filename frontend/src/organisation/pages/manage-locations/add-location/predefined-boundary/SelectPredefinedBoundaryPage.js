@@ -61,12 +61,6 @@ export default function SelectPredefinedBoundaryPage () {
     setPartnerId(data)
   }
 
-  // Clear any previous boundary selection
-  useEffect(() => {
-    dispatch(setSelectedBoundary(null))
-    dispatch(setSelectedBoundaryType(null))
-  }, [dispatch])
-
   // Get boundary types
   useEffect(() => {
     const getBoundaryTypesList = async () => {

@@ -124,18 +124,31 @@ export default function FloodDataInformationPopup({
     return floodLink
   }
 
-  const FloodAreaLink = ({ code, linkText, type }) => {
-    const link = getFloodLink(code, type)
-    return (
-      <a
-        className='govuk-link'
-        target='_blank'
-        rel='noopener noreferrer'
-        href={link}
-      >
-        {linkText} (opens in new tab)
-      </a>
-    )
+  const FloodAreaLink = ({ code, linkText, type }) => (
+    <a
+      className='govuk-link'
+      target='_blank'
+      rel='noopener noreferrer'
+      href={getFloodLink(code, type)}
+    >
+      {linkText} (opens in new tab)
+    </a>
+  )
+
+  const formatDate = (date) => {
+    const time = date
+      .toLocaleString('en-UK', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+      .toLowerCase()
+
+    const day = date.getDate()
+    const month = date.toLocaleString('en-UK', { month: 'long' })
+    const year = date.getFullYear()
+
+    return `${time} on ${day} ${month} ${year}`
   }
 
   const viewLocation = (e, location) => {
@@ -198,7 +211,8 @@ export default function FloodDataInformationPopup({
                 <FloodWarningInfo floodInformation={floodInformation} />
 
                 <p className='govuk-!-margin-top-5 govuk-body govuk-!-font-size-19'>
-                  Updated {floodInformation.floodData.updatedTime}
+                  Updated{' '}
+                  {formatDate(floodInformation.floodData.lastUpdatedTime)}
                 </p>
 
                 <FloodAreaLink

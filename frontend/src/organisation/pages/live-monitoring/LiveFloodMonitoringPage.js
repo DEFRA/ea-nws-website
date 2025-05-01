@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
-import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
-import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
-import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import Button from '../../../../../common/components/gov-uk/Button'
-import { orgFloodReportsUrls } from '../../../../routes/flood-reports/FloodReportsRoutes'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import floodAlertIcon from '../../../common/assets/images/flood_alert.svg'
+import floodWarningIcon from '../../../common/assets/images/flood_warning.svg'
+import floodWarningRemovedIcon from '../../../common/assets/images/flood_warning_removed.svg'
+import floodSevereWarningIcon from '../../../common/assets/images/severe_flood_warning.svg'
+import BackLink from '../../../common/components/custom/BackLink'
+import Button from '../../../common/components/gov-uk/Button'
+import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
 
@@ -34,8 +34,7 @@ export default function LiveFloodMonitoringPage () {
     setFloodData(data)
   }
 
-  const applyFilter = (event) => {
-    event.preventDefault()
+  const applyFilter = () => {
     setFilters({
       severeAreas: showSevereLocations,
       warningAreas: showWarningLocations,

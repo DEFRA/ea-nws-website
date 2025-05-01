@@ -1236,18 +1236,21 @@
   background-color: #b1b4b6;
 }
 
+.warnings-filter-panel,
 .locations-filter-panel,
 .contacts-filter-panel {
   border: 0.1rem solid #b1b4b6;
   padding-bottom: 1rem;
 }
 
+.warnings-filter-header,
 .locations-filter-header,
 .contacts-filter-header {
   background-color: #b1b4b6;
   padding: 0.5rem 1rem 0.1rem 1.3rem;
 }
 
+.warnings-filter-selected,
 .locations-filter-selected,
 .contacts-filter-selected {
   border-style: none none solid;
@@ -1260,6 +1263,11 @@
 .contacts-name-filter {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.warnings-date-range-filter {
+  padding-left: 1rem;
+  padding-right: 5.5rem;
 }
 
 .warnings-select-filter,
@@ -1296,6 +1304,7 @@
   gap: 0.2rem;
 }
 
+.warnings-selected-filters-panel,
 .locations-selected-filters-panel,
 .contacts-selected-filters-panel {
   border-bottom-style: solid;
@@ -1323,6 +1332,7 @@
   padding-right: 1rem;
 }
 
+.warnings-filter-name-section,
 .locations-filter-name-section,
 .contacts-filter-name-section {
   display: flex;
@@ -1330,6 +1340,7 @@
   gap: 0.5rem;
 }
 
+.warnings-filter-other-section,
 .locations-filter-other-section,
 .contacts-filter-other-section {
   display: flex;
@@ -1337,6 +1348,7 @@
   gap: 0.2rem;
 }
 
+.warnings-selected-filter-row,
 .locations-selected-filter-row,
 .contacts-selected-filter-row {
   display: flex;
@@ -1455,10 +1467,6 @@
   margin-right: 10px;
 }
 
-.input-with-icon {
-  position: relative;
-}
-
 .keyword-search-container {
   background: #f3f2f1;
 }
@@ -1500,7 +1508,13 @@
   border-color: #005a30;
 }
 
-.input-icon {
+.input-with-icon {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.input-search-icon {
   position: absolute;
   left: 8px;
   top: 65%;
@@ -1508,8 +1522,24 @@
   z-index: 1;
 }
 
-.govuk-input-icon {
+.govuk-input-search-icon {
   padding-left: 35px;
+}
+
+.input-calendar-icon {
+  position: absolute;
+  right: -4px;
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  background-color: rgba(29, 112, 184, 1);
+  color: white;
+  padding: 0.6rem;
+}
+
+.govuk-input-calendar-icon {
+  padding-right: 0.75rem;
 }
 
 .org-flood-warning-key {
@@ -2019,7 +2049,3 @@ govuk-menu-toggle.button-menu > button {
   }
 }
 
-.full-width-banner {
-  width: 100% !important;
-  max-width: none !important;
-}

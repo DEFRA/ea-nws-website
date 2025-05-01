@@ -111,12 +111,23 @@ export default function DeleteLayout () {
               Delete {!isLocation && 'user'} {nameToDelete}
             </h1>
             <div className='govuk-body'>
+            {isLocation ? 
               <p className='govuk-!-margin-bottom-8'>
                 If you continue {nameToDelete} will be deleted from this account
                 and will not get flood messages.
               </p>
+              :
+              <>
+              <p>
+                If you continue, {nameToDelete} will be deleted from this account.
+              </p>
+              <p className='govuk-!-margin-bottom-8'>
+                They'll no longer get flood messages, if there were receiving any.
+              </p>
+              </>
+              }
               <Button
-                text={`Delete ${isLocation ? 'location' : 'contact'}`}
+                text={`Delete ${isLocation ? 'location' : 'user'}`}
                 className='govuk-button govuk-button--warning'
                 onClick={handleDelete}
               />

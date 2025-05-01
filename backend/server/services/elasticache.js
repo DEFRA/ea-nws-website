@@ -673,5 +673,6 @@ module.exports = {
   orgSignIn,
   orgSignOut,
   checkKeyExists,
-  addOrgActiveAdmins
+  addOrgActiveAdmins,
+  getOrgActiveAdmins
 }

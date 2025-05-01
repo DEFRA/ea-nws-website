@@ -35,6 +35,7 @@ const routes = [].concat(
   require('../routes/add_location/duplicate_location'),
   require('../routes/add_location/search'),
   require('../routes/add_location/download_flood_history'),
+  require('../routes/elasticache/get_active_admins'),
   require('../routes/elasticache/get_data'),
   require('../routes/elasticache/list_locations'),
   require('../routes/elasticache/list_contacts'),

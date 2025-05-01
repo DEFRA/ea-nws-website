@@ -551,7 +551,8 @@ export default function FloodReportFilter({
             Selected filters
           </h2>
           <Link
-            onClick={() => {
+            onClick={(event) => {
+              event.preventDefault()
               clearFilters()
               resetErrors()
             }}

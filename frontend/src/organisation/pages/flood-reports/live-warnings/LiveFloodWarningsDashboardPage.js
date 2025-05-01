@@ -122,12 +122,6 @@ export default function LiveFloodWarningsDashboardPage () {
     }
   }
 
-  useEffect(() => {
-    if (!loading) {
-      setFilteredLocationsAffected(locationsAffected)
-    }
-  }, [loading, locationsAffected])
-
   const processLocation = (
     location,
     severity,
@@ -160,6 +154,7 @@ export default function LiveFloodWarningsDashboardPage () {
     const updatedLocation = createLocationWithFloodData()
     setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
     setDisplayedLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
+    setFilteredLocationsAffected(locationsAffected)
   }
 
   useEffect(() => {

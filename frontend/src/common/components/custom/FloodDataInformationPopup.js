@@ -12,7 +12,7 @@ import { webToGeoSafeLocation } from '../../services/formatters/LocationFormatte
 import Button from '../gov-uk/Button'
 import ServiceNavigation from '../gov-uk/ServiceNavigation'
 
-export default function FloodDataInformationPopup ({
+export default function FloodDataInformationPopup({
   locationsFloodInformation,
   onClose
 }) {
@@ -21,11 +21,8 @@ export default function FloodDataInformationPopup ({
 
   const [servicePhase, setServicePhase] = useState(false)
 
-  async function getServicePhase () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_service_phase'
-    )
+  async function getServicePhase() {
+    const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
   }
 
@@ -161,7 +158,6 @@ export default function FloodDataInformationPopup ({
   const [currentPage, setCurrentPage] = useState(navLinks[0].url)
 
   const updateNavBar = (page) => {
-    console.log(page)
     setCurrentPage(page)
   }
 
@@ -178,7 +174,8 @@ export default function FloodDataInformationPopup ({
           <h1 className='govuk-heading-l govuk-link'>
             <Link
               onClick={(e) =>
-                viewLocation(e, locationsFloodInformation[0].locationData)}
+                viewLocation(e, locationsFloodInformation[0].locationData)
+              }
             >
               {locationsFloodInformation[0].locationData.address}
             </Link>

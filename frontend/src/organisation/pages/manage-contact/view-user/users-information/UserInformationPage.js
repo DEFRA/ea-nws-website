@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import UserType from '../../../../../common/enums/UserType'
-import { setAddingAdminFlow } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -65,9 +64,21 @@ export default function UserInformationPage() {
 
   const pendingAdminLinks = (
     <>
-      <Link className='govuk-link'>Resend invitation</Link>
+      <Link
+        className='govuk-link'
+        to={orgManageContactsUrls.admin.resendInvite}
+        state={{ pendingAdmin: currentContact }}
+      >
+        Resend invitation
+      </Link>
       <span style={{ color: '#1d70b8', margin: '0 5px' }}>|</span>
-      <Link className='govuk-link'>Withdraw invitation</Link>
+      <Link
+        className='govuk-link'
+        to={orgManageContactsUrls.admin.withdrawInvite}
+        state={{ pendingAdmin: currentContact }}
+      >
+        Withdraw invitation
+      </Link>
     </>
   )
 

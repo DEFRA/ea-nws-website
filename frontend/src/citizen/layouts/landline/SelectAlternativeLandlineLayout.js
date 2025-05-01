@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function SelectAlternativeLandlineLayout ({
+export default function SelectAlternativeLandlineLayout({
   NextPageWithoutValidation,
   NextPageWithValidation,
   NavigateBack
@@ -110,7 +110,7 @@ export default function SelectAlternativeLandlineLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[error, validationError]} />}
             {location?.state?.banner && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'

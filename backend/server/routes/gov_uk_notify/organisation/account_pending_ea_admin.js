@@ -15,20 +15,38 @@ module.exports = [
         }
 
         const {
-          email, refNumber, orgName, address, companyHouseNumber
-          , responder, fullName, alternativeContactFullName,
-          alternativeContactEmail, alternativeContactTelephone,
-          alternativeContactJob, submissionDateTime
+          email: eaEmail,
+          adminEmail,
+          refNumber,
+          orgName,
+          address,
+          companyHouseNumber,
+          responder,
+          fullName,
+          alternativeContactFullName,
+          alternativeContactEmail,
+          alternativeContactTelephone,
+          alternativeContactJob,
+          submissionDateTime
         } = request.payload
 
         if (
-          email && refNumber && orgName && address && companyHouseNumber &&
-          responder && fullName && alternativeContactFullName &&
-                    alternativeContactEmail && alternativeContactTelephone &&
-                    alternativeContactJob && submissionDateTime
+          eaEmail &&
+          adminEmail && 
+          refNumber &&
+          orgName &&
+          address &&
+          companyHouseNumber &&
+          responder &&
+          fullName &&
+          alternativeContactFullName &&
+          alternativeContactEmail &&
+          alternativeContactTelephone &&
+          alternativeContactJob &&
+          submissionDateTime
         ) {
           const personalisation = {
-            email_address: email,
+            email_address: adminEmail,
             full_name: fullName,
             reference_number: refNumber,
             organisation_name: orgName,
@@ -46,10 +64,8 @@ module.exports = [
             'nws/notify/templates',
             'accountPendingEaAdmin'
           )
-          /* ToDo the email as the perameter below will need to be
-             changed to the EA email address and not the one got from
-             the request.payload */
-          sendEmailNotification(templateId, email, personalisation)
+
+          sendEmailNotification(templateId, eaEmail, personalisation)
           return h.response({ status: 200 })
         } else {
           return createGenericErrorResponse(h)

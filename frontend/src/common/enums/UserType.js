@@ -1,7 +1,7 @@
 const UserType = {
   Admin: 'Admin',
   PendingAdmin: 'Pending admin',
-  Contact: 'contact'
+  Contact: 'Contact'
 }
 
 export default UserType

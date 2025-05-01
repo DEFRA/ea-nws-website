@@ -41,7 +41,6 @@ export default function ContactChannelsLayout({
   )
   const userType = role || pendingRole
   const addingAdmin = useSelector((state) => state.session.addingAdminFlow)
-  console.log('addingAdmin', addingAdmin)
   const profile = useSelector((state) => state.session.profile)
   const firstname = useSelector(
     (state) => state.session.orgCurrentContact.firstname
@@ -227,7 +226,6 @@ export default function ContactChannelsLayout({
 
   const renderFirstEmail = () => {
     // admin user being added
-    console.log('addingAdmin', addingAdmin)
     if (addingAdmin) {
       return (
         <div className='govuk-inset-text'>

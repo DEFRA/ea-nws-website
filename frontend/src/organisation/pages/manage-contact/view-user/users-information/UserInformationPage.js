@@ -15,7 +15,6 @@ import UserMap from './user-information-components/UserMap'
 
 export default function UserInformationPage() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const jobTitle = currentContact.additionals.jobTitle
   const keywords = currentContact.additionals.keywords
@@ -34,10 +33,6 @@ export default function UserInformationPage() {
   const [showMap, setShowMap] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-
-  useEffect(() => {
-    dispatch(setAddingAdminFlow(false))
-  }, [])
 
   const navigateBack = (e) => {
     e.preventDefault()

@@ -309,9 +309,6 @@ const userSlice = createSlice({
     setSelectedBoundary: (state, action) => {
       state.selectedBoundary = action.payload
     },
-    setLocationBoundaries: (state, action) => {
-      state.locationBoundaries = action.payload
-    },
     setConsecutiveBoundariesAdded: (state, action) => {
       state.consecutiveBoundariesAdded = action.payload
     },
@@ -800,7 +797,6 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
-      state.locationBoundaries = null
       state.consecutiveBoundariesAdded = 0
       state.predefinedBoundaryFlow = null
       // org location data

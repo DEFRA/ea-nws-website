@@ -14,7 +14,6 @@ import {
   setCurrentLocationGeometry,
   setCurrentLocationName,
   setCurrentLocationType,
-  setLocationBoundaries,
   setPredefinedBoundaryFlow,
   setSelectedBoundary,
   setSelectedBoundaryType
@@ -45,9 +44,6 @@ export default function SelectPredefinedBoundaryPage() {
   )
   const selectedBoundary = useSelector(
     (state) => state.session.selectedBoundary
-  )
-  const locationBoundaries = useSelector(
-    (state) => state.session.locationBoundaries
   )
   const consecutiveBoundariesAdded = useSelector(
     (state) => state.session.consecutiveBoundariesAdded
@@ -124,11 +120,6 @@ export default function SelectPredefinedBoundaryPage() {
         boundary_type: selectedBoundaryType,
         boundary: selectedBoundary
       }
-      locationBoundaries
-        ? dispatch(
-            setLocationBoundaries([...locationBoundaries, locationBoundary])
-          )
-        : dispatch(setLocationBoundaries([locationBoundary]))
       dispatch(
         setCurrentLocationGeometry({
           geoJson: JSON.stringify(locationBoundary.boundary)

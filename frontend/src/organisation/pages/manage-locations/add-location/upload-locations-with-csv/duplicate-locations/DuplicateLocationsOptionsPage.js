@@ -121,7 +121,7 @@ export default function DuplicateLocationsOptionsPage () {
         notFoundLocations > 0
           ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
           : notInEnglandLocations > 0
-            ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
+            ? orgManageLocationsUrls.unmatchedLocations.notInEngland.find
             : orgManageLocationsUrls.add.contactLinkInfo
 
       switch (option) {
@@ -165,12 +165,22 @@ export default function DuplicateLocationsOptionsPage () {
                 }
                 return typeMap[type] || []
               }
-              location.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
-                location.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
-                location.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+              location.additionals.other.targetAreas.some(
+                (area) => categoryToType(area.category) === 'warning'
+              ) &&
+                location.additionals.other.alertTypes.push(
+                  AlertType.SEVERE_FLOOD_WARNING
+                ) &&
+                location.additionals.other.alertTypes.push(
+                  AlertType.FLOOD_WARNING
+                )
 
-              location.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
-                location.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+              location.additionals.other.targetAreas.some(
+                (area) => categoryToType(area.category) === 'alert'
+              ) &&
+                location.additionals.other.alertTypes.push(
+                  AlertType.FLOOD_ALERT
+                )
 
               const locationToUpdate = webToGeoSafeLocation(location)
               // change the location ID to the existing ID in geosafe

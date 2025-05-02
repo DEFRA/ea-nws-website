@@ -7,8 +7,8 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 
 export default function DropPinOnMapPage () {
   const navigate = useNavigate()
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
+  const locationName = useSelector((state) =>
+    getLocationAdditional(state, 'locationName')
   )
 
   const navigateToNextPage = () => {
@@ -34,6 +34,7 @@ export default function DropPinOnMapPage () {
       navigateToNextPage={navigateToNextPage}
       navigateToNotInEnglandPage={navigateToNotInEnglandPage}
       navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
+      flow='change-coords'
     />
   )
 }

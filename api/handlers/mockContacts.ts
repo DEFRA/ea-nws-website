@@ -53,7 +53,7 @@ const contacts = [
     metatdata: null,
     pois: null,
     role: null,
-    pendingRole: null
+    pendingRole: 'ADMIN'
   },
   {
     id: '3',
@@ -95,7 +95,7 @@ const contacts = [
     position: null,
     unit: null,
     service: null,
-    comments: null,
+    comments: 'Steven binns is the admin',
     additionals: [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
       { id: 'signupComplete', value: { s: 'true' } },

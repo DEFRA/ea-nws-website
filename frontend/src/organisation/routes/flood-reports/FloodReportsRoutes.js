@@ -1,13 +1,17 @@
-import LiveFloodWarningsDashboardPage from '../../pages/manage-locations/live-monitoring/flood-reports/LiveFloodWarningsDashboardPage'
-import ReportsOverviewPage from '../../pages/manage-locations/live-monitoring/flood-reports/ReportsOverviewPage'
-import ViewLocationSummaryPage from '../../pages/manage-locations/live-monitoring/flood-reports/ViewLocationSummaryPage'
+import ReportsOverviewPage from '../../pages/flood-reports/ReportsOverviewPage'
+import FloodWarningHistoryDashboardPage from '../../pages/flood-reports/flood-warning-history/FloodWarningHistoryDashboardPage'
+import FloodWarningsRemovedDashboardPage from '../../pages/flood-reports/flood-warnings-removed/FloodWarningsRemovedDashboardPage'
+import LiveFloodWarningsDashboardPage from '../../pages/flood-reports/live-warnings/LiveFloodWarningsDashboardPage'
+import FloodMessagesSentSummaryPage from '../../pages/flood-reports/messages-sent-summary/FloodMessagesSentSummaryPage'
 
-const urlOrg = '/organisation'
+const urlOrgReports = '/organisation/reports'
 
 const orgFloodReportsUrls = {
-  overview: urlOrg + '/reports',
-  live: urlOrg + '/reports/live-warnings',
-  summary: urlOrg + '/reports/view-summary'
+  overview: urlOrgReports,
+  live: urlOrgReports + '/live-warnings',
+  history: urlOrgReports + '/historic-warnings',
+  removed: urlOrgReports + '/removed-warnings',
+  summary: urlOrgReports + '/view-summary'
 }
 
 const orgFloodReportsRoutes = [
@@ -20,8 +24,16 @@ const orgFloodReportsRoutes = [
     component: <LiveFloodWarningsDashboardPage />
   },
   {
+    path: orgFloodReportsUrls.removed,
+    component: <FloodWarningsRemovedDashboardPage />
+  },
+  {
+    path: orgFloodReportsUrls.history,
+    component: <FloodWarningHistoryDashboardPage />
+  },
+  {
     path: orgFloodReportsUrls.summary,
-    component: <ViewLocationSummaryPage />
+    component: <FloodMessagesSentSummaryPage />
   }
 ]
 export { orgFloodReportsRoutes, orgFloodReportsUrls }

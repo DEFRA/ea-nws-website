@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function NotificationBanner ({
+export default function NotificationBanner({
   className,
   title,
   heading,
@@ -17,7 +17,6 @@ export default function NotificationBanner ({
         role='alert'
         aria-labelledby='govuk-notification-banner-title'
         data-module='govuk-notification-banner'
-
       >
         <div className='govuk-notification-banner__header'>
           <h2
@@ -27,15 +26,17 @@ export default function NotificationBanner ({
             {title}
           </h2>
         </div>
-        <div className='govuk-notification-banner__content'>
-          {heading
-            ? (
-              <h3 className='govuk-notification-banner__heading'>{heading}</h3>
-              )
-            : null}
+
+        {/* the below css class has a restricted width which is causing issues for full width org pages */}
+        <div className={'govuk-notification-banner__content'}>
+          {heading && (
+            <h3 className='govuk-notification-banner__heading'>{heading}</h3>
+          )}
           <p className='govuk-body'>
             {text.map((line, index) => (
-              <p key={index} className='govuk-!-margin-bottom-1'>{line}</p>
+              <p key={index} className='govuk-!-margin-bottom-1'>
+                {line}
+              </p>
             ))}
           </p>
         </div>

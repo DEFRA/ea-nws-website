@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import { orgFloodReportsUrls } from '../../../../routes/flood-reports/FloodReportsRoutes'
-import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import BackLink from '../../../common/components/custom/BackLink'
+import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ReportsOverviewPage () {
+export default function ReportsOverviewPage() {
   const navigate = useNavigate()
 
   return (
@@ -26,14 +26,14 @@ export default function ReportsOverviewPage () {
               </Link>
             </p>
             <p>
-              {/* <Link to='#' className='govuk-link'> */}
-              Warnings removed in last 24 hours (not yet available)
-              {/* </Link> */}
+              <Link to={orgFloodReportsUrls.removed} className='govuk-link'>
+                Warnings removed in last 24 hours
+              </Link>
             </p>
             <p>
-              {/* <Link to='#' className='govuk-link'> */}
-              Historic warnings (not yet available)
-              {/* </Link> */}
+              <Link to={orgFloodReportsUrls.history} className='govuk-link'>
+                Historic warnings
+              </Link>
             </p>
             <br />
             <h2 className='govuk-heading-m'>Your locations</h2>
@@ -48,7 +48,8 @@ export default function ReportsOverviewPage () {
             </p>
             <p>
               {/* <Link to={orgFloodReportsUrls.summary} className='govuk-link'> */}
-              Summary of flood messages sent to your locations (not yet available)
+              Summary of flood messages sent to your locations (not yet
+              available)
               {/* </Link> */}
             </p>
             <br />

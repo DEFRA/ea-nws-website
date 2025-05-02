@@ -86,7 +86,7 @@ export default function DeleteLayout () {
           : orgManageContactsUrls.view.dashboard,
         {
           state: {
-            successMessage: `${nameToDelete} deleted`
+            successMessage: [`${nameToDelete} deleted`]
           }
         }
       )

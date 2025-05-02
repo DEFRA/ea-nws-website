@@ -72,23 +72,29 @@ const osFindNameApiCall = async (name, filter) => {
 
   try {
     const response = await axios.get(url)
-    // Check that location is in England
+    // checking first location in list returned should give a good indication if user
+    // is attempting to search for a location outside England
     if (response.data.results?.[0].GAZETTEER_ENTRY.COUNTRY === 'England') {
-      responseData = response.data.results.map((result) => {
-        const formattedLocationName = locationNameFormatter(
-          result.GAZETTEER_ENTRY
-        )
-        const coordinates = convertCoordinates(
-          result.GAZETTEER_ENTRY.GEOMETRY_X,
-          result.GAZETTEER_ENTRY.GEOMETRY_Y
-        )
+      responseData = response.data.results
+        .filter((result) => {
+          // filter out any non english locations
+          return result.GAZETTEER_ENTRY.COUNTRY === 'England'
+        })
+        .map((result) => {
+          const formattedLocationName = locationNameFormatter(
+            result.GAZETTEER_ENTRY
+          )
+          const coordinates = convertCoordinates(
+            result.GAZETTEER_ENTRY.GEOMETRY_X,
+            result.GAZETTEER_ENTRY.GEOMETRY_Y
+          )
 
-        return {
-          name: '',
-          address: formattedLocationName,
-          coordinates: coordinates
-        }
-      })
+          return {
+            name: '',
+            address: formattedLocationName,
+            coordinates: coordinates
+          }
+        })
 
       return { status: response.status, data: responseData }
     } else {

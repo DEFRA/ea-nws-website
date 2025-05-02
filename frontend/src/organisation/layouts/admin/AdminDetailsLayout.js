@@ -91,15 +91,7 @@ export default function AdminDetailsLayout ({
         setErrorEmail(errorMessage)
       }
     } else {
-      let updatedProfile
-      if (location.state?.returnToReview) {
-        // If coming from CheckYourAnswers page, replace the array entirely
-        // Over-writing whatever email was initially given (rather than just appending new one)
-        updatedProfile = { ...profile, emails: [email] }
-      } else {
-        // Normal "first time" flow through sign-up
-        updatedProfile = addVerifiedContact(profile, 'email', email)
-      }
+      const updatedProfile = { ...profile, emails: [email] }
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))

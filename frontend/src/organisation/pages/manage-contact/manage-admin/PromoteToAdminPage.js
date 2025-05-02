@@ -10,6 +10,7 @@ import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+import { webToGeoSafeContact } from '../../../../common/services/formatters/ContactFormatter'
 
 export default function PromoteToAdminPage() {
   const navigate = useNavigate()
@@ -53,11 +54,12 @@ export default function PromoteToAdminPage() {
       heading = `Confirm email address to invite ${contactName} as admin`
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const validationError = emailValidation(selectedEmail)
     setErrorMessage(validationError)
     if (validationError === '') {
-      const updatedContact = JSON.parse(JSON.stringify(currentContact))
+      const updatedContact = JSON.parse(JSON.stringify(webToGeoSafeContact(currentContact)))
       updatedContact.emails = [selectedEmail, ...updatedContact.emails]
 
       const dataToSend = { authToken, orgId, contact: updatedContact }

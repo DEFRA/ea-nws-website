@@ -7,7 +7,7 @@ import {
 } from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
-export default function LocationSearchResultsPage () {
+export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -66,7 +66,7 @@ export default function LocationSearchResultsPage () {
     }
   }
 
-  const returnToSearchPage = navigate('/signup/register-location/search')
+  const returnToSearchPage = () => navigate('/signup/register-location/search')
 
   return (
     <>

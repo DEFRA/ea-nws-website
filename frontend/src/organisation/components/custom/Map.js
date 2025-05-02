@@ -30,12 +30,13 @@ import {
   getSurroundingFloodAreasFromShape
 } from '../../../common/services/WfsFloodDataService'
 import {
-  createAlertPattern, createShapefilePattern,
+  createAlertPattern,
+  createShapefilePattern,
   createWarningPattern
 } from './FloodAreaPatterns'
 import { createExistingBoundaryPattern } from './PredefinedBoundaryPattern'
 
-export default function Map ({
+export default function Map({
   type,
   setCoordinates,
   showMapControls = true,
@@ -74,17 +75,18 @@ export default function Map ({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       let floodAreas
-      if (currentLocationDataType === LocationDataType.BOUNDARY ||
+      if (
+        currentLocationDataType === LocationDataType.BOUNDARY ||
         currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
-        currentLocationDataType === LocationDataType.SHAPE_LINE) {
-        floodAreas = await getSurroundingFloodAreasFromShape(JSON.parse(locationGeometry.geoJson))
-      } else {
-        floodAreas = await getSurroundingFloodAreas(
-          latitude,
-          longitude
+        currentLocationDataType === LocationDataType.SHAPE_LINE
+      ) {
+        floodAreas = await getSurroundingFloodAreasFromShape(
+          JSON.parse(locationGeometry.geoJson)
         )
+      } else {
+        floodAreas = await getSurroundingFloodAreas(latitude, longitude)
       }
       const { alertArea, warningArea } = floodAreas
       setAlertArea(alertArea)
@@ -119,7 +121,7 @@ export default function Map ({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -177,7 +179,7 @@ export default function Map ({
   )
   const ref = useRef(null)
 
-  function AddMarker () {
+  function AddMarker() {
     useMapEvents({
       click: (e) => {
         const mapHeight = ref.current.clientHeight
@@ -356,7 +358,7 @@ export default function Map ({
 
   // get boundary data if on boundary page
   useEffect(() => {
-    async function fetchBoundaries () {
+    async function fetchBoundaries() {
       if (
         currentLocationDataType === LocationDataType.BOUNDARY &&
         selectedBoundaryType
@@ -389,11 +391,13 @@ export default function Map ({
   const setBoundaryStyles = () => {
     if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.eachLayer((layer) => {
-        if (boundariesAlreadyAdded.includes(layer.feature.id)) {
+        console.log('layer.feature', layer.feature)
+        if (boundariesAlreadyAdded.includes(layer.feature.properties.TA_Name)) {
           layer.options.interactive = false
         } else if (
           selectedBoundary &&
-          layer.feature.id === selectedBoundary.id
+          layer.feature.properties.TA_Name ===
+            selectedBoundary.properties.TA_Name
         ) {
           layer.setStyle({
             color: '#6d7475',
@@ -435,7 +439,7 @@ export default function Map ({
       }
     })
 
-    if (boundariesAlreadyAdded.includes(layer.feature.id)) {
+    if (boundariesAlreadyAdded.includes(layer.feature.properties.TA_Name)) {
       layer.options.className = 'existing-boundary-area-pattern-fill'
       layer.setStyle({
         opacity: 1,
@@ -500,50 +504,47 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && apiKey !== 'error'
-          ? (
-            <>
-              {tileLayerWithHeader}
-              {showMapControls && (
-                <>
-                  <ZoomControl position='bottomright' />
-                  <ResetMapButton />
-                </>
-              )}
-              {currentLocationDataType !== LocationDataType.BOUNDARY &&
+        {apiKey && apiKey !== 'error' ? (
+          <>
+            {tileLayerWithHeader}
+            {showMapControls && (
+              <>
+                <ZoomControl position='bottomright' />
+                <ResetMapButton />
+              </>
+            )}
+            {currentLocationDataType !== LocationDataType.BOUNDARY &&
               currentLocationDataType !== LocationDataType.SHAPE_POLYGON &&
               currentLocationDataType !== LocationDataType.SHAPE_LINE && (
                 <>
-                  {type === 'drop'
-                    ? (
-                      <AddMarker />
-                      )
-                    : (
-                      <Marker position={centre} interactive={false} />
-                      )}
+                  {type === 'drop' ? (
+                    <AddMarker />
+                  ) : (
+                    <Marker position={centre} interactive={false} />
+                  )}
                 </>
               )}
-              {alertArea && (
-                <GeoJSON
-                  data={alertArea}
-                  onEachFeature={onEachAlertAreaFeature}
-                  ref={(el) => {
-                    alertAreaRef.current = el
-                    setAlertAreaRefVisible(true)
-                  }}
-                />
-              )}
-              {warningArea && (
-                <GeoJSON
-                  data={warningArea}
-                  onEachFeature={onEachWarningAreaFeature}
-                  ref={(el) => {
-                    warningAreaRef.current = el
-                    setWarningAreaRefVisible(true)
-                  }}
-                />
-              )}
-              {boundaries &&
+            {alertArea && (
+              <GeoJSON
+                data={alertArea}
+                onEachFeature={onEachAlertAreaFeature}
+                ref={(el) => {
+                  alertAreaRef.current = el
+                  setAlertAreaRefVisible(true)
+                }}
+              />
+            )}
+            {warningArea && (
+              <GeoJSON
+                data={warningArea}
+                onEachFeature={onEachWarningAreaFeature}
+                ref={(el) => {
+                  warningAreaRef.current = el
+                  setWarningAreaRefVisible(true)
+                }}
+              />
+            )}
+            {boundaries &&
               currentLocationDataType === LocationDataType.BOUNDARY && (
                 <GeoJSON
                   data={boundaries}
@@ -554,10 +555,9 @@ export default function Map ({
                   }}
                 />
               )}
-              {locationGeometry &&
+            {locationGeometry &&
               (currentLocationDataType === LocationDataType.SHAPE_LINE ||
-                currentLocationDataType === LocationDataType.SHAPE_POLYGON) &&
-              (
+                currentLocationDataType === LocationDataType.SHAPE_POLYGON) && (
                 <>
                   <GeoJSON
                     data={JSON.parse(locationGeometry.geoJson)}
@@ -569,9 +569,8 @@ export default function Map ({
                   <FitBounds />
                 </>
               )}
-              {locationGeometry &&
-                currentLocationDataType === LocationDataType.BOUNDARY &&
-              (
+            {locationGeometry &&
+              currentLocationDataType === LocationDataType.BOUNDARY && (
                 <>
                   <GeoJSON
                     data={JSON.parse(locationGeometry.geoJson)}
@@ -583,16 +582,15 @@ export default function Map ({
                   <FitBounds />
                 </>
               )}
-            </>
-            )
-          : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
-            )}
+          </>
+        ) : (
+          <div className='map-error-container'>
+            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+            <Link className='govuk-body-s' onClick={() => getApiKey()}>
+              Reload map
+            </Link>
+          </div>
+        )}
       </MapContainer>
     </div>
   )

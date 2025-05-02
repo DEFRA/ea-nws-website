@@ -1,25 +1,16 @@
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
 import ContactDetailsLayout from '../../../layouts/manage-contact/ContactDetailsLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactDetailsPage () {
+export default function AddContactDetailsPage() {
   const navigate = useNavigate()
-  const location = useLocation()
-  const userType = location?.state?.type || 'contact'
+  const addingAdmin = useSelector((state) => state.session.addingAdminFlow)
   const navigateToNextPage = () => {
-    if (userType === 'admin') {
-      navigate(orgManageContactsUrls.add.email, {
-        state: {
-          type: userType
-        }
-      })
+    if (addingAdmin) {
+      navigate(orgManageContactsUrls.add.email)
     } else {
-      navigate(orgManageContactsUrls.add.channels, {
-        state: {
-          type: userType
-        }
-      })
+      navigate(orgManageContactsUrls.add.channels)
     }
   }
 

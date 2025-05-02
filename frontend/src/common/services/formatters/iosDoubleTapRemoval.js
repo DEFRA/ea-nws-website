@@ -1,10 +1,8 @@
 // https://tinyurl.com/yf795sm5 - link to medium post on how this fix was found
 
-// https://stackoverflow.com/a/71779604/3717718
 export function removeHoverIosSafari() {
   if (!isIosSafari()) return
 
-  console.log('is ios')
   // Tags of interest: Only process certain interactive elements
   function shouldPrevent(target) {
     var tagName = target.tagName.toLowerCase()
@@ -74,7 +72,6 @@ export function removeHoverIosSafari() {
 }
 
 function isIosSafari() {
-  console.log(navigator.userAgent)
   return (
     /iP(ad|hone|od)/.test(navigator.userAgent) &&
     /WebKit/.test(navigator.userAgent) &&

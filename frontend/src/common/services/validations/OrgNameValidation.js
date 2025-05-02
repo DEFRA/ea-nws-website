@@ -11,7 +11,7 @@ const orgNameValidation = (orgName) => {
   // Only letters, digits, spaces, and any of . , : ; # -
   const validPattern = /^[A-za-z0-9 .,:;#-]+$/
   if (!validPattern.test(orgName)) {
-    return `TODO: Change once message is confirmed with UCD`
+    return `Organisation name can only contain letters, numbers, hyphens and colons`
   }
 
   return ''

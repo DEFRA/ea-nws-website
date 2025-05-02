@@ -8,9 +8,9 @@ import Input from '../../../../common/components/gov-uk/Input'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { webToGeoSafeContact } from '../../../../common/services/formatters/ContactFormatter'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
-import { webToGeoSafeContact } from '../../../../common/services/formatters/ContactFormatter'
 
 export default function PromoteToAdminPage() {
   const navigate = useNavigate()
@@ -59,8 +59,16 @@ export default function PromoteToAdminPage() {
     const validationError = emailValidation(selectedEmail)
     setErrorMessage(validationError)
     if (validationError === '') {
-      const updatedContact = JSON.parse(JSON.stringify(webToGeoSafeContact(currentContact)))
-      updatedContact.emails = [selectedEmail, ...updatedContact.emails]
+      const updatedContact = JSON.parse(
+        JSON.stringify(webToGeoSafeContact(currentContact))
+      )
+
+      // move email selected to receive notification to front of array
+      const index = updatedContact.emails.indexOf(selectedEmail)
+      if (index > 0) {
+        updatedContact.emails.splice(index, 1)
+        updatedContact.emails.unshift(selectedEmail)
+      }
 
       const dataToSend = { authToken, orgId, contact: updatedContact }
       const { errorMessage: updateError } = await backendCall(

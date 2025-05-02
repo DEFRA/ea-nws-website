@@ -36,6 +36,7 @@ export default function LocationMessagesPage () {
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
+  const isPredefinedBoundary = additionalData.location_data_type === 'boundary'
 
   const handleClose = () => {
     setUnlinkID(null)
@@ -68,6 +69,9 @@ export default function LocationMessagesPage () {
       setLocationUnlinked(true)
       setUnlinkID(null)
     }
+
+    // Directly remove flood area from the table state so it can be reflected on page (without refreshing)
+    setFloodAreasInputs(prevInputs => prevInputs.filter(input => input.linked !== unlinkID))
   }
 
   async function getPartnerId () {
@@ -313,7 +317,7 @@ export default function LocationMessagesPage () {
           <>
             <p>
               Flood messages are currently unavailable for this location. This may
-              be because there are no measurement guages in the area of the
+              be because there are no measurement gauges in the area of the
               location. Or the location is in an area where not many people live
               or work.
             </p>
@@ -549,11 +553,16 @@ export default function LocationMessagesPage () {
             {messageSettingsSection}
           </div>
         </div>
-        <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full govuk-!-margin-top-9'>
-            {floodAreasSection}
+
+        {/* Only render flood areas section if location is not a predefined boundary */}
+        {!isPredefinedBoundary && (
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-full govuk-!-margin-top-9'>
+              {floodAreasSection}
+            </div>
           </div>
-        </div>
+        )}
+
         {unlinkID &&
           <Popup
             onDelete={() => handleDelete()}

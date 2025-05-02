@@ -1,9 +1,9 @@
 // FloodTypeFilter.jsx
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { orgFloodReportsUrls } from '../../../../../routes/flood-reports/FloodReportsRoutes'
+import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
 
-export default function FloodTypeFilter ({
+export default function FloodTypeFilter({
   iconSrc,
   locationsCount,
   warningType,

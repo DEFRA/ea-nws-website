@@ -170,6 +170,15 @@ export default function ViewLocationsDashboardPage () {
         }
       })
 
+      // Sort objects by location name alphabetically
+      locationsUpdate.sort((a, b) => {
+        const nameA = (a.additionals.locationName || '').toLowerCase()
+        const nameB = (b.additionals.locationName || '').toLowerCase()
+        if (nameA < nameB) return -1
+        if (nameA > nameB) return 1
+        return 0
+      })
+
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
       setLoading(false)

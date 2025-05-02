@@ -1,32 +1,30 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+import UserType from '../../../../common/enums/UserType'
 import store from '../../../../common/redux/store'
 import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactNotesPage () {
+export default function AddContactNotesPage() {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const dispatch = useDispatch()
   const [error, setError] = useState('')
-  const location = useLocation()
-  const userType = location?.state?.type || 'contact'
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
+  const userType = currentContact.role
 
   const navigateToNextPage = () => {
-    navigate(orgManageContactsUrls.add.linkContactToLocations, {
-      state: {
-        type: userType
-      }
-    })
+    navigate(orgManageContactsUrls.add.linkContactToLocations)
   }
 
   const updateContact = async () => {
-    const contact = JSON.parse(JSON.stringify(store.getState().session.orgCurrentContact))
+    const contact = JSON.parse(
+      JSON.stringify(store.getState().session.orgCurrentContact)
+    )
     const dataToSend = { authToken, orgId, contact }
     const { data, errorMessage } = await backendCall(
       dataToSend,
@@ -86,7 +84,8 @@ export default function AddContactNotesPage () {
 
   const instructionText = (
     <>
-      For example, annual leave dates or locations they look after.<br />
+      For example, annual leave dates or locations they look after.
+      <br />
       All admins in your organisation will see these notes.
     </>
   )
@@ -99,7 +98,7 @@ export default function AddContactNotesPage () {
         instructionText={instructionText}
         title={notesTitle}
         buttonText='Continue'
-        onSubmit={userType === 'admin' ? updateContact : onAddContact}
+        onSubmit={userType === UserType.Admin ? updateContact : onAddContact}
         error={error}
         setError={setError}
       />

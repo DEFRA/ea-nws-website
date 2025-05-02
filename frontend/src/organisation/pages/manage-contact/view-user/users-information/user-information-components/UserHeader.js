@@ -1,15 +1,16 @@
 import { useLocation, useNavigate } from 'react-router'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
+import UserType from '../../../../../../common/enums/UserType'
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader ({ contactName, userType, currentPage }) {
+export default function UserHeader({ contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
 
   const handleSubmit = () => {
-    if (userType !== 'ADMIN') {
+    if (userType !== UserType.Admin) {
       navigate(orgManageContactsUrls.admin.promote)
     } else {
       navigate(orgManageContactsUrls.admin.remove)
@@ -18,18 +19,18 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
 
   return (
     <>
-      {location.state.successMessage && (
+      {location.state?.successMessage && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success'
           title='Success'
           text={location.state.successMessage}
         />
       )}
-      {userType === 'Pending admin' ? (
+      {userType === UserType.PendingAdmin ? (
         <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
           Pending admin
         </strong>
-      ) : userType === 'ADMIN' ? (
+      ) : userType === UserType.Admin ? (
         <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
           Admin
         </strong>
@@ -54,7 +55,9 @@ export default function UserHeader ({ contactName, userType, currentPage }) {
           <>
             <Button
               text={
-                userType === 'ADMIN' ? 'Remove as admin' : 'Promote to admin'
+                userType === UserType.Admin
+                  ? 'Remove as admin'
+                  : 'Promote to admin'
               }
               className='govuk-button govuk-button--secondary'
               onClick={() => {

@@ -1,3 +1,5 @@
+const { default: UserType } = require('../../enums/UserType')
+
 const geoSafeToWebContact = (geoSafeContact) => {
   const contact = {
     id: geoSafeContact?.id,
@@ -22,8 +24,8 @@ const geoSafeToWebContact = (geoSafeContact) => {
     unverified: geoSafeContact?.unverified,
     metatdata: geoSafeContact?.metatdata,
     pois: geoSafeContact?.pois,
-    role: geoSafeContact?.role,
-    pendingRole: geoSafeContact?.pendingRole
+    role: geoSafeContact?.role && UserType.Admin,
+    pendingRole: geoSafeContact?.pendingRole && UserType.PendingAdmin
   }
 
   const additionals = geoSafeContact?.additionals
@@ -80,8 +82,8 @@ const webToGeoSafeContact = (webContact) => {
     unverified: webContact.unverified,
     metatdata: webContact.metatdata,
     pois: webContact.pois,
-    role: webContact.role,
-    pendingRole: webContact.pendingRole
+    role: webContact.role && 'ADMIN',
+    pendingRole: webContact.pendingRole && 'ADMIN'
   }
   return contact
 }

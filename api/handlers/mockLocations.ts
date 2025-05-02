@@ -726,6 +726,51 @@ const locations = [
         }
       }
     ]
+  },
+  ,
+  {
+    id: '14',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Derbyshire',
+    coordinates: {
+      latitude: 52.92944454871733 * 10 ** 6,
+      longitude: -1.4721362793347623 * 10 ** 6
+    },
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Derbyshire' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: 'Derbyshire',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [
+              {
+                TA_CODE: '034FWFDELITTLECH',
+                TA_Name:
+                  'River Derwent at Little Chester, Eastgate and Cattle Market',
+                category: 'Flood Warning'
+              }
+            ]
+          })
+        }
+      }
+    ]
   }
 ]
 

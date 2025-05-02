@@ -9,7 +9,7 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 
 export default function RemoveAdminPage () {
   const navigate = useNavigate()
-  const authToken = useSelector((state) => state.session.token)
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
@@ -46,7 +46,7 @@ export default function RemoveAdminPage () {
 
       navigate(orgManageContactsUrls.view.dashboard, {
         state: {
-          successMessage: `${contactName} is no longer and admin but is now a contact. They'll still get the same flood messages as before.`
+          successMessage: [`${contactName} is no longer and admin but is now a contact. They'll still get the same flood messages as before.`]
         }
       })
     } catch (e) {

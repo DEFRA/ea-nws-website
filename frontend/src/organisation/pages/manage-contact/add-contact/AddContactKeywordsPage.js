@@ -5,18 +5,13 @@ import { useLocation } from 'react-router-dom'
 import KeywordsLayout from '../../../layouts/optional-info/KeywordsLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactKeywordsPage () {
+export default function AddContactKeywordsPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const userType = location?.state?.type || 'contact'
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
   const navigateToNextPage = () => {
-    navigate(orgManageContactsUrls.add.notes, {
-      state: {
-        type: userType
-      }
-    })
+    navigate(orgManageContactsUrls.add.notes)
   }
 
   const KeywordTitle = `Keywords for ${currentContact?.firstname} ${currentContact?.lastname} (optional)`
@@ -24,13 +19,16 @@ export default function AddContactKeywordsPage () {
   const KeywordText = (
     <>
       <p className='govuk-!-margin-bottom-5'>
-        Keywords are useful if you need to group users and then link them to locations.
+        Keywords are useful if you need to group users and then link them to
+        locations.
       </p>
       <p className='govuk-!-margin-bottom-5'>
-        For example,  you could add the keyword 'Midlands' for {currentContact?.firstname} {currentContact?.lastname}.
+        For example, you could add the keyword 'Midlands' for{' '}
+        {currentContact?.firstname} {currentContact?.lastname}.
       </p>
       <p className='govuk-!-margin-bottom-5'>
-        Then link {currentContact?.firstname} {currentContact?.lastname} and all other users with this keyword to locations in the Midlands.
+        Then link {currentContact?.firstname} {currentContact?.lastname} and all
+        other users with this keyword to locations in the Midlands.
       </p>
     </>
   )

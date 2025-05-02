@@ -20,13 +20,10 @@ export default function WithdrawInvitePage () {
 
   const handleSubmit = async () => {
     try {
-      const adminToUpdate = JSON.parse(JSON.stringify(pendingAdmin))
-      adminToUpdate.pendingRole = null
-
-      const dataToSend = { authToken, orgId, contact: adminToUpdate }
+      const dataToSend = { authToken, orgId, contactId: pendingAdmin.id }
       const { errorMessage } = await backendCall(
         dataToSend,
-        'api/organization/update_contact',
+        'api/organization/demote_contact',
         navigate
       )
 

@@ -673,6 +673,8 @@ const userSlice = createSlice({
       state.orgCurrentContact.additionals = action.payload.additionals
       state.orgCurrentContact.comments = action.payload.comments
       state.orgCurrentContact.pois = action.payload.pois
+      state.orgCurrentContact.role = action.payload.role
+      state.orgCurrentContact.pendingRole = action.payload.pendingRole
     },
     setOrgCurrentContactId: (state, action) => {
       state.orgCurrentContact.id = action.payload
@@ -720,6 +722,15 @@ const userSlice = createSlice({
         'jobTitle',
         action.payload
       )
+    },
+    setOrgCurrentContactRole: (state, action) => {
+      state.orgCurrentContact.role = action.payload
+    },
+    setOrgCurrentContactPendingRole: (state, action) => {
+      state.orgCurrentContact.pendingRole = action.payload
+    },
+    setAddingAdminFlow: (state, action) => {
+      state.addingAdminFlow = action.payload
     },
     clearOrgCurrentContact: (state) => {
       state.orgCurrentContact = {
@@ -868,6 +879,7 @@ const userSlice = createSlice({
         alertDiffusionZoneBoundingBox: null,
         urlSlug: null
       }
+      state.addingAdminFlow = null
       state.orgCurrentContact = {
         id: null,
         enabled: true,
@@ -1079,7 +1091,11 @@ export const {
   setOrgCurrentContactJobTitle,
   setOrgCurrentContactNotes,
   setOrgCurrentContactPois,
+  setOrgCurrentContactRole,
+  setOrgCurrentContactPendingRole,
   setContacts,
+  // flow
+  setAddingAdminFlow,
   // clear state
   clearAuth,
   clearCurrentLocation,

@@ -129,7 +129,7 @@ export default function LinkBanner ({
 
     if (!errorFound) {
       setErrorMessage('')
-      const successMessage = getSuccessMessage()
+      const successMessage = [getSuccessMessage()]
       if (linkLocations) {
         if (predefinedBoundaryFlow) {
           navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother, {

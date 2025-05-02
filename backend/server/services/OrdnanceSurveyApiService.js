@@ -77,10 +77,10 @@ const osFindNameApiCall = async (name, filter) => {
     if (response.data.results?.[0].GAZETTEER_ENTRY.COUNTRY === 'England') {
       responseData = response.data.results
         .filter((result) => {
+          // filter out any non english locations
           return result.GAZETTEER_ENTRY.COUNTRY === 'England'
         })
         .map((result) => {
-          // filter out any non english locations
           const formattedLocationName = locationNameFormatter(
             result.GAZETTEER_ENTRY
           )

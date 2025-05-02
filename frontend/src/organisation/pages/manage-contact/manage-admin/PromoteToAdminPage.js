@@ -11,7 +11,7 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PromoteToAdminPage () {
+export default function PromoteToAdminPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -118,20 +118,18 @@ export default function PromoteToAdminPage () {
               receiving, as a contact.
             </p>
 
-            {emailCount > 1
-              ? (
-                  emailRadios
-                )
-              : (
-                <Input
-                  inputType='text'
-                  value={selectedEmail}
-                  name='Email address'
-                  onChange={(val) => setSelectedEmail(val)}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                />
-                )}
+            {emailCount > 1 ? (
+              emailRadios
+            ) : (
+              <Input
+                inputType='text'
+                value={selectedEmail}
+                name='Email address'
+                onChange={(val) => setSelectedEmail(val)}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+              />
+            )}
             <Button
               text='Invite as admin'
               className='govuk-button'

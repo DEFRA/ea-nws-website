@@ -355,7 +355,6 @@ export default function ViewUsersDashboardPage() {
 
   return (
     <>
-      {/* if user has just been added then do not allow user to navigate back through adding process */}
       {location.state?.successMessage && <BackLink onClick={navigateBack} />}
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

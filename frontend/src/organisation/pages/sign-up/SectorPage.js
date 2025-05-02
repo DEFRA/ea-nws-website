@@ -15,7 +15,7 @@ export default function SectorPage () {
   const navigateToNextPage = async () => {
     // Save lastAccessedUrl so users are taken to next page if logging in after abandoning at this point
     const updatedProfile = updateAdditionals(profile, [
-      { id: 'signupComplete', value: { s: 'pending' } },
+      { id: 'signupComplete', value: { s: 'false' } },
       { id: 'lastAccessedUrl', value: { s: orgSignUpUrls.altContact } }
     ])
     dispatch(setProfile(updatedProfile))

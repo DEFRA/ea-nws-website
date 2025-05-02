@@ -76,7 +76,6 @@ export default function SelectPredefinedBoundaryPage() {
     )
 
     setBoundariesAlreadyAdded(boundaryLocations)
-    console.log('boundaryLocations', boundaryLocations)
   }
 
   // Get boundary types
@@ -98,22 +97,6 @@ export default function SelectPredefinedBoundaryPage() {
     setBoundaryError('')
   }, [selectedBoundary])
 
-  // useEffect(() => {
-  //   if (locationBoundaries) {
-  //     setBoundariesAlreadyAdded(
-  //       locationBoundaries
-  //         .filter((locationBoundary) => {
-  //           return locationBoundary.boundary_type === selectedBoundaryType
-  //         })
-  //         .map((locationBoundary) => {
-  //           return locationBoundary.boundary
-  //         })
-  //     )
-  //   } else {
-  //     setBoundariesAlreadyAdded([])
-  //   }
-  // }, [selectedBoundaryType, locationBoundaries])
-
   const onBoundaryTypeSelected = (boundaryType) => {
     dispatch(setSelectedBoundaryType(boundaryType))
   }
@@ -122,8 +105,6 @@ export default function SelectPredefinedBoundaryPage() {
     const boundarySelected = boundaries.find(
       (boundary) => boundary.properties.TA_Name === boundaryName
     )
-
-    console.log('boundary selected', boundarySelected)
 
     dispatch(setSelectedBoundary(boundarySelected))
   }
@@ -213,8 +194,6 @@ export default function SelectPredefinedBoundaryPage() {
         newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
 
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
-
-      console.log('newGeosafeLocation', newGeosafeLocation)
 
       const dataToSend = { authToken, orgId, location: newGeosafeLocation }
       const { data } = await backendCall(

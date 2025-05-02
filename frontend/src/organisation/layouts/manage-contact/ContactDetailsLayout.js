@@ -105,7 +105,9 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
         c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
     )
     if (isDuplicate) {
-      setFirstNameError('TODO: Set correct message after confirming with UCD')
+      setFirstNameError(
+        `User ${firstname} ${lastname} already exists in your organisation - you cannot enter this person again`
+      )
       return
     }
 

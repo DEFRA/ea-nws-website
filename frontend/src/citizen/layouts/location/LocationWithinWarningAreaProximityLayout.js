@@ -165,7 +165,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     If you choose one of these, you'll get{' '}
                     {type === 'severe'
                       ? 'flood messages about danger to life or property.'
-                      : 'early alerts aboutpossible flooding.'}
+                      : 'early alerts about possible flooding.'}
                   </p>
                 </div>
               </div>

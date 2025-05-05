@@ -101,6 +101,16 @@ export default function ViewLocationPage () {
     setPartnerId(data)
   }
 
+  useEffect(() => {
+    const alertTypes = getLocationOtherAdditional(
+      selectedLocation?.additionals || [],
+      'alertTypes'
+    )
+    const floodAlertEnabled = alertTypes.includes(AlertType.FLOOD_ALERT)
+    setSavedOptionalAlerts(floodAlertEnabled)
+    setPendingOptionalAlerts(floodAlertEnabled)
+  }, [selectedLocation])
+
   // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData () {

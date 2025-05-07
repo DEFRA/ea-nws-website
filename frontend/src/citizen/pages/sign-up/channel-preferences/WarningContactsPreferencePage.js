@@ -66,20 +66,21 @@ export default function WarningContactsPreferencePage () {
                   text={loginEmail + ' is your sign in email'}
                 />
                 )}
-            <h1 className='govuk-heading-l'>
-              How would you like to get messages about flooding?
-            </h1>
-            <div
-              className={
-                error
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
-            >
-              <fieldset className='govuk-fieldset'>
-                <legend className='govuk-fieldset__legend'>
-                  Select at least one option
-                </legend>
+            <fieldset className='govuk-fieldset' aria-describedby="group-hint">
+              <legend className='govuk-fieldset__legend'>
+                <h1 className='govuk-heading-l'>
+                  How would you like to get messages about flooding?
+                </h1>
+              </legend>
+              <div
+                className={
+                  error
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
+                }
+              >
+                <span id="group-hint">Select at least one option</span>
+
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((preference) => (
@@ -94,8 +95,8 @@ export default function WarningContactsPreferencePage () {
                     />
                   ))}
                 </div>
-              </fieldset>
-            </div>
+              </div>
+            </fieldset>
             <Button
               text='Continue'
               className='govuk-button'

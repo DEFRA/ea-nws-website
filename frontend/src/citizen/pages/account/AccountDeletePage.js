@@ -170,6 +170,7 @@ export default function AccountDeletePage () {
                 <fieldset className='govuk-fieldset' />
                 <h2 className='govuk-label-wrapper'>
                   <label
+                    id="more-detail-hint"
                     className='govuk-label govuk-label--m'
                     htmlFor='more-detail'
                   >
@@ -184,6 +185,7 @@ export default function AccountDeletePage () {
                   id='more-detail'
                   rows='5'
                   onChange={(val) => setAccountDeletionFurtherInfo(val)}
+                  labelledByID="more-detail-hint"
                 />
               </div>
 

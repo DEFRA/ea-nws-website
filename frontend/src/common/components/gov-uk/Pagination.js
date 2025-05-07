@@ -82,7 +82,6 @@ export default function Pagination ({
               <div className='govuk-pagination__prev'>
                 <a
                   className='govuk-link govuk-pagination__link'
-                  href='#'
                   onClick={(e) => {
                     e.preventDefault()
                     setCurrentPage(currentPage - 1)
@@ -114,7 +113,6 @@ export default function Pagination ({
               <div className='govuk-pagination__next'>
                 <a
                   className='govuk-link govuk-pagination__link'
-                  href='#'
                   rel='next'
                   onClick={(e) => {
                     e.preventDefault()

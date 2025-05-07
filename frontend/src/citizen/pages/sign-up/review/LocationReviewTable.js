@@ -15,7 +15,7 @@ export default function LocationReviewTable ({ locations }) {
 
   return (
     <div className='govuk-!-padding-bottom-4'>
-      <h3 className='govuk-heading-m'>Location you selected</h3>
+      <h2 className='govuk-heading-m'>Location you selected</h2>
       {locations.map && (
         <table className='govuk-table'>
           <tbody className='govuk-table__body' />

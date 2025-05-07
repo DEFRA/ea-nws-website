@@ -179,7 +179,9 @@ export default function LocationWithinWarningAreaProximityLayout ({
                   }
                   >
                     <fieldset className='govuk-fieldset'>
-                      <legend><h3 className='govuk-heading-s'>Select a nearby area</h3></legend>
+                      <legend className='govuk-fieldset__legend'>
+                        <h3 className='govuk-heading-s'>Select a nearby area</h3>
+                      </legend>
                       {error && <p className='govuk-error-message'>{error}</p>}
                       {floodAreas
                         ? (

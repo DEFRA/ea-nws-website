@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import { backendCall } from '../../../common/services/BackendService'
@@ -27,6 +28,8 @@ export default function LinkBanner ({
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const predefinedBoundaryFlow = useSelector((state) => state.session.predefinedBoundaryFlow)
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
+  const [linking, setLinking] = useState(false)
+  const [stage, setStage] = useState('')
 
   const getSuccessMessage = () => {
     let afterText = ''
@@ -106,7 +109,12 @@ export default function LinkBanner ({
     }
 
     if (!errorFound) {
-      for (const locationID of linkLocationIDs) {
+      const numLocations = linkLocationIDs.length
+      // only show the linking progress if more than one location
+      // is being linked too 
+      numLocations > 1 && setLinking(true)
+      for (const [index, locationID] of linkLocationIDs.entries()) {
+        setStage(`Linking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
         const dataToSend = {
           authToken,
           orgId,
@@ -125,6 +133,7 @@ export default function LinkBanner ({
           console.log(errorMessage)
         }
       }
+      setLinking(false)
     }
 
     if (!errorFound) {
@@ -232,6 +241,7 @@ export default function LinkBanner ({
   }
 
   return (
+    <>
     <div
       className='govuk-!-margin-top-1'
       style={{
@@ -315,5 +325,14 @@ export default function LinkBanner ({
         </div>
       </div>
     </div>
+    {linking &&
+        <div className='popup-dialog'>
+          <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+            <LoadingSpinner
+              loadingText={<p className='govuk-body-l'>{stage}</p>}
+            />
+          </div>
+        </div>}
+    </>
   )
 }

@@ -117,7 +117,7 @@ export default function StartPage () {
             </div>
           </div>
           <div className='govuk-grid-column-one-third'>
-            <h3 className='govuk-heading-s'>Related content</h3>
+            <h2 className='govuk-heading-s'>Related content</h2>
             <ul className='govuk-list'>
               <li>
                 <a

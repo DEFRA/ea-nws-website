@@ -8,9 +8,9 @@ export default function AccountDetailsTable ({ profile }) {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header  govuk-!-width-one-half'>
+            <th className='govuk-table__header govuk-!-width-one-half' scope='row'>
               Full name
-            </td>
+            </th>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {profile.firstname + ' ' + profile.lastname}
             </td>
@@ -26,9 +26,9 @@ export default function AccountDetailsTable ({ profile }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header  govuk-!-width-one-half'>
+            <th className='govuk-table__header  govuk-!-width-one-half' scope='row'>
               Email to sign in
-            </td>
+            </th>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {profile.emails[0]}
             </td>

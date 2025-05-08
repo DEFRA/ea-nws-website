@@ -727,7 +727,6 @@ const locations = [
       }
     ]
   },
-  ,
   {
     id: '14',
     enabled: true,

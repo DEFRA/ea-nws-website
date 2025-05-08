@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
-import AlertType from '../../../../../../common/enums/AlertType'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import {
   geoSafeToWebLocation,
@@ -19,6 +19,8 @@ export default function DuplicateLocationsOptionsPage () {
   const navigate = useNavigate()
   const [option, setOption] = useState('')
   const [error, setError] = useState('')
+  const [replacing, setReplacing] = useState(false)
+  const [stage, setStage] = useState('')
   const location = useLocation()
   const addedLocations = location?.state?.addedLocations || 0
   const duplicateLocations = location?.state?.numDuplicates
@@ -144,84 +146,62 @@ export default function DuplicateLocationsOptionsPage () {
           break
         }
         case options[1].value: {
-          await Promise.all(
-            dupLocations.map(async (location) => {
-              // get the exisitng location to use it's ID
-              const existingLocation = await getLocation(
-                orgId,
-                location.additionals.locationName,
-                'valid'
-              )
-
-              // Set alert types
-              location.additionals.other.alertTypes = []
-              const categoryToType = (type) => {
-                const typeMap = {
-                  'Flood Warning': 'warning',
-                  'Flood Warning Groundwater': 'warning',
-                  'Flood Warning Rapid Response': 'warning',
-                  'Flood Alert': 'alert',
-                  'Flood Alert Groundwater': 'alert'
-                }
-                return typeMap[type] || []
-              }
-              location.additionals.other.targetAreas.some(
-                (area) => categoryToType(area.category) === 'warning'
-              ) &&
-                location.additionals.other.alertTypes.push(
-                  AlertType.SEVERE_FLOOD_WARNING
-                ) &&
-                location.additionals.other.alertTypes.push(
-                  AlertType.FLOOD_WARNING
+          const dupLength = dupLocations.length
+          setReplacing(true)
+          for (let i = 0; i < dupLength; i += 10) {
+            setStage(`Replacing locations (${Math.round((i / dupLength) * 100)}%)`)
+            const chunk = dupLocations.slice(i, i + 10)
+            await Promise.all(
+              chunk.map(async (location) => {
+                // get the exisitng location to use it's ID
+                const existingLocation = await getLocation(
+                  orgId,
+                  location.additionals.locationName,
+                  'valid'
                 )
-
-              location.additionals.other.targetAreas.some(
-                (area) => categoryToType(area.category) === 'alert'
-              ) &&
-                location.additionals.other.alertTypes.push(
-                  AlertType.FLOOD_ALERT
-                )
-
-              const locationToUpdate = webToGeoSafeLocation(location)
-              // change the location ID to the existing ID in geosafe
-              locationToUpdate.id = existingLocation.id
-              // Update exisiting location in geosafe with new location
-              const dataToSend = {
-                authToken,
-                orgId,
-                location: locationToUpdate
-              }
-              await backendCall(dataToSend, 'api/location/update', navigate)
-              // update registrations as the new location will have all alerts enabled by default
-              const registerData = {
-                authToken,
-                locationId: locationToUpdate.id,
-                partnerId,
-                params: {
-                  channelVoiceEnabled: true,
-                  channelSmsEnabled: true,
-                  channelEmailEnabled: true,
-                  channelMobileAppEnabled: true,
-                  partnerCanView: true,
-                  partnerCanEdit: true,
-                  alertTypes: location.additionals.other.alertTypes
+  
+                const locationToUpdate = webToGeoSafeLocation(location)
+                // change the location ID to the existing ID in geosafe
+                locationToUpdate.id = existingLocation.id
+                // Update exisiting location in geosafe with new location
+                const dataToSend = {
+                  authToken,
+                  orgId,
+                  location: locationToUpdate
                 }
-              }
-
-              await backendCall(
-                registerData,
-                'api/location/update_registration',
-                navigate
-              )
-              // remove location from invalid array
-              const locationIdToRemove = location.id
-              await backendCall(
-                { orgId, locationId: locationIdToRemove },
-                'api/bulk_uploads/remove_invalid_location',
-                navigate
-              )
-            })
-          )
+                await backendCall(dataToSend, 'api/location/update', navigate)
+                // update registrations as the new location will have all alerts enabled by default
+                const registerData = {
+                  authToken,
+                  locationId: locationToUpdate.id,
+                  partnerId,
+                  params: {
+                    channelVoiceEnabled: true,
+                    channelSmsEnabled: true,
+                    channelEmailEnabled: true,
+                    channelMobileAppEnabled: true,
+                    partnerCanView: true,
+                    partnerCanEdit: true,
+                    alertTypes: location.additionals.other.alertTypes
+                  }
+                }
+  
+                await backendCall(
+                  registerData,
+                  'api/location/update_registration',
+                  navigate
+                )
+                // remove location from invalid array
+                const locationIdToRemove = location.id
+                await backendCall(
+                  { orgId, locationId: locationIdToRemove },
+                  'api/bulk_uploads/remove_invalid_location',
+                  navigate
+                )
+              })
+            )
+          }
+          setReplacing(false)
 
           navigateToNextPage(
             url,
@@ -298,6 +278,14 @@ export default function DuplicateLocationsOptionsPage () {
           </div>
         </div>
       </main>
+      {replacing &&
+        <div className='popup-dialog'>
+          <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+            <LoadingSpinner
+              loadingText={<p className='govuk-body-l'>{`${stage}`}</p>}
+            />
+          </div>
+        </div>}
     </>
   )
 }

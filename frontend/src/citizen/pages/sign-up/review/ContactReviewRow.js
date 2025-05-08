@@ -35,9 +35,9 @@ export default function ContactReviewRow ({
   return (
     <>
       <tr key={key} className='govuk-table__row'>
-        <td className='govuk-table__header text-nowrap'>
+        <th className='govuk-table__header text-nowrap' scope='row'>
           {rowDetails().titleRow}
-        </td>
+        </th>
         <td className='custom-table-cell govuk-table__cell'>
           {contact}
           {!isConfirmed && (

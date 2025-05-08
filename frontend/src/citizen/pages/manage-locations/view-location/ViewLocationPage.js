@@ -101,16 +101,6 @@ export default function ViewLocationPage () {
     setPartnerId(data)
   }
 
-  useEffect(() => {
-    const alertTypes = getLocationOtherAdditional(
-      selectedLocation?.additionals || [],
-      'alertTypes'
-    )
-    const floodAlertEnabled = alertTypes.includes(AlertType.FLOOD_ALERT)
-    setSavedOptionalAlerts(floodAlertEnabled)
-    setPendingOptionalAlerts(floodAlertEnabled)
-  }, [selectedLocation])
-
   // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData () {
@@ -322,7 +312,10 @@ export default function ViewLocationPage () {
                               type='radio'
                               value='on'
                               checked={pendingOptionalAlerts === true}
-                              onChange={() => setPendingOptionalAlerts(true)}
+                              onChange={() => {
+                                setPendingOptionalAlerts(true)
+                                setSavedOptionalAlerts(true)
+                              }}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -339,7 +332,10 @@ export default function ViewLocationPage () {
                               type='radio'
                               value='off'
                               checked={pendingOptionalAlerts === false}
-                              onChange={() => setPendingOptionalAlerts(false)}
+                              onChange={() => {
+                                setPendingOptionalAlerts(false)
+                                setSavedOptionalAlerts(false)
+                              }}
                             />
                             <label
                               className='govuk-label govuk-radios__label'

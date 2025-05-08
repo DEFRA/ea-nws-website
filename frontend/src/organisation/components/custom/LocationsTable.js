@@ -160,6 +160,12 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
+  const viewLinkedContacts = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    navigate(orgManageLocationsUrls.view.viewLinkedContacts)
+  }
+
   const updateMessageSettings = (e, location) => {
     e.preventDefault()
     dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
@@ -393,7 +399,7 @@ export default function LocationsTable ({
                   ? (
                     <Link
                       className='govuk-link'
-                      to={orgManageLocationsUrls.view.viewLinkedContacts}
+                      onClick={(e) => viewLinkedContacts(e, location)}
                     >
                       {location.linked_contacts?.length}
                     </Link>

@@ -5,13 +5,14 @@ export default function ContactReviewRow({
   contact,
   contactType,
   isConfirmed,
-  key,
   emailIndex
 }) {
+  console.log('2')
   const rowDetails = () => {
     let titleRow
     let confirmLink
     let showDelete = true
+
     switch (contactType) {
       case 'homePhone':
         titleRow = 'By phone call'
@@ -32,53 +33,58 @@ export default function ContactReviewRow({
     return { titleRow, confirmLink, showDelete }
   }
 
-  return (
-    <>
-      <tr key={key} className='govuk-table__row'>
-        <th className='govuk-table__header text-nowrap' scope='row'>
-          {rowDetails().titleRow}
-        </th>
-        <td className='custom-table-cell govuk-table__cell'>
-          {contact}
-          {!isConfirmed && (
-            <>
-              <br />
-              <br />
-              <strong className='govuk-tag govuk-tag--red '>Unconfirmed</strong>
-            </>
-          )}
-        </td>
+  const details = rowDetails()
 
-        <td className='custom-table-cell govuk-table__cell'>
-          {rowDetails().showDelete && (
+  return (
+    <tr className='govuk-table__row'>
+      <th className='govuk-table__header text-nowrap' scope='row'>
+        {details.titleRow}
+      </th>
+      <td className='custom-table-cell govuk-table__cell'>
+        {contact}
+        {!isConfirmed && (
+          <>
+            <br />
+            <br />
+            <strong className='govuk-tag govuk-tag--red'>Unconfirmed</strong>
+          </>
+        )}
+      </td>
+      <td className='custom-table-cell govuk-table__cell'>
+        {details.showDelete && (
+          <Link
+            role='button'
+            to='/signup/review/remove-contact'
+            state={{
+              type: contactType,
+              contact
+            }}
+            className='govuk-link right'
+            style={{ cursor: 'pointer' }}
+            id={`remove-${contactType}-${emailIndex ?? contact}`}
+            aria-label={`Remove ${contact} from your verified ${contactType} list`}
+            tabIndex='0' // Ensuring keyboard focus works
+          >
+            Remove
+          </Link>
+        )}
+        {!isConfirmed && (
+          <>
+            <br />
+            <br />
             <Link
-              to='/signup/review/remove-contact'
-              state={{
-                type: contactType,
-                contact
-              }}
+              to={details.confirmLink}
               className='govuk-link right'
               style={{ cursor: 'pointer' }}
-              aria-label={`Remove ${contact} from your verified ${contactType} list`}
+              id={`confirm-${contactType}-${emailIndex ?? contact}`}
+              tabIndex='0' // Ensuring keyboard focus works
+              aria-label={`Confirm ${contact}`}
             >
-              Remove
+              Confirm
             </Link>
-          )}
-          {!isConfirmed && (
-            <>
-              <br />
-              <br />
-              <Link
-                to={rowDetails().confirmLink}
-                className='govuk-link right'
-                style={{ cursor: 'pointer' }}
-              >
-                Confirm
-              </Link>
-            </>
-          )}
-        </td>
-      </tr>
-    </>
+          </>
+        )}
+      </td>
+    </tr>
   )
 }

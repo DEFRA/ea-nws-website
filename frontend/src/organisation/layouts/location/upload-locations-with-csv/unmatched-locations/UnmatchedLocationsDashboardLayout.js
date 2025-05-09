@@ -41,7 +41,11 @@ export default function UnmatchedLocationsDashboardLayout ({
     useState(null)
   const [showPopup, setShowPopup] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const locationsPerPage = 20
+
+  const defaultLocationsPerPage = 20
+  const [locationsPerPage, setLocationsPerPage] = useState(
+    defaultLocationsPerPage
+  )
 
   const message = location?.state?.text || null
   const addedLocations = location?.state?.addedLocations || 0
@@ -75,13 +79,19 @@ export default function UnmatchedLocationsDashboardLayout ({
   }, [])
 
   useEffect(() => {
-    setDisplayedNotAddedLocationsInfo(
-      notAddedLocationsInfo?.slice(
-        (currentPage - 1) * locationsPerPage,
-        currentPage * locationsPerPage
+    if (locationsPerPage === null) {
+      setDisplayedNotAddedLocationsInfo(notAddedLocationsInfo) // Show all
+      window.print()
+      setLocationsPerPage(defaultLocationsPerPage)
+    } else {
+      setDisplayedNotAddedLocationsInfo(
+        notAddedLocationsInfo?.slice(
+          (currentPage - 1) * locationsPerPage,
+          currentPage * locationsPerPage
+        )
       )
-    )
-  }, [notAddedLocationsInfo, currentPage])
+    }
+  }, [notAddedLocationsInfo, currentPage, locationsPerPage])
 
   // Location info
   const info = () => {
@@ -273,7 +283,8 @@ export default function UnmatchedLocationsDashboardLayout ({
           className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-5 govuk-!-margin-bottom-0'
           title='Success'
           text={
-            message || (addedLocations > 0
+            message ||
+            (addedLocations > 0
               ? `${addedLocations} ${
                   addedLocations === 1 ? 'location' : 'locations'
                 } added`
@@ -295,7 +306,11 @@ export default function UnmatchedLocationsDashboardLayout ({
               <Button
                 className='govuk-button govuk-button--secondary govuk-!-margin-top-3'
                 text={`Print locations ${unmatchedLocationText}`}
-                // onClick={handleButton} // TODO: Add print format
+                onClick={(event) => {
+                  event.preventDefault()
+                  setCurrentPage(1)
+                  setLocationsPerPage(null) // null triggers useEffect to show everything and print
+                }}
               />
 
               {warningText()}
@@ -306,22 +321,28 @@ export default function UnmatchedLocationsDashboardLayout ({
             <div className='govuk-grid-column-full'>
               {table()}
 
-              <div className='govuk-body govuk-!-padding-top-1'>
-                <Pagination
-                  totalPages={Math.ceil(notAddedLocations / locationsPerPage)}
-                  onPageChange={(val) => setCurrentPage(val)}
-                />
+              {/* Only show when not printing */}
+              {locationsPerPage && (
+                <div className='govuk-body govuk-!-padding-top-1'>
+                  <Pagination
+                    totalPages={Math.ceil(notAddedLocations / locationsPerPage)}
+                    onPageChange={(val) => setCurrentPage(val)}
+                  />
 
-                <Button
-                  text={`Finish ${
-                    (flow === 'unmatched-locations-not-found' && 'finding') ||
-                    (flow === 'unmatched-locations-not-in-england' &&
-                      'checking')
-                  } locations`}
-                  className='govuk-button govuk-button'
-                  onClick={(event) => { event.preventDefault(); setShowPopup(true) }}
-                />
-              </div>
+                  <Button
+                    text={`Finish ${
+                      (flow === 'unmatched-locations-not-found' && 'finding') ||
+                      (flow === 'unmatched-locations-not-in-england' &&
+                        'checking')
+                    } locations`}
+                    className='govuk-button govuk-button'
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setShowPopup(true)
+                    }}
+                  />
+                </div>
+              )}
 
               {popup()}
             </div>

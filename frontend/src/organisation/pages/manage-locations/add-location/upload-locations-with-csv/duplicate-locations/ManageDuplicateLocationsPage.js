@@ -186,12 +186,14 @@ export default function ManageDuplicateLocationsPage () {
                 </tbody>
               </table>
             </div>
-            <Pagination
-              totalPages={Math.ceil(
-                duplicateLocations.length / locationsPerPage
-              )}
-              onPageChange={(val) => setCurrentPage(val)}
-            />
+            {locationsPerPage && (
+              <Pagination
+                totalPages={Math.ceil(
+                  duplicateLocations.length / locationsPerPage
+                )}
+                onPageChange={(val) => setCurrentPage(val)}
+              />
+            )}
             <Button
               className='govuk-button'
               text='Finish managing duplicate locations'

@@ -11,12 +11,13 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
+import { getAdditionals } from '../../../../../common/services/ProfileServices'
 
 export default function UserInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const jobTitle = currentContact.additionals.jobTitle
-  const keywords = currentContact.additionals.keywords
+  const jobTitle = getAdditionals(currentContact, 'jobTitle')
+  const keywords = getAdditionals(currentContact, 'keywords')
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const role = () => {
     if (currentContact?.role) {

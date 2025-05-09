@@ -294,57 +294,59 @@ export default function Map({
 
   return (
     <>
-      <MapContainer
-        center={[latitude, longitude]}
-        zoom={14}
-        zoomControl={false}
-        attributionControl={false}
-        minZoom={7}
-        maxBounds={maxBounds}
-        className={mobileView ? 'map-mobile-view' : 'map-container'}
-      >
-        {apiKey && tileLayerWithHeader}
-        {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
-        {!mobileView && <ZoomControl position='bottomright' />}
-        {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />}
-        {!showOnlySelectedFloodArea && (
-          <Marker position={[latitude, longitude]} interactive={false}>
-            <Popup />
-          </Marker>
-        )}
-        {alertArea && types.includes('alert') && (
-          <GeoJSON
-            data={alertArea}
-            style={{ color: '#ffa200' }}
-            onEachFeature={function (feature, layer) {
-              interactive &&
-                layer.on({
-                  click: () => dispatch(setSelectedFloodAlertArea(feature))
-                })
-            }}
-            ref={(el) => {
-              alertAreaRef.current = el
-              setAlertAreaRefVisible(true)
-            }}
-          />
-        )}
-        {warningArea && types.includes('severe') && (
-          <GeoJSON
-            data={warningArea}
-            style={{ color: '#f70202' }}
-            onEachFeature={function (feature, layer) {
-              interactive &&
-                layer.on({
-                  click: () => dispatch(setSelectedFloodWarningArea(feature))
-                })
-            }}
-            ref={(el) => {
-              warningAreaRef.current = el
-              setWarningAreaRefVisible(true)
-            }}
-          />
-        )}
-      </MapContainer>
+      <div aria-label='Map'>
+        <MapContainer
+          center={[latitude, longitude]}
+          zoom={14}
+          zoomControl={false}
+          attributionControl={false}
+          minZoom={7}
+          maxBounds={maxBounds}
+          className={mobileView ? 'map-mobile-view' : 'map-container'}
+        >
+          {apiKey && tileLayerWithHeader}
+          {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
+          {!mobileView && <ZoomControl position='bottomright' />}
+          {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />}
+          {!showOnlySelectedFloodArea && (
+            <Marker position={[latitude, longitude]} interactive={false}>
+              <Popup />
+            </Marker>
+          )}
+          {alertArea && types.includes('alert') && (
+            <GeoJSON
+              data={alertArea}
+              style={{ color: '#ffa200' }}
+              onEachFeature={function (feature, layer) {
+                interactive &&
+                  layer.on({
+                    click: () => dispatch(setSelectedFloodAlertArea(feature))
+                  })
+              }}
+              ref={(el) => {
+                alertAreaRef.current = el
+                setAlertAreaRefVisible(true)
+              }}
+            />
+          )}
+          {warningArea && types.includes('severe') && (
+            <GeoJSON
+              data={warningArea}
+              style={{ color: '#f70202' }}
+              onEachFeature={function (feature, layer) {
+                interactive &&
+                  layer.on({
+                    click: () => dispatch(setSelectedFloodWarningArea(feature))
+                  })
+              }}
+              ref={(el) => {
+                warningAreaRef.current = el
+                setWarningAreaRefVisible(true)
+              }}
+            />
+          )}
+        </MapContainer>
+      </div>
     </>
   )
 }

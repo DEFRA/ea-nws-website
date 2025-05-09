@@ -48,7 +48,7 @@ frontend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-test-20241206111635567200000001
+    eks.amazonaws.com/nodegroup: public-website-test-20250508134439663800000001
   tolerations: []
   affinity:
     podAntiAffinity:
@@ -118,7 +118,7 @@ backend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-test-20241206111635567200000001
+    eks.amazonaws.com/nodegroup: public-website-test-20250508134439663800000001
   tolerations: []
   affinity:
     podAntiAffinity:

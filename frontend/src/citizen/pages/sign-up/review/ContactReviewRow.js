@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ContactReviewRow ({
+export default function ContactReviewRow({
   contact,
   contactType,
   isConfirmed,
@@ -59,6 +59,7 @@ export default function ContactReviewRow ({
               }}
               className='govuk-link right'
               style={{ cursor: 'pointer' }}
+              aria-label={`Remove ${contact} from your verified ${contactType} list`}
             >
               Remove
             </Link>
@@ -67,7 +68,11 @@ export default function ContactReviewRow ({
             <>
               <br />
               <br />
-              <Link to={rowDetails().confirmLink} className='govuk-link right' style={{ cursor: 'pointer' }}>
+              <Link
+                to={rowDetails().confirmLink}
+                className='govuk-link right'
+                style={{ cursor: 'pointer' }}
+              >
                 Confirm
               </Link>
             </>

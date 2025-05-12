@@ -41,13 +41,6 @@ export default function ValidateLandlineLayout ({
     setCodeResent(false)
   }, [error])
 
-  useEffect(() => {
-    // Trigger call automatically when user returns to this page to confirm later
-    if (homePhone && !isSignUpJourney) {
-      getNewCode({ preventDefault: () => {} })
-    }
-  }, [])
-
   const handleSubmit = async (event) => {
     event.preventDefault()
     const { error: validationError, code: formattedCode } =

@@ -76,17 +76,16 @@ export default function SubscribedLocationTable ({ setError }) {
       'alertTypes'
     )
 
-    if (alertTypes) {
-      dispatch(setSelectedLocation(location))
-      if (alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)) {
-        navigate(`/manage-locations/view/${'both'}`)
-      } else if (alertTypes.includes(AlertType.FLOOD_WARNING)) {
-        dispatch(setShowOnlySelectedFloodArea(true))
-        navigate(`/manage-locations/view${'severe'}`)
-      } else {
-        dispatch(setShowOnlySelectedFloodArea(true))
-        navigate(`/manage-locations/view/${'alert'}`)
-      }  
+    const hasSevereOrWarning =
+      alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING) ||
+      alertTypes.includes(AlertType.FLOOD_WARNING)
+
+    if (hasSevereOrWarning) {
+      dispatch(setShowOnlySelectedFloodArea(true))
+      navigate(`/manage-locations/view/${'both'}`)
+    } else if (alertTypes.includes(AlertType.FLOOD_ALERT)) {
+      dispatch(setShowOnlySelectedFloodArea(true))
+      navigate(`/manage-locations/view/${'alert'}`)
     }
   }
 

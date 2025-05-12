@@ -50,7 +50,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
       }
     }
     fetchContacts()
-  }, [orgId])
+  }, [])
 
   const navigateBack = (event) => {
     event.preventDefault()

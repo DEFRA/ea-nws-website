@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../layouts/mobile/ValidateMobileLayout'
@@ -32,12 +33,17 @@ export default function ValidateMobilePhone () {
     })
   }
   return (
-    <ValidateMobileLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentMobile}
-      SkipValidation={SkipValidation}
-      DifferentMobile={DifferentMobile}
-      isSignUpJourney
-    />
+    <>
+      <Helmet>
+        <title>Check Your Mobile Phone - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <ValidateMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentMobile}
+        SkipValidation={SkipValidation}
+        DifferentMobile={DifferentMobile}
+        isSignUpJourney
+      />
+    </>
   )
 }

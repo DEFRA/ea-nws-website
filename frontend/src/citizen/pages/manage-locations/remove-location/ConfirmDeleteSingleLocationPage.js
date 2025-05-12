@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -73,7 +74,9 @@ export default function ConfirmDeleteSingleLocationPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>Are You Sure You Want to Remove This Location? - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {error && <ErrorSummary errorList={[error]} />}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

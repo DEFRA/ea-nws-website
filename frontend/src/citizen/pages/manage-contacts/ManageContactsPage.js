@@ -1,7 +1,7 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-
 import Details from '../../../common/components/gov-uk/Details'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
@@ -86,6 +86,9 @@ export default function ManageContactsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Your Email Addresses and Telephone Numbers - Next Warning Service GOV.UK</title>
+      </Helmet>
       {location.state !== null && location.state.removedContact
         ? (
           <NotificationBanner

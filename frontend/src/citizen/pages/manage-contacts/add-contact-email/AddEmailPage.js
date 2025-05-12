@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import AddEmailLayout from '../../../layouts/email/AddEmailLayout'
 
@@ -7,5 +8,12 @@ export default function AddEmailPage () {
     navigate('/managecontacts/validate-email')
   }
 
-  return <AddEmailLayout navigateToNextPage={navigateToNextPage} />
+  return (
+    <>
+      <Helmet>
+        <title>Enter an Email Address - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AddEmailLayout navigateToNextPage={navigateToNextPage} />
+    </>
+  )
 }

@@ -1,4 +1,5 @@
-import * as React from 'react'
+import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -22,7 +23,9 @@ export default function SkipConfirmMobilePhonePage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>You Must Confirm This Mobile Number - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink to='/signup/contactpreferences/mobile/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
 
@@ -25,12 +26,17 @@ export default function ValidateEmailPage () {
   }
 
   return (
-    <ValidateEmailLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentEmail}
-      SkipValidation={SkipValidation}
-      DifferentEmail={DifferentEmail}
-      buttonText='Continue'
-    />
+    <>
+      <Helmet>
+        <title>Check Your Email</title>
+      </Helmet>
+      <ValidateEmailLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentEmail}
+        SkipValidation={SkipValidation}
+        DifferentEmail={DifferentEmail}
+        buttonText='Continue'
+      />
+    </>
   )
 }

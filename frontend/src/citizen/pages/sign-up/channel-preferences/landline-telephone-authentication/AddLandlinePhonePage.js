@@ -1,4 +1,5 @@
-import * as React from 'react'
+import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import AddLandlineLayout from '../../../../layouts/landline/AddLandlineLayout'
@@ -17,6 +18,9 @@ export default function AddLandlinePhonePage () {
 
   return (
     <>
+      <Helmet>
+        <title>Enter a Telephone Number - Next Warning Service GOV.UK</title>
+      </Helmet>
       {profile.unverified?.mobilePhones || profile.mobilePhones
         ? (
           <SelectAlternativeLandlineLayout

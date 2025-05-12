@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -39,13 +40,18 @@ export default function ChangeNamePage () {
   }
 
   return (
-    <AddAccountNameLayout
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      navigateToNextPage={navigateToNextPage}
-      buttonText='Save changes'
-      changeName
-      updateProfile={updateProfile}
-      profileError={error}
-    />
+    <>
+      <Helmet>
+        <title>Change Your Name - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AddAccountNameLayout
+        NavigateToPreviousPage={NavigateToPreviousPage}
+        navigateToNextPage={navigateToNextPage}
+        buttonText='Save changes'
+        changeName
+        updateProfile={updateProfile}
+        profileError={error}
+      />
+    </>
   )
 }

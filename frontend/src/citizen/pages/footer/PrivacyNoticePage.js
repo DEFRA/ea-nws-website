@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import PrivateBetaPrivacyNoticePage from '../../../common/pages/private-beta/PrivateBetaPrivacyNoticePage'
@@ -22,6 +23,9 @@ export default function PrivacyNoticePage () {
 
   return (
     <>
+      <Helmet>
+        <title>Privacy Notice - Next Warning Service GOV.UK</title>
+      </Helmet>
       {servicePhase === 'beta'
         ? (
           <>

@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import AddMobileLayout from '../../../../layouts/mobile/AddMobileLayout'
 
@@ -9,9 +10,14 @@ export default function AddMobilePhonePage () {
   const NavigateToPreviousPage = () => navigate('/signup/contactpreferences')
 
   return (
-    <AddMobileLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Enter a Mobile Number - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AddMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

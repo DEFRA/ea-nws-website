@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import LocationWithinWarningAreaProximityLayout from '../../../layouts/location/LocationWithinWarningAreaProximityLayout'
 
@@ -25,6 +26,9 @@ export default function LocationInWarningAreaProximityPage () {
 
   return (
     <>
+      <Helmet>
+        <title>You Can Get Flood Alerts Near This Location - Next Warning Service GOV.UK</title>
+      </Helmet>
       <LocationWithinWarningAreaProximityLayout
         continueToSelectedFloodWarningsPage={
           continueToSelectedFloodWarningsPage

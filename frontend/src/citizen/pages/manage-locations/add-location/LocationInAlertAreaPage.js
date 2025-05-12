@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationInAlertAreaLayout from '../../../layouts/location/LocationInAlertAreaLayout'
@@ -45,6 +46,9 @@ export default function LocationInAlertAreaPage () {
 
   return (
     <>
+      <Helmet>
+        <title>You Can Get Flood Alerts for This Location - Next Warning Service GOV.UK</title>
+      </Helmet>
       <LocationInAlertAreaLayout continueToNextPage={continueToNextPage} continueToSearchResultsPage={continueToSearchResultsPage} />
     </>
   )

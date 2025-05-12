@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../../../common/layouts/email/ValidateEmailLayout'
@@ -42,13 +43,18 @@ export default function ChangeAccountEmailValidationPage () {
   }
 
   return (
-    <ValidateEmailLayout
-      DifferentEmail={DifferentEmail}
-      NavigateToPreviousPage={DifferentEmail}
-      buttonText='Confirm email address'
-      changeSignIn
-      profileError={error}
-      updateProfile={updateProfile}
-    />
+    <>
+      <Helmet>
+        <title>Check Your Email - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <ValidateEmailLayout
+        DifferentEmail={DifferentEmail}
+        NavigateToPreviousPage={DifferentEmail}
+        buttonText='Confirm email address'
+        changeSignIn
+        profileError={error}
+        updateProfile={updateProfile}
+      />
+    </>
   )
 }

@@ -1,50 +1,56 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
 export default function AccountDetailsTable ({ profile }) {
   return (
-    <div className='govuk-padding-bottom-4'>
-      <h2 className='govuk-heading-m'>Your account</h2>
-      <table className='govuk-table'>
-        <tbody className='govuk-table__body'>
-          <tr className='govuk-table__row'>
-            <th className='govuk-table__header govuk-!-width-one-half' scope='row'>
-              Full name
-            </th>
-            <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.firstname + ' ' + profile.lastname}
-            </td>
+    <>
+      <Helmet>
+        <title>Your Account - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <div className='govuk-padding-bottom-4'>
+        <h2 className='govuk-heading-m'>Your account</h2>
+        <table className='govuk-table'>
+          <tbody className='govuk-table__body'>
+            <tr className='govuk-table__row'>
+              <th className='govuk-table__header govuk-!-width-one-half' scope='row'>
+                Full name
+              </th>
+              <td className='govuk-table__cell  govuk-!-width-full'>
+                {profile.firstname + ' ' + profile.lastname}
+              </td>
 
-            <td className='govuk-table__cell'>
-              <Link
-                to='/signup/review/change-account-name'
-                className='govuk-link'
-                style={{ cursor: 'pointer' }}
-              >
-                Change
-              </Link>
-            </td>
-          </tr>
-          <tr className='govuk-table__row'>
-            <th className='govuk-table__header  govuk-!-width-one-half' scope='row'>
-              Email to sign in
-            </th>
-            <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.emails[0]}
-            </td>
+              <td className='govuk-table__cell'>
+                <Link
+                  to='/signup/review/change-account-name'
+                  className='govuk-link'
+                  style={{ cursor: 'pointer' }}
+                >
+                  Change
+                </Link>
+              </td>
+            </tr>
+            <tr className='govuk-table__row'>
+              <th className='govuk-table__header  govuk-!-width-one-half' scope='row'>
+                Email to sign in
+              </th>
+              <td className='govuk-table__cell  govuk-!-width-full'>
+                {profile.emails[0]}
+              </td>
 
-            <td className='govuk-table__cell'>
-              <Link
-                to='/signup/review/change-account-email'
-                className='govuk-link'
-                style={{ cursor: 'pointer' }}
-              >
-                Change
-              </Link>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+              <td className='govuk-table__cell'>
+                <Link
+                  to='/signup/review/change-account-email'
+                  className='govuk-link'
+                  style={{ cursor: 'pointer' }}
+                >
+                  Change
+                </Link>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </>
   )
 }

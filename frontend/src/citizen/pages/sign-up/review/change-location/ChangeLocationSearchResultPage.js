@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setAdditionalAlerts } from '../../../../../common/redux/userSlice'
@@ -40,6 +41,9 @@ export default function ChangeLocationSearchResultPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Select an Address - Next Warning Service GOV.UK</title>
+      </Helmet>
       <LocationSearchResultsLayout continueToNextPage={continueToNextPage} />
     </>
   )

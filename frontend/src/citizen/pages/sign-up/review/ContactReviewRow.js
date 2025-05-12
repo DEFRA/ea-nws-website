@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ContactReviewRow ({
+export default function ContactReviewRow({
   contact,
   contactType,
   isConfirmed,
@@ -35,9 +35,9 @@ export default function ContactReviewRow ({
   return (
     <>
       <tr key={key} className='govuk-table__row'>
-        <td className='govuk-table__header text-nowrap'>
+        <th className='govuk-table__header text-nowrap' scope='row'>
           {rowDetails().titleRow}
-        </td>
+        </th>
         <td className='custom-table-cell govuk-table__cell'>
           {contact}
           {!isConfirmed && (
@@ -59,6 +59,7 @@ export default function ContactReviewRow ({
               }}
               className='govuk-link right'
               style={{ cursor: 'pointer' }}
+              aria-label={`Remove ${contact} from your verified ${contactType} list`}
             >
               Remove
             </Link>
@@ -67,7 +68,11 @@ export default function ContactReviewRow ({
             <>
               <br />
               <br />
-              <Link to={rowDetails().confirmLink} className='govuk-link right' style={{ cursor: 'pointer' }}>
+              <Link
+                to={rowDetails().confirmLink}
+                className='govuk-link right'
+                style={{ cursor: 'pointer' }}
+              >
                 Confirm
               </Link>
             </>

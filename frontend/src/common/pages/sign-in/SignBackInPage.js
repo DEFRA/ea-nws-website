@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 
@@ -11,6 +12,9 @@ export default function SignBackInPage () {
 
   return (
     <>
+      <Helmet>
+        <title>You Need to Sign Back In - Next Warning Service GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

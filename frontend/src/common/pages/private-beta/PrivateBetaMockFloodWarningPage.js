@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import floodWarningIcon from '../../assets/images/flood_warning.svg'
 import BackLink from '../../components/custom/BackLink'
@@ -9,6 +10,9 @@ export default function PrivateBetaMockFloodWarningPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Flood Warning for Areas Near The Eastern River - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

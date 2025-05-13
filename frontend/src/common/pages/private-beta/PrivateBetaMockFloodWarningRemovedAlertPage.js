@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
@@ -8,6 +9,9 @@ export default function PrivateBetaMockFloodWarningRemovedAlertPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Removed Flood Warning Alert - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

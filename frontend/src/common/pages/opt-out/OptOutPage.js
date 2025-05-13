@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import floodAlertIcon from '../../assets/images/flood_alert.svg'
 import floodWarningIcon from '../../assets/images/flood_warning.svg'
@@ -13,6 +14,9 @@ export default function OptOutPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Opt Out - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

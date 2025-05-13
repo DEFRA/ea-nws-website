@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import SignOutLayout from '../../layouts/sign-out/SignOutPageLayout'
 import { clearAuth } from '../../redux/userSlice'
@@ -27,5 +28,12 @@ export default function SignOutManuallyPage () {
     dispatch(clearAuth())
   }, [])
 
-  return <SignOutLayout text="You've been signed out for security reasons" />
+  return (
+    <>
+      <Helmet>
+        <title>You've Been Signed Out - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <SignOutLayout text="You've been signed out for security reasons" />
+    </>
+  )
 }

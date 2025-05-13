@@ -1,10 +1,14 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import ContactDetails from '../layouts/footer-link-layouts/ContactDetails'
 
 export default function ErrorPage () {
   return (
     <>
+      <Helmet>
+        <title>There is a Problem - Next Warning Service GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-body govuk-grid-column-two-thirds'>

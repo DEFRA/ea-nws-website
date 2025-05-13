@@ -1,4 +1,5 @@
 import React from 'react'
+import HelmetExport, { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { getLocationAdditional } from '../../../../../../common/redux/userSlice'
@@ -45,12 +46,17 @@ export default function LocationSearchOptionsPage () {
   }
 
   return (
-    <LocationOptionsLayout
-      heading={`How do you want to find ${locationName}?`}
-      info={info}
-      searchOptions={searchOptions}
-      navigateToNextPage={navigateToNextPage}
-      navigateToPreviousPage={navigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>How Do You Want to Find Location? - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <LocationOptionsLayout
+        heading={`How do you want to find ${locationName}?`}
+        info={info}
+        searchOptions={searchOptions}
+        navigateToNextPage={navigateToNextPage}
+        navigateToPreviousPage={navigateToPreviousPage}
+      />
+    </>
   )
 }

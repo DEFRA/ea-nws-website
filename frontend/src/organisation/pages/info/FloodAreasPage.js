@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 import BackLink from '../../../common/components/custom/BackLink'
 import Details from '../../../common/components/gov-uk/Details'
 import WarningText from '../../../common/components/gov-uk/WarningText'
@@ -32,7 +33,9 @@ export default function FloodAreasPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>What Are Flood Areas? - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>

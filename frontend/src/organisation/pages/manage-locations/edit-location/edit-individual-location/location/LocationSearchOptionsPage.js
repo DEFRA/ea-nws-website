@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import LocationSearchOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -45,12 +46,17 @@ export default function LocationSearchOptionsPage () {
   }
 
   return (
-    <LocationSearchOptionsLayout
-      heading='How do you want to change the existing location?'
-      additionalInfo={additionalInfo}
-      searchOptions={locationOptions}
-      navigateToNextPage={navigateToNextPage}
-      navigateToPreviousPage={navigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Location Search Options - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <LocationSearchOptionsLayout
+        heading='How do you want to change the existing location?'
+        additionalInfo={additionalInfo}
+        searchOptions={locationOptions}
+        navigateToNextPage={navigateToNextPage}
+        navigateToPreviousPage={navigateToPreviousPage}
+      />
+    </>
   )
 }

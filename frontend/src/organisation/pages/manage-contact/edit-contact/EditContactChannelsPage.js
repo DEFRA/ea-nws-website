@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import ContactChannelsLayout from '../../../layouts/manage-contact/ContactChannelsLayout'
 import UpdateContactAndNavigate from '../UpdateContactAndNavigate'
 
@@ -11,6 +12,9 @@ export default function EditContactChannelsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>User Email Addresses and Numbers - Next Warning Service GOV.UK</title>
+      </Helmet>
       <ContactChannelsLayout
         navigateToNextPage={navigateToNextPage}
         error={error}

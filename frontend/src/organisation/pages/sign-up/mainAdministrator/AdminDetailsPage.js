@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router'
+import { Helmet } from 'react-helmet'
 import AdminDetailsLayout from '../../../layouts/admin/AdminDetailsLayout'
 import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
@@ -13,9 +14,14 @@ export default function AdminDetailsPage () {
   }
 
   return (
-    <AdminDetailsLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Admin Details - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AdminDetailsLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import ContactDetailsLayout from '../../../layouts/manage-contact/ContactDetailsLayout'
 import UpdateContactAndNavigate from '../UpdateContactAndNavigate'
 
@@ -11,6 +12,9 @@ export default function EditContactDetailsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>User Details - Next Warning Service GOV.UK</title>
+      </Helmet>
       <ContactDetailsLayout
         navigateToNextPage={navigateToNextPage}
         error={error}

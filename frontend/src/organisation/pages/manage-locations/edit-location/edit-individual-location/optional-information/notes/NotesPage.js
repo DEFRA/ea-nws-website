@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import NotesLayout from '../../../../../../layouts/optional-info/NotesLayout'
 import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
@@ -12,6 +13,9 @@ export default function NotesPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Edit Notes - Next Warning Service GOV.UK</title>
+      </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'

@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import KeyInformationLayout from '../../../../layouts/optional-info/KeyInformationLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -11,6 +12,9 @@ export default function AddKeyInformationPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Add Key Information - Next Warning Service GOV.UK</title>
+      </Helmet>
       <KeyInformationLayout
         flow='add'
         navigateToNextPage={navigateToNextPage}

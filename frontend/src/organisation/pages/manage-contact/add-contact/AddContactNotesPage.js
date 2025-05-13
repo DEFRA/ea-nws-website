@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import UserType from '../../../../common/enums/UserType'
@@ -92,6 +93,9 @@ export default function AddContactNotesPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Add User Notes - Next Warning Service GOV.UK</title>
+      </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='contact'

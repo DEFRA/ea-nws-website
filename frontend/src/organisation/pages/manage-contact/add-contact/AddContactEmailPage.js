@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
@@ -138,6 +139,9 @@ export default function AddContactEmailPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Add User Email Address - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>

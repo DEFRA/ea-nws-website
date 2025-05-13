@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import KeyInformationLayout from '../../../../../../layouts/optional-info/KeyInformationLayout'
 import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
@@ -12,6 +13,9 @@ export default function KeyInformationPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Edit Key Information - Next Warning Service GOV.UK</title>
+      </Helmet>
       <KeyInformationLayout
         flow='edit'
         navigateToNextPage={navigateToNextPage}

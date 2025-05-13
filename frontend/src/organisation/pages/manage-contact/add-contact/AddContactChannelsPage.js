@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
 import ContactChannelsLayout from '../../../layouts/manage-contact/ContactChannelsLayout'
@@ -12,6 +13,9 @@ export default function AddContactChannelsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Email Addresses and Numbers - Next Warning Service GOV.UK</title>
+      </Helmet>
       <ContactChannelsLayout
         navigateToNextPage={navigateToNextPage}
         error={error}

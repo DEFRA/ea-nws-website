@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
@@ -84,6 +85,9 @@ export default function ManuallyFindLocationsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Manually Find Locations - Next warning Service GOV.UK</title>
+      </Helmet>
       {location.state && (
         <NotificationBanner
           className={`govuk-notification-banner ${

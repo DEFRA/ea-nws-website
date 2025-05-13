@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useLocation, useNavigate } from 'react-router-dom'
 import SearchAddressResultLayout from '../../layouts/address/SearchAddressResultLayout'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
@@ -22,10 +23,15 @@ export default function SelectAddressPage () {
   const navigateToFindPostcodePage = () => navigate(orgSignUpUrls.address.add)
 
   return (
-    <SearchAddressResultLayout
-      navigateToNextPage={navigateToNextPage}
-      navigateToPreviousPage={navigateToPreviousPage}
-      navigateToFindPostcodePage={navigateToFindPostcodePage}
-    />
+    <>
+      <Helmet>
+        <title>Search Address Results - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <SearchAddressResultLayout
+        navigateToNextPage={navigateToNextPage}
+        navigateToPreviousPage={navigateToPreviousPage}
+        navigateToFindPostcodePage={navigateToFindPostcodePage}
+      />
+    </>
   )
 }

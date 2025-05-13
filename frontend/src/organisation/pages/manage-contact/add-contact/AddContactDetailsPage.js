@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import ContactDetailsLayout from '../../../layouts/manage-contact/ContactDetailsLayout'
@@ -16,6 +17,9 @@ export default function AddContactDetailsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Add User Details - Next Warning Service GOV.UK</title>
+      </Helmet>
       <ContactDetailsLayout navigateToNextPage={navigateToNextPage} />
     </>
   )

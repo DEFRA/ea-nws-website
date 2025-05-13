@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -125,6 +126,9 @@ export default function ManageDuplicateLocationsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Manage Duplicate Locations - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       {location.state && (
         <NotificationBanner

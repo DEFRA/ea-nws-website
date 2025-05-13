@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
@@ -30,11 +31,16 @@ export default function DropPinOnMapPage () {
   }
 
   return (
-    <DropPinOnMapLayout
-      navigateToNextPage={navigateToNextPage}
-      navigateToNotInEnglandPage={navigateToNotInEnglandPage}
-      navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
-      flow='change-coords'
-    />
+    <>
+      <Helmet>
+        <title>Drop Pin on Map - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <DropPinOnMapLayout
+        navigateToNextPage={navigateToNextPage}
+        navigateToNotInEnglandPage={navigateToNotInEnglandPage}
+        navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
+        flow='change-coords'
+      />
+    </>
   )
 }

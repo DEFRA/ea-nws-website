@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { setProfile } from '../../../common/redux/userSlice'
@@ -40,9 +41,14 @@ export default function ConfirmAddressPage () {
   }
 
   return (
-    <ConfirmAddressLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Confirm Address - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <ConfirmAddressLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

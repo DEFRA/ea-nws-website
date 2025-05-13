@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import AddAddressLayout from '../../../../layouts/address/AddAddressLayout'
 import { orgSignUpUrls } from '../../../../routes/sign-up/SignUpRoutes'
@@ -19,10 +20,15 @@ export default function ChangeAddressPage () {
   }
 
   return (
-    <AddAddressLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      navigateToConfirmPage={navigateToConfirmPage}
-    />
+    <>
+      <Helmet>
+        <title>Change Address - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AddAddressLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+        navigateToConfirmPage={navigateToConfirmPage}
+      />
+    </>
   )
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
@@ -18,7 +19,9 @@ export default function ManageAdminDetailsPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>Manage Administrator Details - Next Warning Service GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

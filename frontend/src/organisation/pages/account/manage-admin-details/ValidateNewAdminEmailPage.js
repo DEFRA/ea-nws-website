@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
-export default function ValidateNewAdminEmailPage () {
+
+export default function ValidateNewAdminEmailPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
@@ -44,13 +46,18 @@ export default function ValidateNewAdminEmailPage () {
   }
 
   return (
-    <ValidateEmailLayout
-      DifferentEmail={DifferentEmail}
-      NavigateToPreviousPage={DifferentEmail}
-      buttonText='Continue'
-      changeSignIn
-      profileError={error}
-      updateProfile={updateProfile}
-    />
+    <>
+      <Helmet>
+        <title>Check Your Email - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <ValidateEmailLayout
+        DifferentEmail={DifferentEmail}
+        NavigateToPreviousPage={DifferentEmail}
+        buttonText='Continue'
+        changeSignIn
+        profileError={error}
+        updateProfile={updateProfile}
+      />
+    </>
   )
 }

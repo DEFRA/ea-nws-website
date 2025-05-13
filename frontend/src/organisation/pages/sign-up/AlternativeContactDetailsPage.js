@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { setProfile } from '../../../common/redux/userSlice'
@@ -35,9 +36,14 @@ export default function AlternativeContactDetailsPage () {
   }
 
   return (
-    <AlternativeContactDetailsLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Add Alternative Contact Details - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AlternativeContactDetailsLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

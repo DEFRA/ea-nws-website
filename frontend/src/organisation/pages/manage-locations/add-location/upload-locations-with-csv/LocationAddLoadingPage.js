@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
@@ -138,6 +139,9 @@ export default function LocationAddLoadingPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Loading - Next Warning Service GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
           <h1 className='govuk-heading-l'>{stage}</h1>

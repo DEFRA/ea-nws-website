@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
@@ -84,6 +85,9 @@ export default function UserInformationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>User Information - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         {userType === UserType.PendingAdmin && (

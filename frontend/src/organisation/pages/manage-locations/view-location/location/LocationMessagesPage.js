@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import linkIcon from '../../../../../common/assets/images/link.svg'
@@ -522,7 +523,9 @@ export default function LocationMessagesPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>Location Messages - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {isBannerDisplayed && (

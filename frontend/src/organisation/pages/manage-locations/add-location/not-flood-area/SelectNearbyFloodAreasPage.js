@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import LinkLocationsLayout from '../../../../layouts/location/link-locations/LinkLocationsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -16,6 +17,9 @@ export default function SelectNearbyFloodAreasPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Select Nearby Flood Areas - Next Warning Service GOV.UK</title>
+      </Helmet>
       <LinkLocationsLayout
         navigateToPreviousPage={navigateToPreviousPage}
         navigateToNextPage={navigateToNextPage}

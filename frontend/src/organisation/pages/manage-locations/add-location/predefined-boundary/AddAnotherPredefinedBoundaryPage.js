@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -48,6 +49,9 @@ export default function AddAnotherPredefinedBoundaryPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Add Another Predefined Boundary - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

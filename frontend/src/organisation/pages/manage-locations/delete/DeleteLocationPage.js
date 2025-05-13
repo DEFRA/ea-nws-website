@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import DeleteLayout from '../../../layouts/location-contact/DeleteLayout'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
@@ -12,6 +13,9 @@ export default function DeleteLocationPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Delete Location - Next Warning Service GOV.UK</title>
+      </Helmet>
       <DeleteLayout navigateToNextPage={navigateToNextPage} />
     </>
   )

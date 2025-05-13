@@ -1,6 +1,7 @@
 import { booleanIntersects, booleanPointInPolygon } from '@turf/turf'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -207,7 +208,9 @@ export default function FloodAreaPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>Flood Area - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <div className='govuk-grid-row'>

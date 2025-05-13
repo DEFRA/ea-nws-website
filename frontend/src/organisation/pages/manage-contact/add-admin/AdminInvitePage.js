@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -100,6 +101,9 @@ export default function AdminInvitePage () {
 
   return (
     <>
+      <Helmet>
+        <title>You've Been Invited - Next Warning Service GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

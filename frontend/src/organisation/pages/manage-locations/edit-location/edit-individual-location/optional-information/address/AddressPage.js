@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import AddressLayout from '../../../../../../layouts/optional-info/AddressLayout'
 import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
@@ -22,11 +23,16 @@ export default function AddressPage () {
   )
 
   return (
-    <AddressLayout
-      navigateToNextPage={navigateToNextPage}
-      additionalInfo={additionalInfo}
-      error={error}
-      setError={setError}
-    />
+    <>
+      <Helmet>
+        <title>Edit Address - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AddressLayout
+        navigateToNextPage={navigateToNextPage}
+        additionalInfo={additionalInfo}
+        error={error}
+        setError={setError}
+      />
+    </>
   )
 }

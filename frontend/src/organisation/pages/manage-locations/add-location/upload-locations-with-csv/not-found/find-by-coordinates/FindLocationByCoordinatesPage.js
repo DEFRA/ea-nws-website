@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import LocationXYCoordinatesSearchLayout from '../../../../../../layouts/location/add-or-edit-location/search/xy-coords/LocationXYCoordinatesSearchLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -19,6 +20,9 @@ export default function FindLocationByCoordinatesPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Find Location By Coordinates - Next Warning Service GOV.UK</title>
+      </Helmet>
       <LocationXYCoordinatesSearchLayout
         navigateToNextPage={navigateToNextPage}
         navigateToNotInEngland={navigateToNotInEngland}

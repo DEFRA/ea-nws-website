@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import KeywordsLayout from '../../../../layouts/optional-info/KeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -31,6 +32,9 @@ export default function AddKeywordsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Add Keywords - Next Warning Service GOV.UK</title>
+      </Helmet>
       <KeywordsLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'

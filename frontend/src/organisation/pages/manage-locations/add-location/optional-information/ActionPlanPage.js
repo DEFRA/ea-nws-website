@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
@@ -48,6 +49,9 @@ export default function ActionPlanPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Action Plan - Next Warning Service GOV.UK</title>
+      </Helmet>
       <ActionPlanLayout
         navigateToNextPage={() => { navigateToNextPage() }}
         error={error}

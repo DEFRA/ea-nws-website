@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { setSigninType } from '../../../common/redux/userSlice'
 
@@ -12,6 +12,9 @@ export default function HomePage () {
 
   return (
     <>
+      <Helmet>
+        <title>Organisation Home Page</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

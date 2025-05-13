@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import floodAlertIcon from '../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../common/assets/images/flood_warning.svg'
@@ -14,7 +15,9 @@ export default function FloodTypesPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>What Are The Different Types of Flood Messages? - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>

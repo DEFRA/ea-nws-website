@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -355,6 +356,9 @@ export default function ViewUsersDashboardPage() {
 
   return (
     <>
+      <Helmet>
+        <title>View Users - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

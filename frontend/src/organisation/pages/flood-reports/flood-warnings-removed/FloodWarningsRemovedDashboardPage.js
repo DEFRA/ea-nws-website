@@ -1,8 +1,12 @@
+import { Helmet } from 'react-helmet'
 import BackLink from '../../../../common/components/custom/BackLink'
 
 export default function FloodWarningsRemovedDashboardPage() {
   return (
     <>
+      <Helmet>
+        <title>Flood Warnings Removed in Last 24 Hours - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

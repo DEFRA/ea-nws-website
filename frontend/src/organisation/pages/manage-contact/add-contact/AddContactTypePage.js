@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -58,6 +59,9 @@ export default function AddContactTypePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Select User Type - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

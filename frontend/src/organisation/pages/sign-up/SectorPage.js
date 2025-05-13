@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { setProfile } from '../../../common/redux/userSlice'
@@ -35,9 +36,14 @@ export default function SectorPage () {
   }
 
   return (
-    <SectorLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Add Sector - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <SectorLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

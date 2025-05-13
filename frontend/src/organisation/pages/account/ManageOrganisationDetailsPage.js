@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setSigninType } from '../../../common/redux/userSlice'
@@ -17,6 +18,9 @@ export default function ManageOrganisationDetailsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Manage Your Organisation's Details - Next Warning Service GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div Name='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>

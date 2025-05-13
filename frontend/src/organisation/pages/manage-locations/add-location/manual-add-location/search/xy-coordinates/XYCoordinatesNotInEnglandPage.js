@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import NotInEnglandLayout from '../../../../../../layouts/location/add-or-edit-location/error/NotInEnglandLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -11,11 +12,16 @@ export default function XYCoordinatesNotInEnglandPage () {
   const dropPinSearchUrl = orgManageLocationsUrls.add.search.dropPinSearch
 
   return (
-    <NotInEnglandLayout
-      postCodeSearchUrl={postCodeSearchUrl}
-      xyCoordinatesSearchUrl={xyCoordsSearchUrl}
-      dropPinSearchUrl={dropPinSearchUrl}
-      flow='xyCoordinate'
-    />
+    <>
+      <Helmet>
+        <title>Location Not In England - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <NotInEnglandLayout
+        postCodeSearchUrl={postCodeSearchUrl}
+        xyCoordinatesSearchUrl={xyCoordsSearchUrl}
+        dropPinSearchUrl={dropPinSearchUrl}
+        flow='xyCoordinate'
+      />
+    </>
   )
 }

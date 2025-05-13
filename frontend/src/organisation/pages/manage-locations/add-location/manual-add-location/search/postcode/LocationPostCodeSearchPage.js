@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import PostCodeSearchLayout from '../../../../../../layouts/location/add-or-edit-location/search/postcode/PostCodeSearchLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -12,6 +13,9 @@ export default function LocationPostCodeSearchPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Location Postcode Search - Next Warning Service GOV.UK</title>
+      </Helmet>
       <PostCodeSearchLayout navigateToNextPage={navigateToNextPage} />
     </>
   )

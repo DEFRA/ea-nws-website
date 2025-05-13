@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import AlternativeContactDetailsLayout from '../../../../layouts/alternative-contact/AlternativeContactDetailsLayout'
 import { orgSignUpUrls } from '../../../../routes/sign-up/SignUpRoutes'
@@ -14,9 +15,14 @@ export default function ChangeAlternativeContactDetailsPage () {
   }
 
   return (
-    <AlternativeContactDetailsLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Change Alternative Contact Details - Next Warning Service GOV.UK</title>
+      </Helmet>
+      <AlternativeContactDetailsLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

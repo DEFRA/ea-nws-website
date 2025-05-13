@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -27,6 +28,9 @@ export default function AddContactAdditionalInformationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Add Additional Information - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>

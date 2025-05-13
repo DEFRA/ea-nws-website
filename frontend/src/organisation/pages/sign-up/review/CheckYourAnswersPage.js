@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -44,6 +45,9 @@ export default function CheckYourAnswersPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Check Your Answers - Next Warning Service GOV.UK</title>
+      </Helmet>
       <BackLink to='/organisation/sign-up/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>

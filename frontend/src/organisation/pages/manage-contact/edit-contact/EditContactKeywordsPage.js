@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import KeywordsLayout from '../../../layouts/optional-info/KeywordsLayout'
 import UpdateContactAndNavigate from '../UpdateContactAndNavigate'
 
@@ -39,6 +40,9 @@ export default function EditContactKeywordsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Edit User Keywords - Next Warning Service GOV.UK</title>
+      </Helmet>
       <KeywordsLayout
         keywordType='contact'
         keywordText={KeywordText}

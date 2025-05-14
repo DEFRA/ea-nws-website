@@ -7,7 +7,6 @@ export default function ContactReviewRow({
   isConfirmed,
   emailIndex
 }) {
-  console.log('2')
   const rowDetails = () => {
     let titleRow
     let confirmLink

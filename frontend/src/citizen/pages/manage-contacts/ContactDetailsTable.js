@@ -29,13 +29,9 @@ export default function ContactDetailsTable({
     }
   }
 
-  const handleContactSelection = (contact, nextPage) => {
-    dispatch(setCurrentContact(contact))
-    navigate(nextPage)
-  }
-
-  const UnconfirmedLink = ({ contact }) => {
+  const handleContactSelection = (contact) => {
     let nextPage
+    dispatch(setCurrentContact(contact))
 
     switch (contactType) {
       case 'email address':
@@ -49,21 +45,7 @@ export default function ContactDetailsTable({
         break
     }
 
-    return (
-      <>
-        <Link
-          className='govuk-link right'
-          onClick={(e) => {
-            e.preventDefault()
-            handleContactSelection(contact, nextPage)
-          }}
-          aria-label={`Confirm ${contact} as a verified contact`}
-          style={{ cursor: 'pointer' }}
-        >
-          Confirm
-        </Link>
-      </>
-    )
+    navigate(nextPage)
   }
 
   const MaximumReached = () => {
@@ -93,7 +75,10 @@ export default function ContactDetailsTable({
         <table className='govuk-table'>
           <tbody className='govuk-table__body'>
             {contacts.map((contact, index) => (
-              <tr key={index} className='govuk-table__row'>
+              <tr
+                key={`verified-${contactType}-${index}`}
+                className='govuk-table__row'
+              >
                 <td className='custom-table-cell govuk-table__cell'>
                   {contact}
                 </td>
@@ -118,7 +103,10 @@ export default function ContactDetailsTable({
               </tr>
             ))}
             {unregisteredContact.map((unregisteredContact, index) => (
-              <tr key={index} className='govuk-table__row'>
+              <tr
+                key={`unverified-${contactType}-${index}`}
+                className='govuk-table__row'
+              >
                 <td className='custom-table-cell govuk-table__cell'>
                   {unregisteredContact.address}
                   <br />
@@ -143,7 +131,17 @@ export default function ContactDetailsTable({
                   </Link>
                   <br />
                   <br />
-                  <UnconfirmedLink contact={unregisteredContact.address} />
+                  <Link
+                    className='govuk-link right'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleContactSelection(unregisteredContact.address)
+                    }}
+                    aria-label={`Confirm ${unregisteredContact.address} as a verified contact`}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Confirm
+                  </Link>
                 </td>
               </tr>
             ))}

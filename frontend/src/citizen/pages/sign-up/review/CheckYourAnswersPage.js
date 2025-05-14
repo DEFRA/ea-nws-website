@@ -23,9 +23,6 @@ export default function CheckYourAnswersPage() {
     unverifiedHomePhones: profile?.unverified?.homePhones
   }
   const registration = useSelector((state) => state.session.registrations)
-  const contactPreferences = useSelector(
-    (state) => state.session.contactPreferences
-  )
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const handleButton = async (event) => {

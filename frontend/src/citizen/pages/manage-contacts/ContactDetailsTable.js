@@ -1,8 +1,9 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import { setCurrentContact } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function ContactDetailsTable({
   contacts,
@@ -13,6 +14,7 @@ export default function ContactDetailsTable({
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleButton = (event) => {
     event.preventDefault()
@@ -29,23 +31,32 @@ export default function ContactDetailsTable({
     }
   }
 
-  const handleContactSelection = (contact) => {
-    let nextPage
+  const handleContactSelection = async (contact) => {
+    let nextPage, endpoint, payload
     dispatch(setCurrentContact(contact))
 
     switch (contactType) {
       case 'email address':
         nextPage = '/managecontacts/validate-email'
+        endpoint = 'api/add_contact/email/add'
+        payload = { authToken, email: contact }
         break
       case 'mobile telephone number':
         nextPage = '/managecontacts/validate-mobile'
+        endpoint = 'api/add_contact/mobile/add'
+        payload = { authToken, msisdn: contact }
         break
       case 'telephone number':
         nextPage = '/managecontacts/validate-landline'
+        endpoint = 'api/add_contact/landline/add'
+        payload = { authToken, msisdn: contact }
         break
     }
+    const { errorMessage } = await backendCall(payload, endpoint, navigate)
 
-    navigate(nextPage)
+    if (!errorMessage) {
+      navigate(nextPage)
+    }
   }
 
   const MaximumReached = () => {
@@ -133,7 +144,7 @@ export default function ContactDetailsTable({
                   <br />
                   <Link
                     className='govuk-link right'
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.preventDefault()
                       handleContactSelection(unregisteredContact.address)
                     }}

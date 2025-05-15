@@ -61,10 +61,7 @@ export default function CheckYourAnswersPage() {
             <h1 className='govuk-heading-l'>Check your answers</h1>
             <LocationReviewTable locations={profile.pois} />
             <FloodMessageReviewTable registration={registration} />
-            <ContactReviewTable
-              contacts={contacts}
-              // contactPreferences={contactPreferences}
-            />
+            <ContactReviewTable contacts={contacts} />
             <AccountDetailsTable profile={profile} />
           </div>
         </div>

@@ -28,6 +28,8 @@ export default function ContactReviewTable({ contacts }) {
             contact={contact}
             contactType={type}
             isConfirmed
+            arrayLength={verified.length}
+            index={index}
             {...(type === 'email' && { emailIndex: index })}
           />
         )
@@ -41,6 +43,8 @@ export default function ContactReviewTable({ contacts }) {
             key={`unverified-${type}-${index}`}
             contact={item.address}
             contactType={type}
+            index={index}
+            arrayLength={unverified.length}
             isConfirmed={false}
           />
         )

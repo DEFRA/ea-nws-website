@@ -5,31 +5,47 @@ export default function ContactReviewRow({
   contact,
   contactType,
   isConfirmed,
-  emailIndex
+  emailIndex,
+  arrayLength,
+  index
 }) {
   const rowDetails = () => {
-    let titleRow
-    let confirmLink
-    let showDelete = true
+    const contactLabel = `${
+      arrayLength > 1 && index ? `${index} - ` : ''
+    }${contact}`
+    const confirmedLink =
+      isConfirmed &&
+      `/signup/review/validate-${
+        contactType === 'homePhone' ? 'landline' : contactType
+      }`
 
-    switch (contactType) {
-      case 'homePhone':
-        titleRow = 'By phone call'
-        confirmLink = isConfirmed ? '' : '/signup/review/validate-landline'
-        break
-      case 'mobilePhone':
-        titleRow = 'By text'
-        confirmLink = isConfirmed ? '' : '/signup/review/validate-mobile'
-        break
-      case 'email':
-        titleRow = 'By email'
-        confirmLink = isConfirmed ? '' : '/signup/review/validate-email'
-        showDelete = emailIndex !== 0
-        break
-      default:
-        break
+    const contactTypeMap = {
+      homePhone: {
+        titleRow: 'By phone call',
+        confirmLabel: `Confirm telephone number ${contactLabel}, for phone call warnings`,
+        removeLabel: `Remove telephone number ${contactLabel}, for phone call warnings`
+      },
+      mobilePhone: {
+        titleRow: 'By text',
+        confirmLabel: `Confirm telephone number ${contactLabel}, for text warnings`,
+        removeLabel: `Remove telephone number ${contactLabel}, for text warnings`
+      },
+      email: {
+        titleRow: 'By email',
+        confirmLabel: `Confirm email ${contactLabel}, for email warnings`,
+        removeLabel: `Remove email ${contactLabel}, for email warnings`
+      }
     }
-    return { titleRow, confirmLink, showDelete }
+
+    const details = contactTypeMap[contactType] || {}
+
+    return {
+      titleRow: details.titleRow || '',
+      confirmLink: confirmedLink,
+      confirmLinkLabel: details.confirmLabel || '',
+      removeLinkLabel: details.removeLabel || '',
+      showDelete: contactType === 'email' ? emailIndex !== 0 : true
+    }
   }
 
   const details = rowDetails()
@@ -61,8 +77,8 @@ export default function ContactReviewRow({
             className='govuk-link right'
             style={{ cursor: 'pointer' }}
             id={`remove-${contactType}-${emailIndex ?? contact}`}
-            aria-label={`Remove ${contact} from your verified ${contactType} list`}
-            tabIndex='0' // Ensuring keyboard focus works
+            aria-label={rowDetails().removeLinkLabel}
+            tabIndex='0'
           >
             Remove
           </Link>
@@ -76,8 +92,8 @@ export default function ContactReviewRow({
               className='govuk-link right'
               style={{ cursor: 'pointer' }}
               id={`confirm-${contactType}-${emailIndex ?? contact}`}
-              tabIndex='0' // Ensuring keyboard focus works
-              aria-label={`Confirm ${contact}`}
+              tabIndex='0'
+              aria-label={rowDetails().confirmLinkLabel}
             >
               Confirm
             </Link>

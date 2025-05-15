@@ -79,6 +79,31 @@ export default function ContactDetailsTable({
     }
   }
 
+  const getLabel = (contact, arrayLength, index, type) => {
+    let confirmLabel, removeLabel
+    const contactLabel = `${
+      arrayLength > 1 && index ? `${index} - ` : ''
+    }${contact}`
+
+    switch (contactType) {
+      case 'email address':
+        confirmLabel = `Confirm email address ${contactLabel} to receive warnings for this address`
+        removeLabel = `Remove email address ${contactLabel} to stop warnings for this address`
+      case 'mobile telephone number':
+        confirmLabel = `Confirm mobile number ${contactLabel} to receive text warnings to this number`
+        removeLabel = `Remove mobile number ${contactLabel} to stop text warnings to this number`
+      case 'telephone number':
+        confirmLabel = `Confirm telephone number ${contactLabel} to receive phone call warnings to this number`
+        removeLabel = `Remove telephone number ${contactLabel} to stop phone call warnings to this number`
+    }
+
+    if (type === 'confirm') {
+      return confirmLabel
+    } else {
+      return removeLabel
+    }
+  }
+
   return (
     <>
       <h3 className='govuk-heading-m'>{contactTitle}</h3>
@@ -97,13 +122,18 @@ export default function ContactDetailsTable({
                   <td className='custom-table-cell govuk-table__cell'>
                     <Link
                       to='/managecontacts/confirm-delete'
-                      aria-label={`Remove ${contact} from your verified ${contactType} list`}
                       state={{
                         type: contactType,
                         contact
                       }}
                       className='govuk-link right'
                       style={{ cursor: 'pointer' }}
+                      aria-label={getLabel(
+                        contact,
+                        arrayLength,
+                        index,
+                        'remove'
+                      )}
                     >
                       Remove
                     </Link>
@@ -129,7 +159,6 @@ export default function ContactDetailsTable({
                 <td className='custom-table-cell govuk-table__cell'>
                   <Link
                     to='/managecontacts/confirm-delete'
-                    aria-label={`Remove ${unregisteredContact.address} from your unverified ${contactType} list`}
                     state={{
                       type: contactType,
                       contact: unregisteredContact.address,
@@ -137,6 +166,12 @@ export default function ContactDetailsTable({
                     }}
                     className='govuk-link right'
                     style={{ cursor: 'pointer' }}
+                    aria-label={getLabel(
+                      unregisteredContact.address,
+                      arrayLength,
+                      index,
+                      'remove'
+                    )}
                   >
                     Remove
                   </Link>
@@ -148,8 +183,13 @@ export default function ContactDetailsTable({
                       e.preventDefault()
                       handleContactSelection(unregisteredContact.address)
                     }}
-                    aria-label={`Confirm ${unregisteredContact.address} as a verified contact`}
                     style={{ cursor: 'pointer' }}
+                    aria-label={getLabel(
+                      unregisteredContact.address,
+                      arrayLength,
+                      index,
+                      'confirm'
+                    )}
                   >
                     Confirm
                   </Link>

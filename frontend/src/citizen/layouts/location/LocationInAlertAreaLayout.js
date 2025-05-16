@@ -20,7 +20,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel,
@@ -52,7 +52,7 @@ export default function LocationInAlertAreaLayout ({
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -72,7 +72,10 @@ export default function LocationInAlertAreaLayout ({
         updatedProfile = await updateExistingLocationAlertTypes([
           AlertType.SEVERE_FLOOD_WARNING,
           AlertType.FLOOD_WARNING,
-          AlertType.FLOOD_ALERT
+          AlertType.FLOOD_ALERT,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING,
+          AlertType.INFO
         ])
       }
     } else if (additionalAlerts && !isChecked) {
@@ -82,7 +85,10 @@ export default function LocationInAlertAreaLayout ({
       } else {
         updatedProfile = await updateExistingLocationAlertTypes([
           AlertType.SEVERE_FLOOD_WARNING,
-          AlertType.FLOOD_WARNING
+          AlertType.FLOOD_WARNING,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING,
+          AlertType.INFO
         ])
       }
     } else {
@@ -118,11 +124,14 @@ export default function LocationInAlertAreaLayout ({
           ? [
               AlertType.SEVERE_FLOOD_WARNING,
               AlertType.FLOOD_WARNING,
-              AlertType.FLOOD_ALERT
+              AlertType.FLOOD_ALERT,
+              AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+              AlertType.REMOVE_FLOOD_WARNING,
+              AlertType.INFO
             ]
           : [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
       } else if (isUserInNearbyTargetFlowpath) {
-        alertTypes = [AlertType.FLOOD_ALERT]
+        alertTypes = [AlertType.FLOOD_ALERT, AlertType.INFO]
       }
 
       const data = {
@@ -151,7 +160,10 @@ export default function LocationInAlertAreaLayout ({
       } else {
         updatedProfile = await updateExistingLocationAlertTypes([
           AlertType.SEVERE_FLOOD_WARNING,
-          AlertType.FLOOD_WARNING
+          AlertType.FLOOD_WARNING,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING,
+          AlertType.INFO
         ])
       }
     } else {
@@ -199,7 +211,8 @@ export default function LocationInAlertAreaLayout ({
       address: selectedFloodAlertArea.properties.TA_Name,
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea),
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
-        AlertType.FLOOD_ALERT
+        AlertType.FLOOD_ALERT,
+        AlertType.INFO
       ])
     }
     const updatedProfile = await addLocation(profile, alertArea)
@@ -224,7 +237,8 @@ export default function LocationInAlertAreaLayout ({
     const locationWithAlertType = {
       ...locationWithoutPostcode,
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
-        AlertType.FLOOD_ALERT
+        AlertType.FLOOD_ALERT,
+        AlertType.INFO
       ])
     }
     const updatedProfile = await addLocation(profile, locationWithAlertType)

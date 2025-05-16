@@ -26,7 +26,7 @@ import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalA
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LinkLocationsLayout ({
+export default function LinkLocationsLayout({
   navigateToPreviousPage,
   navigateToNextPage
 }) {
@@ -47,7 +47,7 @@ export default function LinkLocationsLayout ({
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -223,8 +223,8 @@ export default function LinkLocationsLayout ({
           TargetAreaToAdd.properties.category === 'Flood Warning Rapid Response'
             ? [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
             : TargetAreaToAdd.properties.category === 'Flood Alert'
-              ? [AlertType.FLOOD_ALERT]
-              : []
+            ? [AlertType.FLOOD_ALERT]
+            : []
         childrenAlertTypes.push(...alertTypes)
         const targetAreas = [
           {
@@ -343,13 +343,13 @@ export default function LinkLocationsLayout ({
         childrenAlertTypes.includes(allAlertTypes[0]) ||
         additionalData.alertTypes.includes(allAlertTypes[0])
       ) {
-        alertTypes.push(allAlertTypes[0])
+        alertTypes.push(allAlertTypes[0], AlertType.REMOVE_FLOOD_SEVERE_WARNING)
       }
       if (
         childrenAlertTypes.includes(allAlertTypes[1]) ||
         additionalData.alertTypes.includes(allAlertTypes[1])
       ) {
-        alertTypes.push(allAlertTypes[1])
+        alertTypes.push(allAlertTypes[1], AlertType.REMOVE_FLOOD_WARNING)
       }
       if (
         childrenAlertTypes.includes(allAlertTypes[2]) ||
@@ -392,7 +392,7 @@ export default function LinkLocationsLayout ({
   }
 
   // Compute the minimum positive distance from any point in a Polygon/MultiPolygon to the flood area
-  function computeMinPositiveDistance (locationGeometry, floodPolygon) {
+  function computeMinPositiveDistance(locationGeometry, floodPolygon) {
     let minDistance = Infinity
     let coords = []
 
@@ -415,7 +415,7 @@ export default function LinkLocationsLayout ({
   }
 
   useEffect(() => {
-    async function fetchFloodAreas () {
+    async function fetchFloodAreas() {
       if (!currentLocation) return
       const currentLinked = exisitingChildrenIDs?.map((child) => child.TA_CODE)
 

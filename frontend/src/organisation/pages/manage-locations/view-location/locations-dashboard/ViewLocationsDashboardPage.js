@@ -584,10 +584,13 @@ export default function ViewLocationsDashboardPage() {
   const editLocations = async (locationsToEdit) => {
     const chosenAlerts = []
     if (dialog.options[0].sent) {
-      chosenAlerts.push(AlertType.SEVERE_FLOOD_WARNING)
+      chosenAlerts.push(
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING
+      )
     }
     if (dialog.options[1].sent) {
-      chosenAlerts.push(AlertType.FLOOD_WARNING)
+      chosenAlerts.push(AlertType.FLOOD_WARNING, AlertType.REMOVE_FLOOD_WARNING)
     }
     if (dialog.options[2].sent) {
       chosenAlerts.push(AlertType.FLOOD_ALERT)

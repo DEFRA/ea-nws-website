@@ -137,13 +137,6 @@ export default function SelectPredefinedBoundaryPage() {
       const newWebLocation = geoSafeToWebLocation(
         JSON.parse(JSON.stringify(locationToAdd))
       )
-      newWebLocation.additionals.other.alertTypes = [
-        AlertType.SEVERE_FLOOD_WARNING,
-        AlertType.FLOOD_WARNING,
-        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
-        AlertType.REMOVE_FLOOD_WARNING,
-        AlertType.FLOOD_ALERT
-      ]
       // get the target areas
       const TAs = await getFloodAreasFromShape(
         newWebLocation?.geometry?.geoJson
@@ -175,10 +168,10 @@ export default function SelectPredefinedBoundaryPage() {
         (area) => categoryToType(area.category) === 'warning'
       ) &&
         newWebLocation.additionals.other.alertTypes.push(
-          AlertType.SEVERE_FLOOD_WARNING
-        ) &&
-        newWebLocation.additionals.other.alertTypes.push(
-          AlertType.FLOOD_WARNING
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING
         )
 
       newWebLocation.additionals.other.targetAreas.some(

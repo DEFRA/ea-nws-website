@@ -9,7 +9,6 @@ export default function LocationAddShapefileInfoPage () {
 
   // References used to scroll to certain elements on page
   const howToUploadRef = useRef(null)
-  const infoNeededRef = useRef(null)
 
   const scrollToSection = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
@@ -36,13 +35,6 @@ export default function LocationAddShapefileInfoPage () {
                   onClick={() => scrollToSection(howToUploadRef)}
                 >
                   How to upload a shapefile
-                </Link>{' '}
-                <br />-{' '}
-                <Link
-                  className='govuk-link '
-                  onClick={() => scrollToSection(infoNeededRef)}
-                >
-                  Information you need to include
                 </Link>
              </p>
               <br />
@@ -58,9 +50,7 @@ export default function LocationAddShapefileInfoPage () {
               <p>
                 Each shapefile can only contain 1 location in it. But a
                 shapefile can contain multiple shapes in it that refer to a
-                single location.
-                <br />
-                For example, you could upload a shapefile of a railway line that
+                single location. For example, you could upload a shapefile of a railway line that
                 has multiple parts along it.{' '}
               </p>
               <p>Each shapefile must be included in a single ZIP file.</p>
@@ -83,20 +73,12 @@ export default function LocationAddShapefileInfoPage () {
                 locations.dbf
               </p>
               <p>
+                Your shapefile name will be used for the location name in this service.
+                You can change this later, if you need to.
+              </p>
+              <p>
                 If you have any problems uploading your shapefile, contact
                 getfloodwarnings@environment-agency.gov.uk to get some support.
-              </p>
-              <br />
-
-              {/* Information to include section */}
-              <h2 ref={infoNeededRef} className='govuk-heading-m'>
-                Information you need to include
-              </h2>
-              <p>
-                <b>Location name</b> <br />
-                How you refer to the location, for example: head office, Brayton
-                Water, pumping station. This needs to be unique so cannot be
-                used for multiple locations.
               </p>
               <br />
               <Button

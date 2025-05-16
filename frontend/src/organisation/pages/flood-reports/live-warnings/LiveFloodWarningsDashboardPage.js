@@ -12,7 +12,7 @@ import { geoSafeToWebLocation } from '../../../../common/services/formatters/Loc
 import FloodReportFilter from '../components/FloodReportFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
 
-export default function LiveFloodWarningsDashboardPage () {
+export default function LiveFloodWarningsDashboardPage() {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -49,6 +49,7 @@ export default function LiveFloodWarningsDashboardPage () {
     )
 
     const options = {
+      states: [AlertState.CURRENT],
       states: [AlertState.CURRENT],
       boundingBox: {},
       channels: [],
@@ -130,9 +131,10 @@ export default function LiveFloodWarningsDashboardPage () {
     TA_NAME
   ) => {
     const { additionals } = location
-    const locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
-      (targetArea) => targetArea.TA_CODE === TA_CODE
-    )
+    const locationIntersectsWithFloodArea =
+      additionals.other?.targetAreas?.some(
+        (targetArea) => targetArea.TA_CODE === TA_CODE
+      )
 
     if (!locationIntersectsWithFloodArea) return
 
@@ -154,6 +156,7 @@ export default function LiveFloodWarningsDashboardPage () {
     const updatedLocation = createLocationWithFloodData()
     setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
     setDisplayedLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
+    setFilteredLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
   }
 
   useEffect(() => {
@@ -265,32 +268,28 @@ export default function LiveFloodWarningsDashboardPage () {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <h1 className='govuk-heading-l'>Live flood warnings</h1>
-            {loading
-              ? (
-                <LoadingSpinner />
-                )
-              : !isFilterVisible
-                  ? (
-                    <div className='govuk-grid-row'>
-                      <>{table}</>
-                    </div>
-                    )
-                  : (
-                    <div className='govuk-grid-row'>
-                      <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
-                        <FloodReportFilter
-                          locationsAffected={locationsAffected}
-                          setFilteredLocationsAffected={setFilteredLocationsAffected}
-                          resetPaging={resetPaging}
-                          setResetPaging={setResetPaging}
-                          filters={filters}
-                          updateFilter={updateFilter}
-                          clearFilters={clearFilters}
-                        />
-                      </div>
-                      <div className='govuk-grid-column-three-quarters'>{table}</div>
-                    </div>
-                    )}
+            {loading ? (
+              <LoadingSpinner />
+            ) : !isFilterVisible ? (
+              <div className='govuk-grid-row'>
+                <>{table}</>
+              </div>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                  <FloodReportFilter
+                    locationsAffected={locationsAffected}
+                    setFilteredLocationsAffected={setFilteredLocationsAffected}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    filters={filters}
+                    updateFilter={updateFilter}
+                    clearFilters={clearFilters}
+                  />
+                </div>
+                <div className='govuk-grid-column-three-quarters'>{table}</div>
+              </div>
+            )}
           </div>
         </div>
       </main>

@@ -125,9 +125,9 @@ export default function SignUpSuccessPage() {
               </p>
               {servicePhase !== 'beta' && (
                 <div>
-                  <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
                     Help us improve this service
-                  </h1>
+                  </h2>
                   <p className='govuk-!-margin-top-6'>
                     <Link to='/signup/feedback' className='govuk-link'>
                       What do you think of the service?
@@ -138,9 +138,9 @@ export default function SignUpSuccessPage() {
               )}
               {servicePhase === 'beta' && (
                 <div>
-                  <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
                     Now answer some questions about the sign up process
-                  </h1>
+                  </h2>
                   <Button
                     text='Continue'
                     className='govuk-button'

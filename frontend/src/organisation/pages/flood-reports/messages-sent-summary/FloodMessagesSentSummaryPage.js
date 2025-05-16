@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import AlertState from '../../../../common/enums/AlertState'
+import AlertType from '../../../../common/enums/AlertType'
 import { getAdditional } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
@@ -88,30 +89,41 @@ export default function FloodMessagesSentSummaryPage() {
         return
       }
 
-      processLocationByAlertTypes(location, alertTypes, targetAreas, alerts)
+      processLocationByAlertTypes(alertTypes, targetAreas, alerts)
     })
   }
 
-  const processLocationByAlertTypes = (
-    location,
-    alertTypes,
-    targetAreas,
-    alerts
-  ) => {
+  const processLocationByAlertTypes = (alertTypes, targetAreas, alerts) => {
     // all alert types
-    if (alertTypes.length === 3) {
+    if (
+      [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.FLOOD_ALERT
+      ].every((type) => alertTypes.includes(type))
+    ) {
       updateLocationStats('all', targetAreas, alerts)
     }
     // severe and warning messages only
-    else if (alertTypes.length === 2) {
+    else if (
+      [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING].every((type) =>
+        alertTypes.includes(type)
+      )
+    ) {
       updateLocationStats('severeWarningsOnly', targetAreas, alerts)
     }
     // alert messages only
-    else if (alertTypes.length === 1) {
+    else if (alertTypes.includes(AlertType.FLOOD_ALERT)) {
       updateLocationStats('alertsOnly', targetAreas, alerts)
     }
     // messages turned off
-    else if (alertTypes.length === 0) {
+    else if (
+      [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.FLOOD_ALERT
+      ].every((type) => !alertTypes.includes(type))
+    ) {
       updateLocationStats('messagesTurnedOff', targetAreas, alerts)
     }
   }

@@ -355,7 +355,7 @@ export default function ViewUsersDashboardPage() {
 
   return (
     <>
-      {location.state?.successMessage && <BackLink onClick={navigateBack} />}
+      {!location.state?.addContactFlow && <BackLink onClick={navigateBack} />}
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         {loading ? (

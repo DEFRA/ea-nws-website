@@ -8,7 +8,7 @@ import { geoSafeToWebLocation } from '../../../common/services/formatters/Locati
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LinkBanner ({
+export default function LinkBanner({
   linkLocations,
   linkContacts,
   selectedLocations,
@@ -25,7 +25,9 @@ export default function LinkBanner ({
     useSelector((state) => state.session.currentLocation)
   )
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const predefinedBoundaryFlow = useSelector((state) => state.session.predefinedBoundaryFlow)
+  const predefinedBoundaryFlow = useSelector(
+    (state) => state.session.predefinedBoundaryFlow
+  )
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
 
   const getSuccessMessage = () => {
@@ -152,10 +154,10 @@ export default function LinkBanner ({
         }
       } else if (linkContacts) {
         if (linkSource === 'dashboard') {
-          // if ()
           navigate(orgManageContactsUrls.view.dashboard, {
             state: {
-              successMessage
+              successMessage,
+              addContactFlow: true
             }
           })
         } else {
@@ -281,19 +283,19 @@ export default function LinkBanner ({
           </div>
           {((selectedContacts && selectedContacts.length > 0) ||
             (selectedLocations && selectedLocations.length > 0)) && (
-              <div
-                className='govuk-checkboxes--small'
-                style={{ display: 'flex', alignItems: 'center' }}
-              >
-                <Checkbox
-                  label='Only show selected'
-                  style={{ maxWidth: '100%' }}
-                  checked={onlyShowSelectedOption}
-                  onChange={() => {
-                    actionOnlyShowSelected()
-                  }}
-                />
-              </div>
+            <div
+              className='govuk-checkboxes--small'
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
+              <Checkbox
+                label='Only show selected'
+                style={{ maxWidth: '100%' }}
+                checked={onlyShowSelectedOption}
+                onChange={() => {
+                  actionOnlyShowSelected()
+                }}
+              />
+            </div>
           )}
           <div
             style={{

@@ -11,18 +11,23 @@ import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
 import LocationReviewTable from './LocationReviewTable'
 
-export default function CheckYourAnswersPage () {
+export default function CheckYourAnswersPage() {
   const session = useSelector((state) => state.session)
   const profile = useSelector((state) => state.session.profile)
+  const contacts = {
+    emails: profile?.emails,
+    unverifiedEmails: profile?.unverified?.emails,
+    mobilePhones: profile?.mobilePhones,
+    unverifiedMobiles: profile?.unverified?.mobilePhones,
+    homePhones: profile?.homePhones,
+    unverifiedHomePhones: profile?.unverified?.homePhones
+  }
   const registration = useSelector((state) => state.session.registrations)
-  const contactPreferences = useSelector(
-    (state) => state.session.contactPreferences
-  )
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const handleButton = async (event) => {
     event.preventDefault()
-    if (signUpAccountValidation) {
+    if (signUpAccountValidation()) {
       const updatedProfile = updateAdditionals(profile, [
         { id: 'signupComplete', value: { s: 'true' } },
         { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
@@ -49,7 +54,6 @@ export default function CheckYourAnswersPage () {
 
   return (
     <>
-
       <BackLink to='/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
@@ -57,10 +61,7 @@ export default function CheckYourAnswersPage () {
             <h1 className='govuk-heading-l'>Check your answers</h1>
             <LocationReviewTable locations={profile.pois} />
             <FloodMessageReviewTable registration={registration} />
-            <ContactReviewTable
-              profile={profile}
-              contactPreferences={contactPreferences}
-            />
+            <ContactReviewTable contacts={contacts} />
             <AccountDetailsTable profile={profile} />
           </div>
         </div>

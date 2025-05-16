@@ -14,7 +14,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function SubscribedLocationTable ({ setError }) {
+export default function SubscribedLocationTable({ setError }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
@@ -27,7 +27,7 @@ export default function SubscribedLocationTable ({ setError }) {
   const maxLocations = 15
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -45,12 +45,22 @@ export default function SubscribedLocationTable ({ setError }) {
           className='govuk-link'
           style={{ cursor: 'pointer' }}
         >
+        <Link
+          to='/manage-locations/add/search'
+          className='govuk-link'
+          style={{ cursor: 'pointer' }}
+        >
           Add a new location
         </Link>
         &nbsp;before removing any you do not need.
       </p>
       <p>
         Or you could&nbsp;
+        <Link
+          to='/account/delete'
+          className='govuk-link'
+          style={{ cursor: 'pointer' }}
+        >
         <Link
           to='/account/delete'
           className='govuk-link'
@@ -99,7 +109,7 @@ export default function SubscribedLocationTable ({ setError }) {
   }
 
   const locationTable = () => {
-    const viewColumn = (location) => {
+    const viewColumn = (location, arrayLength, index) => {
       return (
         <td className='govuk-table__cell'>
           <Link
@@ -109,6 +119,9 @@ export default function SubscribedLocationTable ({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
+            aria-label={`View location ${arrayLength > 1 && index} - ${
+              location.address
+            }`}
           >
             View
           </Link>
@@ -116,7 +129,7 @@ export default function SubscribedLocationTable ({ setError }) {
       )
     }
 
-    const removeColumn = (location) => {
+    const removeColumn = (location, arrayLength, index) => {
       return (
         <td className='govuk-table__cell'>
           <Link
@@ -128,6 +141,9 @@ export default function SubscribedLocationTable ({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
+            aria-label={`Remove location ${arrayLength > 1 && index} - ${
+              location.address
+            }`}
           >
             Remove
           </Link>
@@ -155,11 +171,12 @@ export default function SubscribedLocationTable ({ setError }) {
         <tbody className='govuk-table__body'>
           {displayedLocations.map((location, index) => (
             <tr key={index} className='govuk-table__row'>
-              {addressColumn(location)}
+              {addressColumn(location, locations.length, index)}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {viewColumn(location)}
-              {locations.length > 1 && removeColumn(location)}
+              {locations.length > 1 &&
+                removeColumn(location, locations.length, index)}
             </tr>
           ))}
         </tbody>

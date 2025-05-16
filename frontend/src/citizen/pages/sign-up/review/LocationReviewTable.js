@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setLocationToBeChanged } from '../../../../common/redux/userSlice'
 
-export default function LocationReviewTable ({ locations }) {
+export default function LocationReviewTable({ locations }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -21,7 +21,9 @@ export default function LocationReviewTable ({ locations }) {
           <tbody className='govuk-table__body' />
           {locations.map((location, index) => (
             <tr key={index} className='govuk-table__row'>
-              <th className='govuk-table__header' scope='row'>Address</th>
+              <th className='govuk-table__header' scope='row'>
+                Address
+              </th>
               <td className='govuk-table__cell govuk-!-width-full'>
                 {location.address}
               </td>
@@ -31,6 +33,9 @@ export default function LocationReviewTable ({ locations }) {
                   onClick={(e) => selectLocationToBeChanged(e, location)}
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
+                  aria-label={`Change address for location ${
+                    locations.length > 1 && index
+                  } - ${location.address}`}
                 >
                   Change
                 </Link>

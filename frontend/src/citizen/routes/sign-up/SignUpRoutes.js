@@ -1,3 +1,6 @@
+import OrganisationConfirmServicePage from '../../../common/pages/sign-up/OrganisationConfirmServicePage'
+import OrganisationServiceSelectionPage from '../../../common/pages/sign-up/OrganisationServiceSelectionPage' // TODO: Move to common sign-up routes
+import ServiceSelectionPage from '../../../common/pages/sign-up/ServiceSelectionPage' // TODO: Move to common sign-up routes
 import AddFullNamePage from '../../pages/sign-up/account-name/AddFullNamePage'
 import SignUpDuplicateEmailPage from '../../pages/sign-up/account/SignUpDuplicateEmailPage'
 import SignUpFeedbackConfirmationPage from '../../pages/sign-up/account/SignUpFeedbackConfirmationPage'
@@ -38,9 +41,6 @@ import AddMobileContactStartPage from '../../pages/sign-up/review/manage-contact
 import ValidateMobileContactPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileValidatePage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
-import ServiceSelectionPage from '../../../common/pages/sign-up/ServiceSelectionPage' // TODO: Move to common sign-up routes
-import OrganisationServiceSelectionPage from '../../../common/pages/sign-up/OrganisationServiceSelectionPage' // TODO: Move to common sign-up routes
-import OrganisationConfirmServicePage from '../../../common/pages/sign-up/OrganisationConfirmServicePage'
 
 // sign up routes
 const signupRoutes = [

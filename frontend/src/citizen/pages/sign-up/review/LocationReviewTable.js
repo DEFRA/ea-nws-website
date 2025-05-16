@@ -15,13 +15,13 @@ export default function LocationReviewTable ({ locations }) {
 
   return (
     <div className='govuk-!-padding-bottom-4'>
-      <h3 className='govuk-heading-m'>Location you selected</h3>
+      <h2 className='govuk-heading-m'>Location you selected</h2>
       {locations.map && (
         <table className='govuk-table'>
           <tbody className='govuk-table__body' />
           {locations.map((location, index) => (
             <tr key={index} className='govuk-table__row'>
-              <td className='govuk-table__header'>Address</td>
+              <th className='govuk-table__header' scope='row'>Address</th>
               <td className='govuk-table__cell govuk-!-width-full'>
                 {location.address}
               </td>

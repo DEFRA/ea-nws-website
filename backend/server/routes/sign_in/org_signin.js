@@ -19,59 +19,56 @@ module.exports = [
         const { redis } = request.server.app
 
         if (orgData) {
-            const elasticacheKey = 'signin_status:' + orgData.authToken
-            await setJsonData(redis, elasticacheKey, { stage: 'Retrieving locations', status: 'working' })   
-            const locationRes = await apiCall(
-              { authToken: orgData.authToken },
+          const elasticacheKey = 'signin_status:' + orgData.authToken
+          await setJsonData(redis, elasticacheKey, { stage: 'Retrieving locations', status: 'working' })
+          const locationRes = await apiCall(
+            { authToken: orgData.authToken },
+            'location/list'
+          )
+          await setJsonData(redis, elasticacheKey, { stage: 'Retrieving contacts', status: 'working' })
+          const contactRes = await apiCall(
+            { authToken: orgData.authToken },
+            'organization/listContacts'
+          )
+
+          await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'working' })
+          // Send the profile to elasticache
+          await orgSignIn(
+            redis,
+            orgData.profile,
+            orgData.organization,
+            locationRes.data.locations,
+            contactRes.data.contacts,
+            orgData.authToken
+          )
+
+          for (const contact of contactRes.data.contacts) {
+            const options = { contactId: contact.id }
+            const linkLocationsRes = await apiCall(
+              {
+                authToken: orgData.authToken,
+                options: options
+              },
               'location/list'
             )
-            await setJsonData(redis, elasticacheKey, { stage: 'Retrieving contacts', status: 'working' })   
-            const contactRes = await apiCall(
-              { authToken: orgData.authToken },
-              'organization/listContacts'
-            )
 
-            await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'working' })   
-            // Send the profile to elasticache
-            await orgSignIn(
+            const locationIDs = []
+            linkLocationsRes.data.locations.forEach(function (location) {
+              locationIDs.push(location.id)
+            })
+
+            await addLinkedLocations(
               redis,
-              orgData.profile,
-              orgData.organization,
-              locationRes.data.locations,
-              contactRes.data.contacts,
-              orgData.authToken
+              orgData.organization.id,
+              contact.id,
+              locationIDs
             )
-
-            for (const contact of contactRes.data.contacts) {
-              const options = { contactId: contact.id }
-              const linkLocationsRes = await apiCall(
-                {
-                  authToken: orgData.authToken,
-                  options: options
-                },
-                'location/list'
-              )
-
-              const locationIDs = []
-              linkLocationsRes.data.locations.forEach(function (location) {
-                locationIDs.push(location.id)
-              })
-
-              await addLinkedLocations(
-                redis,
-                orgData.organization.id,
-                contact.id,
-                locationIDs
-              )
-            }
-            await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'complete' })
+          }
+          await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'complete' })
 
           return h.response({ status: 200 })
         } else {
-          return h.response({
-            status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
-          })
+          return createGenericErrorResponse(h)
         }
       } catch (error) {
         logger.error(error)

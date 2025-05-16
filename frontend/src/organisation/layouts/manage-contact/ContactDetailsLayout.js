@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -11,13 +11,18 @@ import {
   setOrgCurrentContactJobTitle,
   setOrgCurrentContactLastName
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const orgId = useSelector((state) => state.session.orgId)
+
   const [firstnameError, setFirstNameError] = useState('')
   const [lastnameError, setLastNameError] = useState('')
   const [jobTitleError, setJobTitleError] = useState('')
+
+  const [contacts, setContacts] = useState([])
   const [firstname, setFirstName] = useState(
     useSelector((state) => state.session.orgCurrentContact.firstname)
   )
@@ -29,6 +34,23 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
   )
 
   const charLimit = 20
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const dataToSend = { orgId }
+        const contactsData = await backendCall(
+          dataToSend,
+          'api/elasticache/list_contacts',
+          navigate
+        )
+        setContacts(contactsData.data)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    fetchContacts()
+  }, [])
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -73,14 +95,26 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const dataValid = validateData()
-    if (dataValid) {
-      dispatch(setOrgCurrentContactFirstName(firstname))
-      dispatch(setOrgCurrentContactLastName(lastname))
-      jobTitle != null && dispatch(setOrgCurrentContactJobTitle(jobTitle))
+    if (!validateData()) return
 
-      navigateToNextPage()
+    // Ensure name given is not a duplicate with existing user
+    const isDuplicate = contacts.some(
+      (c) =>
+        c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
+        c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
+    )
+    if (isDuplicate) {
+      setFirstNameError(
+        `User ${firstname} ${lastname} already exists in your organisation - you cannot enter this person again`
+      )
+      return
     }
+
+    dispatch(setOrgCurrentContactFirstName(firstname))
+    dispatch(setOrgCurrentContactLastName(lastname))
+    jobTitle != null && dispatch(setOrgCurrentContactJobTitle(jobTitle))
+
+    navigateToNextPage()
   }
 
   return (
@@ -99,7 +133,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 ]}
               />
             )}
-            <h1 className='govuk-heading-l'>Contact details</h1>
+            <h1 className='govuk-heading-l'>User details</h1>
             <div className='govuk-body'>
               <Input
                 name='First name'
@@ -115,6 +149,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 error={firstnameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
+                nameSize='s'
               />
               <Input
                 name='Last name'
@@ -130,6 +165,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 error={lastnameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
+                nameSize='s'
               />
               <Input
                 name='Job title (optional)'
@@ -145,6 +181,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
+                nameSize='s'
               />
               <div className='govuk-!-margin-top-8'>
                 <Button

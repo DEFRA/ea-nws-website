@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import UserType from '../../../common/enums/UserType'
 import { setOrgCurrentContact } from '../../../common/redux/userSlice'
-import { webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function UsersTable ({
+export default function UsersTable({
   contacts,
   displayedContacts,
   filteredContacts,
@@ -157,12 +157,8 @@ export default function UsersTable ({
 
   const viewContact = (e, contact) => {
     e.preventDefault()
-    dispatch(setOrgCurrentContact(webToGeoSafeContact(contact)))
-    navigate(orgManageContactsUrls.view.viewContact, {
-      state: {
-        userType: contact.pendingRole || contact.role
-      }
-    })
+    dispatch(setOrgCurrentContact(contact))
+    navigate(orgManageContactsUrls.view.viewContact)
   }
 
   const LoadingDots = (
@@ -221,7 +217,8 @@ export default function UsersTable ({
                     userTypeSort,
                     setUserTypeSort,
                     (contact) => contact.role || ''
-                  )}
+                  )
+                }
               >
                 User type
               </button>
@@ -236,7 +233,8 @@ export default function UsersTable ({
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
                     return contact.firstname + (contact.lastname || '')
-                  })}
+                  })
+                }
               >
                 Name
               </button>
@@ -251,7 +249,8 @@ export default function UsersTable ({
                 onClick={() =>
                   sortData(jobTitleSort, setJobTitleSort, (contact) => {
                     return contact.additionals.jobTitle
-                  })}
+                  })
+                }
               >
                 Job title
               </button>
@@ -266,7 +265,8 @@ export default function UsersTable ({
                 onClick={() =>
                   sortData(emailSort, setEmailSort, (contact) => {
                     return contact.emails[0]
-                  })}
+                  })
+                }
               >
                 Email
               </button>
@@ -317,21 +317,17 @@ export default function UsersTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>
-                {contact.pendingRole === 'ADMIN'
-                  ? (
-                    <strong className='govuk-tag govuk-tag--orange'>
-                      Pending admin
-                    </strong>
-                    )
-                  : contact.role === 'ADMIN'
-                    ? (
-                      <strong className='govuk-tag govuk-tag--purple'>Admin</strong>
-                      )
-                    : (
-                      <strong className='govuk-tag govuk-tag--green'>
-                        Contact
-                      </strong>
-                      )}
+                {contact.pendingRole === UserType.PendingAdmin ? (
+                  <strong className='govuk-tag govuk-tag--orange'>
+                    Pending admin
+                  </strong>
+                ) : contact.role === UserType.Admin ? (
+                  <strong className='govuk-tag govuk-tag--purple'>Admin</strong>
+                ) : (
+                  <strong className='govuk-tag govuk-tag--green'>
+                    Contact
+                  </strong>
+                )}
               </td>
               <td className='govuk-table__cell'>
                 <Link
@@ -350,18 +346,16 @@ export default function UsersTable ({
               {!filterVisible && (
                 <>
                   <td className='govuk-table__cell'>
-                    {contact.linked_locations?.length !== undefined
-                      ? (
-                        <Link
-                          className='govuk-link'
-                          to={orgManageContactsUrls.view.viewLinkedLocations}
-                        >
-                          {contact.linked_locations?.length}
-                        </Link>
-                        )
-                      : (
-                          LoadingDots
-                        )}
+                    {contact.linked_locations?.length !== undefined ? (
+                      <Link
+                        className='govuk-link'
+                        to={orgManageContactsUrls.view.viewLinkedLocations}
+                      >
+                        {contact.linked_locations?.length}
+                      </Link>
+                    ) : (
+                      LoadingDots
+                    )}
                   </td>
                   <td className='govuk-table__cell'>
                     {contact.message_count !== undefined

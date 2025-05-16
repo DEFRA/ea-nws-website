@@ -128,7 +128,7 @@ export default function ManageKeywordsPage () {
       setContacts(contacts)
     }
 
-    keywordType == 'location' ? getLocations() : getContacts()
+    keywordType === 'location' ? getLocations() : getContacts()
   }, [keywordType])
 
   useEffect(() => {
@@ -317,7 +317,7 @@ export default function ManageKeywordsPage () {
         }
 
         await updateLocationOrContact()
-        if (action == 'delete' && keywordsToUpdate.length > 1) {
+        if (action === 'delete' && keywordsToUpdate.length > 1) {
           locationsOrContactsInfo = locationsOrContactsInfo.map(info =>
             info.id === id ? locationOrContactToUpdate : info
           )

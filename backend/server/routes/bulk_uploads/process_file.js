@@ -67,7 +67,7 @@ module.exports = [
                 let showProgress = false
                 validLength > 50 ? showProgress = true : showProgress = false
                 for (let i = 0; i < validLength; i += 25) {
-                  showProgress && setJsonData(redis, elasticacheKey, { stage: `Associating flood data (${Math.round((i/validLength)*100)}%)`, status: 'working' })
+                  showProgress && setJsonData(redis, elasticacheKey, { stage: `Associating flood data (${Math.round((i / validLength) * 100)}%)`, status: 'working' })
                   const chunk = response.data?.valid?.slice(i, i + 25)
                   const chunkResult = await addFloodData(chunk)
                   validWithData.push(...chunkResult.data)

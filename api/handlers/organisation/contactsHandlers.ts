@@ -48,7 +48,9 @@ async function getOrgDemoteContact(
   }
 
   if (authToken !== 'WrongAuthToken' && contactId) {
-    const contact = mockContacts.allContacts.filter((contact: any) => contact.id === contactId)[0]
+    const contact = mockContacts.allContacts.filter(
+      (contact: any) => contact.id === contactId
+    )[0]
     contact.role = null
     contact.pendingRole = null
     // geosafe returns the contact
@@ -91,8 +93,10 @@ async function getOrgPromoteContact(
     contactId &&
     (role === 'SELF' || role === 'ADMIN' || role === 'READONLY')
   ) {
-    const contact = mockContacts.allContacts.filter((contact: any) => contact.id === contactId)[0]
-    if (contact.role) {
+    const contact = mockContacts.allContacts.filter(
+      (contact: any) => contact.id === contactId
+    )[0]
+    if (contact?.role) {
       contact.role = role
     } else {
       contact.pendingRole = role

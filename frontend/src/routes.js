@@ -14,11 +14,13 @@ import { orgManageAccountRoutes } from './organisation/routes/account/AccountRou
 import { orgFloodReportsRoutes } from './organisation/routes/flood-reports/FloodReportsRoutes'
 import orgFooterRoutes from './organisation/routes/footer/FooterRoutes'
 import { infoRoutes } from './organisation/routes/info/InfoRoutes'
+import { orgInviteRoutes } from './organisation/routes/invite/InviteRoutes'
 import { orgManageContactsRoutes } from './organisation/routes/manage-contacts/ManageContactsRoutes'
 import { orgManageKeywordsRoutes } from './organisation/routes/manage-keywords/ManageKeywordsRoutes'
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { orgSignUpRoutes } from './organisation/routes/sign-up/SignUpRoutes'
 
+import optOutRoutes from './common/routes/opt-out/OptOutRoutes'
 import privateBetaRoutes from './common/routes/private-beta/PrivateBetaRoutes'
 
 // index routes
@@ -35,7 +37,9 @@ export const routes = [
   ...orgSignUpRoutes,
   ...orgFooterRoutes,
   ...infoRoutes,
-  ...privateBetaRoutes
+  ...privateBetaRoutes,
+  ...optOutRoutes,
+  ...orgInviteRoutes
 ]
 
 export const authenticatedRoutes = [

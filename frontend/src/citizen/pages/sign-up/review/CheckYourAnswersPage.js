@@ -54,7 +54,7 @@ export default function CheckYourAnswersPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <div className='govuk-grid-column-three-quarters'>
-            <h2 className='govuk-heading-l'>Check your answers</h2>
+            <h1 className='govuk-heading-l'>Check your answers</h1>
             <LocationReviewTable locations={profile.pois} />
             <FloodMessageReviewTable registration={registration} />
             <ContactReviewTable

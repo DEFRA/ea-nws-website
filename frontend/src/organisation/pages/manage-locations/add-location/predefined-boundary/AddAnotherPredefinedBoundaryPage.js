@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { useLocation } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import {
   setConsecutiveBoundariesAdded,
-  setPredefinedBoundaryFlow
+  setPredefinedBoundaryFlow,
+  setSelectedBoundary,
+  setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 
-export default function AddAnotherPredefinedBoundaryPage () {
+export default function AddAnotherPredefinedBoundaryPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
@@ -19,9 +20,13 @@ export default function AddAnotherPredefinedBoundaryPage () {
   const consecutiveBoundariesAdded = useSelector(
     (state) => state.session.consecutiveBoundariesAdded
   )
-  const [notificationText, setNotificationText] = useState(
-    location.state?.successMessage
-  )
+  const notificationText = location.state?.successMessage
+
+  // Clear any previous boundary selection
+  useEffect(() => {
+    dispatch(setSelectedBoundary(null))
+    dispatch(setSelectedBoundaryType(null))
+  }, [dispatch])
 
   const navigateBack = (event) => {
     event.preventDefault()

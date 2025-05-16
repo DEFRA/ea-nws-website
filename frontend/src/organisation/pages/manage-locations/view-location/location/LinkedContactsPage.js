@@ -132,25 +132,26 @@ export default function LinkedContactsPage () {
   }
 
   const unlinkContacts = async (contactsToUnlink) => {
-    for (const contact of contactsToUnlink) {
-      const dataToSend = {
-        authToken,
-        orgId,
-        locationId: currentLocation.id,
-        contactIds: [contact.id]
-      }
-
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/location/detach_contacts',
-        navigate
-      )
-
-      if (errorMessage) {
-        console.log(errorMessage)
-      }
+    const contactIDs = contactsToUnlink.map((contact) => {
+      return contact.id
+    })
+    const dataToSend = {
+      authToken,
+      orgId,
+      locationId: currentLocation.id,
+      contactIds: contactIDs
     }
 
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/detach_contacts',
+      navigate
+    )
+
+    if (errorMessage) {
+      console.log(errorMessage)
+    }
+    
     setUnlinkNotification(getUnlinkText(contactsToUnlink))
 
     const updatedContacts = linkedContacts.filter(

@@ -16,7 +16,7 @@ async function getOrgValidateInvitation(
   if (inviteToken) {
     //geosafe returns authtoken, contact and org
     const authToken = uuidv4()
-    const contact = mockContacts[0]
+    const contact = mockContacts.allContacts[0]
     contact.role = contact.pendingRole
     const organization = mockResponses.organization
     return res.response({

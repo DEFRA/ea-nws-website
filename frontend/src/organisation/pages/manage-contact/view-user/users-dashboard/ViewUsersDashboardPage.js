@@ -350,12 +350,17 @@ export default function ViewUsersDashboardPage() {
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    if (location.state?.addContactFlow) {
+      // if user just completed add contact flow - take them back to start of flow instead of previous page (avoids duplicate users)
+      navigate(orgManageContactsUrls.add.typeSelection)
+    } else {
+      navigate(-1)
+    }
   }
 
   return (
     <>
-      {!location.state?.addContactFlow && <BackLink onClick={navigateBack} />}
+      <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         {loading ? (

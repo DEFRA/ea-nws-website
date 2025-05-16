@@ -154,6 +154,7 @@ export default function FloodWarningHistoryDashboardPage() {
     const updatedLocation = createLocationWithFloodData()
     setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
     setDisplayedLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
+    setFilteredLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
   }
 
   useEffect(() => {

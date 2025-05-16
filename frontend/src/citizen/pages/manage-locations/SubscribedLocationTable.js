@@ -45,22 +45,12 @@ export default function SubscribedLocationTable({ setError }) {
           className='govuk-link'
           style={{ cursor: 'pointer' }}
         >
-        <Link
-          to='/manage-locations/add/search'
-          className='govuk-link'
-          style={{ cursor: 'pointer' }}
-        >
           Add a new location
         </Link>
         &nbsp;before removing any you do not need.
       </p>
       <p>
         Or you could&nbsp;
-        <Link
-          to='/account/delete'
-          className='govuk-link'
-          style={{ cursor: 'pointer' }}
-        >
         <Link
           to='/account/delete'
           className='govuk-link'

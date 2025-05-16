@@ -4,13 +4,13 @@
 frontend:
   replicaCount: 1
   imagePullSecrets: []
-  nameOverride: ""
-  fullnameOverride: ""
+  nameOverride: ''
+  fullnameOverride: ''
   serviceAccount:
     create: false
     automount: true
     annotations: {}
-    name: "int-public-website-s3-service-account"
+    name: 'int-public-website-s3-service-account'
   podAnnotations: {}
   podLabels: {}
   podSecurityContext: {}
@@ -20,7 +20,7 @@ frontend:
       image:
         repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "frontend-0.4.0"
+        tag: 'frontend-0.4.2'
       livenessProbe:
         httpGet:
           path: /
@@ -54,13 +54,13 @@ frontend:
 backend:
   replicaCount: 1
   imagePullSecrets: []
-  nameOverride: ""
-  fullnameOverride: ""
+  nameOverride: ''
+  fullnameOverride: ''
   serviceAccount:
     create: false
     automount: true
     annotations: {}
-    name: "int-public-website-s3-service-account"
+    name: 'int-public-website-s3-service-account'
   podAnnotations: {}
   podLabels: {}
   podSecurityContext: {}
@@ -70,7 +70,7 @@ backend:
       image:
         repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "backend-0.4.0"
+        tag: 'backend-0.4.2'
       livenessProbe:
         httpGet:
           path: /liveness

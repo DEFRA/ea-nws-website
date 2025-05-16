@@ -11,25 +11,22 @@ import {
   setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  addAccountName,
-  addVerifiedContact
-} from '../../../common/services/ProfileServices'
+import { addAccountName } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function AdminDetailsLayout ({
+export default function AdminDetailsLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
-  const session = useSelector((state) => state.session)
+  const profile = useSelector((state) => state.session.profile)
   const [fullName, setFullName] = useState(
-    session.profile?.firstname && session.profile?.lastname
-      ? `${session.profile.firstname} ${session.profile.lastname}`
+    profile?.firstname && profile?.lastname
+      ? `${profile.firstname} ${profile.lastname}`
       : ''
   )
   const [email, setEmail] = useState('')
@@ -65,9 +62,8 @@ export default function AdminDetailsLayout ({
     // if the string cannot be split then only the first name is set and the last name remains blank
     const [firstname, ...lastnameParts] = fullName.trim().split(' ')
     const lastname = lastnameParts.join(' ')
-
-    const profile = addAccountName(session.profile, firstname, lastname)
-    dispatch(setProfile(profile))
+    const updatedProfile = addAccountName(profile, firstname, lastname)
+    dispatch(setProfile(updatedProfile))
 
     // Add the main admin email to the unverified component
     const dataToSend = { name: organization.name, email }
@@ -90,8 +86,7 @@ export default function AdminDetailsLayout ({
         setErrorEmail(errorMessage)
       }
     } else {
-      // add email to  emails list
-      const updatedProfile = addVerifiedContact(profile, 'email', email)
+      const updatedProfile = { ...profile, emails: [email] }
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))
@@ -113,31 +108,27 @@ export default function AdminDetailsLayout ({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {isAdmin
-              ? (
-                <h1 className='govuk-heading-l'>Enter your details</h1>
-                )
-              : (
-                <h1 className='govuk-heading-l'>
-                  Enter details for main administrator
-                </h1>
-                )}
+            {isAdmin ? (
+              <h1 className='govuk-heading-l'>Enter your details</h1>
+            ) : (
+              <h1 className='govuk-heading-l'>
+                Enter details for main administrator
+              </h1>
+            )}
             <div className='govuk-body'>
-              {isAdmin
-                ? (
-                  <p className='govuk-hint'>
-                    You'll be able to set up flood warnings, locations and users.
-                    You will also receive flood messages for every locations you
-                    set up.
-                  </p>
-                  )
-                : (
-                  <p className='govuk-hint'>
-                    An administrator can set up flood warning, locations and
-                    users. They will also receive flood messages for every
-                    locations they set up.
-                  </p>
-                  )}
+              {isAdmin ? (
+                <p className='govuk-hint'>
+                  You'll be able to set up flood warnings, locations and users.
+                  You will also receive flood messages for every locations you
+                  set up.
+                </p>
+              ) : (
+                <p className='govuk-hint'>
+                  An administrator can set up flood warning, locations and
+                  users. They will also receive flood messages for every
+                  locations they set up.
+                </p>
+              )}
               <Input
                 name='Full name'
                 inputType='text'

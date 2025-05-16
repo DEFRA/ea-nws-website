@@ -1,10 +1,11 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import { setCurrentContact } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
-export default function ContactDetailsTable ({
+export default function ContactDetailsTable({
   contacts,
   contactTitle,
   contactType,
@@ -13,6 +14,7 @@ export default function ContactDetailsTable ({
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleButton = (event) => {
     event.preventDefault()
@@ -29,40 +31,32 @@ export default function ContactDetailsTable ({
     }
   }
 
-  const handleContactSelection = (contact, nextPage) => {
+  const handleContactSelection = async (contact) => {
+    let nextPage, endpoint, payload
     dispatch(setCurrentContact(contact))
-    navigate(nextPage)
-  }
-
-  const UnconfirmedLink = ({ contact }) => {
-    let nextPage
 
     switch (contactType) {
       case 'email address':
         nextPage = '/managecontacts/validate-email'
+        endpoint = 'api/add_contact/email/add'
+        payload = { authToken, email: contact }
         break
       case 'mobile telephone number':
         nextPage = '/managecontacts/validate-mobile'
+        endpoint = 'api/add_contact/mobile/add'
+        payload = { authToken, msisdn: contact }
         break
       case 'telephone number':
         nextPage = '/managecontacts/validate-landline'
+        endpoint = 'api/add_contact/landline/add'
+        payload = { authToken, msisdn: contact }
         break
     }
+    const { errorMessage } = await backendCall(payload, endpoint, navigate)
 
-    return (
-      <>
-        <Link
-          className='govuk-link right'
-          onClick={(e) => {
-            e.preventDefault()
-            handleContactSelection(contact, nextPage)
-          }}
-          style={{ cursor: 'pointer' }}
-        >
-          Confirm
-        </Link>
-      </>
-    )
+    if (!errorMessage) {
+      navigate(nextPage)
+    }
   }
 
   const MaximumReached = () => {
@@ -85,6 +79,31 @@ export default function ContactDetailsTable ({
     }
   }
 
+  const getLabel = (contact, arrayLength, index, type) => {
+    let confirmLabel, removeLabel
+    const contactLabel = `${
+      arrayLength > 1 && index ? `${index} - ` : ''
+    }${contact}`
+
+    switch (contactType) {
+      case 'email address':
+        confirmLabel = `Confirm email address ${contactLabel} to receive warnings for this address`
+        removeLabel = `Remove email address ${contactLabel} to stop warnings for this address`
+      case 'mobile telephone number':
+        confirmLabel = `Confirm mobile number ${contactLabel} to receive text warnings to this number`
+        removeLabel = `Remove mobile number ${contactLabel} to stop text warnings to this number`
+      case 'telephone number':
+        confirmLabel = `Confirm telephone number ${contactLabel} to receive phone call warnings to this number`
+        removeLabel = `Remove telephone number ${contactLabel} to stop phone call warnings to this number`
+    }
+
+    if (type === 'confirm') {
+      return confirmLabel
+    } else {
+      return removeLabel
+    }
+  }
+
   return (
     <>
       <h3 className='govuk-heading-m'>{contactTitle}</h3>
@@ -92,33 +111,43 @@ export default function ContactDetailsTable ({
         <table className='govuk-table'>
           <tbody className='govuk-table__body'>
             {contacts.map((contact, index) => (
-              <tr key={index} className='govuk-table__row'>
+              <tr
+                key={`verified-${contactType}-${index}`}
+                className='govuk-table__row'
+              >
                 <td className='custom-table-cell govuk-table__cell'>
                   {contact}
                 </td>
-                {contact !== primaryContact
-                  ? (
-                    <td className='custom-table-cell govuk-table__cell'>
-                      <Link
-                        to='/managecontacts/confirm-delete'
-                        state={{
-                          type: contactType,
-                          contact
-                        }}
-                        className='govuk-link right'
-                        style={{ cursor: 'pointer' }}
-                      >
-                        Remove
-                      </Link>
-                    </td>
-                    )
-                  : (
-                    <td className='govuk-table__cell' />
-                    )}
+                {contact !== primaryContact ? (
+                  <td className='custom-table-cell govuk-table__cell'>
+                    <Link
+                      to='/managecontacts/confirm-delete'
+                      state={{
+                        type: contactType,
+                        contact
+                      }}
+                      className='govuk-link right'
+                      style={{ cursor: 'pointer' }}
+                      aria-label={getLabel(
+                        contact,
+                        arrayLength,
+                        index,
+                        'remove'
+                      )}
+                    >
+                      Remove
+                    </Link>
+                  </td>
+                ) : (
+                  <td className='govuk-table__cell' />
+                )}
               </tr>
             ))}
             {unregisteredContact.map((unregisteredContact, index) => (
-              <tr key={index} className='govuk-table__row'>
+              <tr
+                key={`unverified-${contactType}-${index}`}
+                className='govuk-table__row'
+              >
                 <td className='custom-table-cell govuk-table__cell'>
                   {unregisteredContact.address}
                   <br />
@@ -137,31 +166,50 @@ export default function ContactDetailsTable ({
                     }}
                     className='govuk-link right'
                     style={{ cursor: 'pointer' }}
+                    aria-label={getLabel(
+                      unregisteredContact.address,
+                      arrayLength,
+                      index,
+                      'remove'
+                    )}
                   >
                     Remove
                   </Link>
                   <br />
                   <br />
-                  <UnconfirmedLink contact={unregisteredContact.address} />
+                  <Link
+                    className='govuk-link right'
+                    onClick={async (e) => {
+                      e.preventDefault()
+                      handleContactSelection(unregisteredContact.address)
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    aria-label={getLabel(
+                      unregisteredContact.address,
+                      arrayLength,
+                      index,
+                      'confirm'
+                    )}
+                  >
+                    Confirm
+                  </Link>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-      {contacts.length + unregisteredContact.length < 5
-        ? (
-          <Button
-            className='govuk-button govuk-button--secondary'
-            text={`Add ${
+      {contacts.length + unregisteredContact.length < 5 ? (
+        <Button
+          className='govuk-button govuk-button--secondary'
+          text={`Add ${
             contactType === 'email address' ? 'an' : 'a'
           } ${contactType}`}
-            onClick={handleButton}
-          />
-          )
-        : (
-          <MaximumReached />
-          )}
+          onClick={handleButton}
+        />
+      ) : (
+        <MaximumReached />
+      )}
     </>
   )
 }

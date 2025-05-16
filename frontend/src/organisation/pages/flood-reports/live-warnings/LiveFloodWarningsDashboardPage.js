@@ -50,6 +50,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
     const options = {
       states: [AlertState.CURRENT],
+      states: [AlertState.CURRENT],
       boundingBox: {},
       channels: [],
       partnerId
@@ -213,8 +214,17 @@ export default function LiveFloodWarningsDashboardPage() {
   }
 
   const onPrint = () => {
-    setLocationsAffectedPerPage(filteredLocationsAffected.length)
+    setCurrentPage(1) // always show page 1
+    setLocationsAffectedPerPage(null) // null = “show all rows”
   }
+
+  useEffect(() => {
+    if (locationsAffectedPerPage === null) {
+      window.print()
+      setLocationsAffectedPerPage(defaultLocationsPerPage)
+      setFilteredLocationsAffected(locationsAffected)
+    }
+  }, [locationsAffectedPerPage])
 
   const table = (
     <>

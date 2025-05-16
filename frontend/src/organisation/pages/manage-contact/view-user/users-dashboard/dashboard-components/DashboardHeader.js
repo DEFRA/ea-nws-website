@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import UserType from '../../../../../../common/enums/UserType'
 import { clearOrgCurrentContact } from '../../../../../../common/redux/userSlice'
 import LinkBanner from '../../../../../components/custom/LinkBanner'
-import {
-  orgManageContactsUrls
-} from '../../../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 
-export default function DashboardHeader ({
+export default function DashboardHeader({
   contacts,
   onClickLinked,
   linkLocations,
@@ -58,7 +57,9 @@ export default function DashboardHeader ({
       message = ' not linked to locations'
     } else if (type === 'pendingAdmins') {
       heading = 'Pending admins who have not accepted invitation'
-      count = contacts.filter((item) => item.pendingRole === 'ADMIN').length
+      count = contacts.filter(
+        (item) => item.pendingRole === UserType.PendingAdmin
+      ).length
 
       message = ' pending admins'
     }
@@ -100,7 +101,7 @@ export default function DashboardHeader ({
                 to={orgManageContactsUrls.admin.pendingInvites}
                 state={{
                   pendingAdmins: contacts.filter(
-                    (c) => c.pendingRole === 'ADMIN'
+                    (c) => c.pendingRole === UserType.PendingAdmin
                   )
                 }}
               >
@@ -122,7 +123,9 @@ export default function DashboardHeader ({
               className='govuk-link'
               to={orgManageContactsUrls.admin.pendingInvites}
               state={{
-                pendingAdmins: contacts.filter((c) => c.pendingRole === 'ADMIN')
+                pendingAdmins: contacts.filter(
+                  (c) => c.pendingRole === UserType.PendingAdmin
+                )
               }}
             >
               {' '}
@@ -171,8 +174,9 @@ export default function DashboardHeader ({
                 .length > 0 && <ContactsBanner type='linked' />}
               {contacts.filter((item) => item.linked_locations?.length === 0)
                 .length > 0 && <ContactsBanner type='notLinked' />}
-              {contacts.filter((item) => item.pendingRole === 'ADMIN').length >
-                0 && <ContactsBanner type='pendingAdmins' />}
+              {contacts.filter(
+                (item) => item.pendingRole === UserType.PendingAdmin
+              ).length > 0 && <ContactsBanner type='pendingAdmins' />}
             </div>
           </>
         ) : (

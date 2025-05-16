@@ -510,6 +510,7 @@
   padding: 3px;
   border-radius: 5px;
   cursor: pointer;
+  border: none;
 }
 
 .back-map-button {

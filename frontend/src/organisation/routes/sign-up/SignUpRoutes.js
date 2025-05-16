@@ -19,6 +19,7 @@ import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
 import SectorPage from '../../pages/sign-up/SectorPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import TermsAndConditionsPage from '../../pages/sign-up/TermsAndConditionsPage'
+import TimedOutPage from '../../pages/sign-up/TimedOutPage'
 
 const orgSignUpUrl = '/organisation/sign-up'
 
@@ -49,7 +50,8 @@ const orgSignUpUrls = {
     sector: orgSignUpUrl + '/change/sector',
     mainAdmin: orgSignUpUrl + '/change/admin-details',
     altContact: orgSignUpUrl + '/change/alternative-contact'
-  }
+  },
+  timedOut: orgSignUpUrl + '/timed-out'
 }
 
 const orgSignUpRoutes = [
@@ -121,6 +123,10 @@ const orgSignUpRoutes = [
   {
     path: orgSignUpUrls.change.altContact,
     component: <ChangeAlternativeContactDetailsPage />
+  },
+  {
+    path: orgSignUpUrls.timedOut,
+    component: <TimedOutPage />
   }
 ]
 

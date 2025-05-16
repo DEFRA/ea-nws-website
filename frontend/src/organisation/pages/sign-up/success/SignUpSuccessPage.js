@@ -6,7 +6,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 import { backendCall } from '../../../../common/services/BackendService'
 
-export default function SignUpSuccessPage () {
+export default function SignUpSuccessPage() {
   // need to check for authToken
   const navigate = useNavigate()
   const profile = useSelector((state) => state.session.profile)
@@ -19,7 +19,7 @@ export default function SignUpSuccessPage () {
   const [servicePhase, setServicePhase] = useState(false)
   const [eaEmail, setEAEmail] = useState(null)
 
-  async function notifySignUpSuccessEa () {
+  async function notifySignUpSuccessEa() {
     const submissionDateTime = new Date()
       .toLocaleString('en-GB', {
         day: 'numeric',
@@ -54,7 +54,7 @@ export default function SignUpSuccessPage () {
     await backendCall(dataToSend, 'api/notify/account_pending_ea', navigate)
   }
 
-  async function notifySignUpSuccessOrg () {
+  async function notifySignUpSuccessOrg() {
     const dataToSend = {
       email: profile.emails[0],
       refNumber: organization.id,
@@ -125,9 +125,9 @@ export default function SignUpSuccessPage () {
               </p>
               {servicePhase !== 'beta' && (
                 <div>
-                  <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
                     Help us improve this service
-                  </h1>
+                  </h2>
                   <p className='govuk-!-margin-top-6'>
                     <Link to='/signup/feedback' className='govuk-link'>
                       What do you think of the service?
@@ -137,12 +137,16 @@ export default function SignUpSuccessPage () {
                 </div>
               )}
               {servicePhase === 'beta' && (
-                <a
-                  className='govuk-link'
-                  href='https://forms.office.com/e/09pkcE64uK'
-                >
-                  <Button text='Continue' className='govuk-button' />
-                </a>
+                <div>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Now answer some questions about the sign up process
+                  </h2>
+                  <Button
+                    text='Continue'
+                    className='govuk-button'
+                    onClick={() => navigate('/signup/feedback')}
+                  />
+                </div>
               )}
             </div>
           </div>

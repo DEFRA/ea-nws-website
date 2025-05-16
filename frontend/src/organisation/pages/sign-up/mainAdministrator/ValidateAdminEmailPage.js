@@ -6,7 +6,7 @@ export default function ValidateAdminEmailPage () {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const navigateToNextPage = () => {
+  const navigateToNextPage = async () => {
     if (location.state?.returnToReview) {
       navigate(orgSignUpUrls.review)
     } else {

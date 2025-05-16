@@ -26,6 +26,11 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
     }
     const tileMatrixLimits = tileMatrixSetLimits[coords.z]
 
+    // if we have no limits defined for this zoom, never try to fetch WMTS tiles
+    if (!tileMatrixLimits) {
+      return false
+    }
+
     const withinLimits = () => {
       return (
         coords.x >= tileMatrixLimits.x[0] &&

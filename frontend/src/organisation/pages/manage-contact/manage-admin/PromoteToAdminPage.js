@@ -63,6 +63,25 @@ export default function PromoteToAdminPage() {
         JSON.stringify(webToGeoSafeContact(currentContact))
       )
       updatedContact.emails = [selectedEmail, ...updatedContact.emails]
+      const updatedContact = JSON.parse(
+        JSON.stringify(webToGeoSafeContact(currentContact))
+      )
+
+      if (updatedContact.emails.length === 0) {
+        updatedContact.emails.push(selectedEmail)
+      } else if (updatedContact.emails.length === 1) {
+        // user updated primary email
+        if (selectedEmail != updatedContact.emails[0]) {
+          updatedContact.emails[0] = selectedEmail
+        }
+      } else {
+        // move email selected to receive notification to front of array
+        const index = updatedContact.emails.indexOf(selectedEmail)
+        if (index > 0) {
+          updatedContact.emails.splice(index, 1)
+          updatedContact.emails.unshift(selectedEmail)
+        }
+      }
 
       const dataToSend = { authToken, orgId, contact: updatedContact }
       const { errorMessage: updateError } = await backendCall(

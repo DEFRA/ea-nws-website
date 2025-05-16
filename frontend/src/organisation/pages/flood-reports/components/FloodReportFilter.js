@@ -77,7 +77,7 @@ export default function FloodReportFilter({
   const resetErrors = () => {
     setDateFromError(null)
     setDateToError(null)
-    setFilterErrorMessages([])
+    setFilterErrorMessages?.([])
   }
 
   const filterLocationsAffected = async (event) => {
@@ -102,7 +102,7 @@ export default function FloodReportFilter({
       } else {
         setDateFromError(dateFromErrorMessage)
         setDateToError(dateToErrorMessage)
-        setFilterErrorMessages([dateFromErrorMessage, dateToErrorMessage])
+        setFilterErrorMessages?.([dateFromErrorMessage, dateToErrorMessage])
       }
     }
 

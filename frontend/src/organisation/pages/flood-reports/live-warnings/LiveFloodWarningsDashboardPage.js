@@ -12,7 +12,7 @@ import { geoSafeToWebLocation } from '../../../../common/services/formatters/Loc
 import FloodReportFilter from '../components/FloodReportFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
 
-export default function LiveFloodWarningsDashboardPage () {
+export default function LiveFloodWarningsDashboardPage() {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -49,7 +49,7 @@ export default function LiveFloodWarningsDashboardPage () {
     )
 
     const options = {
-      states: [AlertState.PAST],
+      states: [AlertState.CURRENT],
       boundingBox: {},
       channels: [],
       partnerId
@@ -130,9 +130,10 @@ export default function LiveFloodWarningsDashboardPage () {
     TA_NAME
   ) => {
     const { additionals } = location
-    const locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
-      (targetArea) => targetArea.TA_CODE === TA_CODE
-    )
+    const locationIntersectsWithFloodArea =
+      additionals.other?.targetAreas?.some(
+        (targetArea) => targetArea.TA_CODE === TA_CODE
+      )
 
     if (!locationIntersectsWithFloodArea) return
 
@@ -154,7 +155,7 @@ export default function LiveFloodWarningsDashboardPage () {
     const updatedLocation = createLocationWithFloodData()
     setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
     setDisplayedLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
-    setFilteredLocationsAffected(locationsAffected)
+    setFilteredLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
   }
 
   useEffect(() => {

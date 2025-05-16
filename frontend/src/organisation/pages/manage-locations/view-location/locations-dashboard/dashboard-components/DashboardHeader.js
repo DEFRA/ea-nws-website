@@ -294,8 +294,6 @@ export default function DashboardHeader({
     )
   }
 
-  console.log('linkContacts', linkContacts)
-
   return (
     <>
       <div className='govuk-body govuk-!-margin-top-6'>

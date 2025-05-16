@@ -30,7 +30,7 @@ export default function FloodMessageReviewTable () {
 
   return (
     <div className='govuk-!-padding-bottom-4'>
-      <h3 className='govuk-heading-m'>Flood messages you'll get</h3>
+      <h2 className='govuk-heading-m'>Flood messages you'll get</h2>
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           {hasSevereFloodWarning

@@ -105,7 +105,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
 
   return (
     <div className='govuk-!-padding-bottom-4'>
-      <h3 className='govuk-heading-m'>How you'll get flood messages</h3>
+      <h2 className='govuk-heading-m'>How you'll get flood messages</h2>
       <table className='govuk-table govuk-!-margin-bottom-0'>
         <tbody className='govuk-table__body'>
           <EmailAddressesSection />

@@ -174,7 +174,8 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            <Link to='/' className='govuk-link'>
+            {/* TO-DO waiting on UCD feedback - link to comment https://tinyurl.com/mr5j74f2 */}
+            <Link to='#' className='govuk-link'>
               {data.all.locations}
             </Link>
           </td>
@@ -204,7 +205,8 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            <Link to='/' className='govuk-link'>
+            {/* TO-DO waiting on UCD feedback - link to comment https://tinyurl.com/mr5j74f2 */}
+            <Link to='#' className='govuk-link'>
               {data.severeWarningsOnly.locations}
             </Link>
           </td>
@@ -230,7 +232,8 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            <Link to='/' className='govuk-link'>
+            {/* TO-DO waiting on UCD feedback - link to comment https://tinyurl.com/mr5j74f2 */}
+            <Link to='#' className='govuk-link'>
               {data.alertsOnly.locations}
             </Link>
           </td>
@@ -259,7 +262,8 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            <Link to='/' className='govuk-link'>
+            {/* TO-DO waiting on UCD feedback - link to comment https://tinyurl.com/mr5j74f2 */}
+            <Link to='#' className='govuk-link'>
               {data.noneAvailable}
             </Link>
           </td>
@@ -283,7 +287,8 @@ export default function FloodMessagesSentSummaryPage() {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            <Link to='/' className='govuk-link'>
+            {/* TO-DO waiting on UCD feedback - link to comment https://tinyurl.com/mr5j74f2 */}
+            <Link to='#' className='govuk-link'>
               {data.messagesTurnedOff.locations}
             </Link>
           </td>
@@ -303,8 +308,6 @@ export default function FloodMessagesSentSummaryPage() {
       </tbody>
     </>
   )
-
-  console.log(data)
 
   const locationTableHead = (
     title,

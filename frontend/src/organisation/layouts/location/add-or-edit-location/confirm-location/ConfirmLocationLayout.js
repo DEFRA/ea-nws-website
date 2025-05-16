@@ -29,7 +29,7 @@ import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout ({
+export default function ConfirmLocationLayout({
   navigateToNextPage,
   navigateToPinDropFlow,
   flow
@@ -71,7 +71,7 @@ export default function ConfirmLocationLayout ({
   const shapeArea = location.state?.shapeArea
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -186,9 +186,11 @@ export default function ConfirmLocationLayout ({
       (area) => categoryToType(area.category) === 'warning'
     ) &&
       newWebLocation.additionals.other.alertTypes.push(
-        AlertType.SEVERE_FLOOD_WARNING
-      ) &&
-      newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING
+      )
 
     newWebLocation.additionals.other.targetAreas.some(
       (area) => categoryToType(area.category) === 'alert'
@@ -354,25 +356,25 @@ export default function ConfirmLocationLayout ({
             {/* Shapefile layout */}
             {(currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
               currentLocationDataType === LocationDataType.SHAPE_LINE) && (
-                <>
-                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    Polygon
-                  </h3>
-                  <p>{shapeArea} square metres</p>
+              <>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                  Polygon
+                </h3>
+                <p>{shapeArea} square metres</p>
 
-                  <div className='govuk-!-margin-top-8'>
-                    <Button
-                      text='Add and continue'
-                      className='govuk-button'
-                      onClick={handleSubmit}
-                    />
-                    <Button
-                      text='Cancel upload'
-                      className='govuk-button govuk-button--warning govuk-!-margin-left-3'
-                      onClick={navigateBack}
-                    />
-                  </div>
-                </>
+                <div className='govuk-!-margin-top-8'>
+                  <Button
+                    text='Add and continue'
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />
+                  <Button
+                    text='Cancel upload'
+                    className='govuk-button govuk-button--warning govuk-!-margin-left-3'
+                    onClick={navigateBack}
+                  />
+                </div>
+              </>
             )}
           </div>
           <div

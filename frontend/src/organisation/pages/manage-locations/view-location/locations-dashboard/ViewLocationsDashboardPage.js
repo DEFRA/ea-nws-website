@@ -26,7 +26,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewLocationsDashboardPage () {
+export default function ViewLocationsDashboardPage() {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -76,7 +76,7 @@ export default function ViewLocationsDashboardPage () {
   const [partnerId, setPartnerId] = useState(false)
   const historyData = useFetchAlerts()
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -580,10 +580,13 @@ export default function ViewLocationsDashboardPage () {
   const editLocations = async (locationsToEdit) => {
     const chosenAlerts = []
     if (dialog.options[0].sent) {
-      chosenAlerts.push(AlertType.SEVERE_FLOOD_WARNING)
+      chosenAlerts.push(
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING
+      )
     }
     if (dialog.options[1].sent) {
-      chosenAlerts.push(AlertType.FLOOD_WARNING)
+      chosenAlerts.push(AlertType.FLOOD_WARNING, AlertType.REMOVE_FLOOD_WARNING)
     }
     if (dialog.options[2].sent) {
       chosenAlerts.push(AlertType.FLOOD_ALERT)
@@ -766,176 +769,172 @@ export default function ViewLocationsDashboardPage () {
             />
           </div>
           <div className='govuk-grid-column-full govuk-body'>
-            {loading
-              ? (
-                <LoadingSpinner />
-                )
-              : (
-                <>
-                  {!isFilterVisible
-                    ? (
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                {!isFilterVisible ? (
+                  <>
+                    <Button
+                      text='Open filter'
+                      className='govuk-button govuk-button--secondary inline-block'
+                      onClick={(event) => onOpenCloseFilter(event)}
+                    />
+                    {(!location.state ||
+                      !location.state.linkContacts ||
+                      location.state.linkContacts.length === 0) && (
                       <>
+                        &nbsp; &nbsp;
+                        <ButtonMenu
+                          title='More actions'
+                          options={moreActions}
+                          onSelect={(index) => onMoreAction(index)}
+                        />
+                        &nbsp; &nbsp;
                         <Button
-                          text='Open filter'
+                          text='Print'
                           className='govuk-button govuk-button--secondary inline-block'
+                          onClick={(event) => onPrint(event)}
+                        />
+                      </>
+                    )}
+                    <LocationsTable
+                      locations={locations}
+                      displayedLocations={displayedLocations}
+                      filteredLocations={filteredLocations}
+                      selectedLocations={selectedLocations}
+                      setLocations={setLocations}
+                      setSelectedLocations={setSelectedLocations}
+                      setFilteredLocations={setFilteredLocations}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      onAction={onAction}
+                      actionText='Delete'
+                      linkContacts={location.state?.linkContacts}
+                    />
+                    {locationsPerPage && (
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredLocations.length / locationsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        holdPage={holdPage}
+                        setHoldPage={setHoldPage}
+                        pageList
+                        reset={resetPaging}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <div className='govuk-grid-row'>
+                    <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
+                      <SearchFilter
+                        locations={locations}
+                        setFilteredLocations={setFilteredLocations}
+                        resetPaging={resetPaging}
+                        setResetPaging={setResetPaging}
+                        selectedFilters={selectedFilters}
+                        setSelectedFilters={setSelectedFilters}
+                        selectedLocationTypeFilters={
+                          selectedLocationTypeFilters
+                        }
+                        setSelectedLocationTypeFilters={
+                          setSelectedLocationTypeFilters
+                        }
+                        selectedBusinessCriticalityFilters={
+                          selectedBusinessCriticalityFilters
+                        }
+                        setSelectedBusinessCriticalityFilters={
+                          setSelectedBusinessCriticalityFilters
+                        }
+                        selectedKeywordFilters={selectedKeywordFilters}
+                        setSelectedKeywordFilters={setSelectedKeywordFilters}
+                        selectedGroundWaterRiskFilters={
+                          selectedGroundWaterRiskFilters
+                        }
+                        setSelectedGroundWaterRiskFilters={
+                          setSelectedGroundWaterRiskFilters
+                        }
+                        selectedRiverSeaRiskFilters={
+                          selectedRiverSeaRiskFilters
+                        }
+                        setSelectedRiverSeaRiskFilters={
+                          setSelectedRiverSeaRiskFilters
+                        }
+                        selectedFloodMessagesAvailableFilters={
+                          selectedFloodMessagesAvailableFilters
+                        }
+                        setSelectedFloodMessagesAvailableFilters={
+                          setSelectedFloodMessagesAvailableFilters
+                        }
+                        selectedFloodMessagesSentFilters={
+                          selectedFloodMessagesSentFilters
+                        }
+                        setSelectedFloodMessagesSentFilters={
+                          setSelectedFloodMessagesSentFilters
+                        }
+                        selectedLinkedFilters={selectedLinkedFilters}
+                        setSelectedLinkedFilters={setSelectedLinkedFilters}
+                      />
+                    </div>
+
+                    <div className='govuk-grid-column-three-quarters'>
+                      <div className='govuk-grid-row'>
+                        <Button
+                          text='Close Filter'
+                          className='govuk-button govuk-button--secondary'
                           onClick={(event) => onOpenCloseFilter(event)}
                         />
                         {(!location.state ||
-                      !location.state.linkContacts ||
-                      location.state.linkContacts.length === 0) && (
-                        <>
-                        &nbsp; &nbsp;
-                          <ButtonMenu
-                            title='More actions'
-                            options={moreActions}
-                            onSelect={(index) => onMoreAction(index)}
-                          />
-                        &nbsp; &nbsp;
-                          <Button
-                            text='Print'
-                            className='govuk-button govuk-button--secondary inline-block'
-                            onClick={(event) => onPrint(event)}
-                          />
-                        </>
-                        )}
-                        <LocationsTable
-                          locations={locations}
-                          displayedLocations={displayedLocations}
-                          filteredLocations={filteredLocations}
-                          selectedLocations={selectedLocations}
-                          setLocations={setLocations}
-                          setSelectedLocations={setSelectedLocations}
-                          setFilteredLocations={setFilteredLocations}
-                          resetPaging={resetPaging}
-                          setResetPaging={setResetPaging}
-                          onAction={onAction}
-                          actionText='Delete'
-                          linkContacts={location.state?.linkContacts}
-                        />
-                        {locationsPerPage && (
-                          <Pagination
-                            totalPages={Math.ceil(
-                              filteredLocations.length / locationsPerPage
-                            )}
-                            onPageChange={(val) => setCurrentPage(val)}
-                            holdPage={holdPage}
-                            setHoldPage={setHoldPage}
-                            pageList
-                            reset={resetPaging}
-                          />
-                        )}
-                      </>
-                      )
-                    : (
-                      <div className='govuk-grid-row'>
-                        <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
-                          <SearchFilter
-                            locations={locations}
-                            setFilteredLocations={setFilteredLocations}
-                            resetPaging={resetPaging}
-                            setResetPaging={setResetPaging}
-                            selectedFilters={selectedFilters}
-                            setSelectedFilters={setSelectedFilters}
-                            selectedLocationTypeFilters={
-                          selectedLocationTypeFilters
-                        }
-                            setSelectedLocationTypeFilters={
-                          setSelectedLocationTypeFilters
-                        }
-                            selectedBusinessCriticalityFilters={
-                          selectedBusinessCriticalityFilters
-                        }
-                            setSelectedBusinessCriticalityFilters={
-                          setSelectedBusinessCriticalityFilters
-                        }
-                            selectedKeywordFilters={selectedKeywordFilters}
-                            setSelectedKeywordFilters={setSelectedKeywordFilters}
-                            selectedGroundWaterRiskFilters={
-                          selectedGroundWaterRiskFilters
-                        }
-                            setSelectedGroundWaterRiskFilters={
-                          setSelectedGroundWaterRiskFilters
-                        }
-                            selectedRiverSeaRiskFilters={
-                          selectedRiverSeaRiskFilters
-                        }
-                            setSelectedRiverSeaRiskFilters={
-                          setSelectedRiverSeaRiskFilters
-                        }
-                            selectedFloodMessagesAvailableFilters={
-                          selectedFloodMessagesAvailableFilters
-                        }
-                            setSelectedFloodMessagesAvailableFilters={
-                          setSelectedFloodMessagesAvailableFilters
-                        }
-                            selectedFloodMessagesSentFilters={
-                          selectedFloodMessagesSentFilters
-                        }
-                            setSelectedFloodMessagesSentFilters={
-                          setSelectedFloodMessagesSentFilters
-                        }
-                            selectedLinkedFilters={selectedLinkedFilters}
-                            setSelectedLinkedFilters={setSelectedLinkedFilters}
-                          />
-                        </div>
-
-                        <div className='govuk-grid-column-three-quarters'>
-                          <div className='govuk-grid-row'>
-                            <Button
-                              text='Close Filter'
-                              className='govuk-button govuk-button--secondary'
-                              onClick={(event) => onOpenCloseFilter(event)}
-                            />
-                            {(!location.state ||
                           !location.state.linkContacts ||
                           location.state.linkContacts.length === 0) && (
-                            <>
+                          <>
                             &nbsp; &nbsp;
-                              <ButtonMenu
-                                title='More actions'
-                                options={moreActions}
-                                onSelect={(index) => onMoreAction(index)}
-                              />
-                            &nbsp; &nbsp;
-                              <Button
-                                text='Print'
-                                className='govuk-button govuk-button--secondary inline-block'
-                                onClick={(event) => onPrint(event)}
-                              />
-                            </>
-                            )}
-                          </div>
-                          <LocationsTable
-                            locations={locations}
-                            displayedLocations={displayedLocations}
-                            filteredLocations={filteredLocations}
-                            selectedLocations={selectedLocations}
-                            setLocations={setLocations}
-                            setSelectedLocations={setSelectedLocations}
-                            setFilteredLocations={setFilteredLocations}
-                            resetPaging={resetPaging}
-                            setResetPaging={setResetPaging}
-                            onAction={onAction}
-                            actionText='Delete'
-                            linkContacts={location.state?.linkContacts}
-                          />
-                          {locationsPerPage && (
-                            <Pagination
-                              totalPages={Math.ceil(
-                  filteredLocations.length / locationsPerPage
-                )}
-                              onPageChange={(val) => setCurrentPage(val)}
-                              holdPage={holdPage}
-                              setHoldPage={setHoldPage}
-                              pageList
-                              reset={resetPaging}
+                            <ButtonMenu
+                              title='More actions'
+                              options={moreActions}
+                              onSelect={(index) => onMoreAction(index)}
                             />
-                          )}
-                        </div>
+                            &nbsp; &nbsp;
+                            <Button
+                              text='Print'
+                              className='govuk-button govuk-button--secondary inline-block'
+                              onClick={(event) => onPrint(event)}
+                            />
+                          </>
+                        )}
                       </div>
+                      <LocationsTable
+                        locations={locations}
+                        displayedLocations={displayedLocations}
+                        filteredLocations={filteredLocations}
+                        selectedLocations={selectedLocations}
+                        setLocations={setLocations}
+                        setSelectedLocations={setSelectedLocations}
+                        setFilteredLocations={setFilteredLocations}
+                        resetPaging={resetPaging}
+                        setResetPaging={setResetPaging}
+                        onAction={onAction}
+                        actionText='Delete'
+                        linkContacts={location.state?.linkContacts}
+                      />
+                      {locationsPerPage && (
+                        <Pagination
+                          totalPages={Math.ceil(
+                            filteredLocations.length / locationsPerPage
+                          )}
+                          onPageChange={(val) => setCurrentPage(val)}
+                          holdPage={holdPage}
+                          setHoldPage={setHoldPage}
+                          pageList
+                          reset={resetPaging}
+                        />
                       )}
-                </>
+                    </div>
+                  </div>
                 )}
+              </>
+            )}
             {dialog.show && (
               <>
                 <Popup
@@ -949,7 +948,8 @@ export default function ViewLocationsDashboardPage () {
                   options={dialog.options}
                   error={dialog.error}
                   setError={(val) =>
-                    setDialog((dial) => ({ ...dial, error: val }))}
+                    setDialog((dial) => ({ ...dial, error: val }))
+                  }
                   validateInput={() => validateInput()}
                   defaultValue={
                     dialog.input ? targetLocation.additionals.locationName : ''

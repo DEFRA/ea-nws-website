@@ -140,6 +140,8 @@ export default function SelectPredefinedBoundaryPage() {
       newWebLocation.additionals.other.alertTypes = [
         AlertType.SEVERE_FLOOD_WARNING,
         AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
         AlertType.FLOOD_ALERT
       ]
       // get the target areas

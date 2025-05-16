@@ -56,8 +56,6 @@ export default function SignUpValidationPage() {
     event.preventDefault()
     const { error: validationError, code: formattedCode } =
       authCodeValidation(code)
-    const { error: validationError, code: formattedCode } =
-      authCodeValidation(code)
     setError(validationError)
 
     if (validationError === '') {

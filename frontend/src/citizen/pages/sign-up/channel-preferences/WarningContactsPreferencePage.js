@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { setContactPreferences } from '../../../../common/redux/userSlice'
 
@@ -11,6 +12,7 @@ export default function WarningContactsPreferencePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
+  const [error, setError] = useState('')
   const [selectedContactPreferences, setSelectedContactPreferences] = useState(
     []
   )
@@ -21,13 +23,17 @@ export default function WarningContactsPreferencePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    dispatch(setContactPreferences(selectedContactPreferences))
-    if (selectedContactPreferences.includes('Text')) {
-      navigate('/signup/contactpreferences/mobile/add')
-    } else if (selectedContactPreferences.includes('PhoneCall')) {
-      navigate('/signup/contactpreferences/landline/add')
+    if (selectedContactPreferences.length === 0) {
+      setError('Select at least one way to get messages about flooding')
     } else {
-      navigate('/signup/accountname/add')
+      dispatch(setContactPreferences(selectedContactPreferences))
+      if (selectedContactPreferences.includes('Text')) {
+        navigate('/signup/contactpreferences/mobile/add')
+      } else if (selectedContactPreferences.includes('PhoneCall')) {
+        navigate('/signup/contactpreferences/landline/add')
+      } else {
+        navigate('/signup/accountname/add')
+      }
     }
   }
 

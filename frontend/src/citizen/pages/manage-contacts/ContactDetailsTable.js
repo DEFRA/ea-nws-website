@@ -130,7 +130,7 @@ export default function ContactDetailsTable({
                       style={{ cursor: 'pointer' }}
                       aria-label={getLabel(
                         contact,
-                        arrayLength,
+                        contacts.length,
                         index,
                         'remove'
                       )}
@@ -168,7 +168,7 @@ export default function ContactDetailsTable({
                     style={{ cursor: 'pointer' }}
                     aria-label={getLabel(
                       unregisteredContact.address,
-                      arrayLength,
+                      unregisteredContact.length,
                       index,
                       'remove'
                     )}
@@ -186,7 +186,7 @@ export default function ContactDetailsTable({
                     style={{ cursor: 'pointer' }}
                     aria-label={getLabel(
                       unregisteredContact.address,
-                      arrayLength,
+                      unregisteredContact.length,
                       index,
                       'confirm'
                     )}

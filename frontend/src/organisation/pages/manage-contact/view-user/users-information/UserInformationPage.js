@@ -17,7 +17,6 @@ export default function UserInformationPage() {
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const jobTitle = currentContact.additionals.jobTitle
   const keywords = currentContact.additionals.keywords
-  console.log(keywords)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const role = () => {
     if (currentContact?.role) {

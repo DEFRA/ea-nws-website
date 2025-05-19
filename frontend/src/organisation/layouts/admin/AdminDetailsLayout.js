@@ -11,7 +11,6 @@ import {
   setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { addAccountName } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
@@ -62,10 +61,8 @@ export default function AdminDetailsLayout({
     // if the string cannot be split then only the first name is set and the last name remains blank
     const [firstname, ...lastnameParts] = fullName.trim().split(' ')
     const lastname = lastnameParts.join(' ')
-    const updatedProfile = addAccountName(profile, firstname, lastname)
-    dispatch(setProfile(updatedProfile))
 
-    // Add the main admin email to the unverified component
+    // Start org registration in geosafe
     const dataToSend = { name: organization.name, email }
     const { data, errorMessage } = await backendCall(
       dataToSend,
@@ -86,7 +83,7 @@ export default function AdminDetailsLayout({
         setErrorEmail(errorMessage)
       }
     } else {
-      const updatedProfile = { ...profile, emails: [email] }
+      const updatedProfile = { ...profile, emails: [email], firstname, lastname }
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))

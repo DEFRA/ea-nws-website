@@ -38,7 +38,7 @@ export default function UserHeader({ contactId, contactName, userType, currentPa
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success'
           title='Success'
-          text={location.state.successMessage}
+          text={location?.state?.successMessage}
         />
       )}
       {userType === UserType.PendingAdmin ? (

@@ -138,6 +138,21 @@ export default function ViewUsersDashboardPage() {
         }
       })
 
+      // Sort objects by contact name alphabetically
+      contactsUpdate.sort((a, b) => {
+        const first = (a.firstname || '').localeCompare(
+          b.firstname || '',
+          undefined,
+          { sensitivity: 'base' }
+        )
+        if (first !== 0) return first
+
+        // If first names match, compare second names
+        return (a.lastname || '').localeCompare(b.lastname || '', undefined, {
+          sensitivity: 'base'
+        })
+      })
+
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
       setLoading(false)
@@ -459,7 +474,12 @@ export default function ViewUsersDashboardPage() {
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    if (location.state?.addContactFlow) {
+      // if user just completed add contact flow - take them back to start of flow instead of previous page (avoids duplicate users)
+      navigate(orgManageContactsUrls.add.typeSelection)
+    } else {
+      navigate(-1)
+    }
   }
 
   return (

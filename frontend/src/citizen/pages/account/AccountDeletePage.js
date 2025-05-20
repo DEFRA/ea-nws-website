@@ -113,88 +113,94 @@ export default function AccountDeletePage () {
                 We'll no longer send you any flood messages for all your
                 locations.
               </p>
-              <h2 className='govuk-heading-m'>
-                Select reason for deleting your account
-              </h2>
-              <p className='govuk-body govuk-!-margin-bottom-6'>
-                This helps us to improve this service.
-              </p>
+              <fieldset className='govuk-fieldset'>
+                <legend className='govuk-fieldset__legend'>
+                  <h2 className='govuk-heading-m'>
+                    Select reason for deleting your account
+                  </h2>
+                </legend>
+                <p className='govuk-body govuk-!-margin-bottom-6'>
+                  This helps us to improve this service.
+                </p>
 
-              {/* Select account deletion reason */}
-              <div
-                className={
-                      reasonError
-                        ? 'govuk-form-group govuk-form-group--error'
-                        : 'govuk-form-group'
-                    }
-              >
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  {reasonError && (
-                    <p className='govuk-error-message'>{reasonError}</p>
-                  )}
-                  {accountDeletionReasonOptions.map((option) => (
+                {/* Select account deletion reason */}
+                <div
+                  className={
+                        reasonError
+                          ? 'govuk-form-group govuk-form-group--error'
+                          : 'govuk-form-group'
+                      }
+                >
+                  <div className='govuk-radios' data-module='govuk-radios'>
+                    {reasonError && (
+                      <p className='govuk-error-message'>{reasonError}</p>
+                    )}
+                    {accountDeletionReasonOptions.map((option) => (
+                      <Radio
+                        key={option.value}
+                        name='accountDeletionReasonRadios'
+                        label={option.label}
+                        value={option.value}
+                        onChange={(e) =>
+                          setAccountDeletionReason(e.target.value)}
+                      />
+                    ))}
                     <Radio
-                      key={option.value}
+                      label='Other'
+                      value='Other'
                       name='accountDeletionReasonRadios'
-                      label={option.label}
-                      value={option.value}
                       onChange={(e) =>
                         setAccountDeletionReason(e.target.value)}
+                      conditional={accountDeletionReason === 'Other'}
+                      conditionalQuestion='Reason for deleting account'
+                      conditionalInput={(val) =>
+                        setaccountDeletionReasonText(val)}
+                      conditionalError={reasonTextError}
                     />
-                  ))}
-                  <Radio
-                    label='Other'
-                    value='Other'
-                    name='accountDeletionReasonRadios'
-                    onChange={(e) =>
-                      setAccountDeletionReason(e.target.value)}
-                    conditional={accountDeletionReason === 'Other'}
-                    conditionalQuestion='Reason for deleting account'
-                    conditionalInput={(val) =>
-                      setaccountDeletionReasonText(val)}
-                    conditionalError={reasonTextError}
+                  </div>
+                </div>
+              </fieldset>
+
+                <br />
+
+                {/* Enter account deletion optional information */}
+                <div
+                  className={
+                        furtherInfoError
+                          ? 'govuk-form-group govuk-form-group--error'
+                          : 'govuk-form-group'
+                      }
+                >
+                  <fieldset className='govuk-fieldset' />
+                  <h2 className='govuk-label-wrapper'>
+                    <label
+                      id="more-detail-hint"
+                      className='govuk-label govuk-label--m'
+                      htmlFor='more-detail'
+                    >
+                      Any more information you'd like to tell us? (optional)
+                    </label>
+                  </h2>
+                  {furtherInfoError && (
+                    <p className='govuk-error-message'>{furtherInfoError}</p>
+                  )}
+                  <TextArea
+                    className='govuk-textarea govuk-!-width-one-half'
+                    id='more-detail'
+                    rows='5'
+                    onChange={(val) => setAccountDeletionFurtherInfo(val)}
+                    labelledByID="more-detail-hint"
                   />
                 </div>
-              </div>
 
-              <br />
-
-              {/* Enter account deletion optional information */}
-              <div
-                className={
-                      furtherInfoError
-                        ? 'govuk-form-group govuk-form-group--error'
-                        : 'govuk-form-group'
-                    }
-              >
-                <fieldset className='govuk-fieldset' />
-                <h2 className='govuk-label-wrapper'>
-                  <label
-                    className='govuk-label govuk-label--m'
-                    htmlFor='more-detail'
-                  >
-                    Any more information you'd like to tell us? (optional)
-                  </label>
-                </h2>
-                {furtherInfoError && (
-                  <p className='govuk-error-message'>{furtherInfoError}</p>
-                )}
-                <TextArea
-                  className='govuk-textarea govuk-!-width-one-half'
-                  id='more-detail'
-                  rows='5'
-                  onChange={(val) => setAccountDeletionFurtherInfo(val)}
+                <Button
+                  text='Delete account'
+                  className='govuk-button govuk-button--warning'
+                  onClick={handleButton}
                 />
-              </div>
-
-              <Button
-                text='Delete account'
-                className='govuk-button govuk-button--warning'
-                onClick={handleButton}
-              />
-              <Link to='/account' className='govuk-link inline-link' style={{ cursor: 'pointer' }}>
-                Cancel
-              </Link>
+                <Link to='/account' className='govuk-link inline-link' style={{ cursor: 'pointer' }}>
+                  Cancel
+                </Link>
             </div>
           </div>
         </div>

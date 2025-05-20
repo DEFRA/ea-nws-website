@@ -26,7 +26,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {
@@ -55,7 +55,7 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -95,7 +95,13 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const registerLocationToPartner = async (profile) => {
     const location = findPOIByAddress(profile, addressToUse)
-    const alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+    const alertTypes = [
+      AlertType.SEVERE_FLOOD_WARNING,
+      AlertType.FLOOD_WARNING,
+      AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+      AlertType.REMOVE_FLOOD_WARNING,
+      AlertType.INFO
+    ]
 
     const data = {
       authToken,
@@ -159,7 +165,10 @@ export default function LocationInSevereWarningAreaLayout ({
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea),
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
         AlertType.SEVERE_FLOOD_WARNING,
-        AlertType.FLOOD_WARNING
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
       ])
     }
     const updatedProfile = addLocation(profile, warningArea)
@@ -198,7 +207,10 @@ export default function LocationInSevereWarningAreaLayout ({
       ...locationWithoutPostcode,
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
         AlertType.SEVERE_FLOOD_WARNING,
-        AlertType.FLOOD_WARNING
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
       ])
     }
 

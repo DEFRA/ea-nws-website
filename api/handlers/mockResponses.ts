@@ -19,7 +19,14 @@ const locationAdditionals = [
   { id: 'parentID', value: { s: '' } },
   { id: 'targetAreas', value: { s: '' } },
   { id: 'keywords', value: { s: '[]' } },
-  { id: 'other', value: { s: '' } }
+  {
+    id: 'other',
+    value: {
+      s: JSON.stringify({
+        alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+      })
+    }
+  }
 ]
 
 const citizenPOIs = [
@@ -36,7 +43,16 @@ const citizenPOIs = [
     geometry: { geoJson: '' },
     geocode: '',
     metadata: { nbAttachedContacts: 0 },
-    additionals: []
+    additionals: [
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+          })
+        }
+      }
+    ]
   }
 ]
 
@@ -106,7 +122,17 @@ const citizenContact2 = {
       coordinates: {
         latitude: '52612444.5',
         longitude: '1724640.5'
-      }
+      },
+      additionals: [
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({
+              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+            })
+          }
+        }
+      ]
     },
     {
       address: 'Exmouth, United Kingdom',
@@ -114,7 +140,15 @@ const citizenContact2 = {
       coordinates: {
         latitude: '50621091',
         longitude: '-3412665'
-      }
+      },
+      additionals: [
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({ alertTypes: ['ALERT_LVL_3'] })
+          }
+        }
+      ]
     }
   ]
 }
@@ -154,7 +188,7 @@ const registrations = {
 }
 
 const organization = {
-  id: '1334',
+  id: '13435',
   name: 'Flood Inc.',
   description: JSON.stringify({
     name: 'Flood Inc.',

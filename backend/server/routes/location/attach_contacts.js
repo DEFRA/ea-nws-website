@@ -25,8 +25,10 @@ module.exports = [
           if (location) {
             const childrenIds = JSON.parse(location.additionals.filter((additional) => additional?.id === 'other')[0]?.value?.s)?.childrenIDs?.map((child) => child?.id)
             if (childrenIds && childrenIds.length > 0) {
+              // loop through all child locations, we don't handle the response so this can be done
+              // in the background asynchronously so no need to await 
               for (const childrenId of childrenIds) {
-                await apiCall(
+                apiCall(
                   { authToken: authToken, locationId: childrenId, contactIds: contactIds },
                   'location/attachContacts'
                 )

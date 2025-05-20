@@ -1,51 +1,60 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 import { backendCall } from '../../../../common/services/BackendService'
-import { useEffect, useState } from 'react'
 
-export default function SignUpSuccessPage () {
+export default function SignUpSuccessPage() {
   // need to check for authToken
   const navigate = useNavigate()
   const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
   const responderValue = organizationAdditionals.emergencySector ? 'yes' : 'no'
-  const jobTitle = organizationAdditionals.alternativeContact.jobTitle.trim() || '-'
+  const jobTitle =
+    organizationAdditionals.alternativeContact.jobTitle.trim() || '-'
   const compHouseNum = organizationAdditionals.compHouseNum ?? '-'
   const [servicePhase, setServicePhase] = useState(false)
   const [eaEmail, setEAEmail] = useState(null)
 
-  async function notifySignUpSuccessEa () {
-    const submissionDateTime = new Date().toLocaleString('en-GB', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    }).replace('AM', 'am').replace('PM', 'pm')
+  async function notifySignUpSuccessEa() {
+    const submissionDateTime = new Date()
+      .toLocaleString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+      .replace('AM', 'am')
+      .replace('PM', 'pm')
 
     const dataToSend = {
       email: eaEmail,
+      adminEmail: profile.emails[0],
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
       companyHouseNumber: compHouseNum,
       responder: responderValue,
       fullName: profile.firstname + ' ' + profile.lastname,
-      alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
+      alternativeContactFullName:
+        organizationAdditionals.alternativeContact.firstName +
+        ' ' +
+        organizationAdditionals.alternativeContact.lastName,
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
-      alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
+      alternativeContactTelephone:
+        organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: jobTitle,
       submissionDateTime
     }
     await backendCall(dataToSend, 'api/notify/account_pending_ea', navigate)
   }
 
-  async function notifySignUpSuccessOrg () {
+  async function notifySignUpSuccessOrg() {
     const dataToSend = {
       email: profile.emails[0],
       refNumber: organization.id,
@@ -54,9 +63,13 @@ export default function SignUpSuccessPage () {
       companyHouseNumber: compHouseNum,
       responder: responderValue,
       fullName: profile.firstname + ' ' + profile.lastname,
-      alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
+      alternativeContactFullName:
+        organizationAdditionals.alternativeContact.firstName +
+        ' ' +
+        organizationAdditionals.alternativeContact.lastName,
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
-      alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
+      alternativeContactTelephone:
+        organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: jobTitle,
       eaEmail
     }
@@ -70,7 +83,10 @@ export default function SignUpSuccessPage () {
     }
 
     const getServicePhase = async () => {
-      const { data } = await backendCall('data', 'api/service/get_service_phase')
+      const { data } = await backendCall(
+        'data',
+        'api/service/get_service_phase'
+      )
       setServicePhase(data)
     }
 
@@ -109,9 +125,9 @@ export default function SignUpSuccessPage () {
               </p>
               {servicePhase !== 'beta' && (
                 <div>
-                  <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
                     Help us improve this service
-                  </h1>
+                  </h2>
                   <p className='govuk-!-margin-top-6'>
                     <Link to='/signup/feedback' className='govuk-link'>
                       What do you think of the service?
@@ -121,12 +137,16 @@ export default function SignUpSuccessPage () {
                 </div>
               )}
               {servicePhase === 'beta' && (
-                <a
-                  className='govuk-link'
-                  href='https://forms.office.com/e/09pkcE64uK'
-                >
-                  <Button text='Continue' className='govuk-button' />
-                </a>
+                <div>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Now answer some questions about the sign up process
+                  </h2>
+                  <Button
+                    text='Continue'
+                    className='govuk-button'
+                    onClick={() => navigate('/signup/feedback')}
+                  />
+                </div>
               )}
             </div>
           </div>

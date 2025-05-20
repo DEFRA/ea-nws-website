@@ -65,8 +65,8 @@ const routes = [].concat(
   require('../routes/gov_uk_notify/organisation/account_pending_ea_admin'),
   require('../routes/gov_uk_notify/organisation/account_pending_org_admin'),
   require('../routes/gov_uk_notify/organisation/admin_removed'),
-  require('../routes/live-alerts/list'),
-  require('../routes/live-alerts/get'),
+  require('../routes/alert/list'),
+  require('../routes/alert/get'),
   require('../routes/sign_in/org_signin'),
   require('../routes/sign_in/org_signin_status')
 )

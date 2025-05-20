@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import { backendCall } from '../../../common/services/BackendService'
@@ -8,7 +9,7 @@ import { geoSafeToWebLocation } from '../../../common/services/formatters/Locati
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LinkBanner ({
+export default function LinkBanner({
   linkLocations,
   linkContacts,
   selectedLocations,
@@ -25,8 +26,12 @@ export default function LinkBanner ({
     useSelector((state) => state.session.currentLocation)
   )
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const predefinedBoundaryFlow = useSelector((state) => state.session.predefinedBoundaryFlow)
+  const predefinedBoundaryFlow = useSelector(
+    (state) => state.session.predefinedBoundaryFlow
+  )
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
+  const [linking, setLinking] = useState(false)
+  const [stage, setStage] = useState('')
 
   const getSuccessMessage = () => {
     let afterText = ''
@@ -106,7 +111,12 @@ export default function LinkBanner ({
     }
 
     if (!errorFound) {
-      for (const locationID of linkLocationIDs) {
+      const numLocations = linkLocationIDs.length
+      // only show the linking progress if more than one location
+      // is being linked too 
+      numLocations > 1 && setLinking(true)
+      for (const [index, locationID] of linkLocationIDs.entries()) {
+        setStage(`Linking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
         const dataToSend = {
           authToken,
           orgId,
@@ -125,6 +135,7 @@ export default function LinkBanner ({
           console.log(errorMessage)
         }
       }
+      setLinking(false)
     }
 
     if (!errorFound) {
@@ -152,10 +163,10 @@ export default function LinkBanner ({
         }
       } else if (linkContacts) {
         if (linkSource === 'dashboard') {
-          // if ()
           navigate(orgManageContactsUrls.view.dashboard, {
             state: {
-              successMessage
+              successMessage,
+              addContactFlow: true
             }
           })
         } else {
@@ -232,6 +243,7 @@ export default function LinkBanner ({
   }
 
   return (
+    <>
     <div
       className='govuk-!-margin-top-1'
       style={{
@@ -281,19 +293,19 @@ export default function LinkBanner ({
           </div>
           {((selectedContacts && selectedContacts.length > 0) ||
             (selectedLocations && selectedLocations.length > 0)) && (
-              <div
-                className='govuk-checkboxes--small'
-                style={{ display: 'flex', alignItems: 'center' }}
-              >
-                <Checkbox
-                  label='Only show selected'
-                  style={{ maxWidth: '100%' }}
-                  checked={onlyShowSelectedOption}
-                  onChange={() => {
-                    actionOnlyShowSelected()
-                  }}
-                />
-              </div>
+            <div
+              className='govuk-checkboxes--small'
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
+              <Checkbox
+                label='Only show selected'
+                style={{ maxWidth: '100%' }}
+                checked={onlyShowSelectedOption}
+                onChange={() => {
+                  actionOnlyShowSelected()
+                }}
+              />
+            </div>
           )}
           <div
             style={{
@@ -315,5 +327,14 @@ export default function LinkBanner ({
         </div>
       </div>
     </div>
+    {linking &&
+        <div className='popup-dialog'>
+          <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+            <LoadingSpinner
+              loadingText={<p className='govuk-body-l'>{stage}</p>}
+            />
+          </div>
+        </div>}
+    </>
   )
 }

@@ -6,7 +6,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { getAdditionals } from '../../../common/services/ProfileServices'
 
-export default function AccountPage () {
+export default function AccountPage() {
   const location = useLocation()
 
   const navigate = useNavigate()
@@ -29,28 +29,25 @@ export default function AccountPage () {
           (location.state?.jobTitle ? location.state?.jobTitle : '')
       ]
     : location.state?.changeEmail
-      ? location.state?.email + ' is your new email address to sign in with'
-      : location.state?.changeName && location.state?.name
+    ? location.state?.email + ' is your new email address to sign in with'
+    : location.state?.changeName && location.state?.name
 
   const bannerHeading = location.state?.changeBusinessDetails
     ? 'Business details updated'
     : location.state?.changeEmail
-      ? 'Email address updated'
-      : location.state?.changeName && 'Name updated'
+    ? 'Email address updated'
+    : location.state?.changeName && 'Name updated'
 
   return (
     <>
-
-      {location.state !== null
-        ? (
-          <NotificationBanner
-            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-            title='Success'
-            heading={bannerHeading}
-            text={bannerText}
-          />
-          )
-        : null}
+      {location.state !== null ? (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+          title='Success'
+          heading={bannerHeading}
+          text={bannerText}
+        />
+      ) : null}
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
@@ -65,7 +62,12 @@ export default function AccountPage () {
                     </th>
                     <td className='govuk-table__cell'>{name}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
-                      <Link to='/account/change-name' className='govuk-link' style={{ cursor: 'pointer' }}>
+                      <Link
+                        to='/account/change-name'
+                        aria-label={`Change ${name} as your name`}
+                        className='govuk-link'
+                        style={{ cursor: 'pointer' }}
+                      >
                         Change
                       </Link>
                     </td>
@@ -76,7 +78,12 @@ export default function AccountPage () {
                     </th>
                     <td className='govuk-table__cell'>{email}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
-                      <Link to='/account/change-email' className='govuk-link' style={{ cursor: 'pointer' }}>
+                      <Link
+                        to='/account/change-email'
+                        aria-label={`Change ${email} as your sign-in email`}
+                        className='govuk-link'
+                        style={{ cursor: 'pointer' }}
+                      >
                         Change
                       </Link>
                     </td>
@@ -89,6 +96,11 @@ export default function AccountPage () {
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-business-details'
+                        aria-label={
+                          businessName
+                            ? `Change ${businessName} as your business name`
+                            : 'Add your business name'
+                        }
                         className='govuk-link'
                         style={{ cursor: 'pointer' }}
                       >
@@ -104,6 +116,11 @@ export default function AccountPage () {
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-business-details'
+                        aria-label={
+                          jobTitle
+                            ? `Change ${jobTitle} as your job title`
+                            : 'Add your job title'
+                        }
                         className='govuk-link'
                         style={{ cursor: 'pointer' }}
                       >

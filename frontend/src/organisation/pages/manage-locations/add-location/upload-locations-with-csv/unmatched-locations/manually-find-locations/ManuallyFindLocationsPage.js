@@ -9,10 +9,13 @@ import {
   setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManuallyFindLocationsPage () {
+export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const orgId = useSelector((state) => state.session.orgId)
@@ -68,9 +71,7 @@ export default function ManuallyFindLocationsPage () {
     const poi = location
     dispatch(setCurrentLocation(webToGeoSafeLocation(poi)))
     const isAddressValid = await findAvailableAddresses(
-      poi.additionals.other.full_address +
-        ', ' +
-        poi.additionals.other.postcode
+      poi.additionals.other.full_address + ', ' + poi.additionals.other.postcode
     )
     // If there is results for the unmatched address, navigate to the radio screen
     // where user can select how to find the address
@@ -106,7 +107,7 @@ export default function ManuallyFindLocationsPage () {
               <p>
                 <>
                   <Link
-                    to='/' // link to download file of all locations not matched
+                    to='#' // link to download file of all locations not matched
                     className='govuk-link'
                   >
                     Download a file of all the locations not matched
@@ -139,14 +140,10 @@ export default function ManuallyFindLocationsPage () {
                       return (
                         <tr className='govuk-table__row' key={index}>
                           <th scope='row' className='govuk-table__header'>
-                            {
-                              location.additionals.locationName
-                            }
+                            {location.additionals.locationName}
                           </th>
                           <td className='govuk-table__cell'>
-                            {
-                              location.additionals.other.full_address
-                            }
+                            {location.additionals.other.full_address}
                           </td>
                           <td className='govuk-table__cell'>
                             {location.additionals.other.postcode}

@@ -165,7 +165,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     If you choose one of these, you'll get{' '}
                     {type === 'severe'
                       ? 'flood messages about danger to life or property.'
-                      : 'early alerts aboutpossible flooding.'}
+                      : 'early alerts about possible flooding.'}
                   </p>
                 </div>
               </div>
@@ -179,7 +179,9 @@ export default function LocationWithinWarningAreaProximityLayout ({
                   }
                   >
                     <fieldset className='govuk-fieldset'>
-                      <h3 className='govuk-heading-s'>Select a nearby area</h3>
+                      <legend className='govuk-fieldset__legend'>
+                        <h3 className='govuk-heading-s'>Select a nearby area</h3>
+                      </legend>
                       {error && <p className='govuk-error-message'>{error}</p>}
                       {floodAreas
                         ? (

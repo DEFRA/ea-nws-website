@@ -38,6 +38,10 @@ export default function Map({
   )
   const { latitude, longitude } = selectedLocation.coordinates
   const [apiKey, setApiKey] = useState(null)
+  // used when user has selected search via placename and radius of TAs found is extended
+  const locationSearchType = useSelector(
+    (state) => state.session.locationSearchType
+  )
   // used when user selects flood area when location is within proximity
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
@@ -60,7 +64,9 @@ export default function Map({
     async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
-        longitude
+        longitude,
+        // extend the radius of TAs loaded on map when user has searched via placename
+        locationSearchType === 'placename' ? 1.5 : 0.5
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)

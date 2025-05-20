@@ -39,7 +39,7 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     if (valueValid) {
       const dataToSend = {
         name: value,
-        filter: null
+        filters: null
       }
       const { data, errorMessage } = await backendCall(
         dataToSend,

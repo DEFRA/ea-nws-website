@@ -7,12 +7,13 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import {
   setLocationPostCode,
-  setLocationSearchResults
+  setLocationSearchResults,
+  setLocationSearchType
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function LocationSearchLayout ({ continueToNextPage }) {
+export default function LocationSearchLayout({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
@@ -35,7 +36,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
       setError('Select how you want to search for your location')
     } else {
       switch (searchOption) {
-        case 'AddressPostCode': {
+        case 'Postcode': {
           const postCodeValidationError = postCodeValidation(postCode)
           if (!postCodeValidationError) {
             // normalise postcode
@@ -50,6 +51,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             if (!errorMessage) {
               dispatch(setLocationPostCode(data[0].postcode))
               dispatch(setLocationSearchResults(data))
+              dispatch(setLocationSearchType('postcode'))
               continueToNextPage()
             } else {
               // show error message from OS Api postcode search
@@ -62,12 +64,26 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             break
           }
         }
-        case 'PlaceNameTownOrKeyword':
+        case 'TownOrPlaceName':
           if (placeName) {
             // normalise postcode
             const dataToSend = {
               name: placeName,
-              filter: null
+              filters: [
+                'Bay',
+                'City',
+                'Coastal_Headland',
+                'Estuary',
+                'Group_Of_Islands',
+                'Harbour',
+                'Island',
+                'Other_Settlement',
+                'Suburban_Area',
+                'Tidal_Water',
+                'Town',
+                'Urban_Greenspace',
+                'Village'
+              ]
             }
             const { data, errorMessage } = await backendCall(
               dataToSend,
@@ -77,6 +93,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             if (!errorMessage) {
               dispatch(setLocationPostCode(''))
               dispatch(setLocationSearchResults(data))
+              dispatch(setLocationSearchType('placename'))
               continueToNextPage()
             } else {
               // show error message from OS Api postcode search
@@ -85,7 +102,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             }
             break
           } else {
-            setPlaceNameError('Please enter a place name, town or keyword')
+            setPlaceNameError('Enter a town or place name')
             break
           }
         default:
@@ -96,7 +113,6 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
@@ -122,22 +138,22 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
                 </legend>
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <Radio
-                  label='Address with postcode'
-                  value='AddressPostCode'
+                  label='Postcode'
+                  value='Postcode'
                   name='searchOptionsRadios'
                   onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'AddressPostCode'}
-                  conditionalQuestion='Postcode in England'
+                  conditional={searchOption === 'Postcode'}
+                  conditionalHint='Postcode in England'
                   conditionalInput={(val) => setPostCode(val)}
                   conditionalError={postCodeError}
                 />
                 <Radio
-                  label='Place name, town or keyword'
-                  value='PlaceNameTownOrKeyword'
+                  label='Town or place name'
+                  value='TownOrPlaceName'
                   name='searchOptionsRadios'
                   onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'PlaceNameTownOrKeyword'}
-                  conditionalQuestion='Enter a place name, town or keyword'
+                  conditional={searchOption === 'TownOrPlaceName'}
+                  conditionalHint='Be as specific as possible. For example, enter a town or village, rather than a large city'
                   conditionalInput={(val) => setPlaceName(val)}
                   conditionalError={placeNameError}
                 />

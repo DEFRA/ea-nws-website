@@ -99,7 +99,7 @@ const osFindNameApiCall = async (name, filters) => {
     if (results.length === 0) {
       return {
         status: 500,
-        errorMessage: 'Enter a place name, town or keyword in England'
+        errorMessage: 'Enter a town or place name'
       }
     } else {
       responseData.push(
@@ -134,7 +134,7 @@ const osFindNameApiCall = async (name, filters) => {
       if (responseData.length === 0) {
         return {
           status: 500,
-          errorMessage: 'Enter a place name, town or keyword in England'
+          errorMessage: 'Enter a town or place name'
         }
       }
 

@@ -36,7 +36,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
       setError('Select how you want to search for your location')
     } else {
       switch (searchOption) {
-        case 'AddressPostCode': {
+        case 'Postcode': {
           const postCodeValidationError = postCodeValidation(postCode)
           if (!postCodeValidationError) {
             // normalise postcode
@@ -64,7 +64,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
             break
           }
         }
-        case 'PlaceNameTownOrKeyword':
+        case 'TownOrPlaceName':
           if (placeName) {
             // normalise postcode
             const dataToSend = {
@@ -102,7 +102,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
             }
             break
           } else {
-            setPlaceNameError('Please enter a place name, town or keyword')
+            setPlaceNameError('Enter a town or place name')
             break
           }
         default:
@@ -138,22 +138,22 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                 </legend>
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <Radio
-                  label='Address with postcode'
-                  value='AddressPostCode'
+                  label='Postcode'
+                  value='Postcode'
                   name='searchOptionsRadios'
                   onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'AddressPostCode'}
-                  conditionalQuestion='Postcode in England'
+                  conditional={searchOption === 'Postcode'}
+                  conditionalHint='Postcode in England'
                   conditionalInput={(val) => setPostCode(val)}
                   conditionalError={postCodeError}
                 />
                 <Radio
-                  label='Place name, town or keyword'
-                  value='PlaceNameTownOrKeyword'
+                  label='Town or place name'
+                  value='TownOrPlaceName'
                   name='searchOptionsRadios'
                   onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'PlaceNameTownOrKeyword'}
-                  conditionalQuestion='Enter a place name, town or keyword'
+                  conditional={searchOption === 'TownOrPlaceName'}
+                  conditionalHint='Be as specific as possible. For example, enter a town or village, rather than a large city'
                   conditionalInput={(val) => setPlaceName(val)}
                   conditionalError={placeNameError}
                 />

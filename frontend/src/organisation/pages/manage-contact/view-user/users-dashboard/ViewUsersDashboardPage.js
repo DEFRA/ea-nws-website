@@ -223,7 +223,7 @@ export default function ViewUsersDashboardPage() {
         }
           <br />
           <br />
-          They'll no longer get flood messages, if there were receiving any.</>
+          They'll no longer get flood messages, if they were receiving any.</>
       text = (defaultText)
 
       if (activeAdminsNotRemoved.length > 0) {

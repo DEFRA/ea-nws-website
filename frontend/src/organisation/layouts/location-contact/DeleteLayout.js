@@ -122,7 +122,7 @@ export default function DeleteLayout () {
                 If you continue, {nameToDelete} will be deleted from this account.
               </p>
               <p className='govuk-!-margin-bottom-8'>
-                They'll no longer get flood messages, if there were receiving any.
+                They'll no longer get flood messages, if they were receiving any.
               </p>
               </>
               }

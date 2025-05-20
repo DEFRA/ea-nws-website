@@ -26,7 +26,6 @@ export default function Popup ({
   showCancel = true,
   infoOnly = false
 }) {
-  console.log(popupText)
   const handleTextInputChange = (val) => {
     if (input) {
       setTextInput(val)

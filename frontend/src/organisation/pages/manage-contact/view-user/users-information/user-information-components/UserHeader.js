@@ -60,6 +60,7 @@ export default function UserHeader({ contactId, contactName, userType, currentPa
             {contactName}
           </h1>
         </div>
+        {!(userType === UserType.Admin && (activeAdmin || profileId === contactId)) &&
         <div
           className='govuk-grid-column-one-half right'
           style={{
@@ -92,6 +93,7 @@ export default function UserHeader({ contactId, contactName, userType, currentPa
             }}
           />
         </div>
+        }
       </div>
 
       {/* view user navigation */}

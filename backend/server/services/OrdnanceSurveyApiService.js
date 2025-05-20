@@ -55,8 +55,10 @@ const osPostCodeApiCall = async (postCode) => {
 
 const osFindNameApiCall = async (name, filters) => {
   let responseData = []
-  const formattedName = name.replace('&', '%26')
-  const nameSplit = formattedName.split(' ')
+  // remove special characters from name
+  const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
+
+  console.log(formattedName)
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   let url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
   if (filters !== null) {
@@ -83,8 +85,6 @@ const osFindNameApiCall = async (name, filters) => {
     let response = await axios.get(url)
     results.push(...response.data.results)
 
-    console.log(response.data.header.totalresults)
-
     // we must filter through all results returned since OS api only returns first 100
     if (response.data.header.totalresults > 100) {
       const totalRecalls = Math.floor(response.data.header.totalresults / 100)
@@ -95,18 +95,6 @@ const osFindNameApiCall = async (name, filters) => {
         i++
       }
     }
-
-    console.log('results size', results.length)
-
-    console.log(results[0])
-    console.log(results[results.length - 1])
-
-    const t = results.filter(
-      (r) => r.GAZETTEER_ENTRY.COUNTRY === 'England'
-      //r.GAZETTEER_ENTRY.NAME1.toLowerCase().includes(formattedName)
-    )
-
-    console.log('test array', t)
 
     if (results.length === 0) {
       return {
@@ -141,8 +129,6 @@ const osFindNameApiCall = async (name, filters) => {
             }
           })
       )
-
-      console.log('response data length', responseData.length)
 
       // only scottish results were returned
       if (responseData.length === 0) {

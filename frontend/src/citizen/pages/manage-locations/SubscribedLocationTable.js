@@ -4,15 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import AlertType from '../../../common/enums/AlertType'
 import {
-  getLocationOtherAdditional,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
 export default function SubscribedLocationTable({ setError }) {
   const navigate = useNavigate()
@@ -71,22 +70,49 @@ export default function SubscribedLocationTable({ setError }) {
   }, [])
 
   const viewSelectedLocation = async (location) => {
-    const alertTypes = getLocationOtherAdditional(
-      location.additionals,
-      'alertTypes'
+    // need to check if location was added as a nearby target area (TA)
+    // if added as a nearby TA, location name will be that nearby TA name
+    // 1.5km bbox is set as placename search radius is set at 1.5km
+    const { alertArea, warningArea } = await getSurroundingFloodAreas(
+      location.coordinates.latitude,
+      location.coordinates.longitude,
+      1.5
     )
 
-    const hasSevereOrWarning =
-      alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING) ||
-      alertTypes.includes(AlertType.FLOOD_WARNING)
+    const locationIsWarningArea = isSavedLocationTargetArea(
+      location.address,
+      warningArea.features
+    )
 
-    if (hasSevereOrWarning) {
-      dispatch(setShowOnlySelectedFloodArea(true))
+    const locationIsAlertArea = isSavedLocationTargetArea(
+      location.address,
+      alertArea.features
+    )
+
+    dispatch(setSelectedLocation(location))
+
+    if (
+      locationIsWarningArea.length === 0 &&
+      locationIsAlertArea.length === 0
+    ) {
+      // location was not added as a nearby target area
       navigate(`/manage-locations/view/${'both'}`)
-    } else if (alertTypes.includes(AlertType.FLOOD_ALERT)) {
+    } else {
       dispatch(setShowOnlySelectedFloodArea(true))
-      navigate(`/manage-locations/view/${'alert'}`)
+      if (locationIsWarningArea.length > 0) {
+        // location is a severe warning target area
+        dispatch(setSelectedFloodWarningArea(locationIsWarningArea[0]))
+        navigate(`/manage-locations/view/${'severe'}`)
+      } else if (locationIsAlertArea.length > 0) {
+        // location is an alert target area
+        dispatch(setSelectedFloodAlertArea(locationIsAlertArea[0]))
+        navigate(`/manage-locations/view/${'alert'}`)
+      }
     }
+  }
+
+  const isSavedLocationTargetArea = (locationName, areas) => {
+    return areas.filter((area) => locationName === area.properties.TA_Name)
   }
 
   const onClickAddLocation = async (event) => {

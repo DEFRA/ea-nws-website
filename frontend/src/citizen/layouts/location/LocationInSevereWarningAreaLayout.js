@@ -22,8 +22,8 @@ import {
   setLocationOtherAdditionals
 } from '../../../common/services/ProfileServices'
 import {
-  getAssociatedAlertArea,
-  getCoordsOfFloodArea
+  getCoordsOfFloodArea,
+  getFloodAreaByTaCode
 } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationInSevereWarningAreaLayout({
@@ -188,9 +188,7 @@ export default function LocationInSevereWarningAreaLayout({
   }
 
   const findAssociatedFloodAlertArea = async () => {
-    const associatedAlertArea = await getAssociatedAlertArea(
-      selectedLocation.coordinates.latitude,
-      selectedLocation.coordinates.longitude,
+    const associatedAlertArea = await getFloodAreaByTaCode(
       selectedFloodWarningArea.properties.parenttacode
     )
 

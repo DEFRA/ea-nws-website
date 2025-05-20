@@ -128,7 +128,14 @@ const citizenContact2 = {
           id: 'other',
           value: {
             s: JSON.stringify({
-              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+              alertTypes: [
+                'ALERT_LVL_1',
+                'ALERT_LVL_2',
+                'ALERT_LVL_3',
+                'INFO', // info alert type required on all citizen locations
+                'MONTHLY', // remove severe warning
+                'RESEVERVED' // remove flood warning
+              ]
             })
           }
         }
@@ -145,7 +152,16 @@ const citizenContact2 = {
         {
           id: 'other',
           value: {
-            s: JSON.stringify({ alertTypes: ['ALERT_LVL_3'] })
+            s: JSON.stringify({
+              // this location should have flood alerts turned off in the optional setting on view location
+              alertTypes: [
+                'ALERT_LVL_1',
+                'ALERT_LVL_2',
+                'INFO',
+                'MONTHLY',
+                'RESEVERVED'
+              ]
+            })
           }
         }
       ]

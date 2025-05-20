@@ -7,12 +7,13 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import {
   setLocationPostCode,
-  setLocationSearchResults
+  setLocationSearchResults,
+  setLocationSearchType
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function LocationSearchLayout ({ continueToNextPage }) {
+export default function LocationSearchLayout({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
@@ -50,6 +51,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             if (!errorMessage) {
               dispatch(setLocationPostCode(data[0].postcode))
               dispatch(setLocationSearchResults(data))
+              dispatch(setLocationSearchType('postcode'))
               continueToNextPage()
             } else {
               // show error message from OS Api postcode search
@@ -67,7 +69,21 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             // normalise postcode
             const dataToSend = {
               name: placeName,
-              filter: null
+              filters: [
+                'Bay',
+                'City',
+                'Coastal_Headland',
+                'Estuary',
+                'Group_Of_Islands',
+                'Harbour',
+                'Island',
+                'Other_Settlement',
+                'Suburban_Area',
+                'Tidal_Water',
+                'Town',
+                'Urban_Greenspace',
+                'Village'
+              ]
             }
             const { data, errorMessage } = await backendCall(
               dataToSend,
@@ -77,6 +93,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             if (!errorMessage) {
               dispatch(setLocationPostCode(''))
               dispatch(setLocationSearchResults(data))
+              dispatch(setLocationSearchType('placename'))
               continueToNextPage()
             } else {
               // show error message from OS Api postcode search
@@ -96,7 +113,6 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

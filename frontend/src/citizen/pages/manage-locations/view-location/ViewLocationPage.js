@@ -92,7 +92,7 @@ export default function ViewLocationPage() {
   const [pendingOptionalAlerts, setPendingOptionalAlerts] =
     useState(initialAlerts)
 
-  const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
+  const areaTypes = type === 'both' ? ['severe', 'alert'] : [type]
 
   const [partnerId, setPartnerId] = useState(false)
 
@@ -106,7 +106,8 @@ export default function ViewLocationPage() {
     async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude
+        selectedLocation.coordinates.longitude,
+        0.001
       )
 
       const isError = !warningArea && !alertArea
@@ -247,8 +248,10 @@ export default function ViewLocationPage() {
                   text={successMessage}
                 />
               )}
-              <h1 className='govuk-heading-l'>{selectedLocation.address}</h1>
-              <Map types={areaAreas} />
+              <h1 className='govuk-!-margin-top-4 govuk-heading-l'>
+                {selectedLocation.address}
+              </h1>
+              <Map types={areaTypes} />
               <FloodWarningKey type={type} />
               <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
                 Flood messages you get

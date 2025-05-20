@@ -75,7 +75,6 @@ export default function UserHeader({ contactId, contactName, userType, currentPa
                   ? 'Remove as admin'
                   : 'Promote to admin'
               }
-              disable={userType === UserType.Admin && (activeAdmin || profileId === contactId)}
               className='govuk-button govuk-button--secondary'
               onClick={() => {
                 handleSubmit()
@@ -86,7 +85,6 @@ export default function UserHeader({ contactId, contactName, userType, currentPa
           <Button
             text='Delete user'
             className='govuk-button govuk-button--secondary'
-            disable={userType === UserType.Admin && (activeAdmin || profileId === contactId)}
             onClick={(event) => {
               event.preventDefault()
               navigate(orgManageContactsUrls.delete)

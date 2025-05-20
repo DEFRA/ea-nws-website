@@ -57,8 +57,6 @@ const osFindNameApiCall = async (name, filters) => {
   let responseData = []
   // remove special characters from name
   const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
-
-  console.log(formattedName)
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   let url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
   if (filters !== null) {
@@ -141,7 +139,6 @@ const osFindNameApiCall = async (name, filters) => {
       return { status: response.status, data: responseData }
     }
   } catch (error) {
-    console.log('error', error)
     logger.error(error)
     return createGenericErrorResponse(h)
   }

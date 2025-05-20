@@ -43,20 +43,32 @@ export default function ViewUsersDashboardPage() {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const profileId = useSelector((state) => state.session.profileId)
   const [contactsPerPage, setContactsPerPage] = useState(defaultContactsPerPage)
   const [dialog, setDialog] = useState({
     show: false,
-    text: '',
-    title: '',
+    text: (<></>),
+    title: (<></>),
     buttonText: '',
     buttonClass: '',
     input: '',
     charLimit: 0,
-    error: ''
+    error: '',
+    infoOnly: false
   })
   const [loading, setLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
   const historyData = useFetchAlerts()
+  const [activeAdmins, setActiveAdmins] = useState([])
+
+  async function getActiveAdmins () {
+    const { data } = await backendCall({orgId: orgId}, 'api/elasticache/get_active_admins')
+    setActiveAdmins(data)
+  }
+
+  useEffect(() => {
+    getActiveAdmins()
+  }, [])
 
   useEffect(() => {
     if (!contactsPerPage) {
@@ -176,7 +188,7 @@ export default function ViewUsersDashboardPage() {
     return floodCount
   }
 
-  const deleteContactsText = (contactsToBeDeleted) => {
+  const deleteContactsNotification = (contactsToBeDeleted) => {
     let text = ''
 
     if (contactsToBeDeleted.length > 1) {
@@ -195,23 +207,134 @@ export default function ViewUsersDashboardPage() {
     return text
   }
 
+  const deleteContactsText = (toDelete, activeAdminsNotRemoved, selfRemoved) => {
+    let text = ''
+    if (toDelete.length > 0) {
+      const defaultText = <>If you continue, {toDelete.length === 1 ? 
+        <>
+         {toDelete[0].firstname + (toDelete[0].lastname.length > 0
+          ? ' ' + toDelete[0].lastname
+          : '')} will be deleted from this account.
+          </>
+          :
+          <>
+          they'll be deleted from this account.
+          </>
+        }
+          <br />
+          <br />
+          They'll no longer get flood messages, if they were receiving any.</>
+      text = (defaultText)
+
+      if (activeAdminsNotRemoved.length > 0) {
+        text = (
+          <>
+          {defaultText}
+          <div className='govuk-inset-text'>
+            <strong>You cannot delete [{activeAdminsNotRemoved.length} + {selfRemoved ? 1 : 0}] users</strong>
+            <br />
+            <br />
+            {activeAdminsNotRemoved.length} user{activeAdminsNotRemoved.length > 1 ? 's are' : ' is'} currently using the service and cannot be deleted.
+            {selfRemoved &&
+            <>
+            <br />
+            <br />
+            It’s not possible to delete your own profile - another administrator must do this for you.
+            </>}
+          </div>
+          </>
+        )
+      } else if (selfRemoved) {
+        text = (
+          <>
+          {defaultText}
+          <div className='govuk-inset-text'>
+            <strong>You cannot delete your own profile</strong>
+            <br />
+            <br />
+            It’s not possible to delete your own profile - another administrator must do this for you.
+          </div>
+          </>
+        )
+      }
+    } else if (toDelete.length === 0) {
+      if (activeAdminsNotRemoved.length > 0) {
+        text = (
+        <>
+          {activeAdminsNotRemoved.length} user{activeAdminsNotRemoved.length > 1 ? 's are' :' is'} currently using the service and cannot be deleted.
+          {selfRemoved && 
+            <>
+              <br />
+              <br />
+              It’s not possible to delete your own profile - another administrator must do this for you.
+            </>
+          }
+        </>
+        )
+      } else if (selfRemoved) {
+        text = (
+          <>
+            Another administrator must do this for you.
+          </>
+        )
+      }
+    }
+    return text
+  }
+
+  const deleteContactsTitle = (toDelete, activeAdminsNotRemoved, selfRemoved) => {
+    const numNotDelete = activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+    let title = ''
+    if (toDelete.length > 0) {
+      if (numNotDelete > 0) {
+       title = (
+        <>
+          Delete {toDelete.length} of {toDelete.length + numNotDelete} users
+        </>
+       )
+      } else  {
+        title = (
+          <>
+            Delete {toDelete.length > 1 ? `${toDelete.length} users` : 'user'}
+          </>
+        )
+      }
+    } else if (toDelete.length === 0) {
+      if (activeAdminsNotRemoved.length > 0) {
+        title = (
+          <>
+            you cannot delete [{numNotDelete}] user{numNotDelete > 1 ? 's': ''}
+          </>
+        )
+      } else if (selfRemoved) {
+        title = (
+          <>
+            You cannot delete your own profile
+          </>
+        )
+      }
+    }
+
+    return title
+  }
   const deleteDialog = (contactsToBeDeleted) => {
+    const toDelete = contactsToBeDeleted.filter((el) => !activeAdmins.includes(el.id))
+    const activeAdminsNotRemoved = activeAdmins.filter(
+      (el) => contactsToBeDeleted.map((contact) => contact.id).includes(el)
+    ).filter((el) => el !== profileId)
+    const selfRemoved = contactsToBeDeleted.map((contact) => contact.id).includes(profileId)
+
+
     if (contactsToBeDeleted && contactsToBeDeleted.length > 0) {
       setDialog({
         show: true,
-        text: (
-          <>
-            If you continue {deleteContactsText(contactsToBeDeleted)} will be
-            deleted from this account and will not get flood messages.
-          </>
-        ),
-        title: `Delete ${
-          contactsToBeDeleted.length > 1 ? contactsToBeDeleted.length : ''
-        } ${contactsToBeDeleted.length > 1 ? 'users' : 'user'}`,
+        text: deleteContactsText(toDelete, activeAdminsNotRemoved, selfRemoved),
+        title: deleteContactsTitle(toDelete, activeAdminsNotRemoved, selfRemoved),
         buttonText: `Delete ${
-          contactsToBeDeleted.length > 1 ? 'users' : 'user'
+          toDelete.length > 1 ? 'users' : 'user'
         }`,
-        buttonClass: 'govuk-button--warning'
+        buttonClass: 'govuk-button--warning',
+        infoOnly: toDelete.length === 0
       })
     }
   }
@@ -316,7 +439,7 @@ export default function ViewUsersDashboardPage() {
     setContacts([...updatedContacts])
     setFilteredContacts([...updatedFilteredContacts])
 
-    setNotificationText([deleteContactsText(contactsToRemove) + ' deleted'])
+    setNotificationText([deleteContactsNotification(contactsToRemove) + ' deleted'])
 
     setDialog({ ...dialog, show: false })
     setTargetContact(null)
@@ -335,7 +458,8 @@ export default function ViewUsersDashboardPage() {
         setSelectedContacts(updatedSelectedContacts)
       }
     } else if (selectedContacts.length > 0) {
-      const contactsToRemove = [...selectedContacts]
+      const toDelete = selectedContacts.filter((el) => !activeAdmins.includes(el.id))
+      const contactsToRemove = [...toDelete]
       await removeContacts(contactsToRemove)
     }
   }
@@ -538,6 +662,7 @@ export default function ViewUsersDashboardPage() {
                         setDialog((dial) => ({ ...dial, error: val }))
                       }
                       defaultValue={dialog.input ? targetContact.name : ''}
+                      infoOnly={dialog.infoOnly}
                     />
                   </>
                 )}

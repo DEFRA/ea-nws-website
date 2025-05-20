@@ -95,6 +95,7 @@ export default function UserInformationPage() {
           />
         )}
         <UserHeader
+          contactId={currentContact.id}
           contactName={contactName}
           userType={userType}
           currentPage={orgManageContactsUrls.view.viewContact}

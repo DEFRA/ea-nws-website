@@ -1,13 +1,28 @@
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import UserType from '../../../../../../common/enums/UserType'
+import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader({ contactName, userType, currentPage }) {
+export default function UserHeader({ contactId, contactName, userType, currentPage }) {
   const location = useLocation()
   const navigate = useNavigate()
+  const [activeAdmin, setActiveAdmin] = useState(false)
+  const orgId = useSelector((state) => state.session.orgId)
+  const profileId = useSelector((state) => state.session.profileId)
+
+  async function getActiveAdmin () {
+    const { data } = await backendCall({orgId: orgId, userId: contactId}, 'api/elasticache/get_active_admins')
+    setActiveAdmin(data)
+  }
+
+  useEffect(() => {
+    getActiveAdmin()
+  }, [])
 
   const handleSubmit = () => {
     if (userType !== UserType.Admin) {
@@ -45,6 +60,7 @@ export default function UserHeader({ contactName, userType, currentPage }) {
             {contactName}
           </h1>
         </div>
+        {!(userType === UserType.Admin && (activeAdmin || profileId === contactId)) &&
         <div
           className='govuk-grid-column-one-half right'
           style={{
@@ -75,6 +91,7 @@ export default function UserHeader({ contactName, userType, currentPage }) {
             }}
           />
         </div>
+        }
       </div>
 
       {/* view user navigation */}

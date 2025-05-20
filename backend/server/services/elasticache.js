@@ -552,14 +552,14 @@ const removeLinkedContacts = async (client, orgId, locationID, contactIDs) => {
   }
 }
 
-const addOrgActiveAdmins = async (client, orgId, authToken) => {
+const addOrgActiveAdmins = async (client, orgId, id) => {
   const key = orgId + ':org_active_admins'
-  await addToList(client, key, authToken)
+  await addToList(client, key, id)
 }
 
-const removeOrgActiveAdmins = async (client, orgId, authToken) => {
+const removeOrgActiveAdmins = async (client, orgId, id) => {
   const key = orgId + ':org_active_admins'
-  await removeFromList(client, key, authToken)
+  await removeFromList(client, key, id)
 }
 
 const getOrgActiveAdmins = async (client, orgId) => {
@@ -570,7 +570,7 @@ const getOrgActiveAdmins = async (client, orgId) => {
 
 const orgSignIn = async (client, profile, organization, locations, contacts, authToken) => {
   await setJsonData(client, profile.id + ':profile', profile)
-  await addOrgActiveAdmins(client, organization.id, authToken)
+  await addOrgActiveAdmins(client, organization.id, profile.id)
   const orgExists = await checkKeyExists(client, organization.id + ':org_data')
   if (orgExists) {
     const existingLocations = await getLocationKeys(client, organization.id)
@@ -602,10 +602,10 @@ const orgSignIn = async (client, profile, organization, locations, contacts, aut
   }
 }
 
-const orgSignOut = async (client, profileId, orgId, authToken) => {
+const orgSignOut = async (client, profileId, orgId) => {
   // delete profile
   await deleteJsonData(client, profileId + ':profile')
-  await removeOrgActiveAdmins(client, orgId, authToken)
+  await removeOrgActiveAdmins(client, orgId, profileId)
   // get the new list to see if there are any admins still logged in
   const activeAdmins = await getOrgActiveAdmins(client, orgId)
   // delete all data from elasticache if there are no org Admins logged in
@@ -673,5 +673,6 @@ module.exports = {
   orgSignIn,
   orgSignOut,
   checkKeyExists,
-  addOrgActiveAdmins
+  addOrgActiveAdmins,
+  getOrgActiveAdmins
 }

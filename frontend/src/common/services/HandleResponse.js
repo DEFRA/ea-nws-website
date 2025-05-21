@@ -1,5 +1,5 @@
 const handleResponse = (response, navigate) => {
-  switch (response.status) {
+  switch (response?.status) {
     case 200:
       return { data: response.data, errorMessage: null }
     case 400:
@@ -9,6 +9,9 @@ const handleResponse = (response, navigate) => {
       return navigate('/not-found')
     case 500:
       return { data: null, errorMessage: response.errorMessage }
+    default:
+      // need to add a not found page
+      return navigate('/not-found')
   }
 }
 

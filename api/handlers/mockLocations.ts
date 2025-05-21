@@ -773,6 +773,54 @@ const locations = [
   }
 ]
 
+const additionalLocations = [
+  {
+    id: '15',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Oakham centre',
+    coordinates: {
+      latitude: 52.66745486614397 * 10 ** 6,
+      longitude: -0.7179950997323488 * 10 ** 6
+    },
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Oakham centre' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: 'Oakham centre',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [
+              {
+                TA_CODE: '055FWFWELT04',
+                TA_Name: 'River Gwash, Barleythorpe Brook',
+                category: 'Flood Warning'
+              }
+            ]
+          })
+        }
+      }
+    ]
+  }
+]
+
 module.exports = {
-  allLocations: locations
+  allLocations: locations,
+  // below is/was used for testing the offset option
+  offsetLocations: additionalLocations
 }

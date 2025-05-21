@@ -9,6 +9,37 @@ const {
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
+// geosafe api restricted to 1024 locations per response
+// recall to api required to collect all locations
+const getAdditionalLocations = async (firstLocationApiCall, authToken) => {
+  let additionalLocations = []
+
+  if (firstLocationApiCall.data.total > 1024) {
+    const fetchLocationsPromises = []
+    const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1024)
+    let i = 1
+    while (i <= totalRecalls) {
+      fetchLocationsPromises.push(
+        apiCall(
+          {
+            authToken: authToken,
+            options: { offset: 1024 * i }
+          },
+          'location/list'
+        )
+      )
+      i++
+    }
+
+    const results = await Promise.all(fetchLocationsPromises)
+    results.forEach((response) => {
+      additionalLocations.push(...response.data.locations)
+    })
+  }
+
+  return locations
+}
+
 module.exports = [
   {
     method: ['POST'],
@@ -36,30 +67,11 @@ module.exports = [
           )
           locations.push(...locationRes.data.locations)
 
-          // geosafe api restricted to 1024 locations per response
-          // recall to api required to collect all locations
-          if (locationRes.data.total > 1024) {
-            const fetchLocationsPromises = []
-            const totalRecalls = Math.floor(locationRes.data.total / 1024)
-            let i = 1
-            while (i <= totalRecalls) {
-              fetchLocationsPromises.push(
-                apiCall(
-                  {
-                    authToken: orgData.authToken,
-                    options: { offset: 1024 * i }
-                  },
-                  'location/list'
-                )
-              )
-              i++
-            }
-
-            const results = await Promise.all(fetchLocationsPromises)
-            results.forEach((response) => {
-              locations.push(...response.data.locations)
-            })
-          }
+          const additionalLocations = getAdditionalLocations(
+            locationRes,
+            orgData.authToken
+          )
+          locations.push(...additionalLocations)
 
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving contacts',
@@ -85,6 +97,7 @@ module.exports = [
           )
 
           for (const contact of contactRes.data.contacts) {
+            let contactsLocations = []
             const options = { contactId: contact.id }
             const linkLocationsRes = await apiCall(
               {
@@ -93,9 +106,16 @@ module.exports = [
               },
               'location/list'
             )
+            contactsLocations.push(...linkLocationsRes.data.locations)
+
+            const additionalLocations = getAdditionalLocations(
+              locationRes,
+              orgData.authToken
+            )
+            contactsLocations.push(...additionalLocations)
 
             const locationIDs = []
-            linkLocationsRes.data.locations.forEach(function (location) {
+            contactsLocations.forEach(function (location) {
               locationIDs.push(location.id)
             })
 

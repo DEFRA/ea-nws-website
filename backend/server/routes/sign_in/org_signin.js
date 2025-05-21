@@ -67,13 +67,11 @@ module.exports = [
           )
           locations.push(...locationRes.data.locations)
 
-          const additionalLocations = getAdditionalLocations(
+          const additionalLocations = await getAdditionalLocations(
             locationRes,
             orgData.authToken
           )
           locations.push(...additionalLocations)
-
-          console.log('locations', locations)
 
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving contacts',
@@ -110,7 +108,7 @@ module.exports = [
             )
             contactsLocations.push(...linkLocationsRes.data.locations)
 
-            const additionalLocations = getAdditionalLocations(
+            const additionalLocations = await getAdditionalLocations(
               locationRes,
               orgData.authToken
             )

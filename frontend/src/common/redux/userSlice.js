@@ -1003,7 +1003,7 @@ const userSlice = createSlice({
       return getLocationOtherAdditional(state.currentLocation.additionals, key)
     },
     getContactAdditional: (state, key) => {
-      return getAdditional(state.orgCurrentContact.additionals, key)
+      return getAdditional(state.orgCurrentContact?.additionals, key)
     }
   }
 })

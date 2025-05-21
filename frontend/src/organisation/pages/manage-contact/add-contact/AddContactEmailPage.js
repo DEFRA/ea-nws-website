@@ -1,7 +1,6 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
@@ -18,12 +17,11 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function AddContactEmailPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [errors, setErrors] = useState([])
   const [emailError, setEmailError] = useState('')
   const [emailInput, setEmailInput] = useState('')
-  const location = useLocation()
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
-  const [errors, setErrors] = useState([])
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -90,6 +88,7 @@ export default function AddContactEmailPage() {
       }
       dispatch(setOrgCurrentContact(contactToAdd))
     }
+
     return addContactError
   }
 
@@ -103,6 +102,8 @@ export default function AddContactEmailPage() {
       role: 'ADMIN',
       orgId
     }
+
+    console.log('promotedata', promoteData)
 
     const { errorMessage: promoteError, data: contactData } = await backendCall(
       promoteData,
@@ -129,6 +130,9 @@ export default function AddContactEmailPage() {
         navigate(orgManageContactsUrls.add.additionalInformation)
       } else {
         const errorArray = []
+
+        console.log('addContactError', addContactError)
+        console.log('inviteContactError', inviteContactError)
         addContactError && errorArray.push(addContactError)
         inviteContactError && errorArray.push(inviteContactError)
         setErrors(errorArray)
@@ -153,26 +157,18 @@ export default function AddContactEmailPage() {
               <p className='govuk-!-margin-bottom-5'>
                 This will also be their sign in email address.
               </p>
-              <div
-                className={
-                  emailError && 'govuk-form-group govuk-form-group--error'
-                }
-              >
-                <Input
-                  name='Email address'
-                  inputType='text'
-                  onChange={(val) => {
-                    setErrors([])
-                    setEmailError('')
-                    setEmailInput(val)
-                  }}
-                  value={emailInput}
-                  error={emailError}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                  labelSize='s'
-                />
-              </div>
+              <Input
+                name='Email address'
+                inputType='text'
+                onChange={(val) => {
+                  setEmailInput(val)
+                }}
+                //value={emailInput}
+                error={emailError}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+                labelSize='s'
+              />
               <div className='govuk-!-margin-top-8'>
                 <Button
                   text='Continue'

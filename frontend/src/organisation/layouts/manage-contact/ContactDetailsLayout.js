@@ -13,7 +13,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
+export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const orgId = useSelector((state) => state.session.orgId)
@@ -24,13 +24,13 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
 
   const [contacts, setContacts] = useState([])
   const [firstname, setFirstName] = useState(
-    useSelector((state) => state.session.orgCurrentContact.firstname)
+    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
   )
   const [lastname, setLastName] = useState(
-    useSelector((state) => state.session.orgCurrentContact.lastname)
+    useSelector((state) => state.session.orgCurrentContact.lastname) || ''
   )
   const [jobTitle, setJobTitle] = useState(
-    useSelector((state) => getContactAdditional(state, 'jobTitle'))
+    useSelector((state) => getContactAdditional(state, 'jobTitle')) || ''
   )
 
   const charLimit = 20
@@ -144,7 +144,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setFirstName,
                     setFirstNameError,
                     'First name'
-                  )}
+                  )
+                }
                 value={firstname}
                 error={firstnameError}
                 className='govuk-input govuk-input--width-20'
@@ -160,7 +161,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setLastName,
                     setLastNameError,
                     'Last name'
-                  )}
+                  )
+                }
                 value={lastname}
                 error={lastnameError}
                 className='govuk-input govuk-input--width-20'
@@ -176,7 +178,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setJobTitle,
                     setJobTitleError,
                     'Job title'
-                  )}
+                  )
+                }
                 value={jobTitle}
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'

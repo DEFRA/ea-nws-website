@@ -90,8 +90,7 @@ export default function LinkContactToLocationPage() {
             <Link
               to={orgManageContactsUrls.view.dashboard}
               state={{
-                successMessage: successMessage(),
-                addContactFlow: true
+                successMessage: successMessage()
               }}
               className='govuk-link inline-link govuk-body'
             >

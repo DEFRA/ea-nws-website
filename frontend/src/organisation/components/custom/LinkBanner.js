@@ -113,7 +113,7 @@ export default function LinkBanner({
     if (!errorFound) {
       const numLocations = linkLocationIDs.length
       // only show the linking progress if more than one location
-      // is being linked too 
+      // is being linked too
       numLocations > 1 && setLinking(true)
       for (const [index, locationID] of linkLocationIDs.entries()) {
         setStage(`Linking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
@@ -165,8 +165,7 @@ export default function LinkBanner({
         if (linkSource === 'dashboard') {
           navigate(orgManageContactsUrls.view.dashboard, {
             state: {
-              successMessage,
-              addContactFlow: true
+              successMessage
             }
           })
         } else {
@@ -244,97 +243,98 @@ export default function LinkBanner({
 
   return (
     <>
-    <div
-      className='govuk-!-margin-top-1'
-      style={{
-        width: '100%'
-      }}
-    >
       <div
+        className='govuk-!-margin-top-1'
         style={{
-          border: '1px solid #b1b4b6',
-          backgroundColor: '#f3f2f1',
-          padding: '30px 20px',
-          gap: '30px'
+          width: '100%'
         }}
       >
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '15px'
+            border: '1px solid #b1b4b6',
+            backgroundColor: '#f3f2f1',
+            padding: '30px 20px',
+            gap: '30px'
           }}
         >
-          <span style={{ fontWeight: '700' }}>Link</span>
           <div
             style={{
-              border: '1px solid #b1b4b6',
-              height: '50px',
-              paddingLeft: '20px',
-              paddingRight: '20px',
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
+              gap: '15px'
             }}
           >
-            {firstFieldText()}
-          </div>
-          <span style={{ fontWeight: '700' }}>to</span>
-          <div
-            style={{
-              border: '1px solid #b1b4b6',
-              height: '50px',
-              paddingLeft: '20px',
-              paddingRight: '20px',
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            {secondFieldText()}
-          </div>
-          {((selectedContacts && selectedContacts.length > 0) ||
-            (selectedLocations && selectedLocations.length > 0)) && (
+            <span style={{ fontWeight: '700' }}>Link</span>
             <div
-              className='govuk-checkboxes--small'
-              style={{ display: 'flex', alignItems: 'center' }}
+              style={{
+                border: '1px solid #b1b4b6',
+                height: '50px',
+                paddingLeft: '20px',
+                paddingRight: '20px',
+                display: 'flex',
+                alignItems: 'center'
+              }}
             >
-              <Checkbox
-                label='Only show selected'
-                style={{ maxWidth: '100%' }}
-                checked={onlyShowSelectedOption}
-                onChange={() => {
-                  actionOnlyShowSelected()
-                }}
+              {firstFieldText()}
+            </div>
+            <span style={{ fontWeight: '700' }}>to</span>
+            <div
+              style={{
+                border: '1px solid #b1b4b6',
+                height: '50px',
+                paddingLeft: '20px',
+                paddingRight: '20px',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              {secondFieldText()}
+            </div>
+            {((selectedContacts && selectedContacts.length > 0) ||
+              (selectedLocations && selectedLocations.length > 0)) && (
+              <div
+                className='govuk-checkboxes--small'
+                style={{ display: 'flex', alignItems: 'center' }}
+              >
+                <Checkbox
+                  label='Only show selected'
+                  style={{ maxWidth: '100%' }}
+                  checked={onlyShowSelectedOption}
+                  onChange={() => {
+                    actionOnlyShowSelected()
+                  }}
+                />
+              </div>
+            )}
+            <div
+              style={{
+                marginLeft: 'auto',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <Button
+                text={
+                  linkLocations
+                    ? 'Link location to contacts'
+                    : 'Link contact to locations'
+                }
+                className='govuk-button govuk-!-margin-0'
+                onClick={(event) => linkLocationsContacts(event)}
               />
             </div>
-          )}
-          <div
-            style={{
-              marginLeft: 'auto',
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <Button
-              text={
-                linkLocations
-                  ? 'Link location to contacts'
-                  : 'Link contact to locations'
-              }
-              className='govuk-button govuk-!-margin-0'
-              onClick={(event) => linkLocationsContacts(event)}
-            />
           </div>
         </div>
       </div>
-    </div>
-    {linking &&
+      {linking && (
         <div className='popup-dialog'>
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{stage}</p>}
             />
           </div>
-        </div>}
+        </div>
+      )}
     </>
   )
 }

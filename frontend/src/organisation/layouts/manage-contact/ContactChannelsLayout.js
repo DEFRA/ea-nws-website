@@ -13,6 +13,7 @@ import {
   setOrgCurrentContactHomePhones,
   setOrgCurrentContactMobilePhones
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
@@ -48,6 +49,7 @@ export default function ContactChannelsLayout({
   const lastname = useSelector(
     (state) => state.session.orgCurrentContact.lastname
   )
+  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -87,10 +89,29 @@ export default function ContactChannelsLayout({
     setMobilePhoneError((errs) => [errs[0], ''])
   }, [mobileInput[1]])
 
-  const validateData = () => {
+  const fetchEmailsAlreadyAdded = async () => {
+    let emailsAlreadyAdded = []
+    try {
+      const dataToSend = { orgId }
+      const contactsData = await backendCall(
+        dataToSend,
+        'api/elasticache/list_contacts',
+        navigate
+      )
+      contactsData.data.forEach((contact) => {
+        emailsAlreadyAdded.push(...contact.emails)
+      })
+    } catch (e) {
+      console.error(e)
+    }
+
+    return emailsAlreadyAdded
+  }
+
+  const validateData = async () => {
     let dataValid = true
 
-    const validateEmail = (email, first) => {
+    const validateEmailAndCheckDuplicate = async (email, first) => {
       if (email) {
         const emailValid = emailValidation(email)
         if (emailValid) {
@@ -104,7 +125,22 @@ export default function ContactChannelsLayout({
                 'Enter email address 2 in the correct format, like name@example.com'
               ])
         }
-        return emailValid === ''
+        const emailsAlreadyAdded = await fetchEmailsAlreadyAdded()
+
+        if (!emailsAlreadyAdded.includes(email)) {
+          return true
+        } else {
+          first
+            ? setEmailError((errs) => [
+                'This email is already registered to another user',
+                errs[1]
+              ])
+            : setEmailError((errs) => [
+                errs[0],
+                'This email is already registered to another user'
+              ])
+          return false
+        }
       }
       return true
     }
@@ -175,8 +211,8 @@ export default function ContactChannelsLayout({
       return false
     }
 
-    dataValid &= validateEmail(emailInput[0], true)
-    dataValid &= validateEmail(emailInput[1])
+    dataValid &= await validateEmailAndCheckDuplicate(emailInput[0], true)
+    dataValid &= await validateEmailAndCheckDuplicate(emailInput[1])
     dataValid &= validatePhone(mobileInput[0], 'mobile', true)
     dataValid &= validatePhone(mobileInput[1], 'mobile')
     dataValid &= validatePhone(homeInput[0], 'mobileAndLandline', true)
@@ -184,9 +220,9 @@ export default function ContactChannelsLayout({
     return dataValid
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    const dataValid = validateData()
+    const dataValid = await validateData()
     if (dataValid) {
       const newEmails = []
       if (emailInput[0] != null && emailInput[0]?.length !== 0) {

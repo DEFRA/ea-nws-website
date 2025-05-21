@@ -11,7 +11,7 @@ export default function ResendInvitePage() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const authToken = useSelector((state) => state.session.token)
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const pendingAdmin = location.state?.pendingAdmin
@@ -19,7 +19,8 @@ export default function ResendInvitePage() {
   const pendingAdminName =
     pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     try {
       const dataToSend = {
         authToken,

@@ -18,7 +18,8 @@ export default function WithdrawInvitePage () {
   const pendingAdminName =
     pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     try {
       const dataToSend = { authToken, orgId, contactId: pendingAdmin.id }
       const { errorMessage } = await backendCall(

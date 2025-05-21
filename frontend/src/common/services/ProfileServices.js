@@ -157,10 +157,14 @@ const addAccountName = (profile, firstname, lastname) => {
 
 const getAdditionals = (profile, id) => {
   if (profile.additionals) {
-    for (let i = 0; i < profile.additionals.length; i++) {
-      if (profile.additionals[i].id === id) {
-        return profile.additionals[i].value?.s
+    if (Array.isArray(profile.additionals)) {
+      for (let i = 0; i < profile.additionals.length; i++) {
+        if (profile.additionals[i].id === id) {
+          return profile.additionals[i].value?.s
+        }
       }
+    } else {
+      return profile.additionals[id] || ''
     }
   }
   return ''

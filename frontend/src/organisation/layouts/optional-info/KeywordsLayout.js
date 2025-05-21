@@ -79,7 +79,11 @@ export default function KeywordsLayout ({
         ? getAdditionals(currentObject, 'keywords')
         : ''
   )
-  if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
+
+  // if currentKeywords is not an array
+  if (currentKeywords.length > 0 && !Array.isArray(currentKeywords)) {
+      currentKeywords = JSON.parse(currentKeywords)
+  }
 
   const checkboxArray = Array(currentKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')

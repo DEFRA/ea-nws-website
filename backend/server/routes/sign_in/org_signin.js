@@ -37,7 +37,7 @@ const getAdditionalLocations = async (firstLocationApiCall, authToken) => {
     })
   }
 
-  return locations
+  return additionalLocations
 }
 
 module.exports = [
@@ -72,6 +72,8 @@ module.exports = [
             orgData.authToken
           )
           locations.push(...additionalLocations)
+
+          console.log('locations', locations)
 
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving contacts',

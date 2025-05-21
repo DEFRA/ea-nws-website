@@ -49,7 +49,7 @@ export default function FloodMessagesSentSummaryPage() {
 
       const options = {
         states: [AlertState.CURRENT, AlertState.PAST],
-        boundingBox: {},
+        boundingBox: null,
         channels: [],
         partnerId
       }

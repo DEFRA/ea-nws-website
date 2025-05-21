@@ -51,7 +51,7 @@ export default function FloodWarningHistoryDashboardPage() {
 
     const options = {
       states: [AlertState.PAST],
-      boundingBox: {},
+      boundingBox: null,
       channels: [],
       partnerId
     }

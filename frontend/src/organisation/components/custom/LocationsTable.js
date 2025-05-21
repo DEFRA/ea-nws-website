@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import locationPin from '../../../common/assets/images/location_pin.svg'
+/* import locationPin from '../../../common/assets/images/location_pin.svg' */
 import { setCurrentLocation } from '../../../common/redux/userSlice'
 import { webToGeoSafeLocation } from '../../../common/services/formatters/LocationFormatter'
-import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap'
+/* import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap' */
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable ({
@@ -24,7 +24,7 @@ export default function LocationsTable ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [showMap, setShowMap] = useState(false)
+  /* const [showMap, setShowMap] = useState(false) */
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [locationNameSort, setLocationNameSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
@@ -172,9 +172,9 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewMessages)
   }
 
-  const openMap = () => {
+  /* const openMap = () => {
     setShowMap(true)
-  }
+  } */
 
   const LoadingDots = (
     <div className='loading-dots'>
@@ -200,7 +200,7 @@ export default function LocationsTable ({
           {selectedLocations.length}{' '}
           {selectedLocations.length === 1 ? 'location' : 'locations'} selected{' '}
         </span>
-        {!linkContacts && (
+        {/* {!linkContacts && (
           <>
             <span style={{ margin: '0 20px' }}>|</span>
             <img src={locationPin} alt='Location pin icon' />
@@ -208,16 +208,16 @@ export default function LocationsTable ({
               View on map
             </Link>
           </>
-        )}
+        )} */}
       </p>
-      {showMap && (
+      {/* {showMap && (
         <FullscreenMap
           showMap={showMap}
           setShowMap={setShowMap}
           locations={locations}
           filteredLocations={filteredLocations}
         />
-      )}
+      )} */}
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>

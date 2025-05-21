@@ -4,7 +4,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
+import AlertType from '../../../common/enums/AlertType'
 import {
+  getLocationOtherAdditional,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
@@ -91,20 +93,35 @@ export default function SubscribedLocationTable({ setError }) {
 
     dispatch(setSelectedLocation(location))
 
+    const alertTypes = getLocationOtherAdditional(
+      location.additionals,
+      'alertTypes'
+    )
+
     if (
       locationIsWarningArea.length === 0 &&
       locationIsAlertArea.length === 0
     ) {
       // location was not added as a nearby target area
-      navigate(`/manage-locations/view/${'both'}`)
+      // check first if location was added as an alert only location
+      if (
+        alertTypes.includes(AlertType.FLOOD_ALERT) &&
+        alertTypes.length === 2
+      ) {
+        navigate(`/manage-locations/view/${'alert'}`)
+      } else {
+        // location is subscribed to more than alerts only, so show all TAs nearby
+        navigate(`/manage-locations/view/${'both'}`)
+      }
     } else {
+      // location was added as a nearby TA
       dispatch(setShowOnlySelectedFloodArea(true))
       if (locationIsWarningArea.length > 0) {
-        // location is a severe warning target area
+        // locations name matches a warning TA
         dispatch(setSelectedFloodWarningArea(locationIsWarningArea[0]))
         navigate(`/manage-locations/view/${'severe'}`)
       } else if (locationIsAlertArea.length > 0) {
-        // location is an alert target area
+        // locations name matches an alert TA
         dispatch(setSelectedFloodAlertArea(locationIsAlertArea[0]))
         navigate(`/manage-locations/view/${'alert'}`)
       }

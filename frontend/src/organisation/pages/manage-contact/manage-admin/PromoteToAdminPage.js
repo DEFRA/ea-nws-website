@@ -62,8 +62,6 @@ export default function PromoteToAdminPage() {
       const updatedContact = JSON.parse(
         JSON.stringify(webToGeoSafeContact(currentContact))
       )
-      updatedContact.emails = [selectedEmail, ...updatedContact.emails]
-
       if (updatedContact.emails.length === 0) {
         updatedContact.emails.push(selectedEmail)
       } else if (updatedContact.emails.length === 1) {

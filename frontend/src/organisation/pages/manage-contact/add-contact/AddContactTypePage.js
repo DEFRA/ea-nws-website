@@ -7,10 +7,7 @@ import Details from '../../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import UserType from '../../../../common/enums/UserType'
-import {
-  clearOrgCurrentContact,
-  setAddingAdminFlow
-} from '../../../../common/redux/userSlice'
+import { setAddingAdminFlow } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactTypePage() {
@@ -19,11 +16,6 @@ export default function AddContactTypePage() {
 
   const [userType, setUserType] = useState('')
   const [reasonError, setReasonError] = useState('')
-
-  useEffect(() => {
-    console.log('run')
-    dispatch(clearOrgCurrentContact())
-  }, [])
 
   useEffect(() => {
     setReasonError('')

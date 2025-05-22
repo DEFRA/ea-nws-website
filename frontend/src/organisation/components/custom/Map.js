@@ -391,7 +391,6 @@ export default function Map({
   const setBoundaryStyles = () => {
     if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.eachLayer((layer) => {
-        console.log('layer.feature', layer.feature)
         if (boundariesAlreadyAdded.includes(layer.feature.properties.TA_Name)) {
           layer.options.interactive = false
         } else if (

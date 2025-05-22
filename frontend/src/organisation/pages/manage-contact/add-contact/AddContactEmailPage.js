@@ -128,9 +128,6 @@ export default function AddContactEmailPage() {
         navigate(orgManageContactsUrls.add.additionalInformation)
       } else {
         const errorArray = []
-
-        console.log('addContactError', addContactError)
-        console.log('inviteContactError', inviteContactError)
         addContactError && errorArray.push(addContactError)
         inviteContactError && errorArray.push(inviteContactError)
         setErrors(errorArray)
@@ -155,18 +152,26 @@ export default function AddContactEmailPage() {
               <p className='govuk-!-margin-bottom-5'>
                 This will also be their sign in email address.
               </p>
-              <Input
-                name='Email address'
-                inputType='text'
-                onChange={(val) => {
-                  setEmailInput(val)
-                }}
-                //value={emailInput}
-                error={emailError}
-                className='govuk-input govuk-input--width-20'
-                isNameBold
-                labelSize='s'
-              />
+              <div
+                className={`govuk-form-group ${
+                  emailError && 'govuk-form-group--error'
+                }`}
+              >
+                <Input
+                  name='Email address'
+                  inputType='text'
+                  onChange={(val) => {
+                    setErrors([])
+                    setEmailError('')
+                    setEmailInput(val)
+                  }}
+                  value={emailInput}
+                  error={emailError}
+                  className='govuk-input govuk-input--width-20'
+                  isNameBold
+                  labelSize='s'
+                />
+              </div>
               <div className='govuk-!-margin-top-8'>
                 <Button
                   text='Continue'

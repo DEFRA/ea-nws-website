@@ -34,6 +34,8 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   )
 
   const charLimit = 20
+  const originalFirstName =  useSelector((state) => state.session.orgCurrentContact.firstname)
+  const originalLastName = useSelector((state) => state.session.orgCurrentContact.firstname)
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -98,16 +100,19 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
     if (!validateData()) return
 
     // Ensure name given is not a duplicate with existing user
-    const isDuplicate = contacts.some(
-      (c) =>
-        c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
-        c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
-    )
-    if (isDuplicate) {
-      setFirstNameError(
-        `User ${firstname} ${lastname} already exists in your organisation - you cannot enter this person again`
+    // When editing only check if name is changed
+    if (originalFirstName !== firstname && originalLastName !== lastname) {
+      const isDuplicate = contacts.some(
+        (c) =>
+          c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
+          c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
       )
-      return
+      if (isDuplicate) {
+        setFirstNameError(
+          `User ${firstname} ${lastname} already exists in your organisation - you cannot enter this person again`
+        )
+        return
+      }
     }
 
     dispatch(setOrgCurrentContactFirstName(firstname))

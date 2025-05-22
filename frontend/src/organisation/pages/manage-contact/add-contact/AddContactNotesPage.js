@@ -1,7 +1,6 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
-import UserType from '../../../../common/enums/UserType'
+import { useNavigate } from 'react-router-dom'
 import store from '../../../../common/redux/store'
 import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -15,7 +14,6 @@ export default function AddContactNotesPage() {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const userType = currentContact.role
 
   const navigateToNextPage = () => {
     navigate(orgManageContactsUrls.add.linkContactToLocations)
@@ -73,6 +71,7 @@ export default function AddContactNotesPage() {
       if (newContact && newContact.length > 0) {
         contactToAdd.id = newContact[0].id
       }
+
       dispatch(setOrgCurrentContact(contactToAdd))
       navigateToNextPage()
     } else {
@@ -98,7 +97,7 @@ export default function AddContactNotesPage() {
         instructionText={instructionText}
         title={notesTitle}
         buttonText='Continue'
-        onSubmit={userType === UserType.Admin ? updateContact : onAddContact}
+        onSubmit={currentContact.id ? updateContact : onAddContact}
         error={error}
         setError={setError}
       />

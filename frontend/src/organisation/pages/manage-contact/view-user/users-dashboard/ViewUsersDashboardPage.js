@@ -245,7 +245,7 @@ export default function ViewUsersDashboardPage() {
             {defaultText}
             <div className='govuk-inset-text'>
               <strong>
-                You cannot delete [{notDeleteTotal}] user{notDeleteTotal > 1 ? 's' : ''}
+                You cannot delete {notDeleteTotal} user{notDeleteTotal > 1 ? 's' : ''}
               </strong>
               <br />
               <br />
@@ -326,7 +326,7 @@ export default function ViewUsersDashboardPage() {
       if (activeAdminsNotRemoved.length > 0) {
         title = (
           <>
-            you cannot delete [{numNotDelete}] user{numNotDelete > 1 ? 's' : ''}
+            you cannot delete {numNotDelete} user{numNotDelete > 1 ? 's' : ''}
           </>
         )
       } else if (selfRemoved) {

@@ -9,9 +9,6 @@ const handleResponse = (response, navigate) => {
       return navigate('/not-found')
     case 500:
       return { data: null, errorMessage: response.errorMessage }
-    default:
-      // need to add a not found page
-      return navigate('/not-found')
   }
 }
 

@@ -83,7 +83,8 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                 'Town',
                 'Urban_Greenspace',
                 'Village'
-              ]
+              ],
+              loop: true
             }
             const { data, errorMessage } = await backendCall(
               dataToSend,

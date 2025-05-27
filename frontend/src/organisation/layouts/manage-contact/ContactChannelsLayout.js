@@ -50,6 +50,7 @@ export default function ContactChannelsLayout({
     (state) => state.session.orgCurrentContact.lastname
   )
   const orgId = useSelector((state) => state.session.orgId)
+  const originalEmails = useSelector((state) => state.session.orgCurrentContact.emails) || []
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -126,20 +127,26 @@ export default function ContactChannelsLayout({
               ])
         }
         const emailsAlreadyAdded = await fetchEmailsAlreadyAdded()
-
-        if (!emailsAlreadyAdded.includes(email)) {
-          return true
+        // create array of only changed emails
+        const emailsChanged = emailInput.filter((email) => !originalEmails.includes(email))
+        // check for duplicates only if email has changed
+        if (emailsChanged.includes(email)) {
+          if (!emailsAlreadyAdded.includes(email)) {
+            return true
+          } else {
+            first
+              ? setEmailError((errs) => [
+                  'This email is already registered to another user',
+                  errs[1]
+                ])
+              : setEmailError((errs) => [
+                  errs[0],
+                  'This email is already registered to another user'
+                ])
+            return false
+          }
         } else {
-          first
-            ? setEmailError((errs) => [
-                'This email is already registered to another user',
-                errs[1]
-              ])
-            : setEmailError((errs) => [
-                errs[0],
-                'This email is already registered to another user'
-              ])
-          return false
+          return true
         }
       }
       return true

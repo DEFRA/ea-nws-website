@@ -34,8 +34,8 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   )
 
   const charLimit = 20
-  const originalFirstName =  useSelector((state) => state.session.orgCurrentContact.firstname)
-  const originalLastName = useSelector((state) => state.session.orgCurrentContact.firstname)
+  const originalFirstName =  useSelector((state) => state.session.orgCurrentContact.firstname) || ''
+  const originalLastName = useSelector((state) => state.session.orgCurrentContact.firstname) || ''
 
   useEffect(() => {
     const fetchContacts = async () => {

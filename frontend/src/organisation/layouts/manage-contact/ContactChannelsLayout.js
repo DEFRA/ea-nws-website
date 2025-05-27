@@ -50,7 +50,7 @@ export default function ContactChannelsLayout({
     (state) => state.session.orgCurrentContact.lastname
   )
   const orgId = useSelector((state) => state.session.orgId)
-  const originalEmails = useSelector((state) => state.session.orgCurrentContact.emails)
+  const originalEmails = useSelector((state) => state.session.orgCurrentContact.emails) || []
 
   const navigateBack = (event) => {
     event.preventDefault()

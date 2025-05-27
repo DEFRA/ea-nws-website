@@ -259,7 +259,7 @@ export default function LocationsTable({
                   <input
                     className='govuk-checkboxes__input'
                     type='checkbox'
-                    checked={isTopCheckboxChecked}
+                    checked={isTopCheckboxChecked && selectedLocations.length}
                     onChange={handleHeaderCheckboxChange}
                   />
                   <label className='govuk-label govuk-checkboxes__label' />

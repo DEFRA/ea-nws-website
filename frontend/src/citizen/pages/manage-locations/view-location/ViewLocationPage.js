@@ -314,7 +314,6 @@ export default function ViewLocationPage () {
                               checked={pendingOptionalAlerts === true}
                               onChange={() => {
                                 setPendingOptionalAlerts(true)
-                                setSavedOptionalAlerts(true)
                               }}
                             />
                             <label
@@ -334,7 +333,6 @@ export default function ViewLocationPage () {
                               checked={pendingOptionalAlerts === false}
                               onChange={() => {
                                 setPendingOptionalAlerts(false)
-                                setSavedOptionalAlerts(false)
                               }}
                             />
                             <label
@@ -347,7 +345,10 @@ export default function ViewLocationPage () {
                         </div>
 
                         <Link
-                          onClick={(e) => handleOptionalAlertSave(e)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleOptionalAlertSave(e)
+                          }}
                           className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
                           style={{ cursor: 'pointer' }}
                         >

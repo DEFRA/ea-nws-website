@@ -23,7 +23,10 @@ const getAdditionalLocations = async (firstLocationApiCall, authToken) => {
         apiCall(
           {
             authToken: authToken,
-            options: { offset: 1024 * i }
+            options: {
+              offset: 1000 * i,
+              limit: 1000
+             }
           },
           'location/list'
         )

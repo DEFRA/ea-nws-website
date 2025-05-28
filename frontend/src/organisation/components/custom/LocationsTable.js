@@ -8,7 +8,7 @@ import { webToGeoSafeLocation } from '../../../common/services/formatters/Locati
 import {
   GROUND_WATER_RISK_ORDER,
   RIVER_SEA_RISK_ORDER
-} from '../../../utils/constants'
+} from '../../../common/enums/RiskType'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable({

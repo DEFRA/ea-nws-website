@@ -5,9 +5,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { setCurrentLocation } from '../../../common/redux/userSlice'
 import { webToGeoSafeLocation } from '../../../common/services/formatters/LocationFormatter'
 /* import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap' */
+import {
+  GROUND_WATER_RISK_ORDER,
+  RIVER_SEA_RISK_ORDER
+} from '../../../common/enums/RiskType'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationsTable ({
+export default function LocationsTable({
   locations,
   displayedLocations,
   filteredLocations,
@@ -42,6 +46,31 @@ export default function LocationsTable ({
     setLinkedContactsSort('none')
     setRiverSeaRisksSort('none')
   }, [locations])
+
+  const sortByRisk = (sortType, setSort, riskOrder, data) => {
+    if (sortType === 'none' || sortType === 'descending') {
+      setSort('ascending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) => {
+          const valueA = riskOrder[a[data].title || 'Unavailable']
+          const valueB = riskOrder[b[data].title || 'Unavailable']
+          return valueB - valueA
+        })
+      )
+    }
+
+    if (sortType === 'ascending') {
+      setSort('descending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) => {
+          const valueA = riskOrder[a[data].title || 'Unavailable']
+          const valueB = riskOrder[b[data].title || 'Unavailable']
+          return valueA - valueB
+        })
+      )
+    }
+    setResetPaging(!resetPaging)
+  }
 
   // Sort standard data
   const sortData = (sortType, setSort, data) => {
@@ -249,7 +278,8 @@ export default function LocationsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'additionals.locationName'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -266,7 +296,8 @@ export default function LocationsTable ({
                     locationTypeSort,
                     setLocationTypeSort,
                     'additionals.other.location_type'
-                  )}
+                  )
+                }
               >
                 Location type
               </button>
@@ -283,7 +314,8 @@ export default function LocationsTable ({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'additionals.other.business_criticality'
-                  )}
+                  )
+                }
               >
                 Business
                 <br /> criticality
@@ -317,11 +349,13 @@ export default function LocationsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortByRisk(
                     riverSeaRisksSort,
                     setRiverSeaRisksSort,
-                    'riverSeaRisk.title'
-                  )}
+                    RIVER_SEA_RISK_ORDER,
+                    'riverSeaRisk'
+                  )
+                }
               >
                 Rivers and sea
                 <br /> flood risk
@@ -335,11 +369,13 @@ export default function LocationsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortByRisk(
                     groundWaterRisksSort,
                     setGroundWaterRisksSort,
-                    'groundWaterRisk.title'
-                  )}
+                    GROUND_WATER_RISK_ORDER,
+                    'groundWaterRisk'
+                  )
+                }
               >
                 Groundwater
                 <br /> flood risk
@@ -395,18 +431,16 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.linked_contacts?.length !== undefined
-                  ? (
-                    <Link
-                      className='govuk-link'
-                      onClick={(e) => viewLinkedContacts(e, location)}
-                    >
-                      {location.linked_contacts?.length}
-                    </Link>
-                    )
-                  : (
-                      LoadingDots
-                    )}
+                {location.linked_contacts?.length !== undefined ? (
+                  <Link
+                    className='govuk-link'
+                    onClick={(e) => viewLinkedContacts(e, location)}
+                  >
+                    {location.linked_contacts?.length}
+                  </Link>
+                ) : (
+                  LoadingDots
+                )}
               </td>
               <td className='govuk-table__cell'>
                 <span

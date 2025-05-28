@@ -83,67 +83,69 @@ const validateLocations = async (locations) => {
   if (locations) {
     // we need to get the national boundary once, for england check
     const england = await nationalBoundary()
-
-    await Promise.all(
-      locations.map(async (location) => {
-        // Location coords/address is mandatory
-        if (location.X_coordinates && location.Y_coordinates) {
-          const isValid = validateCoords(
-            location.X_coordinates,
-            location.Y_coordinates
-          )
-          if (isValid) {
-            // convert coords
-            location.coordinates = convertCoords(
+    for (let i = 0; i < locations.length; i += 10) {
+      const chunk = locations.slice(i, i + 10)
+      await Promise.all(
+        chunk.map(async (location) => {
+          // Location coords/address is mandatory
+          if (location.X_coordinates && location.Y_coordinates) {
+            const isValid = validateCoords(
               location.X_coordinates,
               location.Y_coordinates
             )
-
-            // Check if coordinate is in England
-            const coordInEngland = await isCoordInEngland(
-              england,
-              location.coordinates.latitude,
-              location.coordinates.longitude
-            )
-            if (coordInEngland) {
-              valid.push(location)
-            } else {
-              location.error = ['not in England']
-              invalid.push(location)
-            }
-          } else {
-            location.error = ['not found']
-            invalid.push(location)
-          }
-        } else if (location.Full_address && location.Postcode) {
-          // calculate X and Y based on address and postcode
-          const { errorMessage, data } = await getCoords(location)
-          if (errorMessage) {
-            location.error = ['not found']
-            invalid.push(location)
-          } else {
-            location.coordinates = data[0].coordinates
-            location.address = data[0].address
-
-            if (data[0].inEngland) {
-              const EPSG27700 = convertTo27700(
-                data[0].coordinates.longitude,
-                data[0].coordinates.latitude
+            if (isValid) {
+              // convert coords
+              location.coordinates = convertCoords(
+                location.X_coordinates,
+                location.Y_coordinates
               )
-              location.X_coordinates = EPSG27700.east
-              location.Y_coordinates = EPSG27700.north
-              valid.push(location)
+  
+              // Check if coordinate is in England
+              const coordInEngland = isCoordInEngland(
+                england,
+                location.coordinates.latitude,
+                location.coordinates.longitude
+              )
+              if (coordInEngland) {
+                valid.push(location)
+              } else {
+                location.error = ['not in England']
+                invalid.push(location)
+              }
             } else {
-              location.error = ['not in England']
+              location.error = ['not found']
               invalid.push(location)
             }
+          } else if (location.Full_address && location.Postcode) {
+            // calculate X and Y based on address and postcode
+            const { errorMessage, data } = await getCoords(location)
+            if (errorMessage) {
+              location.error = ['not found']
+              invalid.push(location)
+            } else {
+              location.coordinates = data[0].coordinates
+              location.address = data[0].address
+  
+              if (data[0].inEngland) {
+                const EPSG27700 = convertTo27700(
+                  data[0].coordinates.longitude,
+                  data[0].coordinates.latitude
+                )
+                location.X_coordinates = EPSG27700.east
+                location.Y_coordinates = EPSG27700.north
+                valid.push(location)
+              } else {
+                location.error = ['not in England']
+                invalid.push(location)
+              }
+            }
+          } else {
+            location.error = ['not found']
+            invalid.push(location)
           }
-        } else {
-          location.error = ['not found']
-          invalid.push(location)
-        }
-      })
-    )
+        })
+      )
+    }
   }
 
   return { valid: valid, invalid: invalid }

@@ -17,9 +17,9 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { name, filters } = request.payload
+        const { name, filters, loop } = request.payload
 
-        const response = await osFindNameApiCall(name, filters)
+        const response = await osFindNameApiCall(name, filters, loop)
         return h.response(response)
       } catch (error) {
         logger.error(error)

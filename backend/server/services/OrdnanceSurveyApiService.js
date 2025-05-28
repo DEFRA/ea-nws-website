@@ -53,7 +53,7 @@ const osPostCodeApiCall = async (postCode) => {
   }
 }
 
-const osFindNameApiCall = async (name, filters) => {
+const osFindNameApiCall = async (name, filters, loop) => {
   let responseData = []
   // remove special characters from name
   const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
@@ -84,7 +84,7 @@ const osFindNameApiCall = async (name, filters) => {
     results.push(...response.data.results)
 
     // we must filter through all results returned since OS api only returns first 100
-    if (response.data.header.totalresults > 100) {
+    if (response.data.header.totalresults > 100 && loop === true) {
       const totalRecalls = Math.floor(response.data.header.totalresults / 100)
       let i = 1
       while (i <= totalRecalls) {
@@ -108,7 +108,7 @@ const osFindNameApiCall = async (name, filters) => {
               result.GAZETTEER_ENTRY.COUNTRY === 'England' &&
               result.GAZETTEER_ENTRY.NAME1.replace(/[^a-zA-Z0-9 ]/g, '')
                 .toLowerCase()
-                .includes(formattedName)
+                .includes(formattedName.toLowerCase())
             )
           })
           .map((result) => {

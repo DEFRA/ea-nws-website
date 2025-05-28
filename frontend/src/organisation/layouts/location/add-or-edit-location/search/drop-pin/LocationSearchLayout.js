@@ -39,7 +39,22 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     if (valueValid) {
       const dataToSend = {
         name: value,
-        filters: null
+        filters: [
+          'Bay',
+          'City',
+          'Coastal_Headland',
+          'Estuary',
+          'Group_Of_Islands',
+          'Harbour',
+          'Island',
+          'Other_Settlement',
+          'Suburban_Area',
+          'Tidal_Water',
+          'Town',
+          'Urban_Greenspace',
+          'Village'
+        ],
+        loop: false
       }
       const { data, errorMessage } = await backendCall(
         dataToSend,

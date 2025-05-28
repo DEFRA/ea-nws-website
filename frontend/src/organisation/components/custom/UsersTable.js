@@ -161,6 +161,12 @@ export default function UsersTable({
     navigate(orgManageContactsUrls.view.viewContact)
   }
 
+  const viewLinkedLocations = (e, contact) => {
+    e.preventDefault()
+    dispatch(setOrgCurrentContact(contact))
+    navigate(orgManageContactsUrls.view.viewLinkedLocations)
+  }
+
   const LoadingDots = (
     <div className='loading-dots'>
       <span className='dot one'>.</span>
@@ -349,7 +355,7 @@ export default function UsersTable({
                     {contact.linked_locations?.length !== undefined ? (
                       <Link
                         className='govuk-link'
-                        to={orgManageContactsUrls.view.viewLinkedLocations}
+                        onClick={(e) => viewLinkedLocations(e, contact)}
                       >
                         {contact.linked_locations?.length}
                       </Link>

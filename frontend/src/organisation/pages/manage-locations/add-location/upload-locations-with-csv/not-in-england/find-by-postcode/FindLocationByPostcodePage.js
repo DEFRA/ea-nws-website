@@ -19,7 +19,7 @@ export default function FindLocationByPostcodePage () {
   return (
     <>
       <Helmet>
-        <title>Find Location By Postcode - GOV.UK</title>
+        <title>Find location by postcode - GOV.UK</title>
       </Helmet>
       <PostCodeSearchLayout
         navigateToNextPage={navigateToNextPage}

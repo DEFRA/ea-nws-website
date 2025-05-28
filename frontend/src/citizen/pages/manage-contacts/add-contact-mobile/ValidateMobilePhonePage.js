@@ -28,7 +28,7 @@ export default function ValidateMobilePhonePage () {
   return (
     <>
       <Helmet>
-        <title>Enter Your Mobile Phone - GOV.UK</title>
+        <title>Enter your mobile phone - GOV.UK</title>
       </Helmet>
       <ValidateMobileLayout
         navigateToNextPage={navigateToNextPage}

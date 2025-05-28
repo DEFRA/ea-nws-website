@@ -14,7 +14,7 @@ export default function DeleteContactPage() {
   return (
     <>
       <Helmet>
-        <title>Delete User - GOV.UK</title>
+        <title>Delete user - GOV.UK</title>
       </Helmet>
       <DeleteLayout navigateToNextPage={navigateToNextPage} />
     </>

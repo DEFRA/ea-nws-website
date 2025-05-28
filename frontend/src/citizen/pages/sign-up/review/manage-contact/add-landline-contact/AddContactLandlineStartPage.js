@@ -11,7 +11,7 @@ export default function AddLandlineContactPage () {
   return (
     <>
       <Helmet>
-        <title>Enter a Telephone Number - Get flood warnings - GOV.UK</title>
+        <title>Enter a telephone number - Get flood warnings - GOV.UK</title>
       </Helmet>
       <AddLandlineLayout navigateToNextPage={navigateToNextPage} />
     </>

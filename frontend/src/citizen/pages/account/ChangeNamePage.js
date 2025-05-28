@@ -42,7 +42,7 @@ export default function ChangeNamePage () {
   return (
     <>
       <Helmet>
-        <title>Change Your Name - GOV.UK</title>
+        <title>Change your name - GOV.UK</title>
       </Helmet>
       <AddAccountNameLayout
         NavigateToPreviousPage={NavigateToPreviousPage}

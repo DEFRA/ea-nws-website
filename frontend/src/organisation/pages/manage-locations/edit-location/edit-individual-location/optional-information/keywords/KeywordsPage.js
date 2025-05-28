@@ -34,7 +34,7 @@ export default function KeywordsPage () {
   return (
     <>
       <Helmet>
-        <title>Edit Keywords - GOV.UK</title>
+        <title>Edit keywords - GOV.UK</title>
       </Helmet>
       <KeywordsLayout
         navigateToNextPage={navigateToNextPage}

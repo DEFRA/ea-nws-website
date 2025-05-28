@@ -71,7 +71,7 @@ export default function LocationNamePage () {
   return (
     <>
       <Helmet>
-        <title>Add Location Name - GOV.UK</title>
+        <title>Add location name - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

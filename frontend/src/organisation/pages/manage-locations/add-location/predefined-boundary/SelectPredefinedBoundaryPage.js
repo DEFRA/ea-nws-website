@@ -234,7 +234,7 @@ export default function SelectPredefinedBoundaryPage() {
   return (
     <>
       <Helmet>
-        <title>Add a Predefined Boundary - GOV.UK</title>
+        <title>Add a predefined boundary - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

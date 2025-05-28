@@ -24,7 +24,7 @@ export default function CannotFindLocationByAddressPage () {
   return (
     <>
       <Helmet>
-        <title>Cannot Find Location By Address - GOV.UK</title>
+        <title>Cannot find location by address - GOV.UK</title>
       </Helmet>
       <CannotFindAddressLayout
         navigateToNextPage={navigateToNextPage}

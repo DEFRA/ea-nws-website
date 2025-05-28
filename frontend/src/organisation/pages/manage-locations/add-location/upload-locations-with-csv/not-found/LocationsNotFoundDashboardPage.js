@@ -24,7 +24,7 @@ export default function LocationsNotFoundDashboardPage () {
   return (
     <>
       <Helmet>
-        <title>Locations Not Found - GOV.UK</title>
+        <title>Locations not found - GOV.UK</title>
       </Helmet>
       <UnmatchedLocationsDashboardLayout
         navigateToNextPage={navigateToNextPage}

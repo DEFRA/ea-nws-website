@@ -41,7 +41,7 @@ export default function LocationNotInEnglandInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Location Not In England Information - GOV.UK</title>
+        <title>Location not in england information - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

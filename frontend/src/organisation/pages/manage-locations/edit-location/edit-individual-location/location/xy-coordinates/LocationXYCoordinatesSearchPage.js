@@ -19,7 +19,7 @@ export default function LocationXYCoordinatesSearchPage () {
   return (
     <>
       <Helmet>
-        <title>X Y Coordinate Search - GOV.UK</title>
+        <title>X y coordinate search - GOV.UK</title>
       </Helmet>
       <LocationXYCoordinatesSearchLayout
         navigateToNextPage={navigateToNextPage}

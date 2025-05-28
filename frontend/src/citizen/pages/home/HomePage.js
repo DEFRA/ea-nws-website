@@ -25,7 +25,7 @@ export default function HomePage () {
   return (
     <>
       <Helmet>
-        <title>Locations and Message Preferences - GOV.UK</title>
+        <title>Locations and message preferences - GOV.UK</title>
       </Helmet>
       {location.state !== null && location.state.removedLocation && (
         <NotificationBanner

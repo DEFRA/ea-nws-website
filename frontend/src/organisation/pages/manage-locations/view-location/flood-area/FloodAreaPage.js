@@ -209,7 +209,7 @@ export default function FloodAreaPage () {
   return (
     <>
       <Helmet>
-        <title>Flood Area - GOV.UK</title>
+        <title>Flood area - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>

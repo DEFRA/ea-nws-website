@@ -79,7 +79,7 @@ export default function FeedbackPage () {
   return (
     <>
       <Helmet>
-        <title>Give Feedback About Signing Up - Get flood warnings - GOV.UK</title>
+        <title>Give feedback about signing up - Get flood warnings - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

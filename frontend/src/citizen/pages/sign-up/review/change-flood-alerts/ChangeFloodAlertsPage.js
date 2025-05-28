@@ -18,7 +18,7 @@ export default function ChangeFloodAlertPage () {
   return (
     <>
       <Helmet>
-        <title>You Can Get Flood Alerts - Get flood warnings - GOV.UK</title>
+        <title>You can get flood alerts - Get flood warnings - GOV.UK</title>
       </Helmet>
       <LocationInAlertAreaLayout
         continueToNextPage={continueToNextPage}

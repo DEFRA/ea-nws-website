@@ -67,7 +67,7 @@ export default function AddLocationOptionsPage () {
   return (
     <>
       <Helmet>
-        <title>Add Location Options - GOV.UK</title>
+        <title>Add location options - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

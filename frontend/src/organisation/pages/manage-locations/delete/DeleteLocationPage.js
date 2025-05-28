@@ -14,7 +14,7 @@ export default function DeleteLocationPage () {
   return (
     <>
       <Helmet>
-        <title>Delete Location - GOV.UK</title>
+        <title>Delete location - GOV.UK</title>
       </Helmet>
       <DeleteLayout navigateToNextPage={navigateToNextPage} />
     </>

@@ -5,7 +5,7 @@ export default function FloodWarningsRemovedDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Flood Warnings Removed in Last 24 Hours - GOV.UK</title>
+        <title>Flood warnings removed in last 24 hours - GOV.UK</title>
       </Helmet>
       <BackLink />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -38,7 +38,7 @@ export default function AlternativeContactDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Add Alternative Contact Details - GOV.UK</title>
+        <title>Add alternative contact details - GOV.UK</title>
       </Helmet>
       <AlternativeContactDetailsLayout
         navigateToNextPage={navigateToNextPage}

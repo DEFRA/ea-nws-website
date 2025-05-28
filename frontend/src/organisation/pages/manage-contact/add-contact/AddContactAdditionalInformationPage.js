@@ -29,7 +29,7 @@ export default function AddContactAdditionalInformationPage() {
   return (
     <>
       <Helmet>
-        <title>Add Additional Information - GOV.UK</title>
+        <title>Add additional information - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

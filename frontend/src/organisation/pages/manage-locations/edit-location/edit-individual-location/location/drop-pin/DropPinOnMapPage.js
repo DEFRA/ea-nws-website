@@ -33,7 +33,7 @@ export default function DropPinOnMapPage () {
   return (
     <>
       <Helmet>
-        <title>Drop Pin on Map - GOV.UK</title>
+        <title>Drop pin on map - GOV.UK</title>
       </Helmet>
       <DropPinOnMapLayout
         navigateToNextPage={navigateToNextPage}

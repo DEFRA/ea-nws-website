@@ -231,7 +231,7 @@ export default function FloodMessagesSentSummaryPage() {
   return (
     <>
       <Helmet>
-        <title>Summary of Flood Messages Sent - GOV.UK</title>
+        <title>Summary of flood messages sent - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

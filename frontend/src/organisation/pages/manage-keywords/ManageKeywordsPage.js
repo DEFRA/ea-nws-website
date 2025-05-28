@@ -453,7 +453,7 @@ export default function ManageKeywordsPage () {
   return (
     <>
       <Helmet>
-        <title>Manage Keywords - GOV.UK</title>
+        <title>Manage keywords - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

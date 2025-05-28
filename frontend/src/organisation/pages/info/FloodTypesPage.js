@@ -16,7 +16,7 @@ export default function FloodTypesPage () {
   return (
     <>
       <Helmet>
-        <title>What Are The Different Types of Flood Messages? - GOV.UK</title>
+        <title>What are the different types of flood messages? - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>

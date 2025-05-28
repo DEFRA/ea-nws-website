@@ -7,7 +7,7 @@ export default function ErrorPage () {
   return (
     <>
       <Helmet>
-        <title>There is a Problem - GOV.UK</title>
+        <title>There is a problem - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

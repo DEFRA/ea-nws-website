@@ -6,7 +6,7 @@ export default function CannotChangeLocationPolygonPage () {
   return (
     <>
       <Helmet>
-        <title>Cannot Change Location - GOV.UK</title>
+        <title>Cannot change location - GOV.UK</title>
       </Helmet>
       <CannotChangeLocationManuallyLayout LocationType='polygon' />
     </>

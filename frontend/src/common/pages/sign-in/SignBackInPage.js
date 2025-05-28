@@ -13,7 +13,7 @@ export default function SignBackInPage () {
   return (
     <>
       <Helmet>
-        <title>You Need to Sign Back In - GOV.UK</title>
+        <title>You need to sign back in - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

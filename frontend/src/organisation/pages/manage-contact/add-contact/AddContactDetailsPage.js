@@ -18,7 +18,7 @@ export default function AddContactDetailsPage() {
   return (
     <>
       <Helmet>
-        <title>Add User Details - GOV.UK</title>
+        <title>Add user details - GOV.UK</title>
       </Helmet>
       <ContactDetailsLayout navigateToNextPage={navigateToNextPage} />
     </>

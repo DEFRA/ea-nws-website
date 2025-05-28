@@ -20,7 +20,7 @@ export default function LocationAddShapefileInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Shapefile Information Page - GOV.UK</title>
+        <title>Shapefile information page - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
 

@@ -14,7 +14,7 @@ export default function ChangeCompHouseNumPage () {
   return (
     <>
       <Helmet>
-        <title>Change Companies House Number - GOV.UK</title>
+        <title>Change companies house number - GOV.UK</title>
       </Helmet>
       <CompaniesHouseNumLayout
         navigateToNextPage={navigateToNextPage}

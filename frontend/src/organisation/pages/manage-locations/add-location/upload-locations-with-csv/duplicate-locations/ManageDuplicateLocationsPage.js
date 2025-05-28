@@ -127,7 +127,7 @@ export default function ManageDuplicateLocationsPage () {
   return (
     <>
       <Helmet>
-        <title>Manage Duplicate Locations - GOV.UK</title>
+        <title>Manage duplicate locations - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       {location.state && (

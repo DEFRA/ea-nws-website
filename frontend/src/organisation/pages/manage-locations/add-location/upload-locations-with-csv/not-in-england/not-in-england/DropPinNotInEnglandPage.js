@@ -23,7 +23,7 @@ export default function DropPinNotInEnglandPage () {
   return (
     <>
       <Helmet>
-        <title>Pin Drop Not In England - GOV.UK</title>
+        <title>Pin drop not in england - GOV.UK</title>
       </Helmet>
       <NotInEnglandLayout
         navigateToNextPage={navigateToNextPage}

@@ -81,7 +81,7 @@ export default function AdminJoinedPage() {
   return (
     <>
       <Helmet>
-        <title>You've Joined as an Admin - GOV.UK</title>
+        <title>You've joined as an admin - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

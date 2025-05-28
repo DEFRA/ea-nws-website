@@ -44,7 +44,7 @@ export default function SelectContactTypeToAddPage () {
   return (
     <>
       <Helmet>
-        <title>Select Contact Type - Get flood warnings - GOV.UK</title>
+        <title>Select contact type - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink to='/signup/review' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -31,7 +31,7 @@ export default function SignOutManuallyPage () {
   return (
     <>
       <Helmet>
-        <title>You've Signed Out - GOV.UK</title>
+        <title>You've signed out - GOV.UK</title>
       </Helmet>
       <SignOutLayout text="You've signed out" />
     </>

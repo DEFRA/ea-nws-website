@@ -140,7 +140,7 @@ export default function AddContactEmailPage() {
   return (
     <>
       <Helmet>
-        <title>Add User Email Address - GOV.UK</title>
+        <title>Add user email address - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

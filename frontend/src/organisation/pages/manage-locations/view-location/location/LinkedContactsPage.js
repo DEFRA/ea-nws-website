@@ -217,7 +217,7 @@ export default function LinkedContactsPage () {
   return (
     <>
       <Helmet>
-        <title>Linked Users - GOV.UK</title>
+        <title>Linked users - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>

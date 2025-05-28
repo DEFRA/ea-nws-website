@@ -48,7 +48,7 @@ export default function WithdrawInvitePage () {
   return (
     <>
       <Helmet>
-        <title>Withdraw Admin Invite - GOV.UK</title>
+        <title>Withdraw admin invite - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>

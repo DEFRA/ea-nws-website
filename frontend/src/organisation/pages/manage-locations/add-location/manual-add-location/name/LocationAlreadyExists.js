@@ -46,7 +46,7 @@ export default function LocationAlreadyExists () {
   return (
     <>
       <Helmet>
-        <title>Location Already Exists - GOV.UK</title>
+        <title>Location already exists - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

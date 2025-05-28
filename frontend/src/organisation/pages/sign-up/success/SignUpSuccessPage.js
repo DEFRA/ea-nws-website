@@ -105,7 +105,7 @@ export default function SignUpSuccessPage () {
   return (
     <>
       <Helmet>
-        <title>Sign Up Success - GOV.UK</title>
+        <title>Sign up success - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

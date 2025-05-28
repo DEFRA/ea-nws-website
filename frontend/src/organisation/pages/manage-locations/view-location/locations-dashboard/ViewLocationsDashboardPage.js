@@ -745,7 +745,7 @@ export default function ViewLocationsDashboardPage () {
   return (
     <>
       <Helmet>
-        <title>View Locations - GOV.UK</title>
+        <title>View locations - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

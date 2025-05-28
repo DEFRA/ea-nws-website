@@ -72,7 +72,7 @@ export default function DeclarationOfAgreementPage () {
   return (
     <>
       <Helmet>
-        <title>Check the Terms and Conditions - Get flood warnings - GOV.UK</title>
+        <title>Check the terms and conditions - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

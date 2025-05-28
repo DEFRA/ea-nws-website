@@ -14,7 +14,7 @@ export default function ChangeSectorPage () {
   return (
     <>
       <Helmet>
-        <title>Change Sector - GOV.UK</title>
+        <title>Change sector - GOV.UK</title>
       </Helmet>
       <SectorLayout
         navigateToNextPage={navigateToNextPage}

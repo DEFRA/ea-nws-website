@@ -237,7 +237,7 @@ export default function ViewLocationPage () {
   return (
     <>
       <Helmet>
-        <title>View Location - GOV.UK</title>
+        <title>View location - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

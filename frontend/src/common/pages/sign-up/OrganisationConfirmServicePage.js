@@ -10,7 +10,7 @@ export default function OrganisationConfirmServicePage () {
   return (
     <>
       <Helmet>
-        <title>You've Chosen Professional - GOV.UK</title>
+        <title>You've chosen professional - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

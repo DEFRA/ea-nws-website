@@ -81,7 +81,7 @@ export default function AddFullNamePage () {
   return (
     <>
       <Helmet>
-        <title>Enter Your Name - Get flood warnings - GOV.UK</title>
+        <title>Enter your name - Get flood warnings - GOV.UK</title>
       </Helmet>
       <AddAccountNameLayout
         navigateToNextPage={navigateToNextPage}

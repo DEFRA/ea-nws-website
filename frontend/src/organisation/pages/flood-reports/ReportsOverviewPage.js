@@ -13,7 +13,7 @@ export default function ReportsOverviewPage() {
   return (
     <>
       <Helmet>
-        <title>Flood Reports - GOV.UK</title>
+        <title>Flood reports - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

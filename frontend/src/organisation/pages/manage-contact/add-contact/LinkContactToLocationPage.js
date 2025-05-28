@@ -71,7 +71,7 @@ export default function LinkContactToLocationPage() {
   return (
     <>
       <Helmet>
-        <title>Link User to Location - GOV.UK</title>
+        <title>Link user to location - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

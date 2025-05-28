@@ -20,7 +20,7 @@ export default function SkipConfirmLandlinePhonePage () {
   return (
     <>
       <Helmet>
-        <title>You Must Confirm This Number - Get flood warnings - GOV.UK</title>
+        <title>You must confirm this number - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink to='/signup/contactpreferences/landline/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

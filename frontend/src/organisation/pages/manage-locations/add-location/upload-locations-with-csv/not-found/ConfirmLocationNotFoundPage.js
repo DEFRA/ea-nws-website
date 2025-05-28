@@ -22,7 +22,7 @@ export default function ConfirmLocationNotFoundPage () {
   return (
     <>
       <Helmet>
-        <title>Location Not Found - GOV.UK</title>
+        <title>Location not found - GOV.UK</title>
       </Helmet>
       <ConfirmLocationLayout
         navigateToNextPage={navigateToNextPage}

@@ -22,7 +22,7 @@ export default function ChangeAddressPage () {
   return (
     <>
       <Helmet>
-        <title>Change Address - GOV.UK</title>
+        <title>Change address - GOV.UK</title>
       </Helmet>
       <AddAddressLayout
         navigateToNextPage={navigateToNextPage}

@@ -13,7 +13,7 @@ export default function HomePage () {
   return (
     <>
       <Helmet>
-        <title>Organisation Home Page</title>
+        <title>Organisation home page</title>
       </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

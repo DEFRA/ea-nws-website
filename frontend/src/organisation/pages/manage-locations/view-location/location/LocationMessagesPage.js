@@ -524,7 +524,7 @@ export default function LocationMessagesPage () {
   return (
     <>
       <Helmet>
-        <title>Location Messages - GOV.UK</title>
+        <title>Location messages - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>

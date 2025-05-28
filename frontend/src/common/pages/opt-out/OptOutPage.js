@@ -15,7 +15,7 @@ export default function OptOutPage () {
   return (
     <>
       <Helmet>
-        <title>Opt Out - GOV.UK</title>
+        <title>Opt out - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -102,7 +102,7 @@ export default function AdminInvitePage () {
   return (
     <>
       <Helmet>
-        <title>You've Been Invited - GOV.UK</title>
+        <title>You've been invited - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

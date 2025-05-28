@@ -8,7 +8,7 @@ export default function ContactUsPage () {
   return (
     <>
       <Helmet>
-        <title>Contact Us - GOV.UK</title>
+        <title>Contact us - GOV.UK</title>
       </Helmet>
       <ContactUsLayout
         email={email}

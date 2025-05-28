@@ -18,7 +18,7 @@ export default function ChangeAdminDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Change Admin Details - GOV.UK</title>
+        <title>Change admin details - GOV.UK</title>
       </Helmet>
       <AdminDetailsLayout
         navigateToNextPage={navigateToNextPage}

@@ -46,7 +46,7 @@ export default function LinkLocationToContactPage () {
   return (
     <>
       <Helmet>
-        <title>Link Location to Users - Next Warning Service GOV.UK </title>
+        <title>Link location to users - Next warning service gov.uk</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

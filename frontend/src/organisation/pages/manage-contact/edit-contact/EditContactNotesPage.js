@@ -18,7 +18,7 @@ export default function EditContactNotesPage () {
   return (
     <>
       <Helmet>
-        <title>Edit User Notes - GOV.UK</title>
+        <title>Edit user notes - GOV.UK</title>
       </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}

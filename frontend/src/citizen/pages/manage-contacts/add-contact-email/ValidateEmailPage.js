@@ -28,7 +28,7 @@ export default function ValidateEmailPage () {
   return (
     <>
       <Helmet>
-        <title>Check Your Email</title>
+        <title>Check your email</title>
       </Helmet>
       <ValidateEmailLayout
         navigateToNextPage={navigateToNextPage}

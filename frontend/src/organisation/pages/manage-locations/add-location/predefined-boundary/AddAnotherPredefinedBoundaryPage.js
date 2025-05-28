@@ -50,7 +50,7 @@ export default function AddAnotherPredefinedBoundaryPage() {
   return (
     <>
       <Helmet>
-        <title>Add Another Predefined Boundary - GOV.UK</title>
+        <title>Add another predefined boundary - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

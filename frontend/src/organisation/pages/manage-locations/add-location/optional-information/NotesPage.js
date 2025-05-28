@@ -23,7 +23,7 @@ export default function AddNotesPage () {
   return (
     <>
       <Helmet>
-        <title>Add Notes - GOV.UK</title>
+        <title>Add notes - GOV.UK</title>
       </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}

@@ -13,7 +13,7 @@ export default function TimedOutPage () {
   return (
     <>
       <Helmet>
-        <title>Timed Out - Next Warning Service</title>
+        <title>Timed out - Next warning service</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

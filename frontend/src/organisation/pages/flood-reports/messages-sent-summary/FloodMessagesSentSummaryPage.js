@@ -38,7 +38,7 @@ export default function FloodMessagesSentSummaryPage() {
   const [data, setData] = useState(initialData)
   const [locationsCount, setLocationsCount] = useState(0)
 
-  useEffect(async () => {
+  useEffect(() => {
     const loadData = async () => {
       setData(initialData)
 
@@ -54,10 +54,11 @@ export default function FloodMessagesSentSummaryPage() {
         partnerId
       }
 
-      // need to filter alertsData.alerts so that it is only last 2 years brought back
-      // load alertsData.alerts
+      const twoYearsAgo = new Date()
+      twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
+
       const { data: alertsData } = await backendCall(
-        { options },
+        { options, filterDate: twoYearsAgo },
         'api/alert/list',
         navigate
       )
@@ -71,6 +72,9 @@ export default function FloodMessagesSentSummaryPage() {
       setLocationsCount(locationsData?.length || 0)
 
       const locations = locationsData?.map(geoSafeToWebLocation) || []
+
+      console.log('alerts', alertsData?.alerts)
+
       processLocations(locations, alertsData?.alerts || [])
     }
 
@@ -361,9 +365,15 @@ export default function FloodMessagesSentSummaryPage() {
       no messages are available or messages types have been turned off.
     </>
   )
+
+  const navigateBack = (e) => {
+    e.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

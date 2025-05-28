@@ -9,7 +9,7 @@ import { setCurrentLocationCoordinates } from '../../../../../../common/redux/us
 import { backendCall } from '../../../../../../common/services/BackendService'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
+export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

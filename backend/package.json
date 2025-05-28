@@ -26,6 +26,7 @@
     "@turf/turf": "^7.1.0",
     "axios": "^1.7.2",
     "blipp": "4.0.2",
+    "date-fns": "^4.1.0",
     "dbf-reader": "^1.0.3",
     "hapi-k8s-health": "^1.1.1",
     "hapi-pino": "9.4.0",

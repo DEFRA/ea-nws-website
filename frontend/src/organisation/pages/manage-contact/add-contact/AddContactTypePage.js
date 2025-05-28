@@ -76,7 +76,7 @@ export default function AddContactTypePage() {
                 {reasonError && (
                   <p className='govuk-error-message'>{reasonError}</p>
                 )}
-                <fieldset class="govuk-fieldset">
+                <fieldset className='govuk-fieldset'>
                   <Radio
                     name='userTypeSelectionRadios'
                     label='Contact'

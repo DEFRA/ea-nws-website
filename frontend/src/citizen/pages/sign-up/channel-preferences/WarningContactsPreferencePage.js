@@ -51,7 +51,7 @@ export default function WarningContactsPreferencePage () {
   return (
     <>
       <Helmet>
-        <title>How Would You Like to Get Messages? - Next Warning Service GOV.UK</title>
+        <title>How Would You Like to Get Messages? - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink to='/signup/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

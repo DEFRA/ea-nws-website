@@ -14,7 +14,7 @@ export default function LocationPostCodeSearchPage () {
   return (
     <>
       <Helmet>
-        <title>Location Postcode Search - Next Warning Service GOV.UK</title>
+        <title>Location Postcode Search - GOV.UK</title>
       </Helmet>
       <PostCodeSearchLayout navigateToNextPage={navigateToNextPage} />
     </>

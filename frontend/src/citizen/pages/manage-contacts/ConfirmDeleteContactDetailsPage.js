@@ -21,7 +21,7 @@ export default function RemoveContactFromReviewConfirmationPage () {
   return (
     <>
       <Helmet>
-        <title>Are You Sure You Want to Remove Contact? - Next Warning Service GOV.UK</title>
+        <title>Are You Sure You Want to Remove Contact? - GOV.UK</title>
       </Helmet>
       <ConfirmDeleteContactDetailsLayout
         navigateToNextPage={navigateToNextPage}

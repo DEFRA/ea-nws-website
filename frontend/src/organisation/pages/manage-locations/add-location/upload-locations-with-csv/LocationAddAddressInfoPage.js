@@ -38,7 +38,7 @@ export default function LocationAddAddressInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Add Address Information - Next Warning Service GOV.UK</title>
+        <title>Add Address Information - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

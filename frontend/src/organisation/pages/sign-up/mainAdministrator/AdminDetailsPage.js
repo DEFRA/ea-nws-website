@@ -16,7 +16,7 @@ export default function AdminDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Admin Details - Next Warning Service GOV.UK</title>
+        <title>Admin Details - GOV.UK</title>
       </Helmet>
       <AdminDetailsLayout
         navigateToNextPage={navigateToNextPage}

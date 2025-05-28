@@ -23,7 +23,7 @@ export default function OptionalInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Add Optional Information - Next Warning Service GOV.UK</title>
+        <title>Add Optional Information - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -357,7 +357,7 @@ export default function ViewUsersDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>View Users - Next Warning Service GOV.UK</title>
+        <title>View Users - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
 

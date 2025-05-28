@@ -1,5 +1,5 @@
 import React from 'react'
-import {Helmet} from 'react-helmet'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
@@ -41,7 +41,7 @@ export default function AccountPage() {
   return (
     <>
       <Helmet>
-        <title>Manage Your Account - Next Warning Service GOV.UK</title>
+        <title>Manage Your Account - GOV.UK</title>
       </Helmet>
       {location.state !== null ? (
         <NotificationBanner

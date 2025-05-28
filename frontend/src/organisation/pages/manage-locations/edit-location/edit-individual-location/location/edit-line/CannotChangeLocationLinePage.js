@@ -6,7 +6,7 @@ export default function CannotChangeLocationLinePage () {
   return (
     <>
       <Helmet>
-        <title>Cannot Change Location - Next Warning Service GOV.UK</title>
+        <title>Cannot Change Location - GOV.UK</title>
       </Helmet>
       <CannotChangeLocationManuallyLayout LocationType='line' />
     </>

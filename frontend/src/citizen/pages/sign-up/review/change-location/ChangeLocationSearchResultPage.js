@@ -42,7 +42,7 @@ export default function ChangeLocationSearchResultPage () {
   return (
     <>
       <Helmet>
-        <title>Select an Address - Next Warning Service GOV.UK</title>
+        <title>Select an address - Get flood warnings - GOV.UK</title>
       </Helmet>
       <LocationSearchResultsLayout continueToNextPage={continueToNextPage} />
     </>

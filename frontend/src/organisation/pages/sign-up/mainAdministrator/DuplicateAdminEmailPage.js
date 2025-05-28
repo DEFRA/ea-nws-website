@@ -5,7 +5,7 @@ export default function DuplicateAdminEmailPage () {
   return (
     <>
       <Helmet>
-        <title>Email Address Already in Use - Next Warning Service GOV.UK</title>
+        <title>Email Address Already in Use - GOV.UK</title>
       </Helmet>
       <SignUpDuplicateEmailPageLayout />
     </>

@@ -24,7 +24,7 @@ export default function ValidateLandlinePhonePage () {
   return (
     <>
       <Helmet>
-        <title>Confirm Telephone Number - Next Warning Service GOV.UK</title>
+        <title>Confirm Telephone Number - Get flood warnings - GOV.UK</title>
       </Helmet>
       <ValidateLandlineLayout
         navigateToNextPage={navigateToNextPage}

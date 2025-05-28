@@ -6,7 +6,7 @@ export default function AccountDetailsTable ({ profile }) {
   return (
     <>
       <Helmet>
-        <title>Your Account - Next Warning Service GOV.UK</title>
+        <title>Your Account - Get flood warnings - GOV.UK</title>
       </Helmet>
       <div className='govuk-padding-bottom-4'>
         <h2 className='govuk-heading-m'>Your account</h2>

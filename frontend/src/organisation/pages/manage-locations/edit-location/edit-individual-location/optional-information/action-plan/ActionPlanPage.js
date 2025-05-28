@@ -14,7 +14,7 @@ export default function ActionPlanPage () {
   return (
     <>
       <Helmet>
-        <title>Action Plan - Next Warning Service GOV.UK</title>
+        <title>Action Plan - GOV.UK</title>
       </Helmet>
       <ActionPlanLayout
         navigateToNextPage={navigateToNextPage}

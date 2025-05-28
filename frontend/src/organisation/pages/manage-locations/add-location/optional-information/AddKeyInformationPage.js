@@ -13,7 +13,7 @@ export default function AddKeyInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Add Key Information - Next Warning Service GOV.UK</title>
+        <title>Add Key Information - GOV.UK</title>
       </Helmet>
       <KeyInformationLayout
         flow='add'

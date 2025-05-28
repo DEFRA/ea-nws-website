@@ -29,7 +29,7 @@ export default function ValidateMobileContactPage () {
   return (
     <>
       <Helmet>
-        <title>Check Your Mobile Phone - Next Warning Service GOV.UK</title>
+        <title>Check Your Mobile Phone - Get flood warnings - GOV.UK</title>
       </Helmet>
       <ValidateMobileLayout
         navigateToNextPage={navigateToNextPage}

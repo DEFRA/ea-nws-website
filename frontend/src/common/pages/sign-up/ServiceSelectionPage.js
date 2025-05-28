@@ -38,7 +38,7 @@ export default function ServiceSelectionPage() {
   return (
     <>
       <Helmet>
-        <title>Who Are The Flood Warnings For? - Next Warning Service GOV.UK</title>
+        <title>Who are the flood warnings for? - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}

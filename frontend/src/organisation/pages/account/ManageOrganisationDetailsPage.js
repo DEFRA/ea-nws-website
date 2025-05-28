@@ -19,7 +19,7 @@ export default function ManageOrganisationDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Manage Your Organisation's Details - Next Warning Service GOV.UK</title>
+        <title>Manage Your Organisation's Details - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper'>
         <div Name='govuk-grid-row'>

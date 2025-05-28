@@ -48,7 +48,7 @@ export default function ValidateNewAdminEmailPage() {
   return (
     <>
       <Helmet>
-        <title>Check Your Email - Next Warning Service GOV.UK</title>
+        <title>Check Your Email - GOV.UK</title>
       </Helmet>
       <ValidateEmailLayout
         DifferentEmail={DifferentEmail}

@@ -5,7 +5,7 @@ export default function AdminInviteNotWorkingPage () {
   return (
     <>
       <Helmet>
-        <title>Your Invitation Is No Longer Working - Next Warning Service GOV.UK</title>
+        <title>Your Invitation Is No Longer Working - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

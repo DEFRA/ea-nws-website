@@ -45,7 +45,7 @@ export default function ChangeAccountEmailValidationPage () {
   return (
     <>
       <Helmet>
-        <title>Check Your Email - Next Warning Service GOV.UK</title>
+        <title>Check Your Email - Get flood warnings - GOV.UK</title>
       </Helmet>
       <ValidateEmailLayout
         DifferentEmail={DifferentEmail}

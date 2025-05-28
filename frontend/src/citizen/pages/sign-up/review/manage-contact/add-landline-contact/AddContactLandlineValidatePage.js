@@ -1,8 +1,8 @@
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { addContactPreference } from '../../../../../../common/redux/userSlice'
 import ValidateLandlineLayout from '../../../../../layouts/landline/ValidateLandlineLayout'
-import { Helmet } from 'react-helmet'
 
 export default function ValidateLandlineContactPage () {
   const dispatch = useDispatch()
@@ -28,7 +28,7 @@ export default function ValidateLandlineContactPage () {
   return (
     <>
       <Helmet>
-        <title>Confirm Your Telephone Number - Next Warning Service GOV.UK</title>
+        <title>Confirm Your Telephone Number - Get flood warnings - GOV.UK</title>
       </Helmet>
       <ValidateLandlineLayout
         navigateToNextPage={navigateToNextPage}

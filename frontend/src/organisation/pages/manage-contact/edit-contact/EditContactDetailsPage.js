@@ -13,7 +13,7 @@ export default function EditContactDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>User Details - Next Warning Service GOV.UK</title>
+        <title>User Details - GOV.UK</title>
       </Helmet>
       <ContactDetailsLayout
         navigateToNextPage={navigateToNextPage}

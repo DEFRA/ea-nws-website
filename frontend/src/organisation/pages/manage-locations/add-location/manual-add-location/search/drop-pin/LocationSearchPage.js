@@ -16,7 +16,7 @@ export default function LocationSearchPage () {
   return (
     <>
       <Helmet>
-        <title>Find Location - Next Warning Service GOV.UK</title>
+        <title>Find Location - GOV.UK</title>
       </Helmet>
       <LocationSearchLayout navigateToNextPage={navigateToNextPage} />
     </>

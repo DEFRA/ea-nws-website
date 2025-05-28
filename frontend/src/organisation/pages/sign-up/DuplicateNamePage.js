@@ -9,7 +9,7 @@ export default function SignUpDuplicateEmailPageLayout () {
   return (
     <>
       <Helmet>
-        <title>Account Already Exists - Next Warning Service GOV.UK</title>
+        <title>Account Already Exists - GOV.UK</title>
       </Helmet>
       <BackLink to='/organisation/sign-up' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

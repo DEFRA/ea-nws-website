@@ -14,7 +14,7 @@ export default function KeyInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Edit Key Information - Next Warning Service GOV.UK</title>
+        <title>Edit Key Information - GOV.UK</title>
       </Helmet>
       <KeyInformationLayout
         flow='edit'

@@ -1,5 +1,5 @@
-import { Helmet } from 'react-helmet'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setProfile } from '../../../common/redux/userSlice'
@@ -42,7 +42,7 @@ export default function ChangeNamePage () {
   return (
     <>
       <Helmet>
-        <title>Change Your Name - Next Warning Service GOV.UK</title>
+        <title>Change Your Name - GOV.UK</title>
       </Helmet>
       <AddAccountNameLayout
         NavigateToPreviousPage={NavigateToPreviousPage}

@@ -21,7 +21,7 @@ export default function FindLocationByCoordinatesPage () {
   return (
     <>
       <Helmet>
-        <title>Find Location By Coordinates - Next Warning Service GOV.UK</title>
+        <title>Find Location By Coordinates - GOV.UK</title>
       </Helmet>
       <LocationXYCoordinatesSearchLayout
         navigateToNextPage={navigateToNextPage}

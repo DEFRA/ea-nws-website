@@ -43,7 +43,7 @@ export default function ConfirmAddressPage () {
   return (
     <>
       <Helmet>
-        <title>Confirm Address - Next Warning Service GOV.UK</title>
+        <title>Confirm Address - GOV.UK</title>
       </Helmet>
       <ConfirmAddressLayout
         navigateToNextPage={navigateToNextPage}

@@ -42,7 +42,7 @@ export default function FindUnmatchedLocationsPage () {
   return (
     <>
       <Helmet>
-        <title>Find Unmatched Locations - Next Warning Service GOV.UK</title>
+        <title>Find Unmatched Locations - GOV.UK</title>
       </Helmet>
       {addedLocations > 0 && (
         <NotificationBanner

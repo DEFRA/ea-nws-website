@@ -10,23 +10,23 @@ import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
 import {
-  setConsecutiveBoundariesAdded,
-  setCurrentLocation,
-  setCurrentLocationGeometry,
-  setCurrentLocationName,
-  setCurrentLocationType,
-  setPredefinedBoundaryFlow,
-  setSelectedBoundary,
-  setSelectedBoundaryType
+    setConsecutiveBoundariesAdded,
+    setCurrentLocation,
+    setCurrentLocationGeometry,
+    setCurrentLocationName,
+    setCurrentLocationType,
+    setPredefinedBoundaryFlow,
+    setSelectedBoundary,
+    setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
-  getBoundaryTypes,
-  getFloodAreasFromShape
+    getBoundaryTypes,
+    getFloodAreasFromShape
 } from '../../../../../common/services/WfsFloodDataService'
 import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
+    geoSafeToWebLocation,
+    webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
@@ -234,7 +234,7 @@ export default function SelectPredefinedBoundaryPage() {
   return (
     <>
       <Helmet>
-        <title>Add a Predefined Boundary - Next Warning Service GOV.UK</title>
+        <title>Add a Predefined Boundary - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

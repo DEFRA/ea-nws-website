@@ -74,7 +74,7 @@ export default function PendingAdminsPage() {
   return (
     <>
       <Helmet>
-        <title>Pending Admins - Next Warning Service GOV.UK</title>
+        <title>Pending Admins - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>

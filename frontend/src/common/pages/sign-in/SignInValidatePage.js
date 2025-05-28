@@ -14,14 +14,14 @@ import InsetText from '../../components/gov-uk/InsetText'
 import NotificationBanner from '../../components/gov-uk/NotificationBanner'
 import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
-  setAuthToken,
-  setContactPreferences,
-  setOrgId,
-  setOrganization,
-  setProfile,
-  setProfileId,
-  setRegistrations,
-  setSigninType
+    setAuthToken,
+    setContactPreferences,
+    setOrgId,
+    setOrganization,
+    setProfile,
+    setProfileId,
+    setRegistrations,
+    setSigninType
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
@@ -170,7 +170,7 @@ export default function SignInValidatePage () {
   return (
     <>
       <Helmet>
-        <title>Confirm Email Address - Next Warning Service GOV.UK</title>
+        <title>Confirm Email Address - GOV.UK</title>
       </Helmet>
       {codeExpired || signUpNotComplete
         ? (

@@ -28,7 +28,7 @@ export default function FindLocationByDropPinPage () {
   return (
     <>
       <Helmet>
-        <title>Find Location By Dropping Pin - Next Warning Service GOV.UK</title>
+        <title>Find Location By Dropping Pin - GOV.UK</title>
       </Helmet>
       <DropPinOnMapLayout
         navigateToNextPage={navigateToNextPage}

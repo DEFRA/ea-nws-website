@@ -9,7 +9,7 @@ export default function PrivateBetaPrivacyNoticePage () {
   return (
     <>
       <Helmet>
-        <title>Privacy Notice - Next Warning Service GOV.UK</title>
+        <title>Privacy Notice - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

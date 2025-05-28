@@ -13,9 +13,9 @@ import AlertType from '../../../../common/enums/AlertType'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getLocationOtherAdditional,
-  getRegistrationParams,
-  updateLocationsAlertTypes
+    getLocationOtherAdditional,
+    getRegistrationParams,
+    updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
@@ -237,7 +237,7 @@ export default function ViewLocationPage () {
   return (
     <>
       <Helmet>
-        <title>View Location - Next Warning Service GOV.UK</title>
+        <title>View Location - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

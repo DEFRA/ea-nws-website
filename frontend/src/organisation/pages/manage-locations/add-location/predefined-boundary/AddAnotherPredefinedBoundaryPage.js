@@ -6,10 +6,10 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import {
-  setConsecutiveBoundariesAdded,
-  setPredefinedBoundaryFlow,
-  setSelectedBoundary,
-  setSelectedBoundaryType
+    setConsecutiveBoundariesAdded,
+    setPredefinedBoundaryFlow,
+    setSelectedBoundary,
+    setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -50,7 +50,7 @@ export default function AddAnotherPredefinedBoundaryPage() {
   return (
     <>
       <Helmet>
-        <title>Add Another Predefined Boundary - Next Warning Service GOV.UK</title>
+        <title>Add Another Predefined Boundary - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

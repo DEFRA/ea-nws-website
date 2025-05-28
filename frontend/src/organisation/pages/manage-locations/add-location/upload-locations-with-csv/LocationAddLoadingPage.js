@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
 import {
-  setNotFoundLocations,
-  setNotInEnglandLocations
+    setNotFoundLocations,
+    setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -140,7 +140,7 @@ export default function LocationAddLoadingPage () {
   return (
     <>
       <Helmet>
-        <title>Loading - Next Warning Service GOV.UK</title>
+        <title>Loading - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>

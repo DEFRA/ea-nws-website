@@ -75,7 +75,7 @@ export default function ConfirmDeleteSingleLocationPage () {
   return (
     <>
       <Helmet>
-        <title>Are You Sure You Want to Remove This Location? - Next Warning Service GOV.UK</title>
+        <title>Are You Sure You Want to Remove This Location? - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {error && <ErrorSummary errorList={[error]} />}

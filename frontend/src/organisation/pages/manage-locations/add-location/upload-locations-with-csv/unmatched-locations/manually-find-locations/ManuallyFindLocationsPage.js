@@ -6,8 +6,8 @@ import Button from '../../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 import {
-  setCurrentLocation,
-  setLocationSearchResults
+    setCurrentLocation,
+    setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../../common/services/formatters/LocationFormatter'
@@ -86,7 +86,7 @@ export default function ManuallyFindLocationsPage () {
   return (
     <>
       <Helmet>
-        <title>Manually Find Locations - Next warning Service GOV.UK</title>
+        <title>Manually Find Locations - GOV.UK</title>
       </Helmet>
       {location.state && (
         <NotificationBanner

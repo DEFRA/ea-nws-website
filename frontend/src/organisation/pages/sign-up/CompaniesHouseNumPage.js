@@ -38,7 +38,7 @@ export default function CompaniesHouseNumPage () {
   return (
     <>
       <Helmet>
-        <title>Add Companies House Number - Next Warning Service GOV.UK</title>
+        <title>Add Companies House Number - GOV.UK</title>
       </Helmet>
       <CompaniesHouseNumLayout
         navigateToNextPage={navigateToNextPage}

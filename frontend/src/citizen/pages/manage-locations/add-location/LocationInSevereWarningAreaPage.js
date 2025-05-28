@@ -12,7 +12,7 @@ export default function LocationInSevereWarningAreaPage () {
   return (
     <>
       <Helmet>
-        <title>You Can Get Flood Warnings for This Location - Next Warning Service GOV.UK</title>
+        <title>You Can Get Flood Warnings for This Location - GOV.UK</title>
       </Helmet>
       <LocationInSevereWarningAreaLayout
         continueToNextPage={continueToNextPage}

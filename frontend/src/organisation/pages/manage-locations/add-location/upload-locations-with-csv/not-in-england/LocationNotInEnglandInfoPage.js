@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import {
-  getLocationAdditional,
-  getLocationOther
+    getLocationAdditional,
+    getLocationOther
 } from '../../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../components/custom/Map'
@@ -41,7 +41,7 @@ export default function LocationNotInEnglandInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Location Not In England Information - Next Warning Service GOV.UK</title>
+        <title>Location Not In England Information - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

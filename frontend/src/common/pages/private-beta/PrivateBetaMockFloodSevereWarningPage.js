@@ -11,7 +11,7 @@ export default function PrivateBetaMockFloodSevereWarningPage () {
   return (
     <>
       <Helmet>
-        <title>Severe Flood Warning for Eastern River - Next Warning Service GOV.UK</title>
+        <title>Severe Flood Warning for Eastern River - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

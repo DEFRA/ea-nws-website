@@ -7,8 +7,8 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import {
-  setLinkLocations,
-  setOrgCurrentContact
+    setLinkLocations,
+    setOrgCurrentContact
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
@@ -217,7 +217,7 @@ export default function LinkedContactsPage () {
   return (
     <>
       <Helmet>
-        <title>Linked Users - Next Warning Service GOV.UK</title>
+        <title>Linked Users - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>

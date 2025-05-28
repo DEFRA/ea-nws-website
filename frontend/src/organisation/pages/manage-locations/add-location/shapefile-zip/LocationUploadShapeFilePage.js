@@ -9,7 +9,7 @@ export default function LocationUploadShapeFilePage () {
   return (
     <>
       <Helmet>
-        <title>Upload Shapefile - Next Warning Service GOV.UK</title>
+        <title>Upload Shapefile - GOV.UK</title>
       </Helmet>
       <UploadFileLayout uploadMethod={uploadType} />
     </>

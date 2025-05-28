@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
@@ -102,7 +102,7 @@ export default function AdminInvitePage () {
   return (
     <>
       <Helmet>
-        <title>You've Been Invited - Next Warning Service GOV.UK</title>
+        <title>You've Been Invited - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

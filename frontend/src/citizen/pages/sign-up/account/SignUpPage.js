@@ -8,13 +8,13 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import {
-  setProfile,
-  setRegisterToken
+    setProfile,
+    setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  addVerifiedContact,
-  removeVerifiedContact
+    addVerifiedContact,
+    removeVerifiedContact
 } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 
@@ -71,7 +71,7 @@ export default function SignUpPage() {
   return (
     <>
       <Helmet>
-        <title>Enter an Email Address - Next Warning Service GOV.UK</title>
+        <title>Enter an Email Address - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

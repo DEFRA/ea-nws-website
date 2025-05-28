@@ -3,13 +3,13 @@ import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import {
-  getLocationOtherAdditional,
-  setProfile
+    getLocationOtherAdditional,
+    setProfile
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getRegistrationParams,
-  updateAdditionals
+    getRegistrationParams,
+    updateAdditionals
 } from '../../../../common/services/ProfileServices'
 import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLayout'
 
@@ -81,7 +81,7 @@ export default function AddFullNamePage () {
   return (
     <>
       <Helmet>
-        <title>Enter Your Name - Next Warning Service GOV.UK</title>
+        <title>Enter Your Name - Get flood warnings - GOV.UK</title>
       </Helmet>
       <AddAccountNameLayout
         navigateToNextPage={navigateToNextPage}

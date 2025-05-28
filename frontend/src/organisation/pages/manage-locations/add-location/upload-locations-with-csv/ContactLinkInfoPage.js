@@ -25,7 +25,7 @@ export default function ContactLinkInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Link Users - Next Warning Service GOV.UK</title>
+        <title>Link Users - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

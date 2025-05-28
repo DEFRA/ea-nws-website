@@ -18,7 +18,7 @@ export default function SelectNearbyFloodAreasPage () {
   return (
     <>
       <Helmet>
-        <title>Select Nearby Flood Areas - Next Warning Service GOV.UK</title>
+        <title>Select Nearby Flood Areas - GOV.UK</title>
       </Helmet>
       <LinkLocationsLayout
         navigateToPreviousPage={navigateToPreviousPage}

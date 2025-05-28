@@ -190,7 +190,7 @@ export default function ConfirmAddingLocationsPage () {
   return (
     <>
       <Helmet>
-        <title>Confirm Adding Locations - Next Warning Service GOV.UK</title>
+        <title>Confirm Adding Locations - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

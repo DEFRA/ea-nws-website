@@ -7,7 +7,7 @@ export default function FeedbackConfirmationPage () {
   return (
     <>
       <Helmet>
-        <title>Thank You for Your Feedback - Next Warning Service GOV.UK</title>
+        <title>Thank you for your feedback - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -6,7 +6,7 @@ import floodWarningIcon from '../../assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../assets/images/severe_flood_warning.svg'
 import BackLink from '../../components/custom/BackLink'
 import ContactDetails, {
-  TelephoneNumber
+    TelephoneNumber
 } from '../../layouts/footer-link-layouts/ContactDetails'
 
 export default function OptOutPage () {
@@ -15,7 +15,7 @@ export default function OptOutPage () {
   return (
     <>
       <Helmet>
-        <title>Opt Out - Next Warning Service GOV.UK</title>
+        <title>Opt Out - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

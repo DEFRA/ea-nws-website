@@ -17,7 +17,7 @@ export default function MainAdminPage () {
   return (
     <>
       <Helmet>
-        <title>Will You be the Main Administrator? - Next Warning Service GOV.UK</title>
+        <title>Will You be the Main Administrator? - GOV.UK</title>
       </Helmet>
       <MainAdminLayout
         navigateToNextPage={navigateToNextPage}

@@ -12,7 +12,7 @@ export default function LocationSearchPage () {
   return (
     <>
       <Helmet>
-        <title>Check If You Can Get Flood Messages - Next Warning Service GOV.UK</title>
+        <title>Check If You Can Get Flood Messages - GOV.UK</title>
       </Helmet>
       <LocationSearchLayout continueToNextPage={continueToNextPage} />
     </>

@@ -23,7 +23,7 @@ export default function FindLocationByAddressPage () {
   return (
     <>
       <Helmet>
-        <title>Find Location By Address - Next Warning Service GOV.UK</title>
+        <title>Find Location By Address - GOV.UK</title>
       </Helmet>
       <AddressSearchLayout
         navigateToNextPage={navigateToNextPage}

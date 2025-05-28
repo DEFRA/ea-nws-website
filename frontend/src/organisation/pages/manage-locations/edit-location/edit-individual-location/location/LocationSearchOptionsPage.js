@@ -48,7 +48,7 @@ export default function LocationSearchOptionsPage () {
   return (
     <>
       <Helmet>
-        <title>Location Search Options - Next Warning Service GOV.UK</title>
+        <title>Location Search Options - GOV.UK</title>
       </Helmet>
       <LocationSearchOptionsLayout
         heading='How do you want to change the existing location?'

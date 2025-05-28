@@ -215,7 +215,7 @@ export default function LocationLoadingShapefilePage () {
   return (
     <>
       <Helmet>
-        <title>Loading - Next Warning Service GOV.UK</title>
+        <title>Loading - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>

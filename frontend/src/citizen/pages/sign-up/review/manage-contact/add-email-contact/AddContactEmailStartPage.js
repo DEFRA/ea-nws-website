@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router'
 import { Helmet } from 'react-helmet'
+import { useNavigate } from 'react-router'
 import AddEmailLayout from '../../../../../layouts/email/AddEmailLayout'
 
 export default function AddEmailContactStartPage () {
@@ -15,7 +15,7 @@ export default function AddEmailContactStartPage () {
   return (
     <>
       <Helmet>
-        <title>Enter an Email Address - Next Warning Service GOV.UK</title>
+        <title>Enter an Email Address - Get flood warnings - GOV.UK</title>
       </Helmet>
       <AddEmailLayout navigateToNextPage={navigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
     </>

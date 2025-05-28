@@ -87,7 +87,7 @@ export default function ManageContactsPage () {
   return (
     <>
       <Helmet>
-        <title>Your Email Addresses and Telephone Numbers - Next Warning Service GOV.UK</title>
+        <title>Your Email Addresses and Telephone Numbers - GOV.UK</title>
       </Helmet>
       {location.state !== null && location.state.removedContact
         ? (

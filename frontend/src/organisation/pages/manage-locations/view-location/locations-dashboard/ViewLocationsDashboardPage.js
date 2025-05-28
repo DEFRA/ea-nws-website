@@ -16,8 +16,8 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
+    geoSafeToWebLocation,
+    webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import LocationsTable from '../../../../components/custom/LocationsTable'
@@ -745,7 +745,7 @@ export default function ViewLocationsDashboardPage () {
   return (
     <>
       <Helmet>
-        <title>View Locations - Next Warning Service GOV.UK</title>
+        <title>View Locations - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

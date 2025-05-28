@@ -39,7 +39,7 @@ export default function SignUpSuccessPage () {
   return (
     <>
       <Helmet>
-        <title>What Happens Next - Next Warning Service GOV.UK</title>
+        <title>What Happens Next - Get flood warnings - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

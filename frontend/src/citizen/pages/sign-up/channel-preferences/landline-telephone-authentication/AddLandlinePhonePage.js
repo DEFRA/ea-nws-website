@@ -19,7 +19,7 @@ export default function AddLandlinePhonePage () {
   return (
     <>
       <Helmet>
-        <title>Enter a Telephone Number - Next Warning Service GOV.UK</title>
+        <title>Enter a Telephone Number - Get flood warnings - GOV.UK</title>
       </Helmet>
       {profile.unverified?.mobilePhones || profile.mobilePhones
         ? (

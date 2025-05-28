@@ -9,8 +9,8 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
-  setNotFoundLocations,
-  setNotInEnglandLocations
+    setNotFoundLocations,
+    setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { getFloodAreas, getFloodAreasFromShape, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../../common/services/WfsFloodDataService'
@@ -197,7 +197,7 @@ export default function DuplicateLocationComparisonPage () {
   return (
     <>
       <Helmet>
-        <title>Duplicate Location Comparison - Next Warning Service GOV.UK</title>
+        <title>Duplicate Location Comparison - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

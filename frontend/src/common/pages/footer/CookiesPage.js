@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
-import PrivateBetaCookiesPage from '../private-beta/PrivateBetaCookiesPage'
 import { backendCall } from '../../services/BackendService'
+import PrivateBetaCookiesPage from '../private-beta/PrivateBetaCookiesPage'
 
 export default function CookiesPage () {
   const navigate = useNavigate()
@@ -24,7 +24,7 @@ export default function CookiesPage () {
   return (
     <>
       <Helmet>
-        <title>Cookies - Next Warning Service GOV.UK</title>
+        <title>Cookies - GOV.UK</title>
       </Helmet>
       {servicePhase === 'beta'
         ? (

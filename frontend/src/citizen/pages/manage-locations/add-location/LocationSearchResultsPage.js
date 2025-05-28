@@ -41,7 +41,7 @@ export default function LocationSearchResultsPage() {
   return (
     <>
       <Helmet>
-        <title>Select a Location - Next Warning Service GOV.UK</title>
+        <title>Select a Location - GOV.UK</title>
       </Helmet>
       <LocationSearchResultsLayout continueToNextPage={continueToNextPage} />
     </>

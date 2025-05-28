@@ -37,7 +37,7 @@ export default function AddContactKeywordsPage() {
   return (
     <>
       <Helmet>
-        <title>Add Keywords for User - Next Warning Service GOV.UK</title>
+        <title>Add Keywords for User - GOV.UK</title>
       </Helmet>
       <KeywordsLayout
         keywordType='contact'

@@ -15,8 +15,8 @@ import Pagination from '../../../common/components/gov-uk/Pagination'
 import { backendCall } from '../../../common/services/BackendService'
 import { geoSafeToWebContact, webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
 import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
+    geoSafeToWebLocation,
+    webToGeoSafeLocation
 } from '../../../common/services/formatters/LocationFormatter'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
@@ -453,7 +453,7 @@ export default function ManageKeywordsPage () {
   return (
     <>
       <Helmet>
-        <title>Manage Keywords - Next Warning Service GOV.UK</title>
+        <title>Manage Keywords - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

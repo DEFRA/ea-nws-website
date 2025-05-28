@@ -1,5 +1,5 @@
 import {
-  faCheck
+    faCheck
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
@@ -28,7 +28,7 @@ export default function OrganisationServiceSelectionPage () {
   return (
     <>
       <Helmet>
-        <title>Select Service - Next Warning Service GOV.UK</title>
+        <title>Select Service - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}

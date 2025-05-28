@@ -16,7 +16,7 @@ export default function ChangeEmailPage () {
   return (
     <>
       <Helmet>
-        <title>Change Your Email Address - Next Warning Service GOV.UK</title>
+        <title>Change Your Email Address - GOV.UK</title>
       </Helmet>
       <ChangeEmailLayout
         navigateToNextPage={navigateToNextPage}

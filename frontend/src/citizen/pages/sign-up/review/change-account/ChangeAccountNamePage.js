@@ -42,7 +42,7 @@ export default function ChangeAccountNamePage () {
   return (
     <>
       <Helmet>
-        <title>Enter Your Name - Next Warning Service GOV.UK</title>
+        <title>Enter Your Name - Get flood warnings - GOV.UK</title>
       </Helmet>
       <AddAccountNameLayout
         NavigateToPreviousPage={NavigateToPreviousPage}

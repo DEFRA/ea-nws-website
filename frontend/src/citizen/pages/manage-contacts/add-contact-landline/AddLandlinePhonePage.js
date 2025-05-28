@@ -15,7 +15,7 @@ export default function AddLandlinePhonePage () {
   return (
     <>
       <Helmet>
-        <title>Enter a Telephone Number - Next Warning Service GOV.UK</title>
+        <title>Enter a Telephone Number - GOV.UK</title>
       </Helmet>
       <AddLandlineLayout
         navigateToNextPage={navigateToNextPage}

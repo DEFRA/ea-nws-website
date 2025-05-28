@@ -33,7 +33,7 @@ export default function AddKeywordsPage () {
   return (
     <>
       <Helmet>
-        <title>Add Keywords - Next Warning Service GOV.UK</title>
+        <title>Add Keywords - GOV.UK</title>
       </Helmet>
       <KeywordsLayout
         navigateToNextPage={navigateToNextPage}

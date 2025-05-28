@@ -1,13 +1,13 @@
-import BackLink from '../../../common/components/custom/BackLink'
 import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
+import BackLink from '../../../common/components/custom/BackLink'
 
 export default function TermsAndConditionsPage () {
   const navigate = useNavigate()
   return (
     <>
       <Helmet>
-        <title>Terms and Conditions - Next Warning Service GOV.UK</title>
+        <title>Terms and Conditions - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>

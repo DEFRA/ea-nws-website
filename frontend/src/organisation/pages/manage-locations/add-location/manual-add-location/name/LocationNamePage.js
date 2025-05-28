@@ -10,8 +10,8 @@ import { setCurrentLocationName } from '../../../../../../common/redux/userSlice
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import {
-  orgManageLocationsUrls,
-  urlManageOrgAddLocations
+    orgManageLocationsUrls,
+    urlManageOrgAddLocations
 } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationNamePage () {
@@ -71,7 +71,7 @@ export default function LocationNamePage () {
   return (
     <>
       <Helmet>
-        <title>Add Location Name - Next Warning Service GOV.UK</title>
+        <title>Add Location Name - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

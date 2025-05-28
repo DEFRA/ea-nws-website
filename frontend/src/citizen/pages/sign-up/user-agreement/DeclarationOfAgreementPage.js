@@ -7,8 +7,8 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import {
-  setProfile,
-  setRegistrations
+    setProfile,
+    setRegistrations
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
@@ -72,7 +72,7 @@ export default function DeclarationOfAgreementPage () {
   return (
     <>
       <Helmet>
-        <title>Check the Terms and Conditions - Next Warning Service GOV.UK</title>
+        <title>Check the Terms and Conditions - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

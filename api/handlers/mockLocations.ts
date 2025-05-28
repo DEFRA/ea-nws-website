@@ -37,7 +37,9 @@ const locations = [
                 TA_Name: 'Tidal Thames at Westminster',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'low',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -86,7 +88,9 @@ const locations = [
                 TA_NAME: 'South Devon Estuaries',
                 category: 'Alert flood warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'medium',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -123,7 +127,9 @@ const locations = [
             notes: '',
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_3'],
-            targetAreas: []
+            targetAreas: [],
+            riverSeaRisk: 'low',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -186,7 +192,9 @@ const locations = [
                   'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -244,7 +252,9 @@ const locations = [
             notes: 'some notes',
             location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
-            targetAreas: []
+            targetAreas: [],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -300,7 +310,8 @@ const locations = [
                 TA_Name: 'The River Colne from Halstead to Lexden',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'very low'
           })
         }
       }
@@ -357,7 +368,8 @@ const locations = [
                 TA_Name: 'The River Nene',
                 category: 'Severe flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'very low'
           })
         }
       }
@@ -412,7 +424,9 @@ const locations = [
             notes: 'some notes',
             location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_3'],
-            targetAreas: []
+            targetAreas: [],
+            riverSeaRisk: 'low',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -486,7 +500,9 @@ const locations = [
                   'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey',
                 category: 'Alert flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -557,7 +573,9 @@ const locations = [
                   'River Derwent from Rowsley to the River Trent at Shardlow',
                 category: 'Alert flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -605,7 +623,8 @@ const locations = [
                 TA_Name: 'River Wye in North Hereford',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'medium'
           })
         }
       }
@@ -677,7 +696,9 @@ const locations = [
                 TA_Name: 'Southampton Water and Hamble',
                 category: 'Alert flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'medium',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -721,7 +742,9 @@ const locations = [
                   'River Derwent at Little Chester, Eastgate and Cattle Market',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'very low',
+            groundWaterRisk: 'unlikely'
           })
         }
       }

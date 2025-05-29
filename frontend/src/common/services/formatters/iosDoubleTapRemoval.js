@@ -1,8 +1,6 @@
 // https://tinyurl.com/yf795sm5 - link to medium post on how this fix was found
 
 export function removeHoverIosSafari() {
-  console.log('checking if device is ios')
-  console.log('isIosSafari()', !isIosSafari())
   if (!isIosSafari()) return
 
   // Tags of interest: Only process certain interactive elements
@@ -74,7 +72,6 @@ export function removeHoverIosSafari() {
 }
 
 function isIosSafari() {
-  console.log('device', navigator.userAgent)
   return (
     /iP(ad|hone|od)/.test(navigator.userAgent) &&
     /WebKit/.test(navigator.userAgent) &&

@@ -24,7 +24,7 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { backendCall } from '../../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map ({
+export default function Map({
   types,
   setFloodAreas,
   mobileView,
@@ -38,6 +38,10 @@ export default function Map ({
   )
   const { latitude, longitude } = selectedLocation.coordinates
   const [apiKey, setApiKey] = useState(null)
+  // used when user has selected search via placename and radius of TAs found is extended
+  const locationSearchType = useSelector(
+    (state) => state.session.locationSearchType
+  )
   // used when user selects flood area when location is within proximity
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
@@ -57,10 +61,12 @@ export default function Map ({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
-        longitude
+        longitude,
+        // extend the radius of TAs loaded on map when user has searched via placename
+        locationSearchType === 'placename' ? 1.5 : 0.5
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)
@@ -83,8 +89,12 @@ export default function Map ({
 
   // outline the selected flood area - used when user has chosen flood area from proximity
   useEffect(() => {
+    if (!alertAreaRef.current && !warningAreaRef.current) return
     showAreas()
   }, [
+    types,
+    alertArea,
+    warningArea,
     selectedFloodWarningArea,
     selectedFloodAlertArea,
     showOnlySelectedFloodArea,
@@ -190,9 +200,13 @@ export default function Map ({
     }
 
     return (
-      <div className='reset-map-button' onClick={handleClick}>
+      <button
+        className='reset-map-button'
+        aria-label='Reset map zoom and centre on point selected'
+        onClick={handleClick}
+      >
         <FontAwesomeIcon icon={faRotateLeft} size='2x' />
-      </div>
+      </button>
     )
   }
 
@@ -207,7 +221,7 @@ export default function Map ({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -257,7 +271,7 @@ export default function Map ({
     [apiKey]
   )
 
-  function SetMapBoundsToShowFullFloodArea () {
+  function SetMapBoundsToShowFullFloodArea() {
     const map = useMap()
     useEffect(() => {
       if (
@@ -286,57 +300,59 @@ export default function Map ({
 
   return (
     <>
-      <MapContainer
-        center={[latitude, longitude]}
-        zoom={14}
-        zoomControl={false}
-        attributionControl={false}
-        minZoom={7}
-        maxBounds={maxBounds}
-        className={mobileView ? 'map-mobile-view' : 'map-container'}
-      >
-        {apiKey && tileLayerWithHeader}
-        {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
-        {!mobileView && <ZoomControl position='bottomright' />}
-        {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />}
-        {!showOnlySelectedFloodArea && (
-          <Marker position={[latitude, longitude]} interactive={false}>
-            <Popup />
-          </Marker>
-        )}
-        {alertArea && types.includes('alert') && (
-          <GeoJSON
-            data={alertArea}
-            style={{ color: '#ffa200' }}
-            onEachFeature={function (feature, layer) {
-              interactive &&
-                layer.on({
-                  click: () => dispatch(setSelectedFloodAlertArea(feature))
-                })
-            }}
-            ref={(el) => {
-              alertAreaRef.current = el
-              setAlertAreaRefVisible(true)
-            }}
-          />
-        )}
-        {warningArea && types.includes('severe') && (
-          <GeoJSON
-            data={warningArea}
-            style={{ color: '#f70202' }}
-            onEachFeature={function (feature, layer) {
-              interactive &&
-                layer.on({
-                  click: () => dispatch(setSelectedFloodWarningArea(feature))
-                })
-            }}
-            ref={(el) => {
-              warningAreaRef.current = el
-              setWarningAreaRefVisible(true)
-            }}
-          />
-        )}
-      </MapContainer>
+      <div aria-label='Map'>
+        <MapContainer
+          center={[latitude, longitude]}
+          zoom={14}
+          zoomControl={false}
+          attributionControl={false}
+          minZoom={7}
+          maxBounds={maxBounds}
+          className={mobileView ? 'map-mobile-view' : 'map-container'}
+        >
+          {apiKey && tileLayerWithHeader}
+          {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
+          {!mobileView && <ZoomControl position='bottomright' />}
+          {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />}
+          {!showOnlySelectedFloodArea && (
+            <Marker position={[latitude, longitude]} interactive={false}>
+              <Popup />
+            </Marker>
+          )}
+          {alertArea && types.includes('alert') && (
+            <GeoJSON
+              data={alertArea}
+              style={{ color: '#ffa200' }}
+              onEachFeature={function (feature, layer) {
+                interactive &&
+                  layer.on({
+                    click: () => dispatch(setSelectedFloodAlertArea(feature))
+                  })
+              }}
+              ref={(el) => {
+                alertAreaRef.current = el
+                setAlertAreaRefVisible(true)
+              }}
+            />
+          )}
+          {warningArea && types.includes('severe') && (
+            <GeoJSON
+              data={warningArea}
+              style={{ color: '#f70202' }}
+              onEachFeature={function (feature, layer) {
+                interactive &&
+                  layer.on({
+                    click: () => dispatch(setSelectedFloodWarningArea(feature))
+                  })
+              }}
+              ref={(el) => {
+                warningAreaRef.current = el
+                setWarningAreaRefVisible(true)
+              }}
+            />
+          )}
+        </MapContainer>
+      </div>
     </>
   )
 }

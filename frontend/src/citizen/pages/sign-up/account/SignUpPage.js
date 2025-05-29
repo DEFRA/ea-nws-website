@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -16,12 +16,19 @@ import {
   removeVerifiedContact
 } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
-export default function SignUpPage () {
+
+export default function SignUpPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
+
+  useEffect(() => {
+    if (profile?.pois?.length === 0) {
+      navigate('/signup/service-selection')
+    }
+  }, [profile])
 
   const handleSubmit = async (event) => {
     event.preventDefault()

@@ -9,7 +9,7 @@ import { setCurrentLocationCoordinates } from '../../../../../../common/redux/us
 import { backendCall } from '../../../../../../common/services/BackendService'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
+export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -39,7 +39,22 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     if (valueValid) {
       const dataToSend = {
         name: value,
-        filter: null
+        filters: [
+          'Bay',
+          'City',
+          'Coastal_Headland',
+          'Estuary',
+          'Group_Of_Islands',
+          'Harbour',
+          'Island',
+          'Other_Settlement',
+          'Suburban_Area',
+          'Tidal_Water',
+          'Town',
+          'Urban_Greenspace',
+          'Village'
+        ],
+        loop: false
       }
       const { data, errorMessage } = await backendCall(
         dataToSend,

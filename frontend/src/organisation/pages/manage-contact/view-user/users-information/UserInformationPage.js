@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import locationPin from '../../../../../common/assets/images/location_pin.svg'
+import { Link, useNavigate } from 'react-router-dom'
+/* import locationPin from '../../../../../common/assets/images/location_pin.svg' */
 import BackLink from '../../../../../common/components/custom/BackLink'
-import { getContactAdditional } from '../../../../../common/redux/userSlice'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import UserType from '../../../../../common/enums/UserType'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
+/* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
 
-export default function UserInformationPage () {
+export default function UserInformationPage() {
   const navigate = useNavigate()
-  const location = useLocation()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-
-  const jobTitle = useSelector((state) =>
-    getContactAdditional(state, 'jobTitle')
-  )
-  const contactKeywords = useSelector((state) =>
-    getContactAdditional(state, 'keywords')
-  )
-  const keywords = contactKeywords ? JSON.parse(contactKeywords) : []
+  const jobTitle = currentContact.additionals.jobTitle
+  const keywords = currentContact.additionals.keywords
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const userType = location.state?.userType
+  const role = () => {
+    if (currentContact?.role) {
+      return UserType.Admin
+    }
+    if (currentContact?.pendingRole) {
+      return UserType.PendingAdmin
+    }
+    return UserType.Contact
+  }
+  const userType = role()
   const [locations, setLocations] = useState([])
-  const [showMap, setShowMap] = useState(false)
+  /* const [showMap, setShowMap] = useState(false) */
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -35,9 +38,9 @@ export default function UserInformationPage () {
     navigate(-1)
   }
 
-  const openMap = () => {
+  /* const openMap = () => {
     setShowMap(true)
-  }
+  } */
 
   useEffect(() => {
     const getLocations = async () => {
@@ -59,11 +62,40 @@ export default function UserInformationPage () {
     getLocations()
   }, [])
 
+  const pendingAdminLinks = (
+    <>
+      <Link
+        className='govuk-link'
+        to={orgManageContactsUrls.admin.resendInvite}
+        state={{ pendingAdmin: currentContact }}
+      >
+        Resend invitation
+      </Link>
+      <span style={{ color: '#1d70b8', margin: '0 5px' }}>|</span>
+      <Link
+        className='govuk-link'
+        to={orgManageContactsUrls.admin.withdrawInvite}
+        state={{ pendingAdmin: currentContact }}
+      >
+        Withdraw invitation
+      </Link>
+    </>
+  )
+
   return (
     <>
       <BackLink onClick={(e) => navigateBack(e)} />
-      <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
+      <main className='govuk-main-wrapper govuk-body'>
+        {userType === UserType.PendingAdmin && (
+          <NotificationBanner
+            className={'govuk-notification-banner'}
+            title={'Important'}
+            heading={`${contactName} has not yet accepted their invitation to join as admin`}
+            text={pendingAdminLinks}
+          />
+        )}
         <UserHeader
+          contactId={currentContact.id}
           contactName={contactName}
           userType={userType}
           currentPage={orgManageContactsUrls.view.viewContact}
@@ -223,7 +255,7 @@ export default function UserInformationPage () {
           <div className='govuk-grid-column-one-half'>
             <UserMap locations={locations} />
 
-            <div
+            {/* <div
               className='govuk-!-margin-top-4'
               style={{ display: 'flex', alignItems: 'center' }}
             >
@@ -243,7 +275,7 @@ export default function UserInformationPage () {
                   filteredLocations={locations}
                 />
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </main>

@@ -552,8 +552,25 @@ const removeLinkedContacts = async (client, orgId, locationID, contactIDs) => {
   }
 }
 
-const orgSignIn = async (client, profile, organization, locations, contacts) => {
+const addOrgActiveAdmins = async (client, orgId, id) => {
+  const key = orgId + ':org_active_admins'
+  await addToList(client, key, id)
+}
+
+const removeOrgActiveAdmins = async (client, orgId, id) => {
+  const key = orgId + ':org_active_admins'
+  await removeFromList(client, key, id)
+}
+
+const getOrgActiveAdmins = async (client, orgId) => {
+  const key = orgId + ':org_active_admins'
+  const activeAdmins = await getList(client, key)
+  return activeAdmins
+}
+
+const orgSignIn = async (client, profile, organization, locations, contacts, authToken) => {
   await setJsonData(client, profile.id + ':profile', profile)
+  await addOrgActiveAdmins(client, organization.id, profile.id)
   const orgExists = await checkKeyExists(client, organization.id + ':org_data')
   if (orgExists) {
     const existingLocations = await getLocationKeys(client, organization.id)
@@ -586,41 +603,46 @@ const orgSignIn = async (client, profile, organization, locations, contacts) => 
 }
 
 const orgSignOut = async (client, profileId, orgId) => {
-  // delete all data from elasticache
   // delete profile
   await deleteJsonData(client, profileId + ':profile')
-  // delete org
-  await deleteJsonData(client, orgId + ':org_data')
-  // delete locations
-  // delete contacts
-  const locationKeys = await getLocationKeys(client, orgId)
-  const invLocationKeys = await getInvLocationKeys(client, orgId)
-  const contactKeys = await getContactKeys(client, orgId)
-  await Promise.all(
-    locationKeys.map(async (key) => {
-      await deleteJsonData(client, key)
-    })
-  )
-  await Promise.all(
-    invLocationKeys.map(async (key) => {
-      await deleteJsonData(client, key)
-    })
-  )
-  await Promise.all(
-    contactKeys.map(async (key) => {
-      await deleteJsonData(client, key)
-    })
-  )
+  await removeOrgActiveAdmins(client, orgId, profileId)
+  // get the new list to see if there are any admins still logged in
+  const activeAdmins = await getOrgActiveAdmins(client, orgId)
+  // delete all data from elasticache if there are no org Admins logged in
+  if (activeAdmins.length === 0) {
+    // delete org
+    await deleteJsonData(client, orgId + ':org_data')
+    // delete locations
+    // delete contacts
+    const locationKeys = await getLocationKeys(client, orgId)
+    const invLocationKeys = await getInvLocationKeys(client, orgId)
+    const contactKeys = await getContactKeys(client, orgId)
+    await Promise.all(
+      locationKeys.map(async (key) => {
+        await deleteJsonData(client, key)
+      })
+    )
+    await Promise.all(
+      invLocationKeys.map(async (key) => {
+        await deleteJsonData(client, key)
+      })
+    )
+    await Promise.all(
+      contactKeys.map(async (key) => {
+        await deleteJsonData(client, key)
+      })
+    )
 
-  await deleteData(client, orgId + ':t_POIS_locID')
-  await deleteData(client, orgId + ':t_invPOIS_locID')
-  await deleteData(client, orgId + ':t_Contacts_ID')
-  // delete contact and location keywords
-  await deleteJsonData(client, orgId + ':t_Keywords_location')
-  await deleteJsonData(client, orgId + ':t_Keywords_contact')
-  await deleteJsonData(client, orgId + ':alertLocations')
-  await deleteJsonData(client, orgId + ':t_Linked_locations')
-  await deleteJsonData(client, orgId + ':t_Linked_contacts')
+    await deleteData(client, orgId + ':t_POIS_locID')
+    await deleteData(client, orgId + ':t_invPOIS_locID')
+    await deleteData(client, orgId + ':t_Contacts_ID')
+    // delete contact and location keywords
+    await deleteJsonData(client, orgId + ':t_Keywords_location')
+    await deleteJsonData(client, orgId + ':t_Keywords_contact')
+    await deleteJsonData(client, orgId + ':alertLocations')
+    await deleteJsonData(client, orgId + ':t_Linked_locations')
+    await deleteJsonData(client, orgId + ':t_Linked_contacts')
+  }
 }
 
 module.exports = {
@@ -649,5 +671,8 @@ module.exports = {
   addLinkedContacts,
   removeLinkedContacts,
   orgSignIn,
-  orgSignOut
+  orgSignOut,
+  checkKeyExists,
+  addOrgActiveAdmins,
+  getOrgActiveAdmins
 }

@@ -66,7 +66,7 @@ const api = new OpenAPIBackend({
     getOrgDemoteContact: orgContactsHandlers.getOrgDemoteContact,
     getOrgListContacts: orgContactsHandlers.getOrgListContacts,
     getOrgRemoveContacts: orgContactsHandlers.getOrgRemoveContacts,
-    getOrgPromoteContact: orgContactsHandlers.etOrgPromoteContact,
+    getOrgPromoteContact: orgContactsHandlers.getOrgPromoteContact,
     getOrgUpdateContact: orgContactsHandlers.getOrgUpdateContact,
     //remove org
     getOrgRemove: orgRemoveHandler.getOrgRemove,

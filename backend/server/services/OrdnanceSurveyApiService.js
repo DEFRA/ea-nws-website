@@ -4,6 +4,9 @@ const getSecretKeyValue = require('../services/SecretsManager')
 const proj4 = require('proj4')
 const axios = require('axios')
 const { logger } = require('../plugins/logging')
+const {
+  createGenericErrorResponse
+} = require('../services/GenericErrorResponse')
 
 const osPostCodeApiCall = async (postCode) => {
   let responseData
@@ -50,15 +53,20 @@ const osPostCodeApiCall = async (postCode) => {
   }
 }
 
-const osFindNameApiCall = async (name, filter) => {
-  let responseData
-  const formattedName = name.replace('&', '%26')
+const osFindNameApiCall = async (name, filters, loop) => {
+  let responseData = []
+  // remove special characters from name
+  const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   let url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
-  if (filter !== null) {
-    const filterStr = 'LOCAL_TYPE:' + filter.join(' LOCAL_TYPE:')
+  if (filters !== null) {
+    let filterStr = ''
+    filters.forEach((filter) => {
+      filterStr += 'LOCAL_TYPE:' + filter + ' '
+    })
     url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&fq=${filterStr}&key=${osApiKey}`
   }
+
   proj4.defs(
     'EPSG:27700',
     '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
@@ -71,38 +79,68 @@ const osFindNameApiCall = async (name, filter) => {
   }
 
   try {
-    const response = await axios.get(url)
-    // Check that location is in England
-    if (response.data.results?.[0].GAZETTEER_ENTRY.COUNTRY === 'England') {
-      responseData = response.data.results.map((result) => {
-        const formattedLocationName = locationNameFormatter(
-          result.GAZETTEER_ENTRY
-        )
-        const coordinates = convertCoordinates(
-          result.GAZETTEER_ENTRY.GEOMETRY_X,
-          result.GAZETTEER_ENTRY.GEOMETRY_Y
-        )
+    let results = []
+    let response = await axios.get(url)
+    results.push(...response.data.results)
 
-        return {
-          name: '',
-          address: formattedLocationName,
-          coordinates: coordinates
-        }
-      })
+    // we must filter through all results returned since OS api only returns first 100
+    if (response.data.header.totalresults > 100 && loop === true) {
+      const totalRecalls = Math.floor(response.data.header.totalresults / 100)
+      let i = 1
+      while (i <= totalRecalls) {
+        response = await axios.get(url + `&offset=${i * 100}`)
+        results.push(...response.data.results)
+        i++
+      }
+    }
 
-      return { status: response.status, data: responseData }
-    } else {
+    if (results.length === 0) {
       return {
         status: 500,
-        errorMessage: 'Enter a place name, town or keyword in England'
+        errorMessage: 'Enter a town or place name'
       }
+    } else {
+      responseData.push(
+        ...results
+          .filter((result) => {
+            // filter out any non english locations
+            return (
+              result.GAZETTEER_ENTRY.COUNTRY === 'England' &&
+              result.GAZETTEER_ENTRY.NAME1.replace(/[^a-zA-Z0-9 ]/g, '')
+                .toLowerCase()
+                .includes(formattedName.toLowerCase())
+            )
+          })
+          .map((result) => {
+            const formattedLocationName = locationNameFormatter(
+              result.GAZETTEER_ENTRY
+            )
+            const coordinates = convertCoordinates(
+              result.GAZETTEER_ENTRY.GEOMETRY_X,
+              result.GAZETTEER_ENTRY.GEOMETRY_Y
+            )
+
+            return {
+              name: '',
+              address: formattedLocationName,
+              coordinates: coordinates
+            }
+          })
+      )
+
+      // only scottish results were returned
+      if (responseData.length === 0) {
+        return {
+          status: 500,
+          errorMessage: 'Enter a town or place name'
+        }
+      }
+
+      return { status: response.status, data: responseData }
     }
   } catch (error) {
     logger.error(error)
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
+    return createGenericErrorResponse(h)
   }
 }
 

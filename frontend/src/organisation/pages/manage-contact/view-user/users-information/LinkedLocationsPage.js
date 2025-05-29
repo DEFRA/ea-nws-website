@@ -28,6 +28,8 @@ export default function LinkedLocationsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [unlinkNotification, setUnlinkNotification] = useState('')
   const [loading, setLoading] = useState(true)
+  const [unlinking, setUnlinking] = useState(false)
+  const [stage, setStage] = useState('')
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
@@ -165,7 +167,12 @@ export default function LinkedLocationsPage() {
   }
 
   const unlinkLocations = async (locationsToUnlink) => {
-    for (const location of locationsToUnlink) {
+    const numLocations = locationsToUnlink.length
+    // only show the unlinking progress if more than one location
+    // is being unlinked  
+    numLocations > 1 && setUnlinking(true)
+    for (const [index, location] of locationsToUnlink.entries()) {
+      setStage(`unlinking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
       const dataToSend = {
         authToken,
         orgId,
@@ -198,6 +205,7 @@ export default function LinkedLocationsPage() {
     setSelectedLocations([])
 
     setResetPaging(!resetPaging)
+    setUnlinking(false)
   }
 
   const linkedLocationsSection = (
@@ -294,6 +302,14 @@ export default function LinkedLocationsPage() {
           </>
         )}
       </main>
+      {unlinking &&
+        <div className='popup-dialog'>
+          <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+            <LoadingSpinner
+              loadingText={<p className='govuk-body-l'>{stage}</p>}
+            />
+          </div>
+        </div>}
     </>
   )
 }

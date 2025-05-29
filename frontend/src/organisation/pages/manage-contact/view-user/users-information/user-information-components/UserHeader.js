@@ -1,17 +1,42 @@
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
+import UserType from '../../../../../../common/enums/UserType'
+import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader({ contactName, userType, currentPage }) {
+export default function UserHeader({
+  contactId,
+  contactName,
+  userType,
+  currentPage
+}) {
   const location = useLocation()
   const navigate = useNavigate()
+  const [activeAdmin, setActiveAdmin] = useState(false)
+  const orgId = useSelector((state) => state.session.orgId)
+  const profileId = useSelector((state) => state.session.profileId)
+
+  async function getActiveAdmin() {
+    const { data } = await backendCall(
+      { orgId: orgId, userId: contactId },
+      'api/elasticache/get_active_admins'
+    )
+    setActiveAdmin(data)
+  }
+
+  useEffect(() => {
+    getActiveAdmin()
+  }, [])
 
   const handleSubmit = () => {
-    if (userType === 'ADMIN') {
+    if (userType !== UserType.Admin) {
+      navigate(orgManageContactsUrls.admin.promote)
     } else {
-      navigate(orgManageContactsUrls.promoteToAdmin)
+      navigate(orgManageContactsUrls.admin.remove)
     }
   }
 
@@ -21,14 +46,14 @@ export default function UserHeader({ contactName, userType, currentPage }) {
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success'
           title='Success'
-          text={location.state.successMessage}
+          text={location?.state?.successMessage}
         />
       )}
-      {userType === 'Pending admin' ? (
+      {userType === UserType.PendingAdmin ? (
         <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
           Pending admin
         </strong>
-      ) : userType === 'ADMIN' ? (
+      ) : userType === UserType.Admin ? (
         <strong className='govuk-tag govuk-tag--purple govuk-!-margin-bottom-3'>
           Admin
         </strong>
@@ -43,34 +68,41 @@ export default function UserHeader({ contactName, userType, currentPage }) {
             {contactName}
           </h1>
         </div>
-        <div
-          className='govuk-grid-column-one-half right'
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end'
-          }}
-        >
-          <>
+        {!(
+          userType === UserType.Admin &&
+          (activeAdmin || profileId === contactId)
+        ) && (
+          <div
+            className='govuk-grid-column-one-half right'
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end'
+            }}
+          >
+            <>
+              <Button
+                text={
+                  userType === UserType.Admin
+                    ? 'Remove as admin'
+                    : 'Promote to admin'
+                }
+                className='govuk-button govuk-button--secondary'
+                onClick={() => {
+                  handleSubmit()
+                }}
+              />
+              &nbsp; &nbsp;
+            </>
             <Button
-              text={
-                userType === 'ADMIN' ? 'Remove as admin' : 'Promote to admin'
-              }
+              text='Delete user'
               className='govuk-button govuk-button--secondary'
-              onClick={() => {
-                handleSubmit()
+              onClick={(event) => {
+                event.preventDefault()
+                navigate(orgManageContactsUrls.delete)
               }}
             />
-            &nbsp; &nbsp;
-          </>
-          <Button
-            text='Delete user'
-            className='govuk-button govuk-button--secondary'
-            onClick={(event) => {
-              event.preventDefault()
-              navigate(orgManageContactsUrls.delete)
-            }}
-          />
-        </div>
+          </div>
+        )}
       </div>
 
       {/* view user navigation */}

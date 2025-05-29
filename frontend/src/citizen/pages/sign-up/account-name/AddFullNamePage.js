@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { getLocationOtherAdditional, setProfile } from '../../../../common/redux/userSlice'
+import {
+  getLocationOtherAdditional,
+  setProfile
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { getRegistrationParams, updateAdditionals } from '../../../../common/services/ProfileServices'
+import {
+  getRegistrationParams,
+  updateAdditionals
+} from '../../../../common/services/ProfileServices'
 import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLayout'
 
 export default function AddFullNamePage () {
@@ -13,10 +19,7 @@ export default function AddFullNamePage () {
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
@@ -33,7 +36,9 @@ export default function AddFullNamePage () {
   }
 
   const updateProfile = async (profile, authToken) => {
-    const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: { s: '/declaration' } }])
+    const updatedProfile = updateAdditionals(profile, [
+      { id: 'lastAccessedUrl', value: { s: '/declaration' } }
+    ])
     const dataToSend = { profile: updatedProfile, authToken }
     const { errorMessage, data } = await backendCall(
       dataToSend,

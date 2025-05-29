@@ -24,8 +24,8 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'ADMIN',
-    pendingRole: null
+    role: null,
+    pendingRole: 'ADMIN'
   },
   {
     id: '2',
@@ -52,8 +52,8 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'SELF',
-    pendingRole: null
+    role: null,
+    pendingRole: 'ADMIN'
   },
   {
     id: '3',
@@ -80,7 +80,7 @@ const contacts = [
     },
     metatdata: null,
     pois: null,
-    role: 'SELF',
+    role: null,
     pendingRole: null
   },
   {
@@ -95,7 +95,7 @@ const contacts = [
     position: null,
     unit: null,
     service: null,
-    comments: null,
+    comments: 'Steven binns is the admin',
     additionals: [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
       { id: 'signupComplete', value: { s: 'true' } },

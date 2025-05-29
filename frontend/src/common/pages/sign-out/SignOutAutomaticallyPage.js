@@ -1,24 +1,35 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import SignOutLayout from '../../layouts/sign-out/SignOutPageLayout'
 import { clearAuth } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
+import { getAdditionals } from '../../services/ProfileServices'
 
 export default function SignOutManuallyPage () {
   const dispatch = useDispatch()
   const signinType = useSelector((state) => state.session.signinType)
   const profileId = useSelector((state) => state.session.profileId)
+  const profile = useSelector((state) => state.session.profile)
   const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
+  const [signUpNotComplete, setSignUpNotComplete] = useState(false)
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
 
   useEffect(() => {
     const signout = async () => {
       // need to call the backend to remove data from elasticache once signed out
-      await backendCall({ profileId, orgId }, 'api/sign_out')
+      await backendCall({ profileId, orgId, authToken }, 'api/sign_out')
     }
     if (signinType === 'org') {
+      const isSignUpComplete = getAdditionals(profile, 'signupComplete')
+      const lastAccessedUrl = getAdditionals(profile, 'lastAccessedUrl')
+
+      if (isSignUpComplete === 'false' && lastAccessedUrl !== undefined) {
+        setSignUpNotComplete(true)
+      }
+
       // need to call the backend to remove data from elasticache once signed out
       signout()
     }
@@ -26,5 +37,7 @@ export default function SignOutManuallyPage () {
     dispatch(clearAuth())
   }, [])
 
-  return <SignOutLayout text="You've been signed out for security reasons" />
+  const text = signUpNotComplete ? "You timed out before you could finish signing up" : "You've been signed out for security reasons"
+
+  return <SignOutLayout text={text} signUpNotComplete={signUpNotComplete} />
 }

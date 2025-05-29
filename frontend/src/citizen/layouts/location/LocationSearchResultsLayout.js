@@ -22,7 +22,7 @@ import {
 } from '../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../common/services/hooks/GetHistoricalAlerts'
 
-export default function LocationSearchResultsLayout ({
+export default function LocationSearchResultsLayout({
   continueToNextPage,
   returnToSearchPage
 }) {
@@ -31,6 +31,9 @@ export default function LocationSearchResultsLayout ({
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
+  const locationSearchType = useSelector(
+    (state) => state.session.locationSearchType
+  )
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
   )
@@ -79,7 +82,8 @@ export default function LocationSearchResultsLayout ({
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude
+        selectedLocation.coordinates.longitude,
+        locationSearchType === 'placename' ? 1.5 : 0.5
       )
 
       const isError = !warningArea && !alertArea

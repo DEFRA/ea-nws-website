@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'

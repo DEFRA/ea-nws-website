@@ -13,7 +13,8 @@ import { backendCall } from '../../../common/services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  updateAdditionals
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 
@@ -21,7 +22,8 @@ export default function ValidateLandlineLayout ({
   navigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  isSignUpJourney = false
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -61,7 +63,24 @@ export default function ValidateLandlineLayout ({
           setError(errorMessage)
         }
       } else {
-        dispatch(setProfile(data.profile))
+        let updatedProfile = data.profile
+
+        if (isSignUpJourney) {
+          // Set lastAccessedUrl explicitly for signup journey
+          updatedProfile = updateAdditionals(updatedProfile, [
+            { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          ])
+
+          const profileUpdateResponse = await backendCall(
+            { profile: updatedProfile, authToken },
+            'api/profile/update',
+            navigate
+          )
+
+          dispatch(setProfile(profileUpdateResponse.data.profile))
+        } else {
+          dispatch(setProfile(data.profile))
+        }
         navigateToNextPage(homePhone)
       }
     }

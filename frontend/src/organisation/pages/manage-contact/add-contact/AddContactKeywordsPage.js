@@ -1,38 +1,34 @@
 import { React } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import KeywordsLayout from '../../../layouts/optional-info/KeywordsLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactKeywordsPage () {
+export default function AddContactKeywordsPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const currentContact = useSelector((state) => state.session.orgCurrentContact)
 
   const navigateToNextPage = () => {
-    navigate(orgManageContactsUrls.add.channels)
+    navigate(orgManageContactsUrls.add.notes)
   }
+
+  const KeywordTitle = `Keywords for ${currentContact?.firstname} ${currentContact?.lastname} (optional)`
 
   const KeywordText = (
     <>
-      <p>
-        You can add new keywords. Or you can remove existing keywords by
-        unticking the relevant box.
+      <p className='govuk-!-margin-bottom-5'>
+        Keywords are useful if you need to group users and then link them to
+        locations.
       </p>
-      <h3 className='govuk-heading-s'>Why add keywords</h3>
-      <p>
-        Adding keywords for each contact can make it easier for you to filter
-        and create lists of people you can link to locations to get relevant
-        flood messages.
-        <br />
-        <br />
-        For example, you may want to add ‘North’ or ‘Midlands’ or ‘Team A’ as
-        keywords, then show all of the locations with that keyword in a list.
-        <br />
-        <br />
-        You can add a maximum of 50 keywords and each keyword can be single or
-        multiple words, for example ‘South’ or ‘Team 1’.
-        <br />
-        <br />
-        Once you use a keyword it will be saved so you can select it for any
-        other contacts.
+      <p className='govuk-!-margin-bottom-5'>
+        For example, you could add the keyword 'Midlands' for{' '}
+        {currentContact?.firstname} {currentContact?.lastname}.
+      </p>
+      <p className='govuk-!-margin-bottom-5'>
+        Then link {currentContact?.firstname} {currentContact?.lastname} and all
+        other users with this keyword to locations in the Midlands.
       </p>
     </>
   )
@@ -41,6 +37,7 @@ export default function AddContactKeywordsPage () {
     <>
       <KeywordsLayout
         keywordType='contact'
+        keywordTitle={KeywordTitle}
         keywordText={KeywordText}
         navigateToNextPage={navigateToNextPage}
       />

@@ -2,25 +2,37 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const setAdditional = (additionals, id, value) => {
   let idFound = false
-  for (let i = 0; i < additionals.length; i++) {
-    if (additionals[i].id === id) {
-      additionals[i].value = { s: value }
-      idFound = true
+  if (Array.isArray(additionals)) {
+    for (let i = 0; i < additionals.length; i++) {
+      if (additionals[i].id === id) {
+        additionals[i].value = { s: value }
+        idFound = true
+      }
     }
-  }
-  if (!idFound) {
-    additionals.push({ id, value: { s: value } })
+    if (!idFound) {
+      additionals.push({ id, value: { s: value } })
+    }
+  } else {
+    if (id === 'keywords') {
+      additionals[id] = JSON.parse(value)
+    } else {
+      additionals[id] = value
+    }
   }
 }
 
 export const getAdditional = (additionals, id) => {
-  for (let i = 0; i < additionals?.length; i++) {
-    if (additionals[i].id === id) {
-      return additionals[i].value?.s
+  if (Array.isArray(additionals)) {
+    for (let i = 0; i < additionals?.length; i++) {
+      if (additionals[i].id === id) {
+        return additionals[i].value?.s
+      }
+      if (additionals[i].key === id) {
+        return additionals[i].value?.s
+      }
     }
-    if (additionals[i].key === id) {
-      return additionals[i].value?.s
-    }
+  } else {
+    return additionals[id] || ''
   }
   return ''
 }
@@ -109,6 +121,8 @@ const userSlice = createSlice({
     locationSearchResults: null,
     selectedLocation: null,
     additionalAlerts: null,
+    // required for extending name search flood areas radius
+    locationSearchType: null,
     // required for when user changes a location at sign up review
     locationToBeChanged: null,
     // required for nearby flood areas flow
@@ -282,6 +296,10 @@ const userSlice = createSlice({
     setLocationToBeChanged: (state, action) => {
       state.locationToBeChanged = action.payload
     },
+    // required for extending name search flood areas radius
+    setLocationSearchType: (state, action) => {
+      state.locationSearchType = action.payload
+    },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
       state.selectedFloodWarningArea = action.payload
@@ -308,9 +326,6 @@ const userSlice = createSlice({
     },
     setSelectedBoundary: (state, action) => {
       state.selectedBoundary = action.payload
-    },
-    setLocationBoundaries: (state, action) => {
-      state.locationBoundaries = action.payload
     },
     setConsecutiveBoundariesAdded: (state, action) => {
       state.consecutiveBoundariesAdded = action.payload
@@ -676,6 +691,8 @@ const userSlice = createSlice({
       state.orgCurrentContact.additionals = action.payload.additionals
       state.orgCurrentContact.comments = action.payload.comments
       state.orgCurrentContact.pois = action.payload.pois
+      state.orgCurrentContact.role = action.payload.role
+      state.orgCurrentContact.pendingRole = action.payload.pendingRole
     },
     setOrgCurrentContactId: (state, action) => {
       state.orgCurrentContact.id = action.payload
@@ -723,6 +740,15 @@ const userSlice = createSlice({
         'jobTitle',
         action.payload
       )
+    },
+    setOrgCurrentContactRole: (state, action) => {
+      state.orgCurrentContact.role = action.payload
+    },
+    setOrgCurrentContactPendingRole: (state, action) => {
+      state.orgCurrentContact.pendingRole = action.payload
+    },
+    setAddingAdminFlow: (state, action) => {
+      state.addingAdminFlow = action.payload
     },
     clearOrgCurrentContact: (state) => {
       state.orgCurrentContact = {
@@ -789,6 +815,8 @@ const userSlice = createSlice({
       state.additionalAlerts = null
       // required for when user changes a location at sign up review
       state.locationToBeChanged = null
+      // required for extending name search flood areas radius
+      state.locationSearchType = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -800,7 +828,6 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
-      state.locationBoundaries = null
       state.consecutiveBoundariesAdded = 0
       state.predefinedBoundaryFlow = null
       // org location data
@@ -872,6 +899,7 @@ const userSlice = createSlice({
         alertDiffusionZoneBoundingBox: null,
         urlSlug: null
       }
+      state.addingAdminFlow = null
       state.orgCurrentContact = {
         id: null,
         enabled: true,
@@ -1002,6 +1030,8 @@ export const {
   setAdditionalAlerts,
   // required for when user changes a location at sign up review
   setLocationToBeChanged,
+  // required for extending name search flood areas radius
+  setLocationSearchType,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,
@@ -1083,7 +1113,11 @@ export const {
   setOrgCurrentContactJobTitle,
   setOrgCurrentContactNotes,
   setOrgCurrentContactPois,
+  setOrgCurrentContactRole,
+  setOrgCurrentContactPendingRole,
   setContacts,
+  // flow
+  setAddingAdminFlow,
   // clear state
   clearAuth,
   clearCurrentLocation,

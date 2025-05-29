@@ -18,6 +18,7 @@ export default function KeywordsLayout ({
   keywordType,
   navigateToNextPage,
   keywordText,
+  keywordTitle = null,
   error = null
 }) {
   const dispatch = useDispatch()
@@ -78,7 +79,11 @@ export default function KeywordsLayout ({
         ? getAdditionals(currentObject, 'keywords')
         : ''
   )
-  if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
+
+  // if currentKeywords is not an array
+  if (currentKeywords.length > 0 && !Array.isArray(currentKeywords)) {
+      currentKeywords = JSON.parse(currentKeywords)
+  }
 
   const checkboxArray = Array(currentKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
@@ -255,7 +260,7 @@ export default function KeywordsLayout ({
               <ErrorSummary errorList={[keywordError, error]} />
             )}
             <h1 className='govuk-heading-l'>
-              {`Add keywords for this ${keywordType} (optional)`}
+              {keywordTitle || `Add keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
               {keywordText}
@@ -284,6 +289,7 @@ export default function KeywordsLayout ({
                   <p className='govuk-error-message'>{keywordError}</p>
                 )}
               </div>
+              <p>Type Keyword</p>
               <div className='inline-button'>
                 <Autocomplete
                   inputType='text'

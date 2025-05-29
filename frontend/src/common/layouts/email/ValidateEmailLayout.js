@@ -192,7 +192,7 @@ export default function ValidateEmailLayout ({
                     {changeSignIn && (
                       <p className='govuk-body'>
                         You need to confirm your email address.
-                    </p>
+                      </p>
                     )}
                     <p className='govuk-body govuk-!-margin-bottom-5'>
                       We've sent an email with a code to:
@@ -215,35 +215,35 @@ export default function ValidateEmailLayout ({
                     {changeSignIn
                       ? (
                         <>
-                  <Link
-                          onClick={differentEmail}
-                          className='govuk-link inline-link'
-                        >
-                          Enter a different email
-                        </Link>
-                  <br />
-                  <Link onClick={getNewCode} className='govuk-link'>
-                          Get a new code
-                        </Link>
-                </>
+                          <Link
+                            onClick={differentEmail}
+                            className='govuk-link inline-link'
+                          >
+                            Enter a different email
+                          </Link>
+                          <br />
+                          <Link onClick={getNewCode} className='govuk-link'>
+                            Get a new code
+                          </Link>
+                        </>
                         )
                       : (
                         <>
-                  <Link
-                          onClick={skipValidation}
-                          className='govuk-link inline-link'
-                        >
-                          Skip and confirm later
-                        </Link>
-                  <br />
-                  <Link onClick={getNewCode} className='govuk-link'>
-                          Get a new code
-                        </Link>
-                  <br /> <br />
-                  <Link onClick={differentEmail} className='govuk-link'>
-                          Enter a different email
-                        </Link>
-                </>
+                          <Link
+                            onClick={skipValidation}
+                            className='govuk-link inline-link'
+                          >
+                            Skip and confirm later
+                          </Link>
+                          <br />
+                          <Link onClick={getNewCode} className='govuk-link'>
+                            Get a new code
+                          </Link>
+                          <br /> <br />
+                          <Link onClick={differentEmail} className='govuk-link'>
+                            Enter a different email
+                          </Link>
+                        </>
                         )}
                   </div>
                 </div>

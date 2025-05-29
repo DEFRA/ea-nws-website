@@ -29,6 +29,11 @@ export default function SignUpSuccessPage () {
     notifySignUpSuccess()
   }, [])
 
+  const handleContinue = (event) => {
+    event.preventDefault()
+    window.location.href = "https://forms.office.com/e/XgucY9mkPV"
+  }
+
   // need to check for authToken
   return (
     <>
@@ -88,13 +93,7 @@ export default function SignUpSuccessPage () {
                   <h1 className='govuk-heading-m govuk-!-margin-top-6'>
                     Now answer some questions about the sign up process
                   </h1>
-                  <a
-                    className='govuk-link'
-                    href='https://forms.office.com/e/XgucY9mkPV'
-                    target='_blank'
-                  >
-                    <Button text='Continue' className='govuk-button' />
-                  </a>
+                  <Button text='Continue' className='govuk-button' onClick={handleContinue} />
                 </div>
               )}
             </div>

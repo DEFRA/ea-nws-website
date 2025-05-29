@@ -29,6 +29,7 @@
     "leaflet-pip": "^1.1.0",
     "leaflet.pattern": "^0.1.0",
     "moment": "^2.30.1",
+    "number-to-words": "^1.2.4",
     "proj4": "^2.12.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
@@ -46,7 +47,7 @@
   },
   "overrides": {
     "nth-check": "^2.1.1",
-    "postcss":"^8.4.38"
+    "postcss": "^8.4.38"
   },
   "scripts": {
     "start": "serve -s build",

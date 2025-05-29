@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import Details from '../../../common/components/gov-uk/Details'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import UserContactType from '../../../common/enums/UserContactType'
 import ContactDetailsTable from './ContactDetailsTable'
 
 export default function ManageContactsPage() {
@@ -138,7 +139,7 @@ export default function ManageContactsPage() {
               contacts={contacts.emails}
               unregisteredContact={contacts.unverifiedEmails || []}
               contactTitle='Emails'
-              contactType='email address'
+              contactType={UserContactType.Email}
               primaryContact={primaryEmail}
             />
             {contacts.emails.length === 1 &&
@@ -153,14 +154,14 @@ export default function ManageContactsPage() {
               contacts={contacts.mobilePhones}
               unregisteredContact={contacts.unverifiedMobilePhones || []}
               contactTitle='Texts'
-              contactType='mobile telephone number'
+              contactType={UserContactType.Mobile}
               primaryContact={null}
             />
             <ContactDetailsTable
               contacts={contacts.homePhones}
               unregisteredContact={contacts.unverifiedHomePhones || []}
               contactTitle='Phone call warnings'
-              contactType='telephone number'
+              contactType={UserContactType.Telephone}
               primaryContact={null}
             />
           </div>

@@ -46,14 +46,17 @@ const removeUnverifiedContact = (profile, contact, type) => {
 
   // need to check if there are any unverified
   if (profile.unverified) {
-    if (type === 'email address' && profile.unverified.emails) {
+    if (type === UserContactType.Email && profile.unverified.emails) {
       unverifiedContactListKey = 'emails'
     } else if (
-      type === 'mobile telephone number' &&
+      type === UserContactType.Mobile &&
       profile.unverified.mobilePhones
     ) {
       unverifiedContactListKey = 'mobilePhones'
-    } else if (type === 'telephone number' && profile.unverified.homePhones) {
+    } else if (
+      type === UserContactType.Telephone &&
+      profile.unverified.homePhones
+    ) {
       unverifiedContactListKey = 'homePhones'
     } else {
       // contact not found in any unverified contacts list

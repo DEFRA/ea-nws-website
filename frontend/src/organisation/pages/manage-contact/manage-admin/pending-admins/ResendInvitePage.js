@@ -54,7 +54,7 @@ export default function ResendInvitePage() {
   return (
     <>
       <Helmet>
-        <title>Resend admin invite - GOV.UK</title>
+        <title>Do you want to resend an admin invitation to {pendingAdminName}? - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>

@@ -20,7 +20,7 @@ export default function ManageAdminDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Manage administrator details - GOV.UK</title>
+        <title>Manage administrator details - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
         <div className='govuk-grid-row'>

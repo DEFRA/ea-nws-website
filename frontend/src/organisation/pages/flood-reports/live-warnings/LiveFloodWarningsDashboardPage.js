@@ -261,7 +261,7 @@ export default function LiveFloodWarningsDashboardPage () {
   return (
     <>
       <Helmet>
-        <title>Live flood warnings - GOV.UK</title>
+        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

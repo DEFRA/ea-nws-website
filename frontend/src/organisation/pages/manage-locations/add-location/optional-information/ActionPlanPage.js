@@ -50,7 +50,7 @@ export default function ActionPlanPage () {
   return (
     <>
       <Helmet>
-        <title>Action plan - GOV.UK</title>
+        <title>Action plan for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <ActionPlanLayout
         navigateToNextPage={() => { navigateToNextPage() }}

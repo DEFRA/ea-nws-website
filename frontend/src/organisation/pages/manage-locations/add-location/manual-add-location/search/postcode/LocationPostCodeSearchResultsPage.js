@@ -23,7 +23,7 @@ export default function LocationPostCodeSearchResultsPage () {
   return (
     <>
       <Helmet>
-        <title>Select an address (professional) - Get flood warnings - GOV.UK</title>
+        <title>Select an address - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <AddressSearchLayout
         navigateToNextPage={navigateToNextPage}

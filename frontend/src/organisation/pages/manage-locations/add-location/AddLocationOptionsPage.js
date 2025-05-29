@@ -8,8 +8,8 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import LocationDataType from '../../../../common/enums/LocationDataType'
 import {
-    clearCurrentLocation,
-    setCurrentLocationDataType
+  clearCurrentLocation,
+  setCurrentLocationDataType
 } from '../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -67,7 +67,7 @@ export default function AddLocationOptionsPage () {
   return (
     <>
       <Helmet>
-        <title>Add location options - GOV.UK</title>
+        <title>How do you want to add locations? - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

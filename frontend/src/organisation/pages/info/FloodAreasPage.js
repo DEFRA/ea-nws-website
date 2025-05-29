@@ -34,7 +34,7 @@ export default function FloodAreasPage () {
   return (
     <>
       <Helmet>
-        <title>What are flood areas? - GOV.UK</title>
+        <title>What are flood areas? - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>

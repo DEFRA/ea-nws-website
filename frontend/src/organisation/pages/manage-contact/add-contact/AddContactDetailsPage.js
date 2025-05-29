@@ -18,7 +18,7 @@ export default function AddContactDetailsPage() {
   return (
     <>
       <Helmet>
-        <title>Add user details - GOV.UK</title>
+        <title>User details - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <ContactDetailsLayout navigateToNextPage={navigateToNextPage} />
     </>

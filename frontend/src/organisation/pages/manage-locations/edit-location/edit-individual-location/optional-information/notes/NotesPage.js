@@ -14,7 +14,7 @@ export default function NotesPage () {
   return (
     <>
       <Helmet>
-        <title>Edit notes - GOV.UK</title>
+        <title>Edit this location's notes - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}

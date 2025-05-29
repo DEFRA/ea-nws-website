@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import {
-    getLocationAdditional,
-    setCurrentLocation
+  getLocationAdditional,
+  setCurrentLocation
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -46,7 +46,7 @@ export default function LocationAlreadyExists () {
   return (
     <>
       <Helmet>
-        <title>Location already exists - GOV.UK</title>
+        <title>Location already exists in this account - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

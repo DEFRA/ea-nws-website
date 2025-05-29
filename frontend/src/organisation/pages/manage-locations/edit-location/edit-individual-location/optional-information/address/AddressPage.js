@@ -25,7 +25,7 @@ export default function AddressPage () {
   return (
     <>
       <Helmet>
-        <title>Edit address - GOV.UK</title>
+        <title>Edit this location's address - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <AddressLayout
         navigateToNextPage={navigateToNextPage}

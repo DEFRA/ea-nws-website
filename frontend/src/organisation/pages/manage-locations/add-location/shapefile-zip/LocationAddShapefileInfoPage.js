@@ -20,7 +20,7 @@ export default function LocationAddShapefileInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Shapefile information page - GOV.UK</title>
+        <title>How to upload a location as a shapefile - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
 

@@ -13,7 +13,7 @@ export default function AddContactChannelsPage() {
   return (
     <>
       <Helmet>
-        <title>Email addresses and numbers - GOV.UK</title>
+        <title>Add email addresses and numbers for this user - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <ContactChannelsLayout
         navigateToNextPage={navigateToNextPage}

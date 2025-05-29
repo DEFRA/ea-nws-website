@@ -23,7 +23,7 @@ export default function CoordinatesNotInEnglandPage () {
   return (
     <>
       <Helmet>
-        <title>Coordinates not in england - GOV.UK</title>
+        <title>Coordinates not in england - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <NotInEnglandLayout
         navigateToNextPage={navigateToNextPage}

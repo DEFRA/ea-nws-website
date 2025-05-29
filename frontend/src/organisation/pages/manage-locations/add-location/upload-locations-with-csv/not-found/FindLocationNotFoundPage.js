@@ -24,7 +24,7 @@ export default function FindLocationNotFoundPage () {
   return (
     <>
       <Helmet>
-        <title>Find location not found - GOV.UK</title>
+        <title>Find location not found - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <FindUnmatchedLocationLayout
         navigateToFindPostCode={navigateToFindPostCode}

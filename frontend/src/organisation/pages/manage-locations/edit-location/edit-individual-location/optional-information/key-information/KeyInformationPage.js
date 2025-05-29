@@ -14,7 +14,7 @@ export default function KeyInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Edit key information - GOV.UK</title>
+        <title>Edit this location's key information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <KeyInformationLayout
         flow='edit'

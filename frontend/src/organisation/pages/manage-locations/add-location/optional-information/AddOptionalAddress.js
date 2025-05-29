@@ -15,7 +15,7 @@ export default function AddOptionalAddress () {
   return (
     <>
       <Helmet>
-        <title>Add optional address - GOV.UK</title>
+        <title>Add optional address for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <AddressLayout
         navigateToNextPage={navigateToNextPage}

@@ -115,7 +115,7 @@ export default function ChangeAdminDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Change administrator details - GOV.UK</title>
+        <title>Change administrator details - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

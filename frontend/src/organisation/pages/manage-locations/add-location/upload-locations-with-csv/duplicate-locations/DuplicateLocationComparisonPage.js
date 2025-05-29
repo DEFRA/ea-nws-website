@@ -197,7 +197,7 @@ export default function DuplicateLocationComparisonPage () {
   return (
     <>
       <Helmet>
-        <title>Duplicate location comparison - GOV.UK</title>
+        <title>Duplicate location comparison - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

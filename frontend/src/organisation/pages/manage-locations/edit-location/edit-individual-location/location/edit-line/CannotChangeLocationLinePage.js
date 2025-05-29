@@ -6,7 +6,7 @@ export default function CannotChangeLocationLinePage () {
   return (
     <>
       <Helmet>
-        <title>Cannot change location - GOV.UK</title>
+        <title>This location cannot be changed - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <CannotChangeLocationManuallyLayout LocationType='line' />
     </>

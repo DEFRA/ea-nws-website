@@ -22,7 +22,7 @@ export default function LinkLocationsPage () {
   return (
     <>
       <Helmet>
-        <title>Link locations - GOV.UK</title>
+        <title>Link locations - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <LinkLocationsLayout
         navigateToPreviousPage={navigateToPreviousPage}

@@ -74,7 +74,7 @@ export default function LocationAddConfirmPage () {
   return (
     <>
       <Helmet>
-        <title>Confirm add location - GOV.UK</title>
+        <title>Confirm add location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-2)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

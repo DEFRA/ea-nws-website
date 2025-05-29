@@ -8,8 +8,8 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
-    getLocationAdditional,
-    getLocationOther
+  getLocationAdditional,
+  getLocationOther
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
@@ -52,7 +52,7 @@ export default function OptionalLocationInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Add optional information - GOV.UK</title>
+        <title>Useful information you can include to help identify this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

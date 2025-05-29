@@ -8,7 +8,7 @@ export default function AccountPendingPage () {
   return (
     <>
       <Helmet>
-        <title>Account pending - GOV.UK</title>
+        <title>Organisation account pending - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

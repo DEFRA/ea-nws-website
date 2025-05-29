@@ -524,7 +524,7 @@ export default function LocationMessagesPage () {
   return (
     <>
       <Helmet>
-        <title>Location messages - GOV.UK</title>
+        <title>{additionalData.locationName ? additionalData.locationName : 'This location'}'s messages - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>

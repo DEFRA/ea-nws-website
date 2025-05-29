@@ -94,7 +94,7 @@ export default function AddContactNotesPage() {
   return (
     <>
       <Helmet>
-        <title>Add user notes - GOV.UK</title>
+        <title>Add notes for this {currentContact?.firstname} {currentContact?.lastname} - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}

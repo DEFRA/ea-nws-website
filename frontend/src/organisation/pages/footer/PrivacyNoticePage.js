@@ -25,7 +25,7 @@ export default function PrivacyNoticePage () {
   return (
     <>
       <Helmet>
-        <title>Privacy notice - GOV.UK</title>
+        <title>Privacy notice - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       {servicePhase === 'beta'
         ? (

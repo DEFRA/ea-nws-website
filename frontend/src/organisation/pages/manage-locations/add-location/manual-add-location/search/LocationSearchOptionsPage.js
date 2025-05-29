@@ -48,7 +48,7 @@ export default function LocationSearchOptionsPage () {
   return (
     <>
       <Helmet>
-        <title>How do you want to find location? - GOV.UK</title>
+        <title>How do you want to find this location? - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <LocationOptionsLayout
         heading={`How do you want to find ${locationName}?`}

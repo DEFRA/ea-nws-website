@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -12,8 +13,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-  addAccountName,
-  addVerifiedContact
+  addAccountName
 } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
@@ -106,6 +106,15 @@ export default function AdminDetailsLayout ({
 
   return (
     <>
+      <Helmet>
+        {isAdmin 
+          ? (
+            <title>Enter your details - Get flood warnings (professional) - GOV.UK</title>
+            )
+          : (
+            <title>Enter details for the main administrator - Get flood warnings (professional) - GOV.UK</title>
+            )}
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

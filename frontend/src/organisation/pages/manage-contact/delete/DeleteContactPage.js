@@ -1,5 +1,4 @@
 import { React } from 'react'
-import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import DeleteLayout from '../../../layouts/location-contact/DeleteLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
@@ -13,9 +12,6 @@ export default function DeleteContactPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Delete user - GOV.UK</title>
-      </Helmet>
       <DeleteLayout navigateToNextPage={navigateToNextPage} />
     </>
   )

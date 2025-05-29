@@ -24,7 +24,7 @@ export default function FindLocationNotInEnglandPage () {
   return (
     <>
       <Helmet>
-        <title>Find location not in england - GOV.UK</title>
+        <title>Find location not in england - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <FindUnmatchedLocationLayout
         navigateToFindPostCode={navigateToFindPostCode}

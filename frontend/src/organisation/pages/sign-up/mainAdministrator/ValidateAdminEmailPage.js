@@ -22,7 +22,7 @@ export default function ValidateAdminEmailPage () {
   return (
     <>
       <Helmet>
-        <title>Check your email - GOV.UK</title>
+        <title>Confirm email address - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <ValidateEmailLayout
         navigateToNextPage={navigateToNextPage}

@@ -86,7 +86,7 @@ export default function ManuallyFindLocationsPage () {
   return (
     <>
       <Helmet>
-        <title>Manually find locations - GOV.UK</title>
+        <title>Manually find locations - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       {location.state && (
         <NotificationBanner

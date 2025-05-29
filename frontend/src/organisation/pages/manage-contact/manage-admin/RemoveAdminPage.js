@@ -58,7 +58,7 @@ export default function RemoveAdminPage () {
   return (
     <>
       <Helmet>
-        <title>Remove admin - GOV.UK</title>
+        <title>Remove {contactName} as admin - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>

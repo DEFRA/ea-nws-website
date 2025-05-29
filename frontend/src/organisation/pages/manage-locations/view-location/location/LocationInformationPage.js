@@ -169,7 +169,7 @@ export default function LocationInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Location information - GOV.UK</title>
+        <title>{additionalData.locationName ? additionalData.locationName : 'This location'}'s information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>

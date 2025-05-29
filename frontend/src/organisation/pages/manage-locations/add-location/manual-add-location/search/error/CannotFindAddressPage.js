@@ -16,7 +16,7 @@ export default function CannotFindAddressPage () {
   return (
     <>
       <Helmet>
-        <title>Cannot find address - GOV.UK</title>
+        <title>Cannot find address - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <CannotFindAddressLayout
         navigateToDifferentPostCode={navigateToDifferentPostCode}

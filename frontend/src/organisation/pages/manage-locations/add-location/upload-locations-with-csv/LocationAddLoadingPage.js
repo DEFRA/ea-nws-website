@@ -140,7 +140,7 @@ export default function LocationAddLoadingPage () {
   return (
     <>
       <Helmet>
-        <title>Loading - GOV.UK</title>
+        <title>Loading - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>

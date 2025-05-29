@@ -14,7 +14,7 @@ export default function ConfirmShapefilePolygonPage () {
   return (
     <>
       <Helmet>
-        <title>Confirm location - GOV.UK</title>
+        <title>Confirm location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <ConfirmLocationLayout
         navigateToNextPage={navigateToNextPage}

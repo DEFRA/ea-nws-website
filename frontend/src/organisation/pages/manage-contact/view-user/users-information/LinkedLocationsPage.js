@@ -255,7 +255,7 @@ export default function LinkedLocationsPage () {
   return (
     <>
       <Helmet>
-        <title>Linked locations - GOV.UK</title>
+        <title>{contactName}'s linked locations - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>

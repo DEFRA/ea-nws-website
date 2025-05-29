@@ -105,7 +105,7 @@ export default function SignUpSuccessPage () {
   return (
     <>
       <Helmet>
-        <title>Sign up success - GOV.UK</title>
+        <title>Organisation details submitted for approval - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

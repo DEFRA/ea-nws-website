@@ -22,7 +22,7 @@ export default function DropPinOnMapPage () {
   return (
     <>
       <Helmet>
-        <title>Find location on a map - GOV.UK</title>
+        <title>Find location on a map - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <DropPinOnMapLayout
         navigateToNextPage={navigateToNextPage}

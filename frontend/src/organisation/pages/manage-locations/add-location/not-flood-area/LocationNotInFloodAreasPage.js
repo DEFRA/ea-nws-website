@@ -89,7 +89,7 @@ export default function LocationNotInFloodAreaPage () {
   return (
     <>
       <Helmet>
-        <title>Flood messages not available - GOV.UK</title>
+        <title>Flood messages are not available for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>

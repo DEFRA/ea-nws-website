@@ -223,7 +223,7 @@ export default function DuplicateLocationsOptionsPage () {
   return (
     <>
       <Helmet>
-        <title>Duplicate location options - GOV.UK</title>
+        <title>Duplicate location options - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {addedLocations > 0 && (

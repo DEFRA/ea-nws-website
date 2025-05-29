@@ -9,7 +9,7 @@ export default function LocationUploadShapeFilePage () {
   return (
     <>
       <Helmet>
-        <title>Upload shapefile - GOV.UK</title>
+        <title>Upload shapefile - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <UploadFileLayout uploadMethod={uploadType} />
     </>

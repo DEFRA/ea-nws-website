@@ -14,7 +14,7 @@ export default function ChangeSectorPage () {
   return (
     <>
       <Helmet>
-        <title>Change sector - GOV.UK</title>
+        <title>Change organisation sector - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <SectorLayout
         navigateToNextPage={navigateToNextPage}

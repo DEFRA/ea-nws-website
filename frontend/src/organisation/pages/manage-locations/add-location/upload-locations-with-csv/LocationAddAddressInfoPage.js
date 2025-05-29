@@ -38,7 +38,7 @@ export default function LocationAddAddressInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Add address information - GOV.UK</title>
+        <title>Uploading a file with addresses and postcodes or x,y coordinates - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

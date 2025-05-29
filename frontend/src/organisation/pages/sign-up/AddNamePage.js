@@ -14,7 +14,7 @@ export default function AddNamePage () {
   return (
     <>
       <Helmet>
-        <title>Add name - GOV.UK</title>
+        <title>Your organisation's name - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <AddNameLayout
         navigateToNextPage={navigateToNextPage}

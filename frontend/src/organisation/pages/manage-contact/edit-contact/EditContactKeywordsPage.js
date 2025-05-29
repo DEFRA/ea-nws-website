@@ -41,7 +41,7 @@ export default function EditContactKeywordsPage () {
   return (
     <>
       <Helmet>
-        <title>Edit user keywords - GOV.UK</title>
+        <title>Edit user keywords - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <KeywordsLayout
         keywordType='contact'

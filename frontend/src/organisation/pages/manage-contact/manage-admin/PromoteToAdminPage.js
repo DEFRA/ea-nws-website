@@ -123,7 +123,7 @@ export default function PromoteToAdminPage() {
   return (
     <>
       <Helmet>
-        <title>Promote user to admin - GOV.UK</title>
+        <title>{heading} - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>

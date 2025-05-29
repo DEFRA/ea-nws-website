@@ -86,7 +86,7 @@ export default function UserInformationPage() {
   return (
     <>
       <Helmet>
-        <title>User information - GOV.UK</title>
+        <title>{contactName}'s user profile page - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>

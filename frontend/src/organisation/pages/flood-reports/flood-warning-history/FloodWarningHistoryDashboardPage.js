@@ -256,7 +256,7 @@ export default function FloodWarningHistoryDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Flood warning history - GOV.UK</title>
+        <title>Flood warning history - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

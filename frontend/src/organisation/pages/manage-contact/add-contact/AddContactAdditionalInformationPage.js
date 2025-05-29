@@ -29,7 +29,7 @@ export default function AddContactAdditionalInformationPage() {
   return (
     <>
       <Helmet>
-        <title>Add additional information - GOV.UK</title>
+        <title>Do you want to add more information about {currentContact?.firstname} {currentContact?.lastname}? - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

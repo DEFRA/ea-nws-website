@@ -9,8 +9,8 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import store from '../../../../common/redux/store'
 import {
-    setOrgCurrentContact,
-    setOrgCurrentContactEmails
+  setOrgCurrentContact,
+  setOrgCurrentContactEmails
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
@@ -140,7 +140,7 @@ export default function AddContactEmailPage() {
   return (
     <>
       <Helmet>
-        <title>Add user email address - GOV.UK</title>
+        <title>Enter email address - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>

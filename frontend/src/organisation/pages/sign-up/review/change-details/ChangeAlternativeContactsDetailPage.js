@@ -17,7 +17,7 @@ export default function ChangeAlternativeContactDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Change alternative contact details - GOV.UK</title>
+        <title>Change alternative contact details - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <AlternativeContactDetailsLayout
         navigateToNextPage={navigateToNextPage}

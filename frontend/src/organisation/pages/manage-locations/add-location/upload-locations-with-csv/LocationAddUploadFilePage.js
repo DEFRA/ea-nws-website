@@ -9,7 +9,7 @@ export default function LocationAddUploadFilePage () {
   return (
     <>
       <Helmet>
-        <title>Upload location - GOV.UK</title>
+        <title>Upload file - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <UploadFileLayout uploadMethod={uploadType} />
     </>

@@ -25,7 +25,7 @@ export default function SelectAddressPage () {
   return (
     <>
       <Helmet>
-        <title>Search address results - GOV.UK</title>
+        <title>Select an address - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <SearchAddressResultLayout
         navigateToNextPage={navigateToNextPage}

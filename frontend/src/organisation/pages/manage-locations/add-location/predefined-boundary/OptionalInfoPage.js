@@ -23,7 +23,7 @@ export default function OptionalInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Add optional information - GOV.UK</title>
+        <title>Useful information you can include to help identify this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

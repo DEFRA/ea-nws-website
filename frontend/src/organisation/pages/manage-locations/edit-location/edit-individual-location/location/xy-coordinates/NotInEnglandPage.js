@@ -13,7 +13,7 @@ export default function NotInEnglandPage () {
   return (
     <>
       <Helmet>
-        <title>Location not in england - GOV.UK</title>
+        <title>This location is not in england - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <NotInEnglandLayout
         xyCoordinatesSearchUrl={xyCoordsSearchUrl}

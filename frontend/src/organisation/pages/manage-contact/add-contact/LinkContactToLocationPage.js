@@ -8,8 +8,8 @@ import Button from '../../../../common/components/gov-uk/Button'
 import UserType from '../../../../common/enums/UserType'
 import store from '../../../../common/redux/store'
 import {
-    setAddingAdminFlow,
-    setLinkContacts
+  setAddingAdminFlow,
+  setLinkContacts
 } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
@@ -71,7 +71,7 @@ export default function LinkContactToLocationPage() {
   return (
     <>
       <Helmet>
-        <title>Link user to location - GOV.UK</title>
+        <title>If {currentContact?.firstname} {currentContact?.lastname} needs flood messages, you need to link them to locations - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

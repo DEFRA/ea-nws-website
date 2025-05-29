@@ -60,7 +60,7 @@ export default function AddContactTypePage() {
   return (
     <>
       <Helmet>
-        <title>Select user type - GOV.UK</title>
+        <title>Select type of new user - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}

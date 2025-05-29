@@ -14,7 +14,7 @@ export default function ChangeOrgNamePage () {
   return (
     <>
       <Helmet>
-        <title>Change organisation name - GOV.UK</title>
+        <title>Change organisation name - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <AddNameLayout
         navigateToNextPage={navigateToNextPage}

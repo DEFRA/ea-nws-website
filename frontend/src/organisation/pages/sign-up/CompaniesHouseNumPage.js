@@ -38,7 +38,7 @@ export default function CompaniesHouseNumPage () {
   return (
     <>
       <Helmet>
-        <title>Add companies house number - GOV.UK</title>
+        <title>Does your organisation have a Companies House number? - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <CompaniesHouseNumLayout
         navigateToNextPage={navigateToNextPage}

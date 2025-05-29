@@ -13,7 +13,7 @@ export default function EditContactChannelsPage () {
   return (
     <>
       <Helmet>
-        <title>User email addresses and numbers - GOV.UK</title>
+        <title>Edit user email addresses and numbers - Manage users - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <ContactChannelsLayout
         navigateToNextPage={navigateToNextPage}

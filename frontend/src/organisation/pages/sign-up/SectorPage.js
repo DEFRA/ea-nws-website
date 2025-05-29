@@ -38,7 +38,7 @@ export default function SectorPage () {
   return (
     <>
       <Helmet>
-        <title>Add sector - GOV.UK</title>
+        <title>Is your organisation a category 1 or 2 responder? - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <SectorLayout
         navigateToNextPage={navigateToNextPage}

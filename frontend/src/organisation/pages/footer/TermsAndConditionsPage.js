@@ -7,7 +7,7 @@ export default function TermsAndConditionsPage () {
   return (
     <>
       <Helmet>
-        <title>Terms and conditions - GOV.UK</title>
+        <title>Terms and conditions - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>

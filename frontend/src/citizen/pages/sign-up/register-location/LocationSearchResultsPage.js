@@ -66,7 +66,7 @@ export default function LocationSearchResultsPage() {
     }
   }
 
-  const returnToSearchPage = () => navigate('/signup/register-location/search')
+  const returnToSearchPage = '/signup/register-location/search'
 
   return (
     <>

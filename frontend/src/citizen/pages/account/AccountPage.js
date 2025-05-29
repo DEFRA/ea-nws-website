@@ -41,7 +41,7 @@ export default function AccountPage() {
   return (
     <>
       <Helmet>
-        <title>Manage your account - GOV.UK</title>
+        <title>Manage your account - Get flood warnings - GOV.UK</title>
       </Helmet>
       {location.state !== null ? (
         <NotificationBanner

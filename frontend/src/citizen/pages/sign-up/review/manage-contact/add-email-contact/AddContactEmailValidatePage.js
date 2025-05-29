@@ -28,7 +28,7 @@ export default function ValidateEmailContactPage () {
   return (
     <>
       <Helmet>
-        <title>Check your email - Get flood warnings - GOV.UK</title>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
       </Helmet>
       <ValidateEmailLayout
         navigateToNextPage={navigateToNextPage}

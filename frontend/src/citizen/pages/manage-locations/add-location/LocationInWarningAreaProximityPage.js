@@ -27,7 +27,7 @@ export default function LocationInWarningAreaProximityPage () {
   return (
     <>
       <Helmet>
-        <title>You can get flood warnings for this location - GOV.UK</title>
+        <title>You can get flood warnings for this location - Get flood warnings - GOV.UK</title>
       </Helmet>
       <LocationWithinWarningAreaProximityLayout
         continueToSelectedFloodWarningsPage={

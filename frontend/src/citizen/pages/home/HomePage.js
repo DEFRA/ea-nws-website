@@ -25,7 +25,7 @@ export default function HomePage () {
   return (
     <>
       <Helmet>
-        <title>Locations and message preferences - GOV.UK</title>
+        <title>Your locations and message preferences - Get flood warnings - GOV.UK</title>
       </Helmet>
       {location.state !== null && location.state.removedLocation && (
         <NotificationBanner

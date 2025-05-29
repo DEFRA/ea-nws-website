@@ -47,7 +47,7 @@ export default function LocationInAlertAreaPage () {
   return (
     <>
       <Helmet>
-        <title>You can get flood alerts for this location - GOV.UK</title>
+        <title>You can get flood alerts - Get flood warnings - GOV.UK</title>
       </Helmet>
       <LocationInAlertAreaLayout continueToNextPage={continueToNextPage} continueToSearchResultsPage={continueToSearchResultsPage} />
     </>

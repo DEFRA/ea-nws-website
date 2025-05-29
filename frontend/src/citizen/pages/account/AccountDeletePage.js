@@ -95,7 +95,7 @@ export default function AccountDeletePage () {
   return (
     <>
       <Helmet>
-        <title>Delete your account - GOV.UK</title>
+        <title>Delete your account - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}

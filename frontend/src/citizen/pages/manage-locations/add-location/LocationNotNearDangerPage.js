@@ -12,7 +12,7 @@ export default function LocationNotNearDangerPage () {
   return (
     <>
       <Helmet>
-        <title>You cannot get flood messages - GOV.UK</title>
+        <title>We are unable to send you flood messages - Get flood warnings - GOV.UK</title>
       </Helmet>
       <LocationNotNearDangerLayout
         continueToSearchResultsPage={continueToSearchResultsPage}

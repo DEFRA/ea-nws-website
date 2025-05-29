@@ -11,15 +11,15 @@ import InsetText from '../../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import ExpiredCodeLayout from '../../../../common/layouts/email/ExpiredCodeLayout'
 import {
-    setAuthToken,
-    setProfile,
-    setRegisterToken
+  setAuthToken,
+  setProfile,
+  setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-    getLocationOtherAdditional,
-    getRegistrationParams,
-    updateAdditionals
+  getLocationOtherAdditional,
+  getRegistrationParams,
+  updateAdditionals
 } from '../../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
 
@@ -154,7 +154,7 @@ export default function SignUpValidationPage () {
   return (
     <>
       <Helmet>
-        <title>Check your email - Get flood warnings - GOV.UK</title>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
       </Helmet>
       {codeExpired
         ? (

@@ -24,7 +24,7 @@ export default function SkipConfirmMobilePhonePage () {
   return (
     <>
       <Helmet>
-        <title>You must confirm this mobile number - Get flood warnings - GOV.UK</title>
+        <title>We cannot send flood messages to this number yet - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink to='/signup/contactpreferences/mobile/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

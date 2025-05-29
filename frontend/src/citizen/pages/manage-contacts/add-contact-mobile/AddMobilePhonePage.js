@@ -15,7 +15,7 @@ export default function AddMobilePhonePage () {
   return (
     <>
       <Helmet>
-        <title>Enter a mobile number - GOV.UK</title>
+        <title>Enter a mobile number to get flood messages by text - Get flood warnings - GOV.UK</title>
       </Helmet>
       <AddMobileLayout
         navigateToNextPage={navigateToNextPage}

@@ -60,7 +60,7 @@ export default function ChangeBusinessDetailsPage () {
   return (
     <>
       <Helmet>
-        <title>Additional details for business registrations - GOV.UK</title>
+        <title>Additional details for business registrations - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink to='/account' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

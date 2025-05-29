@@ -5,7 +5,7 @@ export default function SignUpDuplicateEmailPage () {
   return (
     <>
       <Helmet>
-        <title>Email address in use - Get flood warnings - GOV.UK</title>
+        <title>Email already address in use - Get flood warnings - GOV.UK</title>
       </Helmet>
       <SignUpDuplicateEmailPageLayout />
     </>

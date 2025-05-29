@@ -38,7 +38,7 @@ export default function AccountDeleteConfirmPage () {
   return (
     <>
       <Helmet>
-        <title>Account deleted - GOV.UK</title>
+        <title>Account deleted - Get flood warnings - GOV.UK</title>
       </Helmet>
       {/* Main body */}
       <main className='govuk-main-wrapper'>

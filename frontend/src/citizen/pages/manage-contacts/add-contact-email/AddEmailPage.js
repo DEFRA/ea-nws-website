@@ -11,7 +11,7 @@ export default function AddEmailPage () {
   return (
     <>
       <Helmet>
-        <title>Enter an email address - GOV.UK</title>
+        <title>Enter an email address - Get flood warnings - GOV.UK</title>
       </Helmet>
       <AddEmailLayout navigateToNextPage={navigateToNextPage} />
     </>

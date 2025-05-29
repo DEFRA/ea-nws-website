@@ -122,11 +122,11 @@ const addVerifiedContact = (profile, type, contact) => {
 const removeVerifiedContact = (profile, contact, type) => {
   let verifiedContactListKey
 
-  if (type === 'email address') {
+  if (type === 'email address' || type === 'email') {
     verifiedContactListKey = 'emails'
-  } else if (type === 'mobile telephone number') {
+  } else if (type === 'mobile telephone number' || type === 'mobilePhone') {
     verifiedContactListKey = 'mobilePhones'
-  } else if (type === 'telephone number') {
+  } else if (type === 'telephone number' || type === 'homePhone') {
     verifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list

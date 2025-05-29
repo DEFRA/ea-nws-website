@@ -178,24 +178,6 @@ export const getFloodAreaByTaName = async (name) => {
   return areas[0] || []
 }
 
-export const getAssociatedAlertArea = async (lat, lng, code) => {
-  const bboxKM = 0.5 // size of bounding box from centre in KM
-
-  // alert area
-  const { data: wfsAlertData } = await wfsCall(
-    calculateBoundingBox(lat, lng, bboxKM),
-    'uk-nfws.qgz',
-    'flood_alerts'
-  )
-
-  const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
-    (floodArea) => floodArea.properties.TA_CODE === code
-  )
-  if (filteredOutOtherAlertAreas.length > 0) {
-    return filteredOutOtherAlertAreas[0]
-  }
-}
-
 export const isLocationInFloodArea = (lat, lng, areaData) => {
   // check if location entered is in target area
   const isInFloodArea = checkPointInPolygon(lat, lng, areaData)
@@ -246,7 +228,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates (nestedArray) {
+function getFirstCoordinates(nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -254,7 +236,7 @@ function getFirstCoordinates (nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon (lat, lng, geojson) {
+function checkPointInPolygon(lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -271,7 +253,7 @@ function checkPointInPolygon (lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox (centerLat, centerLng, distanceKm) {
+function calculateBoundingBox(centerLat, centerLng, distanceKm) {
   const center = turf.point([centerLng, centerLat], { crs: 'EPSG:4326' })
   const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' })
   const bbox = turf.bbox(buffered)
@@ -349,7 +331,7 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
   }
 }
 
-function getHighestRiskRating (areas, ratingOrder, propertyToCheck) {
+function getHighestRiskRating(areas, ratingOrder, propertyToCheck) {
   // if there are no areas nearby, set to lowest risk rating
   let highestRating = null
 

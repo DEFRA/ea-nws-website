@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import locationPin from '../../../common/assets/images/location_pin.svg'
+/* import locationPin from '../../../common/assets/images/location_pin.svg' */
 import { setCurrentLocation } from '../../../common/redux/userSlice'
 import { webToGeoSafeLocation } from '../../../common/services/formatters/LocationFormatter'
-import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap'
+/* import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap' */
+import {
+  GROUND_WATER_RISK_ORDER,
+  RIVER_SEA_RISK_ORDER
+} from '../../../common/enums/RiskType'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationsTable ({
+export default function LocationsTable({
   locations,
   displayedLocations,
   filteredLocations,
@@ -24,7 +28,7 @@ export default function LocationsTable ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [showMap, setShowMap] = useState(false)
+  /* const [showMap, setShowMap] = useState(false) */
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [locationNameSort, setLocationNameSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
@@ -42,6 +46,31 @@ export default function LocationsTable ({
     setLinkedContactsSort('none')
     setRiverSeaRisksSort('none')
   }, [locations])
+
+  const sortByRisk = (sortType, setSort, riskOrder, data) => {
+    if (sortType === 'none' || sortType === 'descending') {
+      setSort('ascending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) => {
+          const valueA = riskOrder[a[data].title || 'Unavailable']
+          const valueB = riskOrder[b[data].title || 'Unavailable']
+          return valueB - valueA
+        })
+      )
+    }
+
+    if (sortType === 'ascending') {
+      setSort('descending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) => {
+          const valueA = riskOrder[a[data].title || 'Unavailable']
+          const valueB = riskOrder[b[data].title || 'Unavailable']
+          return valueA - valueB
+        })
+      )
+    }
+    setResetPaging(!resetPaging)
+  }
 
   // Sort standard data
   const sortData = (sortType, setSort, data) => {
@@ -172,9 +201,9 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewMessages)
   }
 
-  const openMap = () => {
+  /* const openMap = () => {
     setShowMap(true)
-  }
+  } */
 
   const LoadingDots = (
     <div className='loading-dots'>
@@ -200,7 +229,7 @@ export default function LocationsTable ({
           {selectedLocations.length}{' '}
           {selectedLocations.length === 1 ? 'location' : 'locations'} selected{' '}
         </span>
-        {!linkContacts && (
+        {/* {!linkContacts && (
           <>
             <span style={{ margin: '0 20px' }}>|</span>
             <img src={locationPin} alt='Location pin icon' />
@@ -208,16 +237,16 @@ export default function LocationsTable ({
               View on map
             </Link>
           </>
-        )}
+        )} */}
       </p>
-      {showMap && (
+      {/* {showMap && (
         <FullscreenMap
           showMap={showMap}
           setShowMap={setShowMap}
           locations={locations}
           filteredLocations={filteredLocations}
         />
-      )}
+      )} */}
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
@@ -230,7 +259,7 @@ export default function LocationsTable ({
                   <input
                     className='govuk-checkboxes__input'
                     type='checkbox'
-                    checked={isTopCheckboxChecked}
+                    checked={isTopCheckboxChecked && selectedLocations.length}
                     onChange={handleHeaderCheckboxChange}
                   />
                   <label className='govuk-label govuk-checkboxes__label' />
@@ -249,7 +278,8 @@ export default function LocationsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'additionals.locationName'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -266,7 +296,8 @@ export default function LocationsTable ({
                     locationTypeSort,
                     setLocationTypeSort,
                     'additionals.other.location_type'
-                  )}
+                  )
+                }
               >
                 Location type
               </button>
@@ -283,7 +314,8 @@ export default function LocationsTable ({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'additionals.other.business_criticality'
-                  )}
+                  )
+                }
               >
                 Business
                 <br /> criticality
@@ -317,11 +349,13 @@ export default function LocationsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortByRisk(
                     riverSeaRisksSort,
                     setRiverSeaRisksSort,
-                    'riverSeaRisk.title'
-                  )}
+                    RIVER_SEA_RISK_ORDER,
+                    'riverSeaRisk'
+                  )
+                }
               >
                 Rivers and sea
                 <br /> flood risk
@@ -335,11 +369,13 @@ export default function LocationsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortByRisk(
                     groundWaterRisksSort,
                     setGroundWaterRisksSort,
-                    'groundWaterRisk.title'
-                  )}
+                    GROUND_WATER_RISK_ORDER,
+                    'groundWaterRisk'
+                  )
+                }
               >
                 Groundwater
                 <br /> flood risk
@@ -395,18 +431,16 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.linked_contacts?.length !== undefined
-                  ? (
-                    <Link
-                      className='govuk-link'
-                      onClick={(e) => viewLinkedContacts(e, location)}
-                    >
-                      {location.linked_contacts?.length}
-                    </Link>
-                    )
-                  : (
-                      LoadingDots
-                    )}
+                {location.linked_contacts?.length !== undefined ? (
+                  <Link
+                    className='govuk-link'
+                    onClick={(e) => viewLinkedContacts(e, location)}
+                  >
+                    {location.linked_contacts?.length}
+                  </Link>
+                ) : (
+                  LoadingDots
+                )}
               </td>
               <td className='govuk-table__cell'>
                 <span

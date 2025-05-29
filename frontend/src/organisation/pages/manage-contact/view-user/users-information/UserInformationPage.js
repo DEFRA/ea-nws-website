@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import locationPin from '../../../../../common/assets/images/location_pin.svg'
+/* import locationPin from '../../../../../common/assets/images/location_pin.svg' */
 import BackLink from '../../../../../common/components/custom/BackLink'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import UserType from '../../../../../common/enums/UserType'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
+/* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
 
@@ -30,7 +30,7 @@ export default function UserInformationPage() {
   }
   const userType = role()
   const [locations, setLocations] = useState([])
-  const [showMap, setShowMap] = useState(false)
+  /* const [showMap, setShowMap] = useState(false) */
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -39,9 +39,9 @@ export default function UserInformationPage() {
     navigate(-1)
   }
 
-  const openMap = () => {
+  /* const openMap = () => {
     setShowMap(true)
-  }
+  } */
 
   useEffect(() => {
     const getLocations = async () => {
@@ -99,6 +99,7 @@ export default function UserInformationPage() {
           />
         )}
         <UserHeader
+          contactId={currentContact.id}
           contactName={contactName}
           userType={userType}
           currentPage={orgManageContactsUrls.view.viewContact}
@@ -258,7 +259,7 @@ export default function UserInformationPage() {
           <div className='govuk-grid-column-one-half'>
             <UserMap locations={locations} />
 
-            <div
+            {/* <div
               className='govuk-!-margin-top-4'
               style={{ display: 'flex', alignItems: 'center' }}
             >
@@ -278,7 +279,7 @@ export default function UserInformationPage() {
                   filteredLocations={locations}
                 />
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </main>

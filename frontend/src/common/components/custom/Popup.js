@@ -23,7 +23,8 @@ export default function Popup ({
   validateInput = null,
   defaultValue,
   onRadioChange,
-  showCancel = true
+  showCancel = true,
+  infoOnly = false
 }) {
   const handleTextInputChange = (val) => {
     if (input) {
@@ -106,6 +107,8 @@ export default function Popup ({
         <div className='popup-dialog-body'>
           <h3 className='govuk-heading-l'>{title}</h3>
           <p className='govuk-body'>{popupText}</p>
+          {!infoOnly &&
+          <>
           {input && (
             <Input
               name={input}
@@ -134,6 +137,8 @@ export default function Popup ({
               </p>
             )}
           </div>
+          </>
+          }
         </div>
       </div>
     </div>

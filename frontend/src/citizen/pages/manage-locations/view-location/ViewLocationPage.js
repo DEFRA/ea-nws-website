@@ -66,7 +66,7 @@ const removeLocationdetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()
@@ -93,21 +93,22 @@ export default function ViewLocationPage () {
   const [pendingOptionalAlerts, setPendingOptionalAlerts] =
     useState(initialAlerts)
 
-  const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
+  const areaTypes = type === 'both' ? ['severe', 'alert'] : [type]
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude
+        selectedLocation.coordinates.longitude,
+        0.001
       )
 
       const isError = !warningArea && !alertArea
@@ -155,7 +156,7 @@ export default function ViewLocationPage () {
       }
     }
 
-    async function processFloodHist () {
+    async function processFloodHist() {
       if (floodHistoryData) {
         if (alertArea) {
           setHistoricalAlertNumber()
@@ -251,8 +252,10 @@ export default function ViewLocationPage () {
                   text={successMessage}
                 />
               )}
-              <h1 className='govuk-heading-l'>{selectedLocation.address}</h1>
-              <Map types={areaAreas} />
+              <h1 className='govuk-!-margin-top-4 govuk-heading-l'>
+                {selectedLocation.address}
+              </h1>
+              <Map types={areaTypes} />
               <FloodWarningKey type={type} />
               <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
                 Flood messages you get
@@ -348,6 +351,7 @@ export default function ViewLocationPage () {
                           onClick={(e) => handleOptionalAlertSave(e)}
                           className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
                           style={{ cursor: 'pointer' }}
+                          aria-label='Save your preference for receiving early flood alerts'
                         >
                           Save
                         </Link>
@@ -371,27 +375,25 @@ export default function ViewLocationPage () {
                 </div>
               )}
 
-              {canRemoveLocation
-                ? (
-                  <>
-                    <h2 className='govuk-heading-m'>
-                      To stop all flood messages for this location
-                    </h2>
-                    <Button
-                      onClick={deleteLocation}
-                      className='govuk-button govuk-button--warning'
-                      text='Remove location'
-                    />
-                  </>
-                  )
-                : (
-                  <>
-                    <Details
-                      title='If you want to remove this location'
-                      text={removeLocationdetails}
-                    />
-                  </>
-                  )}
+              {canRemoveLocation ? (
+                <>
+                  <h2 className='govuk-heading-m'>
+                    To stop all flood messages for this location
+                  </h2>
+                  <Button
+                    onClick={deleteLocation}
+                    className='govuk-button govuk-button--warning'
+                    text='Remove location'
+                  />
+                </>
+              ) : (
+                <>
+                  <Details
+                    title='If you want to remove this location'
+                    text={removeLocationdetails}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

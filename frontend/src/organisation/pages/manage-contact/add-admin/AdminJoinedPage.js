@@ -7,6 +7,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
+import { geoSafeToWebContact } from '../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -70,7 +71,7 @@ export default function AdminJoinedPage() {
       setErrorText('Select what you would like to do first')
     } else {
       if (nextPage === orgManageContactsUrls.view.viewContact) {
-        dispatch(setOrgCurrentContact(profile))
+        dispatch(setOrgCurrentContact(geoSafeToWebContact(profile)))
         navigate(nextPage)
       } else {
         navigate(nextPage)

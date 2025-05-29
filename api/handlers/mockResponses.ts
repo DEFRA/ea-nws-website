@@ -19,7 +19,14 @@ const locationAdditionals = [
   { id: 'parentID', value: { s: '' } },
   { id: 'targetAreas', value: { s: '' } },
   { id: 'keywords', value: { s: '[]' } },
-  { id: 'other', value: { s: '' } }
+  {
+    id: 'other',
+    value: {
+      s: JSON.stringify({
+        alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+      })
+    }
+  }
 ]
 
 const citizenPOIs = [
@@ -36,7 +43,16 @@ const citizenPOIs = [
     geometry: { geoJson: '' },
     geocode: '',
     metadata: { nbAttachedContacts: 0 },
-    additionals: []
+    additionals: [
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+          })
+        }
+      }
+    ]
   }
 ]
 
@@ -106,7 +122,24 @@ const citizenContact2 = {
       coordinates: {
         latitude: '52612444.5',
         longitude: '1724640.5'
-      }
+      },
+      additionals: [
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({
+              alertTypes: [
+                'ALERT_LVL_1',
+                'ALERT_LVL_2',
+                'ALERT_LVL_3',
+                'INFO', // info alert type required on all citizen locations
+                'MONTHLY', // remove severe warning
+                'RESEVERVED' // remove flood warning
+              ]
+            })
+          }
+        }
+      ]
     },
     {
       address: 'Exmouth, United Kingdom',
@@ -114,7 +147,24 @@ const citizenContact2 = {
       coordinates: {
         latitude: '50621091',
         longitude: '-3412665'
-      }
+      },
+      additionals: [
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({
+              // this location should have flood alerts turned off in the optional setting on view location
+              alertTypes: [
+                'ALERT_LVL_1',
+                'ALERT_LVL_2',
+                'INFO',
+                'MONTHLY',
+                'RESEVERVED'
+              ]
+            })
+          }
+        }
+      ]
     }
   ]
 }
@@ -154,7 +204,7 @@ const registrations = {
 }
 
 const organization = {
-  id: '1334',
+  id: '134335',
   name: 'Flood Inc.',
   description: JSON.stringify({
     name: 'Flood Inc.',

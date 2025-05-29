@@ -33,7 +33,7 @@ import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKe
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DropPinOnMapLayout ({
+export default function DropPinOnMapLayout({
   navigateToNextPage,
   navigateToDropPinLocationSearchPage,
   navigateToNotInEnglandPage,
@@ -83,7 +83,7 @@ export default function DropPinOnMapLayout ({
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -182,10 +182,10 @@ export default function DropPinOnMapLayout ({
           (area) => categoryToType(area.category) === 'warning'
         ) &&
           newWebLocation.additionals.other.alertTypes.push(
-            AlertType.SEVERE_FLOOD_WARNING
-          ) &&
-          newWebLocation.additionals.other.alertTypes.push(
-            AlertType.FLOOD_WARNING
+            AlertType.SEVERE_FLOOD_WARNING,
+            AlertType.FLOOD_WARNING,
+            AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+            AlertType.REMOVE_FLOOD_WARNING
           )
 
         newWebLocation.additionals.other.targetAreas.some(

@@ -2,25 +2,37 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const setAdditional = (additionals, id, value) => {
   let idFound = false
-  for (let i = 0; i < additionals.length; i++) {
-    if (additionals[i].id === id) {
-      additionals[i].value = { s: value }
-      idFound = true
+  if (Array.isArray(additionals)) {
+    for (let i = 0; i < additionals.length; i++) {
+      if (additionals[i].id === id) {
+        additionals[i].value = { s: value }
+        idFound = true
+      }
     }
-  }
-  if (!idFound) {
-    additionals.push({ id, value: { s: value } })
+    if (!idFound) {
+      additionals.push({ id, value: { s: value } })
+    }
+  } else {
+    if (id === 'keywords') {
+      additionals[id] = JSON.parse(value)
+    } else {
+      additionals[id] = value
+    }
   }
 }
 
 export const getAdditional = (additionals, id) => {
-  for (let i = 0; i < additionals?.length; i++) {
-    if (additionals[i].id === id) {
-      return additionals[i].value?.s
+  if (Array.isArray(additionals)) {
+    for (let i = 0; i < additionals?.length; i++) {
+      if (additionals[i].id === id) {
+        return additionals[i].value?.s
+      }
+      if (additionals[i].key === id) {
+        return additionals[i].value?.s
+      }
     }
-    if (additionals[i].key === id) {
-      return additionals[i].value?.s
-    }
+  } else {
+    return additionals[id] || ''
   }
   return ''
 }
@@ -109,6 +121,8 @@ const userSlice = createSlice({
     locationSearchResults: null,
     selectedLocation: null,
     additionalAlerts: null,
+    // required for extending name search flood areas radius
+    locationSearchType: null,
     // required for when user changes a location at sign up review
     locationToBeChanged: null,
     // required for nearby flood areas flow
@@ -281,6 +295,10 @@ const userSlice = createSlice({
     // required for when user changes a location at sign up review
     setLocationToBeChanged: (state, action) => {
       state.locationToBeChanged = action.payload
+    },
+    // required for extending name search flood areas radius
+    setLocationSearchType: (state, action) => {
+      state.locationSearchType = action.payload
     },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
@@ -797,6 +815,8 @@ const userSlice = createSlice({
       state.additionalAlerts = null
       // required for when user changes a location at sign up review
       state.locationToBeChanged = null
+      // required for extending name search flood areas radius
+      state.locationSearchType = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -1010,6 +1030,8 @@ export const {
   setAdditionalAlerts,
   // required for when user changes a location at sign up review
   setLocationToBeChanged,
+  // required for extending name search flood areas radius
+  setLocationSearchType,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,

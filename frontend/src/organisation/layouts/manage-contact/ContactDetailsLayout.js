@@ -13,7 +13,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
+export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const orgId = useSelector((state) => state.session.orgId)
@@ -24,16 +24,18 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
 
   const [contacts, setContacts] = useState([])
   const [firstname, setFirstName] = useState(
-    useSelector((state) => state.session.orgCurrentContact.firstname)
+    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
   )
   const [lastname, setLastName] = useState(
-    useSelector((state) => state.session.orgCurrentContact.lastname)
+    useSelector((state) => state.session.orgCurrentContact.lastname) || ''
   )
   const [jobTitle, setJobTitle] = useState(
-    useSelector((state) => getContactAdditional(state, 'jobTitle'))
+    useSelector((state) => getContactAdditional(state, 'jobTitle')) || ''
   )
 
   const charLimit = 20
+  const originalFirstName =  useSelector((state) => state.session.orgCurrentContact.firstname) || ''
+  const originalLastName = useSelector((state) => state.session.orgCurrentContact.firstname) || ''
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -98,16 +100,19 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
     if (!validateData()) return
 
     // Ensure name given is not a duplicate with existing user
-    const isDuplicate = contacts.some(
-      (c) =>
-        c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
-        c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
-    )
-    if (isDuplicate) {
-      setFirstNameError(
-        `User ${firstname} ${lastname} already exists in your organisation - you cannot enter this person again`
+    // When editing only check if name is changed
+    if (originalFirstName !== firstname && originalLastName !== lastname) {
+      const isDuplicate = contacts.some(
+        (c) =>
+          c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
+          c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
       )
-      return
+      if (isDuplicate) {
+        setFirstNameError(
+          `User ${firstname} ${lastname} already exists in your organisation - you cannot enter this person again`
+        )
+        return
+      }
     }
 
     dispatch(setOrgCurrentContactFirstName(firstname))
@@ -144,7 +149,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setFirstName,
                     setFirstNameError,
                     'First name'
-                  )}
+                  )
+                }
                 value={firstname}
                 error={firstnameError}
                 className='govuk-input govuk-input--width-20'
@@ -160,7 +166,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setLastName,
                     setLastNameError,
                     'Last name'
-                  )}
+                  )
+                }
                 value={lastname}
                 error={lastnameError}
                 className='govuk-input govuk-input--width-20'
@@ -176,7 +183,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setJobTitle,
                     setJobTitleError,
                     'Job title'
-                  )}
+                  )
+                }
                 value={jobTitle}
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'

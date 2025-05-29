@@ -1,9 +1,9 @@
 import { area } from '@turf/turf'
-import { useState } from 'react'
+/* import { useState } from 'react' */
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import locationPin from '../../../../../common/assets/images/location_pin.svg'
+/* import locationPin from '../../../../../common/assets/images/location_pin.svg' */
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
@@ -12,7 +12,7 @@ import { geoSafeToWebLocation } from '../../../../../common/services/formatters/
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import FullscreenMap from '../FullscreenMap'
+/* import FullscreenMap from '../FullscreenMap' */
 import LocationHeader from './location-information-components/LocationHeader'
 
 export default function LocationInformationPage () {
@@ -20,7 +20,7 @@ export default function LocationInformationPage () {
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const webLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(currentLocation)))
   const additionalData = useSelector((state) => getLocationAdditionals(state))
-  const [showMap, setShowMap] = useState(false)
+  /* const [showMap, setShowMap] = useState(false) */
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []
@@ -157,9 +157,9 @@ export default function LocationInformationPage () {
     </>
   )
 
-  const openMap = () => {
+ /*  const openMap = () => {
     setShowMap(true)
-  }
+  } */
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -441,7 +441,7 @@ export default function LocationInformationPage () {
               it shows fixed areas that we provide flood warnings and alerts
               for
             </span>
-            <div
+            {/* <div
               className=' govuk-!-margin-top-4'
               style={{ display: 'flex', marginLeft: '-0.5rem' }}
             >
@@ -457,7 +457,7 @@ export default function LocationInformationPage () {
                 locations={[webLocation]}
                 filteredLocations={[webLocation]}
               />
-            )}
+            )} */}
           </div>
         </div>
       </main>

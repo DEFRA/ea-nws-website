@@ -1,5 +1,5 @@
 const handleResponse = (response, navigate) => {
-  switch (response.status) {
+  switch (response?.status) {
     case 200:
       return { data: response.data, errorMessage: null }
     case 400:

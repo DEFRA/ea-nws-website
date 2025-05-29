@@ -52,7 +52,7 @@ export default function FloodWarningHistoryDashboardPage() {
 
     const options = {
       states: [AlertState.PAST],
-      boundingBox: {},
+      boundingBox: null,
       channels: [],
       partnerId
     }
@@ -155,6 +155,7 @@ export default function FloodWarningHistoryDashboardPage() {
     const updatedLocation = createLocationWithFloodData()
     setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
     setDisplayedLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
+    setFilteredLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
   }
 
   useEffect(() => {

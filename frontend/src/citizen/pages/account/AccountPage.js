@@ -67,7 +67,7 @@ export default function AccountPage() {
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-name'
-                        aria-label='Change name on acccount'
+                        aria-label={`Change ${name} as your name`}
                         className='govuk-link'
                         style={{ cursor: 'pointer' }}
                       >
@@ -83,7 +83,7 @@ export default function AccountPage() {
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-email'
-                        aria-label='Change sign in email'
+                        aria-label={`Change ${email} as your sign-in email`}
                         className='govuk-link'
                         style={{ cursor: 'pointer' }}
                       >
@@ -99,7 +99,11 @@ export default function AccountPage() {
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-business-details'
-                        aria-label='Change or add business name (this is optional)'
+                        aria-label={
+                          businessName
+                            ? `Change ${businessName} as your business name`
+                            : 'Add your business name'
+                        }
                         className='govuk-link'
                         style={{ cursor: 'pointer' }}
                       >
@@ -115,7 +119,11 @@ export default function AccountPage() {
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-business-details'
-                        aria-label='Change or add job title (this is optional)'
+                        aria-label={
+                          jobTitle
+                            ? `Change ${jobTitle} as your job title`
+                            : 'Add your job title'
+                        }
                         className='govuk-link'
                         style={{ cursor: 'pointer' }}
                       >

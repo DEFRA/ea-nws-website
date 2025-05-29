@@ -71,34 +71,31 @@ export default function AddContactTypePage() {
             {reasonError && <ErrorSummary errorList={[reasonError]} />}
             <h1 className='govuk-heading-l'>Select type of new user</h1>
             <div className='govuk-body'>
-              <div>
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  <div
-                    className={
-                      reasonError && 'govuk-form-group govuk-form-group--error'
-                    }
-                  >
-                    {reasonError && (
-                      <p className='govuk-error-message'>{reasonError}</p>
-                    )}
-                    <Radio
-                      key='contact'
-                      name='userTypeSelectionRadios'
-                      label='Contact'
-                      value={UserType.Contact}
-                      hint='Gets flood messages by email, text or phone call.'
-                      onChange={(e) => setUserType(e.target.value)}
-                    />
-                    <Radio
-                      key='admin'
-                      name='serviceSelectionRadios'
-                      label='Admin'
-                      value={UserType.Admin}
-                      hint='Manages contacts, locations and organisation account. Can get flood messages by email, text or phone call.'
-                      onChange={(e) => setUserType(e.target.value)}
-                    />
-                  </div>
-                </div>
+              <div
+                className={
+                  reasonError ? 'govuk-form-group govuk-form-group--error'
+                  : 'govuk-form-group'
+                }
+              >
+                {reasonError && (
+                  <p className='govuk-error-message'>{reasonError}</p>
+                )}
+                <fieldset className='govuk-fieldset'>
+                  <Radio
+                    name='userTypeSelectionRadios'
+                    label='Contact'
+                    value={UserType.Contact}
+                    hint='Gets flood messages by email, text or phone call.'
+                    onChange={(e) => setUserType(e.target.value)}
+                  />
+                  <Radio
+                    name='userTypeSelectionRadios'
+                    label='Admin'
+                    value={UserType.Admin}
+                    hint='Manages contacts, locations and organisation account. Can get flood messages by email, text or phone call.'
+                    onChange={(e) => setUserType(e.target.value)}
+                  />
+                </fieldset>
               </div>
               <br />
               <Button

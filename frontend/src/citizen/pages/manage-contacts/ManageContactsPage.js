@@ -7,11 +7,19 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import ContactDetailsTable from './ContactDetailsTable'
 
-export default function ManageContactsPage () {
+export default function ManageContactsPage() {
   const location = useLocation()
   const profile = useSelector((state) => state.session.profile)
   // user is not allowed to remove the primary email
   const primaryEmail = profile.emails[0]
+  const contacts = {
+    emails: profile?.emails,
+    unverifiedEmails: profile?.unverified?.emails,
+    mobilePhones: profile?.mobilePhones,
+    unverifiedMobiles: profile?.unverified?.mobilePhones,
+    homePhones: profile?.homePhones,
+    unverifiedHomePhones: profile?.unverified?.homePhones
+  }
 
   const unconfirmedMessage = (unconfirmedtype) => {
     if (unconfirmedtype === 'email') {
@@ -89,40 +97,34 @@ export default function ManageContactsPage () {
       <Helmet>
         <title>Your email address and telephone numbers - Get flood warnings - GOV.UK</title>
       </Helmet>
-      {location.state !== null && location.state.removedContact
-        ? (
-          <NotificationBanner
-            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-            title='Success'
-            heading={location.state.removedType + ' removed'}
-            text={location.state.removedContact}
-          />
-          )
-        : null}
-      {location.state !== null && location.state.unconfirmedtype
-        ? (
-          <NotificationBanner
-            className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-            title='Important'
-            heading={
+      {location.state !== null && location.state.removedContact && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+          title='Success'
+          heading={location.state.removedType + ' removed'}
+          text={location.state.removedContact}
+        />
+      )}
+      {location.state !== null && location.state.unconfirmedtype && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+          title='Important'
+          heading={
             'We cannot send flood messages to ' +
             location.state.unconfirmedvalue +
             ' yet'
           }
-            text={unconfirmedMessage(location.state.unconfirmedtype)}
-          />
-          )
-        : null}
-      {location.state !== null && location.state.confirmedtype
-        ? (
-          <NotificationBanner
-            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-            title='Success'
-            heading={confirmedHeading(location.state.confirmedtype)}
-            text={location.state.confirmedvalue + ' will receive flood messages'}
-          />
-          )
-        : null}
+          text={unconfirmedMessage(location.state.unconfirmedtype)}
+        />
+      )}
+      {location.state !== null && location.state.confirmedtype && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+          title='Success'
+          heading={confirmedHeading(location.state.confirmedtype)}
+          text={location.state.confirmedvalue + ' will receive flood messages'}
+        />
+      )}
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
@@ -136,30 +138,30 @@ export default function ManageContactsPage () {
             </p>
             <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
             <ContactDetailsTable
-              contacts={profile.emails}
-              unregisteredContact={profile.unverified?.emails || []}
+              contacts={contacts.emails}
+              unregisteredContact={contacts.unverifiedEmails || []}
               contactTitle='Emails'
               contactType='email address'
               primaryContact={primaryEmail}
             />
-            {profile.emails.length === 1 &&
-              profile.mobilePhones.length === 0 &&
-              profile.homePhones.length === 0 && (
+            {contacts.emails.length === 1 &&
+              contacts.mobilePhones.length === 0 &&
+              contacts.homePhones.length === 0 && (
                 <Details
                   title='If you want to remove this contact'
                   text={detailsMessage}
                 />
-            )}
+              )}
             <ContactDetailsTable
-              contacts={profile.mobilePhones}
-              unregisteredContact={profile.unverified?.mobilePhones || []}
+              contacts={contacts.mobilePhones}
+              unregisteredContact={contacts.unverifiedMobilePhones || []}
               contactTitle='Texts'
               contactType='mobile telephone number'
               primaryContact={null}
             />
             <ContactDetailsTable
-              contacts={profile.homePhones}
-              unregisteredContact={profile.unverified?.homePhones || []}
+              contacts={contacts.homePhones}
+              unregisteredContact={contacts.unverifiedHomePhones || []}
               contactTitle='Phone call warnings'
               contactType='telephone number'
               primaryContact={null}

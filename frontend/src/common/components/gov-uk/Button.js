@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 export default function Button ({
   text,
   className,
   onClick,
   imageSrc = null,
-  imageHgt = '20px'
+  imageHgt = '20px',
+  disable = false
 }) {
   const [cursor, setCursor] = useState('pointer')
   return (
@@ -16,7 +17,7 @@ export default function Button ({
         onClick={async (event) => { setCursor('wait'); await onClick(event); setCursor('pointer') }}
         data-module='govuk-button'
         style={{ cursor }}
-        disabled={cursor === 'wait'}
+        disabled={cursor === 'wait' || disable}
       >
         {imageSrc && (
           <img

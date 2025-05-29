@@ -51,10 +51,9 @@ export default function ReportsOverviewPage() {
               has a filter to produce reports
             </p>
             <p>
-              {/* <Link to={orgFloodReportsUrls.summary} className='govuk-link'> */}
-              Summary of flood messages sent to your locations (not yet
-              available)
-              {/* </Link> */}
+              <Link to={orgFloodReportsUrls.summary} className='govuk-link'>
+                Summary of flood messages sent to your locations
+              </Link>
             </p>
             <br />
             <h2 className='govuk-heading-m'>Your contacts</h2>

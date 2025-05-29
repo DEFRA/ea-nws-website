@@ -30,14 +30,16 @@ const locations = [
             notes:
               'Kier starmer has the flood plan for this location. His contact number is 01234 567 890',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
             targetAreas: [
               {
                 TA_CODE: '063FWT23WestminC',
                 TA_Name: 'Tidal Thames at Westminster',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'low',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -86,7 +88,9 @@ const locations = [
                 TA_NAME: 'South Devon Estuaries',
                 category: 'Alert flood warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'medium',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -122,8 +126,10 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
-            targetAreas: []
+            alertTypes: ['ALERT_LVL_3'],
+            targetAreas: [],
+            riverSeaRisk: 'low',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -172,7 +178,7 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            alertTypes: ['ALERT_LVL_3'],
             targetAreas: [
               {
                 TA_CODE: '122WAF946',
@@ -186,7 +192,9 @@ const locations = [
                   'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -243,8 +251,10 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
-            targetAreas: []
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
+            targetAreas: [],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -293,14 +303,15 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'line',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_2'],
             targetAreas: [
               {
                 TA_CODE: '051FWFEF4B',
                 TA_Name: 'The River Colne from Halstead to Lexden',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'very low'
           })
         }
       }
@@ -350,14 +361,15 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
             targetAreas: [
               {
                 TA_CODE: '055FWFPLNE01',
                 TA_Name: 'The River Nene',
                 category: 'Severe flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'very low'
           })
         }
       }
@@ -411,8 +423,10 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
-            targetAreas: []
+            alertTypes: ['ALERT_LVL_3'],
+            targetAreas: [],
+            riverSeaRisk: 'low',
+            groundWaterRisk: 'possible'
           })
         }
       }
@@ -472,7 +486,7 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
             targetAreas: [
               {
                 TA_CODE: '013FWTTME8',
@@ -486,7 +500,9 @@ const locations = [
                   'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey',
                 category: 'Alert flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -544,7 +560,7 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'polygon',
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2'],
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
             targetAreas: [
               {
                 TA_CODE: '034FWFTRNOTTCITY',
@@ -557,7 +573,9 @@ const locations = [
                   'River Derwent from Rowsley to the River Trent at Shardlow',
                 category: 'Alert flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'high',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -605,7 +623,8 @@ const locations = [
                 TA_Name: 'River Wye in North Hereford',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'medium'
           })
         }
       }
@@ -665,7 +684,7 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'boundary',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
             targetAreas: [
               {
                 TA_CODE: '065FWC0501',
@@ -677,7 +696,9 @@ const locations = [
                 TA_Name: 'Southampton Water and Hamble',
                 category: 'Alert flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'medium',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -721,7 +742,9 @@ const locations = [
                   'River Derwent at Little Chester, Eastgate and Cattle Market',
                 category: 'Flood Warning'
               }
-            ]
+            ],
+            riverSeaRisk: 'very low',
+            groundWaterRisk: 'unlikely'
           })
         }
       }
@@ -773,6 +796,54 @@ const locations = [
   }
 ]
 
+const additionalLocations = [
+  {
+    id: '15',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Oakham centre',
+    coordinates: {
+      latitude: 52.66745486614397 * 10 ** 6,
+      longitude: -0.7179950997323488 * 10 ** 6
+    },
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Oakham centre' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: 'Oakham centre',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [
+              {
+                TA_CODE: '055FWFWELT04',
+                TA_Name: 'River Gwash, Barleythorpe Brook',
+                category: 'Flood Warning'
+              }
+            ]
+          })
+        }
+      }
+    ]
+  }
+]
+
 module.exports = {
-  allLocations: locations
+  allLocations: locations,
+  // below is/was used for testing the offset option
+  offsetLocations: additionalLocations
 }

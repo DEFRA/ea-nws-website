@@ -4,10 +4,13 @@ import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
-import { setSigninType } from '../../../common/redux/userSlice'
+import {
+  setLocationSearchType,
+  setSigninType
+} from '../../../common/redux/userSlice'
 import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
 
-export default function HomePage () {
+export default function HomePage() {
   const location = useLocation()
   const [error, setError] = useState(null)
 
@@ -20,6 +23,8 @@ export default function HomePage () {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(setSigninType('citizen'))
+    // reset the location search type after sign up flow is done
+    dispatch(setLocationSearchType(null))
   }, [])
 
   return (
@@ -47,7 +52,9 @@ export default function HomePage () {
                 text={location.state.locationName}
               />
             )}
-            <h1 className='govuk-heading-l'>Locations and message preferences</h1>
+            <h1 className='govuk-heading-l'>
+              Locations and message preferences
+            </h1>
             <SubscribedLocationTableLayout setError={setError} />
           </div>
         </div>

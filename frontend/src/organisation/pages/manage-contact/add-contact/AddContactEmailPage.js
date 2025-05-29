@@ -2,7 +2,6 @@ import { React, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
@@ -19,12 +18,11 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function AddContactEmailPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [errors, setErrors] = useState([])
   const [emailError, setEmailError] = useState('')
   const [emailInput, setEmailInput] = useState('')
-  const location = useLocation()
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
-  const [errors, setErrors] = useState([])
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -91,6 +89,7 @@ export default function AddContactEmailPage() {
       }
       dispatch(setOrgCurrentContact(contactToAdd))
     }
+
     return addContactError
   }
 
@@ -158,9 +157,9 @@ export default function AddContactEmailPage() {
                 This will also be their sign in email address.
               </p>
               <div
-                className={
-                  emailError && 'govuk-form-group govuk-form-group--error'
-                }
+                className={`govuk-form-group ${
+                  emailError && 'govuk-form-group--error'
+                }`}
               >
                 <Input
                   name='Email address'

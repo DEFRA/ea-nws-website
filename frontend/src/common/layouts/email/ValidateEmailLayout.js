@@ -17,7 +17,7 @@ import {
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from './ExpiredCodeLayout'
 
-export default function ValidateEmailLayout ({
+export default function ValidateEmailLayout({
   navigateToNextPage,
   SkipValidation,
   DifferentEmail,
@@ -33,6 +33,7 @@ export default function ValidateEmailLayout ({
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
+  const orgId = useSelector((state) => state.session.orgId)
   const session = useSelector((state) => state.session)
   const email = session.currentContact
   const [codeResent, setCodeResent] = useState(false)
@@ -66,7 +67,7 @@ export default function ValidateEmailLayout ({
         }
       } else {
         if (changeSignIn) {
-          updateProfile(data.profile, authToken, signinType)
+          updateProfile(data.profile, authToken, signinType, orgId)
           setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
@@ -169,88 +170,84 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
-      {codeExpired
-        ? (
-          <ExpiredCodeLayout getNewCode={getNewCode} />
-          )
-        : (
-          <>
-            <BackLink onClick={backLink} />
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && (
-                    <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
-                    />
-                  )}
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Check your email</h2>
-                  <div className='govuk-body'>
-                    {changeSignIn && (
-                      <p className='govuk-body'>
-                        You need to confirm your email address.
-                      </p>
-                    )}
-                    <p className='govuk-body govuk-!-margin-bottom-5'>
-                      We've sent an email with a code to:
-                      <InsetText text={email} />
-                      {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or
-                      it will expire.
+      {codeExpired ? (
+        <ExpiredCodeLayout getNewCode={getNewCode} />
+      ) : (
+        <>
+          <BackLink onClick={backLink} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {codeResent && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + codeResentTime}
+                  />
+                )}
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>Check your email</h2>
+                <div className='govuk-body'>
+                  {changeSignIn && (
+                    <p className='govuk-body'>
+                      You need to confirm your email address.
                     </p>
-                    <Input
-                      className='govuk-input govuk-input--width-10'
-                      name='Enter code'
-                      inputType='text'
-                      error={error}
-                      onChange={(val) => setCode(val)}
-                    />
-                    <Button
-                      className='govuk-button'
-                      text={buttonText}
-                      onClick={handleSubmit}
-                    />
-                    {changeSignIn
-                      ? (
-                        <>
-                          <Link
-                            onClick={differentEmail}
-                            className='govuk-link inline-link'
-                          >
-                            Enter a different email
-                          </Link>
-                          <br />
-                          <Link onClick={getNewCode} className='govuk-link'>
-                            Get a new code
-                          </Link>
-                        </>
-                        )
-                      : (
-                        <>
-                          <Link
-                            onClick={skipValidation}
-                            className='govuk-link inline-link'
-                          >
-                            Skip and confirm later
-                          </Link>
-                          <br />
-                          <Link onClick={getNewCode} className='govuk-link'>
-                            Get a new code
-                          </Link>
-                          <br /> <br />
-                          <Link onClick={differentEmail} className='govuk-link'>
-                            Enter a different email
-                          </Link>
-                        </>
-                        )}
-                  </div>
+                  )}
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    We've sent an email with a code to:
+                    <InsetText text={email} />
+                    {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or
+                    it will expire.
+                  </p>
+                  <Input
+                    className='govuk-input govuk-input--width-10'
+                    name='Enter code'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text={buttonText}
+                    onClick={handleSubmit}
+                  />
+                  {changeSignIn ? (
+                    <>
+                      <Link
+                        onClick={differentEmail}
+                        className='govuk-link inline-link'
+                      >
+                        Enter a different email
+                      </Link>
+                      <br />
+                      <Link onClick={getNewCode} className='govuk-link'>
+                        Get a new code
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        onClick={skipValidation}
+                        className='govuk-link inline-link'
+                      >
+                        Skip and confirm later
+                      </Link>
+                      <br />
+                      <Link onClick={getNewCode} className='govuk-link'>
+                        Get a new code
+                      </Link>
+                      <br /> <br />
+                      <Link onClick={differentEmail} className='govuk-link'>
+                        Enter a different email
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
-            </main>
-          </>
-          )}
+            </div>
+          </main>
+        </>
+      )}
     </>
   )
 }

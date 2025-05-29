@@ -23,7 +23,7 @@ export default function AccessibilityStatementPage () {
   return (
     <>
       <Helmet>
-        <title>Accessibility statement - GOV.UK</title>
+        <title>Accessibility statement - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

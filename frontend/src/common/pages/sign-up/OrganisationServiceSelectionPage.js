@@ -28,7 +28,7 @@ export default function OrganisationServiceSelectionPage () {
   return (
     <>
       <Helmet>
-        <title>Select service - GOV.UK</title>
+        <title>Select service - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}

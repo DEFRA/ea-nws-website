@@ -10,7 +10,7 @@ export default function PrivateBetaMockFloodWarningRemovedPage() {
   return (
     <>
       <Helmet>
-        <title>Flood warning removed - GOV.UK</title>
+        <title>Flood warning removed - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -24,7 +24,7 @@ export default function CookiesPage () {
   return (
     <>
       <Helmet>
-        <title>Cookies - GOV.UK</title>
+        <title>Cookies - Get flood warnings - GOV.UK</title>
       </Helmet>
       {servicePhase === 'beta'
         ? (

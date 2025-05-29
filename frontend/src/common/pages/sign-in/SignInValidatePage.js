@@ -170,7 +170,7 @@ export default function SignInValidatePage () {
   return (
     <>
       <Helmet>
-        <title>Confirm email address - GOV.UK</title>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
       </Helmet>
       {codeExpired || signUpNotComplete
         ? (

@@ -46,7 +46,7 @@ export default function SignInPage () {
   return (
     <>
       <Helmet>
-        <title>Sign in - GOV.UK</title>
+        <title>Sign in - Get flood warnings - GOV.UK</title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

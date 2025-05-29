@@ -2,6 +2,7 @@ import React from 'react'
 import { isMobile } from 'react-device-detect'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
+import UserContactType from '../../../../common/enums/UserContactType'
 import ContactReviewRow from './ContactReviewRow'
 
 export default function ContactReviewTable({ contacts }) {
@@ -60,17 +61,17 @@ export default function ContactReviewTable({ contacts }) {
       <table className='govuk-table govuk-!-margin-bottom-0'>
         <tbody className='govuk-table__body'>
           {renderContacts(
-            'email',
+            UserContactType.Email,
             contacts.emails || [],
             contacts.unverifiedEmails || []
           )}
           {renderContacts(
-            'mobilePhone',
+            UserContactType.Mobile,
             contacts.mobilePhones || [],
             contacts.unverifiedMobiles || []
           )}
           {renderContacts(
-            'homePhone',
+            UserContactType.Telephone,
             contacts.homePhones || [],
             contacts.unverifiedHomePhones || []
           )}

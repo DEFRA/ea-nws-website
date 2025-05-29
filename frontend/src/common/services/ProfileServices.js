@@ -1,3 +1,5 @@
+const { default: UserContactType } = require('../enums/UserContactType')
+
 const addUnverifiedContact = (profile, type, contact) => {
   let unverifiedContactList
   const formattedContact = { address: contact }
@@ -122,11 +124,11 @@ const addVerifiedContact = (profile, type, contact) => {
 const removeVerifiedContact = (profile, contact, type) => {
   let verifiedContactListKey
 
-  if (type === 'email address' || type === 'email') {
+  if (type === UserContactType.Email) {
     verifiedContactListKey = 'emails'
-  } else if (type === 'mobile telephone number' || type === 'mobilePhone') {
+  } else if (type === UserContactType.Mobile) {
     verifiedContactListKey = 'mobilePhones'
-  } else if (type === 'telephone number' || type === 'homePhone') {
+  } else if (type === UserContactType.Telephone) {
     verifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list

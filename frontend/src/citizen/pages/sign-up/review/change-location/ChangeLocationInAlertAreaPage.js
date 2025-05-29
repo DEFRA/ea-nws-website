@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setProfile } from '../../../../../common/redux/userSlice'
@@ -57,9 +56,6 @@ export default function ChangeLocationInAlertAreaPage () {
 
   return (
     <>
-      <Helmet>
-        <title>You can get flood alerts - Get flood warnings - GOV.UK</title>
-      </Helmet>
       <LocationInAlertAreaLayout continueToNextPage={continueToNextPage} />
     </>
   )

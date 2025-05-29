@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../layouts/email/ValidateEmailLayout'
 import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
@@ -21,9 +20,6 @@ export default function ValidateAdminEmailPage () {
 
   return (
     <>
-      <Helmet>
-        <title>Confirm email address - Get flood warnings (professional) - GOV.UK</title>
-      </Helmet>
       <ValidateEmailLayout
         navigateToNextPage={navigateToNextPage}
         NavigateToPreviousPage={NavigateToPreviousPage}

@@ -18,9 +18,6 @@ export default function AddLandlinePhonePage () {
 
   return (
     <>
-      <Helmet>
-        <title>Enter a telephone number to get flood messages by phone call - Get flood warnings - GOV.UK</title>
-      </Helmet>
       {profile.unverified?.mobilePhones || profile.mobilePhones
         ? (
           <SelectAlternativeLandlineLayout

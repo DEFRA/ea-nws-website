@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../layouts/mobile/ValidateMobileLayout'
 
@@ -27,9 +26,6 @@ export default function ValidateMobilePhonePage () {
 
   return (
     <>
-      <Helmet>
-        <title>Confirm your mobile number - Get flood warnings - GOV.UK</title>
-      </Helmet>
       <ValidateMobileLayout
         navigateToNextPage={navigateToNextPage}
         NavigateToPreviousPage={DifferentMobile}

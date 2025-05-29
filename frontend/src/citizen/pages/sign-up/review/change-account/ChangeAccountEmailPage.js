@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import ChangeEmailLayout from '../../../../layouts/email/ChangeEmailLayout'
 
@@ -15,9 +14,6 @@ export default function ChangeAccountEmailPage () {
 
   return (
     <>
-      <Helmet>
-        <title>Change your email address - Get flood warnings - GOV.UK</title>
-      </Helmet>
       <ChangeEmailLayout
         navigateToNextPage={navigateToNextPage}
         NavigateToPreviousPage={NavigateToPreviousPage}

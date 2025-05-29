@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../layouts/mobile/ValidateMobileLayout'
 
-export default function ValidateMobilePhone () {
+export default function ValidateMobilePhone() {
   const navigate = useNavigate()
   const contactPreferences = useSelector(
     (state) => state.session.contactPreferences
@@ -34,9 +34,6 @@ export default function ValidateMobilePhone () {
   }
   return (
     <>
-      <Helmet>
-        <title>Confirm your mobile number - Get flood warnings - GOV.UK</title>
-      </Helmet>
       <ValidateMobileLayout
         navigateToNextPage={navigateToNextPage}
         NavigateToPreviousPage={DifferentMobile}

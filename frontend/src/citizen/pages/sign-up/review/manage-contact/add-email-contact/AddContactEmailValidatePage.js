@@ -1,11 +1,10 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../../../../common/layouts/email/ValidateEmailLayout'
 import { addContactPreference } from '../../../../../../common/redux/userSlice'
 
-export default function ValidateEmailContactPage () {
+export default function ValidateEmailContactPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const contactPreferences = useSelector(
@@ -27,9 +26,6 @@ export default function ValidateEmailContactPage () {
 
   return (
     <>
-      <Helmet>
-        <title>Confirm email address - Get flood warnings - GOV.UK</title>
-      </Helmet>
       <ValidateEmailLayout
         navigateToNextPage={navigateToNextPage}
         SkipValidation={SkipValidation}

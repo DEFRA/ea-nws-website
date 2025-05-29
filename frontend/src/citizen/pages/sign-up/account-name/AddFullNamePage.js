@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import {
@@ -80,9 +79,6 @@ export default function AddFullNamePage () {
 
   return (
     <>
-      <Helmet>
-        <title>Enter your name - Get flood warnings - GOV.UK</title>
-      </Helmet>
       <AddAccountNameLayout
         navigateToNextPage={navigateToNextPage}
         NavigateToPreviousPage={NavigateToPreviousPage}

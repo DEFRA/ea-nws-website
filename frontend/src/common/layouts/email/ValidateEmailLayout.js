@@ -16,6 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from './ExpiredCodeLayout'
+import { Helmet } from 'react-helmet'
 
 export default function ValidateEmailLayout ({
   navigateToNextPage,
@@ -169,6 +170,9 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
+      <Helmet>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

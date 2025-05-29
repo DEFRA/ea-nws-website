@@ -17,6 +17,7 @@ import {
   updateAdditionals
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
+import { Helmet } from 'react-helmet'
 
 export default function ValidateMobileLayout ({
   navigateToNextPage,
@@ -173,6 +174,9 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
+      <Helmet>
+        <title>Confirm your mobile number - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

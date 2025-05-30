@@ -11,7 +11,7 @@ import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function AddMobileLayout ({
+export default function AddMobileLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -66,7 +66,6 @@ export default function AddMobileLayout ({
 
   return (
     <>
-
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -81,6 +80,7 @@ export default function AddMobileLayout ({
                 hours a day.
               </p>
               <Input
+                id='uk-mobile-telephone-number'
                 name='UK mobile telephone number'
                 inputType='text'
                 error={error}

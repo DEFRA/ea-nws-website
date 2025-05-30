@@ -11,7 +11,7 @@ import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({
+export default function AddLandlineLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -29,7 +29,11 @@ export default function AddLandlineLayout ({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(landline)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
-      const profile = addUnverifiedContact(session.profile, 'homePhones', normalisedPhoneNumber)
+      const profile = addUnverifiedContact(
+        session.profile,
+        'homePhones',
+        normalisedPhoneNumber
+      )
       const profileDataToSend = { profile, authToken }
       const { errorMessage, data } = await backendCall(
         profileDataToSend,
@@ -65,7 +69,6 @@ export default function AddLandlineLayout ({
 
   return (
     <>
-
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -80,6 +83,7 @@ export default function AddLandlineLayout ({
                 called 24 hours a day.
               </p>
               <Input
+                id='uk-landline-mobile'
                 name='UK landline or mobile telephone number'
                 inputType='text'
                 error={error}

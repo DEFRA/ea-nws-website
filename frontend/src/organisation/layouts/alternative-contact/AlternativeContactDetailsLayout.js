@@ -9,7 +9,7 @@ import { emailValidation } from '../../../common/services/validations/EmailValid
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function AlternativeContactDetailsLayout ({
+export default function AlternativeContactDetailsLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -66,13 +66,15 @@ export default function AlternativeContactDetailsLayout ({
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')
       const lastname = lastnameParts.join(' ')
 
-      dispatch(setOrganizationAlternativeContact({
-        firstName: firstname,
-        lastName: lastname,
-        email,
-        telephone,
-        jobTitle
-      }))
+      dispatch(
+        setOrganizationAlternativeContact({
+          firstName: firstname,
+          lastName: lastname,
+          email,
+          telephone,
+          jobTitle
+        })
+      )
       navigateToNextPage()
     }
   }
@@ -97,23 +99,21 @@ export default function AlternativeContactDetailsLayout ({
               Enter details for an alternative contact at your organisation
             </h1>
             <div className='govuk-body'>
-              {isAdmin
-                ? (
-                  <p className='govuk-body govuk-!-margin-bottom-5'>
-                    This person will be an alternative contact, in case you're
-                    unavailable in the future. They will not be given
-                    administrator rights.
-                  </p>
-                  )
-                : (
-                  <p className='govuk-body govuk-!-margin-bottom-5'>
-                    This person will be an alternative contact, in case{' '}
-                    {profile.firstname} {profile.lastname} is
-                    unavailable in the future. They will not be given
-                    administrator rights.
-                  </p>
-                  )}
+              {isAdmin ? (
+                <p className='govuk-body govuk-!-margin-bottom-5'>
+                  This person will be an alternative contact, in case you're
+                  unavailable in the future. They will not be given
+                  administrator rights.
+                </p>
+              ) : (
+                <p className='govuk-body govuk-!-margin-bottom-5'>
+                  This person will be an alternative contact, in case{' '}
+                  {profile.firstname} {profile.lastname} is unavailable in the
+                  future. They will not be given administrator rights.
+                </p>
+              )}
               <Input
+                id='full-name'
                 inputType='text'
                 value={fullName}
                 name='Full name'
@@ -124,6 +124,7 @@ export default function AlternativeContactDetailsLayout ({
                 isNameBold
               />
               <Input
+                id='email-address'
                 inputType='text'
                 value={email}
                 name='Email address'
@@ -133,6 +134,7 @@ export default function AlternativeContactDetailsLayout ({
                 isNameBold
               />
               <Input
+                id='telephone-number'
                 inputType='text'
                 value={telephone}
                 name='Telephone number'
@@ -142,6 +144,7 @@ export default function AlternativeContactDetailsLayout ({
                 isNameBold
               />
               <Input
+                id='job-title'
                 inputType='text'
                 value={jobTitle}
                 name='Job title (optional)'

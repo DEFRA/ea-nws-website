@@ -201,6 +201,7 @@ export default function ValidateEmailLayout({
                     it will expire.
                   </p>
                   <Input
+                    id='enter-code'
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

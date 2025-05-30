@@ -11,18 +11,22 @@ const { logger } = require('../../plugins/logging')
 
 // geosafe api restricted to 1024 locations per response
 // recall to api required to collect all locations
-const getAdditionalLocations = async (firstLocationApiCall, authToken, contactId = null) => {
+const getAdditionalLocations = async (
+  firstLocationApiCall,
+  authToken,
+  contactId = null
+) => {
   let additionalLocations = []
 
-  if (firstLocationApiCall.data.total > 1024) {
+  if (firstLocationApiCall.data.total > 1000) {
     const fetchLocationsPromises = []
-    const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1024)
+    const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1000)
     let i = 1
     while (i <= totalRecalls) {
       let options = {
         offset: 1000 * i,
         limit: 1000
-       }
+      }
       if (contactId) options.contactId = contactId
       fetchLocationsPromises.push(
         apiCall(

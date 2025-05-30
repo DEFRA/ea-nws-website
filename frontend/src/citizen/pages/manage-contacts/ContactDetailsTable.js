@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
+import UserContactType from '../../../common/enums/UserContactType'
 import { setCurrentContact } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
@@ -19,13 +20,13 @@ export default function ContactDetailsTable({
   const handleButton = (event) => {
     event.preventDefault()
     switch (contactType) {
-      case 'email address':
+      case UserContactType.Email:
         navigate('/managecontacts/add-email')
         break
-      case 'mobile telephone number':
+      case UserContactType.Mobile:
         navigate('/managecontacts/add-mobile')
         break
-      case 'telephone number':
+      case UserContactType.Telephone:
         navigate('/managecontacts/add-landline')
         break
     }
@@ -36,17 +37,17 @@ export default function ContactDetailsTable({
     dispatch(setCurrentContact(contact))
 
     switch (contactType) {
-      case 'email address':
+      case UserContactType.Email:
         nextPage = '/managecontacts/validate-email'
         endpoint = 'api/add_contact/email/add'
         payload = { authToken, email: contact }
         break
-      case 'mobile telephone number':
+      case UserContactType.Mobile:
         nextPage = '/managecontacts/validate-mobile'
         endpoint = 'api/add_contact/mobile/add'
         payload = { authToken, msisdn: contact }
         break
-      case 'telephone number':
+      case UserContactType.Telephone:
         nextPage = '/managecontacts/validate-landline'
         endpoint = 'api/add_contact/landline/add'
         payload = { authToken, msisdn: contact }
@@ -60,7 +61,7 @@ export default function ContactDetailsTable({
   }
 
   const MaximumReached = () => {
-    if (contactType === 'email address') {
+    if (contactType === UserContactType.Email) {
       return (
         <div>
           You've reached maximum of 5 {contactType.toLowerCase()}es.
@@ -86,13 +87,13 @@ export default function ContactDetailsTable({
     }${contact}`
 
     switch (contactType) {
-      case 'email address':
+      case UserContactType.Email:
         confirmLabel = `Confirm email address ${contactLabel} to receive warnings for this address`
         removeLabel = `Remove email address ${contactLabel} to stop warnings for this address`
-      case 'mobile telephone number':
+      case UserContactType.Mobile:
         confirmLabel = `Confirm mobile number ${contactLabel} to receive text warnings to this number`
         removeLabel = `Remove mobile number ${contactLabel} to stop text warnings to this number`
-      case 'telephone number':
+      case UserContactType.Telephone:
         confirmLabel = `Confirm telephone number ${contactLabel} to receive phone call warnings to this number`
         removeLabel = `Remove telephone number ${contactLabel} to stop phone call warnings to this number`
     }
@@ -203,7 +204,7 @@ export default function ContactDetailsTable({
         <Button
           className='govuk-button govuk-button--secondary'
           text={`Add ${
-            contactType === 'email address' ? 'an' : 'a'
+            contactType === UserContactType.Email ? 'an' : 'a'
           } ${contactType}`}
           onClick={handleButton}
         />

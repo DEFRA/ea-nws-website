@@ -7,6 +7,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
+import UserContactType from '../../../../common/enums/UserContactType'
 import {
     setProfile,
     setRegisterToken
@@ -57,7 +58,7 @@ export default function SignUpPage() {
           updatedProfile = removeVerifiedContact(
             updatedProfile,
             profile.emails[0],
-            'email address'
+            UserContactType.Email
           )
         }
         updatedProfile = addVerifiedContact(updatedProfile, 'email', email)

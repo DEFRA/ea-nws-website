@@ -84,6 +84,7 @@ export default function SignUpPage() {
               </p>
               <InsetText text='We recommend using an email address you can access 24 hours a day.' />
               <Input
+                id='email-address'
                 className='govuk-input govuk-input--width-20'
                 inputType='text'
                 name='Email address'

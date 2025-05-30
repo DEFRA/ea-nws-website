@@ -13,7 +13,7 @@ import {
   urlManageOrgAddLocations
 } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationNamePage () {
+export default function LocationNamePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [name, setName] = useState('')
@@ -81,6 +81,7 @@ export default function LocationNamePage () {
                 Water pumping station.
               </p>
               <Input
+                id='location-name'
                 name='Location name'
                 inputType='text'
                 value={name}

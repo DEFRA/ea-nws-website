@@ -83,7 +83,12 @@ export default function AdminDetailsLayout({
         setErrorEmail(errorMessage)
       }
     } else {
-      const updatedProfile = { ...profile, emails: [email], firstname, lastname }
+      const updatedProfile = {
+        ...profile,
+        emails: [email],
+        firstname,
+        lastname
+      }
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))
@@ -127,6 +132,7 @@ export default function AdminDetailsLayout({
                 </p>
               )}
               <Input
+                id='full-name'
                 name='Full name'
                 inputType='text'
                 value={fullName}
@@ -137,6 +143,7 @@ export default function AdminDetailsLayout({
                 isNameBold
               />
               <Input
+                id='email-address'
                 name='Email address'
                 inputType='text'
                 value={email}

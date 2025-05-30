@@ -77,6 +77,7 @@ export default function AddAccountNameLayout({
                 account.
               </p>
               <Input
+                id='full-name'
                 inputType='text'
                 value={fullName}
                 name='Full name'

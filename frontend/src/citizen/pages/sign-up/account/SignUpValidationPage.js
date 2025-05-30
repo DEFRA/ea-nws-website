@@ -180,6 +180,7 @@ export default function SignUpValidationPage() {
                   Enter the code within 4 hours or it will expire.
                   <div className='govuk-!-margin-top-6'>
                     <Input
+                      id='enter-code'
                       className='govuk-input govuk-input--width-10'
                       inputType='text'
                       value={code}

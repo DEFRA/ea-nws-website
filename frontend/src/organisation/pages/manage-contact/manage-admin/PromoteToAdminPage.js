@@ -138,6 +138,7 @@ export default function PromoteToAdminPage() {
               emailRadios
             ) : (
               <Input
+                id='email-address'
                 inputType='text'
                 value={selectedEmail}
                 name='Email address'

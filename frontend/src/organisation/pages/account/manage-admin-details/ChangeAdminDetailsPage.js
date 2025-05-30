@@ -127,6 +127,7 @@ export default function ChangeAdminDetailsPage() {
           <h1 className='govuk-heading-l'>Change administrator details</h1>
 
           <Input
+            id='full-name'
             inputType='text'
             value={fullName}
             name='Full name'
@@ -138,6 +139,7 @@ export default function ChangeAdminDetailsPage() {
           />
 
           <Input
+            id='email-address'
             inputType='text'
             value={email}
             name='Email address'

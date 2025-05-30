@@ -50,7 +50,8 @@ export default function ContactChannelsLayout({
     (state) => state.session.orgCurrentContact.lastname
   )
   const orgId = useSelector((state) => state.session.orgId)
-  const originalEmails = useSelector((state) => state.session.orgCurrentContact.emails) || []
+  const originalEmails =
+    useSelector((state) => state.session.orgCurrentContact.emails) || []
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -128,7 +129,9 @@ export default function ContactChannelsLayout({
         }
         const emailsAlreadyAdded = await fetchEmailsAlreadyAdded()
         // create array of only changed emails
-        const emailsChanged = emailInput.filter((email) => !originalEmails.includes(email))
+        const emailsChanged = emailInput.filter(
+          (email) => !originalEmails.includes(email)
+        )
         // check for duplicates only if email has changed
         if (emailsChanged.includes(email)) {
           if (!emailsAlreadyAdded.includes(email)) {
@@ -286,6 +289,7 @@ export default function ContactChannelsLayout({
     if (userType === UserType.Admin && profile.emails[0] === emailInput[0]) {
       return (
         <Input
+          id='additional-email'
           name='Additionals email address (optional)'
           inputType='text'
           onChange={(val) => setEmailInput((inputs) => [inputs[0], val])}
@@ -388,6 +392,7 @@ export default function ContactChannelsLayout({
                   <>
                     {renderFirstEmail()}
                     <Input
+                      id='additional-email'
                       name='Additionals email address (optional)'
                       inputType='text'
                       onChange={(val) =>
@@ -403,6 +408,7 @@ export default function ContactChannelsLayout({
                 ) : (
                   <>
                     <Input
+                      id='email-addresses'
                       name='Email addresses (optional)'
                       inputType='text'
                       onChange={(val) =>
@@ -427,6 +433,7 @@ export default function ContactChannelsLayout({
                 )}
 
                 <Input
+                  id='uk-mobile-numbers'
                   name='UK mobile numbers for text messages (optional)'
                   inputType='text'
                   onChange={(val) =>
@@ -448,6 +455,7 @@ export default function ContactChannelsLayout({
                   error={mobilePhoneError[1]}
                 />
                 <Input
+                  id='uk-telephone-numbers'
                   name='UK telephone numbers for voice messages (optional)'
                   inputType='text'
                   onChange={(val) => setHomeInput((inputs) => [val, inputs[1]])}

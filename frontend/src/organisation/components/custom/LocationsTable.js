@@ -23,8 +23,7 @@ export default function LocationsTable({
   onAction,
   actionText,
   linkContacts,
-  locationPrefix,
-  isLinkedLocations
+  locationPrefix
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -364,7 +363,7 @@ export default function LocationsTable({
               </button>
             </th>
             {/* Conditionally render flood-related columns */}
-            {isLinkedLocations ? (
+            {locationPrefix === 'linked' ? (
               <>
                 <th
                   scope='col'
@@ -483,7 +482,7 @@ export default function LocationsTable({
                 )}
               </td>
               {/* Conditionally render flood-related cells */}
-              {isLinkedLocations ? (
+              {locationPrefix === 'linked' ? (
                 <>
                   <td className='govuk-table__cell'>
                     {location.message_count}

@@ -8,7 +8,10 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../../common/enums/AlertState.js'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
+import {
+  getAdditional,
+  setCurrentLocation
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import LocationsTable from '../../../../components/custom/LocationsTable'
@@ -89,8 +92,8 @@ export default function LinkedLocationsPage() {
         const count = alertsList.filter((alert) => {
           const placemark = alert.mode?.zoneDesc?.placemarks?.[0]
           if (!placemark?.extraInfo) return false
-          const alertCode = placemark.extraInfo.find((e) => e.key === 'TA_CODE')
-          return alertCode && taCodes.includes(alertCode.value.s)
+          const alertCode = getAdditional(placemark.extraInfo, 'TA_CODE')
+          return alertCode && taCodes.includes(alertCode)
         }).length
 
         return {
@@ -331,7 +334,6 @@ export default function LinkedLocationsPage() {
                   onAction={onAction}
                   actionText='Unlink'
                   locationPrefix='linked'
-                  isLinkedLocations={true}
                 />
                 <Pagination
                   totalPages={Math.ceil(

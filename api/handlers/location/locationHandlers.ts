@@ -52,17 +52,17 @@ async function getLocationList(
       console.log('there is a contact ID')
       return {
         locations: mockLocations.allLocations,
-        //total: mockLocations.allLocations.length
+        total: mockLocations.allLocations.length
         // to test offset option, uncomment below
-        total: 1025
+        //total: 1025
       }
     } else {
       console.log('no contact ID returning all locations')
       return {
         locations: mockLocations.allLocations,
-        //total: mockLocations.allLocations.length
+        total: mockLocations.allLocations.length
         // to test offset option, uncomment below
-        total: 1025
+        //total: 1025
       }
     }
   } else {

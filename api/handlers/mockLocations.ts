@@ -30,7 +30,7 @@ const locations = [
             notes:
               'Kier starmer has the flood plan for this location. His contact number is 01234 567 890',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
             targetAreas: [
               {
                 TA_CODE: '063FWT23WestminC',
@@ -45,6 +45,7 @@ const locations = [
       }
     ]
   },
+
   {
     id: '2',
     enabled: true,
@@ -80,13 +81,13 @@ const locations = [
               {
                 TA_CODE: '113WACT1D',
                 TA_NAME: 'South Devon Estuaries',
-                category: 'Severe flood warning'
+                category: 'Flood Warning Rapid Response'
               },
 
               {
                 TA_CODE: '011WAFDU',
                 TA_NAME: 'South Devon Estuaries',
-                category: 'Alert flood warning'
+                category: 'Flood Alert Groundwater'
               }
             ],
             riverSeaRisk: 'medium',
@@ -96,6 +97,7 @@ const locations = [
       }
     ]
   },
+
   {
     id: '3',
     enabled: true,
@@ -127,7 +129,13 @@ const locations = [
             notes: '',
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_3'],
-            targetAreas: [],
+            targetAreas: [
+              {
+                TA_CODE: '065WAC151',
+                TA_Name: 'Southampton Water and Hamble',
+                category: 'Flood Alert'
+              }
+            ],
             riverSeaRisk: 'low',
             groundWaterRisk: 'possible'
           })
@@ -184,13 +192,13 @@ const locations = [
                 TA_CODE: '122WAF946',
                 TA_Name:
                   'River Ouse, Burdyke, Holgate Beck, Blue Beck, River Foss, The Fleet',
-                category: 'Severe flood Warning'
+                category: 'Flood Warning Rapid Response'
               },
               {
                 TA_CODE: '122FWF776',
                 TA_Name:
                   'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly',
-                category: 'Flood Warning'
+                category: 'Flood Alert'
               }
             ],
             riverSeaRisk: 'high',
@@ -366,7 +374,7 @@ const locations = [
               {
                 TA_CODE: '055FWFPLNE01',
                 TA_Name: 'The River Nene',
-                category: 'Severe flood Warning'
+                category: 'Flood Warning Rapid Response'
               }
             ],
             riverSeaRisk: 'very low'
@@ -498,7 +506,7 @@ const locations = [
                 TA_CODE: '013WAFWI',
                 TA_Name:
                   'Wirral catchment with Heswall, Ellesmere Port, Bebington, Hoylake and Wallasey',
-                category: 'Alert flood Warning'
+                category: 'Flood Alert'
               }
             ],
             riverSeaRisk: 'high',
@@ -565,13 +573,13 @@ const locations = [
               {
                 TA_CODE: '034FWFTRNOTTCITY',
                 TA_Name: 'River Trent at Nottingham including The Meadows',
-                category: 'Severe flood Warning'
+                category: 'Flood Warning Rapid Response'
               },
               {
                 TA_CODE: '034WAF409',
                 TA_Name:
                   'River Derwent from Rowsley to the River Trent at Shardlow',
-                category: 'Alert flood Warning'
+                category: 'Flood Alert'
               }
             ],
             riverSeaRisk: 'high',
@@ -694,7 +702,7 @@ const locations = [
               {
                 TA_CODE: '065WAC151',
                 TA_Name: 'Southampton Water and Hamble',
-                category: 'Alert flood Warning'
+                category: 'Flood Alert'
               }
             ],
             riverSeaRisk: 'medium',

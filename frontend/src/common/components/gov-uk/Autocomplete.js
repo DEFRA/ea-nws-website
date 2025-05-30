@@ -97,6 +97,9 @@ export default function Autocomplete ({
       case 'down':
         handleDownArrow(event)
         break
+      case 'enter':
+        selected > -1 && handleOptionClick(selected)
+        break
       default:
         if (isPrintableKeyCode(event.keyCode)) {
           handlePrintableKey(event)

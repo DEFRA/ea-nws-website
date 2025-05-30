@@ -152,14 +152,9 @@ export default function LocationWithinWarningAreaProximityLayout({
                 </h1>
                 <InsetText text={selectedLocation.address} />
                 <p>
-                  Flood message areas nearby are highlighted in{' '}
-                  {type === 'severe' ? 'red' : 'orange'} on the map.
-                </p>
-                <p>
-                  If you choose one of these, you'll get{' '}
                   {type === 'severe'
-                    ? 'flood messages about danger to life or property.'
-                    : 'early alerts about possible flooding.'}
+                    ? 'If you choose one of these nearby areas, you’ll get flood messages about danger to life or property.'
+                    : 'If you choose one of these nearby areas, you’ll get early alerts about possible flooding.'}
                 </p>
               </div>
             </div>

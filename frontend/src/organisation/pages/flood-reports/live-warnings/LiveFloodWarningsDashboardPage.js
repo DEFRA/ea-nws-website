@@ -50,7 +50,6 @@ export default function LiveFloodWarningsDashboardPage() {
 
     const options = {
       states: [AlertState.CURRENT],
-      states: [AlertState.CURRENT],
       boundingBox: null,
       channels: [],
       partnerId

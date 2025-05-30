@@ -5,6 +5,7 @@ const {
 } = require('../../services/GenericErrorResponse')
 const getSecretKeyValue = require('../../services/SecretsManager')
 const { parse } = require('date-fns')
+const fetch = require('node-fetch')
 
 const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
   const rows = text.split(/\r?\n|\r|\n/g)

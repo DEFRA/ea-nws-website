@@ -38,6 +38,7 @@ export default function LocationsTable({
   const [linkedContactsSort, setLinkedContactsSort] = useState('none')
   const [riverSeaRisksSort, setRiverSeaRisksSort] = useState('none')
   const [groundWaterRisksSort, setGroundWaterRisksSort] = useState('none')
+  const [floodMessagesSort, setFloodMessagesSort] = useState('none')
 
   useEffect(() => {
     setLocationNameSort('none')
@@ -46,6 +47,7 @@ export default function LocationsTable({
     setGetsFloodMessagesSort('none')
     setLinkedContactsSort('none')
     setRiverSeaRisksSort('none')
+    setFloodMessagesSort('none')
   }, [locations])
 
   const sortByRisk = (sortType, setSort, riskOrder, data) => {
@@ -159,6 +161,25 @@ export default function LocationsTable({
         })
       )
     }
+  }
+
+  const sortFloodMessages = () => {
+    if (floodMessagesSort === 'none' || floodMessagesSort === 'descending') {
+      setFloodMessagesSort('ascending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) =>
+          (a.message_count || 0) > (b.message_count || 0) ? 1 : -1
+        )
+      )
+    } else if (floodMessagesSort === 'ascending') {
+      setFloodMessagesSort('descending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) =>
+          (a.message_count || 0) < (b.message_count || 0) ? 1 : -1
+        )
+      )
+    }
+    setResetPaging(!resetPaging)
   }
 
   const handleHeaderCheckboxChange = (event) => {
@@ -345,9 +366,15 @@ export default function LocationsTable({
             {/* Conditionally render flood-related columns */}
             {isLinkedLocations ? (
               <>
-                <th scope='col' className='govuk-table__header'>
-                  Flood messages <br />
-                  received in last two years
+                <th
+                  scope='col'
+                  className='govuk-table__header'
+                  aria-sort={floodMessagesSort}
+                >
+                  <button type='button' onClick={() => sortFloodMessages()}>
+                    Flood messages <br />
+                    received in last two years
+                  </button>
                 </th>
               </>
             ) : (
@@ -458,7 +485,9 @@ export default function LocationsTable({
               {/* Conditionally render flood-related cells */}
               {isLinkedLocations ? (
                 <>
-                  <td className='govuk-table__cell'>0</td>
+                  <td className='govuk-table__cell'>
+                    {location.message_count}
+                  </td>
                 </>
               ) : (
                 <>

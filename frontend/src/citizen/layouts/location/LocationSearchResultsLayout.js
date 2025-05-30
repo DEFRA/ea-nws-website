@@ -186,11 +186,13 @@ export default function LocationSearchResultsLayout({
                       Postcode: {locationPostCode}
                       {'   '}
                       <Link
-                        onClick={() =>
-                          returnToSearchPage
-                            ? returnToSearchPage()
-                            : navigate(-1)
-                        }
+                        to={returnToSearchPage ? returnToSearchPage : '#'}
+                        onClick={(e) => {
+                          if (!returnToSearchPage) {
+                            e.preventDefault()
+                            navigate(-1)
+                          }
+                        }}
                         className='govuk-link govuk-!-padding-left-5'
                         style={{ cursor: 'pointer' }}
                       >

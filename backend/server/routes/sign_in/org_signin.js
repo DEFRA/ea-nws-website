@@ -70,8 +70,11 @@ module.exports = [
           })
 
           let locations = []
+          let options = {
+            limit: 1000
+          }
           const locationRes = await apiCall(
-            { authToken: orgData.authToken },
+            { authToken: orgData.authToken, options: options },
             'location/list'
           )
           locations.push(...locationRes.data.locations)

@@ -110,7 +110,7 @@ module.exports = [
 
           for (const contact of contactRes.data.contacts) {
             let contactsLocations = []
-            const options = { contactId: contact.id }
+            const options = { contactId: contact.id, limit: 1000 }
             const linkLocationsRes = await apiCall(
               {
                 authToken: orgData.authToken,

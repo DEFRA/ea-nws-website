@@ -3,7 +3,7 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { setJsonData } = require('../../services/elasticache')
+const { setJsonData, updateContact } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -15,7 +15,7 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken, profile, signinType } = request.payload
+        const { authToken, profile, signinType, orgId } = request.payload
         const { redis } = request.server.app
 
         if (Object.keys(profile).length !== 0 && authToken) {
@@ -24,7 +24,14 @@ module.exports = [
             'member/updateProfile'
           )
           if (signinType === 'org') {
-            await setJsonData(redis, response.data.profile.id + ':profile', response.data.profile)
+            await setJsonData(
+              redis,
+              response.data.profile.id + ':profile',
+              response.data.profile
+            )
+          }
+          if (orgId) {
+            await updateContact(redis, orgId, response.data.profile)
           }
           return h.response(response)
         } else {

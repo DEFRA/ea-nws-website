@@ -1,3 +1,4 @@
+import React from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -7,7 +8,214 @@ import { infoUrls } from '../../../../../routes/info/InfoRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageOrgAddLocations } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DashboardHeader({
+const FloodBanner = React.memo(function FloodBanner({
+  type,
+  locations,
+  onClickLinked,
+  handleFloodAreas
+}) {
+  const count = []
+  const message = []
+  const heading = []
+
+  if (type === 'floodMessages') {
+    heading[0] = 'Locations that will get flood messages'
+    count.push(
+      locations.filter(
+        (obj) =>
+          obj?.within === true &&
+          obj?.additionals?.other?.alertTypes?.length > 0
+      ).length
+    )
+    message[0] = 'in flood areas'
+
+    count.push(
+      locations.filter(
+        (item) =>
+          item.additionals.other?.childrenIDs?.length > 0 &&
+          item.additionals.other?.alertTypes?.length > 0 &&
+          item.within !== true
+      ).length
+    )
+    message.push('linked to nearby flood areas')
+  } else if (type === 'noFloodMessages') {
+    heading[0] = 'Locations that do not currently get flood messages'
+
+    const mediumHighRisk = locations.filter(
+      (obj) =>
+        (obj.riverSeaRisk?.title === 'Medium risk' ||
+          obj.riverSeaRisk?.title === 'High risk' ||
+          obj.riverSeaRisk?.title === 'Unavailable' ||
+          obj.groundWaterRisk?.title === 'Possible' ||
+          obj.groundWaterRisk?.title === 'Unavailable') &&
+        obj.additionals.other?.alertTypes?.length === 0
+    ).length
+    count.push(mediumHighRisk)
+    message[0] = 'at flood risk'
+
+    const lowRisk = locations.filter(
+      (obj) =>
+        (obj.riverSeaRisk?.title === 'Low risk' ||
+          obj.riverSeaRisk?.title === 'Very low risk') &&
+        obj.groundWaterRisk?.title === 'Unlikely' &&
+        obj.additionals.other?.alertTypes?.length === 0
+    ).length
+    count.push(lowRisk)
+    message.push('potentially at flood risk')
+  } else if (type === 'noContacts') {
+    heading[0] = 'Locations not linked to contacts'
+    count.push(
+      locations.filter((item) => item.linked_contacts?.length === 0).length
+    )
+    message[0] = 'not linked to contacts'
+  }
+
+  return (
+    <div
+      className='govuk-!-margin-top-1'
+      style={{
+        width: '100%',
+        padding: '0.5rem 0.5rem'
+      }}
+    >
+      <p>
+        <strong>{heading}</strong>
+      </p>
+      <div
+        style={{
+          border: '2px solid lightGrey',
+          padding: '1.5rem 1.5rem',
+          height: '10rem'
+        }}
+      >
+        {type === 'floodMessages' && (
+          <div style={{ display: 'flex' }}>
+            <div
+              style={{
+                width: '100%',
+                padding: '0rem 1rem 0rem 0rem'
+              }}
+            >
+              <h1>
+                <strong>{count[0]}</strong>
+              </h1>
+              <Link
+                className='govuk-link'
+                to='#'
+                onClick={(e) => {
+                  e.preventDefault()
+                  onClickLinked('messages')
+                }}
+              >
+                {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+              </Link>
+            </div>
+            {count[1] > 0 && (
+              <div
+                style={{
+                  width: '100%',
+                  padding: '0rem 1.5rem',
+                  borderLeft: '2px solid lightGrey'
+                }}
+              >
+                <h1>
+                  <strong>{count[1]}</strong>
+                </h1>
+                <Link
+                  className='govuk-link'
+                  to='#'
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onClickLinked('linked-locations')
+                  }}
+                >
+                  {count[1] === 1 ? 'location' : 'locations'} {message[1]}
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+        {type === 'noFloodMessages' && (
+          <div style={{ display: 'flex' }}>
+            {count[0] > 0 && (
+              <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
+                <h1 style={{ color: 'coral' }}>
+                  <strong>{count[0]}</strong>
+                </h1>
+                <Link
+                  className='govuk-link'
+                  to='#'
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onClickLinked('high-medium-risk')
+                  }}
+                >
+                  {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+                </Link>
+              </div>
+            )}
+            {count[1] > 0 && (
+              <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
+                <h1>
+                  <strong>{count[1]}</strong>
+                </h1>
+                <Link
+                  className='govuk-link'
+                  to='#'
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onClickLinked('low-risk')
+                  }}
+                >
+                  {count[1] === 1 ? 'location' : 'locations'} {message[1]}
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+        {type === 'noContacts' && (
+          <>
+            <h1 style={{ color: 'crimson' }}>
+              <strong>{count[0]}</strong>
+            </h1>
+            <Link
+              className='govuk-link'
+              to='#'
+              onClick={(e) => {
+                e.preventDefault()
+                onClickLinked('no-links')
+              }}
+            >
+              {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+            </Link>
+          </>
+        )}
+      </div>
+
+      <p className='govuk-!-margin-top-2'>
+        {type === 'floodMessages' && (
+          <Link
+            className='govuk-link'
+            to='#'
+            onClick={(e) => {
+              e.preventDefault()
+              handleFloodAreas()
+            }}
+          >
+            What are flood areas?
+          </Link>
+        )}
+        {type === 'noFloodMessages' && (
+          <Link to='#' className='govuk-link'>
+            Link these locations to nearby flood areas to get flood messages
+          </Link>
+        )}
+      </p>
+    </div>
+  )
+})
+
+export default function DashboardHeader ({
   locations,
   onClickLinked,
   linkContacts,
@@ -72,228 +280,6 @@ export default function DashboardHeader({
     </>
   )
 
-  const handleFloodAreas = (event) => {
-    event.preventDefault()
-    navigate(infoUrls.floodAreas)
-  }
-
-  const FloodBanner = ({ type }) => {
-    const count = []
-    const message = []
-    const heading = []
-
-    if (type === 'floodMessages') {
-      heading[0] = 'Locations that will get flood messages'
-      count.push(
-        locations.filter(
-          (obj) =>
-            obj?.within === true &&
-            obj?.additionals?.other?.alertTypes?.length > 0
-        ).length
-      )
-      message[0] = 'in flood areas'
-
-      count.push(
-        locations.filter(
-          (item) =>
-            item.additionals.other?.childrenIDs?.length > 0 &&
-            item.additionals.other?.alertTypes?.length > 0 &&
-            item.within !== true
-        ).length
-      )
-      message.push('linked to nearby flood areas')
-    } else if (type === 'noFloodMessages') {
-      heading[0] = 'Locations that do not currently get flood messages'
-
-      const mediumHighRisk = locations.filter(
-        (obj) =>
-          (obj.riverSeaRisk?.title === 'Medium risk' ||
-            obj.riverSeaRisk?.title === 'High risk' ||
-            obj.riverSeaRisk?.title === 'Unavailable' ||
-            obj.groundWaterRisk?.title === 'Possible' ||
-            obj.groundWaterRisk?.title === 'Unavailable') &&
-          obj.additionals.other?.alertTypes?.length === 0
-      ).length
-      count.push(mediumHighRisk)
-      message[0] = 'at flood risk'
-
-      const lowRisk = locations.filter(
-        (obj) =>
-          (obj.riverSeaRisk?.title === 'Low risk' ||
-            obj.riverSeaRisk?.title === 'Very low risk') &&
-          obj.groundWaterRisk?.title === 'Unlikely' &&
-          obj.additionals.other?.alertTypes?.length === 0
-      ).length
-      count.push(lowRisk)
-      message.push('potentially at flood risk')
-    } else if (type === 'noContacts') {
-      heading[0] = 'Locations not linked to contacts'
-      count.push(
-        locations.filter((item) => item.linked_contacts?.length === 0).length
-      )
-      message[0] = 'not linked to contacts'
-    }
-
-    return (
-      <div
-        className='govuk-!-margin-top-1'
-        style={{
-          width: '100%',
-          padding: '0.5rem 0.5rem'
-        }}
-      >
-        <p>
-          <strong>{heading}</strong>
-        </p>
-        <div
-          style={{
-            border: '2px solid lightGrey',
-            padding: '1.5rem 1.5rem',
-            height: '10rem'
-          }}
-        >
-          {type === 'floodMessages' && (
-            <div style={{ display: 'flex' }}>
-              <div
-                style={{
-                  width: '100%',
-                  padding: '0rem 1rem 0rem 0rem'
-                }}
-              >
-                <h1>
-                  <strong>{count[0]}</strong>
-                </h1>
-                <Link
-                  className='govuk-link'
-                  onClick={() => onClickLinked('messages')}
-                >
-                  {count[0] === 1 ? 'location' : 'locations'} {message[0]}
-                </Link>
-              </div>
-              {locations.filter(
-                (item) =>
-                  item.additionals.other?.childrenIDs?.length > 0 &&
-                  item.additionals.other?.alertTypes?.length > 0 &&
-                  item.within !== true
-              ).length > 0 && (
-                <div
-                  style={{
-                    width: '100%',
-                    padding: '0rem 1.5rem',
-                    borderLeft: '2px solid lightGrey'
-                  }}
-                >
-                  <h1>
-                    <strong>{count[1]}</strong>
-                  </h1>
-                  <Link
-                    className='govuk-link'
-                    onClick={() => onClickLinked('linked-locations')}
-                  >
-                    {count[1] === 1 ? 'location' : 'locations'} {message[1]}
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
-          {type === 'noFloodMessages' && (
-            <div style={{ display: 'flex' }}>
-              {locations.filter(
-                (item) =>
-                  (item.riverSeaRisk?.title === 'Medium risk' ||
-                    item.riverSeaRisk?.title === 'High risk' ||
-                    item.riverSeaRisk?.title === 'Unavailable' ||
-                    item.groundWaterRisk?.title === 'Possible' ||
-                    item.groundWaterRisk?.title === 'Unavailable') &&
-                  item.additionals.other?.alertTypes?.length === 0
-              ).length > 0 && (
-                <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
-                  <h1 style={{ color: 'coral' }}>
-                    <strong>{count[0]}</strong>
-                  </h1>
-                  <Link
-                    className='govuk-link'
-                    onClick={() => onClickLinked('high-medium-risk')}
-                  >
-                    {count[0] === 1 ? 'location' : 'locations'} {message[0]}
-                  </Link>
-                </div>
-              )}
-              {locations.filter(
-                (item) =>
-                  (item.riverSeaRisk?.title === 'Medium risk' ||
-                    item.riverSeaRisk?.title === 'High risk' ||
-                    item.riverSeaRisk?.title === 'Unavailable' ||
-                    item.groundWaterRisk?.title === 'Possible' ||
-                    item.groundWaterRisk?.title === 'Unavailable') &&
-                  item.additionals.other?.alertTypes?.length === 0
-              ).length > 0 &&
-                locations.filter(
-                  (item) =>
-                    (item.riverSeaRisk?.title === 'Low risk' ||
-                      item.riverSeaRisk?.title === 'Very low risk') &&
-                    item.groundWaterRisk?.title === 'Unlikely' &&
-                    item.additionals.other?.alertTypes?.length === 0
-                ).length > 0 && (
-                  <div
-                    style={{
-                      borderRight: '2px solid lightGrey'
-                    }}
-                  />
-                )}
-              {locations.filter(
-                (item) =>
-                  (item.riverSeaRisk?.title === 'Low risk' ||
-                    item.riverSeaRisk?.title === 'Very low risk') &&
-                  item.groundWaterRisk?.title === 'Unlikely' &&
-                  item.additionals.other?.alertTypes?.length === 0
-              ).length > 0 && (
-                <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
-                  <h1>
-                    <strong>{count[1]}</strong>
-                  </h1>
-                  <Link
-                    className='govuk-link'
-                    onClick={() => onClickLinked('low-risk')}
-                  >
-                    {count[1] === 1 ? 'location' : 'locations'} {message[1]}
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
-          {type === 'noContacts' && (
-            <>
-              <h1 style={{ color: 'crimson' }}>
-                <strong>{count[0]}</strong>
-              </h1>
-              <Link
-                className='govuk-link'
-                onClick={() => onClickLinked('no-links')}
-              >
-                {count[0] === 1 ? 'location' : 'locations'} {message[0]}
-              </Link>
-            </>
-          )}
-        </div>
-
-        <p className='govuk-!-margin-top-2'>
-          {type === 'floodMessages' && (
-            <Link className='govuk-link' onClick={handleFloodAreas}>
-              What are flood areas?
-            </Link>
-          )}
-          {type === 'noFloodMessages' && (
-            // TODO: Add route to link locations
-            <Link className='govuk-link'>
-              Link these locations to nearby flood areas to get flood messages
-            </Link>
-          )}
-        </p>
-      </div>
-    )
-  }
-
   return (
     <>
       <div className='govuk-body govuk-!-margin-top-6'>
@@ -325,8 +311,12 @@ export default function DashboardHeader({
               </div>
             </div>
 
-            <span style={{ display: 'flex', fontSize: '18px' }}>
-              <FloodBanner type='floodMessages' />
+            <div style={{ display: 'flex', fontSize: '18px' }}>
+              <FloodBanner
+                type='floodMessages'
+                locations={locations}
+                onClickLinked={onClickLinked}
+              />
               {(locations.filter(
                 (item) =>
                   (item.riverSeaRisk?.title === 'Medium risk' ||
@@ -342,7 +332,17 @@ export default function DashboardHeader({
                       item.riverSeaRisk?.title === 'Very low risk') &&
                     item.groundWaterRisk?.title === 'Unlikely' &&
                     item.additionals.other?.alertTypes?.length === 0
-                ).length > 0) && <FloodBanner type='noFloodMessages' />}
+                ).length > 0) && (
+                <FloodBanner
+                  type='noFloodMessages'
+                  locations={locations}
+                  onClickLinked={onClickLinked}
+                  handleFloodAreas={(e) => {
+                    e.preventDefault()
+                    navigate(infoUrls.floodAreas)
+                  }}
+                />
+              )}
               {locations.filter((item) => item.linked_contacts?.length === 0)
                 .length > 0 && (
                 <div style={{ width: '100%' }}>
@@ -355,7 +355,7 @@ export default function DashboardHeader({
                   </div>
                 </div>
               )}
-            </span>
+            </div>
 
             <div className='govuk-grid-column-one-half'>
               <Details title='What is flood risk?' text={floodRiskDetails} />

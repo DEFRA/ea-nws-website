@@ -13,7 +13,7 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function PostCodeSearchLayout ({
+export default function PostCodeSearchLayout({
   navigateToNextPage,
   navigateToNotInEnglandPage,
   flow
@@ -72,6 +72,7 @@ export default function PostCodeSearchLayout ({
 
             <div className='govuk-body'>
               <Input
+                id='postcode'
                 name='Postcode'
                 isNameBold='true'
                 nameSize='s'

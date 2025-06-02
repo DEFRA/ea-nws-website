@@ -33,28 +33,24 @@ const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
 }
 
 const allowedMessageTypes = [
-  'Flood Alert',
-  'Remove Flood Alert',
+  'Severe Flood Warning',
+  'Remove Severe Flood Warning',
   'Flood Warning',
   'Remove Flood Warning',
-  'Severe Flood Warning',
-  'Remove Severe Flood Warning'
+  'Flood Alert',
+  'Remove Flood Alert'
 ]
 
-const getAlertType = (category) => {
-  const alertMap = {
-    'Severe Flood Warning': 'ALERT_LVL_1',
-    'Flood Warning': 'ALERT_LVL_2',
-    'Flood ALert': 'ALERT_LVL_3'
-  }
-
-  return alertMap[category]
+const alertTypeMap = {
+  'Severe Flood Warning': 'ALERT_LVL_1',
+  'Flood Warning': 'ALERT_LVL_2',
+  'Flood Alert': 'ALERT_LVL_3'
 }
 
 const alertRemovalMap = {
-  'Flood Alert': 'Remove Flood Alert',
+  'Severe Flood Warning': 'Remove Severe Flood Warning',
   'Flood Warning': 'Remove Flood Warning',
-  'Severe Flood Warning': 'Remove Severe Flood Warning'
+  'Flood Alert': 'Remove Flood Alert'
 }
 
 const createGeoSafeAlertObject = (historicData) => {
@@ -96,7 +92,7 @@ const createGeoSafeAlertObject = (historicData) => {
               {
                 key: 'category',
                 value: {
-                  s: historicData.category
+                  s: historicData.type
                 }
               },
               {
@@ -117,7 +113,7 @@ const createGeoSafeAlertObject = (historicData) => {
       }
     },
     channels: [{ channelId: '', placemarks: [0], countryCodes: [] }],
-    type: getAlertType(historicData.category),
+    type: historicData.type,
     sender: '',
     scope: 'PUBLIC',
     capStatus: '',
@@ -164,7 +160,7 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
         const newAlert = {
           taCode: currentEntry['TA Code'],
           taName: currentEntry['TA Name'],
-          category: currentEntry['lookup category'],
+          type: alertTypeMap[currentType],
           createdDate: currentEntry['Approved'],
           endDate: nextEntry['Approved'],
           name: currentType + currentTA

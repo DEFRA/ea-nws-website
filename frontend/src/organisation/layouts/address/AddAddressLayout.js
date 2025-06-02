@@ -14,7 +14,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout ({
+export default function AddAddressLayout({
   navigateToNextPage,
   NavigateToPreviousPage,
   navigateToConfirmPage
@@ -87,6 +87,7 @@ export default function AddAddressLayout ({
             </h1>
             <div className='govuk-body'>
               <Input
+                id='postcode'
                 inputType='text'
                 value={postCode}
                 name='Postcode'
@@ -96,6 +97,7 @@ export default function AddAddressLayout ({
                 defaultValue={postCode}
               />
               <Input
+                id='building-name'
                 inputType='text'
                 value={buildingNum}
                 name='Building name or number (optional)'

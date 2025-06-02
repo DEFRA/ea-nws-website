@@ -8,7 +8,7 @@ import Input from '../../components/gov-uk/Input'
 import { backendCall } from '../../services/BackendService'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function SignInPage () {
+export default function SignInPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -58,6 +58,7 @@ export default function SignInPage () {
             </h1>
             <div className='govuk-body'>
               <Input
+                id='email-address'
                 className='govuk-input govuk-input--width-30'
                 name='Email address'
                 inputType='text'

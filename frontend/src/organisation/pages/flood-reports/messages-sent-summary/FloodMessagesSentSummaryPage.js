@@ -95,27 +95,31 @@ export default function FloodMessagesSentSummaryPage() {
     })
   }
 
-  const processLocationByAlertTypes = (alertTypes, targetAreas, alerts) => {
+  const processLocationByAlertTypes = (
+    locationsMessageSettings,
+    targetAreas,
+    alerts
+  ) => {
     // all alert types
     if (
       [
         AlertType.SEVERE_FLOOD_WARNING,
         AlertType.FLOOD_WARNING,
         AlertType.FLOOD_ALERT
-      ].every((type) => alertTypes.includes(type))
+      ].every((type) => locationsMessageSettings.includes(type))
     ) {
       updateLocationStats('all', targetAreas, alerts)
     }
     // severe and warning messages only
     else if (
       [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING].every((type) =>
-        alertTypes.includes(type)
+        locationsMessageSettings.includes(type)
       )
     ) {
       updateLocationStats('severeWarningsOnly', targetAreas, alerts)
     }
     // alert messages only
-    else if (alertTypes.includes(AlertType.FLOOD_ALERT)) {
+    else if (locationsMessageSettings.includes(AlertType.FLOOD_ALERT)) {
       updateLocationStats('alertsOnly', targetAreas, alerts)
     }
     // messages turned off
@@ -124,7 +128,7 @@ export default function FloodMessagesSentSummaryPage() {
         AlertType.SEVERE_FLOOD_WARNING,
         AlertType.FLOOD_WARNING,
         AlertType.FLOOD_ALERT
-      ].every((type) => !alertTypes.includes(type))
+      ].every((type) => !locationsMessageSettings.includes(type))
     ) {
       updateLocationStats('messagesTurnedOff', targetAreas, alerts)
     }
@@ -140,39 +144,69 @@ export default function FloodMessagesSentSummaryPage() {
     }))
 
     // process all target areas for this location
-    targetAreas?.forEach((targetArea) => {
-      alerts.forEach((alert) => {
-        const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-        const taCode = getAdditional(extraInfo, 'TA_CODE')
-
-        if (taCode === targetArea.TA_CODE) {
-          updateMessageCounts(category, targetArea.category)
+    targetAreas
+      ?.filter((targetArea) => {
+        if (category === 'all' || category === 'messagesTurnedOff') {
+          return (
+            targetArea.category.includes('Warning') ||
+            targetArea.category.includes('Alert')
+          )
+        } else if (category === 'severeWarningsOnly') {
+          return targetArea.category.includes('Warning')
+        } else if (category === 'alertsOnly') {
+          return targetArea.category.includes('Alert')
         }
       })
-    })
+      .forEach((targetArea) => {
+        alerts
+          .filter((alert) => {
+            if (category === 'all' || category === 'messagesTurnedOff') {
+              return [
+                AlertType.SEVERE_FLOOD_WARNING,
+                AlertType.FLOOD_WARNING,
+                AlertType.FLOOD_ALERT
+              ].some((type) => alert.type === type)
+            } else if (category === 'severeWarningsOnly') {
+              return [
+                AlertType.SEVERE_FLOOD_WARNING,
+                AlertType.FLOOD_WARNING
+              ].some((type) => alert.type === type)
+            } else if (category === 'alertsOnly') {
+              return alert.type.includes(AlertType.FLOOD_ALERT)
+            }
+          })
+          .forEach((alert) => {
+            const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
+            const taCode = getAdditional(extraInfo, 'TA_CODE')
+
+            if (taCode === targetArea.TA_CODE) {
+              updateMessageCounts(category, alert.type)
+            }
+          })
+      })
   }
 
-  const updateMessageCounts = (locationCategory, messageCategory) => {
+  const updateMessageCounts = (category, alertLevel) => {
     setData((prev) => {
       const newData = { ...prev }
 
-      if (locationCategory === 'all') {
-        if (messageCategory === 'Severe flood warning') {
+      if (category === 'all') {
+        if (alertLevel === AlertType.SEVERE_FLOOD_WARNING) {
           newData.all.severeMessagesCount++
-        } else if (messageCategory === 'Flood warning') {
+        } else if (alertLevel === AlertType.FLOOD_WARNING) {
           newData.all.warningMessagesCount++
-        } else if (messageCategory === 'Alert flood warning') {
+        } else if (alertLevel === AlertType.FLOOD_ALERT) {
           newData.all.alertMessagesCount++
         }
-      } else if (locationCategory === 'severeWarningsOnly') {
-        if (messageCategory === 'Severe flood warning') {
+      } else if (category === 'severeWarningsOnly') {
+        if (alertLevel === AlertType.SEVERE_FLOOD_WARNING) {
           newData.severeWarningsOnly.severeMessagesCount++
-        } else if (messageCategory === 'Flood warning') {
+        } else if (alertLevel === AlertType.FLOOD_WARNING) {
           newData.severeWarningsOnly.warningMessagesCount++
         }
-      } else if (locationCategory === 'alertsOnly') {
+      } else if (category === 'alertsOnly') {
         newData.alertsOnly.alertMessagesCount++
-      } else if (locationCategory === 'messagesTurnedOff') {
+      } else if (category === 'messagesTurnedOff') {
         newData.messagesTurnedOff.messagesCount++
       }
 
@@ -274,14 +308,12 @@ export default function FloodMessagesSentSummaryPage() {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             None available
-            <br />
-            All message types (turned off)
           </td>
           <td
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            {data.noneAvailable}
+            0
           </td>
         </tr>
         <tr className='govuk-table__row'>

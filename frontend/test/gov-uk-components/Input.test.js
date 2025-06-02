@@ -9,6 +9,7 @@ describe('TextInput component', () => {
   test('renders the input with the correct name and className', () => {
     render(
       <Input
+        id='test-name'
         name='Test Name'
         className='test-class'
         value=''
@@ -25,6 +26,7 @@ describe('TextInput component', () => {
   test('calls onChange when the input value changes', () => {
     render(
       <Input
+        id='test-name'
         name='Test Name'
         className='test-class'
         value=''
@@ -42,6 +44,7 @@ describe('TextInput component', () => {
   test('displays the correct initial value', () => {
     render(
       <Input
+        id='test-name'
         name='Test Name'
         className='test-class'
         value='Initial Value'
@@ -60,6 +63,7 @@ describe('TextInput component', () => {
 
     render(
       <Input
+        id='test-name'
         name='Test Name'
         className='test-class'
         value=''

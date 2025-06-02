@@ -11,7 +11,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
-export default function AddEmailLayout ({ navigateToNextPage }) {
+export default function AddEmailLayout({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
@@ -74,10 +74,11 @@ export default function AddEmailLayout ({ navigateToNextPage }) {
             </h2>
             <div className='govuk-body'>
               <p>
-                We recommend using an email address you can access 24 hours
-                a day.
+                We recommend using an email address you can access 24 hours a
+                day.
               </p>
               <Input
+                id='email-address'
                 name='Email address'
                 inputType='text'
                 error={error}

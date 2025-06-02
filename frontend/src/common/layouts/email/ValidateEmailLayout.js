@@ -35,6 +35,7 @@ export default function ValidateEmailLayout({
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
+  const orgId = useSelector((state) => state.session.orgId)
   const session = useSelector((state) => state.session)
   const email = session.currentContact
   const [codeResent, setCodeResent] = useState(false)
@@ -68,7 +69,7 @@ export default function ValidateEmailLayout({
         }
       } else {
         if (changeSignIn) {
-          updateProfile(data.profile, authToken, signinType)
+          updateProfile(data.profile, authToken, signinType, orgId)
           setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
@@ -204,6 +205,7 @@ export default function ValidateEmailLayout({
                     it will expire.
                   </p>
                   <Input
+                    id='enter-code'
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

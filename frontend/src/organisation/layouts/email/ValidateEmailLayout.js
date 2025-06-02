@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -20,9 +21,8 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import { Helmet } from 'react-helmet'
 
-export default function ValidateEmailLayout ({
+export default function ValidateEmailLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -130,76 +130,77 @@ export default function ValidateEmailLayout ({
   return (
     <>
       <Helmet>
-        <title>Confirm email address - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Confirm email address - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
-      {codeExpired
-        ? (
-          <ExpiredCodeLayout getNewCode={getNewCode} />
-          )
-        : (
-          <>
-            <BackLink onClick={navigateBack} />
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && (
-                    <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
+      {codeExpired ? (
+        <ExpiredCodeLayout getNewCode={getNewCode} />
+      ) : (
+        <>
+          <BackLink onClick={navigateBack} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {codeResent && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + codeResentTime}
+                  />
+                )}
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>Confirm email address</h2>
+                <div className='govuk-body'>
+                  <p className='govuk-!-margin-top-6'>
+                    We've sent an email with a code to:
+                  </p>
+                  <InsetText text={loginEmail} />
+                  Enter the code within 4 hours or it will expire.
+                  <div className='govuk-!-margin-top-6'>
+                    <Input
+                      id='enter-code'
+                      className='govuk-input govuk-input--width-10'
+                      inputType='text'
+                      value={code}
+                      name='Enter code'
+                      error={error}
+                      onChange={(val) => setCode(val)}
                     />
-                  )}
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Confirm email address</h2>
-                  <div className='govuk-body'>
-                    <p className='govuk-!-margin-top-6'>
-                      We've sent an email with a code to:
-                    </p>
-                    <InsetText text={loginEmail} />
-                    Enter the code within 4 hours or it will expire.
-                    <div className='govuk-!-margin-top-6'>
-                      <Input
-                        className='govuk-input govuk-input--width-10'
-                        inputType='text'
-                        value={code}
-                        name='Enter code'
-                        error={error}
-                        onChange={(val) => setCode(val)}
-                      />
-                    </div>
-                    <Button
-                      className='govuk-button'
-                      text='Confirm email address'
-                      onClick={handleSubmit}
-                    />
+                  </div>
+                  <Button
+                    className='govuk-button'
+                    text='Confirm email address'
+                    onClick={handleSubmit}
+                  />
                   &nbsp; &nbsp;
+                  <Link
+                    onClick={navigateBack}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 10px 7px'
+                    }}
+                  >
+                    Use a different email
+                  </Link>
+                  <div className='govuk-!-margin-top-1'>
                     <Link
-                      onClick={navigateBack}
+                      onClick={getNewCode}
                       className='govuk-link'
                       style={{
-                        display: 'inline-block',
-                        padding: '8px 10px 7px'
+                        display: 'inline-block'
                       }}
                     >
-                      Use a different email
+                      Get a new code
                     </Link>
-                    <div className='govuk-!-margin-top-1'>
-                      <Link
-                        onClick={getNewCode}
-                        className='govuk-link'
-                        style={{
-                          display: 'inline-block'
-                        }}
-                      >
-                        Get a new code
-                      </Link>
-                    </div>
                   </div>
                 </div>
               </div>
-            </main>
-          </>
-          )}
+            </div>
+          </main>
+        </>
+      )}
     </>
   )
 }

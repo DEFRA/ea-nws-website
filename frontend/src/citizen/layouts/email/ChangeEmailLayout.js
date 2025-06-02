@@ -11,7 +11,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
-export default function ChangeEmailLayout ({
+export default function ChangeEmailLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -68,7 +68,9 @@ export default function ChangeEmailLayout ({
   return (
     <>
       <Helmet>
-        <title>Change your email address for signing in - Get flood warnings - GOV.UK</title>
+        <title>
+          Change your email address for signing in - Get flood warnings - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -87,10 +89,10 @@ export default function ChangeEmailLayout ({
                 This email is also your sign-in name for this service
               </p>
               <p className='govuk-body govuk-!-margin-bottom-8'>
-                If you change it here, use your new email when you next sign
-                in
+                If you change it here, use your new email when you next sign in
               </p>
               <Input
+                id='new-email-address'
                 className='govuk-input govuk-!-width-one-half'
                 inputType='text'
                 name='New email address'
@@ -102,7 +104,11 @@ export default function ChangeEmailLayout ({
                 text='Save changes'
                 onClick={handleSubmit}
               />
-              <Link to='/account' className='govuk-link inline-link' style={{ cursor: 'pointer' }}>
+              <Link
+                to='/account'
+                className='govuk-link inline-link'
+                style={{ cursor: 'pointer' }}
+              >
                 Cancel
               </Link>
               <br />

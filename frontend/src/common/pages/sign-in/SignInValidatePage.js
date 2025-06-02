@@ -14,20 +14,20 @@ import InsetText from '../../components/gov-uk/InsetText'
 import NotificationBanner from '../../components/gov-uk/NotificationBanner'
 import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
-    setAuthToken,
-    setContactPreferences,
-    setOrgId,
-    setOrganization,
-    setProfile,
-    setProfileId,
-    setRegistrations,
-    setSigninType
+  setAuthToken,
+  setContactPreferences,
+  setOrgId,
+  setOrganization,
+  setProfile,
+  setProfileId,
+  setRegistrations,
+  setSigninType
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function SignInValidatePage () {
+export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -51,7 +51,7 @@ export default function SignInValidatePage () {
         await backendCall(dataToSend, 'api/org_signin', navigate)
       }
       startProcessing()
-      const interval = setInterval(async function getStatus () {
+      const interval = setInterval(async function getStatus() {
         if (getStatus.isRunning) return
         getStatus.isRunning = true
         const dataToSend = { authToken: orgData.authToken }
@@ -172,70 +172,69 @@ export default function SignInValidatePage () {
       <Helmet>
         <title>Confirm email address - Get flood warnings - GOV.UK</title>
       </Helmet>
-      {codeExpired || signUpNotComplete
-        ? (
-            (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
+      {codeExpired || signUpNotComplete ? (
+        (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
         (signUpNotComplete && (
           <NotCompletedSignUpLayout nextPage={lastAccessedUrl} />
         ))
-          )
-        : (
-          <>
-            <BackLink onClick={navigateBack} />
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && (
-                    <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
-                    />
-                  )}
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Confirm email address </h2>
-                  <div className='govuk-body'>
-                    We've sent an email with a code to:
-                    <InsetText text={location.state.email} />
-                    <Input
-                      className='govuk-input govuk-input--width-10'
-                      name='Enter code'
-                      inputType='text'
-                      value={code}
-                      error={error}
-                      onChange={(val) => setCode(val)}
-                    />
-                    <Button
-                      className='govuk-button'
-                      text='Continue'
-                      onClick={handleSubmit}
-                    />
-                  &nbsp; &nbsp;
-                    <Link
-                      onClick={navigateBack}
-                      className='govuk-link inline-link'
-                    >
-                      Enter a different email
-                    </Link>
-                    <br />
-                    <Link onClick={getNewCode} className='govuk-link'>
-                      Get a new code
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </main>
-            {orgData && error === '' && (
-              <div className='popup-dialog'>
-                <div className='popup-dialog-container govuk-!-padding-bottom-6'>
-                  <LoadingSpinner
-                    loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+      ) : (
+        <>
+          <BackLink onClick={navigateBack} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {codeResent && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + codeResentTime}
                   />
+                )}
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>Confirm email address </h2>
+                <div className='govuk-body'>
+                  We've sent an email with a code to:
+                  <InsetText text={location.state.email} />
+                  <Input
+                    id='enter-code'
+                    className='govuk-input govuk-input--width-10'
+                    name='Enter code'
+                    inputType='text'
+                    value={code}
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text='Continue'
+                    onClick={handleSubmit}
+                  />
+                  &nbsp; &nbsp;
+                  <Link
+                    onClick={navigateBack}
+                    className='govuk-link inline-link'
+                  >
+                    Enter a different email
+                  </Link>
+                  <br />
+                  <Link onClick={getNewCode} className='govuk-link'>
+                    Get a new code
+                  </Link>
                 </div>
               </div>
-            )}
-          </>
+            </div>
+          </main>
+          {orgData && error === '' && (
+            <div className='popup-dialog'>
+              <div className='popup-dialog-container govuk-!-padding-bottom-6'>
+                <LoadingSpinner
+                  loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                />
+              </div>
+            </div>
           )}
+        </>
+      )}
     </>
   )
 }

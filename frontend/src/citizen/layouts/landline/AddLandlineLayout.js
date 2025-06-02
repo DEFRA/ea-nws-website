@@ -12,7 +12,7 @@ import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({
+export default function AddLandlineLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -30,7 +30,11 @@ export default function AddLandlineLayout ({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(landline)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
-      const profile = addUnverifiedContact(session.profile, 'homePhones', normalisedPhoneNumber)
+      const profile = addUnverifiedContact(
+        session.profile,
+        'homePhones',
+        normalisedPhoneNumber
+      )
       const profileDataToSend = { profile, authToken }
       const { errorMessage, data } = await backendCall(
         profileDataToSend,
@@ -67,7 +71,10 @@ export default function AddLandlineLayout ({
   return (
     <>
       <Helmet>
-        <title>Enter a telephone number to get flood messages by phone call - Get flood warnings - GOV.UK</title>
+        <title>
+          Enter a telephone number to get flood messages by phone call - Get
+          flood warnings - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -83,6 +90,7 @@ export default function AddLandlineLayout ({
                 called 24 hours a day.
               </p>
               <Input
+                id='uk-landline-mobile'
                 name='UK landline or mobile telephone number'
                 inputType='text'
                 error={error}

@@ -162,6 +162,7 @@ export default function AddContactEmailPage() {
                 }`}
               >
                 <Input
+                  id='email-address'
                   name='Email address'
                   inputType='text'
                   onChange={(val) => {

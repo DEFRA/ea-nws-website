@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-export default function Select ({
+export default function Select({
   label,
   options,
   name,
@@ -8,12 +8,11 @@ export default function Select ({
   hint,
   error = '',
   initialSelectOptionText,
-  disabledOptions = []
+  disabledOptions = [],
+  value
 }) {
-  const [selectedOption, setSelectedOption] = useState('')
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value
-    setSelectedOption(selectedValue)
     onSelect(selectedValue)
   }
 
@@ -44,23 +43,21 @@ export default function Select ({
         name={name}
         aria-describedby={hint}
         onChange={handleSelectChange}
-        value={selectedOption}
+        value={value || ''}
       >
         <option value='' disabled>
           {initialSelectOptionText}
         </option>
         {options.map((option, index) =>
-          disabledOptions.includes(option)
-            ? (
-              <option key={index} value={option} disabled>
-                {option}
-              </option>
-              )
-            : (
-              <option key={index} value={option}>
-                {option}
-              </option>
-              )
+          disabledOptions.includes(option) ? (
+            <option key={index} value={option} disabled>
+              {option}
+            </option>
+          ) : (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          )
         )}
       </select>
     </div>

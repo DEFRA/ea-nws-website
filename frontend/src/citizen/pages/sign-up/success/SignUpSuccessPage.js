@@ -46,9 +46,9 @@ export default function SignUpSuccessPage () {
               preTitle={servicePhase === 'beta' ? 'TESTING PHASE ONLY' : ''}
             />
             <div className='govuk-body govuk-!-margin-top-6'>
-              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+              <h2 className='govuk-heading-m govuk-!-margin-top-6'>
                 What happens next
-              </h1>
+              </h2>
               <p>
                 We've sent you an email confirmation. If you have not received
                 this within 2 hours, check your spam.
@@ -90,9 +90,9 @@ export default function SignUpSuccessPage () {
               )}
               {servicePhase === 'beta' && (
                 <div>
-                  <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
                     Now answer some questions about the sign up process
-                  </h1>
+                  </h2>
                   <Button text='Continue' className='govuk-button' onClick={handleContinue} />
                 </div>
               )}

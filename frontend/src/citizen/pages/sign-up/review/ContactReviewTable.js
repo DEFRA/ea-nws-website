@@ -19,7 +19,7 @@ export default function ContactReviewTable({ contacts }) {
     if (verified.length > 0) {
       verified.forEach((item, index) => {
         const contact =
-          type === 'email' && isMobile && item.length > 20
+          type === UserContactType.Email && isMobile && item.length > 20
             ? item.slice(0, 20) + '...'
             : item
 
@@ -31,7 +31,7 @@ export default function ContactReviewTable({ contacts }) {
             isConfirmed
             arrayLength={verified.length}
             index={index}
-            {...(type === 'email' && { emailIndex: index })}
+            {...(type === UserContactType.Email && { emailIndex: index })}
           />
         )
       })

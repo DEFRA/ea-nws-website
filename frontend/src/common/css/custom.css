@@ -1189,6 +1189,12 @@
   text-underline-offset: 0.1578em;
 }
 
+.service-header__nav-list-item-link:focus-visible {
+  border-radius: 1px;
+  outline: 3px solid #101010;
+  outline-offset: 3px;
+}
+
 .service-header__nav-list-item-link:link {
   color: #1d70b8;
 }

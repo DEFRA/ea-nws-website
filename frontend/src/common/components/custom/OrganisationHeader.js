@@ -285,7 +285,7 @@ export default function OrganisationHeader() {
                       id='service-header__nav'
                       data-open-className='service-header__nav--open'
                     >
-                      <li className='service-header__nav-list-item '>
+                      <li className='service-header__nav-list-item'>
                         <Link
                           className='service-header__nav-list-item-link'
                           onClick={(event) =>

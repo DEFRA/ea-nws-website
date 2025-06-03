@@ -24,7 +24,7 @@ export default function DashboardHeader({
       it is that flooding will happen and the effect that flooding will have on
       people, buildings and services. Flood risk can fall into the following
       categories:
-      <h4 className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</h4>
+      <p className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</p>
       <p className='govuk-!-margin-top-4'>
         <strong>High risk</strong>
         <br />
@@ -43,7 +43,7 @@ export default function DashboardHeader({
         Each year there's a chance of flooding from rivers and the sea of
         between 1 in 1000 and 1 in 100.
       </p>
-      <h4 className='govuk-heading-m  govuk-!-margin-top-6'>Groundwater</h4>
+      <p className='govuk-heading-m  govuk-!-margin-top-6'>Groundwater</p>
       <p className='govuk-!-margin-top-4'>
         <strong>Possible</strong>
         <br />

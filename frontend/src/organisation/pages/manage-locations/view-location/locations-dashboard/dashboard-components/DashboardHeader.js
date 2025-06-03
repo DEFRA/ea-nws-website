@@ -142,9 +142,9 @@ export default function DashboardHeader({
           padding: '0.5rem 0.5rem'
         }}
       >
-        <p>
+        <h2 className='govuk-body'>
           <strong>{heading}</strong>
-        </p>
+        </h2>
         <div
           style={{
             border: '2px solid lightGrey',
@@ -160,9 +160,9 @@ export default function DashboardHeader({
                   padding: '0rem 1rem 0rem 0rem'
                 }}
               >
-                <h1>
+                <p className='govuk-heading-l'>
                   <strong>{count[0]}</strong>
-                </h1>
+                </p>
                 <Link
                   className='govuk-link'
                   onClick={() => onClickLinked('messages')}
@@ -183,9 +183,9 @@ export default function DashboardHeader({
                     borderLeft: '2px solid lightGrey'
                   }}
                 >
-                  <h1>
+                  <p className='govuk-heading-l'>
                     <strong>{count[1]}</strong>
-                  </h1>
+                  </p>
                   <Link
                     className='govuk-link'
                     onClick={() => onClickLinked('linked-locations')}
@@ -208,9 +208,9 @@ export default function DashboardHeader({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
-                  <h1 style={{ color: 'coral' }}>
+                  <p className='govuk-heading-l' style={{ color: 'coral' }}>
                     <strong>{count[0]}</strong>
-                  </h1>
+                  </p>
                   <Link
                     className='govuk-link'
                     onClick={() => onClickLinked('high-medium-risk')}
@@ -249,9 +249,9 @@ export default function DashboardHeader({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
-                  <h1>
+                  <p className='govuk-heading-l'>
                     <strong>{count[1]}</strong>
-                  </h1>
+                  </p>
                   <Link
                     className='govuk-link'
                     onClick={() => onClickLinked('low-risk')}
@@ -264,9 +264,9 @@ export default function DashboardHeader({
           )}
           {type === 'noContacts' && (
             <>
-              <h1 style={{ color: 'crimson' }}>
+              <p className='govuk-heading-l' style={{ color: 'crimson' }}>
                 <strong>{count[0]}</strong>
-              </h1>
+              </p>
               <Link
                 className='govuk-link'
                 onClick={() => onClickLinked('no-links')}

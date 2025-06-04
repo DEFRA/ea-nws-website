@@ -6,7 +6,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrganizationIsAdminRegistering } from '../../../common/redux/userSlice'
 
-export default function MainAdminLayout ({
+export default function MainAdminLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -36,45 +36,50 @@ export default function MainAdminLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
-              Will you be the main administrator on this account?
-            </h1>
             <div className='govuk-body'>
-              <div
-                className={
-                  error
-                    ? 'govuk-form-group govuk-form-group--error'
-                    : 'govuk-form-group'
-                }
-              >
-                <p className='govuk-hint'>
-                  An administrator can set up flood warnings, locations and
-                  users.
-                </p>
-                {error && (
-                  <p className='govuk-error-message'>
-                    <br />
-                    {error}
+              <fieldset className='govuk-fieldset' role='group'>
+                <legend>
+                  <h1 className='govuk-heading-l'>
+                    Will you be the main administrator on this account?
+                  </h1>
+                </legend>
+                <div
+                  className={
+                    error
+                      ? 'govuk-form-group govuk-form-group--error'
+                      : 'govuk-form-group'
+                  }
+                >
+                  <p className='govuk-hint'>
+                    An administrator can set up flood warnings, locations and
+                    users.
                   </p>
-                )}
-                <div className='govuk-radios'>
-                  <Radio
-                    key='radio_yes'
-                    name='adminRadio'
-                    value='adminRadio'
-                    label='Yes'
-                    onChange={() => addAdminDetails(true)}
-                  />
-                  <Radio
-                    key='radio_no'
-                    name='adminRadio'
-                    value='notAdminRadio'
-                    label='No, it will be someone else'
-                    onChange={() => addAdminDetails(false)}
-                  />
-                  <br />
+                  {error && (
+                    <p className='govuk-error-message'>
+                      <br />
+                      {error}
+                    </p>
+                  )}
+                  <div className='govuk-radios'>
+                    <Radio
+                      key='radio_yes'
+                      name='adminRadio'
+                      value='adminRadio'
+                      label='Yes'
+                      onChange={() => addAdminDetails(true)}
+                    />
+                    <Radio
+                      key='radio_no'
+                      name='adminRadio'
+                      value='notAdminRadio'
+                      label='No, it will be someone else'
+                      onChange={() => addAdminDetails(false)}
+                    />
+                    <br />
+                  </div>
                 </div>
-              </div>
+              </fieldset>
+
               <Button
                 text='Continue'
                 className='govuk-button'

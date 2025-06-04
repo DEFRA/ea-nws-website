@@ -280,6 +280,7 @@ export default function LocationsTable({
                   <input
                     className='govuk-checkboxes__input'
                     type='checkbox'
+                    aria-label='Select all locations'
                     checked={isTopCheckboxChecked && selectedLocations.length}
                     onChange={handleHeaderCheckboxChange}
                   />
@@ -294,6 +295,9 @@ export default function LocationsTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by location name, currently ${
+                  locationNameSort === 'none' ? 'unsorted' : locationNameSort
+                }`}
                 onClick={() =>
                   sortData(
                     locationNameSort,
@@ -312,6 +316,9 @@ export default function LocationsTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by location type, currently ${
+                  locationTypeSort === 'none' ? 'unsorted' : locationTypeSort
+                }`}
                 onClick={() =>
                   sortData(
                     locationTypeSort,
@@ -330,6 +337,11 @@ export default function LocationsTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by business criticality, currently ${
+                  businessCriticalitySort === 'none'
+                    ? 'unsorted'
+                    : businessCriticalitySort
+                }`}
                 onClick={() =>
                   sortData(
                     businessCriticalitySort,
@@ -347,7 +359,15 @@ export default function LocationsTable({
               className='govuk-table__header'
               aria-sort={getsFloodMessagesSort}
             >
-              <button type='button' onClick={() => sortGetsFloodMessages()}>
+              <button
+                type='button'
+                aria-label={`Sort by whether location gets flood messages, currently ${
+                  getsFloodMessagesSort === 'none'
+                    ? 'unsorted'
+                    : getsFloodMessagesSort
+                }`}
+                onClick={() => sortGetsFloodMessages()}
+              >
                 Gets flood
                 <br /> messages
               </button>
@@ -357,7 +377,15 @@ export default function LocationsTable({
               className='govuk-table__header'
               aria-sort={linkedContactsSort}
             >
-              <button type='button' onClick={() => sortLinkedContacts()}>
+              <button
+                type='button'
+                aria-label={`Sort by number of linked contacts, currently ${
+                  linkedContactsSort === 'none'
+                    ? 'unsorted'
+                    : linkedContactsSort
+                }`}
+                onClick={() => sortLinkedContacts()}
+              >
                 Linked
                 <br /> contacts
               </button>
@@ -370,7 +398,15 @@ export default function LocationsTable({
                   className='govuk-table__header'
                   aria-sort={floodMessagesSort}
                 >
-                  <button type='button' onClick={() => sortFloodMessages()}>
+                  <button
+                    type='button'
+                    aria-label={`Sort by number of flood messsages received in the last two years, currently ${
+                      floodMessagesSort === 'none'
+                        ? 'unsorted'
+                        : floodMessagesSort
+                    }`}
+                    onClick={() => sortFloodMessages()}
+                  >
                     Flood messages <br />
                     received in last two years
                   </button>
@@ -385,6 +421,11 @@ export default function LocationsTable({
                 >
                   <button
                     type='button'
+                    aria-label={`Sort by rivers and sea flood risk, currently ${
+                      riverSeaRisksSort === 'none'
+                        ? 'unsorted'
+                        : riverSeaRisksSort
+                    }`}
                     onClick={() =>
                       sortByRisk(
                         riverSeaRisksSort,
@@ -405,6 +446,11 @@ export default function LocationsTable({
                 >
                   <button
                     type='button'
+                    aria-label={`Sort by groundwater flood risk, currently ${
+                      groundWaterRisksSort === 'none'
+                        ? 'unsorted'
+                        : groundWaterRisksSort
+                    }`}
                     onClick={() =>
                       sortByRisk(
                         groundWaterRisksSort,
@@ -435,6 +481,7 @@ export default function LocationsTable({
                     <input
                       className='govuk-checkboxes__input'
                       type='checkbox'
+                      aria-label={`Select ${location.additionals.locationName}`}
                       checked={selectedLocations.includes(location)}
                       onChange={() => handleLocationSelected(location)}
                     />

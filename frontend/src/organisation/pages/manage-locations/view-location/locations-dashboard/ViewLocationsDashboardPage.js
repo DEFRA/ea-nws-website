@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -57,6 +57,7 @@ export default function ViewLocationsDashboardPage() {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [errorMessage, setErrorMessage] = useState('')
+  const filterButtonRef = useRef(null)
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -69,6 +70,12 @@ export default function ViewLocationsDashboardPage() {
     error: '',
     options: []
   })
+
+  useEffect(() => {
+    if (isFilterVisible && filterButtonRef.current) {
+      filterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   useEffect(() => {
     if (!locationsPerPage) {
@@ -879,6 +886,7 @@ export default function ViewLocationsDashboardPage() {
                         }
                         selectedLinkedFilters={selectedLinkedFilters}
                         setSelectedLinkedFilters={setSelectedLinkedFilters}
+                        filterButtonRef={filterButtonRef}
                       />
                     </div>
 

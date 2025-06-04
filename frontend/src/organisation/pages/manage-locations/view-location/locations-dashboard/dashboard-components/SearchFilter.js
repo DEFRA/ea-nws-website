@@ -33,7 +33,8 @@ export default function SearchFilter ({
   selectedFloodMessagesSentFilters,
   setSelectedFloodMessagesSentFilters,
   selectedLinkedFilters,
-  setSelectedLinkedFilters
+  setSelectedLinkedFilters,
+  filterButtonRef
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -419,6 +420,7 @@ export default function SearchFilter ({
             text='Apply filters'
             className='govuk-button govuk-button--primary'
             onClick={(event) => filterLocations(event)}
+            ref={filterButtonRef || ''}
           />
         </div>
 

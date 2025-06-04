@@ -164,7 +164,7 @@ export default function DashboardHeader({
                   padding: '0rem 1rem 0rem 0rem'
                 }}
               >
-                <p className='manage-locations-body-strong'>
+                <p className='body-text-strong'>
                   <strong>{count[0]}</strong>
                 </p>
                 <Link
@@ -187,7 +187,7 @@ export default function DashboardHeader({
                     borderLeft: '2px solid lightGrey'
                   }}
                 >
-                  <p className='manage-locations-body-strong'>
+                  <p className='body-text-strong'>
                     <strong>{count[1]}</strong>
                   </p>
                   <Link
@@ -212,10 +212,7 @@ export default function DashboardHeader({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
-                  <p
-                    className='manage-locations-body-strong'
-                    style={{ color: 'coral' }}
-                  >
+                  <p className='body-text-strong' style={{ color: 'coral' }}>
                     <strong>{count[0]}</strong>
                   </p>
                   <Link
@@ -256,7 +253,7 @@ export default function DashboardHeader({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
-                  <p className='manage-locations-body-strong'>
+                  <p className='body-text-strong'>
                     <strong>{count[1]}</strong>
                   </p>
                   <Link
@@ -271,10 +268,7 @@ export default function DashboardHeader({
           )}
           {type === 'noContacts' && (
             <>
-              <p
-                className='manage-locations-body-strong'
-                style={{ color: 'crimson' }}
-              >
+              <p className='body-text-strong' style={{ color: 'crimson' }}>
                 <strong>{count[0]}</strong>
               </p>
               <Link

@@ -24,7 +24,9 @@ export default function DashboardHeader({
       it is that flooding will happen and the effect that flooding will have on
       people, buildings and services. Flood risk can fall into the following
       categories:
-      <p className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</p>
+      <p className='govuk-body-l govuk-!-margin-top-6'>
+        <strong>Rivers and sea</strong>
+      </p>
       <p className='govuk-!-margin-top-4'>
         <strong>High risk</strong>
         <br />
@@ -43,7 +45,9 @@ export default function DashboardHeader({
         Each year there's a chance of flooding from rivers and the sea of
         between 1 in 1000 and 1 in 100.
       </p>
-      <p className='govuk-heading-m  govuk-!-margin-top-6'>Groundwater</p>
+      <p className='govuk-body-l  govuk-!-margin-top-6'>
+        <strong>Groundwater</strong>
+      </p>
       <p className='govuk-!-margin-top-4'>
         <strong>Possible</strong>
         <br />
@@ -160,7 +164,7 @@ export default function DashboardHeader({
                   padding: '0rem 1rem 0rem 0rem'
                 }}
               >
-                <p className='govuk-heading-l'>
+                <p className='manage-locations-body-strong'>
                   <strong>{count[0]}</strong>
                 </p>
                 <Link
@@ -183,7 +187,7 @@ export default function DashboardHeader({
                     borderLeft: '2px solid lightGrey'
                   }}
                 >
-                  <p className='govuk-heading-l'>
+                  <p className='manage-locations-body-strong'>
                     <strong>{count[1]}</strong>
                   </p>
                   <Link
@@ -208,7 +212,10 @@ export default function DashboardHeader({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
-                  <p className='govuk-heading-l' style={{ color: 'coral' }}>
+                  <p
+                    className='manage-locations-body-strong'
+                    style={{ color: 'coral' }}
+                  >
                     <strong>{count[0]}</strong>
                   </p>
                   <Link
@@ -249,7 +256,7 @@ export default function DashboardHeader({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
-                  <p className='govuk-heading-l'>
+                  <p className='manage-locations-body-strong'>
                     <strong>{count[1]}</strong>
                   </p>
                   <Link
@@ -264,7 +271,10 @@ export default function DashboardHeader({
           )}
           {type === 'noContacts' && (
             <>
-              <p className='govuk-heading-l' style={{ color: 'crimson' }}>
+              <p
+                className='manage-locations-body-strong'
+                style={{ color: 'crimson' }}
+              >
                 <strong>{count[0]}</strong>
               </p>
               <Link

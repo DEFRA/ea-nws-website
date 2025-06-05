@@ -422,14 +422,12 @@ export default function ContactChannelsLayout ({
                       />
                       <Input
                         id='email-address-2'
-                        name='Email addresses (optional)'
                         inputType='text'
                         onChange={(val) =>
                           setEmailInput((inputs) => [inputs[0], val])}
                         value={emailInput[1]}
                         error={emailError[1]}
                         className='govuk-input govuk-input--width-20'
-                        hiddenLabel
                       />
                     </>
                     )}
@@ -448,14 +446,12 @@ export default function ContactChannelsLayout ({
                 />
                 <Input
                   id='uk-mobile-number-2'
-                  name='UK mobile numbers for text messages (optional)'
                   inputType='text'
                   onChange={(val) =>
                     setMobileInput((inputs) => [inputs[0], val])}
                   value={mobileInput[1]}
                   className='govuk-input govuk-input--width-20'
                   error={mobilePhoneError[1]}
-                  hiddenLabel
                 />
                 <Input
                   id='uk-telephone-number-1'
@@ -470,13 +466,11 @@ export default function ContactChannelsLayout ({
                 />
                 <Input
                   id='uk-telephone-number-2'
-                  name='UK telephone numbers for voice messages (optional)'
                   inputType='text'
                   onChange={(val) => setHomeInput((inputs) => [inputs[0], val])}
                   className='govuk-input govuk-input--width-20'
                   value={homeInput[1]}
                   error={homePhoneError[1]}
-                  hiddenLabel
                 />
               </div>
               <Button

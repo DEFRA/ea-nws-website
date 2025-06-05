@@ -584,7 +584,7 @@ export default function LocationMessagesPage() {
         {!isPredefinedBoundary && (
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-full govuk-!-margin-top-9'>
-              {floodAreasSectionTwo}
+              {floodAreasSection}
             </div>
           </div>
         )}

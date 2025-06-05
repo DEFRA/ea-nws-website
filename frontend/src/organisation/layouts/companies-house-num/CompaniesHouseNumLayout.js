@@ -56,11 +56,9 @@ export default function CompaniesHouseNumLayout ({
             {(error || numberError) && (
               <ErrorSummary errorList={[error, numberError]} />
             )}
-            <legend className='govuk-fieldset__legend'>
-              <h1 className='govuk-heading-l'>
-                Does your organisation have a Companies House number?
-              </h1>
-            </legend>
+            <h1 className='govuk-heading-l'>
+              Does your organisation have a Companies House number?
+            </h1>
             <div className='govuk-body'>
               {error && <p className='govuk-error-message'>{error}</p>}
               <div
@@ -71,6 +69,9 @@ export default function CompaniesHouseNumLayout ({
                 }
               >
                 <fieldset className='govuk-fieldset'>
+                  <legend className='govuk-visually-hidden'>
+                    Does your organisation have a Companies House number?
+                  </legend>
                   <div className='govuk-radios'>
                     <Radio
                       key='radio_yes'

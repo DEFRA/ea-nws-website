@@ -68,12 +68,15 @@ export default function AddNameLayout ({
             <h1 className='govuk-heading-l'>Your organisation's name</h1>
             <div className='govuk-body'>
               <Input
+                id='organisation-name'
+                name="Your organisation's name"
                 inputType='text'
                 value={name}
                 onChange={(val) => setName(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={name}
+                hiddenLabel
               />
               <Button
                 text='Continue'

@@ -57,7 +57,8 @@ export default function ViewLocationsDashboardPage() {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [errorMessage, setErrorMessage] = useState('')
-  const filterButtonRef = useRef(null)
+  const applyFiltersButtonRef = useRef(null)
+  const toggleFilterButtonRef = useRef(null)
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -72,8 +73,10 @@ export default function ViewLocationsDashboardPage() {
   })
 
   useEffect(() => {
-    if (isFilterVisible && filterButtonRef.current) {
-      filterButtonRef.current.focus()
+    if (isFilterVisible && applyFiltersButtonRef.current) {
+      applyFiltersButtonRef.current.focus()
+    } else if (!isFilterVisible && toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
     }
   }, [isFilterVisible])
 
@@ -790,6 +793,7 @@ export default function ViewLocationsDashboardPage() {
                       text='Open filter'
                       className='govuk-button govuk-button--secondary inline-block'
                       onClick={(event) => onOpenCloseFilter(event)}
+                      ref={toggleFilterButtonRef}
                     />
                     {(!location.state ||
                       !location.state.linkContacts ||
@@ -886,7 +890,7 @@ export default function ViewLocationsDashboardPage() {
                         }
                         selectedLinkedFilters={selectedLinkedFilters}
                         setSelectedLinkedFilters={setSelectedLinkedFilters}
-                        filterButtonRef={filterButtonRef}
+                        filterButtonRef={applyFiltersButtonRef}
                       />
                     </div>
 
@@ -896,6 +900,7 @@ export default function ViewLocationsDashboardPage() {
                           text='Close Filter'
                           className='govuk-button govuk-button--secondary'
                           onClick={(event) => onOpenCloseFilter(event)}
+                          ref={toggleFilterButtonRef}
                         />
                         {(!location.state ||
                           !location.state.linkContacts ||

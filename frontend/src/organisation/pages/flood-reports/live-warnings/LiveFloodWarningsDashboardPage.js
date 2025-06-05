@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink.js'
@@ -31,6 +31,16 @@ export default function LiveFloodWarningsDashboardPage() {
   const [displayedLocationsAffected, setDisplayedLocationsAffected] = useState(
     []
   )
+  const applyFiltersButtonRef = useRef(null)
+  const toggleFilterButtonRef = useRef(null)
+
+  useEffect(() => {
+    if (isFilterVisible && applyFiltersButtonRef.current) {
+      applyFiltersButtonRef.current.focus()
+    } else if (!isFilterVisible && toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   useEffect(() => {
     ;(async () => {
@@ -231,6 +241,7 @@ export default function LiveFloodWarningsDashboardPage() {
         text={isFilterVisible ? 'Close filter' : 'Open filter'}
         className='govuk-button govuk-button--secondary inline-block'
         onClick={() => openCloseFilter()}
+        ref={toggleFilterButtonRef}
       />
       &nbsp; &nbsp;
       <Button
@@ -284,6 +295,7 @@ export default function LiveFloodWarningsDashboardPage() {
                     filters={filters}
                     updateFilter={updateFilter}
                     clearFilters={clearFilters}
+                    filterButtonRef={applyFiltersButtonRef}
                   />
                 </div>
                 <div className='govuk-grid-column-three-quarters'>{table}</div>

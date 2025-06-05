@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -60,6 +60,16 @@ export default function ViewUsersDashboardPage() {
   const [errorMessage, setErrorMessage] = useState('')
   const historyData = useFetchAlerts()
   const [activeAdmins, setActiveAdmins] = useState([])
+  const applyFiltersButtonRef = useRef(null)
+  const toggleFilterButtonRef = useRef(null)
+
+  useEffect(() => {
+    if (isFilterVisible && applyFiltersButtonRef.current) {
+      applyFiltersButtonRef.current.focus()
+    } else if (!isFilterVisible && toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   async function getActiveAdmins() {
     const { data } = await backendCall(
@@ -239,13 +249,15 @@ export default function ViewUsersDashboardPage() {
       text = defaultText
 
       if (activeAdminsNotRemoved.length > 0) {
-        const notDeleteTotal = activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+        const notDeleteTotal =
+          activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
         text = (
           <>
             {defaultText}
             <div className='govuk-inset-text'>
               <strong>
-                You cannot delete {notDeleteTotal} user{notDeleteTotal > 1 ? 's' : ''}
+                You cannot delete {notDeleteTotal} user
+                {notDeleteTotal > 1 ? 's' : ''}
               </strong>
               <br />
               <br />
@@ -550,6 +562,7 @@ export default function ViewUsersDashboardPage() {
                       text='Open filter'
                       className='govuk-button govuk-button--secondary inline-block'
                       onClick={(event) => onOpenCloseFilter(event)}
+                      ref={toggleFilterButtonRef}
                     />
                     {(!location.state ||
                       !location.state.linkLocations ||
@@ -616,6 +629,7 @@ export default function ViewUsersDashboardPage() {
                         setSelectedKeywordFilters={setSelectedKeywordFilters}
                         selectedLinkedFilters={selectedLinkedFilters}
                         setSelectedLinkedFilters={setSelectedLinkedFilters}
+                        filterButtonRef={applyFiltersButtonRef}
                       />
                     </div>
 
@@ -625,6 +639,7 @@ export default function ViewUsersDashboardPage() {
                           text='Close Filter'
                           className='govuk-button govuk-button--secondary'
                           onClick={(event) => onOpenCloseFilter(event)}
+                          ref={toggleFilterButtonRef}
                         />
                         &nbsp; &nbsp;
                         {(!location.state ||

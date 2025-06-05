@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter ({
+export default function SearchFilter({
   // TODO: Combine filter values into a single object
   contacts,
   setFilteredContacts,
@@ -27,7 +27,8 @@ export default function SearchFilter ({
   selectedKeywordFilters,
   setSelectedKeywordFilters,
   selectedLinkedFilters,
-  setSelectedLinkedFilters
+  setSelectedLinkedFilters,
+  filterButtonRef
 }) {
   const userTypes = ['Admin', ' Contact']
   const jobTitles = [
@@ -295,6 +296,7 @@ export default function SearchFilter ({
             text='Apply filters'
             className='govuk-button govuk-button--primary'
             onClick={(event) => filterContacts(event)}
+            ref={filterButtonRef || ''}
           />
         </div>
 

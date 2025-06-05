@@ -31,13 +31,10 @@ export default function LiveFloodWarningsDashboardPage () {
   const [displayedLocationsAffected, setDisplayedLocationsAffected] = useState(
     []
   )
-  const applyFiltersButtonRef = useRef(null)
   const toggleFilterButtonRef = useRef(null)
 
   useEffect(() => {
-    if (isFilterVisible && applyFiltersButtonRef.current) {
-      applyFiltersButtonRef.current.focus()
-    } else if (!isFilterVisible && toggleFilterButtonRef.current) {
+    if (toggleFilterButtonRef.current) {
       toggleFilterButtonRef.current.focus()
     }
   }, [isFilterVisible])
@@ -299,7 +296,6 @@ export default function LiveFloodWarningsDashboardPage () {
                           filters={filters}
                           updateFilter={updateFilter}
                           clearFilters={clearFilters}
-                          filterButtonRef={applyFiltersButtonRef}
                         />
                       </div>
                       <div className='govuk-grid-column-three-quarters'>{table}</div>

@@ -33,8 +33,7 @@ export default function SearchFilter ({
   selectedFloodMessagesSentFilters,
   setSelectedFloodMessagesSentFilters,
   selectedLinkedFilters,
-  setSelectedLinkedFilters,
-  filterButtonRef
+  setSelectedLinkedFilters
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -76,9 +75,7 @@ export default function SearchFilter ({
   ]
 
   const keywords = [
-    ...new Set(
-      locations.flatMap(location => location.additionals.keywords)
-    )
+    ...new Set(locations.flatMap((location) => location.additionals.keywords))
   ]
 
   const linkedLocations = [...new Set(['No', 'Yes'])]
@@ -420,7 +417,6 @@ export default function SearchFilter ({
             text='Apply filters'
             className='govuk-button govuk-button--primary'
             onClick={(event) => filterLocations(event)}
-            ref={filterButtonRef || ''}
           />
         </div>
 

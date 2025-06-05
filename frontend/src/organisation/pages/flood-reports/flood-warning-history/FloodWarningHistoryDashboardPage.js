@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -13,7 +13,7 @@ import { geoSafeToWebLocation } from '../../../../common/services/formatters/Loc
 import FloodReportFilter from '../components/FloodReportFilter'
 import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodReportsTable'
 
-export default function FloodWarningHistoryDashboardPage() {
+export default function FloodWarningHistoryDashboardPage () {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -32,6 +32,13 @@ export default function FloodWarningHistoryDashboardPage() {
   const [displayedLocationsAffected, setDisplayedLocationsAffected] = useState(
     []
   )
+  const toggleFilterButtonRef = useRef(null)
+
+  useEffect(() => {
+    if (toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   useEffect(() => {
     ;(async () => {
@@ -129,7 +136,7 @@ export default function FloodWarningHistoryDashboardPage() {
     lastUpdatedTime
   ) => {
     const { additionals } = location
-    let locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
+    const locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
       (targetArea) => targetArea.TA_CODE === TA_CODE
     )
 
@@ -225,6 +232,7 @@ export default function FloodWarningHistoryDashboardPage() {
         text={isFilterVisible ? 'Close filter' : 'Open filter'}
         className='govuk-button govuk-button--secondary inline-block'
         onClick={() => openCloseFilter()}
+        ref={toggleFilterButtonRef}
       />
       &nbsp; &nbsp;
       <Button
@@ -262,29 +270,33 @@ export default function FloodWarningHistoryDashboardPage() {
             <ErrorSummary errorList={filterErrorMessages} />
             <br />
             <h1 className='govuk-heading-l'>Flood warning history</h1>
-            {loading ? (
-              <LoadingSpinner />
-            ) : !isFilterVisible ? (
-              <div className='govuk-grid-row'>
-                <>{table}</>
-              </div>
-            ) : (
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
-                  <FloodReportFilter
-                    locationsAffected={locationsAffected}
-                    setFilteredLocationsAffected={setFilteredLocationsAffected}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                    filters={filters}
-                    updateFilter={updateFilter}
-                    clearFilters={clearFilters}
-                    setFilterErrorMessages={setFilterErrorMessages}
-                  />
-                </div>
-                <div className='govuk-grid-column-three-quarters'>{table}</div>
-              </div>
-            )}
+            {loading
+              ? (
+                <LoadingSpinner />
+                )
+              : !isFilterVisible
+                  ? (
+                    <div className='govuk-grid-row'>
+                      <>{table}</>
+                    </div>
+                    )
+                  : (
+                    <div className='govuk-grid-row'>
+                      <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                        <FloodReportFilter
+                          locationsAffected={locationsAffected}
+                          setFilteredLocationsAffected={setFilteredLocationsAffected}
+                          resetPaging={resetPaging}
+                          setResetPaging={setResetPaging}
+                          filters={filters}
+                          updateFilter={updateFilter}
+                          clearFilters={clearFilters}
+                          setFilterErrorMessages={setFilterErrorMessages}
+                        />
+                      </div>
+                      <div className='govuk-grid-column-three-quarters'>{table}</div>
+                    </div>
+                    )}
           </div>
         </div>
       </main>

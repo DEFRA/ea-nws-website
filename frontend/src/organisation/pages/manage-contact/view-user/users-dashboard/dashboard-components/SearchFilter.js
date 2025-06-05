@@ -27,8 +27,7 @@ export default function SearchFilter ({
   selectedKeywordFilters,
   setSelectedKeywordFilters,
   selectedLinkedFilters,
-  setSelectedLinkedFilters,
-  filterButtonRef
+  setSelectedLinkedFilters
 }) {
   const userTypes = ['Admin', ' Contact']
   const jobTitles = [
@@ -296,7 +295,6 @@ export default function SearchFilter ({
             text='Apply filters'
             className='govuk-button govuk-button--primary'
             onClick={(event) => filterContacts(event)}
-            ref={filterButtonRef || ''}
           />
         </div>
 

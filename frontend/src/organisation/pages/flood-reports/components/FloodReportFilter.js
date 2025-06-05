@@ -21,8 +21,7 @@ export default function FloodReportFilter ({
   filters,
   updateFilter,
   clearFilters,
-  setFilterErrorMessages,
-  filterButtonRef
+  setFilterErrorMessages
 }) {
   // Search filter visibility
   const [visibility, setVisibility] = useState({
@@ -572,7 +571,6 @@ export default function FloodReportFilter ({
           text='Apply filters'
           className='govuk-button govuk-button--primary'
           onClick={filterLocationsAffected}
-          ref={filterButtonRef}
         />
       </div>
 

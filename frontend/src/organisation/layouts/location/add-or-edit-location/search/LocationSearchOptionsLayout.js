@@ -44,9 +44,7 @@ export default function LocationSearchOptionsLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <legend className='govuk-fieldset__legend'>
-              <h1 className='govuk-heading-l'>{heading}</h1>
-            </legend>
+            <h1 className='govuk-heading-l'>{heading}</h1>
             {additionalInfo && <>{additionalInfo}</>}
             <div
               className={
@@ -57,6 +55,7 @@ export default function LocationSearchOptionsLayout ({
             >
               {error && <p className='govuk-error-message'>{error}</p>}
               <fieldset className='govuk-fieldset'>
+                <legend className='govuk-visually-hidden'>{heading}</legend>
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {searchOptions.map((option) => (
                     <Radio

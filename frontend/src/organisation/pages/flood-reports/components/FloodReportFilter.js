@@ -13,7 +13,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
 
-export default function FloodReportFilter({
+export default function FloodReportFilter ({
   locationsAffected,
   setFilteredLocationsAffected,
   resetPaging,
@@ -197,7 +197,7 @@ export default function FloodReportFilter({
     }
 
     return {
-      date: date
+      date
     }
   }
 
@@ -237,8 +237,7 @@ export default function FloodReportFilter({
                 type='text'
                 value={filters.dateFrom}
                 onChange={(event) =>
-                  updateFilter('dateFrom', event.target.value)
-                }
+                  updateFilter('dateFrom', event.target.value)}
               />
               <FontAwesomeIcon
                 icon={faCalendar}
@@ -307,8 +306,7 @@ export default function FloodReportFilter({
               type='text'
               value={filters.locationName}
               onChange={(event) =>
-                updateFilter('locationName', event.target.value)
-              }
+                updateFilter('locationName', event.target.value)}
             />
           </div>
         </div>
@@ -525,17 +523,19 @@ export default function FloodReportFilter({
       )
     }
 
-    return selectedFilters.length > 0 ? (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '5px'
-        }}
-      >
-        {selectedFilters}
-      </div>
-    ) : null
+    return selectedFilters.length > 0
+      ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '5px'
+          }}
+        >
+          {selectedFilters}
+        </div>
+        )
+      : null
   }
 
   return (

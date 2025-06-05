@@ -144,36 +144,10 @@ export default function FloodMessagesSentSummaryPage() {
 
     // process all target areas for this location
     targetAreas
-      ?.filter((targetArea) => {
-        if (category === 'all' || category === 'messagesTurnedOff') {
-          return (
-            targetArea.category.includes('Warning') ||
-            targetArea.category.includes('Alert')
-          )
-        } else if (category === 'severeWarningsOnly') {
-          return targetArea.category.includes('Warning')
-        } else if (category === 'alertsOnly') {
-          return targetArea.category.includes('Alert')
-        }
-      })
+      ?.filter((targetArea) => isTargetAreaMatch(targetArea, category))
       .forEach((targetArea) => {
         alerts
-          .filter((alert) => {
-            if (category === 'all' || category === 'messagesTurnedOff') {
-              return [
-                AlertType.SEVERE_FLOOD_WARNING,
-                AlertType.FLOOD_WARNING,
-                AlertType.FLOOD_ALERT
-              ].some((type) => alert.type === type)
-            } else if (category === 'severeWarningsOnly') {
-              return [
-                AlertType.SEVERE_FLOOD_WARNING,
-                AlertType.FLOOD_WARNING
-              ].some((type) => alert.type === type)
-            } else if (category === 'alertsOnly') {
-              return alert.type.includes(AlertType.FLOOD_ALERT)
-            }
-          })
+          .filter((alert) => isAlertMatch(alert, category))
           .forEach((alert) => {
             const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
             const taCode = getAdditional(extraInfo, 'TA_CODE')
@@ -211,6 +185,42 @@ export default function FloodMessagesSentSummaryPage() {
 
       return newData
     })
+  }
+
+  function isTargetAreaMatch(targetArea, category) {
+    switch (category) {
+      case 'severeWarningsOnly':
+        return targetArea.category.includes('Warning')
+      case 'alertsOnly':
+        return targetArea.category.includes('Alert')
+      case 'all':
+      case 'messagesTurnedOff':
+      default:
+        return (
+          targetArea.category.includes('Warning') ||
+          targetArea.category.includes('Alert')
+        )
+    }
+  }
+
+  function isAlertMatch(alert, category) {
+    switch (category) {
+      case 'severeWarningsOnly':
+        return [
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING
+        ].includes(alert.type)
+      case 'alertsOnly':
+        return alert.type === AlertType.FLOOD_ALERT
+      case 'all':
+      case 'messagesTurnedOff':
+      default:
+        return [
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING,
+          AlertType.FLOOD_ALERT
+        ].includes(alert.type)
+    }
   }
 
   const locationTableMessagesBody = () => (

@@ -39,7 +39,6 @@ export default function LocationSearchOptionsLayout ({
   }
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -56,6 +55,7 @@ export default function LocationSearchOptionsLayout ({
             >
               {error && <p className='govuk-error-message'>{error}</p>}
               <fieldset className='govuk-fieldset'>
+                <legend className='govuk-visually-hidden'>{heading}</legend>
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {searchOptions.map((option) => (
                     <Radio

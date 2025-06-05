@@ -11,11 +11,18 @@ export default function Input({
   error = '',
   isNameBold = false,
   labelSize = hint ? 's' : 'm',
-  nameSize = null
+  nameSize = null,
+  hiddenLabel = false
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
   }
+
+  const labelClassName = `govuk-label ${
+    isNameBold && !nameSize ? `govuk-label--${labelSize}` : ''
+  } ${isNameBold && nameSize ? `govuk-label--${nameSize}` : ''} ${
+    hiddenLabel ? 'govuk-visually-hidden' : ''
+  }`
 
   return (
     <>
@@ -26,12 +33,7 @@ export default function Input({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label
-          className={`govuk-label ${
-            isNameBold && !nameSize ? `govuk-label--${labelSize}` : ''
-          } ${isNameBold && nameSize ? `govuk-label--${nameSize}` : ''}`}
-          htmlFor={id}
-        >
+        <label className={labelClassName} htmlFor={id}>
           {name}
         </label>
         {hint && (

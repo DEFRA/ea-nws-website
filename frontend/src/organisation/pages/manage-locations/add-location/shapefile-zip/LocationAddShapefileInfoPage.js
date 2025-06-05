@@ -4,19 +4,22 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddShapefileInfoPage () {
+export default function LocationAddShapefileInfoPage() {
   const navigate = useNavigate()
 
   // References used to scroll to certain elements on page
   const howToUploadRef = useRef(null)
 
-  const scrollToSection = (ref) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' })
+  const handleScrollToSection = (e, ref) => {
+    e.preventDefault()
+    if (ref.current) {
+      ref.current?.focus() //Move keyboard focus
+      ref.current?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -32,15 +35,20 @@ export default function LocationAddShapefileInfoPage () {
                 -{' '}
                 <Link
                   className='govuk-link'
-                  onClick={() => scrollToSection(howToUploadRef)}
+                  onClick={(e) => handleScrollToSection(e, howToUploadRef)}
                 >
                   How to upload a shapefile
                 </Link>
-             </p>
+              </p>
               <br />
 
               {/* How to upload section */}
-              <h2 ref={howToUploadRef} className='govuk-heading-m'>
+              <h2
+                ref={howToUploadRef}
+                tabIndex='-1'
+                role='region'
+                className='govuk-heading-m'
+              >
                 How to upload a shapefile
               </h2>
               <p className='govuk-!-margin-bottom-6 govuk-!-margin-top-6'>
@@ -50,8 +58,8 @@ export default function LocationAddShapefileInfoPage () {
               <p>
                 Each shapefile can only contain 1 location in it. But a
                 shapefile can contain multiple shapes in it that refer to a
-                single location. For example, you could upload a shapefile of a railway line that
-                has multiple parts along it.{' '}
+                single location. For example, you could upload a shapefile of a
+                railway line that has multiple parts along it.{' '}
               </p>
               <p>Each shapefile must be included in a single ZIP file.</p>
               <p>
@@ -73,8 +81,8 @@ export default function LocationAddShapefileInfoPage () {
                 locations.dbf
               </p>
               <p>
-                Your shapefile name will be used for the location name in this service.
-                You can change this later, if you need to.
+                Your shapefile name will be used for the location name in this
+                service. You can change this later, if you need to.
               </p>
               <p>
                 If you have any problems uploading your shapefile, contact

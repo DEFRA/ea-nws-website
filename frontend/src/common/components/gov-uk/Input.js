@@ -33,7 +33,7 @@ export default function Input({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label className={labelClassName.trim()} htmlFor={id}>
+        <label className={labelClassName} htmlFor={id}>
           {name}
         </label>
         {hint && (

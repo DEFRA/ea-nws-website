@@ -60,6 +60,7 @@ export default function ActionPlanLayout ({
                 then move stock to the top floor and evacuate.
               </p>
               <TextArea
+                id='action-plan'
                 error={error}
                 inputType='text'
                 rows='5'

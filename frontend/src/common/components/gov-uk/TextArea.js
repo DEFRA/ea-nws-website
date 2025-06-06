@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function TextArea ({
+  id,
   name,
   className,
   rows,
@@ -23,11 +24,11 @@ export default function TextArea ({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label className='govuk-label' htmlFor='govuk-textarea'>
+        <label className='govuk-label' htmlFor={id}>
           {name}
         </label>
         {error !== '' && (
-          <p id='{id}-error' className='govuk-error-message'>
+          <p id={`${id}-error`} className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span> {error}
           </p>
         )}
@@ -36,7 +37,7 @@ export default function TextArea ({
             error === '' ? className : 'govuk-textarea govuk-textarea--error'
           }
           name={name}
-          id='govuk-textarea'
+          id={id}
           rows={rows}
           value={value}
           onChange={handleChange}

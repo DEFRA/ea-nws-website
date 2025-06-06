@@ -301,6 +301,7 @@ export default function KeywordsLayout ({
                   position='absolute'
                   showNotFound={false}
                   nameField='name'
+                  ariaLabel='Add keyword'
                 />
                 <Button
                   text='Add keyword'

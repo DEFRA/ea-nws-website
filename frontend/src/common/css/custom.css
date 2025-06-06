@@ -2096,3 +2096,8 @@ govuk-menu-toggle.button-menu > button {
     margin-bottom: 30px;
   }
 }
+
+.no-bullets {
+  list-style: none;
+  padding-left: 0;
+}

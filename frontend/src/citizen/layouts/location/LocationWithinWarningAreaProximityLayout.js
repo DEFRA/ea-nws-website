@@ -142,7 +142,10 @@ export default function LocationWithinWarningAreaProximityLayout({
             <div className='govuk-grid-row govuk-body'>
               <div className='govuk-grid-column-two-thirds'>
                 {error && <ErrorSummary errorList={[error]} />}
-                <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+                <h1
+                  className='govuk-heading-l govuk-!-margin-top-6'
+                  id='main-content'
+                >
                   You can get{' '}
                   {type === 'severe'
                     ? 'severe flood warnings and '

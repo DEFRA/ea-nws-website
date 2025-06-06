@@ -176,7 +176,7 @@ export default function LocationSearchResultsLayout({
             ) : (
               <div className='govuk-grid-column-two-thirds'>
                 <div className='govuk-body'>
-                  <h1 className='govuk-heading-l'>
+                  <h1 className='govuk-heading-l' id='main-content'>
                     {locationPostCode
                       ? 'Select an address'
                       : 'Select a location'}

@@ -15,7 +15,7 @@ import {
 } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DuplicateLocationsOptionsPage () {
+export default function DuplicateLocationsOptionsPage() {
   const navigate = useNavigate()
   const [option, setOption] = useState('')
   const [error, setError] = useState('')
@@ -37,7 +37,7 @@ export default function DuplicateLocationsOptionsPage () {
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -123,8 +123,8 @@ export default function DuplicateLocationsOptionsPage () {
         notFoundLocations > 0
           ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
           : notInEnglandLocations > 0
-            ? orgManageLocationsUrls.unmatchedLocations.notInEngland.find
-            : orgManageLocationsUrls.add.contactLinkInfo
+          ? orgManageLocationsUrls.unmatchedLocations.notInEngland.find
+          : orgManageLocationsUrls.add.contactLinkInfo
 
       switch (option) {
         case options[0].value: {
@@ -149,7 +149,9 @@ export default function DuplicateLocationsOptionsPage () {
           const dupLength = dupLocations.length
           setReplacing(true)
           for (let i = 0; i < dupLength; i += 10) {
-            setStage(`Replacing locations (${Math.round((i / dupLength) * 100)}%)`)
+            setStage(
+              `Replacing locations (${Math.round((i / dupLength) * 100)}%)`
+            )
             const chunk = dupLocations.slice(i, i + 10)
             await Promise.all(
               chunk.map(async (location) => {
@@ -159,7 +161,7 @@ export default function DuplicateLocationsOptionsPage () {
                   location.additionals.locationName,
                   'valid'
                 )
-  
+
                 const locationToUpdate = webToGeoSafeLocation(location)
                 // change the location ID to the existing ID in geosafe
                 locationToUpdate.id = existingLocation.id
@@ -185,7 +187,7 @@ export default function DuplicateLocationsOptionsPage () {
                     alertTypes: location.additionals.other.alertTypes
                   }
                 }
-  
+
                 await backendCall(
                   registerData,
                   'api/location/update_registration',
@@ -233,7 +235,7 @@ export default function DuplicateLocationsOptionsPage () {
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {duplicateLocations} locations already exist with the same name in
               this account
             </h1>
@@ -278,14 +280,15 @@ export default function DuplicateLocationsOptionsPage () {
           </div>
         </div>
       </main>
-      {replacing &&
+      {replacing && (
         <div className='popup-dialog'>
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{`${stage}`}</p>}
             />
           </div>
-        </div>}
+        </div>
+      )}
     </>
   )
 }

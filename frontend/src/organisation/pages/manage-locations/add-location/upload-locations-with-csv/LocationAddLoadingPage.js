@@ -140,7 +140,7 @@ export default function LocationAddLoadingPage () {
     <>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
-          <h1 className='govuk-heading-l'>{stage}</h1>
+          <h1 className='govuk-heading-l' id='main-content'>{stage}</h1>
           <div className='govuk-body'>
             <Spinner size='75' />
           </div>

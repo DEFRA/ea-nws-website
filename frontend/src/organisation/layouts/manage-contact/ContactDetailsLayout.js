@@ -140,7 +140,9 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
                 ]}
               />
             )}
-            <h1 className='govuk-heading-l'>User details</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              User details
+            </h1>
             <div className='govuk-body'>
               <Input
                 id='first-name'

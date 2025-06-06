@@ -9,12 +9,16 @@ import { geoSafeToWebLocation } from '../../../../common/services/formatters/Loc
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LinkLocationToContactPage () {
+export default function LinkLocationToContactPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
-  const predefinedBoundaryFlow = useSelector((state) => state.session.predefinedBoundaryFlow)
+  const currentLocation = geoSafeToWebLocation(
+    useSelector((state) => state.session.currentLocation)
+  )
+  const predefinedBoundaryFlow = useSelector(
+    (state) => state.session.predefinedBoundaryFlow
+  )
 
   const linkToContacts = (event) => {
     event.preventDefault()
@@ -22,7 +26,8 @@ export default function LinkLocationToContactPage () {
     dispatch(setLinkLocations(linkLocations))
     navigate(orgManageContactsUrls.view.dashboard, {
       state: {
-        linkLocations, linkSource: 'info'
+        linkLocations,
+        linkSource: 'info'
       }
     })
   }
@@ -48,9 +53,9 @@ export default function LinkLocationToContactPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
-              If people in your organisation need
-              flood messages for this location
+            <h1 className='govuk-heading-l' id='main-content'>
+              If people in your organisation need flood messages for this
+              location
             </h1>
             <p className='govuk-body'>
               You'll need to add these people as contacts.
@@ -65,10 +70,7 @@ export default function LinkLocationToContactPage () {
                 onClick={linkToContacts}
               />
               &nbsp; &nbsp;
-              <Link
-                className='govuk-link inline-link'
-                onClick={navigateSkip}
-              >
+              <Link className='govuk-link inline-link' onClick={navigateSkip}>
                 I'll do this later
               </Link>
             </div>

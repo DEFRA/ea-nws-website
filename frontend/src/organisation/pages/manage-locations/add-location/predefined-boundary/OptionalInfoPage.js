@@ -31,7 +31,7 @@ export default function OptionalInformationPage() {
               text='Predefined boundary location added'
             />
             &nbsp; &nbsp;
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Useful information you can include to help you easily identify
               this location
             </h1>

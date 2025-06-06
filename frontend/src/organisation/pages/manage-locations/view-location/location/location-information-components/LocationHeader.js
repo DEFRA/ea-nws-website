@@ -9,7 +9,7 @@ import RiskCategoryLabel from '../../../../../components/custom/RiskCategoryLabe
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import ViewLocationSubNavigation from './ViewLocationSubNavigation'
 
-export default function LocationHeader ({ currentPage }) {
+export default function LocationHeader({ currentPage }) {
   const navigate = useNavigate()
   const location = useLocation()
   const additionalData = useSelector((state) => getLocationAdditionals(state))
@@ -26,7 +26,9 @@ export default function LocationHeader ({ currentPage }) {
       )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
-          <h1 className='govuk-heading-l'>{additionalData.locationName}</h1>
+          <h1 className='govuk-heading-l' id='main-content'>
+            {additionalData.locationName}
+          </h1>
         </div>
         <div
           className='govuk-grid-column-one-half right'
@@ -73,14 +75,16 @@ export default function LocationHeader ({ currentPage }) {
                   </h3>
                   <div className='flood-risk-banner-label '>
                     <RiskCategoryLabel
-                      riskLevel={additionalData?.groundWaterRisk || 'unavailable'}
+                      riskLevel={
+                        additionalData?.groundWaterRisk || 'unavailable'
+                      }
                     />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-      )}
+        )}
 
       {/* view location navigation */}
       <div className='govuk-!-margin-top-6 govuk-!-margin-bottom-9'>

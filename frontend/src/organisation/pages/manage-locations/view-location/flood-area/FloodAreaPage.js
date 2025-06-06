@@ -8,13 +8,16 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import FloodAreaMap from './FloodAreaMap'
 
-export default function FloodAreaPage () {
+export default function FloodAreaPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const area = useSelector((state) => state.session.currentTA)
@@ -45,7 +48,7 @@ export default function FloodAreaPage () {
     return typeMap[type] || []
   }
 
-  const categoryToTableText = type => {
+  const categoryToTableText = (type) => {
     const typeMap = {
       'Flood Warning': 'severe warning and flood warning',
       'Flood Warning Groundwater': 'severe warning and flood warning',
@@ -64,15 +67,27 @@ export default function FloodAreaPage () {
       switch (messageType) {
         case 'Severe Flood Warning':
           count = floodCount.find((count) => count.type === messageType)?.count
-          messageSent.push(`${count} severe flood warning${count === 1 ? '' : 's'} were sent for this area in the last 2 years.`)
+          messageSent.push(
+            `${count} severe flood warning${
+              count === 1 ? '' : 's'
+            } were sent for this area in the last 2 years.`
+          )
           break
         case 'Flood Warning':
           count = floodCount.find((count) => count.type === messageType)?.count
-          messageSent.push(`${count} flood warning${count === 1 ? '' : 's'} were sent for this area in the last 2 years.`)
+          messageSent.push(
+            `${count} flood warning${
+              count === 1 ? '' : 's'
+            } were sent for this area in the last 2 years.`
+          )
           break
         case 'Flood Alert':
           count = floodCount.find((count) => count.type === messageType)?.count
-          messageSent.push(`${count} flood alert${count === 1 ? '' : 's'} were sent for this area in the last 2 years.`)
+          messageSent.push(
+            `${count} flood alert${
+              count === 1 ? '' : 's'
+            } were sent for this area in the last 2 years.`
+          )
           break
         case 'default':
           messageSent.push('')
@@ -120,7 +135,8 @@ export default function FloodAreaPage () {
     if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
       riskCategory = location?.additionals?.other?.riverSeaRisk || 'unavailable'
     } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
-      riskCategory = location?.additionals?.other?.groundWaterRisk || 'unavailable'
+      riskCategory =
+        location?.additionals?.other?.groundWaterRisk || 'unavailable'
     }
     return riskData[riskCategory]
   }
@@ -146,12 +162,22 @@ export default function FloodAreaPage () {
       if (webLocations.length > 0) {
         webLocations.forEach((location) => {
           location.within = true
-          if (location.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
-            booleanPointInPolygon([location.coordinates.longitude, location.coordinates.latitude], area.geometry) && locationsUpdate.push(location)
+          if (
+            location.additionals.other.location_data_type ===
+            LocationDataType.X_AND_Y_COORDS
+          ) {
+            booleanPointInPolygon(
+              [location.coordinates.longitude, location.coordinates.latitude],
+              area.geometry
+            ) && locationsUpdate.push(location)
           } else {
-            booleanIntersects(location.geometry.geoJson, area.geometry) && locationsUpdate.push(location)
+            booleanIntersects(location.geometry.geoJson, area.geometry) &&
+              locationsUpdate.push(location)
           }
-          if (location?.additionals?.other?.childrenIDs && location?.additionals?.other?.childrenIDs.length > 0) {
+          if (
+            location?.additionals?.other?.childrenIDs &&
+            location?.additionals?.other?.childrenIDs.length > 0
+          ) {
             for (const child of location?.additionals?.other?.childrenIDs) {
               if (child.TA_CODE === area.properties.TA_CODE) {
                 location.within = false
@@ -193,9 +219,10 @@ export default function FloodAreaPage () {
 
   const message = (
     <>
-      {historicalMessages.length > 0 && historicalMessages.map((messageSent, index) => (
-        <p key={index}>{messageSent}</p>
-      ))}
+      {historicalMessages.length > 0 &&
+        historicalMessages.map((messageSent, index) => (
+          <p key={index}>{messageSent}</p>
+        ))}
     </>
   )
 
@@ -207,16 +234,17 @@ export default function FloodAreaPage () {
 
   return (
     <>
-
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>{area.properties.TA_Name}</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              {area.properties.TA_Name}
+            </h1>
             {message}
             <div
-              className='govuk-!-margin-top-5' style={
-              {
+              className='govuk-!-margin-top-5'
+              style={{
                 display: 'flex',
                 width: 'fit-content',
                 gap: '10px',
@@ -224,14 +252,26 @@ export default function FloodAreaPage () {
                 borderStyle: 'solid',
                 borderColor: '#B1B4B6',
                 padding: ' 10px 20px 10px 10px'
-              }
-              }
+              }}
             >
-              <svg width='17' height='23' viewBox='0 0 17 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                <path fill-rule='evenodd' clip-rule='evenodd' d='M8.5 23C12.58 18.8182 17 13.5237 17 8.71212C17 3.90055 13.1949 0 8.5 0C3.80508 0 0 3.90055 0 8.71212C0 13.5237 4.42 18.8182 8.5 23ZM8.5 14.6364C11.6928 14.6364 14.28 11.9839 14.28 8.71212C14.28 5.44031 11.6928 2.78788 8.5 2.78788C5.30719 2.78788 2.72 5.44031 2.72 8.71212C2.72 11.9839 5.30719 14.6364 8.5 14.6364Z' fill='#111010' />
+              <svg
+                width='17'
+                height='23'
+                viewBox='0 0 17 23'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  clip-rule='evenodd'
+                  d='M8.5 23C12.58 18.8182 17 13.5237 17 8.71212C17 3.90055 13.1949 0 8.5 0C3.80508 0 0 3.90055 0 8.71212C0 13.5237 4.42 18.8182 8.5 23ZM8.5 14.6364C11.6928 14.6364 14.28 11.9839 14.28 8.71212C14.28 5.44031 11.6928 2.78788 8.5 2.78788C5.30719 2.78788 2.72 5.44031 2.72 8.71212C2.72 11.9839 5.30719 14.6364 8.5 14.6364Z'
+                  fill='#111010'
+                />
               </svg>
 
-              <Link className='govuk-link' onClick={openMap}>View map</Link>
+              <Link className='govuk-link' onClick={openMap}>
+                View map
+              </Link>
             </div>
             {showMap && (
               <FloodAreaMap
@@ -247,7 +287,9 @@ export default function FloodAreaPage () {
               Locations in {categoryToTableText(area.properties.category)} area
             </h2>
             <span className='govuk-caption-m'>
-              {locations.length} location{locations.length === 1 ? ' is' : 's are'} in this {categoryToTableText(area.properties.category)} area
+              {locations.length} location
+              {locations.length === 1 ? ' is' : 's are'} in this{' '}
+              {categoryToTableText(area.properties.category)} area
             </span>
 
             <table className='govuk-table govuk-table--small-text-until-tablet'>
@@ -274,7 +316,10 @@ export default function FloodAreaPage () {
                 {locations.map((location, index) => (
                   <tr key={index} className='govuk-table__row'>
                     <td className='govuk-table__cell'>
-                      <Link className='govuk-link' onClick={(e) => viewLocation(e, location)}>
+                      <Link
+                        className='govuk-link'
+                        onClick={(e) => viewLocation(e, location)}
+                      >
                         {location.additionals.locationName}
                       </Link>
                     </td>

@@ -123,7 +123,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                 errorList={[error, postCodeError, placeNameError]}
               />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Check if you can get flood messages for your location
             </h1>
             <div

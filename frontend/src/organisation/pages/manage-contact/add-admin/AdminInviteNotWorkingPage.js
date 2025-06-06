@@ -1,12 +1,12 @@
 import React from 'react'
 
-export default function AdminInviteNotWorkingPage () {
+export default function AdminInviteNotWorkingPage() {
   return (
     <>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Your invitation is no longer working
             </h1>
             <p className='govuk-body'>

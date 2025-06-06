@@ -259,7 +259,7 @@ export default function KeywordsLayout ({
             {(keywordError || error) && (
               <ErrorSummary errorList={[keywordError, error]} />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {keywordTitle || `Add keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>

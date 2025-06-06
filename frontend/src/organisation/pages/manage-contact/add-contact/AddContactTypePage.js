@@ -65,12 +65,15 @@ export default function AddContactTypePage() {
           <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
             {reasonError && <ErrorSummary errorList={[reasonError]} />}
-            <h1 className='govuk-heading-l'>Select type of new user</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Select type of new user
+            </h1>
             <div className='govuk-body'>
               <div
                 className={
-                  reasonError ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
+                  reasonError
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
                 }
               >
                 {reasonError && (

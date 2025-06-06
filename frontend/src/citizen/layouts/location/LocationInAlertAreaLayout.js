@@ -285,7 +285,7 @@ export default function LocationInAlertAreaLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {additionalAlerts
                 ? 'You can also get flood alerts (optional)'
                 : 'You can get flood alerts for this location'}

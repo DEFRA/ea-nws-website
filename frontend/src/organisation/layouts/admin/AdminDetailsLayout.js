@@ -111,9 +111,11 @@ export default function AdminDetailsLayout({
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
             {isAdmin ? (
-              <h1 className='govuk-heading-l'>Enter your details</h1>
+              <h1 className='govuk-heading-l' id='main-content'>
+                Enter your details
+              </h1>
             ) : (
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 Enter details for main administrator
               </h1>
             )}

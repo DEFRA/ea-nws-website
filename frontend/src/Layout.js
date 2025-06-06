@@ -10,12 +10,12 @@ import PhaseBanner from './common/components/gov-uk/PhaseBanner'
 import './common/css/custom.css'
 import { backendCall } from './common/services/BackendService'
 
-function Layout () {
+function Layout() {
   const location = useLocation()
   const auth = useSelector((state) => state.session.authToken)
   const [servicePhase, setServicePhase] = useState(false)
 
-  async function getServicePhase () {
+  async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
   }
@@ -27,19 +27,24 @@ function Layout () {
 
   return (
     <div className='page-container'>
+      <a
+        href='#main-content'
+        class='govuk-skip-link'
+        data-module='govuk-skip-link'
+      >
+        Skip to main content
+      </a>
       <Header />
       <div className='sub-navigation'>
-        {location.pathname.includes('organisation') && auth
-          ? (
-            <div className='custom-width-container'>
-              <OrganisationAccountNavigation currentPage={location.pathname} />
-            </div>
-            )
-          : (
-            <div className='govuk-width-container'>
-              <CitizenAccountNavigation currentPage={location.pathname} />
-            </div>
-            )}
+        {location.pathname.includes('organisation') && auth ? (
+          <div className='custom-width-container'>
+            <OrganisationAccountNavigation currentPage={location.pathname} />
+          </div>
+        ) : (
+          <div className='govuk-width-container'>
+            <CitizenAccountNavigation currentPage={location.pathname} />
+          </div>
+        )}
       </div>
       <div
         className={
@@ -48,13 +53,11 @@ function Layout () {
             : 'govuk-!-padding-bottom-9'
         }
       >
-        {location.pathname.includes('organisation') && auth
-          ? (
-            <PhaseBanner type='org' phase={servicePhase} />
-            )
-          : (
-            <PhaseBanner phase={servicePhase} />
-            )}
+        {location.pathname.includes('organisation') && auth ? (
+          <PhaseBanner type='org' phase={servicePhase} />
+        ) : (
+          <PhaseBanner phase={servicePhase} />
+        )}
         <div
           className={`${
             location.pathname.includes('organisation') && auth

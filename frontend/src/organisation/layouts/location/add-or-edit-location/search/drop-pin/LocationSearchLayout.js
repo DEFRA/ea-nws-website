@@ -111,7 +111,9 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
             {placeNameTownOrPostcodeError && (
               <ErrorSummary errorList={[placeNameTownOrPostcodeError]} />
             )}
-            <h1 className='govuk-heading-l'>Find the location on a map</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Find the location on a map
+            </h1>
             {flow?.includes('unmatched-locations') && (
               <p>
                 The location you're searching for cannot be found. We need some

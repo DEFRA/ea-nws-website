@@ -7,7 +7,7 @@ import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ContactLinkInfoPage () {
+export default function ContactLinkInfoPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -27,8 +27,9 @@ export default function ContactLinkInfoPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
-              If people in your organisation need<br />
+            <h1 className='govuk-heading-l' id='main-content'>
+              If people in your organisation need
+              <br />
               flood message for these locations
             </h1>
             <div className='govuk-body'>
@@ -39,8 +40,9 @@ export default function ContactLinkInfoPage () {
                   to={orgManageContactsUrls.view.dashboard}
                 >
                   contacts
-                </Link>
-                {' '}and then link them to these<br />
+                </Link>{' '}
+                and then link them to these
+                <br />
                 locations.
               </p>
               <p>
@@ -50,8 +52,9 @@ export default function ContactLinkInfoPage () {
                   onClick={(e) => handleContactInfo(e)}
                 >
                   contact profile
-                </Link>
-                {' '}<br />and link yourself to these locations.
+                </Link>{' '}
+                <br />
+                and link yourself to these locations.
               </p>
 
               <Button

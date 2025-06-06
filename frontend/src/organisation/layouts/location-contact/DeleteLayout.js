@@ -10,7 +10,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DeleteLayout () {
+export default function DeleteLayout() {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -30,7 +30,7 @@ export default function DeleteLayout () {
   const [error, setError] = useState(false)
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -107,25 +107,27 @@ export default function DeleteLayout () {
         {error && <ErrorSummary errorList={[error]} />}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Delete {!isLocation && 'user'} {nameToDelete}
             </h1>
             <div className='govuk-body'>
-            {isLocation ? 
-              <p className='govuk-!-margin-bottom-8'>
-                If you continue {nameToDelete} will be deleted from this account
-                and will not get flood messages.
-              </p>
-              :
-              <>
-              <p>
-                If you continue, {nameToDelete} will be deleted from this account.
-              </p>
-              <p className='govuk-!-margin-bottom-8'>
-                They'll no longer get flood messages, if they were receiving any.
-              </p>
-              </>
-              }
+              {isLocation ? (
+                <p className='govuk-!-margin-bottom-8'>
+                  If you continue {nameToDelete} will be deleted from this
+                  account and will not get flood messages.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    If you continue, {nameToDelete} will be deleted from this
+                    account.
+                  </p>
+                  <p className='govuk-!-margin-bottom-8'>
+                    They'll no longer get flood messages, if they were receiving
+                    any.
+                  </p>
+                </>
+              )}
               <Button
                 text={`Delete ${isLocation ? 'location' : 'user'}`}
                 className='govuk-button govuk-button--warning'

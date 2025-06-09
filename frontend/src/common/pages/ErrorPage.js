@@ -19,7 +19,13 @@ export default function ErrorPage () {
               <ContactDetails />
             </p>
             <p>
-              Email: <Link>getfloodwarnings@environment-agency.gov.uk</Link>
+              Email:{' '}
+              <Link
+                class='govuk-link'
+                to='mailto:enquiries@environment-agency.gov.uk'
+              >
+                enquiries@environment-agency.gov.uk
+              </Link>
               <br />
               Monday to Friday, 8am to 6pm
             </p>

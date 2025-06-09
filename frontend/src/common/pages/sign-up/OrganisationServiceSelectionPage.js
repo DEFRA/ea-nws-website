@@ -42,13 +42,13 @@ export default function OrganisationServiceSelectionPage() {
                       className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4'
                       style={{ color: '#0b0c0c', paddingBottom: '28px' }}
                     >
-                      <ul className='gouk-list no-bullets'>
+                      <ul className='govuk-list'>
                         {panelItem('Instant sign up')}
                         {panelItem('Best for up to 10 locations')}
                         <FontAwesomeIcon icon={faCheck} /> Up to:
                         <br />
                         <br />
-                        <ul className='gouk-list no-bullets'>
+                        <ul className='govuk-list'>
                           <span className='govuk-!-margin-left-4'>
                             5 email addresses for email warnings
                             <br />

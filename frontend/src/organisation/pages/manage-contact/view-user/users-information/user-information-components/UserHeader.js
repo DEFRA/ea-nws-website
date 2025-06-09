@@ -8,15 +8,23 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import ViewUserSubNavigation from './ViewUserSubNavigation'
 
-export default function UserHeader({ contactId, contactName, userType, currentPage }) {
+export default function UserHeader({
+  contactId,
+  contactName,
+  userType,
+  currentPage
+}) {
   const location = useLocation()
   const navigate = useNavigate()
   const [activeAdmin, setActiveAdmin] = useState(false)
   const orgId = useSelector((state) => state.session.orgId)
   const profileId = useSelector((state) => state.session.profileId)
 
-  async function getActiveAdmin () {
-    const { data } = await backendCall({orgId: orgId, userId: contactId}, 'api/elasticache/get_active_admins')
+  async function getActiveAdmin() {
+    const { data } = await backendCall(
+      { orgId: orgId, userId: contactId },
+      'api/elasticache/get_active_admins'
+    )
     setActiveAdmin(data)
   }
 
@@ -60,38 +68,41 @@ export default function UserHeader({ contactId, contactName, userType, currentPa
             {contactName}
           </h1>
         </div>
-        {!(userType === UserType.Admin && (activeAdmin || profileId === contactId)) &&
-        <div
-          className='govuk-grid-column-one-half right'
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end'
-          }}
-        >
-          <>
+        {!(
+          userType === UserType.Admin &&
+          (activeAdmin || profileId === contactId)
+        ) && (
+          <div
+            className='govuk-grid-column-one-half right'
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end'
+            }}
+          >
+            <>
+              <Button
+                text={
+                  userType === UserType.Admin
+                    ? 'Remove as admin'
+                    : 'Promote to admin'
+                }
+                className='govuk-button govuk-button--secondary'
+                onClick={() => {
+                  handleSubmit()
+                }}
+              />
+              &nbsp; &nbsp;
+            </>
             <Button
-              text={
-                userType === UserType.Admin
-                  ? 'Remove as admin'
-                  : 'Promote to admin'
-              }
+              text='Delete user'
               className='govuk-button govuk-button--secondary'
-              onClick={() => {
-                handleSubmit()
+              onClick={(event) => {
+                event.preventDefault()
+                navigate(orgManageContactsUrls.delete)
               }}
             />
-            &nbsp; &nbsp;
-          </>
-          <Button
-            text='Delete user'
-            className='govuk-button govuk-button--secondary'
-            onClick={(event) => {
-              event.preventDefault()
-              navigate(orgManageContactsUrls.delete)
-            }}
-          />
-        </div>
-        }
+          </div>
+        )}
       </div>
 
       {/* view user navigation */}

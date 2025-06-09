@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -57,6 +57,7 @@ export default function ViewLocationsDashboardPage() {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [errorMessage, setErrorMessage] = useState('')
+  const toggleFilterButtonRef = useRef(null)
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -69,6 +70,12 @@ export default function ViewLocationsDashboardPage() {
     error: '',
     options: []
   })
+
+  useEffect(() => {
+    if (toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   useEffect(() => {
     if (!locationsPerPage) {
@@ -748,6 +755,37 @@ export default function ViewLocationsDashboardPage() {
     navigate(-1)
   }
 
+  const renderActionButtons = () => (
+    <div className='govuk-grid-row'>
+      <div className='govuk-grid-column-full'>
+        <Button
+          text={isFilterVisible ? 'Close filter' : 'Open filter'}
+          className='govuk-button govuk-button--secondary inline-block'
+          onClick={(event) => onOpenCloseFilter(event)}
+          ref={toggleFilterButtonRef}
+        />
+        &nbsp; &nbsp;
+        {(!location.state ||
+          !location.state.linkContacts ||
+          location.state.linkContacts.length === 0) && (
+          <>
+            <ButtonMenu
+              title='More actions'
+              options={moreActions}
+              onSelect={(index) => onMoreAction(index)}
+            />
+            &nbsp; &nbsp;
+            <Button
+              text='Print'
+              className='govuk-button govuk-button--secondary inline-block'
+              onClick={(event) => onPrint(event)}
+            />
+          </>
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <>
       <BackLink onClick={navigateBack} />
@@ -779,29 +817,7 @@ export default function ViewLocationsDashboardPage() {
               <>
                 {!isFilterVisible ? (
                   <>
-                    <Button
-                      text='Open filter'
-                      className='govuk-button govuk-button--secondary inline-block'
-                      onClick={(event) => onOpenCloseFilter(event)}
-                    />
-                    {(!location.state ||
-                      !location.state.linkContacts ||
-                      location.state.linkContacts.length === 0) && (
-                      <>
-                        &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
-                        &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                          onClick={(event) => onPrint(event)}
-                        />
-                      </>
-                    )}
+                    {renderActionButtons()}
                     <LocationsTable
                       locations={locations}
                       displayedLocations={displayedLocations}
@@ -883,31 +899,7 @@ export default function ViewLocationsDashboardPage() {
                     </div>
 
                     <div className='govuk-grid-column-three-quarters'>
-                      <div className='govuk-grid-row'>
-                        <Button
-                          text='Close Filter'
-                          className='govuk-button govuk-button--secondary'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                        {(!location.state ||
-                          !location.state.linkContacts ||
-                          location.state.linkContacts.length === 0) && (
-                          <>
-                            &nbsp; &nbsp;
-                            <ButtonMenu
-                              title='More actions'
-                              options={moreActions}
-                              onSelect={(index) => onMoreAction(index)}
-                            />
-                            &nbsp; &nbsp;
-                            <Button
-                              text='Print'
-                              className='govuk-button govuk-button--secondary inline-block'
-                              onClick={(event) => onPrint(event)}
-                            />
-                          </>
-                        )}
-                      </div>
+                      {renderActionButtons()}
                       <LocationsTable
                         locations={locations}
                         displayedLocations={displayedLocations}

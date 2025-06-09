@@ -76,6 +76,7 @@ export default function NotesLayout ({
             <div className='govuk-body'>
               <p className='govuk-hint'>{instructionText}</p>
               <TextArea
+                id='location-notes'
                 error={error}
                 inputType='text'
                 rows='5'

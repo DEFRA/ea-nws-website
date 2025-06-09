@@ -34,8 +34,10 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   )
 
   const charLimit = 20
-  const originalFirstName =  useSelector((state) => state.session.orgCurrentContact.firstname) || ''
-  const originalLastName = useSelector((state) => state.session.orgCurrentContact.firstname) || ''
+  const originalFirstName =
+    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
+  const originalLastName =
+    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -141,6 +143,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
             <h1 className='govuk-heading-l'>User details</h1>
             <div className='govuk-body'>
               <Input
+                id='first-name'
                 name='First name'
                 inputType='text'
                 onChange={(val) =>
@@ -158,6 +161,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
                 nameSize='s'
               />
               <Input
+                id='last-name'
                 name='Last name'
                 inputType='text'
                 onChange={(val) =>
@@ -175,6 +179,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
                 nameSize='s'
               />
               <Input
+                id='job-title'
                 name='Job title (optional)'
                 inputType='text'
                 onChange={(val) =>

@@ -101,16 +101,17 @@ const FloodBanner = React.memo(function FloodBanner({
               </h1>
               <Link
                 className='govuk-link'
-                to='#'
-                onClick={(e) => {
-                  e.preventDefault()
-                  onClickLinked('messages')
-                }}
+                onClick={() => onClickLinked('messages')}
               >
                 {count[0] === 1 ? 'location' : 'locations'} {message[0]}
               </Link>
             </div>
-            {count[1] > 0 && (
+            {locations.filter(
+              (item) =>
+                item.additionals.other?.childrenIDs?.length > 0 &&
+                item.additionals.other?.alertTypes?.length > 0 &&
+                item.within !== true
+            ).length > 0 && (
               <div
                 style={{
                   width: '100%',
@@ -123,11 +124,7 @@ const FloodBanner = React.memo(function FloodBanner({
                 </h1>
                 <Link
                   className='govuk-link'
-                  to='#'
-                  onClick={(e) => {
-                    e.preventDefault()
-                    onClickLinked('linked-locations')
-                  }}
+                  onClick={() => onClickLinked('linked-locations')}
                 >
                   {count[1] === 1 ? 'location' : 'locations'} {message[1]}
                 </Link>
@@ -137,35 +134,63 @@ const FloodBanner = React.memo(function FloodBanner({
         )}
         {type === 'noFloodMessages' && (
           <div style={{ display: 'flex' }}>
-            {count[0] > 0 && (
+            {locations.filter(
+              (item) =>
+                (item.riverSeaRisk?.title === 'Medium risk' ||
+                  item.riverSeaRisk?.title === 'High risk' ||
+                  item.riverSeaRisk?.title === 'Unavailable' ||
+                  item.groundWaterRisk?.title === 'Possible' ||
+                  item.groundWaterRisk?.title === 'Unavailable') &&
+                item.additionals.other?.alertTypes?.length === 0
+            ).length > 0 && (
               <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
                 <h1 style={{ color: 'coral' }}>
                   <strong>{count[0]}</strong>
                 </h1>
                 <Link
                   className='govuk-link'
-                  to='#'
-                  onClick={(e) => {
-                    e.preventDefault()
-                    onClickLinked('high-medium-risk')
-                  }}
+                  onClick={() => onClickLinked('high-medium-risk')}
                 >
                   {count[0] === 1 ? 'location' : 'locations'} {message[0]}
                 </Link>
               </div>
             )}
-            {count[1] > 0 && (
+            {locations.filter(
+              (item) =>
+                (item.riverSeaRisk?.title === 'Medium risk' ||
+                  item.riverSeaRisk?.title === 'High risk' ||
+                  item.riverSeaRisk?.title === 'Unavailable' ||
+                  item.groundWaterRisk?.title === 'Possible' ||
+                  item.groundWaterRisk?.title === 'Unavailable') &&
+                item.additionals.other?.alertTypes?.length === 0
+            ).length > 0 &&
+              locations.filter(
+                (item) =>
+                  (item.riverSeaRisk?.title === 'Low risk' ||
+                    item.riverSeaRisk?.title === 'Very low risk') &&
+                  item.groundWaterRisk?.title === 'Unlikely' &&
+                  item.additionals.other?.alertTypes?.length === 0
+              ).length > 0 && (
+                <div
+                  style={{
+                    borderRight: '2px solid lightGrey'
+                  }}
+                />
+              )}
+            {locations.filter(
+              (item) =>
+                (item.riverSeaRisk?.title === 'Low risk' ||
+                  item.riverSeaRisk?.title === 'Very low risk') &&
+                item.groundWaterRisk?.title === 'Unlikely' &&
+                item.additionals.other?.alertTypes?.length === 0
+            ).length > 0 && (
               <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
                 <h1>
                   <strong>{count[1]}</strong>
                 </h1>
                 <Link
                   className='govuk-link'
-                  to='#'
-                  onClick={(e) => {
-                    e.preventDefault()
-                    onClickLinked('low-risk')
-                  }}
+                  onClick={() => onClickLinked('low-risk')}
                 >
                   {count[1] === 1 ? 'location' : 'locations'} {message[1]}
                 </Link>
@@ -180,11 +205,7 @@ const FloodBanner = React.memo(function FloodBanner({
             </h1>
             <Link
               className='govuk-link'
-              to='#'
-              onClick={(e) => {
-                e.preventDefault()
-                onClickLinked('no-links')
-              }}
+              onClick={() => onClickLinked('no-links')}
             >
               {count[0] === 1 ? 'location' : 'locations'} {message[0]}
             </Link>
@@ -215,7 +236,7 @@ const FloodBanner = React.memo(function FloodBanner({
   )
 })
 
-export default function DashboardHeader ({
+export default function DashboardHeader({
   locations,
   onClickLinked,
   linkContacts,

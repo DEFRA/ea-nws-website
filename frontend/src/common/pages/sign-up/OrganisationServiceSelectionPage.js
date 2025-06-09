@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 
-export default function OrganisationServiceSelectionPage() {
+export default function OrganisationServiceSelectionPage () {
   const navigate = useNavigate()
 
   const panelItem = (itemText) => {

@@ -7,9 +7,13 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import AlertState from '../../../../../common/enums/AlertState.js'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../common/services/BackendService'
+import {
+  getAdditional,
+  setCurrentLocation
+} from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
@@ -17,7 +21,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import UserHeader from './user-information-components/UserHeader'
 
-export default function LinkedLocationsPage () {
+export default function LinkedLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -58,6 +62,48 @@ export default function LinkedLocationsPage () {
   }, [filteredLocations, currentPage])
 
   useEffect(() => {
+    const attachMessageCounts = async (locations) => {
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
+
+      const options = {
+        states: [AlertState.CURRENT, AlertState.PAST],
+        boundingBox: null,
+        channels: [],
+        partnerId
+      }
+
+      const twoYearsAgo = new Date()
+      twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
+
+      const { data: alertsResponse } = await backendCall(
+        { options, filterDate: twoYearsAgo },
+        'api/alert/list',
+        navigate
+      )
+      const alertsList = alertsResponse.alerts || []
+
+      // Loop through locations, attaching a count of how many alerts match their TA_CODE
+      return locations.map((loc) => {
+        const targetAreas = loc.additionals.other?.targetAreas || []
+        const taCodes = targetAreas.map((ta) => ta.TA_CODE)
+
+        const count = alertsList.filter((alert) => {
+          const placemark = alert.mode?.zoneDesc?.placemarks?.[0]
+          if (!placemark?.extraInfo) return false
+          const alertCode = getAdditional(placemark.extraInfo, 'TA_CODE')
+          return alertCode && taCodes.includes(alertCode)
+        }).length
+
+        return {
+          ...loc,
+          message_count: count
+        }
+      })
+    }
+
     const getLinkedLocations = async () => {
       const contactsDataToSend = { orgId, contact: currentContact }
       const { data } = await backendCall(
@@ -111,8 +157,9 @@ export default function LinkedLocationsPage () {
         }
       }
 
-      setLinkedLocations(locationsUpdate)
-      setFilteredLocations(locationsUpdate)
+      const fullLocationData = await attachMessageCounts(locationsUpdate)
+      setLinkedLocations(fullLocationData)
+      setFilteredLocations(fullLocationData)
       setLoading(false)
     }
 
@@ -124,7 +171,8 @@ export default function LinkedLocationsPage () {
     if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
       riskCategory = location?.additionals?.other?.riverSeaRisk || 'unavailable'
     } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
-      riskCategory = location?.additionals?.other?.groundWaterRisk || 'unavailable'
+      riskCategory =
+        location?.additionals?.other?.groundWaterRisk || 'unavailable'
     }
 
     return riskData[riskCategory]
@@ -169,7 +217,7 @@ export default function LinkedLocationsPage () {
   const unlinkLocations = async (locationsToUnlink) => {
     const numLocations = locationsToUnlink.length
     // only show the unlinking progress if more than one location
-    // is being unlinked  
+    // is being unlinked
     numLocations > 1 && setUnlinking(true)
     for (const [index, location] of locationsToUnlink.entries()) {
       setStage(`unlinking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
@@ -270,50 +318,49 @@ export default function LinkedLocationsPage () {
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
         />
-        {loading
-          ? (
-            <LoadingSpinner />
-            )
-          : (
-            <>
-              {linkedLocationsSection}
-              {linkedLocations.length > 0 && (
-                <>
-                  <LocationsTable
-                    locations={linkedLocations}
-                    displayedLocations={displayedLocations}
-                    filteredLocations={filteredLocations}
-                    selectedLocations={selectedLocations}
-                    setLocations={setLinkedLocations}
-                    setSelectedLocations={setSelectedLocations}
-                    setFilteredLocations={setFilteredLocations}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                    onAction={onAction}
-                    actionText='Unlink'
-                    locationPrefix='linked'
-                  />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredLocations.length / locationsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    pageList
-                    reset={resetPaging}
-                  />
-                </>
-              )}
-            </>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            {linkedLocationsSection}
+            {linkedLocations.length > 0 && (
+              <>
+                <LocationsTable
+                  locations={linkedLocations}
+                  displayedLocations={displayedLocations}
+                  filteredLocations={filteredLocations}
+                  selectedLocations={selectedLocations}
+                  setLocations={setLinkedLocations}
+                  setSelectedLocations={setSelectedLocations}
+                  setFilteredLocations={setFilteredLocations}
+                  resetPaging={resetPaging}
+                  setResetPaging={setResetPaging}
+                  onAction={onAction}
+                  actionText='Unlink'
+                  locationPrefix='linked'
+                />
+                <Pagination
+                  totalPages={Math.ceil(
+                    filteredLocations.length / locationsPerPage
+                  )}
+                  onPageChange={(val) => setCurrentPage(val)}
+                  pageList
+                  reset={resetPaging}
+                />
+              </>
             )}
+          </>
+        )}
       </main>
-      {unlinking &&
+      {unlinking && (
         <div className='popup-dialog'>
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{stage}</p>}
             />
           </div>
-        </div>}
+        </div>
+      )}
     </>
   )
 }

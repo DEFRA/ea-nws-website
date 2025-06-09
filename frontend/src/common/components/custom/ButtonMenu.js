@@ -24,13 +24,15 @@ export default function ButtonMenu ({
         type='submit' data-module='govuk-button' className='govuk-button govuk-button--secondary govuk-!-margin-bottom-0'
         onClick={(e) => { e.currentTarget.blur(); setMenuVisible(!menuVisible) }}
         style={{ selected: '' }}
+        aria-expanded={menuVisible}
+        aria-controls='button-menu-list'
       >
         {title}
         &nbsp;&nbsp;
         <FontAwesomeIcon icon={(menuVisible ? faCaretUp : faCaretDown)} size='2xs' />
       </button>
       {menuVisible && (
-        <ul className='button-menu-list'>
+        <ul className='button-menu-list' id='button-menu-list'>
           {options.map((option, index) =>
             <li key={index}>
               <button

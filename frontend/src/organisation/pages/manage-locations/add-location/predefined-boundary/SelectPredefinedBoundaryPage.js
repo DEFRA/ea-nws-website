@@ -255,11 +255,7 @@ export default function SelectPredefinedBoundaryPage() {
                     }
                   />
                   <Select
-                    // key forces the boundary select to re-render after the boundary type is changed
-                    // when boundary type is changed, the selected boundary is reset. we must force this
-                    // re-render for the intial text option to show correctly
                     name='Boundary'
-                    key={selectedBoundary}
                     label='Boundary'
                     options={boundaries.map((boundary) => {
                       return boundary.properties.TA_Name
@@ -274,6 +270,7 @@ export default function SelectPredefinedBoundaryPage() {
                     disabledOptions={boundariesAlreadyAdded.map((boundary) => {
                       return boundary.additionals.locationName
                     })}
+                    value={selectedBoundary?.properties?.TA_Name}
                   />
                   <Button
                     className='govuk-button govuk-!-margin-top-4'

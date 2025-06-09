@@ -521,6 +521,7 @@ export default function ManageKeywordsPage () {
                       position='absolute'
                       showNotFound={false}
                       nameField='name'
+                      ariaLabel='Search for a keyword'
                     />
                     <div className='keyword-search-button-container'>
                       <button

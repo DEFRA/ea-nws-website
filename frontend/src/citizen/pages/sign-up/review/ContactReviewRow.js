@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import UserContactType from '../../../../common/enums/UserContactType'
 
 export default function ContactReviewRow({
   contact,
@@ -16,21 +17,21 @@ export default function ContactReviewRow({
     const confirmedLink =
       isConfirmed &&
       `/signup/review/validate-${
-        contactType === 'homePhone' ? 'landline' : contactType
+        contactType === UserContactType.Telephone ? 'landline' : contactType
       }`
 
     const contactTypeMap = {
-      homePhone: {
+      [UserContactType.Telephone]: {
         titleRow: 'By phone call',
         confirmLabel: `Confirm telephone number ${contactLabel}, for phone call warnings`,
         removeLabel: `Remove telephone number ${contactLabel}, for phone call warnings`
       },
-      mobilePhone: {
+      [UserContactType.Mobile]: {
         titleRow: 'By text',
         confirmLabel: `Confirm telephone number ${contactLabel}, for text warnings`,
         removeLabel: `Remove telephone number ${contactLabel}, for text warnings`
       },
-      email: {
+      [UserContactType.Email]: {
         titleRow: 'By email',
         confirmLabel: `Confirm email ${contactLabel}, for email warnings`,
         removeLabel: `Remove email ${contactLabel}, for email warnings`
@@ -44,7 +45,8 @@ export default function ContactReviewRow({
       confirmLink: confirmedLink,
       confirmLinkLabel: details.confirmLabel || '',
       removeLinkLabel: details.removeLabel || '',
-      showDelete: contactType === 'email' ? emailIndex !== 0 : true
+      showDelete:
+        contactType === UserContactType.Email ? emailIndex !== 0 : true
     }
   }
 

@@ -30,9 +30,10 @@ export default function ReportsOverviewPage() {
               </Link>
             </p>
             <p>
-              <Link to={orgFloodReportsUrls.removed} className='govuk-link'>
-                Warnings removed in last 24 hours
-              </Link>
+              {/* <Link to={orgFloodReportsUrls.removed} className='govuk-link'> */}
+                Warnings removed in last 24 hours (not yet
+              available)
+              {/* </Link> */}
             </p>
             <p>
               <Link to={orgFloodReportsUrls.history} className='govuk-link'>

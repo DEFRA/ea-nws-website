@@ -22,16 +22,16 @@ export default function ConfirmationPanel ({
             >
               {preTitle}
             </h2>}
-          <h2
+          <h1
             className='govuk-panel__title'
             id='govuk-panel-title'
           >
             {title}
-          </h2>
+          </h1>
         </div>
         {body &&
           <div className='govuk-panel__body'>
-            <h3 className='govuk-panel__body'>{body}</h3>
+            <p className='govuk-panel__body'>{body}</p>
           </div>}
       </div>
     </>

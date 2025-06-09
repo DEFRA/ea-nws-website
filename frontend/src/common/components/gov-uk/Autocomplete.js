@@ -14,7 +14,8 @@ export default function Autocomplete ({
   onClick,
   position,
   showNotFound = true,
-  nameField
+  nameField,
+  ariaLabel
 }) {
   const [options, setOptions] = useState(null)
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
@@ -234,6 +235,7 @@ export default function Autocomplete ({
             }}
             defaultValue={defaultValue}
             autoComplete='off'
+            aria-label={ariaLabel}
           />
           <ul
             aria-labelledby='id'

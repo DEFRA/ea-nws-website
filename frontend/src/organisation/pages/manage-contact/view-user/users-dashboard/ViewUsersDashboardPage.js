@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -61,10 +61,17 @@ export default function ViewUsersDashboardPage() {
   const [errorMessage, setErrorMessage] = useState('')
   const historyData = useFetchAlerts()
   const [activeAdmins, setActiveAdmins] = useState([])
+  const toggleFilterButtonRef = useRef(null)
+
+  useEffect(() => {
+    if (toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   async function getActiveAdmins() {
     const { data } = await backendCall(
-      { orgId: orgId },
+      { orgId },
       'api/elasticache/get_active_admins'
     )
     setActiveAdmins(data)
@@ -240,13 +247,15 @@ export default function ViewUsersDashboardPage() {
       text = defaultText
 
       if (activeAdminsNotRemoved.length > 0) {
-        const notDeleteTotal = activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+        const notDeleteTotal =
+          activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
         text = (
           <>
             {defaultText}
             <div className='govuk-inset-text'>
               <strong>
-                You cannot delete {notDeleteTotal} user{notDeleteTotal > 1 ? 's' : ''}
+                You cannot delete {notDeleteTotal} user
+                {notDeleteTotal > 1 ? 's' : ''}
               </strong>
               <br />
               <br />
@@ -508,6 +517,37 @@ export default function ViewUsersDashboardPage() {
     navigate(-1)
   }
 
+  const renderActionButtons = () => (
+    <div className='govuk-grid-row'>
+      <div className='govuk-grid-column-full'>
+        <Button
+          text={isFilterVisible ? 'Close filter' : 'Open filter'}
+          className='govuk-button govuk-button--secondary inline-block'
+          onClick={(event) => onOpenCloseFilter(event)}
+          ref={toggleFilterButtonRef}
+        />
+        &nbsp; &nbsp;
+        {(!location.state ||
+          !location.state.linkLocations ||
+          location.state.linkLocations.length === 0) && (
+          <>
+            <ButtonMenu
+              title='More actions'
+              options={moreActions}
+              onSelect={(index) => onMoreAction(index)}
+            />
+            &nbsp; &nbsp;
+            <Button
+              text='Print'
+              className='govuk-button govuk-button--secondary inline-block'
+              onClick={(event) => onPrint(event)}
+            />
+          </>
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <>
       <Helmet>
@@ -550,29 +590,7 @@ export default function ViewUsersDashboardPage() {
               <div className='govuk-grid-column-full govuk-body'>
                 {!isFilterVisible ? (
                   <>
-                    <Button
-                      text='Open filter'
-                      className='govuk-button govuk-button--secondary inline-block'
-                      onClick={(event) => onOpenCloseFilter(event)}
-                    />
-                    {(!location.state ||
-                      !location.state.linkLocations ||
-                      location.state.linkLocations.length === 0) && (
-                      <>
-                        &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
-                        &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                      </>
-                    )}
+                    {renderActionButtons()}
                     <UsersTable
                       contacts={contacts}
                       displayedContacts={displayedContacts}
@@ -624,31 +642,7 @@ export default function ViewUsersDashboardPage() {
                     </div>
 
                     <div className='govuk-grid-column-three-quarters'>
-                      <div className='govuk-grid-row'>
-                        <Button
-                          text='Close Filter'
-                          className='govuk-button govuk-button--secondary'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                        &nbsp; &nbsp;
-                        {(!location.state ||
-                          !location.state.linkLocations ||
-                          location.state.linkLocations.length === 0) && (
-                          <>
-                            <ButtonMenu
-                              title='More actions'
-                              options={moreActions}
-                              onSelect={(index) => onMoreAction(index)}
-                            />
-                            &nbsp; &nbsp;
-                            <Button
-                              text='Print'
-                              className='govuk-button govuk-button--secondary inline-block'
-                              onClick={(event) => onPrint(event)}
-                            />
-                          </>
-                        )}
-                      </div>
+                      {renderActionButtons()}
                       <UsersTable
                         contacts={contacts}
                         displayedContacts={displayedContacts}

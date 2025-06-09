@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter ({
+export default function SearchFilter({
   // TODO: Combine filter values into a single object
   locations,
   setFilteredLocations,
@@ -75,9 +75,7 @@ export default function SearchFilter ({
   ]
 
   const keywords = [
-    ...new Set(
-      locations.flatMap(location => location.additionals.keywords)
-    )
+    ...new Set(locations.flatMap((location) => location.additionals.keywords))
   ]
 
   const linkedLocations = [...new Set(['No', 'Yes'])]
@@ -245,8 +243,16 @@ export default function SearchFilter ({
     <>
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
       <div
+        role='button'
+        tabIndex='0'
+        aria-label='Toggle location name'
+        aria-expanded={locationNameVisible}
+        aria-controls='location-name'
         className='locations-filter-name-section'
         onClick={() => setLocationNameVisible(!locationNameVisible)}
+        onKeyDown={(e) =>
+          e.key === 'Enter' && setLocationNameVisible(!locationNameVisible)
+        }
       >
         <FontAwesomeIcon
           icon={locationNameVisible ? faAngleUp : faAngleDown}
@@ -288,10 +294,16 @@ export default function SearchFilter ({
       <>
         <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
         <div
+          role='button'
+          tabIndex='0'
+          aria-label={`Toggle ${filterTitle.toLowerCase()}`}
+          aria-expanded={visible}
+          aria-controls={`${filterTitle.toLowerCase().replace(/\s+/g, '-')}`}
           className='locations-filter-other-section'
           onClick={() => {
             setVisible(!visible)
           }}
+          onKeyDown={(e) => e.key === 'Enter' && setVisible(!visible)}
         >
           <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
           &nbsp;
@@ -300,7 +312,10 @@ export default function SearchFilter ({
           </label>
         </div>
         {visible && (
-          <div className='govuk-checkboxes govuk-checkboxes--small locations-select-filter'>
+          <div
+            id={`${filterTitle.toLowerCase().replace(/\s+/g, '-')}`}
+            className='govuk-checkboxes govuk-checkboxes--small locations-select-filter'
+          >
             {filterType.map((option) => (
               <CheckBox
                 key={option}

@@ -79,7 +79,7 @@ export default function SignUpPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>Enter an email address</h2>
+            <h1 className='govuk-heading-l'>Enter an email address</h1>
             <div className='govuk-body'>
               <p>We'll send flood messages to this address. </p>
               <p>

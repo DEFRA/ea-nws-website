@@ -32,6 +32,7 @@ export default function Input({
           } ${isNameBold && nameSize ? `govuk-label--${nameSize}` : ''}`}
           htmlFor={id}
         >
+          {' '}
           {name}
         </label>
         {hint && (

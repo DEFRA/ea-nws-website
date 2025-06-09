@@ -557,6 +557,7 @@ export default function LocationsTable({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
+                  aria-label={`Delete ${location.additionals.locationName}`}
                   onClick={(e) => onAction(e, actionText, location)}
                 >
                   {actionText}

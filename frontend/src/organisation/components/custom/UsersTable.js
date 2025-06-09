@@ -204,6 +204,7 @@ export default function UsersTable({
                   <input
                     className='govuk-checkboxes__input'
                     type='checkbox'
+                    aria-label='Select all users'
                     checked={isTopCheckboxChecked}
                     onChange={handleHeaderCheckboxChange}
                   />
@@ -218,6 +219,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by user type, currently ${
+                  userTypeSort === 'none' ? 'unsorted' : userTypeSort
+                }`}
                 onClick={() =>
                   sortData(
                     userTypeSort,
@@ -236,6 +240,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by name, currently ${
+                  contactNameSort === 'none' ? 'unsorted' : contactNameSort
+                }`}
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
                     return contact.firstname + (contact.lastname || '')
@@ -252,6 +259,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by job title, currently ${
+                  jobTitleSort === 'none' ? 'unsorted' : jobTitleSort
+                }`}
                 onClick={() =>
                   sortData(jobTitleSort, setJobTitleSort, (contact) => {
                     return contact.additionals.jobTitle
@@ -268,6 +278,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by email, currently ${
+                  emailSort === 'none' ? 'unsorted' : emailSort
+                }`}
                 onClick={() =>
                   sortData(emailSort, setEmailSort, (contact) => {
                     return contact.emails[0]
@@ -285,7 +298,15 @@ export default function UsersTable({
                   className='govuk-table__header'
                   aria-sort={linkedLocationsSort}
                 >
-                  <button type='button' onClick={() => sortLinkedLocations()}>
+                  <button
+                    type='button'
+                    aria-label={`Sort by number of linked locations, currently ${
+                      linkedLocationsSort === 'none'
+                        ? 'unsorted'
+                        : linkedLocationsSort
+                    }`}
+                    onClick={() => sortLinkedLocations()}
+                  >
                     Linked locations
                   </button>
                 </th>
@@ -294,7 +315,15 @@ export default function UsersTable({
                   className='govuk-table__header'
                   aria-sort={messagesReceivedSort}
                 >
-                  <button type='button' onClick={() => sortMessagesReceived()}>
+                  <button
+                    type='button'
+                    aria-label={`Sort by number of messages received, currently ${
+                      messagesReceivedSort === 'none'
+                        ? 'unsorted'
+                        : messagesReceivedSort
+                    }`}
+                    onClick={() => sortMessagesReceived()}
+                  >
                     Messages received
                   </button>
                 </th>
@@ -315,6 +344,11 @@ export default function UsersTable({
                     <input
                       className='govuk-checkboxes__input'
                       type='checkbox'
+                      aria-label={`Select ${contact.firstname}${
+                        contact?.lastname?.length > 0
+                          ? ' ' + contact?.lastname
+                          : ''
+                      }`}
                       checked={selectedContacts.includes(contact)}
                       onChange={() => handleContactSelected(contact)}
                     />
@@ -371,6 +405,11 @@ export default function UsersTable({
                   <td className='govuk-table__cell'>
                     <Link
                       className='govuk-link'
+                      aria-label={`Delete ${contact.firstname}${
+                        contact?.lastname?.length > 0
+                          ? ' ' + contact?.lastname
+                          : ''
+                      }`}
                       onClick={(e) => onAction(e, actionText, contact)}
                     >
                       {actionText}

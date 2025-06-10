@@ -20,12 +20,12 @@ export default function ErrorPage () {
             </p>
             <p>
               Email:{' '}
-              <Link
+              <a
                 class='govuk-link'
-                to='mailto:enquiries@environment-agency.gov.uk'
+                href='mailto:enquiries@environment-agency.gov.uk'
               >
                 enquiries@environment-agency.gov.uk
-              </Link>
+              </a>
               <br />
               Monday to Friday, 8am to 6pm
             </p>

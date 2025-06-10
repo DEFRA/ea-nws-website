@@ -26,9 +26,9 @@ export default function ManageOrganisationDetailsPage () {
 
             <p className='govuk-!-margin-top-3'>
               To change these details, email us at{' '}
-              <Link className='govuk-link' to={`mailto:${email}`}>
+              <a className='govuk-link' href={`mailto:${email}`}>
                 {email}.
-              </Link>
+              </a>
             </p>
 
             <table className='govuk-table'>
@@ -121,9 +121,9 @@ export default function ManageOrganisationDetailsPage () {
             </h2>
             <p>
               You'll need to email us at{' '}
-              <Link className='govuk-link' to={`mailto:${email}`}>
+              <a className='govuk-link' href={`mailto:${email}`}>
                 {email}
-              </Link>{' '}
+              </a>{' '}
               to delete your account.
             </p>
             <p>

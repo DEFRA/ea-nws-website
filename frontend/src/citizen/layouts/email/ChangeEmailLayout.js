@@ -89,6 +89,7 @@ export default function ChangeEmailLayout({
                 id='new-email-address'
                 className='govuk-input govuk-!-width-one-half'
                 inputType='text'
+                inputMode='email'
                 name='New email address'
                 error={error}
                 onChange={(val) => setEmail(val)}

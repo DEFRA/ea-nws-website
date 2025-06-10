@@ -56,8 +56,9 @@ export default function SignInPage() {
               <Input
                 id='email-address'
                 className='govuk-input govuk-input--width-30'
-                name='Email address'
+                name='Email address shakir'
                 inputType='text'
+                inputMode='email'
                 error={error}
                 onChange={(val) => setEmail(val)}
               />

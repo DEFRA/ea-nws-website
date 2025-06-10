@@ -140,6 +140,7 @@ export default function PromoteToAdminPage() {
               <Input
                 id='email-address'
                 inputType='text'
+                inputMode='email'
                 value={selectedEmail}
                 name='Email address'
                 onChange={(val) => setSelectedEmail(val)}

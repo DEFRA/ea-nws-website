@@ -15,8 +15,9 @@ import {
   removeLocation,
   setLocationOtherAdditionals
 } from '../../../common/services/ProfileServices'
+import FloodMessageTypesTable from '../../../common/components/custom/FloodMessageTypesTable'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {
@@ -29,7 +30,7 @@ export default function LocationInSevereWarningAreaLayout({
   )
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId() {
+  async function getPartnerId () {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -61,8 +62,8 @@ export default function LocationInSevereWarningAreaLayout({
     // geosafe doesnt accept locations with postcodes - need to remove this from the object
     const { postcode, ...locationWithoutPostcode } = selectedLocation
 
-    //need to add redux variables that checks if location is within both areas or just alert area
-    //then need to choose what alerts based on this - still to update this
+    // need to add redux variables that checks if location is within both areas or just alert area
+    // then need to choose what alerts based on this - still to update this
     const locationWithAlertTypes = {
       ...locationWithoutPostcode,
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
@@ -83,7 +84,7 @@ export default function LocationInSevereWarningAreaLayout({
   const registerLocationToPartner = async (profile) => {
     const location = findPOIByAddress(profile, selectedLocation.address)
 
-    //similar here - need to check what alert types to use based on the new redux variable
+    // similar here - need to check what alert types to use based on the new redux variable
     const alertTypes = [
       AlertType.SEVERE_FLOOD_WARNING,
       AlertType.FLOOD_WARNING,
@@ -172,10 +173,10 @@ export default function LocationInSevereWarningAreaLayout({
             </h1>
             <p>map here</p>
             <p>We'll send you the following flood messages.</p>
-            <p>flood key here - RONAN is doing this</p>
+            <FloodMessageTypesTable />
             <Details
-              title={'Read more on the difference between warnings and alerts'}
-              text={''}
+              title='Read more on the difference between warnings and alerts'
+              text=''
             />
             <Button
               text='I want these'

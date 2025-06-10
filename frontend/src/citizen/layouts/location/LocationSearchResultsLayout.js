@@ -73,6 +73,8 @@ export default function LocationSearchResultsLayout({
     try {
       dispatch(setSelectedLocation(selectedLocation))
 
+      console.log('selected location', selectedLocation)
+
       // reset map display - these are only required when user is taken through location in proximity to flood areas
       // they are updated with data only in proximity flow
       dispatch(setSelectedFloodAlertArea(null))

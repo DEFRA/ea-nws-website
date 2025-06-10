@@ -125,6 +125,8 @@ const userSlice = createSlice({
     locationSearchType: null,
     // required for when user changes a location at sign up review
     locationToBeChanged: null,
+    // required for distinguishing types of flood areas to show
+    selectedLocationAlerts: null,
     // required for nearby flood areas flow
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
@@ -299,6 +301,10 @@ const userSlice = createSlice({
     // required for extending name search flood areas radius
     setLocationSearchType: (state, action) => {
       state.locationSearchType = action.payload
+    },
+    // required for distinguishing types of flood areas to show
+    setSelectedLocationAlerts: (state, action) => {
+      state.selectedLocationAlerts = action.payload
     },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
@@ -817,6 +823,8 @@ const userSlice = createSlice({
       state.locationToBeChanged = null
       // required for extending name search flood areas radius
       state.locationSearchType = null
+      // required for distinguishing types of flood areas to show
+      state.selectedLocationAlerts = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -1032,6 +1040,8 @@ export const {
   setLocationToBeChanged,
   // required for extending name search flood areas radius
   setLocationSearchType,
+  // required for distinguishing types of flood areas to show
+  setSelectedLocationAlerts,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,

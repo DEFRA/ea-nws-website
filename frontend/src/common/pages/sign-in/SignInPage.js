@@ -56,7 +56,7 @@ export default function SignInPage() {
               <Input
                 id='email-address'
                 className='govuk-input govuk-input--width-30'
-                name='Email address shakir'
+                name='Email address'
                 inputType='text'
                 inputMode='email'
                 error={error}

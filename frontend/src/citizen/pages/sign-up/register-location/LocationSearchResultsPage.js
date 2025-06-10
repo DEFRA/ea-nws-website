@@ -1,11 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import AlertType from '../../../../common/enums/AlertType'
-import {
-  setProfile,
-  setSelectedLocationAlerts
-} from '../../../../common/redux/userSlice'
+import { setProfile } from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
 export default function LocationSearchResultsPage() {
@@ -50,29 +46,15 @@ export default function LocationSearchResultsPage() {
     // }
     // navigate to location in flood areas page
 
-    const allAlerts = [
-      AlertType.SEVERE_FLOOD_WARNING,
-      AlertType.FLOOD_WARNING,
-      AlertType.FLOOD_ALERT,
-      AlertType.REMOVE_FLOOD_SEVERE_WARNING,
-      AlertType.REMOVE_FLOOD_WARNING,
-      AlertType.INFO
-    ]
-
-    const alertsOnly = [AlertType.FLOOD_ALERT, AlertType.INFO]
-
     // if(isWithinWarningAreaProximity || isWithinAlertAreaProximity){
     //   navigate to proxy faPersonWalkingDashedLineArrowRight
     // }
-    if (isInWarningArea) {
-      dispatch(setSelectedLocationAlerts(allAlerts))
-    } else if (isInAlertArea) {
-      dispatch(setSelectedLocationAlerts(alertsOnly))
+    if (isInWarningArea || isInAlertArea) {
+      navigate('/signup/register-location/no-danger')
     } else if (isError) {
       navigate('/error')
     } else {
       // location isnt in danger area
-      navigate('/signup/register-location/no-danger')
     }
 
     // default

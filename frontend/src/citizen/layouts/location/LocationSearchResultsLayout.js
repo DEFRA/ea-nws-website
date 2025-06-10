@@ -7,6 +7,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
+import AlertType from '../../../common/enums/AlertType'
 import {
   setFloodAlertCount,
   setNearbyTargetAreasFlow,
@@ -16,6 +17,7 @@ import {
   setSevereFloodWarningCount,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
+import { setLocationOtherAdditionals } from '../../../common/services/ProfileServices'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
@@ -71,10 +73,6 @@ export default function LocationSearchResultsLayout({
 
     setLoading(true)
     try {
-      dispatch(setSelectedLocation(selectedLocation))
-
-      console.log('selected location', selectedLocation)
-
       // reset map display - these are only required when user is taken through location in proximity to flood areas
       // they are updated with data only in proximity flow
       dispatch(setSelectedFloodAlertArea(null))
@@ -105,6 +103,32 @@ export default function LocationSearchResultsLayout({
           selectedLocation.coordinates.longitude,
           warningArea
         )
+
+      const allAlerts = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.FLOOD_ALERT,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
+      ]
+
+      const alertsOnly = [AlertType.FLOOD_ALERT, AlertType.INFO]
+
+      // update selected location with the alerts it can receive - this is used on the next page
+      // to display the correct flood areas on the map
+      const locationWithAlertTypes = {
+        ...selectedLocation,
+        additionals: setLocationOtherAdditionals(
+          [],
+          'alertTypes',
+          isInWarningArea ? allAlerts : alertsOnly
+        )
+      }
+
+      console.log('locationWithAlertTypes', locationWithAlertTypes)
+
+      dispatch(setSelectedLocation(locationWithAlertTypes))
 
       if (isInAlertArea) {
         setHistoricalAlertNumber(alertArea.features[0].properties.TA_CODE)

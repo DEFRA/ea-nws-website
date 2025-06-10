@@ -9,9 +9,9 @@ export function removeHoverIosSafari() {
     var datasetBind = target.dataset.bind
     var preventFilter =
       (datasetBind && datasetBind.indexOf('click') > -1) ||
-      tagName == 'a' ||
-      tagName == 'button' ||
-      (tagName == 'input' &&
+      tagName === 'a' ||
+      tagName === 'button' ||
+      (tagName === 'input' &&
         (target.type === 'radio' || target.type === 'checkbox'))
     return preventFilter
   }

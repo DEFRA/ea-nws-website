@@ -3,17 +3,20 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import AlertType from '../../../common/enums/AlertType'
-import { setProfile } from '../../../common/redux/userSlice'
+import {
+  getLocationOtherAdditional,
+  setProfile
+} from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addLocation,
   findPOIByAddress,
   getRegistrationParams,
-  removeLocation,
-  setLocationOtherAdditionals
+  removeLocation
 } from '../../../common/services/ProfileServices'
 
 export default function LocationInSevereWarningAreaLayout({
@@ -27,6 +30,15 @@ export default function LocationInSevereWarningAreaLayout({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const locationAlertTypes = getLocationOtherAdditional(
+    selectedLocation?.additionals,
+    'alertTypes'
+  )
+  const mapAreas = locationAlertTypes.includes(
+    AlertType.REMOVE_FLOOD_SEVERE_WARNING
+  )
+    ? ['severe', 'alert']
+    : ['alert']
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId() {
@@ -61,20 +73,7 @@ export default function LocationInSevereWarningAreaLayout({
     // geosafe doesnt accept locations with postcodes - need to remove this from the object
     const { postcode, ...locationWithoutPostcode } = selectedLocation
 
-    //need to add redux variables that checks if location is within both areas or just alert area
-    //then need to choose what alerts based on this - still to update this
-    const locationWithAlertTypes = {
-      ...locationWithoutPostcode,
-      additionals: setLocationOtherAdditionals([], 'alertTypes', [
-        AlertType.SEVERE_FLOOD_WARNING,
-        AlertType.FLOOD_WARNING,
-        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
-        AlertType.REMOVE_FLOOD_WARNING,
-        AlertType.INFO
-      ])
-    }
-
-    const updatedProfile = addLocation(profile, locationWithAlertTypes)
+    const updatedProfile = addLocation(profile, locationWithoutPostcode)
     dispatch(setProfile(updatedProfile))
 
     return updatedProfile
@@ -83,20 +82,11 @@ export default function LocationInSevereWarningAreaLayout({
   const registerLocationToPartner = async (profile) => {
     const location = findPOIByAddress(profile, selectedLocation.address)
 
-    //similar here - need to check what alert types to use based on the new redux variable
-    const alertTypes = [
-      AlertType.SEVERE_FLOOD_WARNING,
-      AlertType.FLOOD_WARNING,
-      AlertType.REMOVE_FLOOD_SEVERE_WARNING,
-      AlertType.REMOVE_FLOOD_WARNING,
-      AlertType.INFO
-    ]
-
     const data = {
       authToken,
       locationId: location.id,
       partnerId,
-      params: getRegistrationParams(profile, alertTypes)
+      params: getRegistrationParams(profile, locationAlertTypes)
     }
 
     await backendCall(
@@ -170,7 +160,7 @@ export default function LocationInSevereWarningAreaLayout({
             <h1 className='govuk-heading-l'>
               You can get flood messages for your location
             </h1>
-            <p>map here</p>
+            <Map types={mapAreas} />
             <p>We'll send you the following flood messages.</p>
             <p>flood key here - RONAN is doing this</p>
             <Details

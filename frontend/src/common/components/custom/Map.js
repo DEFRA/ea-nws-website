@@ -298,6 +298,8 @@ export default function Map({
     ])
   }
 
+  console.log('alert area', alertArea, 'types', types)
+
   return (
     <>
       <div aria-label='Map'>

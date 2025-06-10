@@ -47,7 +47,7 @@ export default function LocationSearchResultsPage() {
     // navigate to location in flood areas page
 
     // if(isWithinWarningAreaProximity || isWithinAlertAreaProximity){
-    //   navigate to proxy faPersonWalkingDashedLineArrowRight
+    //   navigate to proxy page
     // }
     if (isInWarningArea || isInAlertArea) {
       navigate('/signup/register-location/no-danger')

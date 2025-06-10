@@ -43,6 +43,9 @@ export default function Map({
     (state) => state.session.locationSearchType
   )
   // used when user selects flood area when location is within proximity
+  const isUserInNearbyTargetFlowpath = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
   )
@@ -65,8 +68,15 @@ export default function Map({
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
-        // extend the radius of TAs loaded on map when user has searched via placename
-        locationSearchType === 'placename' ? 1.5 : 0.5
+
+        !isUserInNearbyTargetFlowpath
+          ? // only load TAs required i.e if location being added lies within TAs, then only load these by searching with a 1m radius
+            // this can be repeated for locations that were added as a TA as well
+            0.001
+          : // extend the radius of TAs loaded on map when user has searched via placename
+          locationSearchType === 'placename'
+          ? 1.5
+          : 0.5
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)
@@ -77,15 +87,19 @@ export default function Map({
   // pass flood area options to parent component - used to show nearby flood areas
   useEffect(() => {
     if (alertArea && warningArea && setFloodAreas) {
-      if (types.includes('severe')) {
-        setFloodAreas(warningArea.features)
-      } else if (types.includes('alert')) {
-        setFloodAreas(alertArea.features)
-      } else {
-        setFloodAreas(alertArea.features, warningArea.features)
-      }
+      console.log('alertArea', alertArea)
+      console.log('warningArea', warningArea)
+      console.log('Combined features', [
+        ...(alertArea?.features || []),
+        ...(warningArea?.features || [])
+      ])
+
+      setFloodAreas(
+        ...(alertArea?.features || []),
+        ...(warningArea?.features || [])
+      )
     }
-  }, [types, alertArea, warningArea])
+  }, [alertArea, warningArea])
 
   // outline the selected flood area - used when user has chosen flood area from proximity
   useEffect(() => {
@@ -297,8 +311,6 @@ export default function Map({
       showOnlySelectedFloodArea
     ])
   }
-
-  console.log('alert area', alertArea, 'types', types)
 
   return (
     <>

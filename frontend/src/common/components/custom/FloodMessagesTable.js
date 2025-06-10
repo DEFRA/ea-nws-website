@@ -1,7 +1,12 @@
 import React from 'react'
 import { isMobile } from 'react-device-detect'
+import AlertType from '../../enums/AlertType'
 
-export default function FloodMessagesTable () {
+export default function FloodMessagesTable({
+  types,
+  severeFloodWarningAreaName,
+  alertFloodWarningAreaName
+}) {
   const columnWidths = {
     type: isMobile ? '50%' : '40%',
     area: isMobile ? '50%' : '60%'
@@ -17,13 +22,15 @@ export default function FloodMessagesTable () {
       <table className='govuk-table'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
-            <th
-              scope='col'
-              className='govuk-table__header'
-              style={{ width: columnWidths.type }}
-            >
-              Type of flood message
-            </th>
+            {types.includes(AlertType.REMOVE_FLOOD_SEVERE_WARNING) && (
+              <th
+                scope='col'
+                className='govuk-table__header'
+                style={{ width: columnWidths.type }}
+              >
+                Type of flood message
+              </th>
+            )}
             <th
               scope='col'
               className='govuk-table__header'
@@ -34,40 +41,46 @@ export default function FloodMessagesTable () {
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          <tr className='govuk-table__row'>
-            <td className='govuk-table__cell'>
-              <div
-                className='org-flood-warning-item'
-                style={{ display: 'flex', alignItems: 'flex-start' }}
-              >
-                <div className='org-flood-warning-square warning-square' />{' '}
-                <div>
-                  <strong className={`govuk-!-font-size-${fontSizes.heading}`}>
-                    Severe flood warnings
-                  </strong>
-                  <span
-                    className={`govuk-caption-m govuk-!-font-size-${fontSizes.caption} govuk-!-margin-bottom-3`}
-                  >
-                    Danger to life - act now
-                  </span>
-                  <strong className={`govuk-!-font-size-${fontSizes.heading}`}>
-                    Flood warnings
-                  </strong>
-                  <br />
-                  <span
-                    className={`govuk-caption-m govuk-!-font-size-${fontSizes.caption}`}
-                  >
-                    Flooding expected - act now
-                  </span>
+          {types.includes(AlertType.REMOVE_FLOOD_SEVERE_WARNING) && (
+            <tr className='govuk-table__row'>
+              <td className='govuk-table__cell'>
+                <div
+                  className='org-flood-warning-item'
+                  style={{ display: 'flex', alignItems: 'flex-start' }}
+                >
+                  <div className='org-flood-warning-square warning-square' />{' '}
+                  <div>
+                    <strong
+                      className={`govuk-!-font-size-${fontSizes.heading}`}
+                    >
+                      Severe flood warnings
+                    </strong>
+                    <span
+                      className={`govuk-caption-m govuk-!-font-size-${fontSizes.caption} govuk-!-margin-bottom-3`}
+                    >
+                      Danger to life - act now
+                    </span>
+                    <strong
+                      className={`govuk-!-font-size-${fontSizes.heading}`}
+                    >
+                      Flood warnings
+                    </strong>
+                    <br />
+                    <span
+                      className={`govuk-caption-m govuk-!-font-size-${fontSizes.caption}`}
+                    >
+                      Flooding expected - act now
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td
-              className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
-            >
-              Upper Hull River Catchment
-            </td>
-          </tr>
+              </td>
+              <td
+                className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
+              >
+                {severeFloodWarningAreaName}
+              </td>
+            </tr>
+          )}
           <tr className='govuk-table__row'>
             <td className='govuk-table__cell'>
               <div
@@ -95,8 +108,7 @@ export default function FloodMessagesTable () {
             <td
               className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
             >
-              River Lambourn and its tributaries from Upper Lambourn down to
-              Newbury
+              {alertFloodWarningAreaName}
             </td>
           </tr>
         </tbody>

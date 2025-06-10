@@ -11,11 +11,8 @@ import AlertType from '../../../common/enums/AlertType'
 import {
   setFloodAlertCount,
   setNearbyTargetAreasFlow,
-  setSelectedFloodAlertArea,
-  setSelectedFloodWarningArea,
   setSelectedLocation,
-  setSevereFloodWarningCount,
-  setShowOnlySelectedFloodArea
+  setSevereFloodWarningCount
 } from '../../../common/redux/userSlice'
 import { setLocationOtherAdditionals } from '../../../common/services/ProfileServices'
 import {
@@ -75,9 +72,9 @@ export default function LocationSearchResultsLayout({
     try {
       // reset map display - these are only required when user is taken through location in proximity to flood areas
       // they are updated with data only in proximity flow
-      dispatch(setSelectedFloodAlertArea(null))
-      dispatch(setSelectedFloodWarningArea(null))
-      dispatch(setShowOnlySelectedFloodArea(false))
+      // dispatch(setSelectedFloodAlertArea(null))
+      // dispatch(setSelectedFloodWarningArea(null))
+      // dispatch(setShowOnlySelectedFloodArea(false))
       dispatch(setNearbyTargetAreasFlow(false))
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
@@ -126,10 +123,9 @@ export default function LocationSearchResultsLayout({
         )
       }
 
-      console.log('locationWithAlertTypes', locationWithAlertTypes)
-
       dispatch(setSelectedLocation(locationWithAlertTypes))
 
+      // what even is this? please remind me to come back to this when reviewing
       if (isInAlertArea) {
         setHistoricalAlertNumber(alertArea.features[0].properties.TA_CODE)
       }
@@ -144,6 +140,13 @@ export default function LocationSearchResultsLayout({
         // check that there are flood areas within boundary box around location
         isWithinWarningAreaProximity = warningArea?.features.length > 0
         isWithinAlertAreaProximity = alertArea?.features.length > 0
+      }
+
+      // this needs reset when on the view location page
+      if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+        dispatch(setNearbyTargetAreasFlow(true))
+      } else {
+        dispatch(setNearbyTargetAreasFlow(false))
       }
 
       continueToNextPage(

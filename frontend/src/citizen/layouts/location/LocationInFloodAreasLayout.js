@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import FloodMessagesTable from '../../../common/components/custom/FloodMessagesTable'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
@@ -34,9 +35,12 @@ export default function LocationInSevereWarningAreaLayout({
     selectedLocation?.additionals,
     'alertTypes'
   )
-  const mapAreas = locationAlertTypes.includes(
-    AlertType.REMOVE_FLOOD_SEVERE_WARNING
-  )
+  const [floodAreas, setFloodAreas] = useState(null)
+  const [severeWarningAreaName, setSevereWarningAreaName] = useState(null)
+  const [alertAreaName, setAlertAreaName] = useState(null)
+
+  // we should update this so that it is based on the enum value
+  const mapAreas = locationAlertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
     ? ['severe', 'alert']
     : ['alert']
   const [partnerId, setPartnerId] = useState(false)
@@ -151,6 +155,25 @@ export default function LocationInSevereWarningAreaLayout({
     return data.profile
   }
 
+  // 'Flood Warning'
+  // 'Flood Warning Groundwater'
+  // 'Flood Warning Rapid Response'
+  // 'Flood Alert'
+  // 'Flood Alert Groundwater'
+
+  console.log('flood areas', floodAreas)
+
+  useEffect(() => {
+    // there should only ever be 2 results for this since the map is searching with a radius of 10 metres
+    floodAreas?.forEach((area) => {
+      if (area.properties.category.toLowerCase().includes('warning')) {
+        setSevereWarningAreaName(area.properties.TA_Name)
+      } else if (area.properties.category.toLowerCase().includes('alert')) {
+        setAlertAreaName(area.properties.TA_Name)
+      }
+    })
+  }, [floodAreas])
+
   return (
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
@@ -160,9 +183,14 @@ export default function LocationInSevereWarningAreaLayout({
             <h1 className='govuk-heading-l'>
               You can get flood messages for your location
             </h1>
-            <Map types={mapAreas} />
+            <Map types={mapAreas} setFloodAreas={setFloodAreas} />
+            <br />
             <p>We'll send you the following flood messages.</p>
-            <p>flood key here - RONAN is doing this</p>
+            <FloodMessagesTable
+              types={locationAlertTypes}
+              severeFloodWarningAreaName={severeWarningAreaName}
+              alertFloodWarningAreaName={alertAreaName}
+            />
             <Details
               title={'Read more on the difference between warnings and alerts'}
               text={''}

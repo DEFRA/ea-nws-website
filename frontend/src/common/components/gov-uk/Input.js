@@ -7,6 +7,7 @@ export default function Input({
   value,
   defaultValue = '',
   inputType,
+  inputMode,
   onChange,
   error = '',
   isNameBold = false,
@@ -50,6 +51,7 @@ export default function Input({
           name={name}
           id={id}
           type={inputType}
+          inputmode={inputMode}
           value={value}
           defaultValue={defaultValue}
           onChange={handleChange}

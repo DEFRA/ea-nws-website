@@ -19,8 +19,8 @@ import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
-import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import locationPin from '../../assets/images/location_pin.svg'
 import { backendCall } from '../../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
@@ -226,10 +226,10 @@ export default function Map({
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
-    iconUrl,
+    iconUrl: locationPin,
     iconRetinaUrl,
     shadowUrl,
-    iconSize: [25, 41],
+    iconSize: [55, 71],
     iconAnchor: [12, 41]
   })
 

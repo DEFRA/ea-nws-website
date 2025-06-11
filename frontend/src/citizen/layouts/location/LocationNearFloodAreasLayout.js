@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
+import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import Details from '../../../common/components/gov-uk/Details'
 import {
   getLocationOtherAdditional,
@@ -16,6 +18,7 @@ import {
   getRegistrationParams,
   removeLocation
 } from '../../../common/services/ProfileServices'
+import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationNearFloodAreasLayout({
   continueToNextPage,
@@ -28,14 +31,48 @@ export default function LocationNearFloodAreasLayout({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const { latitude, longitude } = selectedLocation.coordinates
   const locationAlertTypes = getLocationOtherAdditional(
     selectedLocation?.additionals,
     'alertTypes'
   )
   const [floodAreas, setFloodAreas] = useState([])
-  const [severeWarningAreas, setSevereWarningAreas] = useState(new Set())
-  const [alertAreas, setAlertAreas] = useState(new Set())
   const [partnerId, setPartnerId] = useState(false)
+
+  // used when user has selected search via placename and radius of TAs found is extended
+  const locationSearchType = useSelector(
+    (state) => state.session.locationSearchType
+  )
+  // used when user selects flood area when location is within proximity
+  const isUserInNearbyTargetFlowpath = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
+
+  // get nearby flood areas to setup map
+  useEffect(() => {
+    async function fetchFloodAreaData() {
+      let areas = []
+      const { alertArea, warningArea } = await getSurroundingFloodAreas(
+        latitude,
+        longitude,
+        !isUserInNearbyTargetFlowpath
+          ? // only load TAs required i.e if location being added lies within TAs, then only load these by searching with a 1m radius
+            // this can be repeated for locations that were added as a TA as well
+            0.001
+          : // extend the radius of TAs loaded on map when user has searched via placename
+          locationSearchType === 'placename'
+          ? 1.5
+          : 0.5
+      )
+
+      areas.push(...warningArea.features)
+      areas.push(...alertArea.features)
+      setFloodAreas(areas)
+    }
+    fetchFloodAreaData()
+  }, [])
+
+  console.log('flood areas', floodAreas)
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -147,22 +184,31 @@ export default function LocationNearFloodAreasLayout({
     return data.profile
   }
 
-  //   useEffect(() => {
-  //     let severeNames = new Set()
-  //     let alertNames = new Set()
-  //     floodAreas?.forEach((area) => {
-  //       if (area.properties.category.toLowerCase().includes('warning')) {
-  //         severeNames.add(area.properties.TA_Name)
-  //       } else if (area.properties.category.toLowerCase().includes('alert')) {
-  //         alertNames.add(area.properties.TA_Name)
-  //       }
-  //     })
+  // again need to update here to use enum
+  const getFloodAreaType = (category) => {
+    if (category.toLowerCase().includes('warning')) {
+      return ['severe']
+    } else if (category.toLowerCase().includes('alert')) {
+      return ['alert']
+    }
+  }
 
-  //     setSevereWarningAreaNames(severeNames)
-  //     setAlertAreaNames(alertNames)
-  //   }, [floodAreas])
-
-  console.log('flood areas', floodAreas)
+  const getFloodAreaMessages = (category) => {
+    if (category.toLowerCase().includes('warning')) {
+      return (
+        <ul class='govuk-list govuk-list--bullet'>
+          <li>severe flood warnings</li>
+          <li>flood warnings</li>
+        </ul>
+      )
+    } else if (category.toLowerCase().includes('alert')) {
+      return (
+        <ul class='govuk-list govuk-list--bullet'>
+          <li>flood alerts</li>
+        </ul>
+      )
+    }
+  }
 
   return (
     <>
@@ -178,6 +224,44 @@ export default function LocationNearFloodAreasLayout({
               title={'Read more on the difference between warnings and alerts'}
               text={'Shakir to add details here'}
             />
+            {floodAreas.map((area) => {
+              return (
+                <>
+                  <div
+                    style={{
+                      border: '1px solid rgba(177, 180, 182, 1)',
+                      height: '300px'
+                    }}
+                  >
+                    <div
+                      class='govuk-!-padding-4'
+                      style={{ backgroundColor: 'rgba(177, 180, 182, 1)' }}
+                    >
+                      <Checkbox label='Select' style={{ fontWeight: 'bold' }} />{' '}
+                    </div>
+                    <div class='govuk-grid-row'>
+                      <div class='govuk-grid-column-one-half govuk-!-padding-6'>
+                        <h3 class='govuk-heading-s'>
+                          {' '}
+                          {area.properties.TA_Name}
+                        </h3>
+                        <p>Messages you'll get:</p>
+                        {getFloodAreaMessages(area?.properties?.category)}
+                      </div>
+                      <div class='govuk-grid-column-one-half'>
+                        <Map
+                          selectedFloodArea={area}
+                          types={getFloodAreaType(area?.properties?.category)}
+                          interactive={false}
+                          fullScreenOption={true}
+                        />
+                      </div>
+                    </div>
+                    <br />
+                  </div>
+                </>
+              )
+            })}
             <div className='govuk-!-margin-top-7'>
               <Button
                 text='I want these'

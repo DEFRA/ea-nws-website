@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import LocationInSevereWarningAreaLayout from '../../../../layouts/location/LocationInSevereWarningAreaLayout'
+import LocationInFloodAreasLayout from '../../../../layouts/location/LocationInFloodAreasLayout'
 
-export default function ChangeLocationInSevereWarningAreaPage () {
+export default function ChangeLocationInFloodAreasPage() {
   const navigate = useNavigate()
 
   const continueToNextPage = () => {
-    navigate('/signup/review/location-in-alert-area')
+    navigate('/signup/review')
   }
 
   const continueToSearchResultsPage = () => {
@@ -15,7 +15,7 @@ export default function ChangeLocationInSevereWarningAreaPage () {
 
   return (
     <>
-      <LocationInSevereWarningAreaLayout
+      <LocationInFloodAreasLayout
         continueToNextPage={continueToNextPage}
         continueToSearchResultsPage={continueToSearchResultsPage}
       />

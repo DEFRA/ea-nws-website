@@ -3,11 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import FloodMessagesTable from '../../../common/components/custom/FloodMessagesTable'
-import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
-import AlertType from '../../../common/enums/AlertType'
 import {
   getLocationOtherAdditional,
   setProfile
@@ -99,16 +96,16 @@ export default function LocationNearFloodAreasLayout({
   const handleUserNavigatingBack = async () => {
     let updatedProfile
 
-    updatedProfile = await removeLocationWithinFloodArea()
+    // updatedProfile = await removeLocationWithinFloodArea()
 
-    if (updateGeoSafeProfile) {
-      updatedProfile = await updateGeosafeProfile(profile)
-      // if user is in sign up flow, then profile returned will be undefined
-      if (updatedProfile) {
-        unregisterLocationFromPartner(updatedProfile)
-        dispatch(setProfile(updatedProfile))
-      }
-    }
+    // if (updateGeoSafeProfile) {
+    //   updatedProfile = await updateGeosafeProfile(profile)
+    //   // if user is in sign up flow, then profile returned will be undefined
+    //   if (updatedProfile) {
+    //     unregisterLocationFromPartner(updatedProfile)
+    //     dispatch(setProfile(updatedProfile))
+    //   }
+    // }
 
     navigate(-1)
   }
@@ -150,20 +147,22 @@ export default function LocationNearFloodAreasLayout({
     return data.profile
   }
 
-  useEffect(() => {
-    let severeNames = new Set()
-    let alertNames = new Set()
-    floodAreas?.forEach((area) => {
-      if (area.properties.category.toLowerCase().includes('warning')) {
-        severeNames.add(area.properties.TA_Name)
-      } else if (area.properties.category.toLowerCase().includes('alert')) {
-        alertNames.add(area.properties.TA_Name)
-      }
-    })
+  //   useEffect(() => {
+  //     let severeNames = new Set()
+  //     let alertNames = new Set()
+  //     floodAreas?.forEach((area) => {
+  //       if (area.properties.category.toLowerCase().includes('warning')) {
+  //         severeNames.add(area.properties.TA_Name)
+  //       } else if (area.properties.category.toLowerCase().includes('alert')) {
+  //         alertNames.add(area.properties.TA_Name)
+  //       }
+  //     })
 
-    setSevereWarningAreaNames(severeNames)
-    setAlertAreaNames(alertNames)
-  }, [floodAreas])
+  //     setSevereWarningAreaNames(severeNames)
+  //     setAlertAreaNames(alertNames)
+  //   }, [floodAreas])
+
+  console.log('flood areas', floodAreas)
 
   return (
     <>
@@ -172,20 +171,12 @@ export default function LocationNearFloodAreasLayout({
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>
-              You can get flood messages for your location
+              Select nearby areas where you can get flood messages
             </h1>
-            <Map types={mapAreas} setFloodAreas={setFloodAreas} />
-            <p className='govuk-!-padding-top-6 govuk-!-padding-bottom-4'>
-              We'll send you the following flood messages.
-            </p>
-            <FloodMessagesTable
-              types={locationAlertTypes}
-              severeFloodWarningAreaNames={severeWarningAreaNames}
-              alertFloodWarningAreaNames={alertAreaNames}
-            />
+            <p>Shakir to add types of flood message key here</p>
             <Details
               title={'Read more on the difference between warnings and alerts'}
-              text={''}
+              text={'Shakir to add details here'}
             />
             <div className='govuk-!-margin-top-7'>
               <Button
@@ -203,7 +194,7 @@ export default function LocationNearFloodAreasLayout({
                   cursor: 'pointer'
                 }}
               >
-                Choose different location
+                Enter different location
               </Link>
             </div>
           </div>

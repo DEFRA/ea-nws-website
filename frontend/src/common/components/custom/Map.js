@@ -68,7 +68,6 @@ export default function Map({
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
-
         !isUserInNearbyTargetFlowpath
           ? // only load TAs required i.e if location being added lies within TAs, then only load these by searching with a 1m radius
             // this can be repeated for locations that were added as a TA as well
@@ -87,13 +86,6 @@ export default function Map({
   // pass flood area options to parent component - used to show nearby flood areas
   useEffect(() => {
     if (alertArea && warningArea && setFloodAreas) {
-      console.log('alertArea', alertArea)
-      console.log('warningArea', warningArea)
-      console.log('Combined features', [
-        ...(alertArea?.features || []),
-        ...(warningArea?.features || [])
-      ])
-
       setFloodAreas([
         ...(alertArea?.features || []),
         ...(warningArea?.features || [])

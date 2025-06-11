@@ -15,7 +15,7 @@ import AddMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-t
 import SkipConfirmMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import LocationInFloodAreasPage from '../../pages/sign-up/register-location/LocationInFloodAreasPage'
-import LocationInWarningAreaProximityPage from '../../pages/sign-up/register-location/LocationInWarningAreaProximityPage'
+import LocationNearFloodAreasPage from '../../pages/sign-up/register-location/LocationNearFloodAreasPage'
 import LocationNotNearDangerPage from '../../pages/sign-up/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/sign-up/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/sign-up/register-location/LocationSearchResultsPage'
@@ -23,9 +23,7 @@ import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPag
 import ChangeAccountEmailPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailPage'
 import ChangeAccountEmailValidationPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailValidatePage'
 import ChangeAccountNamePage from '../../pages/sign-up/review/change-account/ChangeAccountNamePage'
-import ChangeFloodAlertPage from '../../pages/sign-up/review/change-flood-alerts/ChangeFloodAlertsPage'
-import ChangeLocationInAlertAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInAlertAreaPage'
-import ChangeLocationInSevereWarningAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInSevereWarningAreaPage'
+import ChangeLocationInFloodAreasPage from '../../pages/sign-up/review/change-location/ChangeLocationInFloodAreasPage'
 import ChangeLocationInWarningAreaProximityPage from '../../pages/sign-up/review/change-location/ChangeLocationInWarningAreaProximityPage'
 import ChangeLocationNotNearDangerPage from '../../pages/sign-up/review/change-location/ChangeLocationNotNearDangerPage'
 import ChangeLocationSearchPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchPage'
@@ -66,8 +64,8 @@ const signupRoutes = [
     component: <LocationInFloodAreasPage />
   },
   {
-    path: '/signup/register-location/location-in-proximity-area/:type',
-    component: <LocationInWarningAreaProximityPage />
+    path: '/signup/register-location/location-near-flood-areas',
+    component: <LocationNearFloodAreasPage />
   },
   {
     path: '/signup/register-location/no-danger',
@@ -161,14 +159,9 @@ const signupRoutes = [
     component: <ChangeLocationSearchResultPage />
   },
   {
-    path: '/signup/review/location-in-severe-warning-area',
-    component: <ChangeLocationInSevereWarningAreaPage />
+    path: '/signup/review/change-location-in-flood-areas',
+    component: <ChangeLocationInFloodAreasPage />
   },
-  {
-    path: '/signup/review/location-in-alert-area',
-    component: <ChangeLocationInAlertAreaPage />
-  },
-
   {
     path: '/signup/review/location-in-proximity-area/:type',
     component: <ChangeLocationInWarningAreaProximityPage />
@@ -188,10 +181,6 @@ const signupRoutes = [
   {
     path: '/signup/review/change-email-validate',
     component: <ChangeAccountEmailValidationPage />
-  },
-  {
-    path: '/signup/review/change-flood-alert',
-    component: <ChangeFloodAlertPage />
   },
   {
     path: '/signup/review/remove-contact',

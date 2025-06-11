@@ -227,20 +227,12 @@ export default function LocationNearFloodAreasLayout({
             {floodAreas.map((area) => {
               return (
                 <>
-                  <div
-                    style={{
-                      border: '1px solid rgba(177, 180, 182, 1)',
-                      height: '300px'
-                    }}
-                  >
-                    <div
-                      class='govuk-!-padding-4'
-                      style={{ backgroundColor: 'rgba(177, 180, 182, 1)' }}
-                    >
+                  <div class='govuk-summary-card'>
+                    <div class='govuk-summary-card__title-wrapper'>
                       <Checkbox label='Select' style={{ fontWeight: 'bold' }} />{' '}
                     </div>
-                    <div class='govuk-grid-row'>
-                      <div class='govuk-grid-column-one-half govuk-!-padding-6'>
+                    <div class='govuk-summary-card__content govuk-grid-row'>
+                      <div class='govuk-grid-column-one-half '>
                         <h3 class='govuk-heading-s'>
                           {' '}
                           {area.properties.TA_Name}

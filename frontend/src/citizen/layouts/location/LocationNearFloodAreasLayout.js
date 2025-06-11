@@ -20,7 +20,7 @@ import {
   removeLocation
 } from '../../../common/services/ProfileServices'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationNearFloodAreasLayout({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {
@@ -36,15 +36,8 @@ export default function LocationInSevereWarningAreaLayout({
     'alertTypes'
   )
   const [floodAreas, setFloodAreas] = useState([])
-  const [severeWarningAreaNames, setSevereWarningAreaNames] = useState(
-    new Set()
-  )
-  const [alertAreaNames, setAlertAreaNames] = useState(new Set())
-
-  // we should update this so that it is based on the enum value
-  const mapAreas = locationAlertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
-    ? ['severe', 'alert']
-    : ['alert']
+  const [severeWarningAreas, setSevereWarningAreas] = useState(new Set())
+  const [alertAreas, setAlertAreas] = useState(new Set())
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId() {
@@ -59,6 +52,8 @@ export default function LocationInSevereWarningAreaLayout({
   const handleSubmit = async (event) => {
     event.preventDefault()
     let updatedProfile
+
+    // cycle through all areas selected
 
     updatedProfile = await addLocationWithinFloodArea()
 

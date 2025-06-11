@@ -14,9 +14,7 @@ import ValidateLandlinePhonePage from '../../pages/sign-up/channel-preferences/l
 import AddMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
-import LocationInAlertAreaPage from '../../pages/sign-up/register-location/LocationInAlertAreaPage'
 import LocationInFloodAreasPage from '../../pages/sign-up/register-location/LocationInFloodAreasPage'
-import LocationInSevereWarningAreaPage from '../../pages/sign-up/register-location/LocationInSevereWarningAreaPage'
 import LocationInWarningAreaProximityPage from '../../pages/sign-up/register-location/LocationInWarningAreaProximityPage'
 import LocationNotNearDangerPage from '../../pages/sign-up/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/sign-up/register-location/LocationSearchPage'
@@ -64,24 +62,16 @@ const signupRoutes = [
     component: <LocationSearchResultsPage />
   },
   {
+    path: '/signup/register-location/location-in-flood-areas',
+    component: <LocationInFloodAreasPage />
+  },
+  {
     path: '/signup/register-location/location-in-proximity-area/:type',
     component: <LocationInWarningAreaProximityPage />
   },
   {
-    path: '/signup/register-location/location-in-severe-warning-area',
-    component: <LocationInSevereWarningAreaPage />
-  },
-  {
-    path: '/signup/register-location/location-in-alert-area',
-    component: <LocationInAlertAreaPage />
-  },
-  {
     path: '/signup/register-location/no-danger',
     component: <LocationNotNearDangerPage />
-  },
-  {
-    path: '/signup/register-location/location-in-flood-areas',
-    component: <LocationInFloodAreasPage />
   },
   // mobile phone authentication route
   {

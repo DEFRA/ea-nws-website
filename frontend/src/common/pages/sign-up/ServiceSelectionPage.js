@@ -36,16 +36,15 @@ export default function ServiceSelectionPage () {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {/* Error summary */}
-            {(reasonError) && (
+            {reasonError && (
               <ErrorSummary
-                errorList={[reasonError]}
+                errorList={[{ text: reasonError, href: '#service-selection' }]}
               />
             )}
             <fieldset className='govuk-fieldset'>
@@ -56,25 +55,30 @@ export default function ServiceSelectionPage () {
               </legend>
               <div className='govuk-body'>
                 <div>
-                  <div className='govuk-radios' data-module='govuk-radios'>
+                  <div
+                    id='service-selection'
+                    className='govuk-radios'
+                    data-module='govuk-radios'
+                  >
                     {reasonError && (
-                      <p className='govuk-error-message'>{reasonError}</p>
+                      <p className='govuk-error-message'>
+                        <span className='govuk-visually-hidden'>Error:</span>{' '}
+                        {reasonError}
+                      </p>
                     )}
                     <Radio
                       key='citizen'
                       name='serviceSelectionRadios'
                       label='Myself, friends and family'
                       value='citizen'
-                      onChange={(e) =>
-                        setServiceOption(e.target.value)}
+                      onChange={(e) => setServiceOption(e.target.value)}
                     />
                     <Radio
                       key='organisation'
                       name='serviceSelectionRadios'
                       label='An organisation or business'
                       value='organisation'
-                      onChange={(e) =>
-                        setServiceOption(e.target.value)}
+                      onChange={(e) => setServiceOption(e.target.value)}
                     />
                   </div>
                 </div>

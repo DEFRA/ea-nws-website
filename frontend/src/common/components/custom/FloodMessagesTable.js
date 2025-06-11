@@ -4,9 +4,12 @@ import AlertType from '../../enums/AlertType'
 
 export default function FloodMessagesTable({
   types,
-  severeFloodWarningAreaName,
-  alertFloodWarningAreaName
+  severeFloodWarningAreaNames,
+  alertFloodWarningAreaNames
 }) {
+  const severeAreaNamesArray = [...severeFloodWarningAreaNames]
+  const alertAreaNamesArray = [...alertFloodWarningAreaNames]
+
   const columnWidths = {
     type: isMobile ? '50%' : '40%',
     area: isMobile ? '50%' : '60%'
@@ -22,15 +25,13 @@ export default function FloodMessagesTable({
       <table className='govuk-table'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
-            {types.includes(AlertType.REMOVE_FLOOD_SEVERE_WARNING) && (
-              <th
-                scope='col'
-                className='govuk-table__header'
-                style={{ width: columnWidths.type }}
-              >
-                Type of flood message
-              </th>
-            )}
+            <th
+              scope='col'
+              className='govuk-table__header'
+              style={{ width: columnWidths.type }}
+            >
+              Type of flood message
+            </th>
             <th
               scope='col'
               className='govuk-table__header'
@@ -77,7 +78,17 @@ export default function FloodMessagesTable({
               <td
                 className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
               >
-                {severeFloodWarningAreaName}
+                {severeAreaNamesArray?.length > 1 ? (
+                  <>
+                    <ul class='govuk-list govuk-list--bullet'>
+                      {severeAreaNamesArray?.map((areaName) => {
+                        return <li key={areaName}>{areaName}</li>
+                      })}
+                    </ul>
+                  </>
+                ) : (
+                  <>{severeAreaNamesArray && severeAreaNamesArray[0]}</>
+                )}
               </td>
             </tr>
           )}
@@ -108,7 +119,17 @@ export default function FloodMessagesTable({
             <td
               className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
             >
-              {alertFloodWarningAreaName}
+              {alertAreaNamesArray?.length > 1 ? (
+                <>
+                  <ul class='govuk-list govuk-list--bullet'>
+                    {alertAreaNamesArray?.map((areaName) => {
+                      return <li key={areaName}>{areaName}</li>
+                    })}
+                  </ul>
+                </>
+              ) : (
+                <>{alertAreaNamesArray && alertAreaNamesArray[0]}</>
+              )}
             </td>
           </tr>
         </tbody>

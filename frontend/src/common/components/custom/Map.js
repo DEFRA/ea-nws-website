@@ -94,10 +94,10 @@ export default function Map({
         ...(warningArea?.features || [])
       ])
 
-      setFloodAreas(
+      setFloodAreas([
         ...(alertArea?.features || []),
         ...(warningArea?.features || [])
-      )
+      ])
     }
   }, [alertArea, warningArea])
 

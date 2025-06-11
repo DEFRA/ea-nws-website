@@ -50,15 +50,14 @@ export default function LocationSearchResultsPage() {
     //   navigate to proxy page
     // }
     if (isInWarningArea || isInAlertArea) {
-      navigate('/signup/register-location/no-danger')
+      navigate('/signup/register-location/location-in-flood-areas')
     } else if (isError) {
       navigate('/error')
     } else {
-      // location isnt in danger area
+      navigate('/signup/register-location/no-danger')
     }
 
     // default
-    navigate('/signup/register-location/location-in-flood-areas')
     return
   }
 

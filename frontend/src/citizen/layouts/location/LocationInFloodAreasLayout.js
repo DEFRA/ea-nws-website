@@ -35,9 +35,11 @@ export default function LocationInSevereWarningAreaLayout({
     selectedLocation?.additionals,
     'alertTypes'
   )
-  const [floodAreas, setFloodAreas] = useState(null)
-  const [severeWarningAreaName, setSevereWarningAreaName] = useState(null)
-  const [alertAreaName, setAlertAreaName] = useState(null)
+  const [floodAreas, setFloodAreas] = useState([])
+  const [severeWarningAreaNames, setSevereWarningAreaNames] = useState(
+    new Set()
+  )
+  const [alertAreaNames, setAlertAreaNames] = useState(new Set())
 
   // we should update this so that it is based on the enum value
   const mapAreas = locationAlertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
@@ -59,7 +61,6 @@ export default function LocationInSevereWarningAreaLayout({
     let updatedProfile
 
     updatedProfile = await addLocationWithinFloodArea()
-    updatedProfile = await updateGeosafeProfile(updatedProfile)
 
     if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(updatedProfile)
@@ -104,7 +105,6 @@ export default function LocationInSevereWarningAreaLayout({
     let updatedProfile
 
     updatedProfile = await removeLocationWithinFloodArea()
-    updatedProfile = await updateGeosafeProfile(profile)
 
     if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(profile)
@@ -155,23 +155,19 @@ export default function LocationInSevereWarningAreaLayout({
     return data.profile
   }
 
-  // 'Flood Warning'
-  // 'Flood Warning Groundwater'
-  // 'Flood Warning Rapid Response'
-  // 'Flood Alert'
-  // 'Flood Alert Groundwater'
-
-  console.log('flood areas', floodAreas)
-
   useEffect(() => {
-    // there should only ever be 2 results for this since the map is searching with a radius of 10 metres
+    let severeNames = new Set()
+    let alertNames = new Set()
     floodAreas?.forEach((area) => {
       if (area.properties.category.toLowerCase().includes('warning')) {
-        setSevereWarningAreaName(area.properties.TA_Name)
+        severeNames.add(area.properties.TA_Name)
       } else if (area.properties.category.toLowerCase().includes('alert')) {
-        setAlertAreaName(area.properties.TA_Name)
+        alertNames.add(area.properties.TA_Name)
       }
     })
+
+    setSevereWarningAreaNames(severeNames)
+    setAlertAreaNames(alertNames)
   }, [floodAreas])
 
   return (
@@ -188,8 +184,8 @@ export default function LocationInSevereWarningAreaLayout({
             <p>We'll send you the following flood messages.</p>
             <FloodMessagesTable
               types={locationAlertTypes}
-              severeFloodWarningAreaName={severeWarningAreaName}
-              alertFloodWarningAreaName={alertAreaName}
+              severeFloodWarningAreaNames={severeWarningAreaNames}
+              alertFloodWarningAreaNames={alertAreaNames}
             />
             <Details
               title={'Read more on the difference between warnings and alerts'}

@@ -30,7 +30,7 @@ export default function SearchFilter({
   selectedLinkedFilters,
   setSelectedLinkedFilters
 }) {
-  const userTypes = ['Admin', 'Contact']
+  const userTypes = ['Admin', 'Contact', 'Pending Admin']
   const jobTitles = [
     ...new Set(
       contacts
@@ -97,7 +97,10 @@ export default function SearchFilter({
             contact.role === UserType.Admin) ||
           (selectedUserTypeFilters.includes('Contact') &&
             contact.role === null &&
-            contact.pendingRole !== UserType.PendingAdmin)
+            contact.pendingRole !== UserType.PendingAdmin) ||
+          (selectedUserTypeFilters.includes('Pending Admin') &&
+            contact.role === null &&
+            contact.pendingRole === UserType.PendingAdmin)
         )
       })
     }

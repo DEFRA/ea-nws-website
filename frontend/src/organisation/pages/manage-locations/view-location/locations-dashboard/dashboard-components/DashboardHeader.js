@@ -78,9 +78,9 @@ const FloodBanner = React.memo(function FloodBanner({
         padding: '0.5rem 0.5rem'
       }}
     >
-      <p>
+      <h2 className='govuk-body'>
         <strong>{heading}</strong>
-      </p>
+      </h2>
       <div
         style={{
           border: '2px solid lightGrey',
@@ -96,9 +96,9 @@ const FloodBanner = React.memo(function FloodBanner({
                 padding: '0rem 1rem 0rem 0rem'
               }}
             >
-              <h1>
+              <p className='body-text-strong'>
                 <strong>{count[0]}</strong>
-              </h1>
+              </p>
               <Link
                 className='govuk-link'
                 onClick={() => onClickLinked('messages')}
@@ -119,9 +119,9 @@ const FloodBanner = React.memo(function FloodBanner({
                   borderLeft: '2px solid lightGrey'
                 }}
               >
-                <h1>
+                <p className='body-text-strong'>
                   <strong>{count[1]}</strong>
-                </h1>
+                </p>
                 <Link
                   className='govuk-link'
                   onClick={() => onClickLinked('linked-locations')}
@@ -144,9 +144,9 @@ const FloodBanner = React.memo(function FloodBanner({
                 item.additionals.other?.alertTypes?.length === 0
             ).length > 0 && (
               <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
-                <h1 style={{ color: 'coral' }}>
+                <p className='body-text-strong' style={{ color: '#FD6214' }}>
                   <strong>{count[0]}</strong>
-                </h1>
+                </p>
                 <Link
                   className='govuk-link'
                   onClick={() => onClickLinked('high-medium-risk')}
@@ -185,9 +185,9 @@ const FloodBanner = React.memo(function FloodBanner({
                 item.additionals.other?.alertTypes?.length === 0
             ).length > 0 && (
               <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
-                <h1>
+                <p className='body-text-strong'>
                   <strong>{count[1]}</strong>
-                </h1>
+                </p>
                 <Link
                   className='govuk-link'
                   onClick={() => onClickLinked('low-risk')}
@@ -200,9 +200,9 @@ const FloodBanner = React.memo(function FloodBanner({
         )}
         {type === 'noContacts' && (
           <>
-            <h1 style={{ color: 'crimson' }}>
+            <p className='body-text-strong' style={{ color: 'crimson' }}>
               <strong>{count[0]}</strong>
-            </h1>
+            </p>
             <Link
               className='govuk-link'
               onClick={() => onClickLinked('no-links')}

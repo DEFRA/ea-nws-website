@@ -1,24 +1,23 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import LocationInAlertAreaLayout from '../../../layouts/location/LocationInAlertAreaLayout'
+import LocationInFloodAreasLayout from '../../../../layouts/location/LocationInFloodAreasLayout'
 
-export default function LocationInAlertAreaPage () {
+export default function ChangeLocationInFloodAreasPage() {
   const navigate = useNavigate()
 
   const continueToNextPage = () => {
-    navigate('/signup')
+    navigate('/signup/review')
   }
 
   const continueToSearchResultsPage = () => {
-    navigate('/signup/register-location/search-results')
+    navigate('/signup/review/change-location-results')
   }
 
   return (
     <>
-      <LocationInAlertAreaLayout
+      <LocationInFloodAreasLayout
         continueToNextPage={continueToNextPage}
         continueToSearchResultsPage={continueToSearchResultsPage}
-        updateGeoSafeProfile={false}
       />
     </>
   )

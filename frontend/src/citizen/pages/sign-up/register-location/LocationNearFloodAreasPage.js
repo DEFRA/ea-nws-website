@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import LocationInSevereWarningAreaLayout from '../../../layouts/location/LocationInSevereWarningAreaLayout'
+import LocationNearFloodAreasLayout from '../../../layouts/location/LocationNearFloodAreasLayout'
 
-export default function LocationInSevereWarningAreaPage () {
+export default function LocationInSevereWarningAreaPage() {
   const navigate = useNavigate()
 
   const continueToNextPage = () => {
-    navigate('/signup/register-location/location-in-alert-area')
+    navigate('/signup')
   }
 
   const continueToSearchResultsPage = () => {
@@ -15,7 +15,7 @@ export default function LocationInSevereWarningAreaPage () {
 
   return (
     <>
-      <LocationInSevereWarningAreaLayout
+      <LocationNearFloodAreasLayout
         continueToNextPage={continueToNextPage}
         continueToSearchResultsPage={continueToSearchResultsPage}
         updateGeoSafeProfile={false}

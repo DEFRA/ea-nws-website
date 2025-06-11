@@ -19,8 +19,8 @@ import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
-import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import locationPin from '../../assets/images/location_pin.svg'
 import { backendCall } from '../../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
@@ -68,7 +68,6 @@ export default function Map({
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
-
         !isUserInNearbyTargetFlowpath
           ? // only load TAs required i.e if location being added lies within TAs, then only load these by searching with a 1m radius
             // this can be repeated for locations that were added as a TA as well
@@ -87,13 +86,6 @@ export default function Map({
   // pass flood area options to parent component - used to show nearby flood areas
   useEffect(() => {
     if (alertArea && warningArea && setFloodAreas) {
-      console.log('alertArea', alertArea)
-      console.log('warningArea', warningArea)
-      console.log('Combined features', [
-        ...(alertArea?.features || []),
-        ...(warningArea?.features || [])
-      ])
-
       setFloodAreas([
         ...(alertArea?.features || []),
         ...(warningArea?.features || [])
@@ -226,10 +218,10 @@ export default function Map({
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
-    iconUrl,
+    iconUrl: locationPin,
     iconRetinaUrl,
     shadowUrl,
-    iconSize: [25, 41],
+    iconSize: [55, 71],
     iconAnchor: [12, 41]
   })
 

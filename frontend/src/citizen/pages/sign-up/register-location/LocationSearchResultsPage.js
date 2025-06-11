@@ -37,28 +37,15 @@ export default function LocationSearchResultsPage() {
 
     dispatch(setProfile(profile))
 
-    // if(user is in proximity){
-    //   navigate to proxy warning areas
-    // } else if (isInWarningArea) {
-    //   set redux variable so that selected location gets all alerts
-    // } else if() {
-    //   set redux variable so that selected location gets only alerts
-    // }
-    // navigate to location in flood areas page
-
-    // if(isWithinWarningAreaProximity || isWithinAlertAreaProximity){
-    //   navigate to proxy page
-    // }
-    if (isInWarningArea || isInAlertArea) {
+    if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+      navigate('/signup/register-location/location-near-flood-areas')
+    } else if (isInWarningArea || isInAlertArea) {
       navigate('/signup/register-location/location-in-flood-areas')
     } else if (isError) {
       navigate('/error')
     } else {
       navigate('/signup/register-location/no-danger')
     }
-
-    // default
-    return
   }
 
   const returnToSearchPage = '/signup/register-location/search'

@@ -176,15 +176,16 @@ export default function LocationInSevereWarningAreaLayout({
   return (
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>
               You can get flood messages for your location
             </h1>
             <Map types={mapAreas} setFloodAreas={setFloodAreas} />
-            <br />
-            <p>We'll send you the following flood messages.</p>
+            <p className='govuk-!-padding-top-6 govuk-!-padding-bottom-4'>
+              We'll send you the following flood messages.
+            </p>
             <FloodMessagesTable
               types={locationAlertTypes}
               severeFloodWarningAreaNames={severeWarningAreaNames}
@@ -391,23 +392,25 @@ export default function LocationInSevereWarningAreaLayout({
                 </>
               }
             />
-            <Button
-              text='I want these'
-              className='govuk-button'
-              onClick={handleSubmit}
-            />
-            &nbsp; &nbsp;
-            <Link
-              onClick={() => navigate(-1)}
-              className='govuk-link'
-              style={{
-                display: 'inline-block',
-                padding: '8px 10px 7px',
-                cursor: 'pointer'
-              }}
-            >
-              Choose different location
-            </Link>
+            <div className='govuk-!-margin-top-7'>
+              <Button
+                text='I want these'
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
+              &nbsp; &nbsp;
+              <Link
+                onClick={() => navigate(-1)}
+                className='govuk-link'
+                style={{
+                  display: 'inline-block',
+                  padding: '8px 10px 7px',
+                  cursor: 'pointer'
+                }}
+              >
+                Choose different location
+              </Link>
+            </div>
           </div>
         </div>
       </main>

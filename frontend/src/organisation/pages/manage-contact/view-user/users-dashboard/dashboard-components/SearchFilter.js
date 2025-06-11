@@ -9,8 +9,9 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
+import UserType from '../../../../../../common/enums/UserType'
 
-export default function SearchFilter ({
+export default function SearchFilter({
   // TODO: Combine filter values into a single object
   contacts,
   setFilteredContacts,
@@ -29,7 +30,7 @@ export default function SearchFilter ({
   selectedLinkedFilters,
   setSelectedLinkedFilters
 }) {
-  const userTypes = ['Admin', ' Contact']
+  const userTypes = ['Admin', 'Contact']
   const jobTitles = [
     ...new Set(
       contacts
@@ -90,9 +91,15 @@ export default function SearchFilter ({
 
     // Apply user type filter
     if (selectedUserTypeFilters.length > 0) {
-      filteredContacts = filteredContacts.filter((contact) =>
-        selectedUserTypeFilters.includes(contact.role)
-      )
+      filteredContacts = filteredContacts.filter((contact) => {
+        return (
+          (selectedUserTypeFilters.includes('Admin') &&
+            contact.role === UserType.Admin) ||
+          (selectedUserTypeFilters.includes('Contact') &&
+            contact.role === null &&
+            contact.pendingRole !== UserType.PendingAdmin)
+        )
+      })
     }
     // Apply job title filter
     if (selectedJobTitleFilters.length > 0) {

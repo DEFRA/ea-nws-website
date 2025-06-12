@@ -10,7 +10,7 @@ import {
   ZoomControl,
   useMap
 } from 'react-leaflet'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
@@ -94,8 +94,6 @@ export default function Map({
     warningAreaRefVisible,
     alertAreaRefVisible
   ])
-
-  console.log('types', types)
 
   //think we still need this when user opens the full map? checking with ucd
   const HighlightSelectedArea = (selectedFloodArea) => {

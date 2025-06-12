@@ -6,10 +6,9 @@ export default function LocationInSevereWarningAreaPage() {
   const navigate = useNavigate()
 
   const continueToNextPage = () => {
-    // waiting on feedback from ucd to know what to show in success banner
     navigate('/home', {
       state: {
-        locationName: 'new location' //this needs updated once UCD have came back to me
+        locationName: 'New location added'
       }
     })
   }

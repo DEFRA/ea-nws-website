@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -7,7 +8,9 @@ import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import Details from '../../../common/components/gov-uk/Details'
+import AlertType from '../../../common/enums/AlertType'
 import {
+  getAdditional,
   getLocationOtherAdditional,
   setProfile
 } from '../../../common/redux/userSlice'
@@ -18,7 +21,10 @@ import {
   getRegistrationParams,
   removeLocation
 } from '../../../common/services/ProfileServices'
-import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
+import {
+  getCoordsOfFloodArea,
+  getSurroundingFloodAreas
+} from '../../../common/services/WfsFloodDataService'
 
 export default function LocationNearFloodAreasLayout({
   continueToNextPage,
@@ -52,7 +58,7 @@ export default function LocationNearFloodAreasLayout({
   useEffect(() => {
     async function fetchFloodAreaData() {
       let areas = []
-      const { alertArea, warningArea } = await getSurroundingFloodAreas(
+      let { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
         !isUserInNearbyTargetFlowpath
@@ -65,14 +71,21 @@ export default function LocationNearFloodAreasLayout({
           : 0.5
       )
 
+      warningArea.features = warningArea.features.map((area) => ({
+        ...area,
+        addLocation: floodAreaExistsInProfile(area)
+      }))
+      alertArea.features = alertArea.features.map((area) => ({
+        ...area,
+        addLocation: floodAreaExistsInProfile(area)
+      }))
+
       areas.push(...warningArea.features)
       areas.push(...alertArea.features)
       setFloodAreas(areas)
     }
     fetchFloodAreaData()
   }, [])
-
-  console.log('flood areas', floodAreas)
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -89,7 +102,7 @@ export default function LocationNearFloodAreasLayout({
 
     // cycle through all areas selected
 
-    updatedProfile = await addLocationWithinFloodArea()
+    updatedProfile = await addFloodAreas()
 
     if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(updatedProfile)
@@ -103,14 +116,53 @@ export default function LocationNearFloodAreasLayout({
     continueToNextPage()
   }
 
-  const addLocationWithinFloodArea = async () => {
-    // geosafe doesnt accept locations with postcodes - need to remove this from the object
-    const { postcode, ...locationWithoutPostcode } = selectedLocation
+  const addFloodAreas = async () => {
+    let updatedProfile
+    // we need to get a common name to group nearby target area locations added through an address
+    const locationName = selectedLocation.address
 
-    const updatedProfile = addLocation(profile, locationWithoutPostcode)
+    floodAreas.forEach((area) => {
+      if (area.addLocation && !floodAreaExistsInProfile(area)) {
+        const additionals = [
+          { id: 'locationName', value: { s: locationName } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify({
+                alertTypes: getAreasAlertMessageTypes(area.properties.category)
+              })
+            }
+          }
+        ]
+
+        const targetArea = {
+          name: '',
+          address: area.properties.TA_Name,
+          coordinates: getCoordsOfFloodArea(area),
+          additionals: additionals
+        }
+
+        console.log('target area being added', targetArea)
+        updatedProfile = addLocation(profile, targetArea)
+      }
+    })
     dispatch(setProfile(updatedProfile))
 
     return updatedProfile
+  }
+
+  const getAreasAlertMessageTypes = (category) => {
+    if (category.toLowerCase().includes('warning')) {
+      return [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
+      ]
+    } else if (category.toLowerCase().includes('alert')) {
+      return [AlertType.FLOOD_ALERT, AlertType.INFO]
+    }
   }
 
   const registerLocationToPartner = async (profile) => {
@@ -210,6 +262,20 @@ export default function LocationNearFloodAreasLayout({
     }
   }
 
+  const floodAreaExistsInProfile = (area) => {
+    const locations = profile.pois
+
+    const floodAreaAdded = locations.some((location) => {
+      return (
+        location.address === area.properties.TA_Name &&
+        getAdditional(location.additionals, 'locationName') ===
+          selectedLocation.address
+      )
+    })
+
+    return floodAreaAdded
+  }
+
   return (
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
@@ -220,16 +286,33 @@ export default function LocationNearFloodAreasLayout({
               Select nearby areas where you can get flood messages
             </h1>
             <p>Shakir to add types of flood message key here</p>
-            <Details
-              title={'Read more on the difference between warnings and alerts'}
-              text={'Shakir to add details here'}
-            />
+            {!isMobile && (
+              <Details
+                title={
+                  'Read more on the difference between warnings and alerts'
+                }
+                text={'Shakir to add details here'}
+              />
+            )}
             {floodAreas.map((area) => {
               return (
                 <>
-                  <div class='govuk-summary-card'>
+                  <div class='govuk-summary-card' key={area.id}>
                     <div class='govuk-summary-card__title-wrapper'>
-                      <Checkbox label='Select' style={{ fontWeight: 'bold' }} />{' '}
+                      <Checkbox
+                        label='Select'
+                        style={{ fontWeight: 'bold' }}
+                        checked={!!area.addLocation}
+                        onChange={() => {
+                          setFloodAreas((prevAreas) =>
+                            prevAreas.map((a) =>
+                              a.id === area.id
+                                ? { ...a, addLocation: !a.addLocation }
+                                : a
+                            )
+                          )
+                        }}
+                      />
                     </div>
                     <div class='govuk-summary-card__content govuk-grid-row'>
                       <div class='govuk-grid-column-one-half '>
@@ -253,11 +336,19 @@ export default function LocationNearFloodAreasLayout({
                   </div>
                 </>
               )
-            })}
+            })}{' '}
+            {isMobile && (
+              <Details
+                title={
+                  'Read more on the difference between warnings and alerts'
+                }
+                text={'Shakir to add details here'}
+              />
+            )}
             <div className='govuk-!-margin-top-7'>
               <Button
                 text='I want these'
-                className='govuk-button'
+                className={`govuk-button ${isMobile && 'custom-width-button'}`}
                 onClick={handleSubmit}
               />
               &nbsp; &nbsp;

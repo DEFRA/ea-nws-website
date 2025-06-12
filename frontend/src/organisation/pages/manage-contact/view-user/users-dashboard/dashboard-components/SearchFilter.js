@@ -30,7 +30,7 @@ export default function SearchFilter({
   selectedLinkedFilters,
   setSelectedLinkedFilters
 }) {
-  const userTypes = ['Admin', 'Contact', 'Pending Admin']
+  const userTypes = Object.values(UserType)
   const jobTitles = [
     ...new Set(
       contacts
@@ -93,12 +93,12 @@ export default function SearchFilter({
     if (selectedUserTypeFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) => {
         return (
-          (selectedUserTypeFilters.includes('Admin') &&
+          (selectedUserTypeFilters.includes(UserType.Admin) &&
             contact.role === UserType.Admin) ||
-          (selectedUserTypeFilters.includes('Contact') &&
+          (selectedUserTypeFilters.includes(UserType.Contact) &&
             contact.role === null &&
             contact.pendingRole !== UserType.PendingAdmin) ||
-          (selectedUserTypeFilters.includes('Pending Admin') &&
+          (selectedUserTypeFilters.includes(UserType.PendingAdmin) &&
             contact.role === null &&
             contact.pendingRole === UserType.PendingAdmin)
         )
@@ -300,7 +300,7 @@ export default function SearchFilter({
           </div>
         )}
 
-        <div className=' govuk-!-margin-top-6 contacts-apply-filters'>
+        <div className='govuk-!-margin-top-6 contacts-apply-filters'>
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'

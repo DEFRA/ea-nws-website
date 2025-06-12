@@ -68,13 +68,17 @@ export default function ChangeBusinessDetailsPage() {
           <div className='govuk-grid-column-two-thirds'>
             {(businessNameError || jobTitleError || error) && (
               <ErrorSummary
-                errorList={[businessNameError, jobTitleError, error]}
-              />
+              errorList={[
+                businessNameError && { text: businessNameError, href: '#business-name' },
+                jobTitleError && { text: jobTitleError, href: '#job-title' },
+                error && { text: error, href: '#business-details-body' }
+              ].filter(Boolean)}
+            />
             )}
             <h2 className='govuk-heading-l'>
               Additional details for business registrations
             </h2>
-            <div className='govuk-body'>
+            <div className='govuk-body' id='business-details-body'>
               <Input
                 id='business-name'
                 name='Business name (optional)'

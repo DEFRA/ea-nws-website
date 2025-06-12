@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Checkbox ({ label = '', value, checked, onChange, style }) {
+export default function Checkbox ({ id, label = '', value, checked, onChange, style }) {
   return (
     <div className='govuk-checkboxes__item'>
       <input
@@ -9,7 +9,7 @@ export default function Checkbox ({ label = '', value, checked, onChange, style 
         value={value}
         checked={checked}
         onChange={onChange}
-        id={'id' + label}
+        id={id || 'id' + label}
       />
       <label
         className='govuk-label govuk-checkboxes__label'

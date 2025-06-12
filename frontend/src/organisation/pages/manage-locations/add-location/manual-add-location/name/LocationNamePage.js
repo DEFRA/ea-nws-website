@@ -73,7 +73,7 @@ export default function LocationNamePage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#location-name'}]} />}
             <h1 className='govuk-heading-l'>What is the location name?</h1>
             <div className='govuk-body'>
               <p>

@@ -54,7 +54,12 @@ export default function CompaniesHouseNumLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || numberError) && (
-              <ErrorSummary errorList={[error, numberError]} />
+              <ErrorSummary
+              errorList={[
+                  error && { text: error, href: '#comp-house-radios' },
+                  numberError && { text: numberError, href: '#comp-house-number' }
+                ].filter(Boolean)}
+              />
             )}
             <h1 className='govuk-heading-l'>
               Does your organisation have a Companies House number?
@@ -68,7 +73,7 @@ export default function CompaniesHouseNumLayout ({
                     : 'govuk-form-group'
                 }
               >
-                <fieldset className='govuk-fieldset'>
+                <fieldset id='comp-house-radios' className='govuk-fieldset'>
                   <legend className='govuk-visually-hidden'>
                     Does your organisation have a Companies House number?
                   </legend>
@@ -85,6 +90,7 @@ export default function CompaniesHouseNumLayout ({
                       conditionalQuestion='Companies House number'
                       conditionalInput={(val) => setCompanyNum(val)}
                       conditionalError={numberError}
+                      conditionalId='comp-house-number'
                     />
                     <Radio
                       key='radio_no'

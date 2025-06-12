@@ -109,7 +109,17 @@ export default function SelectAlternativeLandlineLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error, validationError]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  error && { text: error, href: '#other-number' },
+                  validationError && {
+                    text: validationError,
+                    href: '#phone-number-fieldset'
+                  }
+                ]}
+              />
+            )}
             {location?.state?.banner && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
@@ -135,9 +145,12 @@ export default function SelectAlternativeLandlineLayout({
                     : 'govuk-form-group'
                 }
               >
-                <fieldset className='govuk-fieldset'>
+                <fieldset className='govuk-fieldset' id='phone-number-fieldset'>
                   {validationError && (
-                    <p className='govuk-error-message'>{validationError}</p>
+                    <p className='govuk-error-message'>
+                      <span className="govuk-visually-hidden">Error:</span>{' '}
+                      {validationError}
+                    </p>
                   )}
                   {mobileNumbers.map((mobileNumber, index) => (
                     <div

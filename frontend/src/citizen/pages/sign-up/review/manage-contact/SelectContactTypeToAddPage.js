@@ -42,12 +42,15 @@ export default function SelectContactTypeToAddPage () {
 
   return (
     <>
-
       <BackLink to='/signup/review' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, href: '#contact-type-group' }]}
+              />
+            )}
             <h1 className='govuk-heading-l'>
               Select type of contact you want to add
             </h1>
@@ -58,11 +61,24 @@ export default function SelectContactTypeToAddPage () {
                   : 'govuk-form-group'
               }
             >
-              <fieldset className='govuk-fieldset'>
+              <fieldset
+                id='contact-type-group'
+                className='govuk-fieldset'
+                aria-describedby={
+                  error
+                    ? 'contact-type-hint contact-type-error'
+                    : 'contact-type-hint'
+                }
+              >
                 <legend className='govuk-fieldset__legend'>
                   Select type of contact you want to add
                 </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {error}
+                  </p>
+                )}
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((contact) => (
                     <Radio

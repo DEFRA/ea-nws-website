@@ -108,7 +108,12 @@ export default function AdminDetailsLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(errorFullName || errorEmail) && (
-              <ErrorSummary errorList={[errorFullName, errorEmail]} />
+              <ErrorSummary
+                errorList={[
+                  errorFullName && { text: errorFullName, href: '#full-name' },
+                  errorEmail && { text: errorEmail, href: '#email-address' }
+                ].filter(Boolean)}
+              />
             )}
             {isAdmin ? (
               <h1 className='govuk-heading-l'>Enter your details</h1>

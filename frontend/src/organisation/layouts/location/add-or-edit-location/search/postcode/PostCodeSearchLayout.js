@@ -64,7 +64,7 @@ export default function PostCodeSearchLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#postcode'}]} />}
             <h1 className='govuk-heading-l'>
               What is the location's postcode?
             </h1>

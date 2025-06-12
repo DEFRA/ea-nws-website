@@ -37,7 +37,7 @@ export default function SectorLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#emergency-sector'}]} />}
             <h1 className='govuk-heading-l'>
               Is your organisation a Category 1 or Category 2 responder?
             </h1>
@@ -59,7 +59,11 @@ export default function SectorLayout ({
                     {error}
                   </p>
                 )}
-                <div className='govuk-radios'>
+                <div id='emergency-sector' className='govuk-radios'>
+                  <fieldset
+                    className='govuk-form-group govuk-fieldset'
+                    aria-describedby={error ? 'emergency-sector-error' : undefined}
+                  >
                   <Radio
                     key='radio_yes'
                     name='emergencySectorRadio'
@@ -73,6 +77,7 @@ export default function SectorLayout ({
                     onChange={() => setEmergencySector(false)}
                   />
                   <br />
+                  </fieldset>
                 </div>
               </div>
               <Button

@@ -83,7 +83,7 @@ export default function AdminJoinedPage() {
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {errorText && <ErrorSummary errorList={[errorText]} />}
+            {errorText && <ErrorSummary errorList={[{text: errorText, href: '#admin-next-action'}]} />}
             <h1 className='govuk-heading-l'>
               You've now joined as admin for your organisation and can manage
               the following.
@@ -103,9 +103,10 @@ export default function AdminJoinedPage() {
                   What would you like to do first?
                 </h1>
                 {errorText && (
-                  <p className='govuk-error-message'>{errorText}</p>
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span> {errorText}</p>
                 )}
-                <div className='govuk-radios' data-module='govuk-radios'>
+                <div id='admin-next-action' className='govuk-radios' data-module='govuk-radios'>
                   <Radio
                     key='check_profile'
                     name='radios'

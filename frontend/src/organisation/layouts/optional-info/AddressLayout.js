@@ -47,7 +47,7 @@ export default function AddressLayout ({
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#location-address'}]} />}
             <h1 className='govuk-heading-l'>What is the address?</h1>
             {additionalInfo && <>{additionalInfo}</>}
             <TextArea

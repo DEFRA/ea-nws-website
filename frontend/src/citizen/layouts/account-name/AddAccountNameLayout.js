@@ -67,7 +67,7 @@ export default function AddAccountNameLayout({
             />
           )}
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#full-name'}]} />}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>

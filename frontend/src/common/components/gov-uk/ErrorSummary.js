@@ -3,10 +3,12 @@ import { Helmet } from 'react-helmet'
 
 export default function ErrorSummary ({ errorList }) {
   const summaryRef = useRef(null)
+  const focusFlag = useRef(false)
 
   useEffect(() => {
-    if (errorList.length > 0 && summaryRef.current) {
+    if (!focusFlag.current && errorList.length > 0 && summaryRef.current) {
       summaryRef.current.focus()
+      focusFlag.current = true
     }
   }, [errorList])
 

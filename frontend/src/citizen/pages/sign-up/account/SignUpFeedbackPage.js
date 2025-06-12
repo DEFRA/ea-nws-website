@@ -82,7 +82,18 @@ export default function FeedbackPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || textError) && (
-              <ErrorSummary errorList={[error, textError]} />
+              <ErrorSummary
+                errorList={[
+                  error && {
+                    text: error,
+                    href: '#feedback-pref-fieldset'
+                  },
+                  textError && {
+                    text: textError,
+                    href: '#more-detail'
+                  }
+                ].filter(Boolean)}
+              />
             )}
             <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
             <div className='govuk-body'>
@@ -98,17 +109,24 @@ export default function FeedbackPage () {
               </p>
               <br />
               <div
+                id='feedback-pref-fieldset'
                 className={
                   error
                     ? 'govuk-form-group govuk-form-group--error'
                     : 'govuk-form-group'
                 }
+                aria-describedby={error ? 'feedback-pref-error' : undefined}
               >
                 <fieldset className='govuk-fieldset'>
                   <h2 className='govuk-heading-m'>
                     Overall, how do you feel about this service?
                   </h2>
-                  {error && <p className='govuk-error-message'>{error}</p>}
+                  {error && (
+                    <p className='govuk-error-message'>
+                      <span className="govuk-visually-hidden">Error:</span>{' '}
+                      {error}
+                    </p>
+                  )}
                   <div className='govuk-radios' data-module='govuk-radios'>
                     {feedbackOptions.map((option) => (
                       <Radio
@@ -146,7 +164,10 @@ export default function FeedbackPage () {
                   Do not include your personal or financial details
                 </div>
                 {textError && (
-                  <p className='govuk-error-message'>{textError}</p>
+                  <p className='govuk-error-message'>
+                    <span className="govuk-visually-hidden">Error:</span>{' '}
+                    {textError}
+                  </p>
                 )}
                 <TextArea
                   className='govuk-textarea'

@@ -70,7 +70,7 @@ export default function ChangeEmailLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#new-email-address'}]} />}
             <h2 className='govuk-heading-l'>
               Change your email address for signing in
             </h2>

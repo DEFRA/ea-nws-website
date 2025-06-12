@@ -64,8 +64,8 @@ export default function AddContactTypePage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
-            {reasonError && <ErrorSummary errorList={[reasonError]} />}
-            <h1 className='govuk-heading-l'>Select type of new user</h1>
+            {reasonError && <ErrorSummary errorList={[{text: reasonError, href: '#user-type'}]} />}
+            <h1 id='user-type' className='govuk-heading-l'>Select type of new user</h1>
             <div className='govuk-body'>
               <div
                 className={
@@ -74,7 +74,8 @@ export default function AddContactTypePage() {
                 }
               >
                 {reasonError && (
-                  <p className='govuk-error-message'>{reasonError}</p>
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span> {reasonError}</p>
                 )}
                 <fieldset className='govuk-fieldset'>
                   <Radio

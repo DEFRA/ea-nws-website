@@ -91,7 +91,12 @@ export default function LocationXYCoordinatesSearchLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(xCoordinateError || yCoordinateError) && (
-              <ErrorSummary errorList={[xCoordinateError, yCoordinateError]} />
+              <ErrorSummary
+                errorList={[
+                  xCoordinateError && { text: xCoordinateError, href: '#x-coordinate' },
+                  yCoordinateError && { text: yCoordinateError, href: '#y-coordinate' }
+                ].filter(Boolean)}
+              />
             )}
             <h1 className='govuk-heading-l'>
               What are the X and Y coordinates?

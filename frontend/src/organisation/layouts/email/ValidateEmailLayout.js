@@ -143,7 +143,7 @@ export default function ValidateEmailLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && <ErrorSummary errorList={[{text: error, href: '#enter-code'}]} />}
                 <h2 className='govuk-heading-l'>Confirm email address</h2>
                 <div className='govuk-body'>
                   <p className='govuk-!-margin-top-6'>

@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function Select({
+  id,
   label,
   options,
   name,
@@ -39,7 +40,7 @@ export default function Select({
         className={
           error === '' ? 'govuk-select' : 'govuk-select govuk-input--error'
         }
-        id={'id' + name}
+        id={id || 'id' + name}
         name={name}
         aria-describedby={hint}
         onChange={handleSelectChange}

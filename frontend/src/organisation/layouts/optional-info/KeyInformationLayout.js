@@ -120,7 +120,7 @@ export default function KeyInformationLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(locationNameError || error) && (
-              <ErrorSummary errorList={[locationNameError, error]} />
+              <ErrorSummary errorList={[{text: locationNameError, href: '#location-name'}, error]} />
             )}
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>
               Key information

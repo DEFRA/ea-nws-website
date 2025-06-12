@@ -141,7 +141,7 @@ export default function LocationWithinWarningAreaProximityLayout({
           <main className='govuk-main-wrapper govuk-!-padding-top-4'>
             <div className='govuk-grid-row govuk-body'>
               <div className='govuk-grid-column-two-thirds'>
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && <ErrorSummary errorList={[{text: error, href: '#nearby-areas-fieldset'}]} />}
                 <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                   You can get{' '}
                   {type === 'severe'
@@ -167,11 +167,15 @@ export default function LocationWithinWarningAreaProximityLayout({
                       : 'govuk-form-group'
                   }
                 >
-                  <fieldset className='govuk-fieldset'>
+                  <fieldset id='nearby-areas-fieldset' className='govuk-fieldset'>
                     <legend className='govuk-fieldset__legend'>
                       <h3 className='govuk-heading-s'>Select a nearby area</h3>
                     </legend>
-                    {error && <p className='govuk-error-message'>{error}</p>}
+                    {error && (
+                      <p className='govuk-error-message'>
+                        <span className='govuk-visually-hidden'>Error:</span>{' '}
+                        {error}
+                      </p>)}
                     {floodAreas ? (
                       floodAreas.map((area, index) => (
                         <Radio

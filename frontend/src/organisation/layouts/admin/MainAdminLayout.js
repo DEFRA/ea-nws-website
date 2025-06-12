@@ -35,7 +35,7 @@ export default function MainAdminLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#admin-yes-no'}]} />}
             <div className='govuk-body'>
               <fieldset className='govuk-fieldset' role='group'>
                 <legend>
@@ -57,10 +57,11 @@ export default function MainAdminLayout({
                   {error && (
                     <p className='govuk-error-message'>
                       <br />
+                      <span class="govuk-visually-hidden">Error:</span>{' '}
                       {error}
                     </p>
                   )}
-                  <div className='govuk-radios'>
+                  <div id='admin-yes-no' className='govuk-radios'>
                     <Radio
                       key='radio_yes'
                       name='adminRadio'

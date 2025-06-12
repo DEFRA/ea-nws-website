@@ -138,7 +138,7 @@ export default function FindUnmatchedLocationLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#find-location-options'}]} />}
 
             {/* Heading */}
             <h1 className='govuk-heading-l'>
@@ -170,8 +170,20 @@ export default function FindUnmatchedLocationLayout ({
                     : 'govuk-form-group'
                 }
               >
-                {error && <p className='govuk-error-message'>{error}</p>}
-                <div className='govuk-radios' data-module='govuk-radios'>
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span> {error}
+                  </p>
+                )}
+                <fieldset
+                  className='govuk-fieldset'
+                  aria-describedby={error ? 'find-location-options-error' : undefined}
+                >
+                  <div
+                    id='find-location-options'
+                    className='govuk-radios'
+                    data-module='govuk-radios'
+                  >
                   {findLocationOptions.map((option) => (
                     <Radio
                       key={option.value}
@@ -183,7 +195,8 @@ export default function FindUnmatchedLocationLayout ({
                       onChange={() => setFindLocationOption(option.value)}
                     />
                   ))}
-                </div>
+                  </div>
+                </fieldset>
               </div>
             </div>
             <br />

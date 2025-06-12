@@ -45,11 +45,11 @@ export default function SelectOnMapLayout ({ fullAddress, navigateToNextPage, Na
           <div className='govuk-grid-column-two-thirds'>
             {error && (
               <ErrorSummary
-                errorList={[error]}
+                errorList={[{text: error, href: '#map-pin'}]}
               />
             )}
             <h1 className='govuk-heading-l'>Find location on a map</h1>
-            <div className='govuk-body'>
+            <div id='map-pin' className='govuk-body'>
               <p>
                 Click on the map to drop a pin where you think this location is. You can then add the location to this account.
               </p>

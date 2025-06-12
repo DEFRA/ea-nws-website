@@ -109,7 +109,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {placeNameTownOrPostcodeError && (
-              <ErrorSummary errorList={[placeNameTownOrPostcodeError]} />
+              <ErrorSummary errorList={[{text: placeNameTownOrPostcodeError, href: '#location-search'}]} />
             )}
             <h1 className='govuk-heading-l'>Find the location on a map</h1>
             {flow?.includes('unmatched-locations') && (
@@ -121,6 +121,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
             {flow?.includes('unmatched-locations') && <UnmatchedLocationInfo />}
 
             <div
+              id='location-search'
               className={
                 placeNameTownOrPostcodeError
                   ? 'govuk-form-group govuk-form-group--error'

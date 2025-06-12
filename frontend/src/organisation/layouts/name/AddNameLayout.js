@@ -64,7 +64,7 @@ export default function AddNameLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#organisation-name'}]} />}
             <h1 className='govuk-heading-l'>Your organisation's name</h1>
             <div className='govuk-body'>
               <Input

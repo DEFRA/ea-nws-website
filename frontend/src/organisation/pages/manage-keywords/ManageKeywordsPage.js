@@ -455,7 +455,7 @@ export default function ManageKeywordsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#keyword-search'}]} />}
             {notificationText && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
@@ -507,6 +507,7 @@ export default function ManageKeywordsPage () {
                     id='keyword-search'
                   >
                     <Autocomplete
+                      id='keyword-search'
                       className='govuk-input govuk-input--width-20 keyword-search-input'
                       inputType='text'
                       error=''

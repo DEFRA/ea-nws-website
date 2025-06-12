@@ -122,7 +122,13 @@ export default function ChangeAdminDetailsPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
           {(error || errorEmail || errorName) && (
-            <ErrorSummary errorList={[error, errorEmail, errorName]} />
+              <ErrorSummary
+              errorList={[
+                error,
+                errorName && { text: errorName, href: '#full-name' },
+                errorEmail && { text: errorEmail, href: '#email-address' }
+              ].filter(Boolean)}
+            />
           )}
           <h1 className='govuk-heading-l'>Change administrator details</h1>
 

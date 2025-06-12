@@ -186,7 +186,7 @@ export default function SignInValidatePage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && <ErrorSummary errorList={[{text: error, href: '#enter-code'}]} />}
                 <h2 className='govuk-heading-l'>Confirm email address </h2>
                 <div className='govuk-body'>
                   We've sent an email with a code to:

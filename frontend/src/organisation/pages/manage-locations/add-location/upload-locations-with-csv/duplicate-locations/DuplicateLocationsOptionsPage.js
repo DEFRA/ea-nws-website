@@ -232,7 +232,7 @@ export default function DuplicateLocationsOptionsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#duplicate-locations-options'}]} />}
             <h1 className='govuk-heading-l'>
               {duplicateLocations} locations already exist with the same name in
               this account
@@ -244,11 +244,15 @@ export default function DuplicateLocationsOptionsPage () {
                   : 'govuk-form-group'
               }
             >
-              <fieldset className='govuk-fieldset'>
+              <fieldset id='duplicate-locations-options' className='govuk-fieldset'>
                 <legend className='govuk-fieldset__legend govuk-!-font-weight-bold'>
                   What do you want to do with the duplicate locations?
                 </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span> {error}
+                  </p>
+                )}
                 {options.map((option) => (
                   <Radio
                     key={option.value}

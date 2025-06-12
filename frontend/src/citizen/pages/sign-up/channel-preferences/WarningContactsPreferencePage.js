@@ -65,8 +65,20 @@ export default function WarningContactsPreferencePage() {
             />
           )}
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <fieldset className='govuk-fieldset' aria-describedby='group-hint'>
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  { text: error, href: '#contact-preferences-group' }
+                ]}
+              />
+            )}
+            <fieldset
+              id='contact-preferences-group'
+              className='govuk-fieldset'
+              aria-describedby={
+                error ? 'group-hint contact-preferences-error' : 'group-hint'
+              }
+            >
               <legend className='govuk-fieldset__legend'>
                 <h1 className='govuk-heading-l'>
                   Would you like to get flood messages in any other way?
@@ -82,7 +94,15 @@ export default function WarningContactsPreferencePage() {
               >
                 <span id='group-hint'>Select at least one option</span>
 
-                {error && <p className='govuk-error-message'>{error}</p>}
+                {error && (
+                  <p
+                    id='contact-preferences-error'
+                    className='govuk-error-message'
+                  >
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {error}
+                  </p>
+                )}
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((preference) => (
                     <Checkbox

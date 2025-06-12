@@ -189,7 +189,7 @@ export default function ValidateMobileLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && <ErrorSummary errorList={[{text: error, href: '#enter-code'}]} />}
                 <h2 className='govuk-heading-l'>Check your mobile phone</h2>
                 <div className='govuk-body'>
                   We've sent a text with a code to:

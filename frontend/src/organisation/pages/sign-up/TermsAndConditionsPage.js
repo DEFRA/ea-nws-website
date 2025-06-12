@@ -56,7 +56,7 @@ export default function TermsAndConditionsPage () {
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#terms-and-conditions-checkbox'}]} />}
 
             <h1 className='govuk-heading-l'>Check the terms and conditions</h1>
 
@@ -161,8 +161,13 @@ export default function TermsAndConditionsPage () {
                   : 'govuk-form-group'
               }
             >
-              {error && <p className='govuk-error-message'>{error}</p>}
+              {error && (
+                <p className='govuk-error-message'>
+                  <span className='govuk-visually-hidden'>Error:</span> {error}
+                </p>
+              )}
               <Checkbox
+                id='terms-and-conditions-checkbox'
                 onChange={() => setIsChecked(!isChecked)}
                 checked={isChecked}
                 label={`I warrant that I’m authorised to agree to these terms and conditions on behalf of ${organisationName}.`}

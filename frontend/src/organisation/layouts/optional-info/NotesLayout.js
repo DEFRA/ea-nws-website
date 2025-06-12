@@ -71,7 +71,7 @@ export default function NotesLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#location-notes'}]} />}
             <h1 className='govuk-heading-l'>{title || 'Notes (optional)'}</h1>
             <div className='govuk-body'>
               <p className='govuk-hint'>{instructionText}</p>

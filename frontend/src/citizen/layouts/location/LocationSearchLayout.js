@@ -120,7 +120,17 @@ export default function LocationSearchLayout({ continueToNextPage }) {
           <div className='govuk-grid-column-two-thirds'>
             {(error || postCodeError || placeNameError) && (
               <ErrorSummary
-                errorList={[error, postCodeError, placeNameError]}
+                errorList={[
+                  error && { text: error, href: '#searchOptionsRadios' },
+                  postCodeError && {
+                    text: postCodeError,
+                    href: '#postcode-input'
+                  },
+                  placeNameError && {
+                    text: placeNameError,
+                    href: '#placename-input'
+                  }
+                ].filter(Boolean)}
               />
             )}
             <div className='govuk-body'>
@@ -143,6 +153,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                   </p>
                   {error && <p className='govuk-error-message'>{error}</p>}
                   <Radio
+                    id='searchOptionsRadios'
                     label='Postcode'
                     value='Postcode'
                     name='searchOptionsRadios'
@@ -151,6 +162,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                     conditionalHint='Postcode in England'
                     conditionalInput={(val) => setPostCode(val)}
                     conditionalError={postCodeError}
+                    conditionalId='postcode-input'
                   />
                   <Radio
                     label='Town or place name'
@@ -161,6 +173,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                     conditionalHint='Be as specific as possible. For example, enter a town or village, rather than a large city'
                     conditionalInput={(val) => setPlaceName(val)}
                     conditionalError={placeNameError}
+                    conditionalId='placename-input'
                   />
                 </div>
               </fieldset>

@@ -190,7 +190,11 @@ export default function ValidateLandlineLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, href: '#enter-code' }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l'>Confirm telephone number</h2>
                 <div className='govuk-body'>
                   We're calling this number to read out a code:

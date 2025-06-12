@@ -232,7 +232,7 @@ export default function SelectPredefinedBoundaryPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(boundaryTypeError || boundaryError) && (
-              <ErrorSummary errorList={[boundaryTypeError, boundaryError]} />
+              <ErrorSummary errorList={[{text: boundaryTypeError, href: '#BoundaryType'}, {text: boundaryError, href: '#Boundary'}]} />
             )}
             <h1 className='govuk-heading-l'>Add predefined boundary</h1>
             <div className='govuk-body'>
@@ -241,6 +241,7 @@ export default function SelectPredefinedBoundaryPage() {
                 <div className='govuk-grid-column-one-third'>
                   <br />
                   <Select
+                    id='BoundaryType'
                     name='BoundaryType'
                     label='Boundary type'
                     options={boundaryTypes}
@@ -251,6 +252,7 @@ export default function SelectPredefinedBoundaryPage() {
                     }
                   />
                   <Select
+                    id='Boundary'
                     name='Boundary'
                     label='Boundary'
                     options={boundaries.map((boundary) => {

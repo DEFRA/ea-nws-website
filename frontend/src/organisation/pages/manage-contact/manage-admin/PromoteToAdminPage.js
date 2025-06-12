@@ -124,7 +124,7 @@ export default function PromoteToAdminPage() {
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
+            {errorMessage && <ErrorSummary errorList={[{text: errorMessage, href: '#email-address'}]} />}
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>{heading}</h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.

@@ -133,15 +133,15 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
             {(firstnameError || lastnameError || jobTitleError || error) && (
               <ErrorSummary
                 errorList={[
-                  firstnameError,
-                  lastnameError,
-                  jobTitleError,
-                  error
-                ]}
+                  firstnameError && { text: firstnameError, href: '#first-name' },
+                  lastnameError && { text: lastnameError, href: '#last-name' },
+                  jobTitleError && { text: jobTitleError, href: '#job-title' },
+                  error && { text: error, href: '#main-body' }
+                ].filter(Boolean)}
               />
             )}
             <h1 className='govuk-heading-l'>User details</h1>
-            <div className='govuk-body'>
+            <div id='main-body' className='govuk-body'>
               <Input
                 id='first-name'
                 name='First name'

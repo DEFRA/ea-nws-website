@@ -74,7 +74,11 @@ export default function DeclarationOfAgreementPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, href: '#terms-agreement' }]}
+              />
+            )}
             <div className='govuk-body'>
               <h1 className='govuk-heading-l'>
                 Check the terms and conditions
@@ -152,8 +156,13 @@ export default function DeclarationOfAgreementPage () {
                     : 'govuk-form-group'
                 }
               >
-                {error && <p className='govuk-error-message'>{error}</p>}
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>{error}</span>
+                  </p>
+                )}
                 <Checkbox
+                  id='terms-agreement'
                   onChange={() => setIsChecked(!isChecked)}
                   checked={isChecked}
                   label='I agree to the terms and conditions'

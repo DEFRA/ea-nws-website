@@ -102,7 +102,11 @@ export default function AccountDeletePage () {
             {/* Error summary */}
             {(reasonError || reasonTextError || furtherInfoError) && (
               <ErrorSummary
-                errorList={[reasonError, reasonTextError, furtherInfoError]}
+                errorList={[
+                  reasonError && { text: reasonError, href: '#account-deletion-reason' },
+                  reasonTextError && { text: reasonTextError, href: '#account-deletion-other-text' },
+                  furtherInfoError && { text: furtherInfoError, href: '#more-detail' }
+                ].filter(Boolean)}
               />
             )}
             <h1 className='govuk-heading-l'>
@@ -125,6 +129,7 @@ export default function AccountDeletePage () {
 
                 {/* Select account deletion reason */}
                 <div
+                  id='account-deletion-reason'
                   className={
                         reasonError
                           ? 'govuk-form-group govuk-form-group--error'
@@ -133,7 +138,10 @@ export default function AccountDeletePage () {
                 >
                   <div className='govuk-radios' data-module='govuk-radios'>
                     {reasonError && (
-                      <p className='govuk-error-message'>{reasonError}</p>
+                      <p className='govuk-error-message'>
+                        <span className="govuk-visually-hidden">Error:</span>{' '}
+                        {reasonError}
+                      </p>
                     )}
                     {accountDeletionReasonOptions.map((option) => (
                       <Radio
@@ -156,6 +164,7 @@ export default function AccountDeletePage () {
                       conditionalInput={(val) =>
                         setaccountDeletionReasonText(val)}
                       conditionalError={reasonTextError}
+                      conditionalId='account-deletion-other-text'
                     />
                   </div>
                 </div>
@@ -182,7 +191,10 @@ export default function AccountDeletePage () {
                     </label>
                   </h2>
                   {furtherInfoError && (
-                    <p className='govuk-error-message'>{furtherInfoError}</p>
+                    <p className='govuk-error-message'>
+                      <span className="govuk-visually-hidden">Error:</span>{' '}
+                      {furtherInfoError}
+                    </p>
                   )}
                   <TextArea
                     className='govuk-textarea govuk-!-width-one-half'

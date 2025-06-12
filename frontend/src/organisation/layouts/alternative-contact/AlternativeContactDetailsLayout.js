@@ -92,8 +92,21 @@ export default function AlternativeContactDetailsLayout({
           <div className='govuk-grid-column-two-thirds'>
             {(errorFullName || errorEmail || errorTelephone) && (
               <ErrorSummary
-                errorList={[errorFullName, errorEmail, errorTelephone]}
-              />
+                errorList={[
+                  errorFullName && {
+                    text: errorFullName,
+                    href: '#full-name'
+                  },
+                  errorEmail && {
+                    text: errorEmail,
+                    href: '#email-address'
+                  },
+                  errorTelephone && {
+                    text: errorTelephone,
+                    href: '#telephone-number'
+                  }
+                ].filter(Boolean)}
+            />
             )}
             <h1 className='govuk-heading-l'>
               Enter details for an alternative contact at your organisation

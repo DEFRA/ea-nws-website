@@ -74,7 +74,7 @@ export default function SignUpPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, href: '#email-address'}]} />}
             <h1 className='govuk-heading-l'>Enter an email address</h1>
             <div className='govuk-body'>
               <p>We'll send flood messages to this address. </p>

@@ -24,7 +24,7 @@ import ChangeAccountEmailPage from '../../pages/sign-up/review/change-account/Ch
 import ChangeAccountEmailValidationPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailValidatePage'
 import ChangeAccountNamePage from '../../pages/sign-up/review/change-account/ChangeAccountNamePage'
 import ChangeLocationInFloodAreasPage from '../../pages/sign-up/review/change-location/ChangeLocationInFloodAreasPage'
-import ChangeLocationInWarningAreaProximityPage from '../../pages/sign-up/review/change-location/ChangeLocationInWarningAreaProximityPage'
+import ChangeLocationNearFloodAreasPage from '../../pages/sign-up/review/change-location/ChangeLocationNearFloodAreasPage'
 import ChangeLocationNotNearDangerPage from '../../pages/sign-up/review/change-location/ChangeLocationNotNearDangerPage'
 import ChangeLocationSearchPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchPage'
 import ChangeLocationSearchResultPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchResultPage'
@@ -163,8 +163,8 @@ const signupRoutes = [
     component: <ChangeLocationInFloodAreasPage />
   },
   {
-    path: '/signup/review/location-in-proximity-area/:type',
-    component: <ChangeLocationInWarningAreaProximityPage />
+    path: '/signup/review/change-location-near-flood-areas',
+    component: <ChangeLocationNearFloodAreasPage />
   },
   {
     path: '/signup/review/no-danger',

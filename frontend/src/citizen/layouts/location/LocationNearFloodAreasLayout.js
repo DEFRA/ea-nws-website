@@ -10,6 +10,7 @@ import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import Details from '../../../common/components/gov-uk/Details'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import AlertType from '../../../common/enums/AlertType'
 import {
   getAdditional,
@@ -46,6 +47,7 @@ export default function LocationNearFloodAreasLayout({
   )
   const [floodAreas, setFloodAreas] = useState([])
   const [partnerId, setPartnerId] = useState(false)
+  const [error, setError] = useState(null)
 
   // used when user has selected search via placename and radius of TAs found is extended
   const locationSearchType = useSelector(
@@ -102,20 +104,26 @@ export default function LocationNearFloodAreasLayout({
     event.preventDefault()
     let updatedProfile
 
-    // cycle through all areas selected
+    const minimumAreasAdded = floodAreas.some((area) => {
+      return area.addLocation
+    })
 
-    updatedProfile = await addFloodAreas()
+    if (minimumAreasAdded) {
+      updatedProfile = await addFloodAreas()
 
-    if (updateGeoSafeProfile) {
-      updatedProfile = await updateGeosafeProfile(updatedProfile)
+      if (updateGeoSafeProfile) {
+        updatedProfile = await updateGeosafeProfile(updatedProfile)
 
-      // if user is in sign up flow, then profile returned will be undefined
-      if (updatedProfile) {
-        await registerLocationToPartner(updatedProfile)
-        dispatch(setProfile(updatedProfile))
+        // if user is in sign up flow, then profile returned will be undefined
+        if (updatedProfile) {
+          await registerLocationToPartner(updatedProfile)
+          dispatch(setProfile(updatedProfile))
+        }
       }
+      continueToNextPage()
+    } else {
+      setError('Select at least one area')
     }
-    continueToNextPage()
   }
 
   const addFloodAreas = async () => {
@@ -238,37 +246,28 @@ export default function LocationNearFloodAreasLayout({
     return data.profile
   }
 
-  // again need to update here to use enum
-  const getFloodAreaType = (category) => {
+  const getFloodAreaDetails = (category) => {
     if (category.toLowerCase().includes('warning')) {
-      return ['severe']
+      return {
+        type: ['severe'],
+        icon: 'warning',
+        messages: (
+          <ul class='govuk-list govuk-list--bullet'>
+            <li>severe flood warnings</li>
+            <li>flood warnings</li>
+          </ul>
+        )
+      }
     } else if (category.toLowerCase().includes('alert')) {
-      return ['alert']
-    }
-  }
-
-  const getFloodAreaIcon = (category) => {
-    if (category.toLowerCase().includes('warning')) {
-      return 'warning'
-    } else if (category.toLowerCase().includes('alert')) {
-      return 'alert'
-    }
-  }
-
-  const getFloodAreaMessages = (category) => {
-    if (category.toLowerCase().includes('warning')) {
-      return (
-        <ul class='govuk-list govuk-list--bullet'>
-          <li>severe flood warnings</li>
-          <li>flood warnings</li>
-        </ul>
-      )
-    } else if (category.toLowerCase().includes('alert')) {
-      return (
-        <ul class='govuk-list govuk-list--bullet'>
-          <li>flood alerts</li>
-        </ul>
-      )
+      return {
+        type: ['alert'],
+        icon: 'alert',
+        messages: (
+          <ul class='govuk-list govuk-list--bullet'>
+            <li>flood alerts</li>
+          </ul>
+        )
+      }
     }
   }
 
@@ -286,11 +285,46 @@ export default function LocationNearFloodAreasLayout({
     return floodAreaAdded
   }
 
+  const map = (area) => (
+    <>
+      {' '}
+      <Map
+        selectedFloodArea={area}
+        types={getFloodAreaDetails(area?.properties?.category).type}
+        interactive={false}
+        fullScreenOption={true}
+      />
+    </>
+  )
+
+  const areaInfo = (area) => (
+    <>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '8px'
+        }}
+      >
+        <div
+          className={`org-flood-warning-square ${
+            getFloodAreaDetails(area?.properties?.category).icon
+          }-square left`}
+        />
+        <h3 class='govuk-heading-s'>{area.properties.TA_Name}</h3>
+      </div>
+      <p>Messages you'll get:</p>
+      {getFloodAreaDetails(area?.properties?.category).messages}
+    </>
+  )
+
   return (
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
+
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
+          {error && <ErrorSummary errorList={[error]} />}
           <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>
               Select nearby areas where you can get flood messages
@@ -305,61 +339,52 @@ export default function LocationNearFloodAreasLayout({
               />
             )}
             <FloodMessagesTypes />
-            {floodAreas.map((area) => {
-              return (
-                <>
-                  <div class='govuk-summary-card' key={area.id}>
-                    <div class='govuk-summary-card__title-wrapper'>
-                      <Checkbox
-                        label='Select'
-                        style={{ fontWeight: 'bold' }}
-                        checked={!!area.addLocation}
-                        onChange={() => {
-                          setFloodAreas((prevAreas) =>
-                            prevAreas.map((a) =>
-                              a.id === area.id
-                                ? { ...a, addLocation: !a.addLocation }
-                                : a
+            <div
+              className={`govuk-form-group ${
+                error && 'govuk-form-group--error'
+              }`}
+            >
+              {error && <p class='govuk-error-message'>{error}</p>}
+              {floodAreas.map((area) => {
+                return (
+                  <>
+                    <div class='govuk-summary-card' key={area.id}>
+                      <div class='govuk-summary-card__title-wrapper'>
+                        <Checkbox
+                          label='Select'
+                          style={{ fontWeight: 'bold' }}
+                          checked={!!area.addLocation}
+                          onChange={() => {
+                            setError(null)
+                            setFloodAreas((prevAreas) =>
+                              prevAreas.map((a) =>
+                                a.id === area.id
+                                  ? { ...a, addLocation: !a.addLocation }
+                                  : a
+                              )
                             )
-                          )
-                        }}
-                      />
-                    </div>
-                    <div class='govuk-summary-card__content govuk-grid-row'>
-                      <div class='govuk-grid-column-one-half '>
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            gap: '8px'
                           }}
-                        >
-                          <div
-                            className={`org-flood-warning-square ${getFloodAreaIcon(
-                              area?.properties?.category
-                            )}-square left`}
-                          />
-                          <h3 class='govuk-heading-s'>
-                            {area.properties.TA_Name}
-                          </h3>
-                        </div>
-                        <p>Messages you'll get:</p>
-                        {getFloodAreaMessages(area?.properties?.category)}
-                      </div>
-                      <div class='govuk-grid-column-one-half'>
-                        <Map
-                          selectedFloodArea={area}
-                          types={getFloodAreaType(area?.properties?.category)}
-                          interactive={false}
-                          fullScreenOption={true}
                         />
                       </div>
+                      <div class='govuk-summary-card__content govuk-grid-row'>
+                        <div class='govuk-grid-column-one-half'>
+                          {isMobile ? map(area) : areaInfo(area)}
+                        </div>
+                        <div class='govuk-grid-column-one-half'>
+                          {isMobile ? (
+                            <div className='govuk-!-padding-top-4'>
+                              {areaInfo(area)}
+                            </div>
+                          ) : (
+                            map(area)
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <br />
-                  </div>
-                </>
-              )
-            })}{' '}
+                  </>
+                )
+              })}
+            </div>
             {isMobile && (
               <Details
                 title={

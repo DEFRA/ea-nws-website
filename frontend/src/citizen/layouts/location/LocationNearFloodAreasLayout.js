@@ -4,6 +4,8 @@ import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import FloodMessageDetails from '../../../common/components/custom/FloodMessageDetails'
+import FloodMessagesTypes from '../../../common/components/custom/FloodMessagesTypes'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
@@ -245,6 +247,14 @@ export default function LocationNearFloodAreasLayout({
     }
   }
 
+  const getFloodAreaIcon = (category) => {
+    if (category.toLowerCase().includes('warning')) {
+      return 'warning'
+    } else if (category.toLowerCase().includes('alert')) {
+      return 'alert'
+    }
+  }
+
   const getFloodAreaMessages = (category) => {
     if (category.toLowerCase().includes('warning')) {
       return (
@@ -291,9 +301,10 @@ export default function LocationNearFloodAreasLayout({
                 title={
                   'Read more on the difference between warnings and alerts'
                 }
-                text={'Shakir to add details here'}
+                text={<FloodMessageDetails />}
               />
             )}
+            <FloodMessagesTypes />
             {floodAreas.map((area) => {
               return (
                 <>
@@ -316,10 +327,22 @@ export default function LocationNearFloodAreasLayout({
                     </div>
                     <div class='govuk-summary-card__content govuk-grid-row'>
                       <div class='govuk-grid-column-one-half '>
-                        <h3 class='govuk-heading-s'>
-                          {' '}
-                          {area.properties.TA_Name}
-                        </h3>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: '8px'
+                          }}
+                        >
+                          <div
+                            className={`org-flood-warning-square ${getFloodAreaIcon(
+                              area?.properties?.category
+                            )}-square left`}
+                          />
+                          <h3 class='govuk-heading-s'>
+                            {area.properties.TA_Name}
+                          </h3>
+                        </div>
                         <p>Messages you'll get:</p>
                         {getFloodAreaMessages(area?.properties?.category)}
                       </div>

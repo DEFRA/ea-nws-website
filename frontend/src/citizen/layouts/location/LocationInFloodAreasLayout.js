@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import FloodMessageDetails from '../../../common/components/custom/FloodMessageDetails'
 import FloodMessagesTable from '../../../common/components/custom/FloodMessagesTable'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
@@ -190,7 +191,7 @@ export default function LocationInSevereWarningAreaLayout({
             />
             <Details
               title={'Read more on the difference between warnings and alerts'}
-              text={''}
+              text={<FloodMessageDetails />}
             />
             <div className='govuk-!-margin-top-7'>
               <Button

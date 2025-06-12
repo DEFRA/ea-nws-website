@@ -29,6 +29,9 @@
     padding-top: 5px;
     padding-bottom: 5px;
   }
+  .mobile-table {
+    display: none;
+  }
 }
 
 .sub-navigation__list {
@@ -745,6 +748,9 @@
 @media (max-width: 40.125em) {
   .one-login-header__container {
     display: block;
+  }
+  .desktop-table {
+    display: none;
   }
 }
 
@@ -1893,6 +1899,10 @@ govuk-menu-toggle.button-menu > button {
 
 .right {
   float: right;
+}
+
+.left {
+  float: left;
 }
 
 .live-map-filter-container {

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodMessageDetails from '../../../common/components/custom/FloodMessageDetails'
+import FloodMessageTypes from '../../../common/components/custom/FloodMessagesTypes'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import {
@@ -174,7 +175,8 @@ export default function LocationNearFloodAreasLayout({
             <h1 className='govuk-heading-l'>
               Select nearby areas where you can get flood messages
             </h1>
-            <p>Shakir to add types of flood message key here</p>
+            <FloodMessageTypes message={'Types of flood message'} />
+
             <Details
               title={'Read more on the difference between warnings and alerts'}
               text={<FloodMessageDetails />}

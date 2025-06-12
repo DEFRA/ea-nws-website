@@ -1901,6 +1901,10 @@ govuk-menu-toggle.button-menu > button {
   float: right;
 }
 
+.left {
+  float: left;
+}
+
 .live-map-filter-container {
   display: flex;
   align-items: center;

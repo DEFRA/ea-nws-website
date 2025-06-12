@@ -3,10 +3,43 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import {
+  GROUND_WATER_RISK_ORDER,
+  RIVER_SEA_RISK_ORDER
+} from '../../../../../../common/enums/RiskType'
 import LinkBanner from '../../../../../components/custom/LinkBanner'
 import { infoUrls } from '../../../../../routes/info/InfoRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageOrgAddLocations } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+
+const isMediumHighOrUnavailableRisk = (location) => {
+  const riverRisk = location.riverSeaRisk?.title
+  const groundRisk = location.groundWaterRisk?.title
+
+  return (
+    [
+      RIVER_SEA_RISK_ORDER['High risk'],
+      RIVER_SEA_RISK_ORDER['Medium risk'],
+      RIVER_SEA_RISK_ORDER['Unavailable']
+    ].includes(RIVER_SEA_RISK_ORDER[riverRisk]) ||
+    [
+      GROUND_WATER_RISK_ORDER['Possible'],
+      GROUND_WATER_RISK_ORDER['Unavailable']
+    ].includes(GROUND_WATER_RISK_ORDER[groundRisk])
+  )
+}
+
+const isLowRisk = (location) => {
+  const riverRisk = location.riverSeaRisk?.title
+  const groundRisk = location.groundWaterRisk?.title
+
+  return (
+    [
+      RIVER_SEA_RISK_ORDER['Low risk'],
+      RIVER_SEA_RISK_ORDER['Very low risk']
+    ].includes(RIVER_SEA_RISK_ORDER[riverRisk]) && groundRisk === 'Unlikely'
+  )
+}
 
 const FloodBanner = React.memo(function FloodBanner({
   type,
@@ -43,22 +76,14 @@ const FloodBanner = React.memo(function FloodBanner({
 
     const mediumHighRisk = locations.filter(
       (obj) =>
-        (obj.riverSeaRisk?.title === 'Medium risk' ||
-          obj.riverSeaRisk?.title === 'High risk' ||
-          obj.riverSeaRisk?.title === 'Unavailable' ||
-          obj.groundWaterRisk?.title === 'Possible' ||
-          obj.groundWaterRisk?.title === 'Unavailable') &&
+        isMediumHighOrUnavailableRisk(obj) &&
         obj.additionals.other?.alertTypes?.length === 0
     ).length
     count.push(mediumHighRisk)
     message[0] = 'at flood risk'
 
     const lowRisk = locations.filter(
-      (obj) =>
-        (obj.riverSeaRisk?.title === 'Low risk' ||
-          obj.riverSeaRisk?.title === 'Very low risk') &&
-        obj.groundWaterRisk?.title === 'Unlikely' &&
-        obj.additionals.other?.alertTypes?.length === 0
+      (obj) => isLowRisk(obj) && obj.additionals.other?.alertTypes?.length === 0
     ).length
     count.push(lowRisk)
     message.push('potentially at flood risk')
@@ -78,9 +103,7 @@ const FloodBanner = React.memo(function FloodBanner({
         padding: '0.5rem 0.5rem'
       }}
     >
-      <h2 className='govuk-body'>
-        <strong>{heading}</strong>
-      </h2>
+      <h2 className='govuk-body govuk-!-font-weight-bold'>{heading}</h2>
       <div
         style={{
           border: '2px solid lightGrey',
@@ -96,9 +119,7 @@ const FloodBanner = React.memo(function FloodBanner({
                 padding: '0rem 1rem 0rem 0rem'
               }}
             >
-              <p className='body-text-strong'>
-                <strong>{count[0]}</strong>
-              </p>
+              <p className='body-text-strong'>{count[0]}</p>
               <Link
                 className='govuk-link'
                 onClick={() => onClickLinked('messages')}
@@ -119,9 +140,7 @@ const FloodBanner = React.memo(function FloodBanner({
                   borderLeft: '2px solid lightGrey'
                 }}
               >
-                <p className='body-text-strong'>
-                  <strong>{count[1]}</strong>
-                </p>
+                <p className='body-text-strong'>{count[1]}</p>
                 <Link
                   className='govuk-link'
                   onClick={() => onClickLinked('linked-locations')}
@@ -136,16 +155,12 @@ const FloodBanner = React.memo(function FloodBanner({
           <div style={{ display: 'flex' }}>
             {locations.filter(
               (item) =>
-                (item.riverSeaRisk?.title === 'Medium risk' ||
-                  item.riverSeaRisk?.title === 'High risk' ||
-                  item.riverSeaRisk?.title === 'Unavailable' ||
-                  item.groundWaterRisk?.title === 'Possible' ||
-                  item.groundWaterRisk?.title === 'Unavailable') &&
+                isMediumHighOrUnavailableRisk(item) &&
                 item.additionals.other?.alertTypes?.length === 0
             ).length > 0 && (
               <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
                 <p className='body-text-strong' style={{ color: '#FD6214' }}>
-                  <strong>{count[0]}</strong>
+                  {count[0]}
                 </p>
                 <Link
                   className='govuk-link'
@@ -157,18 +172,12 @@ const FloodBanner = React.memo(function FloodBanner({
             )}
             {locations.filter(
               (item) =>
-                (item.riverSeaRisk?.title === 'Medium risk' ||
-                  item.riverSeaRisk?.title === 'High risk' ||
-                  item.riverSeaRisk?.title === 'Unavailable' ||
-                  item.groundWaterRisk?.title === 'Possible' ||
-                  item.groundWaterRisk?.title === 'Unavailable') &&
+                isMediumHighOrUnavailableRisk(item) &&
                 item.additionals.other?.alertTypes?.length === 0
             ).length > 0 &&
               locations.filter(
                 (item) =>
-                  (item.riverSeaRisk?.title === 'Low risk' ||
-                    item.riverSeaRisk?.title === 'Very low risk') &&
-                  item.groundWaterRisk?.title === 'Unlikely' &&
+                  isLowRisk(item) &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div
@@ -179,15 +188,11 @@ const FloodBanner = React.memo(function FloodBanner({
               )}
             {locations.filter(
               (item) =>
-                (item.riverSeaRisk?.title === 'Low risk' ||
-                  item.riverSeaRisk?.title === 'Very low risk') &&
-                item.groundWaterRisk?.title === 'Unlikely' &&
+                isLowRisk(item) &&
                 item.additionals.other?.alertTypes?.length === 0
             ).length > 0 && (
               <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
-                <p className='body-text-strong'>
-                  <strong>{count[1]}</strong>
-                </p>
+                <p className='body-text-strong'>{count[1]}</p>
                 <Link
                   className='govuk-link'
                   onClick={() => onClickLinked('low-risk')}
@@ -201,7 +206,7 @@ const FloodBanner = React.memo(function FloodBanner({
         {type === 'noContacts' && (
           <>
             <p className='body-text-strong' style={{ color: 'crimson' }}>
-              <strong>{count[0]}</strong>
+              {count[0]}
             </p>
             <Link
               className='govuk-link'
@@ -255,31 +260,31 @@ export default function DashboardHeader({
       categories:
       <h4 className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</h4>
       <p className='govuk-!-margin-top-4'>
-        <strong>High risk</strong>
+        <span className='govuk-!-font-weight-bold'>High risk</span>
         <br />
         Each year there's a chance of flooding from rivers and the sea of
         greater than 1 in 30.
       </p>
       <p className='govuk-!-margin-top-4'>
-        <strong>Medium risk</strong>
+        <span className='govuk-!-font-weight-bold'>Medium risk</span>
         <br />
         Each year there's a chance of flooding from rivers and the sea of
         between 1 in 100 and 1 in 30.
       </p>
       <p className='govuk-!-margin-top-4'>
-        <strong>Low risk</strong>
+        <span className='govuk-!-font-weight-bold'>Low risk</span>
         <br />
         Each year there's a chance of flooding from rivers and the sea of
         between 1 in 1000 and 1 in 100.
       </p>
       <h4 className='govuk-heading-m  govuk-!-margin-top-6'>Groundwater</h4>
       <p className='govuk-!-margin-top-4'>
-        <strong>Possible</strong>
+        <span className='govuk-!-font-weight-bold'>Possible</span>
         <br />
         Flooding is possible in the local area when groundwater levels are high.
       </p>
       <p className='govuk-!-margin-top-4'>
-        <strong>Unlikely</strong>
+        <span className='govuk-!-font-weight-bold'>Unlikely</span>
         <br />
         It's unlikely the location will be affected by groundwater flooding.
       </p>
@@ -340,18 +345,12 @@ export default function DashboardHeader({
               />
               {(locations.filter(
                 (item) =>
-                  (item.riverSeaRisk?.title === 'Medium risk' ||
-                    item.riverSeaRisk?.title === 'High risk' ||
-                    item.riverSeaRisk?.title === 'Unavailable' ||
-                    item.groundWaterRisk?.title === 'Possible' ||
-                    item.groundWaterRisk?.title === 'Unavailable') &&
+                  isMediumHighOrUnavailableRisk(item) &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 ||
                 locations.filter(
                   (item) =>
-                    (item.riverSeaRisk?.title === 'Low risk' ||
-                      item.riverSeaRisk?.title === 'Very low risk') &&
-                    item.groundWaterRisk?.title === 'Unlikely' &&
+                    isLowRisk(item) &&
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0) && (
                 <FloodBanner

@@ -161,6 +161,7 @@ export default function AddContactEmailPage() {
                   id='email-address'
                   name='Email address'
                   inputType='text'
+                  inputMode='email'
                   onChange={(val) => {
                     setErrors([])
                     setEmailError('')

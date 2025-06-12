@@ -7,46 +7,49 @@ export default function FloodMessageTypes({ message }) {
           <tr className='govuk-table__row'>
             <th
               scope='row'
-              style={{ borderBottom: 'none' }}
+              style={{ borderBottom: 'none', paddingBottom: '0' }}
               className='govuk-table__header'
             >
-              <div>
-                <div className='org-flood-warning-square warning-square left' />
-                <div
-                  style={{ display: 'inline' }}
-                  className='govuk-!-padding-left-4'
-                >
-                  Severe flood warning
-                </div>
-              </div>
-              <div>
-                <div className='org-flood-warning-square left' />
-                <div className='govuk-!-padding-left-4 govuk-!-display-inline-block'>
-                  <p className='govuk-!-padding-top-2 govuk-!-padding-left-5'>
-                    Flood warnings
-                  </p>
-                </div>
-              </div>
+              <div className='org-flood-warning-square warning-square govuk-!-margin-right-4 left' />
+              <p>Severe flood warning</p>
             </th>
-            <td style={{ borderBottom: 'none' }} className='govuk-table__cell'>
+            <td
+              style={{ borderBottom: 'none', paddingBottom: '0' }}
+              className='govuk-table__cell'
+            >
               <p style={{ color: '#505a5f', fontSize: '16px' }}>
                 Danger to life - act now
               </p>
+            </td>
+          </tr>
+
+          <tr className='govuk-table__row'>
+            <th
+              scope='row'
+              style={{ borderBottom: 'none', paddingTop: '0' }}
+              className='govuk-table__header'
+            >
+              <div className='org-flood-warning-square govuk-!-margin-right-4 left' />
+              <p>Flood warnings</p>
+            </th>
+            <td
+              style={{ borderBottom: 'none', paddingTop: '0' }}
+              className='govuk-table__cell'
+            >
               <p style={{ color: '#505a5f', fontSize: '16px' }}>
                 Flooding expected - act now
               </p>
             </td>
           </tr>
+
           <tr className='govuk-table__row'>
             <th
               scope='row'
-              style={{ borderBottom: 'none' }}
+              style={{ borderBottom: 'none', paddingBottom: '0' }}
               className='govuk-table__header'
             >
-              <div className='org-flood-warning-square alert-square left' />
-              <div className='govuk-!-padding-left-4 govuk-!-display-inline-block'>
-                Flood warnings
-              </div>
+              <div className='org-flood-warning-square alert-square govuk-!-margin-right-4 left' />
+              <p>Flood warnings</p>
             </th>
             <td style={{ borderBottom: 'none' }} className='govuk-table__cell'>
               <p style={{ color: '#505a5f', fontSize: '16px' }}>

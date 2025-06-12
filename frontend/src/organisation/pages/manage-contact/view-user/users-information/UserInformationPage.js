@@ -11,6 +11,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 /* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
+import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact'
 
 export default function UserInformationPage() {
   const navigate = useNavigate()
@@ -18,16 +19,7 @@ export default function UserInformationPage() {
   const jobTitle = currentContact.additionals.jobTitle
   const keywords = currentContact.additionals.keywords
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const role = () => {
-    if (currentContact?.role) {
-      return UserType.Admin
-    }
-    if (currentContact?.pendingRole) {
-      return UserType.PendingAdmin
-    }
-    return UserType.Contact
-  }
-  const userType = role()
+  const userType = getRole(currentContact)
   const [locations, setLocations] = useState([])
   /* const [showMap, setShowMap] = useState(false) */
   const authToken = useSelector((state) => state.session.authToken)

@@ -17,6 +17,7 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import locationPin from '../../assets/images/location_pin.svg'
+import AlertType from '../../enums/AlertType'
 import { backendCall } from '../../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
@@ -97,7 +98,7 @@ export default function Map({
 
   //think we still need this when user opens the full map? checking with ucd
   const HighlightSelectedArea = (selectedFloodArea) => {
-    if (warningAreaRefVisible && types.includes('severe')) {
+    if (warningAreaRefVisible && types.includes(AlertType.FLOOD_WARNING)) {
       warningAreaRef.current.eachLayer((layer) => {
         if (layer.feature.id === selectedFloodArea.id) {
           layer.bringToFront()
@@ -115,7 +116,7 @@ export default function Map({
       })
     }
 
-    if (alertAreaRefVisible && types.includes('alert')) {
+    if (alertAreaRefVisible && types.includes(AlertType.FLOOD_ALERT)) {
       alertAreaRef.current.eachLayer((layer) => {
         if (layer.feature.id === selectedFloodArea.id) {
           layer.bringToFront()
@@ -136,7 +137,7 @@ export default function Map({
 
   // removes all other flood areas on map apart from selected flood area
   const showSelectedArea = (selectedFloodArea) => {
-    if (warningAreaRefVisible && types.includes('severe')) {
+    if (warningAreaRefVisible && types.includes(AlertType.FLOOD_WARNING)) {
       warningAreaRef.current.eachLayer((layer) => {
         if (layer.feature.id === selectedFloodArea.id) {
           layer.setStyle({
@@ -148,7 +149,7 @@ export default function Map({
       })
     }
 
-    if (alertAreaRefVisible && types.includes('alert')) {
+    if (alertAreaRefVisible && types.includes(AlertType.FLOOD_ALERT)) {
       alertAreaRef.current.eachLayer((layer) => {
         if (layer.feature.id === selectedFloodArea.id) {
           layer.setStyle({
@@ -300,7 +301,7 @@ export default function Map({
               <Popup />
             </Marker>
           )}
-          {alertArea && types.includes('alert') && (
+          {alertArea && types.includes(AlertType.FLOOD_ALERT) && (
             <GeoJSON
               data={alertArea}
               style={{ color: '#ffa200' }}
@@ -310,7 +311,7 @@ export default function Map({
               }}
             />
           )}
-          {warningArea && types.includes('severe') && (
+          {warningArea && types.includes(AlertType.FLOOD_WARNING) && (
             <GeoJSON
               data={warningArea}
               style={{ color: '#f70202' }}

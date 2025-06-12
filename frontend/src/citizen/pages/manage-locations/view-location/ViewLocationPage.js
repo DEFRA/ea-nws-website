@@ -92,7 +92,16 @@ export default function ViewLocationPage() {
   const [pendingOptionalAlerts, setPendingOptionalAlerts] =
     useState(initialAlerts)
 
-  const areaTypes = type === 'both' ? ['severe', 'alert'] : [type]
+  const areaTypes = () => {
+    switch (type) {
+      case 'both:':
+        return [AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+      case 'severe':
+        return [AlertType.FLOOD_WARNING]
+      case 'alert':
+        return [AlertType.FLOOD_ALERT]
+    }
+  }
 
   const [partnerId, setPartnerId] = useState(false)
 

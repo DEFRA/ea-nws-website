@@ -152,7 +152,6 @@ export default function LocationNearFloodAreasLayout({
           additionals: additionals
         }
 
-        console.log('target area being added', targetArea)
         updatedProfile = addLocation(profile, targetArea)
       }
     })
@@ -195,6 +194,7 @@ export default function LocationNearFloodAreasLayout({
   const handleUserNavigatingBack = async () => {
     let updatedProfile
 
+    // waiting on UCD feedback
     // updatedProfile = await removeLocationWithinFloodArea()
 
     // if (updateGeoSafeProfile) {
@@ -249,7 +249,7 @@ export default function LocationNearFloodAreasLayout({
   const getFloodAreaDetails = (category) => {
     if (category.toLowerCase().includes('warning')) {
       return {
-        type: ['severe'],
+        type: [AlertType.FLOOD_WARNING],
         icon: 'warning',
         messages: (
           <ul class='govuk-list govuk-list--bullet'>
@@ -260,7 +260,7 @@ export default function LocationNearFloodAreasLayout({
       }
     } else if (category.toLowerCase().includes('alert')) {
       return {
-        type: ['alert'],
+        type: [AlertType.FLOOD_ALERT],
         icon: 'alert',
         messages: (
           <ul class='govuk-list govuk-list--bullet'>

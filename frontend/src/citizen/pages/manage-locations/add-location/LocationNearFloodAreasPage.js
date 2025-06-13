@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import LocationInFloodAreasLayout from '../../../layouts/location/LocationInFloodAreasLayout'
+import LocationNearFloodAreasLayout from '../../../layouts/location/LocationNearFloodAreasLayout'
 
-export default function LocationInFloodAreasPage() {
+export default function LocationNearFloodWarningsPage() {
   const navigate = useNavigate()
 
   const continueToNextPage = () => {
@@ -19,7 +19,7 @@ export default function LocationInFloodAreasPage() {
 
   return (
     <>
-      <LocationInFloodAreasLayout
+      <LocationNearFloodAreasLayout
         continueToNextPage={continueToNextPage}
         continueToSearchResultsPage={continueToSearchResultsPage}
       />

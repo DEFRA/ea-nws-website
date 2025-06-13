@@ -44,8 +44,8 @@ export default function LocationInSevereWarningAreaLayout({
 
   // we should update this so that it is based on the enum value
   const mapAreas = locationAlertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
-    ? ['severe', 'alert']
-    : ['alert']
+    ? [AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+    : [AlertType.FLOOD_ALERT]
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId() {

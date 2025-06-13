@@ -10,17 +10,14 @@ import {
   ZoomControl,
   useMap
 } from 'react-leaflet'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  setSelectedFloodAlertArea,
-  setSelectedFloodWarningArea
-} from '../../redux/userSlice'
+import { useSelector } from 'react-redux'
 import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import locationPin from '../../assets/images/location_pin.svg'
+import AlertType from '../../enums/AlertType'
 import { backendCall } from '../../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
@@ -28,9 +25,11 @@ export default function Map({
   types,
   setFloodAreas,
   mobileView,
-  interactive = false
+  interactive = true,
+  showMarker = true,
+  fullScreenOption = false,
+  selectedFloodArea
 }) {
-  const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -45,15 +44,6 @@ export default function Map({
   // used when user selects flood area when location is within proximity
   const isUserInNearbyTargetFlowpath = useSelector(
     (state) => state.session.nearbyTargetAreaFlow
-  )
-  const selectedFloodWarningArea = useSelector(
-    (state) => state.session.selectedFloodWarningArea
-  )
-  const selectedFloodAlertArea = useSelector(
-    (state) => state.session.selectedFloodAlertArea
-  )
-  const showOnlySelectedFloodArea = useSelector(
-    (state) => state.session.showOnlySelectedFloodArea
   )
   // the below is used to interact with the map to highlight selected flood areas
   // or only show selected flood areas
@@ -99,22 +89,18 @@ export default function Map({
     showAreas()
   }, [
     types,
+    selectedFloodArea,
     alertArea,
     warningArea,
-    selectedFloodWarningArea,
-    selectedFloodAlertArea,
-    showOnlySelectedFloodArea,
     warningAreaRefVisible,
     alertAreaRefVisible
   ])
 
-  const HighlightSelectedArea = (
-    selectedFloodWarningArea,
-    selectedFloodAlertArea
-  ) => {
-    if (warningAreaRefVisible && types.includes('severe')) {
+  //think we still need this when user opens the full map? checking with ucd
+  const HighlightSelectedArea = (selectedFloodArea) => {
+    if (warningAreaRefVisible && types.includes(AlertType.FLOOD_WARNING)) {
       warningAreaRef.current.eachLayer((layer) => {
-        if (layer.feature.id === selectedFloodWarningArea.id) {
+        if (layer.feature.id === selectedFloodArea.id) {
           layer.bringToFront()
           layer.setStyle({
             color: 'black',
@@ -130,9 +116,9 @@ export default function Map({
       })
     }
 
-    if (alertAreaRefVisible && types.includes('alert')) {
+    if (alertAreaRefVisible && types.includes(AlertType.FLOOD_ALERT)) {
       alertAreaRef.current.eachLayer((layer) => {
-        if (layer.feature.id === selectedFloodAlertArea.id) {
+        if (layer.feature.id === selectedFloodArea.id) {
           layer.bringToFront()
           layer.setStyle({
             color: 'black',
@@ -149,13 +135,11 @@ export default function Map({
     }
   }
 
-  const showSelectedArea = (
-    selectedFloodWarningArea,
-    selectedFloodAlertArea
-  ) => {
-    if (warningAreaRefVisible && types.includes('severe')) {
+  // removes all other flood areas on map apart from selected flood area
+  const showSelectedArea = (selectedFloodArea) => {
+    if (warningAreaRefVisible && types.includes(AlertType.FLOOD_WARNING)) {
       warningAreaRef.current.eachLayer((layer) => {
-        if (layer.feature.id === selectedFloodWarningArea.id) {
+        if (layer.feature.id === selectedFloodArea.id) {
           layer.setStyle({
             fillColor: '#f70202'
           })
@@ -165,9 +149,9 @@ export default function Map({
       })
     }
 
-    if (alertAreaRefVisible && types.includes('alert')) {
+    if (alertAreaRefVisible && types.includes(AlertType.FLOOD_ALERT)) {
       alertAreaRef.current.eachLayer((layer) => {
-        if (layer.feature.id === selectedFloodAlertArea.id) {
+        if (layer.feature.id === selectedFloodArea.id) {
           layer.setStyle({
             fillColor: '#ffa200'
           })
@@ -179,18 +163,9 @@ export default function Map({
   }
 
   const showAreas = () => {
-    if (
-      (selectedFloodWarningArea || selectedFloodAlertArea) &&
-      showOnlySelectedFloodArea
-    ) {
-      // user has decided on a flood area - show only this area
-      showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
-    } else if (
-      (selectedFloodWarningArea || selectedFloodAlertArea) &&
-      !showOnlySelectedFloodArea
-    ) {
-      // user is still deciding what area to pick
-      HighlightSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+    if (selectedFloodArea) {
+      // we must only show the flood area passed in
+      showSelectedArea(selectedFloodArea)
     }
   }
 
@@ -277,32 +252,26 @@ export default function Map({
     [apiKey]
   )
 
-  function SetMapBoundsToShowFullFloodArea() {
-    const map = useMap()
-    useEffect(() => {
-      if (
-        (selectedFloodWarningArea || selectedFloodAlertArea) &&
-        showOnlySelectedFloodArea
-      ) {
-        // user has decided on a flood area - show only this area
-        showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
-        // fit the area to the map
-        if (types.includes('severe')) {
-          const layer = L.geoJSON(selectedFloodWarningArea)
-          const bounds = layer.getBounds()
-          map.fitBounds(bounds)
-        } else if (types.includes('alert')) {
-          const layer = L.geoJSON(selectedFloodAlertArea)
-          const bounds = layer.getBounds()
-          map.fitBounds(bounds)
-        }
-      }
-    }, [
-      selectedFloodWarningArea,
-      selectedFloodAlertArea,
-      showOnlySelectedFloodArea
-    ])
-  }
+  // Unsure we need this? might need it for view location page so commenting out for now
+  // function SetMapBoundsToShowFullFloodArea() {
+  //   const map = useMap()
+  //   useEffect(() => {
+  //     if (selectedFloodArea) {
+  //       // user has decided on a flood area - show only this area
+  //       showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+  //       // fit the area to the map
+  //       if (types.includes('severe')) {
+  //         const layer = L.geoJSON(selectedFloodWarningArea)
+  //         const bounds = layer.getBounds()
+  //         map.fitBounds(bounds)
+  //       } else if (types.includes('alert')) {
+  //         const layer = L.geoJSON(selectedFloodAlertArea)
+  //         const bounds = layer.getBounds()
+  //         map.fitBounds(bounds)
+  //       }
+  //     }
+  //   }, [selectedFloodArea])
+  // }
 
   return (
     <>
@@ -310,47 +279,42 @@ export default function Map({
         <MapContainer
           center={[latitude, longitude]}
           zoom={14}
-          zoomControl={false}
-          attributionControl={false}
           minZoom={7}
           maxBounds={maxBounds}
           className={mobileView ? 'map-mobile-view' : 'map-container'}
+          dragging={interactive}
+          zoomControl={interactive}
+          scrollWheelZoom={interactive}
+          doubleClickZoom={interactive}
+          touchZoom={interactive}
+          keyboard={interactive}
+          boxZoom={interactive}
+          attributionControl={interactive}
         >
           {apiKey && tileLayerWithHeader}
-          {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
-          {!mobileView && <ZoomControl position='bottomright' />}
-          {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />}
-          {!showOnlySelectedFloodArea && (
+          {/* {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />} */}
+          {!mobileView && interactive && <ZoomControl position='bottomright' />}
+          {/* waiting on feedback from UCD on reset button being removed */}
+          {/* {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />} */}
+          {showMarker && (
             <Marker position={[latitude, longitude]} interactive={false}>
               <Popup />
             </Marker>
           )}
-          {alertArea && types.includes('alert') && (
+          {alertArea && types.includes(AlertType.FLOOD_ALERT) && (
             <GeoJSON
               data={alertArea}
               style={{ color: '#ffa200' }}
-              onEachFeature={function (feature, layer) {
-                interactive &&
-                  layer.on({
-                    click: () => dispatch(setSelectedFloodAlertArea(feature))
-                  })
-              }}
               ref={(el) => {
                 alertAreaRef.current = el
                 setAlertAreaRefVisible(true)
               }}
             />
           )}
-          {warningArea && types.includes('severe') && (
+          {warningArea && types.includes(AlertType.FLOOD_WARNING) && (
             <GeoJSON
               data={warningArea}
               style={{ color: '#f70202' }}
-              onEachFeature={function (feature, layer) {
-                interactive &&
-                  layer.on({
-                    click: () => dispatch(setSelectedFloodWarningArea(feature))
-                  })
-              }}
               ref={(el) => {
                 warningAreaRef.current = el
                 setWarningAreaRefVisible(true)

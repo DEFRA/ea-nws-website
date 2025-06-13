@@ -1,5 +1,5 @@
 import LocationInFloodAreasPage from '../../pages/manage-locations/add-location/LocationInFloodAreasPage'
-import LocationInWarningAreaProximityPage from '../../pages/manage-locations/add-location/LocationInWarningAreaProximityPage'
+import LocationNearFloodAreasPage from '../../pages/manage-locations/add-location/LocationNearFloodAreasPage'
 import LocationNotNearDangerPage from '../../pages/manage-locations/add-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/manage-locations/add-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/manage-locations/add-location/LocationSearchResultsPage'
@@ -22,8 +22,8 @@ const manageLocationRoutes = [
     component: <LocationInFloodAreasPage />
   },
   {
-    path: '/manage-locations/add/location-in-proximity-area/:type',
-    component: <LocationInWarningAreaProximityPage />
+    path: '/manage-locations/add/location-near-flood-areas',
+    component: <LocationNearFloodAreasPage />
   },
   {
     path: '/manage-locations/add/no-danger',

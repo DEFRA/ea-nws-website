@@ -24,6 +24,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
+  const emailAddressId = 'email-address'
 
   useEffect(() => {
     if (profile?.pois?.length === 0) {
@@ -74,7 +75,7 @@ export default function SignUpPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#email-address'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: emailAddressId}]} />}
             <h1 className='govuk-heading-l'>Enter an email address</h1>
             <div className='govuk-body'>
               <p>We'll send flood messages to this address. </p>
@@ -84,7 +85,7 @@ export default function SignUpPage() {
               </p>
               <InsetText text='We recommend using an email address you can access 24 hours a day.' />
               <Input
-                id='email-address'
+                id={emailAddressId}
                 className='govuk-input govuk-input--width-20'
                 inputType='text'
                 inputMode='email'

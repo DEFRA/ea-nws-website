@@ -20,6 +20,7 @@ export default function ChangeEmailLayout({
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
+  const emailAddressInputId = 'new-email-address'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -70,7 +71,7 @@ export default function ChangeEmailLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#new-email-address'}]} />}
+            {error && <ErrorSummary errorList={[{ text: error, componentId: emailAddressInputId }]} />}
             <h2 className='govuk-heading-l'>
               Change your email address for signing in
             </h2>
@@ -86,7 +87,7 @@ export default function ChangeEmailLayout({
                 If you change it here, use your new email when you next sign in
               </p>
               <Input
-                id='new-email-address'
+                id={emailAddressInputId}
                 className='govuk-input govuk-!-width-one-half'
                 inputType='text'
                 inputMode='email'

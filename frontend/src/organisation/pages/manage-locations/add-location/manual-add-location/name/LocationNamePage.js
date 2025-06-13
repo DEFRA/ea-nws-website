@@ -18,6 +18,7 @@ export default function LocationNamePage() {
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const locationNameId = 'location-name'
 
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -73,7 +74,7 @@ export default function LocationNamePage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#location-name'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: locationNameId}]} />}
             <h1 className='govuk-heading-l'>What is the location name?</h1>
             <div className='govuk-body'>
               <p>
@@ -81,7 +82,7 @@ export default function LocationNamePage() {
                 Water pumping station.
               </p>
               <Input
-                id='location-name'
+                id={locationNameId}
                 name='Location name'
                 inputType='text'
                 value={name}

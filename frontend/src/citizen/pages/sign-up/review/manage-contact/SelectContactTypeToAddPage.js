@@ -17,6 +17,7 @@ export default function SelectContactTypeToAddPage () {
       value: 'Telephone Number (phone calls)'
     }
   ]
+  const contactTypeGroupId = 'contact-type-group'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -48,7 +49,7 @@ export default function SelectContactTypeToAddPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && (
               <ErrorSummary
-                errorList={[{ text: error, href: '#contact-type-group' }]}
+                errorList={[{ text: error, componentId: contactTypeGroupId }]}
               />
             )}
             <h1 className='govuk-heading-l'>
@@ -62,7 +63,7 @@ export default function SelectContactTypeToAddPage () {
               }
             >
               <fieldset
-                id='contact-type-group'
+                id={contactTypeGroupId}
                 className='govuk-fieldset'
                 aria-describedby={
                   error

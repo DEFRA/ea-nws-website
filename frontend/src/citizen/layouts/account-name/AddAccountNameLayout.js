@@ -28,6 +28,7 @@ export default function AddAccountNameLayout({
       : ''
   )
   const location = useLocation()
+  const fullNameInputId = 'full-name'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -67,7 +68,7 @@ export default function AddAccountNameLayout({
             />
           )}
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#full-name'}]} />}
+            {error && <ErrorSummary errorList={[{ text: error, componentId: fullNameInputId }]} />}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>
@@ -77,7 +78,7 @@ export default function AddAccountNameLayout({
                 account.
               </p>
               <Input
-                id='full-name'
+                id={fullName}
                 inputType='text'
                 value={fullName}
                 name='Full name'

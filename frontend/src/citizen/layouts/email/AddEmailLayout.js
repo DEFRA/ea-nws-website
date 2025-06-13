@@ -17,6 +17,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
+  const emailAddressInputId = 'email-address'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -66,7 +67,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
           <div className='govuk-grid-column-two-thirds'>
             {error && (
               <ErrorSummary
-                errorList={[{ text: error, href: '#email-address' }]}
+                errorList={[{ text: error, componentId: emailAddressInputId }]}
               />
             )}
             <h2 className='govuk-heading-l'>
@@ -78,7 +79,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
                 day.
               </p>
               <Input
-                id='email-address'
+                id={emailAddressInputId}
                 name='Email address'
                 inputType='text'
                 inputMode='email'

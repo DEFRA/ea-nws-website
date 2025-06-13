@@ -15,6 +15,8 @@ export default function FeedbackPage () {
   const [error, setError] = useState('')
   const [textError, setTextError] = useState('')
   const charLimit = 2000
+  const feedbackPrefId = 'feedback-pref-fieldset'
+  const moreDetailId = 'more-detail'
 
   const feedbackOptions = [
     { value: 'Very Satisfied', label: 'Very Satisfied' },
@@ -86,11 +88,11 @@ export default function FeedbackPage () {
                 errorList={[
                   error && {
                     text: error,
-                    href: '#feedback-pref-fieldset'
+                    componentId: feedbackPrefId
                   },
                   textError && {
                     text: textError,
-                    href: '#more-detail'
+                    componentId: moreDetailId
                   }
                 ].filter(Boolean)}
               />
@@ -109,7 +111,7 @@ export default function FeedbackPage () {
               </p>
               <br />
               <div
-                id='feedback-pref-fieldset'
+                id={feedbackPrefId}
                 className={
                   error
                     ? 'govuk-form-group govuk-form-group--error'
@@ -171,7 +173,7 @@ export default function FeedbackPage () {
                 )}
                 <TextArea
                   className='govuk-textarea'
-                  id='more-detail'
+                  id={moreDetailId}
                   rows='5'
                   onChange={(val) => setFeedbackText(val)}
                 />

@@ -21,6 +21,7 @@ export default function AddLandlineLayout({
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = useSelector((state) => state.session.authToken)
+  const landlineInputId = 'uk-landline-mobile'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -73,7 +74,7 @@ export default function AddLandlineLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#uk-landline-mobile'}]} />}
+            {error && <ErrorSummary errorList={[{ text: error, componentId: landlineInputId }]} />}
             <h2 className='govuk-heading-l'>
               Enter a telephone number to get flood messages by phone call
             </h2>
@@ -83,7 +84,7 @@ export default function AddLandlineLayout({
                 called 24 hours a day.
               </p>
               <Input
-                id='uk-landline-mobile'
+                id={landlineInputId}
                 name='UK landline or mobile telephone number'
                 inputType='text'
                 error={error}

@@ -39,13 +39,13 @@ export default function ErrorSummary ({ errorList }) {
           <ul className='govuk-list govuk-error-summary__list'>
             {errorList.map((error, index) => {
               // If an object, render a link to jump to that section
-              if (typeof error === 'object' && error.href) {
+              if (typeof error === 'object' && error.componentId) {
                 return (
                   <li
                     key={index}
                     style={{ color: '#d4351c', fontWeight: '700' }}
                   >
-                    <a href={error.href}>{error.text}</a>
+                    <a href={`#${error.componentId}`}>{error.text}</a>
                   </li>
                 )
               }

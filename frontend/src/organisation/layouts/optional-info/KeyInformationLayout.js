@@ -40,6 +40,7 @@ export default function KeyInformationLayout({
   const [locationType, setLocationType] = useState(
     additionalData.location_type ? additionalData.location_type : ''
   )
+  const locationNameId = 'location-name'
 
   useEffect(() => {
     setLocationNameError('')
@@ -120,7 +121,7 @@ export default function KeyInformationLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(locationNameError || error) && (
-              <ErrorSummary errorList={[{text: locationNameError, href: '#location-name'}, error]} />
+              <ErrorSummary errorList={[{text: locationNameError, componentId: locationNameId}, error]} />
             )}
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>
               Key information
@@ -129,7 +130,7 @@ export default function KeyInformationLayout({
               <Details title='Why add useful information?' text={detailsText} />
               {flow === 'edit' && (
                 <Input
-                  id='location-name'
+                  id={locationNameId}
                   inputType='text'
                   name='Location name'
                   onChange={(val) => setLocationName(val)}

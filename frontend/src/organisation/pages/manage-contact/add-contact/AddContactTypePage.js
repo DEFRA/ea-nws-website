@@ -16,6 +16,7 @@ export default function AddContactTypePage() {
 
   const [userType, setUserType] = useState('')
   const [reasonError, setReasonError] = useState('')
+  const userTypeId = 'user-type'
 
   useEffect(() => {
     setReasonError('')
@@ -64,8 +65,8 @@ export default function AddContactTypePage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
-            {reasonError && <ErrorSummary errorList={[{text: reasonError, href: '#user-type'}]} />}
-            <h1 id='user-type' className='govuk-heading-l'>Select type of new user</h1>
+            {reasonError && <ErrorSummary errorList={[{text: reasonError, componentId: userTypeId}]} />}
+            <h1 id={userTypeId} className='govuk-heading-l'>Select type of new user</h1>
             <div className='govuk-body'>
               <div
                 className={

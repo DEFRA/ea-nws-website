@@ -13,6 +13,7 @@ export default function SectorLayout ({
   const dispatch = useDispatch()
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
+  const emergencySectorId = 'emergency-sector'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -37,7 +38,7 @@ export default function SectorLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#emergency-sector'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: emergencySectorId}]} />}
             <h1 className='govuk-heading-l'>
               Is your organisation a Category 1 or Category 2 responder?
             </h1>
@@ -59,7 +60,7 @@ export default function SectorLayout ({
                     {error}
                   </p>
                 )}
-                <div id='emergency-sector' className='govuk-radios'>
+                <div id={emergencySectorId} className='govuk-radios'>
                   <fieldset
                     className='govuk-form-group govuk-fieldset'
                     aria-describedby={error ? 'emergency-sector-error' : undefined}

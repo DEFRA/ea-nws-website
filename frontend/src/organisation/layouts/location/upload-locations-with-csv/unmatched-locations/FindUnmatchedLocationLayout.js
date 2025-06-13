@@ -25,6 +25,7 @@ export default function FindUnmatchedLocationLayout ({
   const dispatch = useDispatch()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')
+  const findLocationOptionsId = 'find-location-options'
 
   const currentLocName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
@@ -138,7 +139,7 @@ export default function FindUnmatchedLocationLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#find-location-options'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: findLocationOptionsId}]} />}
 
             {/* Heading */}
             <h1 className='govuk-heading-l'>
@@ -180,7 +181,7 @@ export default function FindUnmatchedLocationLayout ({
                   aria-describedby={error ? 'find-location-options-error' : undefined}
                 >
                   <div
-                    id='find-location-options'
+                    id={findLocationOptionsId}
                     className='govuk-radios'
                     data-module='govuk-radios'
                   >

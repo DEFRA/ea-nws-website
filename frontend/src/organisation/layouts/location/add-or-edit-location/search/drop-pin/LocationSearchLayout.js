@@ -21,6 +21,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   const [placeNameTownOrPostcodeError, setPlaceNameTownOrPostcodeError] =
     useState('')
   const [results, setResults] = useState(null)
+  const locationSearchId = 'location-search'
 
   // remove error if user changes place name, town or postcode
   useEffect(() => {
@@ -109,7 +110,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {placeNameTownOrPostcodeError && (
-              <ErrorSummary errorList={[{text: placeNameTownOrPostcodeError, href: '#location-search'}]} />
+              <ErrorSummary errorList={[{text: placeNameTownOrPostcodeError, componentId: locationSearchId}]} />
             )}
             <h1 className='govuk-heading-l'>Find the location on a map</h1>
             {flow?.includes('unmatched-locations') && (
@@ -121,7 +122,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
             {flow?.includes('unmatched-locations') && <UnmatchedLocationInfo />}
 
             <div
-              id='location-search'
+              id={locationSearchId}
               className={
                 placeNameTownOrPostcodeError
                   ? 'govuk-form-group govuk-form-group--error'

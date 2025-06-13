@@ -46,6 +46,7 @@ export default function LocationWithinWarningAreaProximityLayout({
     (state) => state.session.selectedFloodAlertArea
   )
   const floodHistoryData = useFetchAlerts()
+  const nearbyAreasFieldsetId = 'nearby-areas-fieldset'
 
   useEffect(() => {
     dispatch(setSelectedFloodAlertArea(null))
@@ -141,7 +142,7 @@ export default function LocationWithinWarningAreaProximityLayout({
           <main className='govuk-main-wrapper govuk-!-padding-top-4'>
             <div className='govuk-grid-row govuk-body'>
               <div className='govuk-grid-column-two-thirds'>
-                {error && <ErrorSummary errorList={[{text: error, href: '#nearby-areas-fieldset'}]} />}
+                {error && <ErrorSummary errorList={[{ text: error, componentId: nearbyAreasFieldsetId }]} />}
                 <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                   You can get{' '}
                   {type === 'severe'
@@ -167,7 +168,7 @@ export default function LocationWithinWarningAreaProximityLayout({
                       : 'govuk-form-group'
                   }
                 >
-                  <fieldset id='nearby-areas-fieldset' className='govuk-fieldset'>
+                  <fieldset id={nearbyAreasFieldsetId} className='govuk-fieldset'>
                     <legend className='govuk-fieldset__legend'>
                       <h3 className='govuk-heading-s'>Select a nearby area</h3>
                     </legend>

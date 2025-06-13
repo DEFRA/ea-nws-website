@@ -31,6 +31,9 @@ export default function AccountDeletePage () {
 
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
+  const deletionReasonId = 'account-deletion-reason'
+  const deletionOtherId = 'account-deletion-other-text'
+  const moreDetailId = 'more-detail'
 
   useEffect(() => {
     setReasonError('')
@@ -103,9 +106,9 @@ export default function AccountDeletePage () {
             {(reasonError || reasonTextError || furtherInfoError) && (
               <ErrorSummary
                 errorList={[
-                  reasonError && { text: reasonError, href: '#account-deletion-reason' },
-                  reasonTextError && { text: reasonTextError, href: '#account-deletion-other-text' },
-                  furtherInfoError && { text: furtherInfoError, href: '#more-detail' }
+                  reasonError && { text: reasonError, componentId: deletionReasonId },
+                  reasonTextError && { text: reasonTextError, componentId: deletionOtherId },
+                  furtherInfoError && { text: furtherInfoError, componentId: moreDetailId }
                 ].filter(Boolean)}
               />
             )}
@@ -129,7 +132,7 @@ export default function AccountDeletePage () {
 
                 {/* Select account deletion reason */}
                 <div
-                  id='account-deletion-reason'
+                  id={deletionReasonId}
                   className={
                         reasonError
                           ? 'govuk-form-group govuk-form-group--error'
@@ -164,7 +167,7 @@ export default function AccountDeletePage () {
                       conditionalInput={(val) =>
                         setaccountDeletionReasonText(val)}
                       conditionalError={reasonTextError}
-                      conditionalId='account-deletion-other-text'
+                      conditionalId={deletionOtherId}
                     />
                   </div>
                 </div>
@@ -198,7 +201,7 @@ export default function AccountDeletePage () {
                   )}
                   <TextArea
                     className='govuk-textarea govuk-!-width-one-half'
-                    id='more-detail'
+                    id={moreDetailId}
                     rows='5'
                     onChange={(val) => setAccountDeletionFurtherInfo(val)}
                     labelledByID="more-detail-hint"

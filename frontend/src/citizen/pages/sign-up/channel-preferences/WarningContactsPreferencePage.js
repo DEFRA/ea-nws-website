@@ -20,6 +20,7 @@ export default function WarningContactsPreferencePage() {
     { label: 'Text', value: 'Text' },
     { label: 'Phone call', value: 'PhoneCall' }
   ]
+  const contactPrefGroupId = 'contact-preferences-group'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -68,12 +69,12 @@ export default function WarningContactsPreferencePage() {
             {error && (
               <ErrorSummary
                 errorList={[
-                  { text: error, href: '#contact-preferences-group' }
+                  { text: error, componentId: contactPrefGroupId }
                 ]}
               />
             )}
             <fieldset
-              id='contact-preferences-group'
+              id={contactPrefGroupId}
               className='govuk-fieldset'
               aria-describedby={
                 error ? 'group-hint contact-preferences-error' : 'group-hint'

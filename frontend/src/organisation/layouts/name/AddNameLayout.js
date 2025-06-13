@@ -15,6 +15,8 @@ export default function AddNameLayout ({
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const orgNameId = 'organisation-name'
+
   useEffect(() => {
     dispatch(setSigninType('org'))
   }, [])
@@ -64,11 +66,11 @@ export default function AddNameLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#organisation-name'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: orgNameId}]} />}
             <h1 className='govuk-heading-l'>Your organisation's name</h1>
             <div className='govuk-body'>
               <Input
-                id='organisation-name'
+                id={orgNameId}
                 inputType='text'
                 value={name}
                 onChange={(val) => setName(val)}

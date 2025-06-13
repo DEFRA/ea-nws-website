@@ -25,6 +25,9 @@ export default function AlternativeContactDetailsLayout({
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
   const isAdmin = organizationAdditionals.isAdminRegistering
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
+  const telephoneNumberId = 'telephone-number'
 
   useEffect(() => {
     setErrorFullName('')
@@ -95,15 +98,15 @@ export default function AlternativeContactDetailsLayout({
                 errorList={[
                   errorFullName && {
                     text: errorFullName,
-                    href: '#full-name'
+                    component: fullNameId
                   },
                   errorEmail && {
                     text: errorEmail,
-                    href: '#email-address'
+                    component: emailAddressId
                   },
                   errorTelephone && {
                     text: errorTelephone,
-                    href: '#telephone-number'
+                    componentId: telephoneNumberId
                   }
                 ].filter(Boolean)}
             />
@@ -126,7 +129,7 @@ export default function AlternativeContactDetailsLayout({
                 </p>
               )}
               <Input
-                id='full-name'
+                id={fullNameId}
                 inputType='text'
                 value={fullName}
                 name='Full name'
@@ -137,7 +140,7 @@ export default function AlternativeContactDetailsLayout({
                 isNameBold
               />
               <Input
-                id='email-address'
+                id={emailAddressId}
                 inputType='text'
                 inputMode='email'
                 value={email}
@@ -148,7 +151,7 @@ export default function AlternativeContactDetailsLayout({
                 isNameBold
               />
               <Input
-                id='telephone-number'
+                id={telephoneNumberId}
                 inputType='text'
                 value={telephone}
                 name='Telephone number'

@@ -14,6 +14,7 @@ export default function SelectOnMapLayout ({ fullAddress, navigateToNextPage, Na
   const dispatch = useDispatch()
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
+  const mapPinId = 'map-pin'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -45,11 +46,11 @@ export default function SelectOnMapLayout ({ fullAddress, navigateToNextPage, Na
           <div className='govuk-grid-column-two-thirds'>
             {error && (
               <ErrorSummary
-                errorList={[{text: error, href: '#map-pin'}]}
+                errorList={[{text: error, componentId: mapPinId}]}
               />
             )}
             <h1 className='govuk-heading-l'>Find location on a map</h1>
-            <div id='map-pin' className='govuk-body'>
+            <div id={mapPinId} className='govuk-body'>
               <p>
                 Click on the map to drop a pin where you think this location is. You can then add the location to this account.
               </p>

@@ -37,6 +37,7 @@ export default function SignUpValidationPage() {
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
   const [partnerId, setPartnerId] = useState(false)
+  const enterCodeId = 'enter-code'
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -169,7 +170,7 @@ export default function SignUpValidationPage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, href: '#enter-code'}]} />}
+                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
                 <h2 className='govuk-heading-l'>Check your email</h2>
                 <div className='govuk-body'>
                   <p>You need to confirm your email address.</p>
@@ -180,7 +181,7 @@ export default function SignUpValidationPage() {
                   Enter the code within 4 hours or it will expire.
                   <div className='govuk-!-margin-top-6'>
                     <Input
-                      id='enter-code'
+                      id={enterCodeId}
                       className='govuk-input govuk-input--width-10'
                       inputType='text'
                       value={code}

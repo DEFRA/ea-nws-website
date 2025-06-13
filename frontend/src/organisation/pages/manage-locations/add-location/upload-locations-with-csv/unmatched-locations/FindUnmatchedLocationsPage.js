@@ -10,6 +10,7 @@ export default function FindUnmatchedLocationsPage () {
   const [unmatchedLocationOption, setUnmatchedLocationOption] = useState('')
   const [error, setError] = useState('')
   const location = useLocation()
+  const unmatchedLocationsRadiosId = 'unmatched-locations-radios'
 
   // Default values for null location.state
   const addedLocations = location?.state?.added || 0
@@ -50,7 +51,7 @@ export default function FindUnmatchedLocationsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#unmatched-locations-radios'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: unmatchedLocationsRadiosId}]} />}
             <h1 className='govuk-heading-l'>
               What do you want to do with the {notAddedLocations} locations not
               matched?
@@ -68,7 +69,7 @@ export default function FindUnmatchedLocationsPage () {
                     <span className='govuk-visually-hidden'>Error:</span> {error}
                   </p>
                 )}
-                <div id='unmatched-locations-radios' className='govuk-radios' data-module='govuk-radios'>
+                <div id={unmatchedLocationsRadiosId} className='govuk-radios' data-module='govuk-radios'>
                   {unmatchedLocationsOptions.map((option) => (
                     <Radio
                       key={option.value}

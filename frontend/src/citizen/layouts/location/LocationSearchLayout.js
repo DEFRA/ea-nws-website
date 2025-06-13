@@ -22,6 +22,9 @@ export default function LocationSearchLayout({ continueToNextPage }) {
   const [postCodeError, setPostCodeError] = useState('')
   const [placeNameError, setPlaceNameError] = useState('')
   const [error, setError] = useState('')
+  const searchOptionsId = 'search-options-radios'
+  const postcodeInputId = 'postcode-input'
+  const placenameInputId = 'placename-input'
 
   // remove any errors if user changes search option
   useEffect(() => {
@@ -121,14 +124,14 @@ export default function LocationSearchLayout({ continueToNextPage }) {
             {(error || postCodeError || placeNameError) && (
               <ErrorSummary
                 errorList={[
-                  error && { text: error, href: '#searchOptionsRadios' },
+                  error && { text: error, componentId: searchOptionsId },
                   postCodeError && {
                     text: postCodeError,
-                    href: '#postcode-input'
+                    componentId: postcodeInputId
                   },
                   placeNameError && {
                     text: placeNameError,
-                    href: '#placename-input'
+                    componentId: placenameInputId
                   }
                 ].filter(Boolean)}
               />

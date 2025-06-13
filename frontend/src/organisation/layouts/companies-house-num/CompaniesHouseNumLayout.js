@@ -16,6 +16,8 @@ export default function CompaniesHouseNumLayout ({
   const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
+  const compHouseRadiosId = 'comp-house-radios'
+  const compHouseNumberId = 'comp-house-number'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -56,8 +58,8 @@ export default function CompaniesHouseNumLayout ({
             {(error || numberError) && (
               <ErrorSummary
               errorList={[
-                  error && { text: error, href: '#comp-house-radios' },
-                  numberError && { text: numberError, href: '#comp-house-number' }
+                  error && { text: error, componentId: compHouseRadiosId },
+                  numberError && { text: numberError, compHouseNumberId: compHouseNumberId }
                 ].filter(Boolean)}
               />
             )}
@@ -73,7 +75,7 @@ export default function CompaniesHouseNumLayout ({
                     : 'govuk-form-group'
                 }
               >
-                <fieldset id='comp-house-radios' className='govuk-fieldset'>
+                <fieldset id={compHouseRadiosId} className='govuk-fieldset'>
                   <legend className='govuk-visually-hidden'>
                     Does your organisation have a Companies House number?
                   </legend>
@@ -90,7 +92,7 @@ export default function CompaniesHouseNumLayout ({
                       conditionalQuestion='Companies House number'
                       conditionalInput={(val) => setCompanyNum(val)}
                       conditionalError={numberError}
-                      conditionalId='comp-house-number'
+                      conditionalId={compHouseNumberId}
                     />
                     <Radio
                       key='radio_no'

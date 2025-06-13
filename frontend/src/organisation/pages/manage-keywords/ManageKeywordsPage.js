@@ -51,6 +51,7 @@ export default function ManageKeywordsPage () {
   const [contacts, setContacts] = useState([])
   const [error, setError] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
+  const keywordSearchId = 'keyword-search'
 
   const setTab = (tab) => {
     setKeywordType(tab)
@@ -455,7 +456,7 @@ export default function ManageKeywordsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#keyword-search'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: keywordSearchId}]} />}
             {notificationText && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
@@ -504,10 +505,9 @@ export default function ManageKeywordsPage () {
                   </label>
                   <div
                     className='keyword-search-input-container'
-                    id='keyword-search'
                   >
                     <Autocomplete
-                      id='keyword-search'
+                      id={keywordSearchId}
                       className='govuk-input govuk-input--width-20 keyword-search-input'
                       inputType='text'
                       error=''

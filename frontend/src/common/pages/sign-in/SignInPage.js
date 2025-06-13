@@ -12,6 +12,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const location = useLocation()
+  const emailAddressId = 'email-address'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -48,13 +49,13 @@ export default function SignInPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#email-address'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: emailAddressId}]} />}
             <h1 className='govuk-heading-l'>
               Sign in to your flood warnings account
             </h1>
             <div className='govuk-body'>
               <Input
-                id='email-address'
+                id={emailAddressId}
                 className='govuk-input govuk-input--width-30'
                 name='Email address'
                 inputType='text'

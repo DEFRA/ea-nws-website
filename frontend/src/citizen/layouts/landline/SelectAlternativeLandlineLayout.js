@@ -38,7 +38,9 @@ export default function SelectAlternativeLandlineLayout({
     })
   const verifiedMobileNumbers = profile.mobilePhones
   const mobileNumbers = [...unverifiedMobileNumbers, ...verifiedMobileNumbers]
-
+  const phoneNumberFieldsetId = 'phone-number-fieldset'
+  const otherNumberInputId = 'other-number'
+  
   const handleSubmit = async (event) => {
     event.preventDefault()
     const phoneValidationErrors = phoneValidation(
@@ -112,10 +114,10 @@ export default function SelectAlternativeLandlineLayout({
             {error && (
               <ErrorSummary
                 errorList={[
-                  error && { text: error, href: '#other-number' },
+                  error && { text: error, componentId: otherNumberInputId },
                   validationError && {
                     text: validationError,
-                    href: '#phone-number-fieldset'
+                    componentId: phoneNumberFieldsetId
                   }
                 ]}
               />

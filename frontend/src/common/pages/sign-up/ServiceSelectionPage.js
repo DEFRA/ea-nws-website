@@ -10,6 +10,8 @@ export default function ServiceSelectionPage () {
 
   const [serviceOption, setServiceOption] = useState('')
   const [reasonError, setReasonError] = useState('')
+  
+  const serviceSelectionId = 'service-selection'
 
   useEffect(() => {
     setReasonError('')
@@ -44,7 +46,7 @@ export default function ServiceSelectionPage () {
             {/* Error summary */}
             {reasonError && (
               <ErrorSummary
-                errorList={[{ text: reasonError, href: '#service-selection' }]}
+                errorList={[{ text: reasonError, componentId: serviceSelectionId }]}
               />
             )}
             <fieldset className='govuk-fieldset'>
@@ -56,7 +58,7 @@ export default function ServiceSelectionPage () {
               <div className='govuk-body'>
                 <div>
                   <div
-                    id='service-selection'
+                    id={serviceSelectionId}
                     className='govuk-radios'
                     data-module='govuk-radios'
                   >

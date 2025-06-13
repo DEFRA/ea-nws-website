@@ -15,6 +15,7 @@ export default function TermsAndConditionsPage () {
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
+  const termsAndConditionsId = 'terms-and-conditions-checkbox'
 
   const [error, setError] = useState('')
   const [isChecked, setIsChecked] = useState(false)
@@ -56,7 +57,7 @@ export default function TermsAndConditionsPage () {
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#terms-and-conditions-checkbox'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: termsAndConditionsId}]} />}
 
             <h1 className='govuk-heading-l'>Check the terms and conditions</h1>
 
@@ -167,7 +168,7 @@ export default function TermsAndConditionsPage () {
                 </p>
               )}
               <Checkbox
-                id='terms-and-conditions-checkbox'
+                id={termsAndConditionsId}
                 onChange={() => setIsChecked(!isChecked)}
                 checked={isChecked}
                 label={`I warrant that I’m authorised to agree to these terms and conditions on behalf of ${organisationName}.`}

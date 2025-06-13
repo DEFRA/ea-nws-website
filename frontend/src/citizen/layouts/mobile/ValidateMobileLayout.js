@@ -33,6 +33,7 @@ export default function ValidateMobileLayout({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const enterCodeInputId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -189,7 +190,7 @@ export default function ValidateMobileLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, href: '#enter-code'}]} />}
+                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeInputId}]} />}
                 <h2 className='govuk-heading-l'>Check your mobile phone</h2>
                 <div className='govuk-body'>
                   We've sent a text with a code to:
@@ -197,7 +198,7 @@ export default function ValidateMobileLayout({
                   Use the code within 4 hours or it will expire.
                   <br /> <br />
                   <Input
-                    id='enter-code'
+                    id={enterCodeInputId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

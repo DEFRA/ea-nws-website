@@ -42,6 +42,7 @@ export default function SignInValidatePage() {
   const [cookies, setCookie] = useCookies(['authToken'])
   const [orgData, setOrgData] = useState(null)
   const [stage, setStage] = useState('Retrieving locations')
+  const enterCodeId = 'enter-code'
 
   useEffect(() => {
     if (orgData) {
@@ -186,13 +187,13 @@ export default function SignInValidatePage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, href: '#enter-code'}]} />}
+                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
                 <h2 className='govuk-heading-l'>Confirm email address </h2>
                 <div className='govuk-body'>
                   We've sent an email with a code to:
                   <InsetText text={location.state.email} />
                   <Input
-                    id='enter-code'
+                    id={enterCodeId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

@@ -26,7 +26,10 @@ export default function ChangeBusinessDetailsPage() {
     getAdditionals(profile, 'businessName')
   )
   const [jobTitle, setJobTitle] = useState(getAdditionals(profile, 'jobTitle'))
-
+  const businessNameId = 'business-name'
+  const jobTitleId = 'job-title'
+  const businessDetailsId = 'business-details-body'
+  
   const handleSubmit = async (event) => {
     event.preventDefault()
     const { validationErrorBusiness, validationErrorJob } =
@@ -69,18 +72,18 @@ export default function ChangeBusinessDetailsPage() {
             {(businessNameError || jobTitleError || error) && (
               <ErrorSummary
               errorList={[
-                businessNameError && { text: businessNameError, href: '#business-name' },
-                jobTitleError && { text: jobTitleError, href: '#job-title' },
-                error && { text: error, href: '#business-details-body' }
+                businessNameError && { text: businessNameError, componentId: businessNameId },
+                jobTitleError && { text: jobTitleError, componentId: jobTitleId },
+                error && { text: error, componentId: businessDetailsId }
               ].filter(Boolean)}
             />
             )}
             <h2 className='govuk-heading-l'>
               Additional details for business registrations
             </h2>
-            <div className='govuk-body' id='business-details-body'>
+            <div className='govuk-body' id={businessDetailsId}>
               <Input
-                id='business-name'
+                id={businessNameId}
                 name='Business name (optional)'
                 inputType='text'
                 error={businessNameError}
@@ -89,7 +92,7 @@ export default function ChangeBusinessDetailsPage() {
                 defaultValue={getAdditionals(profile, 'businessName')}
               />
               <Input
-                id='job-title'
+                id={jobTitleId}
                 name='Job title (optional)'
                 inputType='text'
                 error={jobTitleError}

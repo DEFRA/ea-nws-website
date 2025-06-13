@@ -13,6 +13,7 @@ export default function MainAdminLayout({
   const dispatch = useDispatch()
   const [adminDetails, addAdminDetails] = useState(null)
   const [error, setError] = useState('')
+  const adminRadiosId = 'admin-yes-no-radios'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -35,7 +36,7 @@ export default function MainAdminLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#admin-yes-no'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: adminRadiosId}]} />}
             <div className='govuk-body'>
               <fieldset className='govuk-fieldset' role='group'>
                 <legend>
@@ -61,7 +62,7 @@ export default function MainAdminLayout({
                       {error}
                     </p>
                   )}
-                  <div id='admin-yes-no' className='govuk-radios'>
+                  <div id={adminRadiosId} className='govuk-radios'>
                     <Radio
                       key='radio_yes'
                       name='adminRadio'

@@ -13,6 +13,7 @@ export default function LocationSearchOptionsLayout ({
 }) {
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
+  const searchOptionsId = 'search-options'
 
   useEffect(() => {
     setError('')
@@ -45,7 +46,7 @@ export default function LocationSearchOptionsLayout ({
           <div className='govuk-grid-column-one-half'>
             {error && (
               <ErrorSummary
-                errorList={[{ text: error, href: '#search-options' }]}
+                errorList={[{ text: error, componentId: searchOptionsId }]}
               />
             )}
             <h1 className='govuk-heading-l'>{heading}</h1>
@@ -65,7 +66,7 @@ export default function LocationSearchOptionsLayout ({
               <fieldset className='govuk-fieldset'>
                 <legend className='govuk-visually-hidden'>{heading}</legend>
                 <div
-                  id='search-options'
+                  id={searchOptionsId}
                   className='govuk-radios'
                   data-module='govuk-radios'
                 >

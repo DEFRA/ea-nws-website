@@ -35,6 +35,9 @@ export default function AdminDetailsLayout({
   const organizationAdditionals = JSON.parse(organization.description)
   const isAdmin = organizationAdditionals.isAdminRegistering
 
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     setErrorFullName('')
@@ -110,8 +113,8 @@ export default function AdminDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary
                 errorList={[
-                  errorFullName && { text: errorFullName, href: '#full-name' },
-                  errorEmail && { text: errorEmail, href: '#email-address' }
+                  errorFullName && { text: errorFullName, componentId: fullNameId },
+                  errorEmail && { text: errorEmail, componentId: emailAddressId }
                 ].filter(Boolean)}
               />
             )}
@@ -137,7 +140,7 @@ export default function AdminDetailsLayout({
                 </p>
               )}
               <Input
-                id='full-name'
+                id={fullNameId}
                 name='Full name'
                 inputType='text'
                 value={fullName}
@@ -148,7 +151,7 @@ export default function AdminDetailsLayout({
                 isNameBold
               />
               <Input
-                id='email-address'
+                id={emailAddressId}
                 name='Email address'
                 inputType='text'
                 inputMode='email'

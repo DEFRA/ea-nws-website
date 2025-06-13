@@ -32,6 +32,7 @@ export default function AddLocationOptionsPage () {
     { value: 'Manual', label: 'Manually add locations' },
     { value: 'PredefinedBoundaries', label: 'Select predefined boundaries' }
   ]
+  const addLocationOptionsId = 'add-location-options'
 
   useEffect(() => {
     setAddLocationTypeError('')
@@ -70,7 +71,7 @@ export default function AddLocationOptionsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {addLocationTypeError && (
-              <ErrorSummary errorList={[{text: addLocationTypeError, href: '#add-location-options'}]} />
+              <ErrorSummary errorList={[{text: addLocationTypeError, componentId: addLocationOptionsId}]} />
             )}
 
             <h1 className='govuk-heading-l'>
@@ -105,7 +106,7 @@ export default function AddLocationOptionsPage () {
                     : 'govuk-form-group'
                 }
               >
-                <div id='add-location-options' className='govuk-radios' data-module='govuk-radios'>
+                <div id={addLocationOptionsId} className='govuk-radios' data-module='govuk-radios'>
                   {addLocationTypeError && (
                     <p className='govuk-error-message'>
                       <span className='govuk-visually-hidden'>Error:</span> {addLocationTypeError}

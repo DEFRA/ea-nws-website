@@ -22,6 +22,7 @@ export default function ActionPlanLayout ({
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
   const charLimit = 500
+  const actionPlanId = 'action-plan'
 
   useEffect(() => {
     if (actionPlan.length > charLimit) {
@@ -51,7 +52,7 @@ export default function ActionPlanLayout ({
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[{text: error, href: '#action-plan'}]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: actionPlanId}]} />}
             <h1 className='govuk-heading-l'>Action plan (optional)</h1>
             <div className='govuk-body'>
               <p>
@@ -60,7 +61,7 @@ export default function ActionPlanLayout ({
                 then move stock to the top floor and evacuate.
               </p>
               <TextArea
-                id='action-plan'
+                id={actionPlanId}
                 error={error}
                 inputType='text'
                 rows='5'

@@ -59,7 +59,9 @@ export default function AddAnotherPredefinedBoundaryPage() {
                 text={notificationText}
               />
             )}
-            <h1 className='govuk-heading-l'>Add another predefined boundary</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Add another predefined boundary
+            </h1>
             <div className='govuk-body'>
               <Button
                 className='govuk-button'

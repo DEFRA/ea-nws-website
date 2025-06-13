@@ -74,7 +74,9 @@ export default function LocationNamePage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>What is the location name?</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              What is the location name?
+            </h1>
             <div className='govuk-body'>
               <p>
                 How you refer to the location, for example: head office, Brayton

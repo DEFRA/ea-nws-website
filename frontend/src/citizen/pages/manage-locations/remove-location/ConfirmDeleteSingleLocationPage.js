@@ -9,7 +9,7 @@ import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { removeLocation } from '../../../../common/services/ProfileServices'
 
-export default function ConfirmDeleteSingleLocationPage () {
+export default function ConfirmDeleteSingleLocationPage() {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -35,7 +35,10 @@ export default function ConfirmDeleteSingleLocationPage () {
     )
 
     if (!errorMessage) {
-      const updatedProfile = removeLocation(session.profile, location.state.name)
+      const updatedProfile = removeLocation(
+        session.profile,
+        location.state.name
+      )
 
       const dataToSend = {
         authToken: session.authToken,
@@ -73,13 +76,12 @@ export default function ConfirmDeleteSingleLocationPage () {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       {error && <ErrorSummary errorList={[error]} />}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Are you sure you want to remove this location?
             </h2>
             <InsetText text={location.state?.name} />
@@ -92,7 +94,7 @@ export default function ConfirmDeleteSingleLocationPage () {
               text='Remove this location'
               onClick={handleSubmit}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               onClick={() => navigate(-1)}
               className='govuk-body govuk-link'

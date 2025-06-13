@@ -74,7 +74,7 @@ export default function AddLandlineLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter a telephone number to get flood messages by phone call
             </h2>
             <div className='govuk-body'>

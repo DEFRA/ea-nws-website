@@ -191,7 +191,9 @@ export default function ValidateLandlineLayout({
                   />
                 )}
                 {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Confirm telephone number</h2>
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Confirm telephone number
+                </h2>
                 <div className='govuk-body'>
                   We're calling this number to read out a code:
                   <InsetText text={homePhone} />

@@ -242,7 +242,7 @@ export default function LocationInSevereWarningAreaLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>

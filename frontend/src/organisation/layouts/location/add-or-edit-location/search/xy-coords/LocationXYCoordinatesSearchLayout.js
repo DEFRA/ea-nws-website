@@ -93,7 +93,7 @@ export default function LocationXYCoordinatesSearchLayout({
             {(xCoordinateError || yCoordinateError) && (
               <ErrorSummary errorList={[xCoordinateError, yCoordinateError]} />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               What are the X and Y coordinates?
             </h1>
 

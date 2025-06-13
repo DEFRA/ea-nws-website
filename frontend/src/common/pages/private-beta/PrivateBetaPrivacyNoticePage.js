@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 
-export default function PrivateBetaPrivacyNoticePage () {
+export default function PrivateBetaPrivacyNoticePage() {
   const navigate = useNavigate()
 
   return (
@@ -12,7 +12,9 @@ export default function PrivateBetaPrivacyNoticePage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>Privacy notice</h1>
+              <h1 className='govuk-heading-l' id='main-content'>
+                Privacy notice
+              </h1>
               <p>
                 Read the{' '}
                 <a

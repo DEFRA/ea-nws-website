@@ -39,7 +39,7 @@ export default function MainAdminLayout({
             <div className='govuk-body'>
               <fieldset className='govuk-fieldset' role='group'>
                 <legend>
-                  <h1 className='govuk-heading-l'>
+                  <h1 className='govuk-heading-l' id='main-content'>
                     Will you be the main administrator on this account?
                   </h1>
                 </legend>

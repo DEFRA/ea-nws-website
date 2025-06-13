@@ -43,7 +43,7 @@ export default function LocationAddAddressInfoPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Uploading a file with addresses and <br /> postcodes or X and Y
               coordinates
             </h1>

@@ -17,7 +17,9 @@ export default function ReportsOverviewPage() {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <br />
-            <h1 className='govuk-heading-l'>Reports</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Reports
+            </h1>
             <h2 className='govuk-heading-m'>Flood warnings</h2>
             <p>
               {' '}
@@ -27,8 +29,7 @@ export default function ReportsOverviewPage() {
             </p>
             <p>
               {/* <Link to={orgFloodReportsUrls.removed} className='govuk-link'> */}
-                Warnings removed in last 24 hours (not yet
-              available)
+              Warnings removed in last 24 hours (not yet available)
               {/* </Link> */}
             </p>
             <p>

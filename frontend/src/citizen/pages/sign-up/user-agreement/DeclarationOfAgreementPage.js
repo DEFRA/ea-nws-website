@@ -12,7 +12,7 @@ import {
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 
-export default function DeclarationOfAgreementPage () {
+export default function DeclarationOfAgreementPage() {
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
   const session = useSelector((state) => state.session)
@@ -76,7 +76,7 @@ export default function DeclarationOfAgreementPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 Check the terms and conditions
               </h1>
               <h3 className='govuk-heading-s'>What we will do</h3>

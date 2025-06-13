@@ -51,7 +51,9 @@ export default function AccountPage() {
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Manage your account</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Manage your account
+            </h1>
             <div className='govuk-body'>
               <h2 className='govuk-heading-m'>Your account details</h2>
               <table className='govuk-table'>

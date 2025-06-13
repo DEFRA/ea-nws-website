@@ -49,7 +49,7 @@ export default function HomePage() {
                 text={location.state.locationName}
               />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Locations and message preferences
             </h1>
             <SubscribedLocationTableLayout setError={setError} />

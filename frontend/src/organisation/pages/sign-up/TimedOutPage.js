@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import Button from '../../../common/components/gov-uk/Button'
 
-export default function TimedOutPage () {
+export default function TimedOutPage() {
   const navigate = useNavigate()
 
   const handleSignIn = () => {
@@ -14,7 +14,7 @@ export default function TimedOutPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You timed out before you could finish signing up
             </h1>
             <div className='govuk-body'>

@@ -10,7 +10,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function TermsAndConditionsPage () {
+export default function TermsAndConditionsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -58,7 +58,9 @@ export default function TermsAndConditionsPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
 
-            <h1 className='govuk-heading-l'>Check the terms and conditions</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Check the terms and conditions
+            </h1>
 
             <p>
               These are the terms and conditions under which we, the Environment

@@ -124,7 +124,7 @@ export default function ChangeAdminDetailsPage() {
           {(error || errorEmail || errorName) && (
             <ErrorSummary errorList={[error, errorEmail, errorName]} />
           )}
-          <h1 className='govuk-heading-l'>Change administrator details</h1>
+          <h1 className='govuk-heading-l' id="main-content">Change administrator details</h1>
 
           <Input
             id='full-name'

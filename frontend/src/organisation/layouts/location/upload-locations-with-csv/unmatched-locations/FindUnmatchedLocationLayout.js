@@ -14,7 +14,7 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import UnmatchedLocationInfo from '../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function FindUnmatchedLocationLayout ({
+export default function FindUnmatchedLocationLayout({
   navigateToFindPostCode,
   navigateToFindAddress,
   navigateToFindCoordinates,
@@ -141,7 +141,7 @@ export default function FindUnmatchedLocationLayout ({
             {error && <ErrorSummary errorList={[error]} />}
 
             {/* Heading */}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               How do you want to{' '}
               {flow === 'unmatched-locations-not-found'
                 ? 'find'

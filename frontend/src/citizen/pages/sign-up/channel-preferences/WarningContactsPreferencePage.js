@@ -68,7 +68,7 @@ export default function WarningContactsPreferencePage() {
             {error && <ErrorSummary errorList={[error]} />}
             <fieldset className='govuk-fieldset' aria-describedby='group-hint'>
               <legend className='govuk-fieldset__legend'>
-                <h1 className='govuk-heading-l'>
+                <h1 className='govuk-heading-l' id='main-content'>
                   Would you like to get flood messages in any other way?
                   (optional)
                 </h1>

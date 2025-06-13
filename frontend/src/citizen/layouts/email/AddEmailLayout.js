@@ -65,7 +65,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter an email address to get flood messages
             </h2>
             <div className='govuk-body'>

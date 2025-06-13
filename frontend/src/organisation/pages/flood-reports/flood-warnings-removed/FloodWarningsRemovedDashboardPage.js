@@ -8,7 +8,7 @@ export default function FloodWarningsRemovedDashboardPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
             <br />
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Flood warnings removed in the last 24 hours
             </h1>
           </div>

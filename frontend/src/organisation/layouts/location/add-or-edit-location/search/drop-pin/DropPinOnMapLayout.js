@@ -296,7 +296,9 @@ export default function DropPinOnMapLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Find the location on a map</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Find the location on a map
+            </h1>
             <div className='govuk-body'>
               <p>
                 Click on the map to drop a pin where you think this location is.

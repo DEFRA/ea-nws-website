@@ -362,9 +362,7 @@ export default function ContactChannelsLayout({
                 ]}
               />
             )}
-            <h1 className='govuk-heading-l' id='main-content'>
-              Email addresses and numbers
-            </h1>
+            <h1 className='govuk-heading-l'>Email addresses and numbers</h1>
             <div className='govuk-body'>
               <div>
                 <p>
@@ -398,6 +396,7 @@ export default function ContactChannelsLayout({
                       id='additional-email-2'
                       name='Additionals email address (optional)'
                       inputType='text'
+                      inputMode='email'
                       onChange={(val) =>
                         setEmailInput((inputs) => [inputs[0], val])
                       }
@@ -414,6 +413,7 @@ export default function ContactChannelsLayout({
                       id='email-address-1'
                       name='Email addresses (optional)'
                       inputType='text'
+                      inputMode='email'
                       onChange={(val) =>
                         setEmailInput((inputs) => [val, inputs[1]])
                       }
@@ -426,6 +426,7 @@ export default function ContactChannelsLayout({
                     <Input
                       id='email-address-2'
                       inputType='text'
+                      inputMode='email'
                       onChange={(val) =>
                         setEmailInput((inputs) => [inputs[0], val])
                       }
@@ -435,53 +436,7 @@ export default function ContactChannelsLayout({
                     />
                   </>
                 )}
-                userType === UserType.PendingAdmin ? (
-                <>
-                  {renderFirstEmail()}
-                  <Input
-                    id='additional-email-2'
-                    name='Additionals email address (optional)'
-                    inputType='text'
-                    inputMode='email'
-                    onChange={(val) =>
-                      setEmailInput((inputs) => [inputs[0], val])
-                    }
-                    value={emailInput[1]}
-                    error={emailError[1]}
-                    className='govuk-input govuk-input--width-20'
-                    isNameBold
-                    labelSize='s'
-                  />
-                </>
-                ) : (
-                <>
-                  <Input
-                    id='email-address-1'
-                    name='Email addresses (optional)'
-                    inputType='text'
-                    inputMode='email'
-                    onChange={(val) =>
-                      setEmailInput((inputs) => [val, inputs[1]])
-                    }
-                    value={emailInput[0]}
-                    error={emailError[0]}
-                    className='govuk-input govuk-input--width-20'
-                    isNameBold
-                    labelSize='s'
-                  />
-                  <Input
-                    id='email-address-2'
-                    inputType='text'
-                    inputMode='email'
-                    onChange={(val) =>
-                      setEmailInput((inputs) => [inputs[0], val])
-                    }
-                    value={emailInput[1]}
-                    error={emailError[1]}
-                    className='govuk-input govuk-input--width-20'
-                  />
-                </>
-                )}
+
                 <Input
                   id='uk-mobile-number-1'
                   name='UK mobile numbers for text messages (optional)'

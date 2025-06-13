@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -11,13 +12,18 @@ export default function ReportsOverviewPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Reports - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <br />
-            <h1 className='govuk-heading-l'>Reports</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Reports
+            </h1>
             <h2 className='govuk-heading-m'>Flood warnings</h2>
             <p>
               {' '}
@@ -27,8 +33,7 @@ export default function ReportsOverviewPage() {
             </p>
             <p>
               {/* <Link to={orgFloodReportsUrls.removed} className='govuk-link'> */}
-                Warnings removed in last 24 hours (not yet
-              available)
+              Warnings removed in last 24 hours (not yet available)
               {/* </Link> */}
             </p>
             <p>

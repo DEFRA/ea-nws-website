@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -69,12 +70,17 @@ export default function LocationNamePage() {
 
   return (
     <>
+      <Helmet>
+        <title>What's the location name? - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>What is the location name?</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              What is the location name?
+            </h1>
             <div className='govuk-body'>
               <p>
                 How you refer to the location, for example: head office, Brayton

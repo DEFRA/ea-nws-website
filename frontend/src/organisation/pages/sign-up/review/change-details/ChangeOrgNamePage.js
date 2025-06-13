@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import AddNameLayout from '../../../../layouts/name/AddNameLayout'
 import { orgSignUpUrls } from '../../../../routes/sign-up/SignUpRoutes'
@@ -11,9 +12,14 @@ export default function ChangeOrgNamePage () {
   }
 
   return (
-    <AddNameLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Change organisation name - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <AddNameLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

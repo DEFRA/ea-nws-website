@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -154,6 +155,9 @@ export default function SignUpValidationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired ? (
         <ExpiredCodeLayout getNewCode={getNewCode} />
       ) : (
@@ -170,7 +174,9 @@ export default function SignUpValidationPage() {
                   />
                 )}
                 {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Check your email</h2>
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Check your email
+                </h2>
                 <div className='govuk-body'>
                   <p>You need to confirm your email address.</p>
                   <p className='govuk-!-margin-top-6'>

@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import KeywordsLayout from '../../../../../../layouts/optional-info/KeywordsLayout'
 import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
@@ -32,6 +33,9 @@ export default function KeywordsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Edit this location's keywords - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <KeywordsLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'

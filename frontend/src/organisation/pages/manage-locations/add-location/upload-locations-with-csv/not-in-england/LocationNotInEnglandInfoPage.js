@@ -1,12 +1,13 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import {
-  getLocationAdditional,
-  getLocationOther
+    getLocationAdditional,
+    getLocationOther
 } from '../../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../components/custom/Map'
@@ -39,6 +40,9 @@ export default function LocationNotInEnglandInfoPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Location not in england information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>

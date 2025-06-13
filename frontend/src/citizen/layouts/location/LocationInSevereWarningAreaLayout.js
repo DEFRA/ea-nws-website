@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -238,11 +239,17 @@ export default function LocationInSevereWarningAreaLayout({
 
   return (
     <>
+      <Helmet>
+        <title>
+          You can get severe flood warnings and flood warnings near this area -
+          Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>

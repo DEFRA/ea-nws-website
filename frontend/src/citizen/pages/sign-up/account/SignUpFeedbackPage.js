@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
@@ -77,14 +78,16 @@ export default function FeedbackPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>Give feedback about signing up - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || textError) && (
               <ErrorSummary errorList={[error, textError]} />
             )}
-            <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
+            <h1 className='govuk-heading-l' id="main-content">Give feedback about signing up</h1>
             <div className='govuk-body'>
               This helps us to improve this service
               <br />

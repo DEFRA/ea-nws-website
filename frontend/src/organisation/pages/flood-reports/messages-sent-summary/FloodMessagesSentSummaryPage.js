@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -412,11 +413,14 @@ export default function FloodMessagesSentSummaryPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Summary of flood messages sent - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
+            <h1 className='govuk-heading-l' id="main-content">Summary of flood messages sent</h1>
             <div className='govuk-body'>
               {locationTableHead(
                 'Locations that get flood messages',

@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -54,11 +55,16 @@ export default function CheckYourAnswersPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Check your answers - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink to='/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <div className='govuk-grid-column-three-quarters'>
-            <h1 className='govuk-heading-l'>Check your answers</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Check your answers
+            </h1>
             <LocationReviewTable locations={profile.pois} />
             <FloodMessageReviewTable registration={registration} />
             <ContactReviewTable contacts={contacts} />

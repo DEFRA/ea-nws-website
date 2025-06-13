@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
 import ContactChannelsLayout from '../../../layouts/manage-contact/ContactChannelsLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
@@ -12,6 +12,9 @@ export default function AddContactChannelsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Add email addresses and numbers for this user - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <ContactChannelsLayout
         navigateToNextPage={navigateToNextPage}
         error={error}

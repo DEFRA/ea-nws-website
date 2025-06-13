@@ -542,14 +542,18 @@ export default function LocationsTable({
                     <span
                       className={`flood-risk-container ${location.riverSeaRisk?.className}`}
                     >
-                      {location.riverSeaRisk?.title}
+                      {location.riverSeaRisk?.title === 'Unavailable'
+                        ? '-'
+                        : location.riverSeaRisk?.title}
                     </span>
                   </td>
                   <td className='govuk-table__cell'>
                     <span
                       className={`flood-risk-container ${location.groundWaterRisk?.className}`}
                     >
-                      {location.groundWaterRisk?.title}
+                      {location.groundWaterRisk?.title === 'Unavailable'
+                        ? '-'
+                        : location.groundWaterRisk?.title}
                     </span>
                   </td>
                 </>
@@ -557,6 +561,7 @@ export default function LocationsTable({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
+                  aria-label={`Delete ${location.additionals.locationName}`}
                   onClick={(e) => onAction(e, actionText, location)}
                 >
                   {actionText}

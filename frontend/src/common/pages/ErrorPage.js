@@ -1,10 +1,14 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import ContactDetails from '../layouts/footer-link-layouts/ContactDetails'
 
 export default function ErrorPage () {
   return (
     <>
+      <Helmet>
+        <title>There is a problem - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-body govuk-grid-column-two-thirds'>
@@ -19,7 +23,13 @@ export default function ErrorPage () {
               <ContactDetails />
             </p>
             <p>
-              Email: <Link>getfloodwarnings@environment-agency.gov.uk</Link>
+              Email:{' '}
+              <a
+                class='govuk-link'
+                href='mailto:enquiries@environment-agency.gov.uk'
+              >
+                enquiries@environment-agency.gov.uk
+              </a>
               <br />
               Monday to Friday, 8am to 6pm
             </p>

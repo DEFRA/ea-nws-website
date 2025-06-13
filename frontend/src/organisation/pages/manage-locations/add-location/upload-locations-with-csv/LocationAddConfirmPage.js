@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -8,7 +9,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddConfirmPage () {
+export default function LocationAddConfirmPage() {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -31,7 +32,7 @@ export default function LocationAddConfirmPage () {
         )
       }
       upload()
-      const interval = setInterval(async function getStatus () {
+      const interval = setInterval(async function getStatus() {
         if (getStatus.isRunning) return
         getStatus.isRunning = true
         const dataToSend = { authToken }
@@ -72,11 +73,17 @@ export default function LocationAddConfirmPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm add location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-2)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-column-two-thirds'>
           {error && <ErrorSummary errorList={[error]} />}
-          <h1 className='govuk-heading-l govuk-!-margin-bottom-7'>
+          <h1
+            className='govuk-heading-l govuk-!-margin-bottom-7'
+            id='main-content'
+          >
             {locationsValid} locations can be added
           </h1>{' '}
           <Button
@@ -94,14 +101,15 @@ export default function LocationAddConfirmPage () {
           />
         </div>
       </main>
-      {saveLocations && error === null &&
+      {saveLocations && error === null && (
         <div className='popup-dialog'>
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
             />
           </div>
-        </div>}
+        </div>
+      )}
     </>
   )
 }

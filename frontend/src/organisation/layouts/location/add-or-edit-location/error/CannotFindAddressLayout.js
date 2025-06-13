@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function CannotFindAddressLayout ({
+export default function CannotFindAddressLayout({
   navigateToNextPage,
   navigateToDifferentPostCode,
   navigateToDifferentCoordinates,
@@ -18,7 +18,9 @@ export default function CannotFindAddressLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>If you cannot find the address:</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              If you cannot find the address:
+            </h1>
             <div className='govuk-body'>
               <p>
                 This might be because the address is not recognised, for example

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -175,6 +176,11 @@ export default function ValidateLandlineLayout({
 
   return (
     <>
+      <Helmet>
+        <title>
+          Confirm your telephone number - Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       {codeExpired ? (
         <ExpiredCodeLayout getNewCode={getNewCode} />
       ) : (
@@ -191,7 +197,9 @@ export default function ValidateLandlineLayout({
                   />
                 )}
                 {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Confirm telephone number</h2>
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Confirm telephone number
+                </h2>
                 <div className='govuk-body'>
                   We're calling this number to read out a code:
                   <InsetText text={homePhone} />

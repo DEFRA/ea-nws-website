@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -281,11 +282,14 @@ export default function LocationInAlertAreaLayout({
 
   return (
     <>
+      <Helmet>
+        <title>You can get flood alerts - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {additionalAlerts
                 ? 'You can also get flood alerts (optional)'
                 : 'You can get flood alerts for this location'}

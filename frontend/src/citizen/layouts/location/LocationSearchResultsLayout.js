@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
-import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
   setFloodAlertCount,
   setNearbyTargetAreasFlow,
@@ -28,7 +27,6 @@ export default function LocationSearchResultsLayout({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
   const locationSearchType = useSelector(
@@ -36,11 +34,6 @@ export default function LocationSearchResultsLayout({
   )
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
-  )
-  const locationsPerPage = 20
-  const displayedLocations = locations.slice(
-    (currentPage - 1) * locationsPerPage,
-    currentPage * locationsPerPage
   )
   const floodHistoryData = useFetchAlerts()
 
@@ -154,14 +147,27 @@ export default function LocationSearchResultsLayout({
 
   const detailsMessage = (
     <div>
-      You can view flood message areas&nbsp;
-      <Link
-        className='govuk-link'
-        onClick={(event) => selectCentreOfAllAreas(event)}
-        style={{ cursor: 'pointer' }}
-      >
-        near this postcode
-      </Link>
+      <p>
+        You can &nbsp;
+        <Link
+          className='govuk-link'
+          onClick={(event) => selectCentreOfAllAreas(event)}
+          style={{ cursor: 'pointer' }}
+        >
+          view areas in or near here
+        </Link>
+        &nbsp;where you can get flood messages.
+      </p>
+      <p>
+        Or you can try a&nbsp;
+        <Link
+          className='govuk-link'
+          onClick={() => navigate(-1)}
+          style={{ cursor: 'pointer' }}
+        >
+          different postcode
+        </Link>
+      </p>
     </div>
   )
 
@@ -176,7 +182,7 @@ export default function LocationSearchResultsLayout({
             ) : (
               <div className='govuk-grid-column-two-thirds'>
                 <div className='govuk-body'>
-                  <h1 className='govuk-heading-l'>
+                  <h1 className='govuk-heading-l' id='main-content'>
                     {locationPostCode
                       ? 'Select an address'
                       : 'Select a location'}
@@ -205,7 +211,7 @@ export default function LocationSearchResultsLayout({
                       <tr className='govuk-table__row'>
                         <td className='govuk-table__cell' />
                       </tr>
-                      {displayedLocations.map((location, index) => (
+                      {locations.map((location, index) => (
                         <tr key={index} className='govuk-table__row'>
                           <td className='govuk-table__cell'>
                             <Link
@@ -236,10 +242,6 @@ export default function LocationSearchResultsLayout({
                       Search using a different location
                     </Link>
                   )}
-                  <Pagination
-                    totalPages={Math.ceil(locations.length / locationsPerPage)}
-                    onPageChange={(val) => setCurrentPage(val)}
-                  />
                 </div>
               </div>
             )}

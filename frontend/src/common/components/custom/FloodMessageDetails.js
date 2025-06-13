@@ -31,14 +31,15 @@ export default function FloodMessageDetails() {
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
             <th scope='row' className='govuk-table__header'>
-              <img
-                src={floodSevereWarningIcon}
-                alt='Severe flood warning Icon'
-                style={{ width: '33px', height: '33px' }}
-              />
-              <span className='govuk-!-padding-left-7'>
-                Severe flood warning
-              </span>
+              <div>
+                <img
+                  src={floodSevereWarningIcon}
+                  alt='Severe flood warning Icon'
+                  style={{ float: 'left', height: '33px', width: '33px' }}
+                  className='govuk-!-margin-right-6'
+                />
+                <p>Severe flood warnings</p>
+              </div>
             </th>
             <td className='govuk-table__cell'>Danger to life - act now</td>
             <td className='govuk-table__cell'>
@@ -48,16 +49,19 @@ export default function FloodMessageDetails() {
           </tr>
           <tr className='govuk-table__row'>
             <th scope='row' className='govuk-table__header'>
-              <img
-                src={floodWarningIcon}
-                alt='Flood warning Icon'
-                style={{ width: '33px', height: '33px' }}
-              />
-              <span className='govuk-!-padding-left-7'>Flood warning</span>
+              <div>
+                <img
+                  src={floodWarningIcon}
+                  alt='Flood warning Icon'
+                  style={{ float: 'left', height: '33px', width: '33px' }}
+                  className='govuk-!-margin-right-6'
+                />
+                <p>Flood warnings</p>
+              </div>
             </th>
             <td className='govuk-table__cell'>Flooding expected - act now</td>
             <td className='govuk-table__cell'>
-              Flooding may affect:
+              <p>Flooding may affect:</p>
               <ul className='govuk-list--bullet'>
                 <li>homes and businesses</li>
                 <li>roads and railway lines</li>
@@ -69,18 +73,21 @@ export default function FloodMessageDetails() {
           </tr>
           <tr className='govuk-table__row'>
             <th scope='row' className='govuk-table__header'>
-              <img
-                src={floodAlertIcon}
-                alt='Flood alert Icon'
-                style={{ width: '33px', height: '33px' }}
-              />
-              <span className='govuk-!-padding-left-7'>Flood alert</span>
+              <div>
+                <img
+                  src={floodAlertIcon}
+                  alt='Flood alert Icon'
+                  style={{ float: 'left', height: '33px', width: '33px' }}
+                  className='govuk-!-margin-right-6'
+                />
+                <p>Flood alerts</p>
+              </div>
             </th>
             <td className='govuk-table__cell'>
               Early alerts of possible flooding - be prepared
             </td>
             <td className='govuk-table__cell'>
-              The following may be at risk:
+              <p>The following may be at risk:</p>
               <ul className='govuk-list--bullet'>
                 <li>fields, recreational land and car parks</li>
                 <li>minor roads</li>
@@ -95,43 +102,52 @@ export default function FloodMessageDetails() {
       <table className='govuk-table mobile-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__cell govuk-!-width-one-half'>
-              <img
-                src={floodSevereWarningIcon}
-                alt='Severe flood warning Icon'
-                style={{ width: '35px', height: '33px' }}
-              />
-              <span className='govuk-!-padding-left-1 govuk-!-font-weight-bold'>
-                Severe flood warning
-              </span>
-              <p className='govuk-hint govuk-!-padding-left-9'>
+            <td className='govuk-table__cell'>
+              <div>
+                <img
+                  src={floodSevereWarningIcon}
+                  alt='Severe flood warning Icon'
+                  style={{ float: 'left', height: '33px', width: '33px' }}
+                  className='govuk-!-margin-right-1'
+                />
+                <p className='govuk-!-padding-left-1 govuk-!-margin-bottom-0 govuk-!-font-weight-bold'>
+                  Severe flood warnings
+                </p>
+              </div>
+              <p
+                style={{ fontSize: '0.875rem' }}
+                className='govuk-hint govuk-!-padding-left-9'
+              >
                 Danger to life - act now
               </p>
             </td>
-            <td className='govuk-table__cell govuk-!-width-one-half'>
+            <td className='govuk-table__cell'>
               Risk of severe flooding and major disruption. There could be
               danger to life and property and you’ll need to act immediately.
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td
-              scope='row'
-              className='govuk-table__cell govuk-!-width-one-half'
-            >
-              <img
-                src={floodWarningIcon}
-                alt='Flood warning Icon'
-                style={{ width: '35px', height: '33px' }}
-              />
-              <span className='govuk-!-padding-left-1 govuk-!-font-weight-bold'>
-                Flood warning
-              </span>
-              <p className='govuk-hint govuk-!-padding-left-9'>
-                Flooding expected - act{' '}
+            <td scope='row' className='govuk-table__cell'>
+              <div>
+                <img
+                  src={floodWarningIcon}
+                  alt='Flood warning Icon'
+                  style={{ float: 'left', height: '33px', width: '33px' }}
+                  className='govuk-!-margin-right-1'
+                />
+                <p className='govuk-!-padding-left-1 govuk-!-margin-bottom-0 govuk-!-font-weight-bold'>
+                  Flood warnings
+                </p>
+              </div>
+              <p
+                style={{ fontSize: '0.875rem' }}
+                className='govuk-hint govuk-!-padding-left-9'
+              >
+                Flooding expected - act now
               </p>
             </td>
-            <td className='govuk-table__cell govuk-!-width-one-half'>
-              Flooding may affect:
+            <td className='govuk-table__cell'>
+              <p>Flooding may affect:</p>
               <ul className='govuk-list--bullet'>
                 <li>homes and businesses</li>
                 <li>roads and railway lines</li>
@@ -142,25 +158,28 @@ export default function FloodMessageDetails() {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td
-              scope='row'
-              className='govuk-table__cell govuk-!-width-one-half'
-            >
-              <img
-                src={floodAlertIcon}
-                alt='Flood alert Icon'
-                style={{ width: '35px', height: '33px' }}
-              />
-              <span className='govuk-!-padding-left-1 govuk-!-font-weight-bold'>
-                Flood alert
-              </span>
-              <p className='govuk-hint govuk-!-padding-left-9'>
+            <td scope='row' className='govuk-table__cell'>
+              <div>
+                <img
+                  src={floodAlertIcon}
+                  alt='Flood alert Icon'
+                  style={{ float: 'left', height: '33px', width: '33px' }}
+                  className='govuk-!-margin-right-1'
+                />
+                <p className='govuk-!-padding-left-1 govuk-!-margin-bottom-0 govuk-!-font-weight-bold'>
+                  Flood alerts
+                </p>
+              </div>
+              <p
+                style={{ fontSize: '0.875rem' }}
+                className='govuk-hint govuk-!-padding-left-9'
+              >
                 Early alerts of possible flooding - be prepared
               </p>
             </td>
 
-            <td className='govuk-table__cell govuk-!-width-one-half'>
-              The following may be at risk:
+            <td className='govuk-table__cell'>
+              <p>The following may be at risk:</p>
               <ul className='govuk-list--bullet'>
                 <li>fields, recreational land and car parks</li>
                 <li>minor roads</li>

@@ -23,6 +23,7 @@ describe('Checkbox', () => {
     expect(checkbox).toBeInTheDocument()
     expect(checkbox).toHaveAttribute('type', 'checkbox')
     expect(checkbox).toHaveAttribute('value', value)
+    expect(checkbox).toHaveAttribute('id', 'idCheckbox_Label')
     expect(checkbox).toBeChecked()
 
     fireEvent.click(checkbox)

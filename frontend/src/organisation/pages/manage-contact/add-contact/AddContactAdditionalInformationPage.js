@@ -35,7 +35,7 @@ export default function AddContactAdditionalInformationPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Do you want to add more information about{' '}
               {currentContact?.firstname} {currentContact?.lastname}?
             </h1>

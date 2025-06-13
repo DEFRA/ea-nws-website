@@ -55,7 +55,7 @@ export default function WithdrawInvitePage () {
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>
               Do you want to withdraw the admin invitation for{' '}
               {pendingAdminName}?
             </h1>

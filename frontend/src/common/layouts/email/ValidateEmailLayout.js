@@ -191,7 +191,9 @@ export default function ValidateEmailLayout({
                   />
                 )}
                 {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Check your email</h2>
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Check your email
+                </h2>
                 <div className='govuk-body'>
                   {changeSignIn && (
                     <p className='govuk-body'>

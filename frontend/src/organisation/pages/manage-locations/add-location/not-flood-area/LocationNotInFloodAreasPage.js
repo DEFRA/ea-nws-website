@@ -95,7 +95,7 @@ export default function LocationNotInFloodAreaPage () {
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half govuk-body'>
-            <h1 class='govuk-heading-l'>
+            <h1 class='govuk-heading-l' id='main-content'>
               Flood messages are not available for {locationName}
             </h1>
             <InsetText text={insetTextInfo} />

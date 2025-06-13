@@ -420,7 +420,7 @@ export default function FloodMessagesSentSummaryPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
+            <h1 className='govuk-heading-l' id="main-content">Summary of flood messages sent</h1>
             <div className='govuk-body'>
               {locationTableHead(
                 'Locations that get flood messages',

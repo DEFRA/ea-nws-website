@@ -129,7 +129,7 @@ export default function ManageContactsPage() {
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Your email addresses and telephone numbers
             </h2>
             <p className='govuk-body'>

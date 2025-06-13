@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 
-export default function ManageAdminDetailsPage () {
+export default function ManageAdminDetailsPage() {
   const profile = useSelector((state) => state.session.profile)
   const location = useLocation()
 
@@ -33,7 +33,9 @@ export default function ManageAdminDetailsPage () {
               />
             )}
 
-            <h1 className='govuk-heading-l'>Manage administrator details</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Manage administrator details
+            </h1>
             <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
               Contact details
             </h2>

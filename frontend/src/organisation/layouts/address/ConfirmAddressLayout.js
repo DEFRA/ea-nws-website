@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 
-export default function ConfirmAddressLayout ({
+export default function ConfirmAddressLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -29,7 +29,9 @@ export default function ConfirmAddressLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>Confirm address</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Confirm address
+            </h1>
             <p className='govuk-inset-text'>{address}</p>
             <Button
               text='Confirm'

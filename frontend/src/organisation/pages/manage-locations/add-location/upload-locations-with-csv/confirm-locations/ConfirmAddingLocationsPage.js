@@ -9,7 +9,7 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmAddingLocationsPage () {
+export default function ConfirmAddingLocationsPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const validLocations = location?.state?.valid || 0
@@ -43,7 +43,7 @@ export default function ConfirmAddingLocationsPage () {
         )
       }
       upload()
-      const interval = setInterval(async function getStatus () {
+      const interval = setInterval(async function getStatus() {
         if (getStatus.isRunning) return
         getStatus.isRunning = true
         const dataToSend = { authToken }
@@ -64,7 +64,11 @@ export default function ConfirmAddingLocationsPage () {
 
                   // Get the existing location (note type is 'valid')
                   const existingLocation = geoSafeToWebLocation(
-                    await getLocation(orgId, location.additionals.locationName, 'valid')
+                    await getLocation(
+                      orgId,
+                      location.additionals.locationName,
+                      'valid'
+                    )
                   )
 
                   // Set the new, duplicate location
@@ -73,7 +77,8 @@ export default function ConfirmAddingLocationsPage () {
                   if (existingLocation && newLocation) {
                     // Now compare the two and let the use choose one
                     navigate(
-                      orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+                      orgManageLocationsUrls.add
+                        .duplicateLocationComparisonPage,
                       {
                         state: {
                           existingLocation,
@@ -84,22 +89,29 @@ export default function ConfirmAddingLocationsPage () {
                     )
                   }
                 } else {
-                  navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
-                    state: {
-                      addedLocations: data.data.valid,
-                      numDuplicates: duplicateLocations
+                  navigate(
+                    orgManageLocationsUrls.add.duplicateLocationsOptionsPage,
+                    {
+                      state: {
+                        addedLocations: data.data.valid,
+                        numDuplicates: duplicateLocations
+                      }
                     }
-                  })
+                  )
                 }
               } else if (notFoundLocations > 0) {
-                navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
-                  state: {
-                    addedLocations: data.data.valid
+                navigate(
+                  orgManageLocationsUrls.unmatchedLocations.notFound.dashboard,
+                  {
+                    state: {
+                      addedLocations: data.data.valid
+                    }
                   }
-                })
+                )
               } else if (notInEnglandLocations > 0) {
                 navigate(
-                  orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
+                  orgManageLocationsUrls.unmatchedLocations.notInEngland
+                    .dashboard,
                   {
                     state: {
                       addedLocations: data.data.valid
@@ -195,7 +207,7 @@ export default function ConfirmAddingLocationsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {validLocations} of {totalLocations} location
               {totalLocations === 1 ? '' : 's'} can be added
             </h1>
@@ -281,14 +293,15 @@ export default function ConfirmAddingLocationsPage () {
           </div>
         </div>
       </main>
-      {saveLocations &&
+      {saveLocations && (
         <div className='popup-dialog'>
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
             />
           </div>
-        </div>}
+        </div>
+      )}
     </>
   )
 }

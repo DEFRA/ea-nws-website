@@ -88,7 +88,7 @@ export default function AdminJoinedPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {errorText && <ErrorSummary errorList={[errorText]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You've now joined as admin for your organisation and can manage
               the following.
             </h1>

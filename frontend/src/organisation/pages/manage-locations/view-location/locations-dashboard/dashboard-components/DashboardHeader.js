@@ -304,7 +304,7 @@ export default function DashboardHeader({
         {!linkContacts || linkContacts.length === 0 ? (
           <>
             <div style={{ display: 'flex' }}>
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 Manage your organisation's{' '}
                 {locations.length > 1 ? locations.length : null} locations
               </h1>
@@ -367,7 +367,7 @@ export default function DashboardHeader({
           </>
         ) : (
           <>
-            <h1 className='govuk-heading-l'>Link contact to locations</h1>
+            <h1 className='govuk-heading-l' id='main-content'>Link contact to locations</h1>
             <p>
               Select the locations you want to link to this contact from the
               list. Then select

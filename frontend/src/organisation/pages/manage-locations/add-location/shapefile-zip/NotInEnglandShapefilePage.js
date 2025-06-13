@@ -7,7 +7,7 @@ import { getLocationAdditional } from '../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 
-export default function NotInEnglandShapeFilePage () {
+export default function NotInEnglandShapeFilePage() {
   const navigate = useNavigate()
   const location = useLocation()
   const locationName = useSelector((state) =>
@@ -29,7 +29,9 @@ export default function NotInEnglandShapeFilePage () {
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>Location not in England</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Location not in England
+            </h1>
             <h2 className='govuk-heading-m govuk-!-margin-top-8 govuk-!-margin-bottom-0'>
               {locationName}
             </h2>

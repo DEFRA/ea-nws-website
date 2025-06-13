@@ -78,7 +78,7 @@ export default function ChangeBusinessDetailsPage() {
                 errorList={[businessNameError, jobTitleError, error]}
               />
             )}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Additional details for business registrations
             </h2>
             <div className='govuk-body'>

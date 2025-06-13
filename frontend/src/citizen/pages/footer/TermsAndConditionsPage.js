@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 
-export default function TermsAndConditionsPage () {
+export default function TermsAndConditionsPage() {
   const navigate = useNavigate()
 
   return (
@@ -16,7 +16,9 @@ export default function TermsAndConditionsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>Terms and conditions</h1>
+              <h1 className='govuk-heading-l' id='main-content'>
+                Terms and conditions
+              </h1>
               <h2 className='govuk-heading-m'>What we will do</h2>
               <p>
                 We make all reasonable efforts to send the flood warnings you
@@ -25,12 +27,9 @@ export default function TermsAndConditionsPage () {
               </p>
               <h2 className='govuk-heading-m'>We do not:</h2>
               <ul className='govuk-list govuk-list--bullet'>
+                <li>accept responsibility if you fail to receive a warning</li>
                 <li>
-                  accept responsibility if you fail to receive a warning
-                </li>
-                <li>
-                  guarantee that our online or phone services will be
-                  available
+                  guarantee that our online or phone services will be available
                 </li>
                 <li>
                   accept responsibility for any lose, damage or costs incurred
@@ -52,30 +51,30 @@ export default function TermsAndConditionsPage () {
               <ul className='govuk-list govuk-list--bullet'>
                 <li>send you warnings you’ve asked for</li>
                 <li>
-                  send you a small number of services or administrative
-                  messages
+                  send you a small number of services or administrative messages
                 </li>
                 <li>
-                  help emergency services and local councils respond to
-                  flooding
+                  help emergency services and local councils respond to flooding
                 </li>
                 <li>
-                  help with our work on flood warning and flood risk
-                  management
+                  help with our work on flood warning and flood risk management
                 </li>
               </ul>
               <p>
                 We may give your information to our agents or representatives,
-                so they can do any of these things for us. And we may share
-                your information with other organisations if the laws says we
-                must.
+                so they can do any of these things for us. And we may share your
+                information with other organisations if the laws says we must.
               </p>
               <p>
-                The Environment Agency manages the flood warning systems. Our
-                {' '}
-                <Link to='/privacy' target='_blank' style={{ cursor: 'pointer' }}>privacy notice (open new window)
-                </Link>
-                {' '}explains how we treat your personal information.
+                The Environment Agency manages the flood warning systems. Our{' '}
+                <Link
+                  to='/privacy'
+                  target='_blank'
+                  style={{ cursor: 'pointer' }}
+                >
+                  privacy notice (open new window)
+                </Link>{' '}
+                explains how we treat your personal information.
               </p>
             </div>
           </div>

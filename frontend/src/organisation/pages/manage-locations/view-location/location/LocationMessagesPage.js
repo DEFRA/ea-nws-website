@@ -388,7 +388,7 @@ export default function LocationMessagesPage() {
 
   const floodAreasSection = (
     <>
-      <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+      <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block' id='main-content'>
         Flood areas
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />

@@ -88,7 +88,7 @@ export default function PendingAdminsPage() {
             />
           )}
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>
               Pending admins who still need to accept their invitation
             </h1>
             <p className='govuk-!-margin-bottom-3 warnings-reports-paragraph'>

@@ -12,7 +12,7 @@ import {
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAlreadyExists () {
+export default function LocationAlreadyExists() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const orgId = useSelector((state) => state.session.orgId)
@@ -53,7 +53,7 @@ export default function LocationAlreadyExists () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds' />
           {error && <ErrorSummary errorList={[error]} />}
-          <h1 className='govuk-heading-l'>
+          <h1 className='govuk-heading-l' id='main-content'>
             {locationName} already exists in this account
           </h1>
           <h2 className='govuk-heading-m'>What do you want to do next?</h2>

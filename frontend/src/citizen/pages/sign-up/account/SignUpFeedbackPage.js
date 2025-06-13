@@ -87,7 +87,7 @@ export default function FeedbackPage () {
             {(error || textError) && (
               <ErrorSummary errorList={[error, textError]} />
             )}
-            <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
+            <h1 className='govuk-heading-l' id="main-content">Give feedback about signing up</h1>
             <div className='govuk-body'>
               This helps us to improve this service
               <br />

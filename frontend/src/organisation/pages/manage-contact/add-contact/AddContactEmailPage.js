@@ -148,7 +148,9 @@ export default function AddContactEmailPage() {
             {(emailError || errors.length > 0) && (
               <ErrorSummary errorList={[emailError, ...errors]} />
             )}
-            <h1 className='govuk-heading-l'>Enter email address</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Enter email address
+            </h1>
             <div className='govuk-body'>
               <p className='govuk-!-margin-bottom-5'>
                 We'll invite them by email to join as an admin.

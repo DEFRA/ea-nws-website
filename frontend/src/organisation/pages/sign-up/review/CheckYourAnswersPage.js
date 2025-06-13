@@ -7,12 +7,12 @@ import Button from '../../../../common/components/gov-uk/Button'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
-import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
-export default function CheckYourAnswersPage () {
+export default function CheckYourAnswersPage() {
   const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
@@ -51,7 +51,9 @@ export default function CheckYourAnswersPage () {
       <BackLink to='/organisation/sign-up/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
-          <h2 className='govuk-heading-l'>Check your answers</h2>
+          <h2 className='govuk-heading-l' id='main-content'>
+            Check your answers
+          </h2>
           <OrganisationDetailsTable organisation={organizationAdditionals} />
           <MainAdministratorTable profile={profile} />
           <AlternativeContactTable

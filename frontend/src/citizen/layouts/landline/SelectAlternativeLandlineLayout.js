@@ -122,7 +122,7 @@ export default function SelectAlternativeLandlineLayout({
                 text={location?.state?.banner?.text}
               />
             )}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Which telephone number do you want to use to get flood messages by
               phone call?
             </h2>

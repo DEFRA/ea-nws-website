@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setSigninType } from '../../../common/redux/userSlice'
 
-export default function ManageOrganisationDetailsPage () {
+export default function ManageOrganisationDetailsPage() {
   const dispatch = useDispatch()
   const orgDetails =
     useSelector((state) => state?.session?.organization) || null
@@ -24,7 +24,7 @@ export default function ManageOrganisationDetailsPage () {
       <main className='govuk-main-wrapper'>
         <div Name='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Manage your organisation's details
             </h1>
 

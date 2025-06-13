@@ -78,7 +78,7 @@ export default function AddMobileLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter a mobile number to get flood messages by text
             </h2>
             <div className='govuk-body'>

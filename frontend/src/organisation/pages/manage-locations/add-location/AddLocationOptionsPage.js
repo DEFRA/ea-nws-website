@@ -77,7 +77,7 @@ export default function AddLocationOptionsPage () {
               <ErrorSummary errorList={[addLocationTypeError]} />
             )}
 
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               How do you want to add locations?
             </h1>
             <div className='govuk-body'>

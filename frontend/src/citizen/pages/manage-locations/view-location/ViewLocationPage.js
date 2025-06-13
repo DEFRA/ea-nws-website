@@ -252,7 +252,7 @@ export default function ViewLocationPage() {
                   text={successMessage}
                 />
               )}
-              <h1 className='govuk-!-margin-top-4 govuk-heading-l'>
+              <h1 className='govuk-!-margin-top-4 govuk-heading-l' id="main-content">
                 {selectedLocation.address}
               </h1>
               <Map types={areaTypes} />

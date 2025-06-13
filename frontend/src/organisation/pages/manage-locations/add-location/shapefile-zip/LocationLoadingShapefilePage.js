@@ -17,7 +17,7 @@ import { geoSafeToWebLocation } from '../../../../../common/services/formatters/
 import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationLoadingShapefilePage () {
+export default function LocationLoadingShapefilePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [status, setStatus] = useState('')
@@ -124,10 +124,14 @@ export default function LocationLoadingShapefilePage () {
           longitude: polygonCentre.geometry.coordinates[0]
         })
       )
-      dispatch(setCurrentLocationGeometry({ geoJson: JSON.stringify(geojsonData) }))
+      dispatch(
+        setCurrentLocationGeometry({ geoJson: JSON.stringify(geojsonData) })
+      )
       dispatch(setCurrentLocationName(locationName))
 
-      const newLocation = JSON.parse(JSON.stringify(store.getState().session.currentLocation))
+      const newLocation = JSON.parse(
+        JSON.stringify(store.getState().session.currentLocation)
+      )
 
       if (inEngland && !existingLocation) {
         navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
@@ -219,7 +223,9 @@ export default function LocationLoadingShapefilePage () {
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
-          <h1 className='govuk-heading-l'>{stage}</h1>
+          <h1 className='govuk-heading-l' id='main-content'>
+            {stage}
+          </h1>
           <div className='govuk-body'>
             <Spinner size='75' />
           </div>

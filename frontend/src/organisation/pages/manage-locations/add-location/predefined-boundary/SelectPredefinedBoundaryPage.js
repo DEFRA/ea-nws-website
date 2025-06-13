@@ -238,7 +238,9 @@ export default function SelectPredefinedBoundaryPage() {
             {(boundaryTypeError || boundaryError) && (
               <ErrorSummary errorList={[boundaryTypeError, boundaryError]} />
             )}
-            <h1 className='govuk-heading-l'>Add predefined boundary</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Add predefined boundary
+            </h1>
             <div className='govuk-body'>
               <p>Select a boundary to add to this account.</p>
               <div className='govuk-grid-row'>

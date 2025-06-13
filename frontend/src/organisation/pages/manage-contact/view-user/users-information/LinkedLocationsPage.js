@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -14,6 +14,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact.js'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -299,6 +300,8 @@ export default function LinkedLocationsPage() {
     navigate(orgManageContactsUrls.view.dashboard)
   }
 
+  const userType = getRole(currentContact)
+
   return (
     <>
       <BackLink onClick={(e) => navigateBack(e)} />
@@ -313,6 +316,7 @@ export default function LinkedLocationsPage() {
         <UserHeader
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
+          userType={userType}
         />
         {loading ? (
           <LoadingSpinner />

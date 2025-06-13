@@ -13,9 +13,11 @@ export default function AdminDetailsPage () {
   }
 
   return (
-    <AdminDetailsLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <AdminDetailsLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../common/assets/images/flood_alert.svg'
@@ -64,6 +65,9 @@ export default function LiveFloodMonitoringPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-5 govuk-body'>
         <div className='govuk-grid-row'>

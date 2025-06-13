@@ -1,8 +1,12 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 
 export default function AdminInviteNotWorkingPage() {
   return (
     <>
+      <Helmet>
+        <title>Your invitation is no longer working - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>

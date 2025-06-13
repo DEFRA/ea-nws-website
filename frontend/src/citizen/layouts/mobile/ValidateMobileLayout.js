@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -174,6 +175,9 @@ export default function ValidateMobileLayout({
 
   return (
     <>
+      <Helmet>
+        <title>Confirm your mobile number - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired ? (
         <ExpiredCodeLayout getNewCode={getNewCode} />
       ) : (

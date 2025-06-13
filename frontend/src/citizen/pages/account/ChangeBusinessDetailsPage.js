@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -62,6 +63,12 @@ export default function ChangeBusinessDetailsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Additional details for business registrations - Get flood warnings -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink to='/account' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

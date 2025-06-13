@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -102,6 +103,9 @@ export default function DeleteLayout() {
 
   return (
     <>
+      <Helmet> 
+        <title>Delete {nameToDelete} - Manage {isLocation ? 'locations' : 'users'} - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         {error && <ErrorSummary errorList={[error]} />}

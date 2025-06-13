@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
@@ -27,11 +28,16 @@ export default function FindLocationByDropPinPage () {
     navigate(orgManageLocationsUrls.unmatchedLocations.notFound.map)
 
   return (
-    <DropPinOnMapLayout
-      navigateToNextPage={navigateToNextPage}
-      navigateToNotInEnglandPage={navigateToNotInEnglandPage}
-      navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
-      flow='unmatched-locations-not-found'
-    />
+    <>
+      <Helmet>
+        <title>Find location on a map - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <DropPinOnMapLayout
+        navigateToNextPage={navigateToNextPage}
+        navigateToNotInEnglandPage={navigateToNotInEnglandPage}
+        navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
+        flow='unmatched-locations-not-found'
+      />
+    </>
   )
 }

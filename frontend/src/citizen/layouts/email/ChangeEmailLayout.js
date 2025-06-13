@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -66,6 +67,11 @@ export default function ChangeEmailLayout({
 
   return (
     <>
+      <Helmet>
+        <title>
+          Change your email address for signing in - Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

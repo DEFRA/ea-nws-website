@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -8,13 +9,13 @@ import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import UserContactType from '../../../../common/enums/UserContactType'
 import {
-  setProfile,
-  setRegisterToken
+    setProfile,
+    setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  addVerifiedContact,
-  removeVerifiedContact
+    addVerifiedContact,
+    removeVerifiedContact
 } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 
@@ -70,6 +71,9 @@ export default function SignUpPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Enter an email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

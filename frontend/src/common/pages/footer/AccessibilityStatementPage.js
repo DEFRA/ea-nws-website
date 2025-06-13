@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import { backendCall } from '../../services/BackendService'
@@ -21,6 +22,9 @@ export default function AccessibilityStatementPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Accessibility statement - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

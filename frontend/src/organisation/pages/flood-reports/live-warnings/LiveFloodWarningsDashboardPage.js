@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink.js'
@@ -269,6 +270,9 @@ export default function LiveFloodWarningsDashboardPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

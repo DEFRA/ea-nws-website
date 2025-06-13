@@ -1,6 +1,7 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useMemo, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -17,8 +18,8 @@ import {
   webToGeoSafeContact
 } from '../../../common/services/formatters/ContactFormatter'
 import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
+    geoSafeToWebLocation,
+    webToGeoSafeLocation
 } from '../../../common/services/formatters/LocationFormatter'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
@@ -475,6 +476,9 @@ export default function ManageKeywordsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Manage keywords - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>

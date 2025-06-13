@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Accordion from '../../../../common/components/gov-uk/Accordion'
@@ -80,6 +81,9 @@ export default function AdminJoinedPage() {
 
   return (
     <>
+      <Helmet>
+        <title>You've now joined as an admin for your organisation - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>

@@ -1,15 +1,16 @@
 import { area, bbox, centroid } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
 import {
-  setCurrentLocationCoordinates,
-  setCurrentLocationDataType,
-  setCurrentLocationGeometry,
-  setCurrentLocationName
+    setCurrentLocationCoordinates,
+    setCurrentLocationDataType,
+    setCurrentLocationGeometry,
+    setCurrentLocationName
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
@@ -217,6 +218,9 @@ export default function LocationLoadingShapefilePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Loading - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
           <h1 className='govuk-heading-l' id='main-content'>

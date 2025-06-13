@@ -12,6 +12,8 @@ export default function AddEmailContactStartPage () {
   }
 
   return (
-    <AddEmailLayout navigateToNextPage={navigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
+    <>
+      <AddEmailLayout navigateToNextPage={navigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
+    </>
   )
 }

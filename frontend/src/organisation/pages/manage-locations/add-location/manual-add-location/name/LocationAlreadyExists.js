@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -44,6 +45,9 @@ export default function LocationAlreadyExists() {
 
   return (
     <>
+      <Helmet>
+        <title>Location already exists in this account - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

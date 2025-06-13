@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -128,6 +129,11 @@ export default function ValidateEmailLayout({
 
   return (
     <>
+      <Helmet>
+        <title>
+          Confirm email address - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       {codeExpired ? (
         <ExpiredCodeLayout getNewCode={getNewCode} />
       ) : (

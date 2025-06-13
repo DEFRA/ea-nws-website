@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -72,6 +73,9 @@ export default function LocationAddConfirmPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm add location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-2)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-column-two-thirds'>

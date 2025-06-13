@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -10,8 +11,8 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
+    geoSafeToWebLocation,
+    webToGeoSafeLocation
 } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -223,6 +224,9 @@ export default function DuplicateLocationsOptionsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Duplicate location options - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {addedLocations > 0 && (
         <NotificationBanner

@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -12,9 +13,9 @@ import AlertType from '../../../../common/enums/AlertType'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getLocationOtherAdditional,
-  getRegistrationParams,
-  updateLocationsAlertTypes
+    getLocationOtherAdditional,
+    getRegistrationParams,
+    updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
@@ -236,6 +237,9 @@ export default function ViewLocationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>View location - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>

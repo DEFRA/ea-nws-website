@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -42,6 +43,11 @@ export default function SelectContactTypeToAddPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Select type of contact you want to add - Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink to='/signup/review' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

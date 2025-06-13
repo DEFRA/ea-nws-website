@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import store from '../../../../common/redux/store'
@@ -91,6 +92,9 @@ export default function AddContactNotesPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Add notes for this {currentContact?.firstname} {currentContact?.lastname} - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='contact'

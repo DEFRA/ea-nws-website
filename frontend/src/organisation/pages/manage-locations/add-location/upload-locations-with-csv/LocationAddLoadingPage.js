@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
 import {
-  setNotFoundLocations,
-  setNotInEnglandLocations
+    setNotFoundLocations,
+    setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -138,6 +139,9 @@ export default function LocationAddLoadingPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Loading - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
           <h1 className='govuk-heading-l' id='main-content'>{stage}</h1>

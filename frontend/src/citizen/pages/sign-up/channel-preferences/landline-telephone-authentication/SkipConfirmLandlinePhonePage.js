@@ -1,4 +1,5 @@
-import * as React from 'react'
+import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -18,6 +19,9 @@ export default function SkipConfirmLandlinePhonePage() {
 
   return (
     <>
+      <Helmet>
+        <title>We cannot send flood messages to this number yet - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink to='/signup/contactpreferences/landline/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

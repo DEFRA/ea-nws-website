@@ -148,6 +148,7 @@ export default function ChangeAdminDetailsPage() {
           <Input
             id='email-address'
             inputType='text'
+            inputMode='email'
             value={email}
             name='Email address'
             onChange={(val) => setEmail(val)}

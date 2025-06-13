@@ -81,6 +81,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
                 id='email-address'
                 name='Email address'
                 inputType='text'
+                inputMode='email'
                 error={error}
                 onChange={(val) => setEmail(val)}
                 className='govuk-input govuk-input--width-20'

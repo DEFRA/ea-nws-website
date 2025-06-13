@@ -91,6 +91,7 @@ export default function SignUpPage() {
                 id='email-address'
                 className='govuk-input govuk-input--width-20'
                 inputType='text'
+                inputMode='email'
                 name='Email address'
                 error={error}
                 onChange={(val) => setEmail(val)}

@@ -156,6 +156,7 @@ export default function AdminDetailsLayout({
                 id='email-address'
                 name='Email address'
                 inputType='text'
+                inputMode='email'
                 value={email}
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}

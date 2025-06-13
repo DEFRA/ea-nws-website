@@ -1186,13 +1186,13 @@
   color: #0b0c0c;
   text-decoration: underline;
   text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
-  text-underline-offset: 0.1578em;
+  text-underline-offset: 0.2em;
 }
 
 .service-header__nav-list-item-link:focus-visible {
   border-radius: 1px;
-  outline: 3px solid #101010;
-  outline-offset: 3px;
+  outline: 2px solid #101010;
+  outline-offset: 2px;
 }
 
 .service-header__nav-list-item-link:link {

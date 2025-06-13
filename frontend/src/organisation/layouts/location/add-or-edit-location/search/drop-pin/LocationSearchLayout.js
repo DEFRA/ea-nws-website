@@ -141,6 +141,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
                 onClick={(val) => handleOnClick(val)}
                 showNotFound={showNotFound}
                 nameField='address'
+                ariaLabel='Enter a place name, town or postcode'
               />
             </div>
             <Button

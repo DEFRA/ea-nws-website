@@ -14,8 +14,9 @@ export default function OrganisationConfirmServicePage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body govuk-!-margin-top-6'>
-              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
-                You've chosen the professional<br />
+              <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+                You've chosen the professional
+                <span style={{ display: 'block' }} />
                 (organisation) service
               </h1>
               <p className='govuk-!-margin-top-6'>

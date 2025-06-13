@@ -53,6 +53,7 @@ export default function AddressLayout({
             </h1>
             {additionalInfo && <>{additionalInfo}</>}
             <TextArea
+              id='location-address'
               error={error}
               className='govuk-textarea'
               rows={5}

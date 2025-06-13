@@ -212,7 +212,7 @@ export default function DashboardHeader({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
-                  <p className='body-text-strong' style={{ color: 'coral' }}>
+                  <p className='body-text-strong' style={{ color: '#FD6214' }}>
                     <strong>{count[0]}</strong>
                   </p>
                   <Link

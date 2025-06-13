@@ -58,6 +58,7 @@ export default function SignInPage() {
                 className='govuk-input govuk-input--width-30'
                 name='Email address'
                 inputType='text'
+                inputMode='email'
                 error={error}
                 onChange={(val) => setEmail(val)}
               />

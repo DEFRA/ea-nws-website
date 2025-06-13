@@ -142,7 +142,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                 aria-describedby='group-hint'
               >
                 <legend className='govuk-fieldset__legend'>
-                  <h1 className='govuk-heading-l'>
+                  <h1 className='govuk-heading-l' id='main-content'>
                     Check if you can get flood messages for your location
                   </h1>
                 </legend>

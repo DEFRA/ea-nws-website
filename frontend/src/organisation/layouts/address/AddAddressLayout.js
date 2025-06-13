@@ -85,7 +85,7 @@ export default function AddAddressLayout({
             {error && (
               <ErrorSummary errorList={[{ text: error, componentId: postcodeId }]} />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Your organisation's UK head office address
             </h1>
             <div className='govuk-body'>

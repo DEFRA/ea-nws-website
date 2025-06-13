@@ -25,11 +25,13 @@ export default function ValidateMobilePhonePage () {
   }
 
   return (
-    <ValidateMobileLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentMobile}
-      SkipValidation={SkipValidation}
-      DifferentMobile={DifferentMobile}
-    />
+    <>
+      <ValidateMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentMobile}
+        SkipValidation={SkipValidation}
+        DifferentMobile={DifferentMobile}
+      />
+    </>
   )
 }

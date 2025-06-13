@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -8,13 +9,13 @@ import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import UserContactType from '../../../../common/enums/UserContactType'
 import {
-  setProfile,
-  setRegisterToken
+    setProfile,
+    setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  addVerifiedContact,
-  removeVerifiedContact
+    addVerifiedContact,
+    removeVerifiedContact
 } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 
@@ -71,12 +72,15 @@ export default function SignUpPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Enter an email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[{text: error, componentId: emailAddressId}]} />}
-            <h1 className='govuk-heading-l'>Enter an email address</h1>
+            <h1 className='govuk-heading-l' id="main-content">Enter an email address</h1>
             <div className='govuk-body'>
               <p>We'll send flood messages to this address. </p>
               <p>

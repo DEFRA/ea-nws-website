@@ -100,7 +100,7 @@ export default function LocationXYCoordinatesSearchLayout({
                 ].filter(Boolean)}
               />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               What are the X and Y coordinates?
             </h1>
 

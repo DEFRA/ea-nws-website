@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 import {
-  setCurrentLocation,
-  setLocationSearchResults
+    setCurrentLocation,
+    setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import {
@@ -85,6 +86,9 @@ export default function ManuallyFindLocationsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Manually find locations - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       {location.state && (
         <NotificationBanner
           className={`govuk-notification-banner ${

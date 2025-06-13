@@ -7,5 +7,9 @@ export default function AddEmailPage () {
     navigate('/managecontacts/validate-email')
   }
 
-  return <AddEmailLayout navigateToNextPage={navigateToNextPage} />
+  return (
+    <>
+      <AddEmailLayout navigateToNextPage={navigateToNextPage} />
+    </>
+  )
 }

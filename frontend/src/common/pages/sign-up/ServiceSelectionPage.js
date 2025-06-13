@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
 import Radio from '../../components/gov-uk/Radio'
 
-export default function ServiceSelectionPage () {
+export default function ServiceSelectionPage() {
   const navigate = useNavigate()
 
   const [serviceOption, setServiceOption] = useState('')
@@ -38,6 +39,9 @@ export default function ServiceSelectionPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Who are the flood warnings for? - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

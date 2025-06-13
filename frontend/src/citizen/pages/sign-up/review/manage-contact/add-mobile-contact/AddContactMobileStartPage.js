@@ -12,6 +12,8 @@ export default function AddMobileContactStartPage () {
   }
 
   return (
-    <AddMobileLayout navigateToNextPage={navigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
+    <>
+      <AddMobileLayout navigateToNextPage={navigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
+    </>
   )
 }

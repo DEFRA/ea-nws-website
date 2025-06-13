@@ -145,7 +145,9 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
                 ].filter(Boolean)}
               />
             )}
-            <h1 className='govuk-heading-l'>User details</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              User details
+            </h1>
             <div id={mainBodyId} className='govuk-body'>
               <Input
                 id={firstNameId}

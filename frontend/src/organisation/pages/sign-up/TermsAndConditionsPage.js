@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -10,7 +11,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function TermsAndConditionsPage () {
+export default function TermsAndConditionsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -53,13 +54,18 @@ export default function TermsAndConditionsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Check the terms and conditions - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[{text: error, componentId: termsAndConditionsId}]} />}
 
-            <h1 className='govuk-heading-l'>Check the terms and conditions</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Check the terms and conditions
+            </h1>
 
             <p>
               These are the terms and conditions under which we, the Environment

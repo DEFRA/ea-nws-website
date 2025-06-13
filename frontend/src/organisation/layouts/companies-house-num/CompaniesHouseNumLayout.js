@@ -7,7 +7,7 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrganizationCompHouseNum } from '../../../common/redux/userSlice'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout ({
+export default function CompaniesHouseNumLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -63,7 +63,7 @@ export default function CompaniesHouseNumLayout ({
                 ].filter(Boolean)}
               />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Does your organisation have a Companies House number?
             </h1>
             <div className='govuk-body'>

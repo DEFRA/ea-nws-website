@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -6,13 +7,13 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import {
-  setProfile,
-  setRegistrations
+    setProfile,
+    setRegistrations
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 
-export default function DeclarationOfAgreementPage () {
+export default function DeclarationOfAgreementPage() {
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
   const session = useSelector((state) => state.session)
@@ -71,6 +72,9 @@ export default function DeclarationOfAgreementPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Check the terms and conditions - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -81,7 +85,7 @@ export default function DeclarationOfAgreementPage () {
               />
             )}
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 Check the terms and conditions
               </h1>
               <h3 className='govuk-heading-s'>What we will do</h3>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -67,12 +68,18 @@ export default function AddMobileLayout({
 
   return (
     <>
+      <Helmet>
+        <title>
+          Enter a mobile number to get flood messages by text - Get flood
+          warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[{text: error, componentId: mobileNumberInputId}]} />}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter a mobile number to get flood messages by text
             </h2>
             <div className='govuk-body'>

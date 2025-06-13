@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import CannotFindAddressLayout from '../../../../../../layouts/location/add-or-edit-location/error/CannotFindAddressLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -22,6 +23,9 @@ export default function CannotFindLocationByAddressPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Cannot find location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <CannotFindAddressLayout
         navigateToNextPage={navigateToNextPage}
         navigateToDifferentPostCode={navigateToDifferentPostCode}

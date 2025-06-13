@@ -4,11 +4,14 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setOrganizationName, setSigninType } from '../../../common/redux/userSlice'
+import {
+  setOrganizationName,
+  setSigninType
+} from '../../../common/redux/userSlice'
 // import { backendCall } from '../../../common/services/BackendService'
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
-export default function AddNameLayout ({
+export default function AddNameLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -67,7 +70,9 @@ export default function AddNameLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[{text: error, componentId: orgNameId}]} />}
-            <h1 className='govuk-heading-l'>Your organisation's name</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Your organisation's name
+            </h1>
             <div className='govuk-body'>
               <Input
                 id={orgNameId}

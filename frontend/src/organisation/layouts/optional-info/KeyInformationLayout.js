@@ -123,7 +123,10 @@ export default function KeyInformationLayout({
             {(locationNameError || error) && (
               <ErrorSummary errorList={[{text: locationNameError, componentId: locationNameId}, error]} />
             )}
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               Key information
             </h1>
             <div className='govuk-body'>

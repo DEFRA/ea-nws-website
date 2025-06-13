@@ -111,7 +111,7 @@ export default function AlternativeContactDetailsLayout({
                 ].filter(Boolean)}
             />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Enter details for an alternative contact at your organisation
             </h1>
             <div className='govuk-body'>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -61,6 +62,9 @@ export default function AddEmailLayout({ navigateToNextPage }) {
 
   return (
     <>
+      <Helmet>
+        <title>Enter an email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -70,7 +74,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
                 errorList={[{ text: error, componentId: emailAddressInputId }]}
               />
             )}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter an email address to get flood messages
             </h2>
             <div className='govuk-body'>

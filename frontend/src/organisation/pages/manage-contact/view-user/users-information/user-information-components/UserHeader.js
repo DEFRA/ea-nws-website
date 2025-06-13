@@ -64,7 +64,10 @@ export default function UserHeader({
       )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
-          <h1 className='govuk-heading-l govuk-!-margin-bottom-1'>
+          <h1
+            className='govuk-heading-l govuk-!-margin-bottom-1'
+            id='main-content'
+          >
             {contactName}
           </h1>
         </div>

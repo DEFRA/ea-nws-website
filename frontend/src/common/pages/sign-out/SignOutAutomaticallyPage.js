@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import SignOutLayout from '../../layouts/sign-out/SignOutPageLayout'
 import { clearAuth } from '../../redux/userSlice'
@@ -39,5 +40,12 @@ export default function SignOutManuallyPage () {
 
   const text = signUpNotComplete ? "You timed out before you could finish signing up" : "You've been signed out for security reasons"
 
-  return <SignOutLayout text={text} signUpNotComplete={signUpNotComplete} />
+  return (
+    <>
+      <Helmet>
+        <title>You've been signed out - Get flood warnings - GOV.UK</title>
+      </Helmet>
+      <SignOutLayout text={text} signUpNotComplete={signUpNotComplete} />
+    </>
+  )
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -121,12 +122,15 @@ export default function PromoteToAdminPage() {
 
   return (
     <>
+      <Helmet>
+        <title>{heading} - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {errorMessage && <ErrorSummary errorList={[{text: errorMessage, componentId: emailAddressId}]} />}
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>{heading}</h1>
+            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>{heading}</h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.
             </p>

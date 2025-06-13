@@ -66,7 +66,7 @@ export default function PostCodeSearchLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[{text: error, componentId: postcodeId}]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               What is the location's postcode?
             </h1>
             {flow?.includes('unmatched-locations') && <UnmatchedLocationInfo />}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -66,6 +67,9 @@ export default function AddLocationOptionsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>How do you want to add locations? - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -74,7 +78,7 @@ export default function AddLocationOptionsPage () {
               <ErrorSummary errorList={[{text: addLocationTypeError, componentId: addLocationOptionsId}]} />
             )}
 
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               How do you want to add locations?
             </h1>
             <div className='govuk-body'>

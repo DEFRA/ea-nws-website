@@ -10,7 +10,7 @@ import {
   setCurrentLocationActionPlan
 } from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({
+export default function ActionPlanLayout({
   navigateToNextPage,
   error,
   setError
@@ -53,7 +53,9 @@ export default function ActionPlanLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[{text: error, componentId: actionPlanId}]} />}
-            <h1 className='govuk-heading-l'>Action plan (optional)</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Action plan (optional)
+            </h1>
             <div className='govuk-body'>
               <p>
                 Use this section to indicate what you can do to reduce the

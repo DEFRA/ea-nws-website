@@ -435,7 +435,7 @@ export default function ContactChannelsLayout({
                     />
                   </>
                 )}
-                userType === UserType.PendingAdmin ? (
+                {userType === UserType.PendingAdmin ? (
                 <>
                   {renderFirstEmail()}
                   <Input

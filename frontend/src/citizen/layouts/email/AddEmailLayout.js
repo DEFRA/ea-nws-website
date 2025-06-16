@@ -22,31 +22,45 @@ export default function AddEmailLayout({ navigateToNextPage }) {
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = emailValidation(email)
-    setError(validationError)
+    if (validationError) {
+      setError(validationError)
+      return
+    }
+
+    // Duplicate check
+    const accountEmails = session.profile.emails || []
+    const isDuplicate = accountEmails
+      .map((e) => e.toLowerCase())
+      .includes(email.toLowerCase())
+    if (isDuplicate) {
+      setError(
+        'You have already registered this email address on your account - you cannot enter it again'
+      )
+      return
+    }
+
     const dataToSend = { email, authToken }
-    if (validationError === '') {
-      const profile = addUnverifiedContact(session.profile, 'email', email)
-      const profileDataToSend = { profile, authToken }
-      const { errorMessage, data } = await backendCall(
-        profileDataToSend,
-        'api/profile/update',
+    const profile = addUnverifiedContact(session.profile, 'email', email)
+    const profileDataToSend = { profile, authToken }
+    const { errorMessage, data } = await backendCall(
+      profileDataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    } else {
+      dispatch(setProfile(data.profile))
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/add_contact/email/add',
         navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(setProfile(data.profile))
-        const { errorMessage } = await backendCall(
-          dataToSend,
-          'api/add_contact/email/add',
-          navigate
-        )
-        if (errorMessage !== null) {
-          setError(errorMessage)
-        } else {
-          dispatch(setCurrentContact(email))
-          navigateToNextPage()
-        }
+        dispatch(setCurrentContact(email))
+        navigateToNextPage()
       }
     }
   }

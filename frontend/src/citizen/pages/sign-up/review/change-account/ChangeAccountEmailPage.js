@@ -17,6 +17,7 @@ export default function ChangeAccountEmailPage () {
       <ChangeEmailLayout
         navigateToNextPage={navigateToNextPage}
         NavigateToPreviousPage={NavigateToPreviousPage}
+        returnToReview
       />
     </>
   )

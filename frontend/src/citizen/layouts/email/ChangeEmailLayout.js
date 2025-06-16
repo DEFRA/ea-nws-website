@@ -13,7 +13,8 @@ import { emailValidation } from '../../../common/services/validations/EmailValid
 
 export default function ChangeEmailLayout({
   navigateToNextPage,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  returnToReview
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -106,7 +107,7 @@ export default function ChangeEmailLayout({
                 onClick={handleSubmit}
               />
               <Link
-                to='/account'
+                to={returnToReview ? '/signup/review' : '/account'}
                 className='govuk-link inline-link'
                 style={{ cursor: 'pointer' }}
               >

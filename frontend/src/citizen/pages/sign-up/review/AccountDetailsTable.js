@@ -27,9 +27,13 @@ export default function AccountDetailsTable({ profile }) {
 
               <td className='govuk-table__cell'>
                 <Link
+                  role='button'
                   to='/signup/review/change-account-name'
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
+                  aria-label={`Change (${
+                    profile.firstname + ' ' + profile.lastname
+                  }) as your full name`}
                 >
                   Change
                 </Link>
@@ -48,9 +52,11 @@ export default function AccountDetailsTable({ profile }) {
 
               <td className='govuk-table__cell'>
                 <Link
+                  role='button'
                   to='/signup/review/change-account-email'
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
+                  aria-label={`Change ${profile.emails[0]} which is your current sign-in email`}
                 >
                   Change
                 </Link>

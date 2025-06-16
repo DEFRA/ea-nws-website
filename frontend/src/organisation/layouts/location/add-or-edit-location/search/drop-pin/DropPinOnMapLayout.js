@@ -18,15 +18,22 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
-import { getFloodAreas, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import {
+  getFloodAreas,
+  getGroundwaterFloodRiskRatingOfLocation,
+  getRiversAndSeaFloodRiskRatingOfLocation
+} from '../../../../../../common/services/WfsFloodDataService'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../../common/services/formatters/LocationFormatter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DropPinOnMapLayout ({
+export default function DropPinOnMapLayout({
   navigateToNextPage,
   navigateToDropPinLocationSearchPage,
   navigateToNotInEnglandPage,
@@ -76,7 +83,7 @@ export default function DropPinOnMapLayout ({
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -126,12 +133,20 @@ export default function DropPinOnMapLayout ({
         pinCoords.latitude,
         pinCoords.longitude
       )
-      const duplicateLocation = await checkDuplicateLocation()
+
+      // Only check for duplicate when *adding* a location
+      // Can be skipped when just changing its pin
+      const duplicateLocation = flow?.includes('change-coords')
+        ? null
+        : await checkDuplicateLocation()
 
       if (inEngland && !duplicateLocation) {
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
         // get target areas
-        const TAs = await getFloodAreas(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+        const TAs = await getFloodAreas(
+          newWebLocation.coordinates.latitude,
+          newWebLocation.coordinates.longitude
+        )
         newWebLocation.additionals.other.targetAreas = []
         TAs.forEach((area) => {
           newWebLocation.additionals.other.targetAreas.push({
@@ -140,8 +155,16 @@ export default function DropPinOnMapLayout ({
             category: area.properties?.category
           })
         })
-        newWebLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
-        newWebLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+        newWebLocation.additionals.other.riverSeaRisk =
+          await getRiversAndSeaFloodRiskRatingOfLocation(
+            newWebLocation.coordinates.latitude,
+            newWebLocation.coordinates.longitude
+          )
+        newWebLocation.additionals.other.groundWaterRisk =
+          await getGroundwaterFloodRiskRatingOfLocation(
+            newWebLocation.coordinates.latitude,
+            newWebLocation.coordinates.longitude
+          )
 
         // Set alert types
         newWebLocation.additionals.other.alertTypes = []
@@ -155,12 +178,22 @@ export default function DropPinOnMapLayout ({
           }
           return typeMap[type] || []
         }
-        newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
-          newWebLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
-          newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+        newWebLocation.additionals.other.targetAreas.some(
+          (area) => categoryToType(area.category) === 'warning'
+        ) &&
+          newWebLocation.additionals.other.alertTypes.push(
+            AlertType.SEVERE_FLOOD_WARNING,
+            AlertType.FLOOD_WARNING,
+            AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+            AlertType.REMOVE_FLOOD_WARNING
+          )
 
-        newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
-          newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+        newWebLocation.additionals.other.targetAreas.some(
+          (area) => categoryToType(area.category) === 'alert'
+        ) &&
+          newWebLocation.additionals.other.alertTypes.push(
+            AlertType.FLOOD_ALERT
+          )
 
         const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
@@ -263,7 +296,9 @@ export default function DropPinOnMapLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Find the location on a map</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Find the location on a map
+            </h1>
             <div className='govuk-body'>
               <p>
                 Click on the map to drop a pin where you think this location is.
@@ -340,8 +375,8 @@ export default function DropPinOnMapLayout ({
                 )}
               </div>
               <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                it shows fixed areas that that we provide flood warnings and alerts
-                for.
+                it shows fixed areas that that we provide flood warnings and
+                alerts for.
               </span>
             </div>
           </div>

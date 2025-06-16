@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -8,16 +9,15 @@ import Input from '../../../../common/components/gov-uk/Input'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { webToGeoSafeContact } from '../../../../common/services/formatters/ContactFormatter'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PromoteToAdminPage () {
+export default function PromoteToAdminPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const contactEmails = currentContact?.emails
@@ -55,12 +55,29 @@ export default function PromoteToAdminPage () {
       heading = `Confirm email address to invite ${contactName} as admin`
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const validationError = emailValidation(selectedEmail)
     setErrorMessage(validationError)
     if (validationError === '') {
-      const updatedContact = JSON.parse(JSON.stringify(currentContact))
-      updatedContact.emails = [selectedEmail, ...updatedContact.emails]
+      const updatedContact = JSON.parse(
+        JSON.stringify(webToGeoSafeContact(currentContact))
+      )
+      if (updatedContact.emails.length === 0) {
+        updatedContact.emails.push(selectedEmail)
+      } else if (updatedContact.emails.length === 1) {
+        // user updated primary email
+        if (selectedEmail !== updatedContact.emails[0]) {
+          updatedContact.emails[0] = selectedEmail
+        }
+      } else {
+        // move email selected to receive notification to front of array
+        const index = updatedContact.emails.indexOf(selectedEmail)
+        if (index > 0) {
+          updatedContact.emails.splice(index, 1)
+          updatedContact.emails.unshift(selectedEmail)
+        }
+      }
 
       const dataToSend = { authToken, orgId, contact: updatedContact }
       const { errorMessage: updateError } = await backendCall(
@@ -104,12 +121,15 @@ export default function PromoteToAdminPage () {
 
   return (
     <>
+      <Helmet>
+        <title>{heading} - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>{heading}</h1>
+            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>{heading}</h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.
             </p>
@@ -118,20 +138,20 @@ export default function PromoteToAdminPage () {
               receiving, as a contact.
             </p>
 
-            {emailCount > 1
-              ? (
-                  emailRadios
-                )
-              : (
-                <Input
-                  inputType='text'
-                  value={selectedEmail}
-                  name='Email address'
-                  onChange={(val) => setSelectedEmail(val)}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                />
-                )}
+            {emailCount > 1 ? (
+              emailRadios
+            ) : (
+              <Input
+                id='email-address'
+                inputType='text'
+                inputMode='email'
+                value={selectedEmail}
+                name='Email address'
+                onChange={(val) => setSelectedEmail(val)}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+              />
+            )}
             <Button
               text='Invite as admin'
               className='govuk-button'

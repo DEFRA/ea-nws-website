@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -10,7 +11,7 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManageDuplicateLocationsPage () {
+export default function ManageDuplicateLocationsPage() {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
   const [duplicateLocations, setDuplicateLocations] = useState([])
@@ -23,9 +24,9 @@ export default function ManageDuplicateLocationsPage () {
   )
   const displayedLocations = locationsPerPage
     ? duplicateLocations.slice(
-      (currentPage - 1) * locationsPerPage,
-      currentPage * locationsPerPage
-    )
+        (currentPage - 1) * locationsPerPage,
+        currentPage * locationsPerPage
+      )
     : duplicateLocations
 
   useEffect(() => {
@@ -125,6 +126,9 @@ export default function ManageDuplicateLocationsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Manage duplicate locations - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       {location.state && (
         <NotificationBanner
@@ -136,7 +140,7 @@ export default function ManageDuplicateLocationsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Manage {duplicateLocations.length} duplicate location
               {duplicateLocations.length !== 1 ? 's' : ''}
             </h1>
@@ -175,7 +179,8 @@ export default function ManageDuplicateLocationsPage () {
                             <Link
                               className='govuk-link'
                               onClick={(event) =>
-                                handleCompareDetails(event, location)}
+                                handleCompareDetails(event, location)
+                              }
                             >
                               Compare details
                             </Link>
@@ -186,12 +191,14 @@ export default function ManageDuplicateLocationsPage () {
                 </tbody>
               </table>
             </div>
-            <Pagination
-              totalPages={Math.ceil(
-                duplicateLocations.length / locationsPerPage
-              )}
-              onPageChange={(val) => setCurrentPage(val)}
-            />
+            {locationsPerPage && (
+              <Pagination
+                totalPages={Math.ceil(
+                  duplicateLocations.length / locationsPerPage
+                )}
+                onPageChange={(val) => setCurrentPage(val)}
+              />
+            )}
             <Button
               className='govuk-button'
               text='Finish managing duplicate locations'

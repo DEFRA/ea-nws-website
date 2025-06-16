@@ -7,7 +7,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationAddress } from '../../../common/redux/userSlice'
 
-export default function AddressLayout ({
+export default function AddressLayout({
   navigateToNextPage,
   additionalInfo = '',
   error,
@@ -48,9 +48,12 @@ export default function AddressLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>What is the address?</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              What is the address?
+            </h1>
             {additionalInfo && <>{additionalInfo}</>}
             <TextArea
+              id='location-address'
               error={error}
               className='govuk-textarea'
               rows={5}

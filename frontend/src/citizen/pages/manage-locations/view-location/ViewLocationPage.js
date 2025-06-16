@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -12,9 +13,9 @@ import AlertType from '../../../../common/enums/AlertType'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getLocationOtherAdditional,
-  getRegistrationParams,
-  updateLocationsAlertTypes
+    getLocationOtherAdditional,
+    getRegistrationParams,
+    updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
@@ -65,7 +66,7 @@ const removeLocationdetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()
@@ -92,21 +93,22 @@ export default function ViewLocationPage () {
   const [pendingOptionalAlerts, setPendingOptionalAlerts] =
     useState(initialAlerts)
 
-  const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
+  const areaTypes = type === 'both' ? ['severe', 'alert'] : [type]
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude
+        selectedLocation.coordinates.longitude,
+        0.001
       )
 
       const isError = !warningArea && !alertArea
@@ -154,7 +156,7 @@ export default function ViewLocationPage () {
       }
     }
 
-    async function processFloodHist () {
+    async function processFloodHist() {
       if (floodHistoryData) {
         if (alertArea) {
           setHistoricalAlertNumber()
@@ -235,6 +237,9 @@ export default function ViewLocationPage () {
 
   return (
     <>
+      <Helmet>
+        <title>View location - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
@@ -247,8 +252,10 @@ export default function ViewLocationPage () {
                   text={successMessage}
                 />
               )}
-              <h1 className='govuk-heading-l'>{selectedLocation.address}</h1>
-              <Map types={areaAreas} />
+              <h1 className='govuk-!-margin-top-4 govuk-heading-l' id="main-content">
+                {selectedLocation.address}
+              </h1>
+              <Map types={areaTypes} />
               <FloodWarningKey type={type} />
               <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
                 Flood messages you get
@@ -312,7 +319,9 @@ export default function ViewLocationPage () {
                               type='radio'
                               value='on'
                               checked={pendingOptionalAlerts === true}
-                              onChange={() => setPendingOptionalAlerts(true)}
+                              onChange={() => {
+                                setPendingOptionalAlerts(true)
+                              }}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -329,7 +338,9 @@ export default function ViewLocationPage () {
                               type='radio'
                               value='off'
                               checked={pendingOptionalAlerts === false}
-                              onChange={() => setPendingOptionalAlerts(false)}
+                              onChange={() => {
+                                setPendingOptionalAlerts(false)
+                              }}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -341,9 +352,13 @@ export default function ViewLocationPage () {
                         </div>
 
                         <Link
-                          onClick={(e) => handleOptionalAlertSave(e)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleOptionalAlertSave(e)
+                          }}
                           className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
                           style={{ cursor: 'pointer' }}
+                          aria-label='Save your preference for receiving early flood alerts'
                         >
                           Save
                         </Link>
@@ -367,27 +382,25 @@ export default function ViewLocationPage () {
                 </div>
               )}
 
-              {canRemoveLocation
-                ? (
-                  <>
-                    <h2 className='govuk-heading-m'>
-                      To stop all flood messages for this location
-                    </h2>
-                    <Button
-                      onClick={deleteLocation}
-                      className='govuk-button govuk-button--warning'
-                      text='Remove location'
-                    />
-                  </>
-                  )
-                : (
-                  <>
-                    <Details
-                      title='If you want to remove this location'
-                      text={removeLocationdetails}
-                    />
-                  </>
-                  )}
+              {canRemoveLocation ? (
+                <>
+                  <h2 className='govuk-heading-m'>
+                    To stop all flood messages for this location
+                  </h2>
+                  <Button
+                    onClick={deleteLocation}
+                    className='govuk-button govuk-button--warning'
+                    text='Remove location'
+                  />
+                </>
+              ) : (
+                <>
+                  <Details
+                    title='If you want to remove this location'
+                    text={removeLocationdetails}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

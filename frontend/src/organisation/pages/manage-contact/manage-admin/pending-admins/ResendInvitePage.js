@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -7,19 +8,20 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function ResendInvitePage () {
+export default function ResendInvitePage() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const authToken = useSelector((state) => state.session.token)
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const pendingAdmin = location.state?.pendingAdmin
-  const pendingAdminEmail = pendingAdmin.emails[0]
+  const pendingAdminEmail = pendingAdmin?.emails[0]
   const pendingAdminName =
     pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     try {
       const dataToSend = {
         authToken,
@@ -52,11 +54,17 @@ export default function ResendInvitePage () {
 
   return (
     <>
+      <Helmet>
+        <title>Do you want to resend an admin invitation to {pendingAdminName}? - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               Do you want to resend an admin invite to {pendingAdminName}?
             </h1>
             <p className='govuk-body govuk-!-margin-bottom-8'>

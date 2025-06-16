@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../components/gov-uk/Button'
 import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
@@ -8,6 +9,9 @@ export default function StartPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Get flood warnings by text, phone or email - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
@@ -117,7 +121,7 @@ export default function StartPage () {
             </div>
           </div>
           <div className='govuk-grid-column-one-third'>
-            <h3 className='govuk-heading-s'>Related content</h3>
+            <h2 className='govuk-heading-s'>Related content</h2>
             <ul className='govuk-list'>
               <li>
                 <a

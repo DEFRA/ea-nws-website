@@ -17,7 +17,7 @@ import { xCoordinateValidation } from '../../../../../../common/services/validat
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function LocationXYCoordinatesSearchLayout ({
+export default function LocationXYCoordinatesSearchLayout({
   navigateToNextPage,
   navigateToNotInEngland,
   flow
@@ -30,9 +30,13 @@ export default function LocationXYCoordinatesSearchLayout ({
   const currentYCoordinate = useSelector((state) =>
     getLocationOther(state, 'y_coordinate')
   )
-  const [xCoordinate, setXCoordinate] = useState(Math.trunc(currentXCoordinate) || '')
+  const [xCoordinate, setXCoordinate] = useState(
+    Math.trunc(currentXCoordinate) || ''
+  )
   const [xCoordinateError, setXCoordinateError] = useState('')
-  const [yCoordinate, setYCoordinate] = useState(Math.trunc(currentYCoordinate) || '')
+  const [yCoordinate, setYCoordinate] = useState(
+    Math.trunc(currentYCoordinate) || ''
+  )
   const [yCoordinateError, setYCoordinateError] = useState('')
 
   useEffect(() => {
@@ -89,7 +93,7 @@ export default function LocationXYCoordinatesSearchLayout ({
             {(xCoordinateError || yCoordinateError) && (
               <ErrorSummary errorList={[xCoordinateError, yCoordinateError]} />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               What are the X and Y coordinates?
             </h1>
 
@@ -97,6 +101,7 @@ export default function LocationXYCoordinatesSearchLayout ({
 
             <div className='govuk-body'>
               <Input
+                id='x-coordinate'
                 name='X coordinate'
                 hint="A number representing how far east or west a location is (also known as an 'easting'), for example: 362105."
                 inputType='text'
@@ -107,6 +112,7 @@ export default function LocationXYCoordinatesSearchLayout ({
                 className='govuk-input govuk-input--width-20'
               />
               <Input
+                id='y-coordinate'
                 name='Y coordinate'
                 hint="A number representing how far north or south a location is (also known as a 'northing'), for example: 387217."
                 inputType='text'

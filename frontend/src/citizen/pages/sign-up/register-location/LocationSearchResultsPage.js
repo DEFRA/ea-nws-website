@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -7,7 +8,7 @@ import {
 } from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
-export default function LocationSearchResultsPage () {
+export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -66,10 +67,13 @@ export default function LocationSearchResultsPage () {
     }
   }
 
-  const returnToSearchPage = navigate('/signup/register-location/search')
+  const returnToSearchPage = '/signup/register-location/search'
 
   return (
     <>
+      <Helmet>
+        <title>Select an address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <LocationSearchResultsLayout
         continueToNextPage={continueToNextPage}
         returnToSearchPage={returnToSearchPage}

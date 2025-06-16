@@ -4,6 +4,8 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const getSecretKeyValue = require('../../services/SecretsManager')
+const { parse } = require('date-fns')
+const fetch = require('node-fetch')
 
 const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
   const rows = text.split(/\r?\n|\r|\n/g)
@@ -32,28 +34,24 @@ const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
 }
 
 const allowedMessageTypes = [
-  'Flood Alert',
-  'Remove Flood Alert',
+  'Severe Flood Warning',
+  'Remove Severe Flood Warning',
   'Flood Warning',
   'Remove Flood Warning',
-  'Severe Flood Warning',
-  'Remove Severe Flood Warning'
+  'Flood Alert',
+  'Remove Flood Alert'
 ]
 
-const getAlertType = (category) => {
-  const alertMap = {
-    'Severe Flood Warning': 'ALERT_LVL_1',
-    'Flood Warning': 'ALERT_LVL_2',
-    'Flood ALert': 'ALERT_LVL_3'
-  }
-
-  return alertMap[category]
+const alertTypeMap = {
+  'Severe Flood Warning': 'ALERT_LVL_1',
+  'Flood Warning': 'ALERT_LVL_2',
+  'Flood Alert': 'ALERT_LVL_3'
 }
 
 const alertRemovalMap = {
-  'Flood Alert': 'Remove Flood Alert',
+  'Severe Flood Warning': 'Remove Severe Flood Warning',
   'Flood Warning': 'Remove Flood Warning',
-  'Severe Flood Warning': 'Remove Severe Flood Warning'
+  'Flood Alert': 'Remove Flood Alert'
 }
 
 const createGeoSafeAlertObject = (historicData) => {
@@ -78,45 +76,45 @@ const createGeoSafeAlertObject = (historicData) => {
             geometry: {
               rings: [],
               circles: [],
-              polygons: [],
-              geocodes: [],
-              extraInfo: [
-                {
-                  key: 'TA_CODE',
-                  value: { s: historicData.taCode }
-                },
-                {
-                  key: 'TA_NAME',
-                  value: {
-                    s: historicData.taName
-                  }
-                },
-                {
-                  key: 'category',
-                  value: {
-                    s: historicData.category
-                  }
-                },
-                {
-                  key: 'createddate',
-                  value: {
-                    s: historicData.createdDate
-                  }
-                },
-                {
-                  key: 'lastmodifieddate',
-                  value: {
-                    s: historicData.endDate
-                  }
+              polygons: []
+            },
+            geocodes: [],
+            extraInfo: [
+              {
+                key: 'TA_CODE',
+                value: { s: historicData.taCode }
+              },
+              {
+                key: 'TA_Name',
+                value: {
+                  s: historicData.taName
                 }
-              ]
-            }
+              },
+              {
+                key: 'category',
+                value: {
+                  s: historicData.type
+                }
+              },
+              {
+                key: 'createddate',
+                value: {
+                  s: historicData.createdDate
+                }
+              },
+              {
+                key: 'lastmodifieddate',
+                value: {
+                  s: historicData.endDate
+                }
+              }
+            ]
           }
         ]
       }
     },
     channels: [{ channelId: '', placemarks: [0], countryCodes: [] }],
-    type: getAlertType(historicData.category),
+    type: historicData.type,
     sender: '',
     scope: 'PUBLIC',
     capStatus: '',
@@ -163,7 +161,7 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
         const newAlert = {
           taCode: currentEntry['TA Code'],
           taName: currentEntry['TA Name'],
-          category: currentEntry['lookup category'],
+          type: alertTypeMap[currentType],
           createdDate: currentEntry['Approved'],
           endDate: nextEntry['Approved'],
           name: currentType + currentTA
@@ -186,6 +184,15 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
   return result
 }
 
+const getLastModifiedDate = (alert) => {
+  const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
+  for (let i = 0; i < extraInfo?.length; i++) {
+    if (extraInfo[i].key === 'lastmodifieddate') {
+      return extraInfo[i].value?.s
+    }
+  }
+}
+
 module.exports = [
   {
     method: ['POST'],
@@ -197,6 +204,7 @@ module.exports = [
         }
 
         const { options } = request.payload
+        const { filterDate } = request.payload
 
         const response = await apiCall({ options: options }, 'alert/list')
 
@@ -232,6 +240,18 @@ module.exports = [
               sortedHistoricFileData
             )
           }
+        }
+
+        if (filterDate) {
+          response.data.alerts = response.data.alerts.filter((alert) => {
+            const lastModifiedDate = parse(
+              getLastModifiedDate(alert),
+              'dd/MM/yyyy HH:mm:ss',
+              new Date()
+            )
+
+            return lastModifiedDate >= new Date(filterDate)
+          })
         }
 
         return h.response(response)

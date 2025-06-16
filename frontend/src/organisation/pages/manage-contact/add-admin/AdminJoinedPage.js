@@ -1,16 +1,22 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Accordion from '../../../../common/components/gov-uk/Accordion'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
+import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
+import { geoSafeToWebContact } from '../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AdminJoinedPage () {
+export default function AdminJoinedPage() {
   const navigate = useNavigate()
   const [nextPage, setNextPage] = useState(null)
   const [errorText, setErrorText] = useState('')
+  const profile = useSelector((state) => state.session.profile)
+  const dispatch = useDispatch()
 
   const infoSections = [
     {
@@ -64,17 +70,25 @@ export default function AdminJoinedPage () {
     if (!nextPage) {
       setErrorText('Select what you would like to do first')
     } else {
-      navigate(nextPage)
+      if (nextPage === orgManageContactsUrls.view.viewContact) {
+        dispatch(setOrgCurrentContact(geoSafeToWebContact(profile)))
+        navigate(nextPage)
+      } else {
+        navigate(nextPage)
+      }
     }
   }
 
   return (
     <>
+      <Helmet>
+        <title>You've now joined as an admin for your organisation - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {errorText && <ErrorSummary errorList={[errorText]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You've now joined as admin for your organisation and can manage
               the following.
             </h1>
@@ -101,7 +115,8 @@ export default function AdminJoinedPage () {
                     name='radios'
                     label='Check my profile and contact details'
                     onChange={() =>
-                      setNextPage(orgManageContactsUrls.view.viewContact)}
+                      setNextPage(orgManageContactsUrls.view.viewContact)
+                    }
                   />
                   <Radio
                     key='start'
@@ -109,7 +124,8 @@ export default function AdminJoinedPage () {
                     label='Start using the service'
                     hint='Check warnings, locations, users and reports'
                     onChange={() =>
-                      setNextPage(orgManageLocationsUrls.monitoring.view)}
+                      setNextPage(orgManageLocationsUrls.monitoring.view)
+                    }
                   />{' '}
                 </div>
               </fieldset>

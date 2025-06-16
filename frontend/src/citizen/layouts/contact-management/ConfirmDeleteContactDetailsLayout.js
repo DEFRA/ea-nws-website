@@ -11,7 +11,7 @@ import {
   removeVerifiedContact
 } from '../../../common/services/ProfileServices'
 
-export default function ConfirmDeleteContactDetailsLayout ({
+export default function ConfirmDeleteContactDetailsLayout({
   NavigateToPreviousPage,
   navigateToNextPage
 }) {
@@ -20,12 +20,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
 
-  const contactTypeMapping = {
-    homePhone: 'telephone number',
-    mobilePhone: 'mobile telephone number',
-    email: 'email address'
-  }
-  const contactType = contactTypeMapping[location.state.type]
+  const contactType = location.state.type
 
   const removeContact = async (event) => {
     event.preventDefault()
@@ -68,7 +63,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Are you sure you want to remove this {location.state.type}?
             </h2>
             <InsetText text={location.state.contact} />

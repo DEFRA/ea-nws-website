@@ -13,7 +13,7 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function PostCodeSearchLayout ({
+export default function PostCodeSearchLayout({
   navigateToNextPage,
   navigateToNotInEnglandPage,
   flow
@@ -65,13 +65,14 @@ export default function PostCodeSearchLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               What is the location's postcode?
             </h1>
             {flow?.includes('unmatched-locations') && <UnmatchedLocationInfo />}
 
             <div className='govuk-body'>
               <Input
+                id='postcode'
                 name='Postcode'
                 isNameBold='true'
                 nameSize='s'

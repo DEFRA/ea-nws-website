@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
+import UserType from '../../../../common/enums/UserType'
+import { setAddingAdminFlow } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactTypePage () {
+export default function AddContactTypePage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [userType, setUserType] = useState('')
   const [reasonError, setReasonError] = useState('')
@@ -27,12 +32,14 @@ export default function AddContactTypePage () {
       isValidInput = false
     }
 
+    if (userType === UserType.Admin) {
+      dispatch(setAddingAdminFlow(true))
+    } else {
+      dispatch(setAddingAdminFlow(false))
+    }
+
     if (isValidInput) {
-      navigate(orgManageContactsUrls.add.details, {
-        state: {
-          type: userType
-        }
-      })
+      navigate(orgManageContactsUrls.add.details)
     }
   }
 
@@ -42,62 +49,56 @@ export default function AddContactTypePage () {
         How to promote an existing contact to admin
       </p>
       <p>
-        1. Go to your <Link to={orgManageContactsUrls.view.dashboard}>users dashboard</Link>
+        1. Go to your{' '}
+        <Link to={orgManageContactsUrls.view.dashboard}>users dashboard</Link>
       </p>
-      <p>
-        2. Choose the contact you want to promote
-      </p>
-      <p>
-        3. On the contact's profile page, select button 'Promote to admin'
-      </p>
+      <p>2. Choose the contact you want to promote</p>
+      <p>3. On the contact's profile page, select button 'Promote to admin'</p>
     </>
   )
 
   return (
     <>
+      <Helmet>
+        <title>Select type of new user - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
-            {(reasonError) && (
-              <ErrorSummary
-                errorList={[reasonError]}
-              />
-            )}
-            <h1 className='govuk-heading-l'>
+            {reasonError && <ErrorSummary errorList={[reasonError]} />}
+            <h1 className='govuk-heading-l' id='main-content'>
               Select type of new user
             </h1>
             <div className='govuk-body'>
-              <div>
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  <div
-                    className={reasonError && 'govuk-form-group govuk-form-group--error'}
-                  >
-                    {reasonError && (
-                      <p className='govuk-error-message'>{reasonError}</p>
-                    )}
-                    <Radio
-                      key='contact'
-                      name='userTypeSelectionRadios'
-                      label='Contact'
-                      value='contact'
-                      hint='Gets flood messages by email, text or phone call.'
-                      onChange={(e) =>
-                        setUserType(e.target.value)}
-                    />
-                    <Radio
-                      key='admin'
-                      name='serviceSelectionRadios'
-                      label='Admin'
-                      value='admin'
-                      hint='Manages contacts, locations and organisation account. Can get flood messages by email, text or phone call.'
-                      onChange={(e) =>
-                        setUserType(e.target.value)}
-                    />
-                  </div>
-                </div>
+              <div
+                className={
+                  reasonError
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
+                }
+              >
+                {reasonError && (
+                  <p className='govuk-error-message'>{reasonError}</p>
+                )}
+                <fieldset className='govuk-fieldset'>
+                  <Radio
+                    name='userTypeSelectionRadios'
+                    label='Contact'
+                    value={UserType.Contact}
+                    hint='Gets flood messages by email, text or phone call.'
+                    onChange={(e) => setUserType(e.target.value)}
+                  />
+                  <Radio
+                    name='userTypeSelectionRadios'
+                    label='Admin'
+                    value={UserType.Admin}
+                    hint='Manages contacts, locations and organisation account. Can get flood messages by email, text or phone call.'
+                    onChange={(e) => setUserType(e.target.value)}
+                  />
+                </fieldset>
               </div>
               <br />
               <Button

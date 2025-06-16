@@ -14,7 +14,8 @@ export default function Autocomplete ({
   onClick,
   position,
   showNotFound = true,
-  nameField
+  nameField,
+  ariaLabel
 }) {
   const [options, setOptions] = useState(null)
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
@@ -96,6 +97,9 @@ export default function Autocomplete ({
         break
       case 'down':
         handleDownArrow(event)
+        break
+      case 'enter':
+        selected > -1 && handleOptionClick(selected)
         break
       default:
         if (isPrintableKeyCode(event.keyCode)) {
@@ -231,6 +235,7 @@ export default function Autocomplete ({
             }}
             defaultValue={defaultValue}
             autoComplete='off'
+            aria-label={ariaLabel}
           />
           <ul
             aria-labelledby='id'

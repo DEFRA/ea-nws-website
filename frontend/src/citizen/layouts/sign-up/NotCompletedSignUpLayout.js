@@ -1,9 +1,11 @@
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 
 export default function NotCompletedSignUpLayout ({ nextPage }) {
   const navigate = useNavigate()
+  const signinType = useSelector((state) => state.session.signinType)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -19,8 +21,10 @@ export default function NotCompletedSignUpLayout ({ nextPage }) {
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
               <h1 className='govuk-heading-l govuk-!-margin-top-7'>
-                You need to finish signing up before we can send you flood
-                messages
+                {signinType === 'org' ?
+                'You need to finish signing up, to get an account'
+                :
+                'You need to finish signing up before we can send you flood messages'}
               </h1>
               <Button
                 text='Continue'

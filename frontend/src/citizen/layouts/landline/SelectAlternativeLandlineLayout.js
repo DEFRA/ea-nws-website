@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -116,6 +117,9 @@ export default function SelectAlternativeLandlineLayout ({
 
   return (
     <>
+      <Helmet>
+        <title>Select a telephone number to get flood messages by phone call - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -131,7 +135,7 @@ export default function SelectAlternativeLandlineLayout ({
                 text={location?.state?.banner?.text}
               />
             )}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               {mobileNumbers.length > 0
                 ? 'Which telephone number do you want to use to get flood messages by phone call?'
                 : 'Enter a telephone number to get flood messages by phone call'}

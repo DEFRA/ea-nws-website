@@ -15,7 +15,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function KeyInformationLayout ({
+export default function KeyInformationLayout({
   flow,
   navigateToNextPage,
   error
@@ -122,13 +122,17 @@ export default function KeyInformationLayout ({
             {(locationNameError || error) && (
               <ErrorSummary errorList={[locationNameError, error]} />
             )}
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               Key information
             </h1>
             <div className='govuk-body'>
               <Details title='Why add useful information?' text={detailsText} />
               {flow === 'edit' && (
                 <Input
+                  id='location-name'
                   inputType='text'
                   name='Location name'
                   onChange={(val) => setLocationName(val)}
@@ -140,6 +144,7 @@ export default function KeyInformationLayout ({
                 />
               )}
               <Input
+                id='internal-reference'
                 inputType='text'
                 name='Internal reference (optional)'
                 onChange={(val) => setInternalReference(val)}
@@ -149,6 +154,7 @@ export default function KeyInformationLayout ({
                 labelSize='s'
               />
               <Input
+                id='business-criticality'
                 inputType='text'
                 name='Business criticality (optional)'
                 onChange={(val) => setBusinessCriticality(val)}
@@ -158,6 +164,7 @@ export default function KeyInformationLayout ({
                 labelSize='s'
               />
               <Input
+                id='location-type'
                 inputType='text'
                 name='Location type (optional)'
                 onChange={(val) => setLocationType(val)}

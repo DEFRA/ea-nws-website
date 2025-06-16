@@ -1,11 +1,13 @@
 import React from 'react'
-export default function Input ({
+export default function Input({
+  id,
   name,
   hint = '',
   className,
   value,
   defaultValue = '',
   inputType,
+  inputMode,
   onChange,
   error = '',
   isNameBold = false,
@@ -29,8 +31,9 @@ export default function Input ({
           className={`govuk-label ${
             isNameBold && !nameSize ? `govuk-label--${labelSize}` : ''
           } ${isNameBold && nameSize ? `govuk-label--${nameSize}` : ''}`}
-          htmlFor='govuk-text-input'
+          htmlFor={id}
         >
+          {' '}
           {name}
         </label>
         {hint && (
@@ -46,8 +49,9 @@ export default function Input ({
             error === '' ? className : className + ' govuk-input--error'
           }
           name={name}
-          id='govuk-text-input'
+          id={id}
           type={inputType}
+          inputmode={inputMode}
           value={value}
           defaultValue={defaultValue}
           onChange={handleChange}

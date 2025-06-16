@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setOrganizationAddress } from '../../../common/redux/userSlice'
 
-export default function SelectAddressLayout ({
+export default function SelectAddressLayout({
   navigateToNextPage,
   navigateToPreviousPage
 }) {
@@ -41,7 +41,9 @@ export default function SelectAddressLayout ({
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <div className='govuk-body'>
-                <h1 className='govuk-heading-l'>Select an address</h1>
+                <h1 className='govuk-heading-l' id='main-content'>
+                  Select an address
+                </h1>
                 {locationPostCode && (
                   <p className='govuk-body'>
                     Postcode: {locationPostCode}
@@ -65,7 +67,8 @@ export default function SelectAddressLayout ({
                           <Link
                             className='govuk-link'
                             onClick={(event) =>
-                              handleSelectedLocation(event, location)}
+                              handleSelectedLocation(event, location)
+                            }
                           >
                             {location.address}
                           </Link>

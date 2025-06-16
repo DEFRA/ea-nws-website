@@ -1,10 +1,11 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import floodAlertIcon from '../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../common/assets/images/flood_warning.svg'
 import severeFloodWarningIcon from '../../../common/assets/images/severe_flood_warning.svg'
 import BackLink from '../../../common/components/custom/BackLink'
 
-export default function FloodTypesPage () {
+export default function FloodTypesPage() {
   const navigate = useNavigate()
 
   const navigateBack = (e) => {
@@ -14,12 +15,17 @@ export default function FloodTypesPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>What are the different types of flood messages? - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               What are the different types of flood messages?
             </h1>
             <p>

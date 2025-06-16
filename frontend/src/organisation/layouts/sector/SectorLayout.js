@@ -6,7 +6,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrganizationEmergencySector } from '../../../common/redux/userSlice'
 
-export default function SectorLayout ({
+export default function SectorLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -38,7 +38,7 @@ export default function SectorLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Is your organisation a Category 1 or Category 2 responder?
             </h1>
             <div className='govuk-body'>
@@ -50,8 +50,8 @@ export default function SectorLayout ({
                 }
               >
                 <p className='govuk-hint'>
-                  For example, a  police, fire or ambulance service, local authority or member of <br />
-                  a local resilience forum.
+                  For example, a police, fire or ambulance service, local
+                  authority or member of <br />a local resilience forum.
                 </p>
                 {error && (
                   <p className='govuk-error-message'>

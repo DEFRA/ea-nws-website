@@ -9,7 +9,7 @@ import { setCurrentLocationCoordinates } from '../../../../../../common/redux/us
 import { backendCall } from '../../../../../../common/services/BackendService'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
+export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -39,7 +39,22 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     if (valueValid) {
       const dataToSend = {
         name: value,
-        filter: null
+        filters: [
+          'Bay',
+          'City',
+          'Coastal_Headland',
+          'Estuary',
+          'Group_Of_Islands',
+          'Harbour',
+          'Island',
+          'Other_Settlement',
+          'Suburban_Area',
+          'Tidal_Water',
+          'Town',
+          'Urban_Greenspace',
+          'Village'
+        ],
+        loop: false
       }
       const { data, errorMessage } = await backendCall(
         dataToSend,
@@ -96,7 +111,9 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
             {placeNameTownOrPostcodeError && (
               <ErrorSummary errorList={[placeNameTownOrPostcodeError]} />
             )}
-            <h1 className='govuk-heading-l'>Find the location on a map</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Find the location on a map
+            </h1>
             {flow?.includes('unmatched-locations') && (
               <p>
                 The location you're searching for cannot be found. We need some
@@ -124,6 +141,7 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
                 onClick={(val) => handleOnClick(val)}
                 showNotFound={showNotFound}
                 nameField='address'
+                ariaLabel='Enter a place name, town or postcode'
               />
             </div>
             <Button

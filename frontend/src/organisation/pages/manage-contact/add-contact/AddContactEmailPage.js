@@ -1,7 +1,7 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
@@ -15,16 +15,14 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactEmailPage () {
+export default function AddContactEmailPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [errors, setErrors] = useState([])
   const [emailError, setEmailError] = useState('')
   const [emailInput, setEmailInput] = useState('')
-  const location = useLocation()
-  const userType = location?.state?.type || 'contact'
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
-  const [errors, setErrors] = useState([])
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -48,7 +46,9 @@ export default function AddContactEmailPage () {
     } else {
       const emailValidationError = emailValidation(emailInput)
       if (emailValidationError) {
-        setEmailError('Enter an email address in the correct format, like name@example.com')
+        setEmailError(
+          'Enter an email address in the correct format, like name@example.com'
+        )
         dataValid = false
       }
     }
@@ -89,6 +89,7 @@ export default function AddContactEmailPage () {
       }
       dispatch(setOrgCurrentContact(contactToAdd))
     }
+
     return addContactError
   }
 
@@ -102,6 +103,7 @@ export default function AddContactEmailPage () {
       role: 'ADMIN',
       orgId
     }
+
     const { errorMessage: promoteError, data: contactData } = await backendCall(
       promoteData,
       'api/organization/promote_contact',
@@ -124,11 +126,7 @@ export default function AddContactEmailPage () {
       const addContactError = await addContact()
       const inviteContactError = await inviteContact()
       if (!addContactError && !inviteContactError) {
-        navigate(orgManageContactsUrls.add.additionalInformation, {
-          state: {
-            type: userType
-          }
-        })
+        navigate(orgManageContactsUrls.add.additionalInformation)
       } else {
         const errorArray = []
         addContactError && errorArray.push(addContactError)
@@ -140,19 +138,19 @@ export default function AddContactEmailPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Enter email address - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(emailError || errors.length > 0) && (
-              <ErrorSummary
-                errorList={[
-                  emailError,
-                  ...errors
-                ]}
-              />
+              <ErrorSummary errorList={[emailError, ...errors]} />
             )}
-            <h1 className='govuk-heading-l'>Enter email address</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Enter email address
+            </h1>
             <div className='govuk-body'>
               <p className='govuk-!-margin-bottom-5'>
                 We'll invite them by email to join as an admin.
@@ -161,11 +159,15 @@ export default function AddContactEmailPage () {
                 This will also be their sign in email address.
               </p>
               <div
-                className={emailError && 'govuk-form-group govuk-form-group--error'}
+                className={`govuk-form-group ${
+                  emailError && 'govuk-form-group--error'
+                }`}
               >
                 <Input
+                  id='email-address'
                   name='Email address'
                   inputType='text'
+                  inputMode='email'
                   onChange={(val) => {
                     setErrors([])
                     setEmailError('')

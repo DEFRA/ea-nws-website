@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import {
-  getLocationOtherAdditional,
-  setProfile
+    getLocationOtherAdditional,
+    setProfile
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getRegistrationParams,
-  updateAdditionals
+    getRegistrationParams,
+    updateAdditionals
 } from '../../../../common/services/ProfileServices'
 import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLayout'
 
@@ -78,12 +78,14 @@ export default function AddFullNamePage () {
   }
 
   return (
-    <AddAccountNameLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      buttonText='Continue'
-      updateProfile={updateProfile}
-      profileError={error}
-    />
+    <>
+      <AddAccountNameLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+        buttonText='Continue'
+        updateProfile={updateProfile}
+        profileError={error}
+      />
+    </>
   )
 }

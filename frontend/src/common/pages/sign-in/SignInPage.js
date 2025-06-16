@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
@@ -7,7 +8,7 @@ import Input from '../../components/gov-uk/Input'
 import { backendCall } from '../../services/BackendService'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function SignInPage () {
+export default function SignInPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -44,6 +45,9 @@ export default function SignInPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Sign in - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -54,9 +58,11 @@ export default function SignInPage () {
             </h1>
             <div className='govuk-body'>
               <Input
+                id='email-address'
                 className='govuk-input govuk-input--width-30'
                 name='Email address'
                 inputType='text'
+                inputMode='email'
                 error={error}
                 onChange={(val) => setEmail(val)}
               />

@@ -4,7 +4,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 
-export default function LocationSearchOptionsLayout ({
+export default function LocationSearchOptionsLayout({
   heading,
   additionalInfo,
   searchOptions,
@@ -39,13 +39,14 @@ export default function LocationSearchOptionsLayout ({
   }
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>{heading}</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              {heading}
+            </h1>
             {additionalInfo && <>{additionalInfo}</>}
             <div
               className={
@@ -56,6 +57,7 @@ export default function LocationSearchOptionsLayout ({
             >
               {error && <p className='govuk-error-message'>{error}</p>}
               <fieldset className='govuk-fieldset'>
+                <legend className='govuk-visually-hidden'>{heading}</legend>
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {searchOptions.map((option) => (
                     <Radio

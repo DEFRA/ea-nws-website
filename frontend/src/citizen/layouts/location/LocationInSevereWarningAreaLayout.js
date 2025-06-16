@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -22,11 +23,11 @@ import {
   setLocationOtherAdditionals
 } from '../../../common/services/ProfileServices'
 import {
-  getAssociatedAlertArea,
-  getCoordsOfFloodArea
+  getCoordsOfFloodArea,
+  getFloodAreaByTaCode
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {
@@ -55,7 +56,7 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -95,7 +96,13 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const registerLocationToPartner = async (profile) => {
     const location = findPOIByAddress(profile, addressToUse)
-    const alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+    const alertTypes = [
+      AlertType.SEVERE_FLOOD_WARNING,
+      AlertType.FLOOD_WARNING,
+      AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+      AlertType.REMOVE_FLOOD_WARNING,
+      AlertType.INFO
+    ]
 
     const data = {
       authToken,
@@ -159,7 +166,10 @@ export default function LocationInSevereWarningAreaLayout ({
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea),
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
         AlertType.SEVERE_FLOOD_WARNING,
-        AlertType.FLOOD_WARNING
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
       ])
     }
     const updatedProfile = addLocation(profile, warningArea)
@@ -179,9 +189,7 @@ export default function LocationInSevereWarningAreaLayout ({
   }
 
   const findAssociatedFloodAlertArea = async () => {
-    const associatedAlertArea = await getAssociatedAlertArea(
-      selectedLocation.coordinates.latitude,
-      selectedLocation.coordinates.longitude,
+    const associatedAlertArea = await getFloodAreaByTaCode(
       selectedFloodWarningArea.properties.parenttacode
     )
 
@@ -198,7 +206,10 @@ export default function LocationInSevereWarningAreaLayout ({
       ...locationWithoutPostcode,
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
         AlertType.SEVERE_FLOOD_WARNING,
-        AlertType.FLOOD_WARNING
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
       ])
     }
 
@@ -228,11 +239,17 @@ export default function LocationInSevereWarningAreaLayout ({
 
   return (
     <>
+      <Helmet>
+        <title>
+          You can get severe flood warnings and flood warnings near this area -
+          Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>

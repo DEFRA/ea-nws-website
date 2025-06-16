@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -20,7 +21,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel,
@@ -52,7 +53,7 @@ export default function LocationInAlertAreaLayout ({
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -72,7 +73,10 @@ export default function LocationInAlertAreaLayout ({
         updatedProfile = await updateExistingLocationAlertTypes([
           AlertType.SEVERE_FLOOD_WARNING,
           AlertType.FLOOD_WARNING,
-          AlertType.FLOOD_ALERT
+          AlertType.FLOOD_ALERT,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING,
+          AlertType.INFO
         ])
       }
     } else if (additionalAlerts && !isChecked) {
@@ -82,7 +86,10 @@ export default function LocationInAlertAreaLayout ({
       } else {
         updatedProfile = await updateExistingLocationAlertTypes([
           AlertType.SEVERE_FLOOD_WARNING,
-          AlertType.FLOOD_WARNING
+          AlertType.FLOOD_WARNING,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING,
+          AlertType.INFO
         ])
       }
     } else {
@@ -118,11 +125,14 @@ export default function LocationInAlertAreaLayout ({
           ? [
               AlertType.SEVERE_FLOOD_WARNING,
               AlertType.FLOOD_WARNING,
-              AlertType.FLOOD_ALERT
+              AlertType.FLOOD_ALERT,
+              AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+              AlertType.REMOVE_FLOOD_WARNING,
+              AlertType.INFO
             ]
           : [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
       } else if (isUserInNearbyTargetFlowpath) {
-        alertTypes = [AlertType.FLOOD_ALERT]
+        alertTypes = [AlertType.FLOOD_ALERT, AlertType.INFO]
       }
 
       const data = {
@@ -151,7 +161,10 @@ export default function LocationInAlertAreaLayout ({
       } else {
         updatedProfile = await updateExistingLocationAlertTypes([
           AlertType.SEVERE_FLOOD_WARNING,
-          AlertType.FLOOD_WARNING
+          AlertType.FLOOD_WARNING,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING,
+          AlertType.INFO
         ])
       }
     } else {
@@ -199,7 +212,8 @@ export default function LocationInAlertAreaLayout ({
       address: selectedFloodAlertArea.properties.TA_Name,
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea),
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
-        AlertType.FLOOD_ALERT
+        AlertType.FLOOD_ALERT,
+        AlertType.INFO
       ])
     }
     const updatedProfile = await addLocation(profile, alertArea)
@@ -224,7 +238,8 @@ export default function LocationInAlertAreaLayout ({
     const locationWithAlertType = {
       ...locationWithoutPostcode,
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
-        AlertType.FLOOD_ALERT
+        AlertType.FLOOD_ALERT,
+        AlertType.INFO
       ])
     }
     const updatedProfile = await addLocation(profile, locationWithAlertType)
@@ -267,11 +282,14 @@ export default function LocationInAlertAreaLayout ({
 
   return (
     <>
+      <Helmet>
+        <title>You can get flood alerts - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {additionalAlerts
                 ? 'You can also get flood alerts (optional)'
                 : 'You can get flood alerts for this location'}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -7,9 +8,9 @@ import Button from '../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function RemoveAdminPage () {
+export default function RemoveAdminPage() {
   const navigate = useNavigate()
-  const authToken = useSelector((state) => state.session.token)
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
@@ -46,7 +47,9 @@ export default function RemoveAdminPage () {
 
       navigate(orgManageContactsUrls.view.dashboard, {
         state: {
-          successMessage: `${contactName} is no longer and admin but is now a contact. They'll still get the same flood messages as before.`
+          successMessage: [
+            `${contactName} is no longer and admin but is now a contact. They'll still get the same flood messages as before.`
+          ]
         }
       })
     } catch (e) {
@@ -56,11 +59,17 @@ export default function RemoveAdminPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Remove {contactName} as admin - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               Remove as admin
             </h1>
             <p className='govuk-body'>

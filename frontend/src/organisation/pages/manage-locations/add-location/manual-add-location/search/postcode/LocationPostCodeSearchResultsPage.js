@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import AddressSearchLayout from '../../../../../../layouts/location/add-or-edit-location/search/address/AddressSearchLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -20,11 +21,16 @@ export default function LocationPostCodeSearchResultsPage () {
     navigate(orgManageLocationsUrls.add.error.cannotFindAddress)
 
   return (
-    <AddressSearchLayout
-      navigateToNextPage={navigateToNextPage}
-      navigateToPreviousPage={navigateToPreviousPage}
-      navigateToFindPostcodePage={navigateToFindPostcodePage}
-      navigateToCannotFindAddressPage={navigateToCannotFindAddressPage}
-    />
+    <>
+      <Helmet>
+        <title>Select an address - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <AddressSearchLayout
+        navigateToNextPage={navigateToNextPage}
+        navigateToPreviousPage={navigateToPreviousPage}
+        navigateToFindPostcodePage={navigateToFindPostcodePage}
+        navigateToCannotFindAddressPage={navigateToCannotFindAddressPage}
+      />
+    </>
   )
 }

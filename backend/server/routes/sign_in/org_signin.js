@@ -2,8 +2,52 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { orgSignIn, addLinkedLocations, setJsonData } = require('../../services/elasticache')
+const {
+  orgSignIn,
+  addLinkedLocations,
+  setJsonData
+} = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
+
+// geosafe api restricted to 1024 locations per response
+// recall to api required to collect all locations
+const getAdditionalLocations = async (
+  firstLocationApiCall,
+  authToken,
+  contactId = null
+) => {
+  let additionalLocations = []
+
+  if (firstLocationApiCall.data.total > 1000) {
+    const fetchLocationsPromises = []
+    const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1000)
+    let i = 1
+    while (i <= totalRecalls) {
+      let options = {
+        offset: 1000 * i,
+        limit: 1000
+      }
+      if (contactId) options.contactId = contactId
+      fetchLocationsPromises.push(
+        apiCall(
+          {
+            authToken: authToken,
+            options: options
+          },
+          'location/list'
+        )
+      )
+      i++
+    }
+
+    const results = await Promise.all(fetchLocationsPromises)
+    results.forEach((response) => {
+      additionalLocations.push(...response.data.locations)
+    })
+  }
+
+  return additionalLocations
+}
 
 module.exports = [
   {
@@ -20,30 +64,53 @@ module.exports = [
 
         if (orgData) {
           const elasticacheKey = 'signin_status:' + orgData.authToken
-          await setJsonData(redis, elasticacheKey, { stage: 'Retrieving locations', status: 'working' })
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Retrieving locations',
+            status: 'working'
+          })
+
+          let locations = []
+          let options = {
+            limit: 1000
+          }
           const locationRes = await apiCall(
-            { authToken: orgData.authToken },
+            { authToken: orgData.authToken, options: options },
             'location/list'
           )
-          await setJsonData(redis, elasticacheKey, { stage: 'Retrieving contacts', status: 'working' })
+          locations.push(...locationRes.data.locations)
+
+          const additionalLocations = await getAdditionalLocations(
+            locationRes,
+            orgData.authToken
+          )
+          locations.push(...additionalLocations)
+
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Retrieving contacts',
+            status: 'working'
+          })
           const contactRes = await apiCall(
             { authToken: orgData.authToken },
             'organization/listContacts'
           )
 
-          await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'working' })
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Populating account',
+            status: 'working'
+          })
           // Send the profile to elasticache
           await orgSignIn(
             redis,
             orgData.profile,
             orgData.organization,
-            locationRes.data.locations,
+            locations,
             contactRes.data.contacts,
             orgData.authToken
           )
 
           for (const contact of contactRes.data.contacts) {
-            const options = { contactId: contact.id }
+            let contactsLocations = []
+            const options = { contactId: contact.id, limit: 1000 }
             const linkLocationsRes = await apiCall(
               {
                 authToken: orgData.authToken,
@@ -51,9 +118,17 @@ module.exports = [
               },
               'location/list'
             )
+            contactsLocations.push(...linkLocationsRes.data.locations)
+
+            const additionalLocations = await getAdditionalLocations(
+              locationRes,
+              orgData.authToken,
+              contact.id
+            )
+            contactsLocations.push(...additionalLocations)
 
             const locationIDs = []
-            linkLocationsRes.data.locations.forEach(function (location) {
+            contactsLocations.forEach(function (location) {
               locationIDs.push(location.id)
             })
 
@@ -64,7 +139,10 @@ module.exports = [
               locationIDs
             )
           }
-          await setJsonData(redis, elasticacheKey, { stage: 'Populating account', status: 'complete' })
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Populating account',
+            status: 'complete'
+          })
 
           return h.response({ status: 200 })
         } else {

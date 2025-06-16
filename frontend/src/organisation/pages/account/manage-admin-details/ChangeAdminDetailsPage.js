@@ -1,28 +1,31 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
-import { setCurrentContact, setProfile } from '../../../../common/redux/userSlice'
+import {
+  setCurrentContact,
+  setProfile
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { addAccountName, addUnverifiedContact } from '../../../../common/services/ProfileServices'
+import {
+  addAccountName,
+  addUnverifiedContact
+} from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../../common/services/validations/FullNameValidation'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
-export default function ChangeAdminDetailsPage () {
+export default function ChangeAdminDetailsPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const currentFirstName = useSelector(
     (state) => state.session.profile.firstname
   )
-  const currentLastName = useSelector(
-    (state) => state.session.profile.lastname
-  )
-  const currentEmail = useSelector(
-    (state) => state.session.profile.emails[0]
-  )
+  const currentLastName = useSelector((state) => state.session.profile.lastname)
+  const currentEmail = useSelector((state) => state.session.profile.emails[0])
 
   const currentFullName = currentFirstName + ' ' + currentLastName
 
@@ -34,14 +37,15 @@ export default function ChangeAdminDetailsPage () {
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
-  const updateProfile = async (profile, authToken, signinType) => {
-    const dataToSend = { profile, authToken, signinType }
+  const updateProfile = async (profile, authToken, signinType, orgId) => {
+    const dataToSend = { profile, authToken, signinType, orgId }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',
@@ -78,7 +82,8 @@ export default function ChangeAdminDetailsPage () {
         updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
         successMessages.push('Email address changed')
       }
-      await updateProfile(updatedProfile, authToken, signinType)
+      await updateProfile(updatedProfile, authToken, signinType, orgId)
+
       if (email) {
         const dataToSend = { email, authToken }
         const { errorMessage } = await backendCall(
@@ -113,21 +118,23 @@ export default function ChangeAdminDetailsPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>
+          Change administrator details - Get flood warnings (professional) -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
           {(error || errorEmail || errorName) && (
-            <ErrorSummary
-              errorList={[error, errorEmail, errorName]}
-            />
+            <ErrorSummary errorList={[error, errorEmail, errorName]} />
           )}
-          <h1 className='govuk-heading-l'>
-            Change administrator details
-          </h1>
+          <h1 className='govuk-heading-l' id="main-content">Change administrator details</h1>
 
           <Input
+            id='full-name'
             inputType='text'
             value={fullName}
             name='Full name'
@@ -139,7 +146,9 @@ export default function ChangeAdminDetailsPage () {
           />
 
           <Input
+            id='email-address'
             inputType='text'
+            inputMode='email'
             value={email}
             name='Email address'
             onChange={(val) => setEmail(val)}

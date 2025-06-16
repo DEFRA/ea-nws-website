@@ -1,6 +1,7 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useMemo, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -12,19 +13,24 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { backendCall } from '../../../common/services/BackendService'
-import { geoSafeToWebContact, webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
 import {
-  geoSafeToWebLocation,
-  webToGeoSafeLocation
+  geoSafeToWebContact,
+  webToGeoSafeContact
+} from '../../../common/services/formatters/ContactFormatter'
+import {
+    geoSafeToWebLocation,
+    webToGeoSafeLocation
 } from '../../../common/services/formatters/LocationFormatter'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
-export default function ManageKeywordsPage () {
+export default function ManageKeywordsPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const [cacheKeywords, setCacheKeywords] = useState([])
   const [keywords, setKeywords] = useState([])
-  const [keywordType, setKeywordType] = useState(location?.state?.type || 'location')
+  const [keywordType, setKeywordType] = useState(
+    location?.state?.type || 'location'
+  )
   const [notificationText, setNotificationText] = useState('')
   const [selectedKeywords, setSelectedKeywords] = useState([])
   const [filteredKeywords, setFilteredKeywords] = useState([])
@@ -77,7 +83,11 @@ export default function ManageKeywordsPage () {
 
   useMemo(() => {
     const getKeywords = async () => {
-      const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
+      const key =
+        orgId +
+        (keywordType === 'location'
+          ? ':t_Keywords_location'
+          : ':t_Keywords_contact')
       const dataToSend = { key }
       const { data } = await backendCall(
         dataToSend,
@@ -274,21 +284,26 @@ export default function ManageKeywordsPage () {
   }
 
   const updateKeywords = async (action, keywordsToUpdate) => {
-    let locationsOrContactsInfo = keywordType === 'location' ? [...locations] : [...contacts]
+    let locationsOrContactsInfo =
+      keywordType === 'location' ? [...locations] : [...contacts]
 
     // Loop over keywords to update (only useful for deleting multiple locations)
     for (const keywordToUpdate of keywordsToUpdate) {
       // Loop over locations/contacts linked to edited keyword
       for (const id of keywordToUpdate.linked_ids) {
         // Get location or Contact info
-        const locationOrContact = locationsOrContactsInfo.filter((info) => info.id === id)[0]
+        const locationOrContact = locationsOrContactsInfo.filter(
+          (info) => info.id === id
+        )[0]
 
-        const locationOrContactKeywords = locationOrContact.additionals.keywords.map((keyword) => {
-          if (keywordToUpdate.name === keyword) {
-            return action === 'edit' ? updatedKeyword : null
-          }
-          return keyword
-        }).filter((keyword) => keyword !== null)
+        const locationOrContactKeywords = locationOrContact.additionals.keywords
+          .map((keyword) => {
+            if (keywordToUpdate.name === keyword) {
+              return action === 'edit' ? updatedKeyword : null
+            }
+            return keyword
+          })
+          .filter((keyword) => keyword !== null)
 
         const locationOrContactToUpdate = {
           ...locationOrContact,
@@ -299,10 +314,22 @@ export default function ManageKeywordsPage () {
         }
 
         const updateLocationOrContact = async () => {
-          const apiPath = keywordType === 'location' ? 'api/location/update' : 'api/organization/update_contact'
-          const dataToSend = keywordType === 'location'
-            ? { authToken, orgId, location: webToGeoSafeLocation(locationOrContactToUpdate) }
-            : { authToken, orgId, contact: webToGeoSafeContact(locationOrContactToUpdate) }
+          const apiPath =
+            keywordType === 'location'
+              ? 'api/location/update'
+              : 'api/organization/update_contact'
+          const dataToSend =
+            keywordType === 'location'
+              ? {
+                  authToken,
+                  orgId,
+                  location: webToGeoSafeLocation(locationOrContactToUpdate)
+                }
+              : {
+                  authToken,
+                  orgId,
+                  contact: webToGeoSafeContact(locationOrContactToUpdate)
+                }
           const { data, errorMessage } = await backendCall(
             dataToSend,
             apiPath,
@@ -318,7 +345,7 @@ export default function ManageKeywordsPage () {
 
         await updateLocationOrContact()
         if (action === 'delete' && keywordsToUpdate.length > 1) {
-          locationsOrContactsInfo = locationsOrContactsInfo.map(info =>
+          locationsOrContactsInfo = locationsOrContactsInfo.map((info) =>
             info.id === id ? locationOrContactToUpdate : info
           )
         }
@@ -366,11 +393,11 @@ export default function ManageKeywordsPage () {
   }
 
   const validateInput = () => {
-    return (updatedKeyword === targetKeyword.name)
+    return updatedKeyword === targetKeyword.name
       ? ''
       : keywords.some((keyword) => updatedKeyword === keyword.name)
-        ? 'This keyword already exists'
-        : ''
+      ? 'This keyword already exists'
+      : ''
   }
 
   const handleEdit = () => {
@@ -391,7 +418,9 @@ export default function ManageKeywordsPage () {
     if (targetKeyword) {
       removeKeywords([targetKeyword])
       if (selectedKeywords.length > 0) {
-        const updatedSelectedKeywords = selectedKeywords.filter(keyword => keyword !== targetKeyword)
+        const updatedSelectedKeywords = selectedKeywords.filter(
+          (keyword) => keyword !== targetKeyword
+        )
         setSelectedKeywords(updatedSelectedKeywords)
       }
     } else if (selectedKeywords.length > 0) {
@@ -401,48 +430,44 @@ export default function ManageKeywordsPage () {
   }
 
   const detailsText =
-    keywordType === 'location'
-      ? (
-        <>
-          <p>
-            Adding keywords for each location can make it easier for you to filter
-            and create lists of locations you can link to contacts to get relevant
-            flood messages.
-          </p>
-          <p>
-            For example, you may want to add 'pumping station' or 'office' or
-            'Midlands' as a keyword, then show all of the locations with that
-            keyword in a list.
-          </p>
-          <p>
-            Once you use a keyword it will be saved so you can select it for any
-            other locations.
-          </p>
-        </>
-        )
-      : keywordType === 'contact'
-        ? (
-          <>
-            <p>
-              Adding keywords for each contact can make it easier for you to filter
-              and create lists of people you can link to locations to get relevant
-              flood messages.
-            </p>
-            <p>
-              For example, you may want to add 'North' or 'South' as a keyword, then
-              show all of the contacts with that keyword in a list.
-            </p>
-            <p>
-              Once you use a keyword it will be saved so you can select it for any
-              other contacts.
-            </p>
-            <p>
-              You can add a maximum of 50 keywords and each keyword can be single or
-              multiple words, for example 'South' or 'South West'.
-            </p>
-          </>
-          )
-        : null
+    keywordType === 'location' ? (
+      <>
+        <p>
+          Adding keywords for each location can make it easier for you to filter
+          and create lists of locations you can link to contacts to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'pumping station' or 'office' or
+          'Midlands' as a keyword, then show all of the locations with that
+          keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other locations.
+        </p>
+      </>
+    ) : keywordType === 'contact' ? (
+      <>
+        <p>
+          Adding keywords for each contact can make it easier for you to filter
+          and create lists of people you can link to locations to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'North' or 'South' as a keyword, then
+          show all of the contacts with that keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other contacts.
+        </p>
+        <p>
+          You can add a maximum of 50 keywords and each keyword can be single or
+          multiple words, for example 'South' or 'South West'.
+        </p>
+      </>
+    ) : null
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -451,6 +476,9 @@ export default function ManageKeywordsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Manage keywords - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
@@ -463,7 +491,9 @@ export default function ManageKeywordsPage () {
                 text={notificationText}
               />
             )}
-            <h1 className='govuk-heading-l'>Manage keywords</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Manage keywords
+            </h1>
             <div className='govuk-body'>
               <p>
                 As an admin you can edit and delete keywords. Deleting a keyword
@@ -517,6 +547,7 @@ export default function ManageKeywordsPage () {
                       position='absolute'
                       showNotFound={false}
                       nameField='name'
+                      ariaLabel='Search for a keyword'
                     />
                     <div className='keyword-search-button-container'>
                       <button
@@ -536,36 +567,34 @@ export default function ManageKeywordsPage () {
                 </Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
-                {filteredKeywords.length !== 0
-                  ? (
-                    <>
-                      <Button
-                        className='govuk-button govuk-button--secondary'
-                        onClick={(event) => multiDeleteDialog(event)}
-                        text='Delete selected keywords'
-                      />
-                      <KeywordsTable
-                        keywords={keywords}
-                        displayedKeywords={displayedKeywords}
-                        filteredKeywords={filteredKeywords}
-                        setFilteredKeywords={setFilteredKeywords}
-                        selectedKeywords={selectedKeywords}
-                        setSelectedKeywords={setSelectedKeywords}
-                        type={keywordType}
-                        onAction={onAction}
-                      />
-                      <Pagination
-                        totalPages={Math.ceil(
-                          filteredKeywords.length / keywordsPerPage
-                        )}
-                        onPageChange={(val) => setCurrentPage(val)}
-                        reset={resetPaging}
-                      />
-                    </>
-                    )
-                  : (
-                    <p>No results. Try searching with a different keyword.</p>
-                    )}
+                {filteredKeywords.length !== 0 ? (
+                  <>
+                    <Button
+                      className='govuk-button govuk-button--secondary'
+                      onClick={(event) => multiDeleteDialog(event)}
+                      text='Delete selected keywords'
+                    />
+                    <KeywordsTable
+                      keywords={keywords}
+                      displayedKeywords={displayedKeywords}
+                      filteredKeywords={filteredKeywords}
+                      setFilteredKeywords={setFilteredKeywords}
+                      selectedKeywords={selectedKeywords}
+                      setSelectedKeywords={setSelectedKeywords}
+                      type={keywordType}
+                      onAction={onAction}
+                    />
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredKeywords.length / keywordsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      reset={resetPaging}
+                    />
+                  </>
+                ) : (
+                  <p>No results. Try searching with a different keyword.</p>
+                )}
                 {dialog.show && (
                   <>
                     <Popup
@@ -582,7 +611,8 @@ export default function ManageKeywordsPage () {
                       charLimit={dialog.charLimit}
                       error={dialog.error}
                       setError={(val) =>
-                        setDialog((dial) => ({ ...dial, error: val }))}
+                        setDialog((dial) => ({ ...dial, error: val }))
+                      }
                       validateInput={() => validateInput()}
                       defaultValue={dialog.input ? targetKeyword.name : ''}
                     />

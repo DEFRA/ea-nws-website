@@ -55,9 +55,7 @@ const orgManageContactsUrls = {
     remove: urlManageContactsOrg + '/remove-admin',
     pendingInvites: urlManageContactsOrg + '/pending-admins',
     resendInvite: urlManageContactsOrg + '/resend-invite',
-    withdrawInvite: urlManageContactsOrg + '/withdraw-invite',
-    adminInvite: urlManageContactsOrg + '/admin-invite',
-    joined: urlManageContactsOrg + '/admin-joined'
+    withdrawInvite: urlManageContactsOrg + '/withdraw-invite'
   }
 }
 
@@ -152,14 +150,6 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.admin.withdrawInvite,
     component: <WithdrawInvitePage />
-  },
-  {
-    path: orgManageContactsUrls.admin.adminInvite,
-    component: <AdminInvitePage />
-  },
-  {
-    path: orgManageContactsUrls.admin.joined,
-    component: <AdminJoinedPage />
   }
 ]
 

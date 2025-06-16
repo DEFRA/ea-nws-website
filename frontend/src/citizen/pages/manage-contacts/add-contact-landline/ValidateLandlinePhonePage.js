@@ -1,5 +1,7 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../layouts/landline/ValidateLandlineLayout'
+
 export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
 
@@ -24,12 +26,14 @@ export default function ValidateLandlinePhonePage () {
   }
 
   return (
-    <ValidateLandlineLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentHomephone}
-      SkipValidation={SkipValidation}
-      DifferentHomePhone={DifferentHomephone}
-      ContinueToAlreadyEnteredMobileOptions={DifferentHomephone}
-    />
+    <>
+      <ValidateLandlineLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentHomephone}
+        SkipValidation={SkipValidation}
+        DifferentHomePhone={DifferentHomephone}
+        ContinueToAlreadyEnteredMobileOptions={DifferentHomephone}
+      />
+    </>
   )
 }

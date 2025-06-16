@@ -15,7 +15,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, contactId, orgId } = request.payload
+        const { authToken, orgId, contactId } = request.payload
         const { redis } = request.server.app
 
         if (authToken && contactId && orgId) {

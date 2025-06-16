@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import { setAuthToken, setContactPreferences, setOrgId, setOrganization, setProfile, setProfileId, setSigninType } from '../../../../common/redux/userSlice'
+import {
+  setAuthToken,
+  setContactPreferences,
+  setOrgId,
+  setOrganization,
+  setProfile,
+  setProfileId,
+  setSigninType
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgInviteUrls } from '../../../routes/invite/InviteRoutes'
 
-export default function AdminInvitePage () {
+export default function AdminInvitePage() {
   const navigate = useNavigate()
   const location = useLocation()
   // eslint-disable-next-line no-unused-vars
@@ -29,14 +38,10 @@ export default function AdminInvitePage () {
     if (orgData) {
       const startProcessing = async () => {
         const dataToSend = { orgData }
-        await backendCall(
-          dataToSend,
-          'api/org_signin',
-          navigate
-        )
+        await backendCall(dataToSend, 'api/org_signin', navigate)
       }
       startProcessing()
-      const interval = setInterval(async function getStatus () {
+      const interval = setInterval(async function getStatus() {
         if (getStatus.isRunning) return
         getStatus.isRunning = true
         const dataToSend = { authToken: orgData.authToken }
@@ -50,7 +55,7 @@ export default function AdminInvitePage () {
             setStage(data.stage)
           }
           if (data?.status === 'complete') {
-            navigate(orgManageContactsUrls.admin.joined)
+            navigate(orgInviteUrls.admin.joined)
           }
         }
         if (errorMessage) {
@@ -88,10 +93,10 @@ export default function AdminInvitePage () {
           data.profile.mobilePhones.length !== 0 && 'Text'
         ])
       )
-      if (data?.orgExists === false) {
+      if (data?.orgExists === 0) {
         setOrgData(data)
       } else {
-        navigate(orgManageContactsUrls.admin.joined)
+        navigate(orgInviteUrls.admin.joined)
       }
     } else if (errorMessage) {
       console.log(errorMessage)
@@ -100,11 +105,14 @@ export default function AdminInvitePage () {
 
   return (
     <>
+      <Helmet>
+        <title>You've been invited to join as an admin for your organisation - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You've been invited to join as an admin for your organisation
             </h1>
             <div className='govuk-!-margin-top-8'>
@@ -119,14 +127,15 @@ export default function AdminInvitePage () {
           </div>
         </div>
       </main>
-      {orgData && error === '' &&
+      {orgData && error === '' && (
         <div className='popup-dialog'>
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
             />
           </div>
-        </div>}
+        </div>
+      )}
     </>
   )
 }

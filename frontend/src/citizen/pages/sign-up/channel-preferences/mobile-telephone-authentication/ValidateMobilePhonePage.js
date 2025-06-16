@@ -1,9 +1,10 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../layouts/mobile/ValidateMobileLayout'
 
-export default function ValidateMobilePhone () {
+export default function ValidateMobilePhone() {
   const navigate = useNavigate()
   const contactPreferences = useSelector(
     (state) => state.session.contactPreferences
@@ -32,12 +33,14 @@ export default function ValidateMobilePhone () {
     })
   }
   return (
-    <ValidateMobileLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentMobile}
-      SkipValidation={SkipValidation}
-      DifferentMobile={DifferentMobile}
-      isSignUpJourney
-    />
+    <>
+      <ValidateMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentMobile}
+        SkipValidation={SkipValidation}
+        DifferentMobile={DifferentMobile}
+        isSignUpJourney
+      />
+    </>
   )
 }

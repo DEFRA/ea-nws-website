@@ -15,7 +15,12 @@ import {
   setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreas, getFloodAreasFromShape, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../common/services/WfsFloodDataService'
+import {
+  getFloodAreas,
+  getFloodAreasFromShape,
+  getGroundwaterFloodRiskRatingOfLocation,
+  getRiversAndSeaFloodRiskRatingOfLocation
+} from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
@@ -24,7 +29,7 @@ import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout ({
+export default function ConfirmLocationLayout({
   navigateToNextPage,
   navigateToPinDropFlow,
   flow
@@ -66,7 +71,7 @@ export default function ConfirmLocationLayout ({
   const shapeArea = location.state?.shapeArea
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -97,7 +102,12 @@ export default function ConfirmLocationLayout ({
   // Switch case to change the button/link logic depending on the location type
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const duplicateLocation = await checkDuplicateLocation()
+
+    // Only check for duplicate when *adding* a location
+    // Can be skipped when just changing its pin
+    const duplicateLocation = flow?.includes('change-coords')
+      ? null
+      : await checkDuplicateLocation()
 
     // Check for duplicates
     if (duplicateLocation) {
@@ -113,10 +123,15 @@ export default function ConfirmLocationLayout ({
       return
     }
 
-    const newWebLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(currentLocation)))
+    const newWebLocation = geoSafeToWebLocation(
+      JSON.parse(JSON.stringify(currentLocation))
+    )
     // set the Target areas
     if (currentLocationDataType === LocationDataType.X_AND_Y_COORDS) {
-      const TAs = await getFloodAreas(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+      const TAs = await getFloodAreas(
+        newWebLocation.coordinates.latitude,
+        newWebLocation.coordinates.longitude
+      )
       newWebLocation.additionals.other.targetAreas = []
       TAs.forEach((area) => {
         newWebLocation.additionals.other.targetAreas.push({
@@ -125,10 +140,20 @@ export default function ConfirmLocationLayout ({
           category: area.properties?.category
         })
       })
-      newWebLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
-      newWebLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newWebLocation.coordinates.latitude, newWebLocation.coordinates.longitude)
+      newWebLocation.additionals.other.riverSeaRisk =
+        await getRiversAndSeaFloodRiskRatingOfLocation(
+          newWebLocation.coordinates.latitude,
+          newWebLocation.coordinates.longitude
+        )
+      newWebLocation.additionals.other.groundWaterRisk =
+        await getGroundwaterFloodRiskRatingOfLocation(
+          newWebLocation.coordinates.latitude,
+          newWebLocation.coordinates.longitude
+        )
     } else if (newWebLocation?.geometry?.geoJson) {
-      const TAs = await getFloodAreasFromShape(newWebLocation?.geometry?.geoJson)
+      const TAs = await getFloodAreasFromShape(
+        newWebLocation?.geometry?.geoJson
+      )
       newWebLocation.additionals.other.targetAreas = []
       TAs.forEach((area) => {
         newWebLocation.additionals.other.targetAreas.push({
@@ -157,12 +182,19 @@ export default function ConfirmLocationLayout ({
       }
       return typeMap[type] || []
     }
-    newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
-      newWebLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
-      newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+    newWebLocation.additionals.other.targetAreas.some(
+      (area) => categoryToType(area.category) === 'warning'
+    ) &&
+      newWebLocation.additionals.other.alertTypes.push(
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING
+      )
 
-    newWebLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
-      newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+    newWebLocation.additionals.other.targetAreas.some(
+      (area) => categoryToType(area.category) === 'alert'
+    ) && newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
 
     const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
@@ -256,7 +288,9 @@ export default function ConfirmLocationLayout ({
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l '>Confirm location</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Confirm location
+            </h1>
 
             <h2 className='govuk-heading-m govuk-!-margin-top-8'>
               {locationName}
@@ -324,25 +358,25 @@ export default function ConfirmLocationLayout ({
             {/* Shapefile layout */}
             {(currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
               currentLocationDataType === LocationDataType.SHAPE_LINE) && (
-                <>
-                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    Polygon
-                  </h3>
-                  <p>{shapeArea} square metres</p>
+              <>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                  Polygon
+                </h3>
+                <p>{shapeArea} square metres</p>
 
-                  <div className='govuk-!-margin-top-8'>
-                    <Button
-                      text='Add and continue'
-                      className='govuk-button'
-                      onClick={handleSubmit}
-                    />
-                    <Button
-                      text='Cancel upload'
-                      className='govuk-button govuk-button--warning govuk-!-margin-left-3'
-                      onClick={navigateBack}
-                    />
-                  </div>
-                </>
+                <div className='govuk-!-margin-top-8'>
+                  <Button
+                    text='Add and continue'
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />
+                  <Button
+                    text='Cancel upload'
+                    className='govuk-button govuk-button--warning govuk-!-margin-left-3'
+                    onClick={navigateBack}
+                  />
+                </div>
+              </>
             )}
           </div>
           <div

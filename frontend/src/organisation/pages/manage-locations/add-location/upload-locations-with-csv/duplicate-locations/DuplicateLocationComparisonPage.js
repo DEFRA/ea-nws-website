@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -8,17 +9,22 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
-  setNotFoundLocations,
-  setNotInEnglandLocations
+    setNotFoundLocations,
+    setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
-import { getFloodAreas, getFloodAreasFromShape, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation } from '../../../../../../common/services/WfsFloodDataService'
+import {
+  getFloodAreas,
+  getFloodAreasFromShape,
+  getGroundwaterFloodRiskRatingOfLocation,
+  getRiversAndSeaFloodRiskRatingOfLocation
+} from '../../../../../../common/services/WfsFloodDataService'
 import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 import LocationInformation from './duplicate-location-components/LocationInformation'
 
-export default function DuplicateLocationComparisonPage () {
+export default function DuplicateLocationComparisonPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,7 +47,7 @@ export default function DuplicateLocationComparisonPage () {
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -77,8 +83,14 @@ export default function DuplicateLocationComparisonPage () {
     } else {
       // update location then navigate
       if (existingOrNew === 'New') {
-        if (newLocation.additionals.other.location_data_type === LocationDataType.X_AND_Y_COORDS) {
-          const TAs = await getFloodAreas(newLocation.coordinates.latitude, newLocation.coordinates.longitude)
+        if (
+          newLocation.additionals.other.location_data_type ===
+          LocationDataType.X_AND_Y_COORDS
+        ) {
+          const TAs = await getFloodAreas(
+            newLocation.coordinates.latitude,
+            newLocation.coordinates.longitude
+          )
           newLocation.additionals.other.targetAreas = []
           TAs.forEach((area) => {
             newLocation.additionals.other.targetAreas.push({
@@ -87,10 +99,20 @@ export default function DuplicateLocationComparisonPage () {
               category: area.properties?.category
             })
           })
-          newLocation.additionals.other.riverSeaRisk = await getRiversAndSeaFloodRiskRatingOfLocation(newLocation.coordinates.latitude, newLocation.coordinates.longitude)
-          newLocation.additionals.other.groundWaterRisk = await getGroundwaterFloodRiskRatingOfLocation(newLocation.coordinates.latitude, newLocation.coordinates.longitude)
+          newLocation.additionals.other.riverSeaRisk =
+            await getRiversAndSeaFloodRiskRatingOfLocation(
+              newLocation.coordinates.latitude,
+              newLocation.coordinates.longitude
+            )
+          newLocation.additionals.other.groundWaterRisk =
+            await getGroundwaterFloodRiskRatingOfLocation(
+              newLocation.coordinates.latitude,
+              newLocation.coordinates.longitude
+            )
         } else if (newLocation?.geometry?.geoJson) {
-          const TAs = await getFloodAreasFromShape(newLocation?.geometry?.geoJson)
+          const TAs = await getFloodAreasFromShape(
+            newLocation?.geometry?.geoJson
+          )
           newLocation.additionals.other.targetAreas = []
           TAs.forEach((area) => {
             newLocation.additionals.other.targetAreas.push({
@@ -119,14 +141,24 @@ export default function DuplicateLocationComparisonPage () {
           }
           return typeMap[type] || []
         }
-        newLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'warning') &&
-          newLocation.additionals.other.alertTypes.push(AlertType.SEVERE_FLOOD_WARNING) &&
-          newLocation.additionals.other.alertTypes.push(AlertType.FLOOD_WARNING)
+        newLocation.additionals.other.targetAreas.some(
+          (area) => categoryToType(area.category) === 'warning'
+        ) &&
+          newLocation.additionals.other.alertTypes.push(
+            AlertType.SEVERE_FLOOD_WARNING,
+            AlertType.FLOOD_WARNING,
+            AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+            AlertType.REMOVE_FLOOD_WARNING
+          )
 
-        newLocation.additionals.other.targetAreas.some((area) => categoryToType(area.category) === 'alert') &&
+        newLocation.additionals.other.targetAreas.some(
+          (area) => categoryToType(area.category) === 'alert'
+        ) &&
           newLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
 
-        const locationToUpdate = webToGeoSafeLocation(JSON.parse(JSON.stringify(newLocation)))
+        const locationToUpdate = webToGeoSafeLocation(
+          JSON.parse(JSON.stringify(newLocation))
+        )
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id
         const dataToSend = { authToken, orgId, location: locationToUpdate }
@@ -174,9 +206,15 @@ export default function DuplicateLocationComparisonPage () {
           navigateToNextPage(
             orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
           )
-        } else if (newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_POLYGON ||
-                   newLocation.additionals.other?.location_data_type === LocationDataType.SHAPE_LINE) {
-          await verifyLocationInFloodAreaAndNavigate(orgManageLocationsUrls.add.linkLocationToContacts)
+        } else if (
+          newLocation.additionals.other?.location_data_type ===
+            LocationDataType.SHAPE_POLYGON ||
+          newLocation.additionals.other?.location_data_type ===
+            LocationDataType.SHAPE_LINE
+        ) {
+          await verifyLocationInFloodAreaAndNavigate(
+            orgManageLocationsUrls.add.linkLocationToContacts
+          )
         } else {
           navigate(orgManageLocationsUrls.add.contactLinkInfo)
         }
@@ -195,12 +233,15 @@ export default function DuplicateLocationComparisonPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Duplicate location comparison - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {newLocation.additionals.locationName} already exists in this
               account
             </h1>

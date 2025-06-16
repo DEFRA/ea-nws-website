@@ -26,7 +26,7 @@ module.exports = [
             const childrenIds = JSON.parse(location.additionals.filter((additional) => additional?.id === 'other')[0]?.value?.s)?.childrenIDs?.map((child) => child?.id)
             if (childrenIds && childrenIds.length > 0) {
               for (const childrenId of childrenIds) {
-                await apiCall(
+                apiCall(
                   { authToken: authToken, locationId: childrenId, contactIds: contactIds },
                   'location/detachContacts'
                 )

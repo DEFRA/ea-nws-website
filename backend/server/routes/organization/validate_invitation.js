@@ -52,7 +52,7 @@ module.exports = [
               if (orgExists) {
                 await updateContact(redis, response.data.organization.id, updateResponse.data.contact)
                 await setJsonData(redis, updateResponse.data.contact.id + ':profile', response.data.contact)
-                await addOrgActiveAdmins(redis, response.data.organization.id, response.data.authToken)
+                await addOrgActiveAdmins(redis, response.data.organization.id, response.data.contact.id, )
               }
               return h.response({
                 status: 200,

@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -11,24 +11,50 @@ import {
   setOrgCurrentContactJobTitle,
   setOrgCurrentContactLastName
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
-export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
+export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const orgId = useSelector((state) => state.session.orgId)
+
   const [firstnameError, setFirstNameError] = useState('')
   const [lastnameError, setLastNameError] = useState('')
   const [jobTitleError, setJobTitleError] = useState('')
+
+  const [contacts, setContacts] = useState([])
   const [firstname, setFirstName] = useState(
-    useSelector((state) => state.session.orgCurrentContact.firstname)
+    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
   )
   const [lastname, setLastName] = useState(
-    useSelector((state) => state.session.orgCurrentContact.lastname)
+    useSelector((state) => state.session.orgCurrentContact.lastname) || ''
   )
   const [jobTitle, setJobTitle] = useState(
-    useSelector((state) => getContactAdditional(state, 'jobTitle'))
+    useSelector((state) => getContactAdditional(state, 'jobTitle')) || ''
   )
 
   const charLimit = 20
+  const originalFirstName =
+    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
+  const originalLastName =
+    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const dataToSend = { orgId }
+        const contactsData = await backendCall(
+          dataToSend,
+          'api/elasticache/list_contacts',
+          navigate
+        )
+        setContacts(contactsData.data)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    fetchContacts()
+  }, [])
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -73,14 +99,29 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const dataValid = validateData()
-    if (dataValid) {
-      dispatch(setOrgCurrentContactFirstName(firstname))
-      dispatch(setOrgCurrentContactLastName(lastname))
-      jobTitle != null && dispatch(setOrgCurrentContactJobTitle(jobTitle))
+    if (!validateData()) return
 
-      navigateToNextPage()
+    // Ensure name given is not a duplicate with existing user
+    // When editing only check if name is changed
+    if (originalFirstName !== firstname && originalLastName !== lastname) {
+      const isDuplicate = contacts.some(
+        (c) =>
+          c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
+          c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
+      )
+      if (isDuplicate) {
+        setFirstNameError(
+          `User ${firstname} ${lastname} already exists in your organisation - you cannot enter this person again`
+        )
+        return
+      }
     }
+
+    dispatch(setOrgCurrentContactFirstName(firstname))
+    dispatch(setOrgCurrentContactLastName(lastname))
+    jobTitle != null && dispatch(setOrgCurrentContactJobTitle(jobTitle))
+
+    navigateToNextPage()
   }
 
   return (
@@ -99,9 +140,12 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 ]}
               />
             )}
-            <h1 className='govuk-heading-l'>User details</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              User details
+            </h1>
             <div className='govuk-body'>
               <Input
+                id='first-name'
                 name='First name'
                 inputType='text'
                 onChange={(val) =>
@@ -110,7 +154,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setFirstName,
                     setFirstNameError,
                     'First name'
-                  )}
+                  )
+                }
                 value={firstname}
                 error={firstnameError}
                 className='govuk-input govuk-input--width-20'
@@ -118,6 +163,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 nameSize='s'
               />
               <Input
+                id='last-name'
                 name='Last name'
                 inputType='text'
                 onChange={(val) =>
@@ -126,7 +172,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setLastName,
                     setLastNameError,
                     'Last name'
-                  )}
+                  )
+                }
                 value={lastname}
                 error={lastnameError}
                 className='govuk-input govuk-input--width-20'
@@ -134,6 +181,7 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                 nameSize='s'
               />
               <Input
+                id='job-title'
                 name='Job title (optional)'
                 inputType='text'
                 onChange={(val) =>
@@ -142,7 +190,8 @@ export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
                     setJobTitle,
                     setJobTitleError,
                     'Job title'
-                  )}
+                  )
+                }
                 value={jobTitle}
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'

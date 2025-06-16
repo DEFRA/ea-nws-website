@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -9,7 +10,7 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { webToGeoSafeContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function PendingAdminsPage () {
+export default function PendingAdminsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -67,15 +68,14 @@ export default function PendingAdminsPage () {
   const viewAdmin = (e, admin) => {
     e.preventDefault()
     dispatch(setOrgCurrentContact(webToGeoSafeContact(admin)))
-    navigate(orgManageContactsUrls.view.viewContact, {
-      state: {
-        userType: 'Pending admin'
-      }
-    })
+    navigate(orgManageContactsUrls.view.viewContact)
   }
 
   return (
     <>
+      <Helmet>
+        <title>Pending admins who still need to accept their invitation - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
@@ -88,7 +88,7 @@ export default function PendingAdminsPage () {
             />
           )}
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>
               Pending admins who still need to accept their invitation
             </h1>
             <p className='govuk-!-margin-bottom-3 warnings-reports-paragraph'>
@@ -120,7 +120,8 @@ export default function PendingAdminsPage () {
                   <button
                     type='button'
                     onClick={() =>
-                      sortData(statusSort, setStatusSort, 'status')}
+                      sortData(statusSort, setStatusSort, 'status')
+                    }
                   >
                     Invitation status
                   </button>
@@ -142,17 +143,15 @@ export default function PendingAdminsPage () {
                     </Link>{' '}
                   </td>
                   <td className='govuk-table__cell'>
-                    {admin.inviteStatus === 'Expired'
-                      ? (
-                        <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
-                          Expired
-                        </strong>
-                        )
-                      : (
-                        <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
-                          Active
-                        </strong>
-                        )}
+                    {admin.inviteStatus === 'Expired' ? (
+                      <strong className='govuk-tag govuk-tag--orange govuk-!-margin-bottom-3'>
+                        Expired
+                      </strong>
+                    ) : (
+                      <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
+                        Active
+                      </strong>
+                    )}
                   </td>
                   <td className='govuk-table__cell'>
                     <Link

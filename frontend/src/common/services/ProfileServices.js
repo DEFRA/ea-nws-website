@@ -1,3 +1,5 @@
+const { default: UserContactType } = require('../enums/UserContactType')
+
 const addUnverifiedContact = (profile, type, contact) => {
   let unverifiedContactList
   const formattedContact = { address: contact }
@@ -28,8 +30,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, formattedContact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -44,14 +46,17 @@ const removeUnverifiedContact = (profile, contact, type) => {
 
   // need to check if there are any unverified
   if (profile.unverified) {
-    if (type === 'email address' && profile.unverified.emails) {
+    if (type === UserContactType.Email && profile.unverified.emails) {
       unverifiedContactListKey = 'emails'
     } else if (
-      type === 'mobile telephone number' &&
+      type === UserContactType.Mobile &&
       profile.unverified.mobilePhones
     ) {
       unverifiedContactListKey = 'mobilePhones'
-    } else if (type === 'telephone number' && profile.unverified.homePhones) {
+    } else if (
+      type === UserContactType.Telephone &&
+      profile.unverified.homePhones
+    ) {
       unverifiedContactListKey = 'homePhones'
     } else {
       // contact not found in any unverified contacts list
@@ -109,8 +114,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -122,11 +127,11 @@ const addVerifiedContact = (profile, type, contact) => {
 const removeVerifiedContact = (profile, contact, type) => {
   let verifiedContactListKey
 
-  if (type === 'email address') {
+  if (type === UserContactType.Email) {
     verifiedContactListKey = 'emails'
-  } else if (type === 'mobile telephone number') {
+  } else if (type === UserContactType.Mobile) {
     verifiedContactListKey = 'mobilePhones'
-  } else if (type === 'telephone number') {
+  } else if (type === UserContactType.Telephone) {
     verifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list
@@ -146,12 +151,6 @@ const removeVerifiedContact = (profile, contact, type) => {
 }
 
 const addAccountName = (profile, firstname, lastname) => {
-  if (!profile) {
-    profile = {}
-  }
-  profile.firstname = firstname
-  profile.lastname = lastname
-
   const updatedProfile = {
     ...profile,
     firstname,
@@ -163,10 +162,14 @@ const addAccountName = (profile, firstname, lastname) => {
 
 const getAdditionals = (profile, id) => {
   if (profile.additionals) {
-    for (let i = 0; i < profile.additionals.length; i++) {
-      if (profile.additionals[i].id === id) {
-        return profile.additionals[i].value?.s
+    if (Array.isArray(profile.additionals)) {
+      for (let i = 0; i < profile.additionals.length; i++) {
+        if (profile.additionals[i].id === id) {
+          return profile.additionals[i].value?.s
+        }
       }
+    } else {
+      return profile.additionals[id] || ''
     }
   }
   return ''
@@ -264,7 +267,7 @@ const getRegistrationParams = (profile, alertTypes) => {
   }
 }
 
-function findPOIByAddress (profile, address) {
+function findPOIByAddress(profile, address) {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   return parsedProfile.pois.find((poi) => poi.address === address)

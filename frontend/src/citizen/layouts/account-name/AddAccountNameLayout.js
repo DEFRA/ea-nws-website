@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -10,7 +11,7 @@ import { setProfile } from '../../../common/redux/userSlice'
 import { addAccountName } from '../../../common/services/ProfileServices'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
-export default function AddAccountNameLayout ({
+export default function AddAccountNameLayout({
   navigateToNextPage,
   NavigateToPreviousPage,
   buttonText,
@@ -35,7 +36,7 @@ export default function AddAccountNameLayout ({
     setError(validationError)
 
     if (validationError === '') {
-      // Split the full name into first name and last name assuming they are separeted by a space.
+      // Split the full name into first name and last name assuming they are separated by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')
       const lastname = lastnameParts.join(' ')
@@ -55,18 +56,23 @@ export default function AddAccountNameLayout ({
 
   return (
     <>
+      <Helmet>
+        <title>Enter your name - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            {location?.state?.banner && <NotificationBanner
+          {location?.state?.banner && (
+            <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success'
               title='Success'
               heading={location?.state?.banner?.heading}
               text={location?.state?.banner?.text}
-                                        />}
-            <h2 className='govuk-heading-l'>
+            />
+          )}
+          <div className='govuk-grid-column-two-thirds'>
+            {error && <ErrorSummary errorList={[error]} />}
+            <h2 className='govuk-heading-l' id='main-content'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>
             <div className='govuk-body'>
@@ -75,6 +81,7 @@ export default function AddAccountNameLayout ({
                 account.
               </p>
               <Input
+                id='full-name'
                 inputType='text'
                 value={fullName}
                 name='Full name'

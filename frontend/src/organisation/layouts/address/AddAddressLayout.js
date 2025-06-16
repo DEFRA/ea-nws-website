@@ -14,7 +14,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout ({
+export default function AddAddressLayout({
   navigateToNextPage,
   NavigateToPreviousPage,
   navigateToConfirmPage
@@ -82,11 +82,12 @@ export default function AddAddressLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Your organisation's UK head office address
             </h1>
             <div className='govuk-body'>
               <Input
+                id='postcode'
                 inputType='text'
                 value={postCode}
                 name='Postcode'
@@ -96,6 +97,7 @@ export default function AddAddressLayout ({
                 defaultValue={postCode}
               />
               <Input
+                id='building-name'
                 inputType='text'
                 value={buildingNum}
                 name='Building name or number (optional)'

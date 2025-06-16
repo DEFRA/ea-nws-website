@@ -38,22 +38,31 @@ async function getLocationList(
 ) {
   const { authToken, options } = req.payload as {
     authToken: string
-    options: { contactId: string }
+    options: { contactId: string; offset: Number }
   }
 
   if (authToken !== 'WrongAuthToken') {
-    if (options?.contactId) {
+    if (options?.offset) {
+      return {
+        locations: mockLocations.offsetLocations,
+        total: 1
+      }
+    } else if (options?.contactId) {
       // Geosafe returns all locations linked to contactId#
       console.log('there is a contact ID')
       return {
         locations: mockLocations.allLocations,
         total: mockLocations.allLocations.length
+        // to test offset option, uncomment below
+        //total: 1025
       }
     } else {
       console.log('no contact ID returning all locations')
       return {
         locations: mockLocations.allLocations,
         total: mockLocations.allLocations.length
+        // to test offset option, uncomment below
+        //total: 1025
       }
     }
   } else {

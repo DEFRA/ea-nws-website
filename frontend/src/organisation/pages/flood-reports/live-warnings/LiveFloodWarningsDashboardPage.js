@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink.js'
@@ -31,6 +32,13 @@ export default function LiveFloodWarningsDashboardPage() {
   const [displayedLocationsAffected, setDisplayedLocationsAffected] = useState(
     []
   )
+  const toggleFilterButtonRef = useRef(null)
+
+  useEffect(() => {
+    if (toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   useEffect(() => {
     ;(async () => {
@@ -49,8 +57,8 @@ export default function LiveFloodWarningsDashboardPage() {
     )
 
     const options = {
-      states: [AlertState.PAST],
-      boundingBox: {},
+      states: [AlertState.CURRENT],
+      boundingBox: null,
       channels: [],
       partnerId
     }
@@ -130,9 +138,10 @@ export default function LiveFloodWarningsDashboardPage() {
     TA_NAME
   ) => {
     const { additionals } = location
-    let locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
-      (targetArea) => targetArea.TA_CODE === TA_CODE
-    )
+    const locationIntersectsWithFloodArea =
+      additionals.other?.targetAreas?.some(
+        (targetArea) => targetArea.TA_CODE === TA_CODE
+      )
 
     if (!locationIntersectsWithFloodArea) return
 
@@ -154,6 +163,7 @@ export default function LiveFloodWarningsDashboardPage() {
     const updatedLocation = createLocationWithFloodData()
     setLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
     setDisplayedLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
+    setFilteredLocationsAffected((prevLocs) => [...prevLocs, updatedLocation])
   }
 
   useEffect(() => {
@@ -211,8 +221,17 @@ export default function LiveFloodWarningsDashboardPage() {
   }
 
   const onPrint = () => {
-    setLocationsAffectedPerPage(filteredLocationsAffected.length)
+    setCurrentPage(1) // always show page 1
+    setLocationsAffectedPerPage(null) // null = “show all rows”
   }
+
+  useEffect(() => {
+    if (locationsAffectedPerPage === null) {
+      window.print()
+      setLocationsAffectedPerPage(defaultLocationsPerPage)
+      setFilteredLocationsAffected(locationsAffected)
+    }
+  }, [locationsAffectedPerPage])
 
   const table = (
     <>
@@ -220,6 +239,7 @@ export default function LiveFloodWarningsDashboardPage() {
         text={isFilterVisible ? 'Close filter' : 'Open filter'}
         className='govuk-button govuk-button--secondary inline-block'
         onClick={() => openCloseFilter()}
+        ref={toggleFilterButtonRef}
       />
       &nbsp; &nbsp;
       <Button
@@ -250,12 +270,17 @@ export default function LiveFloodWarningsDashboardPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
             <br />
-            <h1 className='govuk-heading-l'>Live flood warnings</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Live flood warnings
+            </h1>
             {loading ? (
               <LoadingSpinner />
             ) : !isFilterVisible ? (

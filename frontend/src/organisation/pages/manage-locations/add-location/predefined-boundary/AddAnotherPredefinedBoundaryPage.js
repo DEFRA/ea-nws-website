@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import {
-  setConsecutiveBoundariesAdded,
-  setPredefinedBoundaryFlow
+    setConsecutiveBoundariesAdded,
+    setPredefinedBoundaryFlow,
+    setSelectedBoundary,
+    setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddAnotherPredefinedBoundaryPage () {
+export default function AddAnotherPredefinedBoundaryPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
@@ -19,6 +22,12 @@ export default function AddAnotherPredefinedBoundaryPage () {
     (state) => state.session.consecutiveBoundariesAdded
   )
   const notificationText = location.state?.successMessage
+
+  // Clear any previous boundary selection
+  useEffect(() => {
+    dispatch(setSelectedBoundary(null))
+    dispatch(setSelectedBoundaryType(null))
+  }, [dispatch])
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -40,6 +49,9 @@ export default function AddAnotherPredefinedBoundaryPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Add another predefined boundary - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -51,7 +63,9 @@ export default function AddAnotherPredefinedBoundaryPage () {
                 text={notificationText}
               />
             )}
-            <h1 className='govuk-heading-l'>Add another predefined boundary</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Add another predefined boundary
+            </h1>
             <div className='govuk-body'>
               <Button
                 className='govuk-button'

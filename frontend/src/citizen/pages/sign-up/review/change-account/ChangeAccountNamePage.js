@@ -39,13 +39,15 @@ export default function ChangeAccountNamePage () {
   }
 
   return (
-    <AddAccountNameLayout
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      navigateToNextPage={navigateToNextPage}
-      buttonText='Save changes'
-      changeName
-      updateProfile={updateProfile}
-      profileError={error}
-    />
+    <>
+      <AddAccountNameLayout
+        NavigateToPreviousPage={NavigateToPreviousPage}
+        navigateToNextPage={navigateToNextPage}
+        buttonText='Save changes'
+        changeName
+        updateProfile={updateProfile}
+        profileError={error}
+      />
+    </>
   )
 }

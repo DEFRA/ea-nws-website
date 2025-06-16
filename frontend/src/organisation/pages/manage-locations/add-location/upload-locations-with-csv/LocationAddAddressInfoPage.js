@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function LocationAddAddressInfoPage () {
+
+export default function LocationAddAddressInfoPage() {
   const navigate = useNavigate()
   const [templateUrl, setTemplateUrl] = useState(null)
   const helpAddingLocRef = useRef(null)
@@ -12,11 +14,15 @@ export default function LocationAddAddressInfoPage () {
   const usefulInfoRef = useRef(null)
   const downloadTemplateRef = useRef(null)
 
-  const scrollToSection = (ref) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' })
+  const handleScrollToSection = (e, ref) => {
+    e.preventDefault()
+    if (ref.current) {
+      ref.current?.focus() //Move keyboard focus
+      ref.current?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
-  async function getTemplateUrl () {
+  async function getTemplateUrl() {
     const { data } = await backendCall(
       'data',
       'api/bulk_uploads/download_template'
@@ -35,12 +41,11 @@ export default function LocationAddAddressInfoPage () {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Uploading a file with addresses and <br /> postcodes or X and Y
               coordinates
             </h1>
@@ -50,21 +55,21 @@ export default function LocationAddAddressInfoPage () {
                 -{' '}
                 <Link
                   className='govuk-link'
-                  onClick={() => scrollToSection(helpAddingLocRef)}
+                  onClick={(e) => handleScrollToSection(e, helpAddingLocRef)}
                 >
                   Help with adding locations to the file
                 </Link>
                 <br />-{' '}
                 <Link
                   className='govuk-link '
-                  onClick={() => scrollToSection(infoNeededRef)}
+                  onClick={(e) => handleScrollToSection(e, infoNeededRef)}
                 >
                   Information you need to include
                 </Link>
                 <br />-{' '}
                 <Link
                   className='govuk-link'
-                  onClick={() => scrollToSection(usefulInfoRef)}
+                  onClick={(e) => handleScrollToSection(e, usefulInfoRef)}
                 >
                   Useful information you can include to help easily identify
                   each location
@@ -72,7 +77,7 @@ export default function LocationAddAddressInfoPage () {
                 <br />-{' '}
                 <Link
                   className='govuk-link '
-                  onClick={() => scrollToSection(downloadTemplateRef)}
+                  onClick={(e) => handleScrollToSection(e, downloadTemplateRef)}
                 >
                   Download the template and open in Excel, save it as a CSV file
                   and upload it
@@ -80,6 +85,8 @@ export default function LocationAddAddressInfoPage () {
               </p>
               <h2
                 ref={helpAddingLocRef}
+                tabIndex='-1'
+                role='region'
                 className=' govuk-heading-m govuk-!-margin-top-7'
               >
                 Help with adding locations to the file
@@ -103,6 +110,8 @@ export default function LocationAddAddressInfoPage () {
 
               <h2
                 ref={infoNeededRef}
+                tabIndex='-1'
+                role='region'
                 className='govuk-heading-m govuk-!-margin-top-9'
               >
                 Information you need to include
@@ -147,7 +156,12 @@ export default function LocationAddAddressInfoPage () {
                 known as a ‘northing’), for example: 387217.
               </p>
 
-              <h2 ref={usefulInfoRef} className='govuk-heading-m'>
+              <h2
+                ref={usefulInfoRef}
+                tabIndex='-1'
+                role='region'
+                className='govuk-heading-m'
+              >
                 Useful information you can include to help you easily identify
                 the location
               </h2>
@@ -225,6 +239,8 @@ export default function LocationAddAddressInfoPage () {
 
               <h2
                 ref={downloadTemplateRef}
+                tabIndex='-1'
+                role='region'
                 className='govuk-heading-m govuk-!-margin-top-9'
               >
                 Download the file and open in Excel, save it as a CSV file and

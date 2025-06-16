@@ -11,7 +11,7 @@ import {
   setOrgCurrentContactNotes
 } from '../../../common/redux/userSlice'
 
-export default function NotesLayout ({
+export default function NotesLayout({
   navigateToNextPage,
   keywordType,
   instructionText,
@@ -72,10 +72,13 @@ export default function NotesLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>{title || 'Notes (optional)'}</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              {title || 'Notes (optional)'}
+            </h1>
             <div className='govuk-body'>
               <p className='govuk-hint'>{instructionText}</p>
               <TextArea
+                id='location-notes'
                 error={error}
                 inputType='text'
                 rows='5'

@@ -79,7 +79,11 @@ export default function KeywordsLayout ({
         ? getAdditionals(currentObject, 'keywords')
         : ''
   )
-  if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
+
+  // if currentKeywords is not an array
+  if (currentKeywords.length > 0 && !Array.isArray(currentKeywords)) {
+      currentKeywords = JSON.parse(currentKeywords)
+  }
 
   const checkboxArray = Array(currentKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
@@ -255,7 +259,7 @@ export default function KeywordsLayout ({
             {(keywordError || error) && (
               <ErrorSummary errorList={[keywordError, error]} />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {keywordTitle || `Add keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
@@ -297,6 +301,7 @@ export default function KeywordsLayout ({
                   position='absolute'
                   showNotFound={false}
                   nameField='name'
+                  ariaLabel='Add keyword'
                 />
                 <Button
                   text='Add keyword'

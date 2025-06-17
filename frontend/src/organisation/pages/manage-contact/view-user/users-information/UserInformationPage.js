@@ -18,7 +18,7 @@ export default function UserInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const jobTitle = currentContact.additionals.jobTitle
-  const keywords = currentContact.additionals.keywords
+  const keywords = currentContact?.additionals?.keywords ?? []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const userType = getRole(currentContact)
   const [locations, setLocations] = useState([])
@@ -78,7 +78,10 @@ export default function UserInformationPage() {
   return (
     <>
       <Helmet>
-        <title>{contactName}'s user profile page - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          {contactName}'s user profile page - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>

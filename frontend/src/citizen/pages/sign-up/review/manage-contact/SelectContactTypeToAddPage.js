@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
@@ -88,6 +88,9 @@ export default function SelectContactTypeToAddPage() {
               className='govuk-button'
               onClick={handleSubmit}
             />
+            <Link className='govuk-link inline-link' to={'/signup/review'}>
+              Cancel
+            </Link>
           </div>
         </div>
       </main>

@@ -403,17 +403,19 @@ export default function UsersTable({
                       : LoadingDots}
                   </td>
                   <td className='govuk-table__cell'>
-                    <Link
-                      className='govuk-link'
-                      aria-label={`Delete ${contact.firstname}${
-                        contact?.lastname?.length > 0
-                          ? ' ' + contact?.lastname
-                          : ''
-                      }`}
-                      onClick={(e) => onAction(e, actionText, contact)}
-                    >
-                      {actionText}
-                    </Link>
+                    {!contact?.mainAdmin && (
+                      <Link
+                        className='govuk-link'
+                        aria-label={`Delete ${contact.firstname}${
+                          contact?.lastname?.length > 0
+                            ? ' ' + contact?.lastname
+                            : ''
+                        }`}
+                        onClick={(e) => onAction(e, actionText, contact)}
+                      >
+                        {actionText}
+                      </Link>
+                    )}
                   </td>
                 </>
               )}

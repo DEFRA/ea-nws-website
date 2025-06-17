@@ -147,6 +147,9 @@ export default function ViewUsersDashboardPage() {
             }
           })
         }
+
+        // TODO: Implement real way of checking who the main admin is
+        contact.mainAdmin = false
       })
 
       // Sort objects by contact name alphabetically

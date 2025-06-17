@@ -96,10 +96,10 @@ export default function SearchFilter({
           (selectedUserTypeFilters.includes(UserType.Admin) &&
             contact.role === UserType.Admin) ||
           (selectedUserTypeFilters.includes(UserType.Contact) &&
-            contact.role === null &&
+            (contact.role === null || contact.role === undefined) &&
             contact.pendingRole !== UserType.PendingAdmin) ||
           (selectedUserTypeFilters.includes(UserType.PendingAdmin) &&
-            contact.role === null &&
+            (contact.role === null || contact.role === undefined) &&
             contact.pendingRole === UserType.PendingAdmin)
         )
       })

@@ -1,4 +1,8 @@
-import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowLeft,
+  faRotateLeft,
+  faUpRightAndDownLeftFromCenter
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
@@ -16,6 +20,7 @@ import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { isMobile } from 'react-device-detect'
 import locationPin from '../../assets/images/location_pin.svg'
 import AlertType from '../../enums/AlertType'
 import { backendCall } from '../../services/BackendService'
@@ -25,9 +30,14 @@ export default function Map({
   types,
   setFloodAreas,
   mobileView,
+  zoomLevel = 14,
+  resetMapButton = false,
   interactive = true,
   showMarker = true,
-  selectedFloodArea
+  selectedFloodArea,
+  highlightSelectedFloodArea = false,
+  fullScreen,
+  exitMap
 }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
@@ -96,7 +106,7 @@ export default function Map({
   ])
 
   //think we still need this when user opens the full map? checking with ucd
-  const HighlightSelectedArea = (selectedFloodArea) => {
+  const highlightSelectedArea = (selectedFloodArea) => {
     if (warningAreaRefVisible && types.includes(AlertType.FLOOD_WARNING)) {
       warningAreaRef.current.eachLayer((layer) => {
         if (layer.feature.id === selectedFloodArea.id) {
@@ -166,28 +176,25 @@ export default function Map({
       // we must only show the flood area passed in
       showSelectedArea(selectedFloodArea)
     }
+    if (highlightSelectedFloodArea) {
+      highlightSelectedArea(selectedFloodArea)
+    }
   }
 
   // runs on map-render - used when user selects areas on mobile view
   showAreas()
 
-  // reset the map to selected location
-  const ResetMapButton = () => {
+  function SetMapBoundsToShowFullFloodArea() {
     const map = useMap()
-
-    const handleClick = () => {
-      map.setView([latitude, longitude], 14)
-    }
-
-    return (
-      <button
-        className='reset-map-button'
-        aria-label='Reset map zoom and centre on point selected'
-        onClick={handleClick}
-      >
-        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
-      </button>
-    )
+    useEffect(() => {
+      if (selectedFloodArea) {
+        showSelectedArea(selectedFloodArea)
+        // fit the area to the map
+        const layer = L.geoJSON(selectedFloodArea)
+        const bounds = layer.getBounds()
+        map.fitBounds(bounds)
+      }
+    }, [selectedFloodArea])
   }
 
   // Leaflet Marker Icon fix
@@ -251,50 +258,76 @@ export default function Map({
     [apiKey]
   )
 
-  // Unsure we need this? might need it for view location page so commenting out for now
-  // function SetMapBoundsToShowFullFloodArea() {
-  //   const map = useMap()
-  //   useEffect(() => {
-  //     if (selectedFloodArea) {
-  //       // user has decided on a flood area - show only this area
-  //       showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
-  //       // fit the area to the map
-  //       if (types.includes('severe')) {
-  //         const layer = L.geoJSON(selectedFloodWarningArea)
-  //         const bounds = layer.getBounds()
-  //         map.fitBounds(bounds)
-  //       } else if (types.includes('alert')) {
-  //         const layer = L.geoJSON(selectedFloodAlertArea)
-  //         const bounds = layer.getBounds()
-  //         map.fitBounds(bounds)
-  //       }
-  //     }
-  //   }, [selectedFloodArea])
-  // }
+  const ResetMapButton = () => {
+    const map = useMap()
+
+    const handleClick = () => {
+      map.setView([latitude, longitude], 14)
+    }
+
+    return (
+      <button
+        className='reset-map-button'
+        aria-label='Reset map zoom and centre on point selected'
+        onClick={handleClick}
+      >
+        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
+      </button>
+    )
+  }
+
+  const FullScreenMapButton = () => {
+    return (
+      <button
+        className='full-screen-map-button'
+        aria-label='Enable full screen map'
+        onClick={() => fullScreen()}
+      >
+        <FontAwesomeIcon
+          icon={faUpRightAndDownLeftFromCenter}
+          size='2x'
+          color='#000'
+        />
+      </button>
+    )
+  }
+
+  const ExitMapButton = () => {
+    return (
+      <button
+        className='exit-map-button'
+        aria-label='Exit map'
+        onClick={() => exitMap()}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} size='2x' />
+      </button>
+    )
+  }
 
   return (
     <>
-      <div aria-label='Map'>
+      <div aria-label='Map' style={{ height: '100%', width: '100%' }}>
         <MapContainer
           center={[latitude, longitude]}
-          zoom={14}
+          zoom={zoomLevel}
           minZoom={7}
           maxBounds={maxBounds}
           className={'map-container'}
           dragging={interactive}
-          zoomControl={interactive}
           scrollWheelZoom={interactive}
           doubleClickZoom={interactive}
           touchZoom={interactive}
           keyboard={interactive}
           boxZoom={interactive}
-          attributionControl={interactive}
+          zoomControl={false}
+          attributionControl={false}
         >
           {apiKey && tileLayerWithHeader}
           {/* {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />} */}
-          {!mobileView && interactive && <ZoomControl position='bottomright' />}
-          {/* waiting on feedback from UCD on reset button being removed */}
-          {/* {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />} */}
+          {interactive && !isMobile && <ZoomControl position='bottomright' />}
+          {resetMapButton && !isMobile && <ResetMapButton />}
+          {fullScreen && <FullScreenMapButton />}
+          {exitMap && <ExitMapButton />}
           {showMarker && (
             <Marker position={[latitude, longitude]} interactive={false}>
               <Popup />

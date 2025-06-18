@@ -21,8 +21,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import {
   addLocation,
   findPOIByAddress,
-  getRegistrationParams,
-  removeLocation
+  getRegistrationParams
 } from '../../../common/services/ProfileServices'
 import {
   getCoordsOfFloodArea,
@@ -211,13 +210,6 @@ export default function LocationNearFloodAreasLayout({
     navigate(-1)
   }
 
-  const removeLocationWithinFloodArea = async () => {
-    const updatedProfile = removeLocation(profile, selectedLocation.address)
-    dispatch(setProfile(updatedProfile))
-
-    return updatedProfile
-  }
-
   const unregisterLocationFromPartner = async (updatedProfile) => {
     const location = findPOIByAddress(updatedProfile, selectedLocation.address)
 
@@ -253,6 +245,7 @@ export default function LocationNearFloodAreasLayout({
       return {
         type: [AlertType.FLOOD_WARNING],
         icon: 'warning',
+        areaCategory: 'Severe flood warnings and flood warnings area',
         messages: (
           <ul class='govuk-list govuk-list--bullet'>
             <li>severe flood warnings</li>
@@ -264,6 +257,7 @@ export default function LocationNearFloodAreasLayout({
       return {
         type: [AlertType.FLOOD_ALERT],
         icon: 'alert',
+        areaCategory: 'flood alerts area',
         messages: (
           <ul class='govuk-list govuk-list--bullet'>
             <li>flood alerts</li>
@@ -287,14 +281,26 @@ export default function LocationNearFloodAreasLayout({
     return floodAreaAdded
   }
 
+  const toggleFullScreen = () => {
+    setShowFullMap(!showFullMap)
+  }
+
+  const setUpFullScreenMap = (area) => {
+    setSelectedArea(area)
+    toggleFullScreen()
+  }
+
   const map = (area) => (
     <>
-      <div style={{ height: '30vh', width: '30vh' }}>
+      <div
+        className={`nearby-flood-areas-map ${isMobile ? 'mobile' : 'desktop'}`}
+      >
         <Map
           selectedFloodArea={area}
           types={getFloodAreaDetails(area?.properties?.category).type}
           interactive={false}
-          fullScreenOption={true}
+          fullScreen={() => setUpFullScreenMap(area)}
+          zoomLevel={locationSearchType === 'placename' ? 13 : 14}
         />
       </div>
     </>
@@ -322,115 +328,167 @@ export default function LocationNearFloodAreasLayout({
   )
 
   const fullScreenMap = () => (
-    <>
-      {' '}
-      <Map
-        selectedFloodArea={selectedArea}
-        highlightSelectedFloodArea={true}
-        types={getFloodAreaDetails(selectedArea.properties?.category).type}
-        interactive={false}
-      />
-    </>
+    <div className='nearby-flood-areas-full-screen-map-container'>
+      <div className={isMobile ? 'map-mobile' : 'map-desktop'}>
+        <Map
+          selectedFloodArea={selectedArea}
+          highlightSelectedFloodArea={true}
+          types={getFloodAreaDetails(selectedArea.properties?.category).type}
+          interactive={true}
+          resetMapButton={!isMobile}
+          exitMap={() => toggleFullScreen()}
+        />
+      </div>
+
+      <div className={isMobile ? 'area-info-mobile' : 'area-info-desktop'}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '8px'
+          }}
+        >
+          <div
+            className={`org-flood-warning-square ${
+              getFloodAreaDetails(selectedArea?.properties?.category).icon
+            }-square left`}
+          />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <p className='govuk-body govuk-!-font-size-16 govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-2'>
+              {selectedArea.properties.TA_Name}
+            </p>
+            <p className='govuk-body govuk-!-font-size-16'>
+              {
+                getFloodAreaDetails(selectedArea?.properties?.category)
+                  .areaCategory
+              }
+            </p>
+          </div>
+        </div>
+
+        <Button
+          text='Select this location'
+          className={`govuk-button ${isMobile && 'custom-width-button'}`}
+          onClick={() => {
+            toggleFullScreen()
+            setFloodAreas((prevAreas) =>
+              prevAreas.map((a) =>
+                a.id === selectedArea.id
+                  ? { ...a, addLocation: !a.addLocation }
+                  : a
+              )
+            )
+          }}
+        />
+      </div>
+    </div>
   )
 
   return (
     <>
-      {showFullMap && fullScreenMap}
-      <BackLink onClick={() => handleUserNavigatingBack()} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
-        <div className='govuk-grid-row govuk-body'>
-          {error && <ErrorSummary errorList={[error]} />}
-          <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>
-              Select nearby areas where you can get flood messages
-            </h1>
-            <div class='govuk-grid-column-one-half'>
-              <FloodMessagesTypes />
-            </div>
-            {!isMobile && (
-              <Details
-                title={
-                  'Read more on the difference between warnings and alerts'
-                }
-                text={<FloodMessageDetails />}
-              />
-            )}
-            <div
-              className={`govuk-form-group ${
-                error && 'govuk-form-group--error'
-              }`}
-            >
-              {error && <p class='govuk-error-message'>{error}</p>}
-              {floodAreas.map((area) => {
-                return (
-                  <>
-                    <div class='govuk-summary-card' key={area.id}>
-                      <div class='govuk-summary-card__title-wrapper'>
-                        <Checkbox
-                          label='Select'
-                          style={{ fontWeight: 'bold' }}
-                          checked={!!area.addLocation}
-                          onChange={() => {
-                            setError(null)
-                            setFloodAreas((prevAreas) =>
-                              prevAreas.map((a) =>
-                                a.id === area.id
-                                  ? { ...a, addLocation: !a.addLocation }
-                                  : a
-                              )
-                            )
-                          }}
-                        />
-                      </div>
-                      <div class='govuk-summary-card__content govuk-grid-row'>
-                        <div class='govuk-grid-column-one-half'>
-                          {isMobile ? map(area) : areaInfo(area)}
-                        </div>
-                        <div class='govuk-grid-column-one-half'>
-                          {isMobile ? (
-                            <div className='govuk-!-padding-top-4'>
-                              {areaInfo(area)}
+      {showFullMap ? (
+        fullScreenMap()
+      ) : (
+        <>
+          <BackLink onClick={() => handleUserNavigatingBack()} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+            <div className='govuk-grid-row govuk-body'>
+              {error && <ErrorSummary errorList={[error]} />}
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>
+                  Select nearby areas where you can get flood messages
+                </h1>
+                <div>
+                  <FloodMessagesTypes />
+                </div>
+                {!isMobile && (
+                  <Details
+                    title={
+                      'Read more on the difference between warnings and alerts'
+                    }
+                    text={<FloodMessageDetails />}
+                  />
+                )}
+                <div
+                  className={`govuk-form-group ${
+                    error && 'govuk-form-group--error'
+                  }`}
+                >
+                  {error && <p class='govuk-error-message'>{error}</p>}
+                  {floodAreas.map((area) => {
+                    return (
+                      <>
+                        <div class='govuk-summary-card' key={area.id}>
+                          <div class='govuk-summary-card__title-wrapper'>
+                            <Checkbox
+                              label='Select'
+                              style={{ fontWeight: 'bold' }}
+                              checked={!!area.addLocation}
+                              onChange={() => {
+                                setError(null)
+                                setFloodAreas((prevAreas) =>
+                                  prevAreas.map((a) =>
+                                    a.id === area.id
+                                      ? { ...a, addLocation: !a.addLocation }
+                                      : a
+                                  )
+                                )
+                              }}
+                            />
+                          </div>
+                          <div class='govuk-summary-card__content govuk-grid-row'>
+                            <div class='govuk-grid-column-one-half'>
+                              {isMobile ? map(area) : areaInfo(area)}
                             </div>
-                          ) : (
-                            map(area)
-                          )}
+                            <div class='govuk-grid-column-one-half'>
+                              {isMobile ? (
+                                <div className='govuk-!-padding-top-4'>
+                                  {areaInfo(area)}
+                                </div>
+                              ) : (
+                                map(area)
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </>
-                )
-              })}
+                      </>
+                    )
+                  })}
+                </div>
+                {isMobile && (
+                  <Details
+                    title={
+                      'Read more on the difference between warnings and alerts'
+                    }
+                    text={'Shakir to add details here'}
+                  />
+                )}
+                <div className='govuk-!-margin-top-7'>
+                  <Button
+                    text='I want these'
+                    className={`govuk-button ${
+                      isMobile && 'custom-width-button'
+                    }`}
+                    onClick={handleSubmit}
+                  />
+                  &nbsp; &nbsp;
+                  <Link
+                    onClick={() => navigate(-1)}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 10px 7px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Enter different location
+                  </Link>
+                </div>
+              </div>
             </div>
-            {isMobile && (
-              <Details
-                title={
-                  'Read more on the difference between warnings and alerts'
-                }
-                text={'Shakir to add details here'}
-              />
-            )}
-            <div className='govuk-!-margin-top-7'>
-              <Button
-                text='I want these'
-                className={`govuk-button ${isMobile && 'custom-width-button'}`}
-                onClick={handleSubmit}
-              />
-              &nbsp; &nbsp;
-              <Link
-                onClick={() => navigate(-1)}
-                className='govuk-link'
-                style={{
-                  display: 'inline-block',
-                  padding: '8px 10px 7px',
-                  cursor: 'pointer'
-                }}
-              >
-                Enter different location
-              </Link>
-            </div>
-          </div>
-        </div>
-      </main>
+          </main>
+        </>
+      )}
     </>
   )
 }

@@ -186,6 +186,14 @@
   padding: 10px;
 }
 
+.flood-types {
+  font-size: 1rem;
+}
+
+.flood-types-row-header {
+  width: 30%;
+}
+
 @media (min-width: 40.0625em) {
   .menu-button {
     display: none;
@@ -407,27 +415,62 @@
 }
 
 .map-container {
-  height: max-content;
-  width: max-content;
+  height: 100%;
+  width: 100%;
 }
 
-/* @media (max-width: 1099px) {
-  .map-container {
-    height: 45vh;
+.nearby-flood-areas-map.mobile {
+  width: 370px;
+  height: 220px;
+}
+
+.nearby-flood-areas-map.desktop {
+  width: 400px;
+  height: 320px;
+}
+
+.nearby-flood-areas-full-screen-map-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .nearby-flood-areas-full-screen-map-container {
+    flex-direction: column;
   }
 }
 
-@media (min-width: 1100px) and (max-width: 1700px) {
-  .map-container {
-    height: 60vh;
-  }
+.nearby-flood-areas-full-screen-map-container .map-desktop {
+  width: 80vw;
+  height: 100vh;
 }
 
-@media (min-width: 1700px) {
-  .map-container {
-    height: 40vh;
-  }
-} */
+.nearby-flood-areas-full-screen-map-container .map-mobile {
+  width: 100vw;
+  height: 85vh;
+}
+
+.nearby-flood-areas-full-screen-map-container .area-info-desktop {
+  width: 20vw;
+  height: 100vh;
+  background-color: white;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.nearby-flood-areas-full-screen-map-container .area-info-mobile {
+  width: 100vw;
+  height: 15vh;
+  background-color: white;
+  padding: 1rem;
+  overflow-y: auto;
+}
 
 .flood-warning-key {
   background-color: #f2f2f2;
@@ -522,18 +565,28 @@
   border: none;
 }
 
-.back-map-button {
-  transform: translateX(-50%);
-  z-index: 1001;
+.full-screen-map-button {
   position: absolute;
-  top: 1rem;
-  left: 2rem;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
+  padding: 3px;
   background-color: white;
-  padding: 0.625rem;
-  border-radius: 0.3125rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.exit-map-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  padding: 5px 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .custom-width-button {
@@ -756,6 +809,12 @@
   }
   .desktop-table {
     display: none;
+  }
+  .flood-types {
+    font-size: 0.875rem;
+  }
+  .flood-types-row-header {
+    width: 60%;
   }
 }
 

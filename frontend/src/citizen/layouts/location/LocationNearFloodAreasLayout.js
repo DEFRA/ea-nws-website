@@ -15,13 +15,15 @@ import AlertType from '../../../common/enums/AlertType'
 import {
   getAdditional,
   getLocationOtherAdditional,
+  setNearbyTargetAreasAdded,
   setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addLocation,
   findPOIByAddress,
-  getRegistrationParams
+  getRegistrationParams,
+  removeLocation
 } from '../../../common/services/ProfileServices'
 import {
   getCoordsOfFloodArea,
@@ -57,6 +59,10 @@ export default function LocationNearFloodAreasLayout({
   // used when user selects flood area when location is within proximity
   const isUserInNearbyTargetFlowpath = useSelector(
     (state) => state.session.nearbyTargetAreaFlow
+  )
+  // used when user decides to navigate back right after
+  const floodAreasRecentlyAdded = useSelector(
+    (state) => state.session.nearbyTargetAreasAdded
   )
 
   // get nearby flood areas to setup map
@@ -117,10 +123,12 @@ export default function LocationNearFloodAreasLayout({
 
         // if user is in sign up flow, then profile returned will be undefined
         if (updatedProfile) {
-          await registerLocationToPartner(updatedProfile)
+          await registerLocationsToPartner(updatedProfile)
           dispatch(setProfile(updatedProfile))
         }
       }
+
+      console.log('updatedProfile', updatedProfile)
       continueToNextPage()
     } else {
       setError('Select at least one area')
@@ -132,8 +140,13 @@ export default function LocationNearFloodAreasLayout({
     // we need to get a common name to group nearby target area locations added through an address
     const locationName = selectedLocation.address
 
+    // if user decides to navigate back, we need to know the exact flood areas added to remove from geosafe
+    let floodAreasAdded = []
+
     floodAreas.forEach((area) => {
-      if (area.addLocation && !floodAreaExistsInProfile(area)) {
+      if (area.addLocation || floodAreaExistsInProfile(area)) {
+        floodAreasAdded.push(area.properties.TA_Name)
+
         const additionals = [
           { id: 'locationName', value: { s: locationName } },
           {
@@ -156,6 +169,7 @@ export default function LocationNearFloodAreasLayout({
         updatedProfile = addLocation(profile, targetArea)
       }
     })
+    dispatch(setNearbyTargetAreasAdded(floodAreasAdded))
     dispatch(setProfile(updatedProfile))
 
     return updatedProfile
@@ -175,57 +189,76 @@ export default function LocationNearFloodAreasLayout({
     }
   }
 
-  const registerLocationToPartner = async (profile) => {
-    const location = findPOIByAddress(profile, selectedLocation.address)
+  const registerLocationsToPartner = async (profile) => {
+    floodAreas.forEach(async (area) => {
+      if (area.addLocation || floodAreaExistsInProfile(area)) {
+        const location = findPOIByAddress(profile, area?.properties.TA_Name)
 
-    const data = {
-      authToken,
-      locationId: location.id,
-      partnerId,
-      params: getRegistrationParams(profile, locationAlertTypes)
-    }
+        const data = {
+          authToken,
+          locationId: location.id,
+          partnerId,
+          params: getRegistrationParams(profile, locationAlertTypes)
+        }
 
-    await backendCall(
-      data,
-      'api/partner/register_location_to_partner',
-      navigate
-    )
+        await backendCall(
+          data,
+          'api/partner/register_location_to_partner',
+          navigate
+        )
+      }
+    })
   }
 
   const handleUserNavigatingBack = async () => {
     let updatedProfile
+    updatedProfile = await removeAllFloodAreas()
 
-    // waiting on UCD feedback
-    // updatedProfile = await removeLocationWithinFloodArea()
-
-    // if (updateGeoSafeProfile) {
-    //   updatedProfile = await updateGeosafeProfile(profile)
-    //   // if user is in sign up flow, then profile returned will be undefined
-    //   if (updatedProfile) {
-    //     unregisterLocationFromPartner(updatedProfile)
-    //     dispatch(setProfile(updatedProfile))
-    //   }
-    // }
+    if (updateGeoSafeProfile) {
+      updatedProfile = await updateGeosafeProfile(profile)
+      // if user is in sign up flow, then profile returned will be undefined
+      if (updatedProfile) {
+        unregisterLocationsFromPartner(updatedProfile)
+        dispatch(setProfile(updatedProfile))
+      }
+    }
 
     navigate(-1)
   }
 
-  const unregisterLocationFromPartner = async (updatedProfile) => {
-    const location = findPOIByAddress(updatedProfile, selectedLocation.address)
+  const removeAllFloodAreas = async () => {
+    let updatedProfile
+    if (floodAreasRecentlyAdded?.length > 0) {
+      floodAreasRecentlyAdded.forEach((areaName) => {
+        updatedProfile = removeLocation(profile, areaName)
+      })
+    }
 
-    // accomodates situation where user presses back before the location is stored in the profile
-    if (location) {
-      const data = {
-        authToken,
-        locationId: location.id,
-        partnerId
-      }
+    dispatch(setProfile(updatedProfile))
 
-      await backendCall(
-        data,
-        'api/partner/unregister_location_from_partner',
-        navigate
-      )
+    return updatedProfile
+  }
+
+  const unregisterLocationsFromPartner = async (updatedProfile) => {
+    if (floodAreasRecentlyAdded?.length > 0) {
+      floodAreasRecentlyAdded.forEach(async (areaName) => {
+        const location = findPOIByAddress(updatedProfile, areaName)
+
+        // accomodates situation where user presses back before the location is stored in the profile
+        if (location) {
+          const data = {
+            authToken,
+            locationId: location.id,
+            partnerId
+          }
+
+          await backendCall(
+            data,
+            'api/partner/unregister_location_from_partner',
+            navigate
+          )
+        }
+      })
     }
   }
 

@@ -419,6 +419,25 @@
   width: 100%;
 }
 
+.location-in-flood-area-map.mobile {
+  width: 90vw;
+  height: 40vh;
+}
+
+.location-in-flood-area-map.desktop {
+  width: 50vw;
+  height: 40vh;
+}
+
+.location-in-flood-area--full-screen-map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
 .nearby-flood-areas-map.mobile {
   width: 370px;
   height: 220px;

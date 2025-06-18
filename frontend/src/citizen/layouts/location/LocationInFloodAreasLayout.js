@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -37,10 +38,13 @@ export default function LocationInFloodAreasLayout({
     'alertTypes'
   )
   const [floodAreas, setFloodAreas] = useState([])
-  const [severeWarningAreaNames, setSevereWarningAreaNames] = useState(
-    new Set()
+  const [severeWarningAreas, setSevereWarningAreas] = useState(new Set())
+  const [alertAreas, setAlertAreas] = useState(new Set())
+
+  // used when user has selected search via placename and radius of TAs found is extended
+  const locationSearchType = useSelector(
+    (state) => state.session.locationSearchType
   )
-  const [alertAreaNames, setAlertAreaNames] = useState(new Set())
 
   // we should update this so that it is based on the enum value
   const mapAreas = locationAlertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
@@ -79,6 +83,24 @@ export default function LocationInFloodAreasLayout({
     // geosafe doesnt accept locations with postcodes - need to remove this from the object
     const { postcode, ...locationWithoutPostcode } = selectedLocation
 
+    const severeAreasArray = [...severeWarningAreas]
+    const alertAreasArray = [...alertAreas]
+
+    const allAreasAffectingLocation = severeAreasArray.concat(alertAreasArray)
+
+    const additionals = [
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            targetAreas: allAreasAffectingLocation,
+            alertTypes: locationAlertTypes
+          })
+        }
+      }
+    ]
+
+    locationWithoutPostcode.additionals = additionals
     const updatedProfile = addLocation(profile, locationWithoutPostcode)
     dispatch(setProfile(updatedProfile))
 
@@ -157,64 +179,108 @@ export default function LocationInFloodAreasLayout({
   }
 
   useEffect(() => {
-    let severeNames = new Set()
-    let alertNames = new Set()
+    let severeAreas = []
+    let alertAreas = []
     floodAreas?.forEach((area) => {
-      if (area.properties.category.toLowerCase().includes('warning')) {
-        severeNames.add(area.properties.TA_Name)
-      } else if (area.properties.category.toLowerCase().includes('alert')) {
-        alertNames.add(area.properties.TA_Name)
+      const category = area?.properties?.category?.toLowerCase()
+      if (!category) return
+
+      const areaData = {
+        TA_CODE: area.properties.TA_CODE,
+        TA_Name: area.properties.TA_Name,
+        category: category.includes('warning') ? 'Flood warning' : 'Flood alert'
+      }
+
+      if (category.toLowerCase().includes('warning')) {
+        severeAreas.push(areaData)
+      } else if (category.toLowerCase().includes('alert')) {
+        alertAreas.push(areaData)
       }
     })
 
-    setSevereWarningAreaNames(severeNames)
-    setAlertAreaNames(alertNames)
+    setSevereWarningAreas(severeAreas)
+    setAlertAreas(alertAreas)
   }, [floodAreas])
+
+  const [showFullMap, setShowFullMap] = useState(false)
+
+  const toggleFullScreen = () => {
+    setShowFullMap(!showFullMap)
+  }
 
   return (
     <>
-      <BackLink onClick={() => handleUserNavigatingBack()} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
-        <div className='govuk-grid-row govuk-body'>
-          <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>
-              You can get flood messages for your location
-            </h1>
-            <Map types={mapAreas} setFloodAreas={setFloodAreas} />
-            <p className='govuk-!-padding-top-6 govuk-!-padding-bottom-4'>
-              We'll send you the following flood messages.
-            </p>
-            <FloodMessagesTable
-              types={locationAlertTypes}
-              severeFloodWarningAreaNames={severeWarningAreaNames}
-              alertFloodWarningAreaNames={alertAreaNames}
-            />
-            <Details
-              title={'Read more on the difference between warnings and alerts'}
-              text={<FloodMessageDetails />}
-            />
-            <div className='govuk-!-margin-top-7'>
-              <Button
-                text='I want these'
-                className='govuk-button'
-                onClick={handleSubmit}
-              />
-              &nbsp; &nbsp;
-              <Link
-                onClick={() => navigate(-1)}
-                className='govuk-link'
-                style={{
-                  display: 'inline-block',
-                  padding: '8px 10px 7px',
-                  cursor: 'pointer'
-                }}
-              >
-                Choose different location
-              </Link>
-            </div>
-          </div>
+      {showFullMap ? (
+        <div className='location-in-flood-area--full-screen-map'>
+          <Map
+            types={mapAreas}
+            interactive={true}
+            exitMap={() => toggleFullScreen()}
+          />
         </div>
-      </main>
+      ) : (
+        <>
+          <BackLink onClick={() => handleUserNavigatingBack()} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+            <div className='govuk-grid-row govuk-body'>
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>
+                  You can get flood messages for your location
+                </h1>
+                <div
+                  className={
+                    isMobile
+                      ? 'location-in-flood-area-map mobile'
+                      : 'location-in-flood-area-map desktop'
+                  }
+                >
+                  <Map
+                    types={mapAreas}
+                    setFloodAreas={setFloodAreas}
+                    interactive={!isMobile}
+                    resetMapButton={!isMobile}
+                    fullScreen={isMobile ? () => toggleFullScreen() : undefined}
+                    zoomLevel={locationSearchType === 'placename' ? 13 : 14}
+                  />
+                </div>
+                <p className='govuk-!-padding-top-6 govuk-!-padding-bottom-4'>
+                  We'll send you the following flood messages.
+                </p>
+                <FloodMessagesTable
+                  types={locationAlertTypes}
+                  severeFloodWarningAreas={severeWarningAreas}
+                  alertFloodWarningAreas={alertAreas}
+                />
+                <Details
+                  title={
+                    'Read more on the difference between warnings and alerts'
+                  }
+                  text={<FloodMessageDetails />}
+                />
+                <div className='govuk-!-margin-top-7'>
+                  <Button
+                    text='I want these'
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />
+                  &nbsp; &nbsp;
+                  <Link
+                    onClick={() => navigate(-1)}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 10px 7px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Choose different location
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </main>
+        </>
+      )}
     </>
   )
 }

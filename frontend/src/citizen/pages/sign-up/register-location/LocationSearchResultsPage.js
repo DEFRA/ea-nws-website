@@ -9,6 +9,7 @@ export default function LocationSearchResultsPage() {
   const dispatch = useDispatch()
 
   const continueToNextPage = (
+    floodAreasAlreadyAdded,
     isInWarningArea,
     isInAlertArea,
     isWithinWarningAreaProximity,

@@ -9,7 +9,9 @@ import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import AlertType from '../../../common/enums/AlertType'
 import {
+  getAdditional,
   setFloodAlertCount,
+  setNearbyTargetAreasAdded,
   setNearbyTargetAreasFlow,
   setSelectedLocation,
   setSevereFloodWarningCount
@@ -146,15 +148,24 @@ export default function LocationSearchResultsLayout({
       // this needs reset when on the view location page
       if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
         dispatch(setNearbyTargetAreasFlow(true))
+        dispatch(setNearbyTargetAreasAdded([]))
       } else {
         dispatch(setNearbyTargetAreasFlow(false))
+        dispatch(setNearbyTargetAreasAdded([]))
       }
 
       const floodAreas = alertArea?.features.concat(warningArea?.features)
-      let floodAreasAlreadyAdded = false
+      let floodAreasAlreadyAdded = []
       floodAreas?.forEach((area) => {
-        floodAreasAlreadyAdded = profileLocations.some((loc) => {
-          return loc.address === area.properties.TA_Name
+        profileLocations?.forEach((loc) => {
+          if (
+            loc.address === area.properties.TA_Name ||
+            getAdditional(loc.additionals, 'targetAreas').some((targetArea) => {
+              return targetArea.TA_Name === area.properties.TA_Name
+            })
+          ) {
+            floodAreasAlreadyAdded.push(area.properties.TA_Name)
+          }
         })
       })
 

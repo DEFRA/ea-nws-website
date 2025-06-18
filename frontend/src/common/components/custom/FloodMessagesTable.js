@@ -4,11 +4,11 @@ import AlertType from '../../enums/AlertType'
 
 export default function FloodMessagesTable({
   types,
-  severeFloodWarningAreaNames,
-  alertFloodWarningAreaNames
+  severeFloodWarningAreas,
+  alertFloodWarningAreas
 }) {
-  const severeAreaNamesArray = [...severeFloodWarningAreaNames]
-  const alertAreaNamesArray = [...alertFloodWarningAreaNames]
+  const severeAreasArray = [...severeFloodWarningAreas]
+  const alertAreasArray = [...alertFloodWarningAreas]
 
   const columnWidths = {
     type: isMobile ? '50%' : '40%',
@@ -78,16 +78,16 @@ export default function FloodMessagesTable({
               <td
                 className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
               >
-                {severeAreaNamesArray?.length > 1 ? (
+                {severeAreasArray?.length > 1 ? (
                   <>
                     <ul class='govuk-list govuk-list--bullet'>
-                      {severeAreaNamesArray?.map((areaName) => {
-                        return <li key={areaName}>{areaName}</li>
+                      {severeAreasArray?.map((area) => {
+                        return <li key={area.TA_CODE}>{area.TA_Name}</li>
                       })}
                     </ul>
                   </>
                 ) : (
-                  <>{severeAreaNamesArray && severeAreaNamesArray[0]}</>
+                  <>{severeAreasArray && severeAreasArray[0]?.TA_Name}</>
                 )}
               </td>
             </tr>
@@ -119,16 +119,16 @@ export default function FloodMessagesTable({
             <td
               className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
             >
-              {alertAreaNamesArray?.length > 1 ? (
+              {alertAreasArray?.length > 1 ? (
                 <>
                   <ul class='govuk-list govuk-list--bullet'>
-                    {alertAreaNamesArray?.map((areaName) => {
-                      return <li key={areaName}>{areaName}</li>
+                    {alertAreasArray?.map((area) => {
+                      return <li key={area.TA_CODE}>{area.TA_Name}</li>
                     })}
                   </ul>
                 </>
               ) : (
-                <>{alertAreaNamesArray && alertAreaNamesArray[0]}</>
+                <>{alertAreasArray && alertAreasArray[0]?.TA_Name}</>
               )}
             </td>
           </tr>

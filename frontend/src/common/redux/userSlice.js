@@ -126,10 +126,11 @@ const userSlice = createSlice({
     // required for when user changes a location at sign up review
     locationToBeChanged: null,
     // required for nearby flood areas flow
+    nearbyTargetAreaFlow: null,
+    nearbyTargetAreasAdded: null,
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
-    nearbyTargetAreaFlow: null,
     // required for historical flood warnings and alerts
     severeFloodWarningCount: null,
     floodAlertCount: null,
@@ -312,6 +313,9 @@ const userSlice = createSlice({
     },
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
+    },
+    setNearbyTargetAreasAdded: (state, action) => {
+      state.nearbyTargetAreasAdded = action.payload
     },
     // required for historical flood warnings and alerts
     setSevereFloodWarningCount: (state, action) => {
@@ -822,6 +826,7 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      state.nearbyTargetAreasAdded = null
       // required for historical flood warnings and alerts
       state.severeFloodWarningCount = null
       state.floodAlertCount = null
@@ -1037,6 +1042,7 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  setNearbyTargetAreasAdded,
   // required for historical flood warnings and alerts
   setSevereFloodWarningCount,
   setFloodAlertCount,

@@ -21,7 +21,7 @@ import {
   removeLocation
 } from '../../../common/services/ProfileServices'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInFloodAreasLayout({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {

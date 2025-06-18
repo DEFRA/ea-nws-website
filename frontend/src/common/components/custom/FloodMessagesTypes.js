@@ -1,7 +1,7 @@
 export default function FloodMessageTypes({ message }) {
   return (
     <>
-      <p className='govuk-!-font-weight-bold'>{message}</p>
+      <p className='govuk-!-font-weight-bold'>Types of flood message</p>
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
@@ -11,7 +11,7 @@ export default function FloodMessageTypes({ message }) {
               className='govuk-table__header'
             >
               <div className='org-flood-warning-square warning-square govuk-!-margin-right-4 left' />
-              <p>Severe flood warning</p>
+              <p>Severe flood warnings</p>
             </th>
             <td
               style={{ borderBottom: 'none', paddingBottom: '0' }}

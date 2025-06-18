@@ -30,6 +30,7 @@ export default function LocationSearchResultsLayout({
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
+  const profileLocations = useSelector((state) => state.session.profile?.pois)
   const locationSearchType = useSelector(
     (state) => state.session.locationSearchType
   )
@@ -149,7 +150,16 @@ export default function LocationSearchResultsLayout({
         dispatch(setNearbyTargetAreasFlow(false))
       }
 
+      const floodAreas = alertArea?.features.concat(warningArea?.features)
+      let floodAreasAlreadyAdded = false
+      floodAreas?.forEach((area) => {
+        floodAreasAlreadyAdded = profileLocations.some((loc) => {
+          return loc.address === area.properties.TA_Name
+        })
+      })
+
       continueToNextPage(
+        floodAreasAlreadyAdded,
         isInWarningArea,
         isInAlertArea,
         isWithinWarningAreaProximity,

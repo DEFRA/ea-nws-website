@@ -406,7 +406,12 @@
   height: 100vh;
 }
 
-@media (max-width: 1099px) {
+.map-container {
+  height: max-content;
+  width: max-content;
+}
+
+/* @media (max-width: 1099px) {
   .map-container {
     height: 45vh;
   }
@@ -422,7 +427,7 @@
   .map-container {
     height: 40vh;
   }
-}
+} */
 
 .flood-warning-key {
   background-color: #f2f2f2;

@@ -27,7 +27,6 @@ export default function Map({
   mobileView,
   interactive = true,
   showMarker = true,
-  fullScreenOption = false,
   selectedFloodArea
 }) {
   const [alertArea, setAlertArea] = useState(null)
@@ -281,7 +280,7 @@ export default function Map({
           zoom={14}
           minZoom={7}
           maxBounds={maxBounds}
-          className={mobileView ? 'map-mobile-view' : 'map-container'}
+          className={'map-container'}
           dragging={interactive}
           zoomControl={interactive}
           scrollWheelZoom={interactive}

@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import LocationNearFloodAreasLayout from '../../../layouts/location/LocationNearFloodAreasLayout'
 
-export default function LocationInSevereWarningAreaPage() {
+export default function LocationNearFloodAreasPage() {
   const navigate = useNavigate()
 
   const continueToNextPage = () => {

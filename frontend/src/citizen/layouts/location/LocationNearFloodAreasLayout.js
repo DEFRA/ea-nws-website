@@ -48,6 +48,8 @@ export default function LocationNearFloodAreasLayout({
   const [floodAreas, setFloodAreas] = useState([])
   const [partnerId, setPartnerId] = useState(false)
   const [error, setError] = useState(null)
+  const [showFullMap, setShowFullMap] = useState(false)
+  const [selectedArea, setSelectedArea] = useState(null)
 
   // used when user has selected search via placename and radius of TAs found is extended
   const locationSearchType = useSelector(
@@ -287,13 +289,14 @@ export default function LocationNearFloodAreasLayout({
 
   const map = (area) => (
     <>
-      {' '}
-      <Map
-        selectedFloodArea={area}
-        types={getFloodAreaDetails(area?.properties?.category).type}
-        interactive={false}
-        fullScreenOption={true}
-      />
+      <div style={{ height: '30vh', width: '30vh' }}>
+        <Map
+          selectedFloodArea={area}
+          types={getFloodAreaDetails(area?.properties?.category).type}
+          interactive={false}
+          fullScreenOption={true}
+        />
+      </div>
     </>
   )
 
@@ -318,10 +321,22 @@ export default function LocationNearFloodAreasLayout({
     </>
   )
 
+  const fullScreenMap = () => (
+    <>
+      {' '}
+      <Map
+        selectedFloodArea={selectedArea}
+        highlightSelectedFloodArea={true}
+        types={getFloodAreaDetails(selectedArea.properties?.category).type}
+        interactive={false}
+      />
+    </>
+  )
+
   return (
     <>
+      {showFullMap && fullScreenMap}
       <BackLink onClick={() => handleUserNavigatingBack()} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           {error && <ErrorSummary errorList={[error]} />}
@@ -329,7 +344,9 @@ export default function LocationNearFloodAreasLayout({
             <h1 className='govuk-heading-l'>
               Select nearby areas where you can get flood messages
             </h1>
-            <p>Shakir to add types of flood message key here</p>
+            <div class='govuk-grid-column-one-half'>
+              <FloodMessagesTypes />
+            </div>
             {!isMobile && (
               <Details
                 title={
@@ -338,7 +355,6 @@ export default function LocationNearFloodAreasLayout({
                 text={<FloodMessageDetails />}
               />
             )}
-            <FloodMessagesTypes />
             <div
               className={`govuk-form-group ${
                 error && 'govuk-form-group--error'

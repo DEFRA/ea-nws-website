@@ -9,15 +9,13 @@ export default function LocationInFloodAreasPage() {
     navigate('/signup')
   }
 
-  const continueToSearchResultsPage = () => {
-    navigate('/signup/register-location/search-results')
-  }
+  const searchResultsPage = '/signup/register-location/search-results'
 
   return (
     <>
       <LocationInFloodAreasLayout
         continueToNextPage={continueToNextPage}
-        continueToSearchResultsPage={continueToSearchResultsPage}
+        searchResultsPage={searchResultsPage}
         updateGeoSafeProfile={false}
       />
     </>

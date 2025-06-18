@@ -9,15 +9,13 @@ export default function LocationNearFloodAreasPage() {
     navigate('/signup')
   }
 
-  const continueToSearchResultsPage = () => {
-    navigate('/signup/register-location/search-results')
-  }
+  const searchResultsPage = '/signup/register-location/search-results'
 
   return (
     <>
       <LocationNearFloodAreasLayout
         continueToNextPage={continueToNextPage}
-        continueToSearchResultsPage={continueToSearchResultsPage}
+        searchResultsPage={searchResultsPage}
         updateGeoSafeProfile={false}
       />
     </>

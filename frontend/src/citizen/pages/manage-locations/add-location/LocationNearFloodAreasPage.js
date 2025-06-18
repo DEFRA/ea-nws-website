@@ -13,15 +13,13 @@ export default function LocationNearFloodWarningsPage() {
     })
   }
 
-  const continueToSearchResultsPage = () => {
-    navigate('/manage-locations/add/search-results')
-  }
+  const searchResultsPage = '/manage-locations/add/search-results'
 
   return (
     <>
       <LocationNearFloodAreasLayout
         continueToNextPage={continueToNextPage}
-        continueToSearchResultsPage={continueToSearchResultsPage}
+        searchResultsPage={searchResultsPage}
       />
     </>
   )

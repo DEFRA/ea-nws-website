@@ -9,15 +9,13 @@ export default function ChangeLocationInFloodAreasPage() {
     navigate('/signup/review')
   }
 
-  const continueToSearchResultsPage = () => {
-    navigate('/signup/review/change-location-results')
-  }
+  const searchResultsPage = '/signup/review/change-location-results'
 
   return (
     <>
       <LocationNearFloodAreasLayout
         continueToNextPage={continueToNextPage}
-        continueToSearchResultsPage={continueToSearchResultsPage}
+        searchResultsPage={searchResultsPage}
       />
     </>
   )

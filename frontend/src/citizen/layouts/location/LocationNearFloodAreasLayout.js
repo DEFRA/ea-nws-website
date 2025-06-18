@@ -32,6 +32,7 @@ import {
 
 export default function LocationNearFloodAreasLayout({
   continueToNextPage,
+  searchResultsPage,
   updateGeoSafeProfile = true
 }) {
   const navigate = useNavigate()
@@ -139,7 +140,6 @@ export default function LocationNearFloodAreasLayout({
         }
       }
 
-      console.log('updatedProfile', updatedProfile)
       continueToNextPage()
     } else {
       setError('Select at least one area')
@@ -517,7 +517,7 @@ export default function LocationNearFloodAreasLayout({
                   />
                   &nbsp; &nbsp;
                   <Link
-                    onClick={() => navigate(-1)}
+                    to={searchResultsPage}
                     className='govuk-link'
                     style={{
                       display: 'inline-block',
@@ -525,7 +525,7 @@ export default function LocationNearFloodAreasLayout({
                       cursor: 'pointer'
                     }}
                   >
-                    Enter different location
+                    Choose different location
                   </Link>
                 </div>
               </div>

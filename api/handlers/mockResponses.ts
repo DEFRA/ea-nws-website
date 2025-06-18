@@ -35,8 +35,8 @@ const citizenPOIs = [
     name: '10023463293',
     address: 'House Of Commons, Houses Of Parliament, London,  SW1A 0AA',
     coordinates: {
-      latitude: '51499841.5',
-      longitude: '-012463770.0'
+      latitude: 51.4998415 * 10 ** 6,
+      longitude: -0.1246377 * 10 ** 6
     },
     id: '1',
     enabled: true,
@@ -80,8 +80,8 @@ const citizenPOIs = [
     address:
       'Town Beck at Ulverston from The Gill downstream to The Ellers area',
     coordinates: {
-      latitude: '54194843.0',
-      longitude: '-30912570.0'
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
     },
     id: '1',
     enabled: true,

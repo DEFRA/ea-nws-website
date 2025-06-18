@@ -12,7 +12,6 @@ export default function LocationSearchResultsPage() {
     isWithinAlertAreaProximity,
     isError
   ) => {
-    console.log('floodAreasAlreadyAdded passed on', floodAreasAlreadyAdded)
     if (floodAreasAlreadyAdded.length > 0) {
       navigate('/manage-locations/add/location-already-added')
     } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {

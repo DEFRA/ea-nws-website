@@ -29,12 +29,12 @@ import TileLayerWithHeader from './TileLayerWithHeader'
 export default function Map({
   types,
   setFloodAreas,
-  mobileView,
   zoomLevel = 14,
   resetMapButton = false,
   interactive = true,
   showMarker = true,
   selectedFloodArea,
+  showOnlySelectedFloodArea = false,
   highlightSelectedFloodArea = false,
   fullScreen,
   exitMap
@@ -50,10 +50,6 @@ export default function Map({
   const locationSearchType = useSelector(
     (state) => state.session.locationSearchType
   )
-  // used when user selects flood area when location is within proximity
-  const isUserInNearbyTargetFlowpath = useSelector(
-    (state) => state.session.nearbyTargetAreaFlow
-  )
   // the below is used to interact with the map to highlight selected flood areas
   // or only show selected flood areas
   const alertAreaRef = useRef(null)
@@ -67,7 +63,7 @@ export default function Map({
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
-        !isUserInNearbyTargetFlowpath
+        selectedFloodArea !== null
           ? // only load TAs required i.e if location being added lies within TAs, then only load these by searching with a 1m radius
             // this can be repeated for locations that were added as a TA as well
             0.001
@@ -323,7 +319,7 @@ export default function Map({
           attributionControl={false}
         >
           {apiKey && tileLayerWithHeader}
-          {/* {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />} */}
+          {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
           {interactive && !isMobile && <ZoomControl position='bottomright' />}
           {resetMapButton && !isMobile && <ResetMapButton />}
           {fullScreen && <FullScreenMapButton />}

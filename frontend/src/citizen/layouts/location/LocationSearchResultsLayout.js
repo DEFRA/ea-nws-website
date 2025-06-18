@@ -9,7 +9,7 @@ import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import AlertType from '../../../common/enums/AlertType'
 import {
-  getAdditional,
+  getLocationOtherAdditional,
   setFloodAlertCount,
   setFloodAreasAlreadyAdded,
   setNearbyTargetAreasAdded,
@@ -159,10 +159,11 @@ export default function LocationSearchResultsLayout({
       let floodAreasAlreadyAdded = []
       floodAreas?.forEach((area) => {
         profileLocations?.forEach((loc) => {
-          const locationsTargetAreas = getAdditional(
+          const locationsTargetAreas = getLocationOtherAdditional(
             loc?.additionals,
             'targetAreas'
           )
+
 
           if (
             loc.address === area.properties.TA_Name ||
@@ -175,8 +176,6 @@ export default function LocationSearchResultsLayout({
           }
         })
       })
-
-      console.log('floodAreasAlreadyAdded', floodAreasAlreadyAdded)
 
       dispatch(setFloodAreasAlreadyAdded(floodAreasAlreadyAdded))
 

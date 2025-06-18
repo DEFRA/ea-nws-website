@@ -24,6 +24,7 @@ import {
 
 export default function LocationInFloodAreasLayout({
   continueToNextPage,
+  searchResultsPage,
   updateGeoSafeProfile = true
 }) {
   const navigate = useNavigate()
@@ -101,6 +102,7 @@ export default function LocationInFloodAreasLayout({
     ]
 
     locationWithoutPostcode.additionals = additionals
+
     const updatedProfile = addLocation(profile, locationWithoutPostcode)
     dispatch(setProfile(updatedProfile))
 
@@ -265,7 +267,7 @@ export default function LocationInFloodAreasLayout({
                   />
                   &nbsp; &nbsp;
                   <Link
-                    onClick={() => navigate(-1)}
+                    to={searchResultsPage}
                     className='govuk-link'
                     style={{
                       display: 'inline-block',

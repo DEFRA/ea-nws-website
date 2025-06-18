@@ -13,15 +13,13 @@ export default function LocationInFloodAreasPage() {
     })
   }
 
-  const continueToSearchResultsPage = () => {
-    navigate('/manage-locations/add/search-results')
-  }
+  const searchResultsPage = '/manage-locations/add/search-results'
 
   return (
     <>
       <LocationInFloodAreasLayout
         continueToNextPage={continueToNextPage}
-        continueToSearchResultsPage={continueToSearchResultsPage}
+        searchResultsPage={searchResultsPage}
       />
     </>
   )

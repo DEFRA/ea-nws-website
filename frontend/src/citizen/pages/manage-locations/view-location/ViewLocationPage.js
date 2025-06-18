@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -82,24 +83,26 @@ export default function ViewLocationPage() {
   const [floodAlertCount, setFloodAlertCount] = useState(null)
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
 
-  let alertTypes = getLocationOtherAdditional(
+  let locationsAlertTypes = getLocationOtherAdditional(
     selectedLocation?.additionals || [],
-    'alertTypes'
+    'locationsAlertTypes'
   )
 
-  const initialAlerts = alertTypes.includes(AlertType.FLOOD_ALERT)
+  const initialAlerts = locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
   const [savedOptionalAlerts, setSavedOptionalAlerts] = useState(initialAlerts)
   const [pendingOptionalAlerts, setPendingOptionalAlerts] =
     useState(initialAlerts)
 
-  const areaTypes = () => {
-    switch (type) {
-      case 'both:':
-        return [AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
-      case 'severe':
-        return [AlertType.FLOOD_WARNING]
-      case 'alert':
-        return [AlertType.FLOOD_ALERT]
+  const locationType = () => {
+    if (
+      locationsAlertTypes.includes(AlertType.FLOOD_WARNING) &&
+      locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
+    ) {
+      return [AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+    } else if (locationsAlertTypes.includes(AlertType.FLOOD_WARNING)) {
+      return [AlertType.FLOOD_WARNING]
+    } else {
+      return [AlertType.FLOOD_ALERT]
     }
   }
 
@@ -193,18 +196,20 @@ export default function ViewLocationPage() {
     let updatedProfile
 
     if (pendingOptionalAlerts) {
-      if (!alertTypes.includes(AlertType.FLOOD_ALERT)) {
-        alertTypes = [...alertTypes, AlertType.FLOOD_ALERT]
+      if (!locationsAlertTypes.includes(AlertType.FLOOD_ALERT)) {
+        locationsAlertTypes = [...locationsAlertTypes, AlertType.FLOOD_ALERT]
       }
     } else {
-      alertTypes = alertTypes.filter((type) => type !== AlertType.FLOOD_ALERT)
+      locationsAlertTypes = locationsAlertTypes.filter(
+        (type) => type !== AlertType.FLOOD_ALERT
+      )
     }
 
     const data = {
       authToken,
       locationId: selectedLocation.id,
       partnerId,
-      params: getRegistrationParams(profile, alertTypes)
+      params: getRegistrationParams(profile, locationsAlertTypes)
     }
 
     const { errorMessage } = await backendCall(
@@ -214,7 +219,7 @@ export default function ViewLocationPage() {
     )
 
     if (!errorMessage) {
-      updatedProfile = await updateLocationAlerts(alertTypes)
+      updatedProfile = await updateLocationAlerts(locationsAlertTypes)
 
       await updateGeosafeProfile(updatedProfile)
 
@@ -227,11 +232,11 @@ export default function ViewLocationPage() {
     }
   }
 
-  const updateLocationAlerts = async (alertTypes) => {
+  const updateLocationAlerts = async (locationsAlertTypes) => {
     const updatedProfile = updateLocationsAlertTypes(
       profile,
       selectedLocation,
-      alertTypes
+      locationsAlertTypes
     )
     dispatch(setProfile(updatedProfile))
 
@@ -260,7 +265,7 @@ export default function ViewLocationPage() {
               <h1 className='govuk-!-margin-top-4 govuk-heading-l'>
                 {selectedLocation.address}
               </h1>
-              <Map types={areaTypes} />
+              <Map types={locationsAlertTypes} interactive={!isMobile} />
               <FloodWarningKey type={type} />
               <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
                 Flood messages you get

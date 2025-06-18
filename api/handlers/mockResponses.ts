@@ -163,59 +163,7 @@ const citizenContact2 = {
   unverified: {
     homePhones: [{ address: '01475721535' }]
   },
-  pois: [
-    {
-      address:
-        'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
-      name: '10023463293',
-      coordinates: {
-        latitude: '52612444.5',
-        longitude: '1724640.5'
-      },
-      additionals: [
-        {
-          id: 'other',
-          value: {
-            s: JSON.stringify({
-              alertTypes: [
-                'ALERT_LVL_1',
-                'ALERT_LVL_2',
-                'ALERT_LVL_3',
-                'INFO', // info alert type required on all citizen locations
-                'MONTHLY', // remove severe warning
-                'RESEVERVED' // remove flood warning
-              ]
-            })
-          }
-        }
-      ]
-    },
-    {
-      address: 'Exmouth, United Kingdom',
-      name: '',
-      coordinates: {
-        latitude: '50621091',
-        longitude: '-3412665'
-      },
-      additionals: [
-        {
-          id: 'other',
-          value: {
-            s: JSON.stringify({
-              // this location should have flood alerts turned off in the optional setting on view location
-              alertTypes: [
-                'ALERT_LVL_1',
-                'ALERT_LVL_2',
-                'INFO',
-                'MONTHLY',
-                'RESEVERVED'
-              ]
-            })
-          }
-        }
-      ]
-    }
-  ]
+  pois: citizenPOIs
 }
 
 const registrations = {

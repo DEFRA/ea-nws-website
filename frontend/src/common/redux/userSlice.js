@@ -125,6 +125,8 @@ const userSlice = createSlice({
     locationSearchType: null,
     // required for when user changes a location at sign up review
     locationToBeChanged: null,
+    // required for tracking areas already on account
+    floodAreasAlreadyAdded: null,
     // required for nearby flood areas flow
     nearbyTargetAreaFlow: null,
     nearbyTargetAreasAdded: null,
@@ -300,6 +302,10 @@ const userSlice = createSlice({
     // required for extending name search flood areas radius
     setLocationSearchType: (state, action) => {
       state.locationSearchType = action.payload
+    },
+    // required for tracking areas already on account
+    setFloodAreasAlreadyAdded: (state, action) => {
+      state.floodAreasAlreadyAdded = action.payload
     },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
@@ -821,6 +827,8 @@ const userSlice = createSlice({
       state.locationToBeChanged = null
       // required for extending name search flood areas radius
       state.locationSearchType = null
+      // required for tracking areas already on account
+      state.floodAreasAlreadyAdded = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -1037,6 +1045,8 @@ export const {
   setLocationToBeChanged,
   // required for extending name search flood areas radius
   setLocationSearchType,
+  // required for tracking areas already on account
+  setFloodAreasAlreadyAdded,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,

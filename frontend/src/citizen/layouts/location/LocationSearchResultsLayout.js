@@ -11,6 +11,7 @@ import AlertType from '../../../common/enums/AlertType'
 import {
   getAdditional,
   setFloodAlertCount,
+  setFloodAreasAlreadyAdded,
   setNearbyTargetAreasAdded,
   setNearbyTargetAreasFlow,
   setSelectedLocation,
@@ -158,16 +159,26 @@ export default function LocationSearchResultsLayout({
       let floodAreasAlreadyAdded = []
       floodAreas?.forEach((area) => {
         profileLocations?.forEach((loc) => {
+          const locationsTargetAreas = getAdditional(
+            loc?.additionals,
+            'targetAreas'
+          )
+
           if (
             loc.address === area.properties.TA_Name ||
-            getAdditional(loc.additionals, 'targetAreas').some((targetArea) => {
-              return targetArea.TA_Name === area.properties.TA_Name
-            })
+            (locationsTargetAreas &&
+              locationsTargetAreas?.some((targetArea) => {
+                return targetArea.TA_Name === area.properties.TA_Name
+              }))
           ) {
             floodAreasAlreadyAdded.push(area.properties.TA_Name)
           }
         })
       })
+
+      console.log('floodAreasAlreadyAdded', floodAreasAlreadyAdded)
+
+      dispatch(setFloodAreasAlreadyAdded(floodAreasAlreadyAdded))
 
       continueToNextPage(
         floodAreasAlreadyAdded,

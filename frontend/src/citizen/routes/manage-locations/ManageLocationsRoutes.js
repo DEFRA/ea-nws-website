@@ -1,3 +1,4 @@
+import LocationAlreadyAddedPage from '../../pages/manage-locations/add-location/LocationAlreadyAddedPage'
 import LocationInFloodAreasPage from '../../pages/manage-locations/add-location/LocationInFloodAreasPage'
 import LocationNearFloodAreasPage from '../../pages/manage-locations/add-location/LocationNearFloodAreasPage'
 import LocationNotNearDangerPage from '../../pages/manage-locations/add-location/LocationNotNearDangerPage'
@@ -26,6 +27,10 @@ const manageLocationRoutes = [
     component: <LocationNearFloodAreasPage />
   },
   {
+    path: '/manage-locations/add/location-already-added',
+    component: <LocationAlreadyAddedPage />
+  },
+  {
     path: '/manage-locations/add/no-danger',
     component: <LocationNotNearDangerPage />
   },
@@ -35,7 +40,7 @@ const manageLocationRoutes = [
     component: <ConfirmDeleteContactDetailsPage />
   }, // view a location
   {
-    path: '/manage-locations/view/:type',
+    path: '/manage-locations/view',
     component: <ViewLocationPage />
   }
 ]

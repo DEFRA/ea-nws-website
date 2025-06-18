@@ -64,6 +64,10 @@ export default function LocationNearFloodAreasLayout({
   const floodAreasRecentlyAdded = useSelector(
     (state) => state.session.nearbyTargetAreasAdded
   )
+  // these are flood areas already on the users profile - prevents duplicates
+  const floodAreasAlreadyAdded = useSelector(
+    (state) => state.session.floodAreasAlreadyAdded
+  )
 
   // get nearby flood areas to setup map
   useEffect(() => {
@@ -93,7 +97,12 @@ export default function LocationNearFloodAreasLayout({
 
       areas.push(...warningArea.features)
       areas.push(...alertArea.features)
-      setFloodAreas(areas)
+
+      // remove the choice of picking any
+      const filteredAreas = areas.filter(
+        (area) => !floodAreasAlreadyAdded.includes(area?.properties?.TA_Name)
+      )
+      setFloodAreas(filteredAreas)
     }
     fetchFloodAreaData()
   }, [])
@@ -117,6 +126,8 @@ export default function LocationNearFloodAreasLayout({
 
     if (minimumAreasAdded) {
       updatedProfile = await addFloodAreas()
+
+      // need a function which checks the un-ticked options and removes them from the profile
 
       if (updateGeoSafeProfile) {
         updatedProfile = await updateGeosafeProfile(updatedProfile)

@@ -2,10 +2,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import {
-  setAdditionalAlerts,
-  setProfile
-} from '../../../../common/redux/userSlice'
+import { setProfile } from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
 export default function LocationSearchResultsPage() {
@@ -13,6 +10,7 @@ export default function LocationSearchResultsPage() {
   const dispatch = useDispatch()
 
   const continueToNextPage = (
+    floodAreasAlreadyAdded, //placeholder - do not remove
     isInWarningArea,
     isInAlertArea,
     isWithinWarningAreaProximity,
@@ -41,28 +39,13 @@ export default function LocationSearchResultsPage() {
 
     dispatch(setProfile(profile))
 
-    if (isInWarningArea) {
-      // take user to warning screen and then to alerts screen for optional alerts
-      dispatch(setAdditionalAlerts(true))
-      navigate('/signup/register-location/location-in-severe-warning-area')
-    } else if (isInAlertArea) {
-      // take user to non optional flood alerts screen
-      dispatch(setAdditionalAlerts(false))
-      navigate('/signup/register-location/location-in-alert-area')
-    } else if (isWithinWarningAreaProximity) {
-      // users location is within distance to severe flood area
-      navigate(
-        `/signup/register-location/location-in-proximity-area/${'severe'}`
-      )
-    } else if (isWithinAlertAreaProximity) {
-      // users location is within distance to alert flood area
-      navigate(
-        `/signup/register-location/location-in-proximity-area/${'alert'}`
-      )
+    if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+      navigate('/signup/register-location/location-near-flood-areas')
+    } else if (isInWarningArea || isInAlertArea) {
+      navigate('/signup/register-location/location-in-flood-areas')
     } else if (isError) {
       navigate('/error')
     } else {
-      // location isnt in danger area
       navigate('/signup/register-location/no-danger')
     }
   }

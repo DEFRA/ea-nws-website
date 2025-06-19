@@ -204,19 +204,11 @@ const updateAdditionals = (profile, updatedAdditionals) => {
 const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
 
-  const exists = currentLocations.some(
-    (existingLocation) => existingLocation.address === newLocation.address
-  )
-
-  if (!exists) {
-    const updatedProfile = {
-      ...profile,
-      pois: [...currentLocations, newLocation]
-    }
-    return updatedProfile
-  } else {
-    return profile
+  const updatedProfile = {
+    ...profile,
+    pois: [...currentLocations, newLocation]
   }
+  return updatedProfile
 }
 
 const removeLocation = (profile, address) => {

@@ -1,6 +1,6 @@
-import LocationInAlertAreaPage from '../../pages/manage-locations/add-location/LocationInAlertAreaPage'
-import LocationInSevereWarningAreaPage from '../../pages/manage-locations/add-location/LocationInSevereWarningAreaPage'
-import LocationInWarningAreaProximityPage from '../../pages/manage-locations/add-location/LocationInWarningAreaProximityPage'
+import LocationAlreadyAddedPage from '../../pages/manage-locations/add-location/LocationAlreadyAddedPage'
+import LocationInFloodAreasPage from '../../pages/manage-locations/add-location/LocationInFloodAreasPage'
+import LocationNearFloodAreasPage from '../../pages/manage-locations/add-location/LocationNearFloodAreasPage'
 import LocationNotNearDangerPage from '../../pages/manage-locations/add-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/manage-locations/add-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/manage-locations/add-location/LocationSearchResultsPage'
@@ -19,16 +19,16 @@ const manageLocationRoutes = [
     component: <LocationSearchResultsPage />
   },
   {
-    path: '/manage-locations/add/location-in-proximity-area/:type',
-    component: <LocationInWarningAreaProximityPage />
+    path: '/manage-locations/add/location-in-flood-areas',
+    component: <LocationInFloodAreasPage />
   },
   {
-    path: '/manage-locations/add/location-in-severe-warning-area',
-    component: <LocationInSevereWarningAreaPage />
+    path: '/manage-locations/add/location-near-flood-areas',
+    component: <LocationNearFloodAreasPage />
   },
   {
-    path: '/manage-locations/add/location-in-alert-area',
-    component: <LocationInAlertAreaPage />
+    path: '/manage-locations/add/location-already-added',
+    component: <LocationAlreadyAddedPage />
   },
   {
     path: '/manage-locations/add/no-danger',
@@ -40,7 +40,7 @@ const manageLocationRoutes = [
     component: <ConfirmDeleteContactDetailsPage />
   }, // view a location
   {
-    path: '/manage-locations/view/:type',
+    path: '/manage-locations/view',
     component: <ViewLocationPage />
   }
 ]

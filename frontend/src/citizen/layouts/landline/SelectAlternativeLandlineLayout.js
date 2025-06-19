@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../common/components/gov-uk/Input'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setCurrentContact, setProfile } from '../../../common/redux/userSlice'
@@ -117,7 +118,9 @@ export default function SelectAlternativeLandlineLayout({
 
     return errorMessage
   }
-  const handleBackLink = () => {
+
+  const handleBackLink = (event) => {
+    event.preventDefault()
     NavigateBack()
   }
 
@@ -129,7 +132,7 @@ export default function SelectAlternativeLandlineLayout({
           flood warnings - GOV.UK
         </title>
       </Helmet>
-      <BackLink onClick={handleBackLink} />
+      <BackLink onClick={(e) => handleBackLink(e)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
@@ -145,8 +148,9 @@ export default function SelectAlternativeLandlineLayout({
               />
             )}
             <h2 className='govuk-heading-l' id='main-content'>
-              Which telephone number do you want to use to get flood messages by
-              phone call?
+              {mobileNumbers.length > 0
+                ? 'Which telephone number do you want to use to get flood messages by phone call?'
+                : 'Enter a telephone number to get flood messages by phone call'}
             </h2>
             <div className='govuk-body'>
               <p>

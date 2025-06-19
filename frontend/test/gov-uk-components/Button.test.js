@@ -30,4 +30,10 @@ describe('Button component', () => {
     const buttonElement = screen.getByText(/click me/i)
     expect(buttonElement).toHaveAttribute('type', 'submit')
   })
+
+  test('renders with the provided aria-label', () => {
+    render(<Button text='Click Me' ariaLabel='Accessible label' />)
+    const buttonElement = screen.getByRole('button', { name: 'Accessible label' })
+    expect(buttonElement).toBeInTheDocument()
+  })  
 })

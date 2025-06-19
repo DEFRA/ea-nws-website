@@ -30,13 +30,13 @@ const locationAdditionals = [
 ]
 
 const citizenPOIs = [
+  // below is a location added that lies within a flood area
   {
     name: '10023463293',
-    address:
-      'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
+    address: 'House Of Commons, Houses Of Parliament, London,  SW1A 0AA',
     coordinates: {
-      latitude: '52612444.5',
-      longitude: '1724640.5'
+      latitude: 51.4998415 * 10 ** 6,
+      longitude: -0.1246377 * 10 ** 6
     },
     id: '1',
     enabled: true,
@@ -48,7 +48,56 @@ const citizenPOIs = [
         id: 'other',
         value: {
           s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1'],
+            targetAreas: [
+              {
+                TA_CODE: '063FWT23WestminA',
+                TA_Name:
+                  'Tidal Thames from Blackfriars Bridge to Vauxhall Bridge',
+                category: 'Flood Warning'
+              },
+              {
+                TA_CODE: '063WAT23Central',
+                TA_Name:
+                  'Tidal Thames riverside from the Thames Barrier to Putney Bridge',
+                category: 'Flood alert'
+              },
+              {
+                TA_CODE: '063WAT232N',
+                TA_Name:
+                  'Tidal Thames in the boroughs of Tower Hamlets, City of London, City of Westminster, Ken and Chelsea',
+                category: 'Flood alert'
+              }
+            ]
+          })
+        }
+      }
+    ]
+  },
+  // below is a nearby target area added
+  {
+    name: '',
+    address:
+      'Town Beck at Ulverston from The Gill downstream to The Ellers area',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '1',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: '1, Sun Street, Ulverston,  LA12 7BX' }
+      },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
           })
         }
       }
@@ -114,59 +163,7 @@ const citizenContact2 = {
   unverified: {
     homePhones: [{ address: '01475721535' }]
   },
-  pois: [
-    {
-      address:
-        'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
-      name: '10023463293',
-      coordinates: {
-        latitude: '52612444.5',
-        longitude: '1724640.5'
-      },
-      additionals: [
-        {
-          id: 'other',
-          value: {
-            s: JSON.stringify({
-              alertTypes: [
-                'ALERT_LVL_1',
-                'ALERT_LVL_2',
-                'ALERT_LVL_3',
-                'INFO', // info alert type required on all citizen locations
-                'MONTHLY', // remove severe warning
-                'RESEVERVED' // remove flood warning
-              ]
-            })
-          }
-        }
-      ]
-    },
-    {
-      address: 'Exmouth, United Kingdom',
-      name: '',
-      coordinates: {
-        latitude: '50621091',
-        longitude: '-3412665'
-      },
-      additionals: [
-        {
-          id: 'other',
-          value: {
-            s: JSON.stringify({
-              // this location should have flood alerts turned off in the optional setting on view location
-              alertTypes: [
-                'ALERT_LVL_1',
-                'ALERT_LVL_2',
-                'INFO',
-                'MONTHLY',
-                'RESEVERVED'
-              ]
-            })
-          }
-        }
-      ]
-    }
-  ]
+  pois: citizenPOIs
 }
 
 const registrations = {

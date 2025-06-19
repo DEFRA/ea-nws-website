@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+
 export default function LocationAddAddressInfoPage() {
   const navigate = useNavigate()
   const [templateUrl, setTemplateUrl] = useState(null)
@@ -43,7 +45,7 @@ export default function LocationAddAddressInfoPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Uploading a file with addresses and <br /> postcodes or X and Y
               coordinates
             </h1>

@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
@@ -29,6 +30,9 @@ export default function LocationSearchResultsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Select an address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <LocationSearchResultsLayout
         continueToNextPage={continueToNextPage}
         returnToSearchPage={returnToSearchPage}

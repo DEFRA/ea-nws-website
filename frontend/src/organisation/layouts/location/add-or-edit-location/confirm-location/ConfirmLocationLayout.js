@@ -288,7 +288,9 @@ export default function ConfirmLocationLayout({
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l '>Confirm location</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Confirm location
+            </h1>
 
             <h2 className='govuk-heading-m govuk-!-margin-top-8'>
               {locationName}

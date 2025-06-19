@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -20,13 +21,16 @@ export default function LocationAddShapefileInfoPage() {
 
   return (
     <>
+      <Helmet>
+        <title>How to upload a location as a shapefile - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {/* Contents section */}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               How to upload a location as a shapefile in a ZIP
             </h1>
             <div className='govuk-body'>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 /* import locationPin from '../../../../../common/assets/images/location_pin.svg' */
@@ -11,23 +12,15 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 /* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
+import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact'
 
 export default function UserInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const jobTitle = currentContact.additionals.jobTitle
-  const keywords = currentContact.additionals.keywords
+  const keywords = currentContact?.additionals?.keywords ?? []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const role = () => {
-    if (currentContact?.role) {
-      return UserType.Admin
-    }
-    if (currentContact?.pendingRole) {
-      return UserType.PendingAdmin
-    }
-    return UserType.Contact
-  }
-  const userType = role()
+  const userType = getRole(currentContact)
   const [locations, setLocations] = useState([])
   /* const [showMap, setShowMap] = useState(false) */
   const authToken = useSelector((state) => state.session.authToken)
@@ -84,6 +77,12 @@ export default function UserInformationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {contactName}'s user profile page - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         {userType === UserType.PendingAdmin && (

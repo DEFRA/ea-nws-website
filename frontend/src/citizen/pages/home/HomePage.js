@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import {
@@ -29,6 +29,11 @@ export default function HomePage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Your locations and message preferences - Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       {location.state !== null && location.state.removedLocation && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
@@ -49,7 +54,7 @@ export default function HomePage() {
                 text={location.state.locationName}
               />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Locations and message preferences
             </h1>
             <SubscribedLocationTableLayout setError={setError} />

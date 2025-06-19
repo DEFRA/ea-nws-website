@@ -11,9 +11,7 @@ export default function ContactReviewRow({
   index
 }) {
   const rowDetails = () => {
-    const contactLabel = `${
-      arrayLength > 1 && index ? `${index} - ` : ''
-    }${contact}`
+    const contactLabel = `${arrayLength > 1 ? `${index + 1} - ` : ''}${contact}`
     const confirmedLink =
       isConfirmed &&
       `/signup/review/validate-${
@@ -28,8 +26,8 @@ export default function ContactReviewRow({
       },
       [UserContactType.Mobile]: {
         titleRow: 'By text',
-        confirmLabel: `Confirm telephone number ${contactLabel}, for text warnings`,
-        removeLabel: `Remove telephone number ${contactLabel}, for text warnings`
+        confirmLabel: `Confirm mobile number ${contactLabel}, for text warnings`,
+        removeLabel: `Remove mobile number ${contactLabel}, for text warnings`
       },
       [UserContactType.Email]: {
         titleRow: 'By email',

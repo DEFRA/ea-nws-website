@@ -143,7 +143,7 @@ export default function DashboardHeader({
         {!linkLocations || linkLocations.length === 0 ? (
           <>
             <div style={{ display: 'flex' }}>
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 Your organisation's users ({contacts.length})
               </h1>
               <div style={{ marginLeft: 'auto' }}>

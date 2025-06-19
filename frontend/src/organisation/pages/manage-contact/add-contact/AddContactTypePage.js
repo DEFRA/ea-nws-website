@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -58,6 +59,9 @@ export default function AddContactTypePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Select type of new user - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -65,12 +69,15 @@ export default function AddContactTypePage() {
           <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
             {reasonError && <ErrorSummary errorList={[reasonError]} />}
-            <h1 className='govuk-heading-l'>Select type of new user</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Select type of new user
+            </h1>
             <div className='govuk-body'>
               <div
                 className={
-                  reasonError ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
+                  reasonError
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
                 }
               >
                 {reasonError && (

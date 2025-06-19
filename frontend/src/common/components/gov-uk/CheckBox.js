@@ -1,6 +1,13 @@
 import React from 'react'
 
-export default function Checkbox ({ label = '', value, checked, onChange, style }) {
+export default function Checkbox({
+  label = '',
+  value,
+  checked,
+  onChange,
+  style
+}) {
+  const id = label.split(' ').join('_') // replaces spaces with underscores in ids
   return (
     <div className='govuk-checkboxes__item'>
       <input
@@ -9,12 +16,12 @@ export default function Checkbox ({ label = '', value, checked, onChange, style 
         value={value}
         checked={checked}
         onChange={onChange}
-        id={'id' + label}
+        id={'id' + id}
       />
       <label
         className='govuk-label govuk-checkboxes__label'
         style={style}
-        htmlFor={'id' + label}
+        htmlFor={'id' + id}
       >
         {label}
       </label>

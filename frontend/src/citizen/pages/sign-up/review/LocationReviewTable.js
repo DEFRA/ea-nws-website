@@ -34,7 +34,7 @@ export default function LocationReviewTable({ locations }) {
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
                   aria-label={`Change address for location ${
-                    locations.length > 1 && index
+                    locations.length > 1 ? index + 1 : ''
                   } - ${location.address}`}
                 >
                   Change

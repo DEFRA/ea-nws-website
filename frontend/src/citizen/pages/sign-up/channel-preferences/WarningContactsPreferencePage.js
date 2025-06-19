@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -50,6 +51,9 @@ export default function WarningContactsPreferencePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Would you like to get flood messages any other way? - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink to='/signup/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -68,7 +72,7 @@ export default function WarningContactsPreferencePage() {
             {error && <ErrorSummary errorList={[error]} />}
             <fieldset className='govuk-fieldset' aria-describedby='group-hint'>
               <legend className='govuk-fieldset__legend'>
-                <h1 className='govuk-heading-l'>
+                <h1 className='govuk-heading-l' id='main-content'>
                   Would you like to get flood messages in any other way?
                   (optional)
                 </h1>

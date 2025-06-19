@@ -1,7 +1,7 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-
 import Button from '../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { getAdditionals } from '../../../common/services/ProfileServices'
@@ -40,6 +40,9 @@ export default function AccountPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Manage your account - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {location.state !== null ? (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
@@ -51,7 +54,9 @@ export default function AccountPage() {
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Manage your account</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Manage your account
+            </h1>
             <div className='govuk-body'>
               <h2 className='govuk-heading-m'>Your account details</h2>
               <table className='govuk-table'>

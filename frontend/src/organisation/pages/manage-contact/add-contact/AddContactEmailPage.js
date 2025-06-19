@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -137,6 +138,9 @@ export default function AddContactEmailPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Enter email address - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
@@ -144,7 +148,9 @@ export default function AddContactEmailPage() {
             {(emailError || errors.length > 0) && (
               <ErrorSummary errorList={[emailError, ...errors]} />
             )}
-            <h1 className='govuk-heading-l'>Enter email address</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Enter email address
+            </h1>
             <div className='govuk-body'>
               <p className='govuk-!-margin-bottom-5'>
                 We'll invite them by email to join as an admin.
@@ -161,6 +167,7 @@ export default function AddContactEmailPage() {
                   id='email-address'
                   name='Email address'
                   inputType='text'
+                  inputMode='email'
                   onChange={(val) => {
                     setErrors([])
                     setEmailError('')

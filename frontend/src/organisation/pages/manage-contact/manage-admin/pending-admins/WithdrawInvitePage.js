@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -47,11 +48,14 @@ export default function WithdrawInvitePage () {
 
   return (
     <>
+      <Helmet>
+        <title>Do you want to withdraw the admin invitation for {pendingAdminName}? - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>
               Do you want to withdraw the admin invitation for{' '}
               {pendingAdminName}?
             </h1>

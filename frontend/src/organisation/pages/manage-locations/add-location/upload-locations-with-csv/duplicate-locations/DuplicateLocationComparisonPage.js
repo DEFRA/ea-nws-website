@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -8,8 +9,8 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
-  setNotFoundLocations,
-  setNotInEnglandLocations
+    setNotFoundLocations,
+    setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import {
@@ -232,12 +233,15 @@ export default function DuplicateLocationComparisonPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Duplicate location comparison - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {newLocation.additionals.locationName} already exists in this
               account
             </h1>

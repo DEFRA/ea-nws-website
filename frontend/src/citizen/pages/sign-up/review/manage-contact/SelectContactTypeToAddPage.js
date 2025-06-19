@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 
-export default function SelectContactTypeToAddPage () {
+export default function SelectContactTypeToAddPage() {
   const navigate = useNavigate()
   const [selectedContactType, setSelectedContactType] = useState('')
   const [error, setError] = useState('')
@@ -42,13 +43,17 @@ export default function SelectContactTypeToAddPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>
+          Select type of contact you want to add - Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink to='/signup/review' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Select type of contact you want to add
             </h1>
             <div
@@ -83,6 +88,9 @@ export default function SelectContactTypeToAddPage () {
               className='govuk-button'
               onClick={handleSubmit}
             />
+            <Link className='govuk-link inline-link' to={'/signup/review'}>
+              Cancel
+            </Link>
           </div>
         </div>
       </main>

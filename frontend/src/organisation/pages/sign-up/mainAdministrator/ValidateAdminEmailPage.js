@@ -19,10 +19,12 @@ export default function ValidateAdminEmailPage () {
   }
 
   return (
-    <ValidateEmailLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      buttonText='Continue'
-    />
+    <>
+      <ValidateEmailLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+        buttonText='Continue'
+      />
+    </>
   )
 }

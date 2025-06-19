@@ -17,7 +17,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function ContactChannelsLayout ({
+export default function ContactChannelsLayout({
   navigateToNextPage,
   error,
   setError
@@ -119,13 +119,13 @@ export default function ContactChannelsLayout ({
         if (emailValid) {
           first
             ? setEmailError((errs) => [
-              'Enter email address 1 in the correct format, like name@example.com',
-              errs[1]
-            ])
+                'Enter email address 1 in the correct format, like name@example.com',
+                errs[1]
+              ])
             : setEmailError((errs) => [
-              errs[0],
-              'Enter email address 2 in the correct format, like name@example.com'
-            ])
+                errs[0],
+                'Enter email address 2 in the correct format, like name@example.com'
+              ])
         }
         const emailsAlreadyAdded = await fetchEmailsAlreadyAdded()
         // create array of only changed emails
@@ -139,13 +139,13 @@ export default function ContactChannelsLayout ({
           } else {
             first
               ? setEmailError((errs) => [
-                'This email is already registered to another user',
-                errs[1]
-              ])
+                  'This email is already registered to another user',
+                  errs[1]
+                ])
               : setEmailError((errs) => [
-                errs[0],
-                'This email is already registered to another user'
-              ])
+                  errs[0],
+                  'This email is already registered to another user'
+                ])
             return false
           }
         } else {
@@ -162,23 +162,23 @@ export default function ContactChannelsLayout ({
           if (type === 'mobile') {
             first
               ? setMobilePhoneError((errs) => [
-                'Enter 1st UK mobile telephone number in the correct format,  like 07700 900 982',
-                errs[1]
-              ])
+                  'Enter 1st UK mobile telephone number in the correct format,  like 07700 900 982',
+                  errs[1]
+                ])
               : setMobilePhoneError((errs) => [
-                errs[0],
-                'Enter 2nd UK mobile telephone number in the correct format,  like 07700 900 982'
-              ])
+                  errs[0],
+                  'Enter 2nd UK mobile telephone number in the correct format,  like 07700 900 982'
+                ])
           } else {
             first
               ? setHomePhoneError((errs) => [
-                'Enter 1st UK telephone number in the correct format, like 01632 960 001 or  07700 900 982',
-                errs[1]
-              ])
+                  'Enter 1st UK telephone number in the correct format, like 01632 960 001 or  07700 900 982',
+                  errs[1]
+                ])
               : setHomePhoneError((errs) => [
-                errs[0],
-                'Enter 2nd UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
-              ])
+                  errs[0],
+                  'Enter 2nd UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
+                ])
           }
         }
         return phoneValid === ''
@@ -292,6 +292,7 @@ export default function ContactChannelsLayout ({
           id='additional-email-1'
           name='Additionals email address (optional)'
           inputType='text'
+          inputMode='email'
           onChange={(val) => setEmailInput((inputs) => [inputs[0], val])}
           value={emailInput[1]}
           error={emailError[1]}
@@ -352,16 +353,18 @@ export default function ContactChannelsLayout ({
               emailError[1] ||
               homePhoneError[1] ||
               mobilePhoneError[1]) && (
-                <ErrorSummary
-                  errorList={[
-                    error,
-                    emailError,
-                    homePhoneError,
-                    mobilePhoneError
-                  ]}
-                />
+              <ErrorSummary
+                errorList={[
+                  error,
+                  emailError,
+                  homePhoneError,
+                  mobilePhoneError
+                ]}
+              />
             )}
-            <h1 className='govuk-heading-l'>Email addresses and numbers</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Email addresses and numbers
+            </h1>
             <div className='govuk-body'>
               <div>
                 <p>
@@ -388,56 +391,104 @@ export default function ContactChannelsLayout ({
                 )}
                 {addingAdmin ||
                 userType === UserType.Admin ||
-                userType === UserType.PendingAdmin
-                  ? (
-                    <>
-                      {renderFirstEmail()}
-                      <Input
-                        id='additional-email-2'
-                        name='Additionals email address (optional)'
-                        inputType='text'
-                        onChange={(val) =>
-                          setEmailInput((inputs) => [inputs[0], val])}
-                        value={emailInput[1]}
-                        error={emailError[1]}
-                        className='govuk-input govuk-input--width-20'
-                        isNameBold
-                        labelSize='s'
-                      />
-                    </>
-                    )
-                  : (
-                    <>
-                      <Input
-                        id='email-address-1'
-                        name='Email addresses (optional)'
-                        inputType='text'
-                        onChange={(val) =>
-                          setEmailInput((inputs) => [val, inputs[1]])}
-                        value={emailInput[0]}
-                        error={emailError[0]}
-                        className='govuk-input govuk-input--width-20'
-                        isNameBold
-                        labelSize='s'
-                      />
-                      <Input
-                        id='email-address-2'
-                        inputType='text'
-                        onChange={(val) =>
-                          setEmailInput((inputs) => [inputs[0], val])}
-                        value={emailInput[1]}
-                        error={emailError[1]}
-                        className='govuk-input govuk-input--width-20'
-                      />
-                    </>
-                    )}
-
+                userType === UserType.PendingAdmin ? (
+                  <>
+                    {renderFirstEmail()}
+                    <Input
+                      id='additional-email-2'
+                      name='Additionals email address (optional)'
+                      inputType='text'
+                      onChange={(val) =>
+                        setEmailInput((inputs) => [inputs[0], val])
+                      }
+                      value={emailInput[1]}
+                      error={emailError[1]}
+                      className='govuk-input govuk-input--width-20'
+                      isNameBold
+                      labelSize='s'
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Input
+                      id='email-address-1'
+                      name='Email addresses (optional)'
+                      inputType='text'
+                      onChange={(val) =>
+                        setEmailInput((inputs) => [val, inputs[1]])
+                      }
+                      value={emailInput[0]}
+                      error={emailError[0]}
+                      className='govuk-input govuk-input--width-20'
+                      isNameBold
+                      labelSize='s'
+                    />
+                    <Input
+                      id='email-address-2'
+                      inputType='text'
+                      onChange={(val) =>
+                        setEmailInput((inputs) => [inputs[0], val])
+                      }
+                      value={emailInput[1]}
+                      error={emailError[1]}
+                      className='govuk-input govuk-input--width-20'
+                    />
+                  </>
+                )}
+                {userType === UserType.PendingAdmin ? (
+                <>
+                  {renderFirstEmail()}
+                  <Input
+                    id='additional-email-2'
+                    name='Additionals email address (optional)'
+                    inputType='text'
+                    inputMode='email'
+                    onChange={(val) =>
+                      setEmailInput((inputs) => [inputs[0], val])
+                    }
+                    value={emailInput[1]}
+                    error={emailError[1]}
+                    className='govuk-input govuk-input--width-20'
+                    isNameBold
+                    labelSize='s'
+                  />
+                </>
+                ) : (
+                <>
+                  <Input
+                    id='email-address-1'
+                    name='Email addresses (optional)'
+                    inputType='text'
+                    inputMode='email'
+                    onChange={(val) =>
+                      setEmailInput((inputs) => [val, inputs[1]])
+                    }
+                    value={emailInput[0]}
+                    error={emailError[0]}
+                    className='govuk-input govuk-input--width-20'
+                    isNameBold
+                    labelSize='s'
+                  />
+                  <Input
+                    id='email-address-2'
+                    inputType='text'
+                    inputMode='email'
+                    onChange={(val) =>
+                      setEmailInput((inputs) => [inputs[0], val])
+                    }
+                    value={emailInput[1]}
+                    error={emailError[1]}
+                    className='govuk-input govuk-input--width-20'
+                  />
+                </>
+                )}
                 <Input
                   id='uk-mobile-number-1'
                   name='UK mobile numbers for text messages (optional)'
                   inputType='text'
                   onChange={(val) =>
-                    setMobileInput((inputs) => [val, inputs[1]])}
+                    setMobileInput((inputs) => [val, inputs[1]])
+                  }
                   value={mobileInput[0]}
                   className='govuk-input govuk-input--width-20'
                   isNameBold
@@ -448,7 +499,8 @@ export default function ContactChannelsLayout ({
                   id='uk-mobile-number-2'
                   inputType='text'
                   onChange={(val) =>
-                    setMobileInput((inputs) => [inputs[0], val])}
+                    setMobileInput((inputs) => [inputs[0], val])
+                  }
                   value={mobileInput[1]}
                   className='govuk-input govuk-input--width-20'
                   error={mobilePhoneError[1]}

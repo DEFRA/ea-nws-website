@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
@@ -36,6 +37,9 @@ export default function AccountDeleteConfirmPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Account deleted - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {/* Main body */}
       <main className='govuk-main-wrapper'>
         {/* Account deletion confirmation panel */}

@@ -85,7 +85,7 @@ export default function SubscribedLocationTable({ setError }) {
   const locationTable = () => {
     const viewColumn = (location, arrayLength, index) => {
       return (
-        <td className='govuk-table__cell'>
+        <td className='govuk-table__cell text-nowrap'>
           <Link
             onClick={(e) => {
               e.preventDefault()
@@ -93,11 +93,11 @@ export default function SubscribedLocationTable({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
-            aria-label={`View location ${arrayLength > 1 && index} - ${
-              location.address
-            }`}
+            aria-label={`Manage preferences for location ${
+              arrayLength > 1 ? `${index + 1}` : ''
+            } - ${location.address}`}
           >
-            View
+            Manage preferences
           </Link>
         </td>
       )
@@ -115,9 +115,9 @@ export default function SubscribedLocationTable({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
-            aria-label={`Remove location ${arrayLength > 1 && index} - ${
-              location.address
-            }`}
+            aria-label={`Remove location ${
+              arrayLength > 1 ? `${index + 1}` : ''
+            } - ${location.address}`}
           >
             Remove
           </Link>

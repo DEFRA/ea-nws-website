@@ -17,7 +17,7 @@ import {
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
 
-export default function UnmatchedLocationsDashboardLayout ({
+export default function UnmatchedLocationsDashboardLayout({
   navigateToNextPage,
   navigateToFindLocation,
   flow
@@ -295,7 +295,7 @@ export default function UnmatchedLocationsDashboardLayout ({
       <main className='govuk-main-wrapper govuk-!-margin-top-3'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {notAddedLocations || 0} location
               {notAddedLocations === 1 ? ' ' : 's '}
               {unmatchedLocationText}

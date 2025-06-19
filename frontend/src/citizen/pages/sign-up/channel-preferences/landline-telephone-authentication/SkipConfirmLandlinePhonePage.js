@@ -1,29 +1,32 @@
-import * as React from 'react'
+import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function SkipConfirmLandlinePhonePage () {
+export default function SkipConfirmLandlinePhonePage() {
   const navigate = useNavigate()
 
   const homePhone = useSelector(
     (state) => state.session.profile.unverified.homePhones[0].address
   )
 
-  function skipConfirm (event) {
+  function skipConfirm(event) {
     event.preventDefault()
     navigate('/signup/accountname/add')
   }
 
   return (
     <>
-
+      <Helmet>
+        <title>We cannot send flood messages to this number yet - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink to='/signup/contactpreferences/landline/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               We cannot send flood messages to {homePhone} until you confirm
               this number
             </h1>

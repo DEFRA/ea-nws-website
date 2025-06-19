@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -117,6 +118,12 @@ export default function ChangeAdminDetailsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Change administrator details - Get flood warnings (professional) -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -124,7 +131,7 @@ export default function ChangeAdminDetailsPage() {
           {(error || errorEmail || errorName) && (
             <ErrorSummary errorList={[error, errorEmail, errorName]} />
           )}
-          <h1 className='govuk-heading-l'>Change administrator details</h1>
+          <h1 className='govuk-heading-l' id="main-content">Change administrator details</h1>
 
           <Input
             id='full-name'
@@ -141,6 +148,7 @@ export default function ChangeAdminDetailsPage() {
           <Input
             id='email-address'
             inputType='text'
+            inputMode='email'
             value={email}
             name='Email address'
             onChange={(val) => setEmail(val)}

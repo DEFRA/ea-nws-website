@@ -29,9 +29,10 @@ export default function LocationNotInEnglandInfoPage () {
   const xCoord = useSelector((state) => getLocationOther(state, 'x_coordinate'))
   const yCoord = useSelector((state) => getLocationOther(state, 'y_coordinate'))
 
-  const handleSubmit = (event) =>
+  const handleSubmit = (event) => {
     event.preventDefault()
-  navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
+  }
 
   const navigateBack = (e) => {
     e.preventDefault()

@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -14,6 +15,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact.js'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -82,7 +84,8 @@ export default function LinkedLocationsPage() {
         'api/alert/list',
         navigate
       )
-      const alertsList = alertsResponse.alerts || []
+
+      const alertsList = alertsResponse?.alerts || []
 
       // Loop through locations, attaching a count of how many alerts match their TA_CODE
       return locations.map((loc) => {
@@ -154,6 +157,9 @@ export default function LinkedLocationsPage() {
             location.linked_contacts.push(contactID)
           })
         }
+
+        const floodAreas = location?.additionals?.other?.targetAreas || []
+        location.within = floodAreas?.length > 0
       }
 
       const fullLocationData = await attachMessageCounts(locationsUpdate)
@@ -299,8 +305,16 @@ export default function LinkedLocationsPage() {
     navigate(orgManageContactsUrls.view.dashboard)
   }
 
+  const userType = getRole(currentContact)
+
   return (
     <>
+      <Helmet>
+        <title>
+          {contactName}'s linked locations - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {unlinkNotification.length > 0 && (
@@ -313,6 +327,7 @@ export default function LinkedLocationsPage() {
         <UserHeader
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
+          userType={userType}
         />
         {loading ? (
           <LoadingSpinner />

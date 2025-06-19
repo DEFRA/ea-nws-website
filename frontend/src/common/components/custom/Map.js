@@ -50,6 +50,9 @@ export default function Map({
   const locationSearchType = useSelector(
     (state) => state.session.locationSearchType
   )
+  const nearbyTargetAreaFlow = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
   // the below is used to interact with the map to highlight selected flood areas
   // or only show selected flood areas
   const alertAreaRef = useRef(null)
@@ -63,12 +66,10 @@ export default function Map({
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
-        selectedFloodArea !== null
-          ? // only load TAs required i.e if location being added lies within TAs, then only load these by searching with a 1m radius
-            // this can be repeated for locations that were added as a TA as well
-            0.001
-          : // extend the radius of TAs loaded on map when user has searched via placename
-          locationSearchType === 'placename'
+        // extend the radius of TAs loaded on map when user has searched via placename
+        !nearbyTargetAreaFlow
+          ? 0.001
+          : locationSearchType === 'placename'
           ? 1.5
           : 0.5
       )

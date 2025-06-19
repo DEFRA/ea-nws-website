@@ -42,13 +42,15 @@ export default function ChangeAccountEmailValidationPage () {
   }
 
   return (
-    <ValidateEmailLayout
-      DifferentEmail={DifferentEmail}
-      NavigateToPreviousPage={DifferentEmail}
-      buttonText='Confirm email address'
-      changeSignIn
-      profileError={error}
-      updateProfile={updateProfile}
-    />
+    <>
+      <ValidateEmailLayout
+        DifferentEmail={DifferentEmail}
+        NavigateToPreviousPage={DifferentEmail}
+        buttonText='Confirm email address'
+        changeSignIn
+        profileError={error}
+        updateProfile={updateProfile}
+      />
+    </>
   )
 }

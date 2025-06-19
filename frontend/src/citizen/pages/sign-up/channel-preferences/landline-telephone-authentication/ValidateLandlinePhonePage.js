@@ -21,12 +21,14 @@ export default function ValidateLandlinePhonePage () {
   }
 
   return (
-    <ValidateLandlineLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentHomePhone}
-      SkipValidation={SkipValidation}
-      DifferentHomePhone={DifferentHomePhone}
-      isSignUpJourney
-    />
+    <>
+      <ValidateLandlineLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentHomePhone}
+        SkipValidation={SkipValidation}
+        DifferentHomePhone={DifferentHomePhone}
+        isSignUpJourney
+      />
+    </>
   )
 }

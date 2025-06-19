@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationSearchResultsLayout from '../../../../layouts/location/LocationSearchResultsLayout'
@@ -28,6 +29,9 @@ export default function ChangeLocationSearchResultPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Select an address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <LocationSearchResultsLayout continueToNextPage={continueToNextPage} />
     </>
   )

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -87,11 +88,14 @@ export default function LocationNotInFloodAreaPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Flood messages are not available for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half govuk-body'>
-            <h1 class='govuk-heading-l'>
+            <h1 class='govuk-heading-l' id='main-content'>
               Flood messages are not available for {locationName}
             </h1>
             <InsetText text={insetTextInfo} />

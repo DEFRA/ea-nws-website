@@ -597,7 +597,9 @@ export default function LinkLocationsLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <br />
-            <h1 className='govuk-heading-l'>Select nearby flood areas</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Select nearby flood areas
+            </h1>
             <p className='govuk-body'>
               {additionalData.locationName} is near to these flood areas. You
               can select 1 or more nearby flood areas you want to link this

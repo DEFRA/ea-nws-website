@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import UnmatchedLocationsDashboardLayout from '../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/UnmatchedLocationsDashboardLayout'
@@ -22,6 +23,9 @@ export default function LocationsNotFoundDashboardPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Locations not found - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <UnmatchedLocationsDashboardLayout
         navigateToNextPage={navigateToNextPage}
         navigateToFindLocation={navigateToFindLocation}

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -21,31 +22,45 @@ export default function AddEmailLayout({ navigateToNextPage }) {
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = emailValidation(email)
-    setError(validationError)
+    if (validationError) {
+      setError(validationError)
+      return
+    }
+
+    // Duplicate check
+    const accountEmails = session.profile.emails || []
+    const isDuplicate = accountEmails
+      .map((e) => e.toLowerCase())
+      .includes(email.toLowerCase())
+    if (isDuplicate) {
+      setError(
+        'You have already registered this email address on your account - you cannot enter it again'
+      )
+      return
+    }
+
     const dataToSend = { email, authToken }
-    if (validationError === '') {
-      const profile = addUnverifiedContact(session.profile, 'email', email)
-      const profileDataToSend = { profile, authToken }
-      const { errorMessage, data } = await backendCall(
-        profileDataToSend,
-        'api/profile/update',
+    const profile = addUnverifiedContact(session.profile, 'email', email)
+    const profileDataToSend = { profile, authToken }
+    const { errorMessage, data } = await backendCall(
+      profileDataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    } else {
+      dispatch(setProfile(data.profile))
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/add_contact/email/add',
         navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(setProfile(data.profile))
-        const { errorMessage } = await backendCall(
-          dataToSend,
-          'api/add_contact/email/add',
-          navigate
-        )
-        if (errorMessage !== null) {
-          setError(errorMessage)
-        } else {
-          dispatch(setCurrentContact(email))
-          navigateToNextPage()
-        }
+        dispatch(setCurrentContact(email))
+        navigateToNextPage()
       }
     }
   }
@@ -60,12 +75,15 @@ export default function AddEmailLayout({ navigateToNextPage }) {
 
   return (
     <>
+      <Helmet>
+        <title>Enter an email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter an email address to get flood messages
             </h2>
             <div className='govuk-body'>
@@ -77,6 +95,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
                 id='email-address'
                 name='Email address'
                 inputType='text'
+                inputMode='email'
                 error={error}
                 onChange={(val) => setEmail(val)}
                 className='govuk-input govuk-input--width-20'

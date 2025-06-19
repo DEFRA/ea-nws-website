@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -55,6 +56,9 @@ export default function AddAccountNameLayout({
 
   return (
     <>
+      <Helmet>
+        <title>Enter your name - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -68,7 +72,7 @@ export default function AddAccountNameLayout({
           )}
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>
             <div className='govuk-body'>

@@ -493,7 +493,7 @@
 .nearby-flood-areas-full-screen-map-container .area-info-desktop {
   width: 20vw;
   height: 100vh;
-  background-color: white;
+  background-color: #f3f2f1;
   padding: 1rem;
   overflow-y: auto;
 }
@@ -501,7 +501,7 @@
 .nearby-flood-areas-full-screen-map-container .area-info-mobile {
   width: 100vw;
   height: 15vh;
-  background-color: white;
+  background-color: #f3f2f1;
   padding: 1rem;
   overflow-y: auto;
 }

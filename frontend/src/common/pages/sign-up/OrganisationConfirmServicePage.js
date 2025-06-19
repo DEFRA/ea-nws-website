@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
@@ -8,14 +9,17 @@ export default function OrganisationConfirmServicePage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>You've chosen the professional service - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body govuk-!-margin-top-6'>
-              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
-                You've chosen the professional<br />
+              <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+                You've chosen the professional
+                <span style={{ display: 'block' }} />
                 (organisation) service
               </h1>
               <p className='govuk-!-margin-top-6'>

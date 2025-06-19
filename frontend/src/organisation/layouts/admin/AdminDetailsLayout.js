@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -103,6 +104,15 @@ export default function AdminDetailsLayout({
 
   return (
     <>
+      <Helmet>
+        {isAdmin 
+          ? (
+            <title>Enter your details - Get flood warnings (professional) - GOV.UK</title>
+            )
+          : (
+            <title>Enter details for the main administrator - Get flood warnings (professional) - GOV.UK</title>
+            )}
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -111,9 +121,11 @@ export default function AdminDetailsLayout({
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
             {isAdmin ? (
-              <h1 className='govuk-heading-l'>Enter your details</h1>
+              <h1 className='govuk-heading-l' id='main-content'>
+                Enter your details
+              </h1>
             ) : (
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 Enter details for main administrator
               </h1>
             )}
@@ -146,6 +158,7 @@ export default function AdminDetailsLayout({
                 id='email-address'
                 name='Email address'
                 inputType='text'
+                inputMode='email'
                 value={email}
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}

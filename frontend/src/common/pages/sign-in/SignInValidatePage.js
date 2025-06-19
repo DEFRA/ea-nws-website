@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import NotCompletedSignUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
@@ -168,6 +169,9 @@ export default function SignInValidatePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired || signUpNotComplete ? (
         (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
         (signUpNotComplete && (

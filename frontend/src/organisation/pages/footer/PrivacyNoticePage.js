@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import BackLink from '../../../common/components/custom/BackLink'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
-import { backendCall } from '../../../common/services/BackendService'
+import BackLink from '../../../common/components/custom/BackLink'
 import PrivateBetaPrivacyNoticePage from '../../../common/pages/private-beta/PrivateBetaPrivacyNoticePage'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function PrivacyNoticePage () {
   const navigate = useNavigate()
@@ -23,6 +24,9 @@ export default function PrivacyNoticePage () {
 
   return (
     <>
+      <Helmet>
+        <title>Privacy notice - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       {servicePhase === 'beta'
         ? (
           <>

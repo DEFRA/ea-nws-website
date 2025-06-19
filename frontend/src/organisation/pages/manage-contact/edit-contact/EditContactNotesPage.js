@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 import UpdateContactAndNavigate from '../UpdateContactAndNavigate'
 
@@ -16,6 +17,9 @@ export default function EditContactNotesPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Edit user notes - Manage users - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='contact'

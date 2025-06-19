@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function NotInEnglandLayout ({
+export default function NotInEnglandLayout({
   navigateToNextPage,
   flow,
   postCodeSearchUrl,
@@ -63,7 +63,7 @@ export default function NotInEnglandLayout ({
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               This location is not in England and cannot be added to this
               account
             </h1>

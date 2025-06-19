@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -13,7 +14,7 @@ import { geoSafeToWebLocation } from '../../../../common/services/formatters/Loc
 import FloodReportFilter from '../components/FloodReportFilter'
 import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodReportsTable'
 
-export default function FloodWarningHistoryDashboardPage () {
+export default function FloodWarningHistoryDashboardPage() {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
 
@@ -136,9 +137,10 @@ export default function FloodWarningHistoryDashboardPage () {
     lastUpdatedTime
   ) => {
     const { additionals } = location
-    const locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
-      (targetArea) => targetArea.TA_CODE === TA_CODE
-    )
+    const locationIntersectsWithFloodArea =
+      additionals.other?.targetAreas?.some(
+        (targetArea) => targetArea.TA_CODE === TA_CODE
+      )
 
     if (!locationIntersectsWithFloodArea) return
 
@@ -263,40 +265,41 @@ export default function FloodWarningHistoryDashboardPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Flood warning history - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
             <ErrorSummary errorList={filterErrorMessages} />
             <br />
-            <h1 className='govuk-heading-l'>Flood warning history</h1>
-            {loading
-              ? (
-                <LoadingSpinner />
-                )
-              : !isFilterVisible
-                  ? (
-                    <div className='govuk-grid-row'>
-                      <>{table}</>
-                    </div>
-                    )
-                  : (
-                    <div className='govuk-grid-row'>
-                      <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
-                        <FloodReportFilter
-                          locationsAffected={locationsAffected}
-                          setFilteredLocationsAffected={setFilteredLocationsAffected}
-                          resetPaging={resetPaging}
-                          setResetPaging={setResetPaging}
-                          filters={filters}
-                          updateFilter={updateFilter}
-                          clearFilters={clearFilters}
-                          setFilterErrorMessages={setFilterErrorMessages}
-                        />
-                      </div>
-                      <div className='govuk-grid-column-three-quarters'>{table}</div>
-                    </div>
-                    )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Flood warning history
+            </h1>
+            {loading ? (
+              <LoadingSpinner />
+            ) : !isFilterVisible ? (
+              <div className='govuk-grid-row'>
+                <>{table}</>
+              </div>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                  <FloodReportFilter
+                    locationsAffected={locationsAffected}
+                    setFilteredLocationsAffected={setFilteredLocationsAffected}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    filters={filters}
+                    updateFilter={updateFilter}
+                    clearFilters={clearFilters}
+                    setFilterErrorMessages={setFilterErrorMessages}
+                  />
+                </div>
+                <div className='govuk-grid-column-three-quarters'>{table}</div>
+              </div>
+            )}
           </div>
         </div>
       </main>

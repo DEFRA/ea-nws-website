@@ -9,9 +9,11 @@ export default function AddMobilePhonePage () {
   const NavigateToPreviousPage = () => navigate('/signup/contactpreferences')
 
   return (
-    <AddMobileLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <AddMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

@@ -77,10 +77,11 @@ export default function LocationInFloodAreasLayout({
         dispatch(setProfile(updatedProfile))
       }
     }
-    continueToNextPage()
+    continueToNextPage(updatedProfile)
   }
 
   const addLocationWithinFloodArea = async () => {
+    let updatedProfile = { ...profile }
     // geosafe doesnt accept locations with postcodes - need to remove this from the object
     const { postcode, ...locationWithoutPostcode } = selectedLocation
 
@@ -103,7 +104,7 @@ export default function LocationInFloodAreasLayout({
 
     locationWithoutPostcode.additionals = additionals
 
-    const updatedProfile = addLocation(profile, locationWithoutPostcode)
+    updatedProfile = addLocation(updatedProfile, locationWithoutPostcode)
     dispatch(setProfile(updatedProfile))
 
     return updatedProfile

@@ -18,30 +18,34 @@ export default function LocationReviewTable({ locations }) {
       <h2 className='govuk-heading-m'>Location you selected</h2>
       {locations.map && (
         <table className='govuk-table'>
-          <tbody className='govuk-table__body' />
-          {locations.map((location, index) => (
-            <tr key={index} className='govuk-table__row'>
-              <th className='govuk-table__header' scope='row'>
-                Address
-              </th>
-              <td className='govuk-table__cell govuk-!-width-full'>
-                {location.address}
-              </td>
-
-              <td className='govuk-table__cell'>
-                <Link
-                  onClick={(e) => selectLocationToBeChanged(e, location)}
-                  className='govuk-link'
-                  style={{ cursor: 'pointer' }}
-                  aria-label={`Change address for location ${
-                    locations.length > 1 && index
-                  } - ${location.address}`}
+          <tbody className='govuk-table__body'>
+            {locations.map((location, index) => (
+              <tr key={index} className='govuk-table__row'>
+                <th
+                  className='govuk-table__header govuk-!-width-one-third'
+                  scope='row'
                 >
-                  Change
-                </Link>
-              </td>
-            </tr>
-          ))}
+                  Location
+                </th>
+                <td className='govuk-table__cell govuk-!-width-full'>
+                  {location.address}
+                </td>
+
+                <td className='govuk-table__cell'>
+                  <Link
+                    onClick={(e) => selectLocationToBeChanged(e, location)}
+                    className='govuk-link'
+                    style={{ cursor: 'pointer' }}
+                    aria-label={`Change address for location ${
+                      locations.length > 1 && index
+                    } - ${location.address}`}
+                  >
+                    Change
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       )}
     </div>

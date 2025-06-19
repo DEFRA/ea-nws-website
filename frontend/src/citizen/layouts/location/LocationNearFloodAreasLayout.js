@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodMessageDetails from '../../../common/components/custom/FloodMessageDetails'
 import FloodMessagesTypes from '../../../common/components/custom/FloodMessagesTypes'
@@ -37,6 +37,7 @@ export default function LocationNearFloodAreasLayout({
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
@@ -52,6 +53,7 @@ export default function LocationNearFloodAreasLayout({
   const [error, setError] = useState(null)
   const [showFullMap, setShowFullMap] = useState(false)
   const [selectedArea, setSelectedArea] = useState(null)
+  const inSignUpFlow = location.pathname.includes('signup')
 
   // used when user has selected search via placename and radius of TAs found is extended
   const locationSearchType = useSelector(
@@ -89,21 +91,25 @@ export default function LocationNearFloodAreasLayout({
 
       warningArea.features = warningArea.features.map((area) => ({
         ...area,
-        addLocation: floodAreaExistsInProfile(area)
+        addLocation: !inSignUpFlow && floodAreaExistsInProfile(area)
       }))
       alertArea.features = alertArea.features.map((area) => ({
         ...area,
-        addLocation: floodAreaExistsInProfile(area)
+        addLocation: !inSignUpFlow && floodAreaExistsInProfile(area)
       }))
 
       areas.push(...warningArea.features)
       areas.push(...alertArea.features)
 
-      // remove the choice of picking any
-      const filteredAreas = areas.filter(
-        (area) => !floodAreasAlreadyAdded.includes(area?.properties?.TA_Name)
-      )
-      setFloodAreas(filteredAreas)
+      if (!inSignUpFlow) {
+        // remove the choice of picking any
+        const filteredAreas = areas.filter(
+          (area) => !floodAreasAlreadyAdded.includes(area?.properties?.TA_Name)
+        )
+        setFloodAreas(filteredAreas)
+      } else {
+        setFloodAreas(areas)
+      }
     }
     fetchFloodAreaData()
   }, [])
@@ -140,7 +146,7 @@ export default function LocationNearFloodAreasLayout({
         }
       }
 
-      continueToNextPage()
+      continueToNextPage(updatedProfile)
     } else {
       setError('Select at least one area')
     }
@@ -204,6 +210,8 @@ export default function LocationNearFloodAreasLayout({
     floodAreas.forEach(async (area) => {
       if (area.addLocation || floodAreaExistsInProfile(area)) {
         const location = findPOIByAddress(profile, area?.properties.TA_Name)
+
+        console.log('location', location)
 
         const data = {
           authToken,

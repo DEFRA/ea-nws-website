@@ -1,7 +1,6 @@
 import { React } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -54,7 +53,6 @@ export default function CheckYourAnswersPage() {
 
   return (
     <>
-      <BackLink to='/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <div className='govuk-grid-column-three-quarters'>

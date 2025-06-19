@@ -63,14 +63,8 @@ export default function Map({
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
-        selectedFloodArea !== null
-          ? // only load TAs required i.e if location being added lies within TAs, then only load these by searching with a 1m radius
-            // this can be repeated for locations that were added as a TA as well
-            0.001
-          : // extend the radius of TAs loaded on map when user has searched via placename
-          locationSearchType === 'placename'
-          ? 1.5
-          : 0.5
+        // extend the radius of TAs loaded on map when user has searched via placename
+        locationSearchType === 'placename' ? 1.5 : 0.5
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)

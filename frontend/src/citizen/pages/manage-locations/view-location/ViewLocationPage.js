@@ -412,11 +412,6 @@ export default function ViewLocationPage() {
                   </div>
                   <div className='govuk-summary-card__content'>
                     <p className='govuk-body'>
-                      {savedOptionalAlerts
-                        ? 'You currently get these early flood alerts.'
-                        : 'You turned these early flood alerts off.'}
-                    </p>
-                    <p className='govuk-body'>
                       Sent in last year: <b>{floodAlertCount || 0}</b>
                     </p>
                     <Details

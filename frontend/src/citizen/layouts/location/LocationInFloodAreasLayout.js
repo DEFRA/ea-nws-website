@@ -77,7 +77,7 @@ export default function LocationInFloodAreasLayout({
         dispatch(setProfile(updatedProfile))
       }
     }
-    continueToNextPage()
+    continueToNextPage(updatedProfile)
   }
 
   const addLocationWithinFloodArea = async () => {

@@ -111,7 +111,9 @@ export default function SelectAlternativeLandlineLayout ({
 
     return errorMessage
   }
-  const handleBackLink = () => {
+
+  const handleBackLink = (event) => {
+    event.preventDefault()
     NavigateBack()
   }
 
@@ -120,7 +122,7 @@ export default function SelectAlternativeLandlineLayout ({
       <Helmet>
         <title>Select a telephone number to get flood messages by phone call - Get flood warnings - GOV.UK</title>
       </Helmet>
-      <BackLink onClick={handleBackLink} />
+      <BackLink onClick={(e) => handleBackLink(e)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

@@ -56,8 +56,8 @@ export default function CheckYourAnswersPage() {
     <>
       <BackLink to='/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row '>
-          <div className='govuk-grid-column-three-quarters'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>Check your answers</h1>
             <LocationReviewTable locations={profile.pois} />
             <FloodMessageReviewTable registration={registration} />

@@ -26,6 +26,7 @@ export default function SelectAlternativeLandlineLayout({
   const [selectedNumber, setSelectedNumber] = useState('')
   const [selectedOption, setSelectedOption] = useState('')
   const [error, setError] = useState('')
+  const [optionError, setOptionError] = useState('')
   const [validationError, setValidationError] = useState('')
   const dispatch = useDispatch()
   const profile = useSelector((state) => state.session.profile)
@@ -42,51 +43,67 @@ export default function SelectAlternativeLandlineLayout({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const phoneValidationErrors = phoneValidation(
-      selectedNumber,
-      'mobileAndLandline'
-    )
-    setValidationError(
-      phoneValidationErrors === 'Enter a UK landline or mobile telephone number'
-        ? 'Which telephone number do you want to use?'
-        : phoneValidationErrors
-    )
-    if (validationError === '') {
-      const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
-      if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
-        const updatedProfile = addVerifiedContact(
-          profile,
-          'homePhones',
-          normalisedPhoneNumber
-        )
-        dispatch(setProfile(updatedProfile))
-        updateBackEndProfile(updatedProfile)
-        NextPageWithoutValidation()
-      } else {
-        const updatedProfile = addUnverifiedContact(
-          profile,
-          'homePhones',
-          normalisedPhoneNumber
-        )
-        dispatch(setProfile(updatedProfile))
-        const updateProfileError = await updateBackEndProfile(updatedProfile)
-        if (updateProfileError !== null) {
-          setError(updateProfileError)
-          return
-        }
-        const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
-        const { errorMessage } = await backendCall(
-          dataToSend,
-          'api/add_contact/landline/add',
-          navigate
-        )
-        if (errorMessage !== null) {
-          setError(errorMessage)
-          return
-        }
-        dispatch(setCurrentContact(normalisedPhoneNumber))
-        NextPageWithValidation()
+    if (!selectedOption) {
+      setOptionError('Which telephone number do you want to use?')
+      return
+    }
+    setOptionError('') // Clear previous error
+
+    if (selectedOption === 'otherNumber') {
+      // No input at all
+      if (!selectedNumber.trim()) {
+        setValidationError('Enter a UK landline or telephone number')
+        return
       }
+
+      const phoneValidationErrors = phoneValidation(
+        selectedNumber,
+        'mobileAndLandline'
+      )
+      // Invalid number input
+      if (phoneValidationErrors) {
+        setValidationError(
+          'Enter a UK landline or mobile telephone number, like 01632 960 001 or 07700 900 982 or 08000 07700 900 982 if you’re using an RNIB number'
+        )
+        return
+      }
+    }
+    setValidationError('') // Clear previous error
+
+    const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
+    if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
+      const updatedProfile = addVerifiedContact(
+        profile,
+        'homePhones',
+        normalisedPhoneNumber
+      )
+      dispatch(setProfile(updatedProfile))
+      updateBackEndProfile(updatedProfile)
+      NextPageWithoutValidation()
+    } else {
+      const updatedProfile = addUnverifiedContact(
+        profile,
+        'homePhones',
+        normalisedPhoneNumber
+      )
+      dispatch(setProfile(updatedProfile))
+      const updateProfileError = await updateBackEndProfile(updatedProfile)
+      if (updateProfileError !== null) {
+        setError(updateProfileError)
+        return
+      }
+      const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/add_contact/landline/add',
+        navigate
+      )
+      if (errorMessage !== null) {
+        setError(errorMessage)
+        return
+      }
+      dispatch(setCurrentContact(normalisedPhoneNumber))
+      NextPageWithValidation()
     }
   }
 
@@ -107,13 +124,18 @@ export default function SelectAlternativeLandlineLayout({
   return (
     <>
       <Helmet>
-        <title>Select a telephone number to get flood messages by phone call - Get flood warnings - GOV.UK</title>
+        <title>
+          Select a telephone number to get flood messages by phone call - Get
+          flood warnings - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error, validationError]} />}
+            {(error || optionError || validationError) && (
+              <ErrorSummary errorList={[error, optionError, validationError]} />
+            )}
             {location?.state?.banner && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
@@ -134,14 +156,14 @@ export default function SelectAlternativeLandlineLayout({
 
               <div
                 className={
-                  validationError
+                  optionError
                     ? 'govuk-form-group govuk-form-group--error'
                     : 'govuk-form-group'
                 }
               >
                 <fieldset className='govuk-fieldset'>
-                  {validationError && (
-                    <p className='govuk-error-message'>{validationError}</p>
+                  {optionError && (
+                    <p className='govuk-error-message'>{optionError}</p>
                   )}
                   {mobileNumbers.map((mobileNumber, index) => (
                     <div
@@ -188,7 +210,7 @@ export default function SelectAlternativeLandlineLayout({
                     conditional={selectedOption === 'otherNumber'}
                     conditionalQuestion='UK landline or mobile telephone number'
                     conditionalInput={(val) => setSelectedNumber(val)}
-                    conditionalError={error}
+                    conditionalError={validationError}
                   />
                 </fieldset>
               </div>

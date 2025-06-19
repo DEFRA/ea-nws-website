@@ -15,7 +15,10 @@ export default function ChangeLocationSearchPage () {
       <Helmet>
         <title>Check if you can get flood messages for your location - Who are the flood warnings for? - Get flood warnings - GOV.UK</title>
       </Helmet>
-      <LocationSearchLayout continueToNextPage={continueToNextPage} />
+      <LocationSearchLayout
+        continueToNextPage={continueToNextPage}
+        returnToReview
+      />
     </>
   )
 }

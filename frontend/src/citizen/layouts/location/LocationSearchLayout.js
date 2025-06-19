@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -13,7 +13,10 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function LocationSearchLayout({ continueToNextPage }) {
+export default function LocationSearchLayout({
+  continueToNextPage,
+  returnToReview
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
@@ -180,12 +183,17 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                   />
                 </div>
               </fieldset>
-
               <Button
                 text='Continue'
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              &nbsp; &nbsp;
+              {returnToReview && (
+                <Link className='govuk-link inline-link' to={'/signup/review'}>
+                  Cancel
+                </Link>
+              )}
             </div>
           </div>
         </div>

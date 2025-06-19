@@ -1,7 +1,7 @@
 const { apiCall } = require('../../../services/ApiService')
 const {
   phoneValidation
-} = require('../../../services/validations/PhoneValidation')
+} = require('../../../../../frontend/src/common/services/validations/PhoneValidation')
 const {
   createGenericErrorResponse
 } = require('../../../services/GenericErrorResponse')

@@ -444,8 +444,18 @@
 }
 
 .nearby-flood-areas-map.mobile {
-  width: 370px;
-  height: 220px;
+  width: 100%;
+  position: relative;
+  padding-top: 66.666%;
+}
+
+.nearby-flood-areas-map.mobile .map-child,
+.nearby-flood-areas-map.desktop .map-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .nearby-flood-areas-map.desktop {

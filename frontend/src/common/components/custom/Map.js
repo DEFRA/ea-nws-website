@@ -5,7 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
@@ -302,7 +302,11 @@ export default function Map({
 
   return (
     <>
-      <div aria-label='Map' style={{ height: '100%', width: '100%' }}>
+      <div
+        aria-label='Map'
+        style={{ height: '100%', width: '100%' }}
+        className='map-child'
+      >
         <MapContainer
           center={[latitude, longitude]}
           zoom={zoomLevel}

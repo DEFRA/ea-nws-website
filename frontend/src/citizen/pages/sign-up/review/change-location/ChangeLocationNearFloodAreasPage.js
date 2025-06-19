@@ -17,12 +17,7 @@ export default function ChangeLocationInFloodAreasPage() {
   const authToken = useSelector((state) => state.session.authToken)
 
   const continueToNextPage = async (profile) => {
-    console.log('profile', profile)
-    console.log('selectedLocation', selectedLocation)
-
     const currentLocations = profile.pois
-    console.log('currentLocations', currentLocations)
-
     // remove all previous locations
     const updatedPois = currentLocations.filter(
       (loc) =>
@@ -42,8 +37,6 @@ export default function ChangeLocationInFloodAreasPage() {
     await backendCall(dataToSend, 'api/profile/update', navigate)
 
     dispatch(setProfile(updatedProfile))
-
-    console.log('updated profile', profile)
 
     navigate('/signup/review')
   }

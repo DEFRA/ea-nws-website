@@ -161,7 +161,7 @@ export default function LocationNearFloodAreasLayout({
     let floodAreasAdded = []
 
     floodAreas.forEach((area) => {
-      if (area.addLocation || floodAreaExistsInProfile(area)) {
+      if (area.addLocation) {
         floodAreasAdded.push(area.properties.TA_Name)
 
         const additionals = [
@@ -183,9 +183,12 @@ export default function LocationNearFloodAreasLayout({
           additionals: additionals
         }
 
+        console.log('target area being added', targetArea)
+
         updatedProfile = addLocation(profile, targetArea)
       }
     })
+
     dispatch(setNearbyTargetAreasAdded(floodAreasAdded))
     dispatch(setProfile(updatedProfile))
 

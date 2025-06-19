@@ -39,12 +39,12 @@ export default function ChangeLocationInFloodAreasPage() {
     await backendCall(dataToSend, 'api/profile/update', navigate)
 
     dispatch(setProfile(updatedProfile))
-    console.log('updated profile', profile)
 
     navigate('/signup/review')
   }
 
   const searchResultsPage = '/signup/review/change-location-results'
+
   return (
     <>
       <LocationInFloodAreasLayout

@@ -153,7 +153,7 @@ export default function LocationNearFloodAreasLayout({
   }
 
   const addFloodAreas = async () => {
-    let updatedProfile
+    let updatedProfile = { ...profile }
     // we need to get a common name to group nearby target area locations added through an address
     const locationName = selectedLocation.address
 
@@ -183,9 +183,7 @@ export default function LocationNearFloodAreasLayout({
           additionals: additionals
         }
 
-        console.log('target area being added', targetArea)
-
-        updatedProfile = addLocation(profile, targetArea)
+        updatedProfile = addLocation(updatedProfile, targetArea)
       }
     })
 
@@ -211,10 +209,8 @@ export default function LocationNearFloodAreasLayout({
 
   const registerLocationsToPartner = async (profile) => {
     floodAreas.forEach(async (area) => {
-      if (area.addLocation || floodAreaExistsInProfile(area)) {
+      if (area.addLocation) {
         const location = findPOIByAddress(profile, area?.properties.TA_Name)
-
-        console.log('location', location)
 
         const data = {
           authToken,

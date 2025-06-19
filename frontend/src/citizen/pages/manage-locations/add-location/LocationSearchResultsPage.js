@@ -25,7 +25,7 @@ export default function LocationSearchResultsPage() {
     }
   }
 
-  const returnToSearchPage = '/manage-locations/add/search-results'
+  const returnToSearchPage = '/manage-locations/add/search'
 
   return (
     <>

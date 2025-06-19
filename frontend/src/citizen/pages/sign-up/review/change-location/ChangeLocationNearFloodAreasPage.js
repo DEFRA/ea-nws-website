@@ -26,8 +26,6 @@ export default function ChangeLocationInFloodAreasPage() {
           selectedLocation.address
     )
 
-    console.log('updated pois', updatedPois)
-
     const updatedProfile = {
       ...profile,
       pois: updatedPois

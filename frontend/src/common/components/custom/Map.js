@@ -50,6 +50,9 @@ export default function Map({
   const locationSearchType = useSelector(
     (state) => state.session.locationSearchType
   )
+  const nearbyTargetAreaFlow = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
   // the below is used to interact with the map to highlight selected flood areas
   // or only show selected flood areas
   const alertAreaRef = useRef(null)
@@ -64,7 +67,11 @@ export default function Map({
         latitude,
         longitude,
         // extend the radius of TAs loaded on map when user has searched via placename
-        locationSearchType === 'placename' ? 1.5 : 0.5
+        !nearbyTargetAreaFlow
+          ? 0.001
+          : locationSearchType === 'placename'
+          ? 1.5
+          : 0.5
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)

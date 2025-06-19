@@ -17,9 +17,6 @@ export default function ChangeLocationInFloodAreasPage() {
   const authToken = useSelector((state) => state.session.authToken)
 
   const continueToNextPage = async (profile) => {
-    console.log('profile', profile)
-    console.log('selectedLocation', selectedLocation)
-
     // remove all previous locations
     const updatedPois = profile.pois.filter(
       (loc) =>
@@ -27,8 +24,6 @@ export default function ChangeLocationInFloodAreasPage() {
         getAdditional(loc?.additionals, 'locationName') !==
           selectedLocation.address
     )
-
-    console.log('updated pois', updatedPois)
 
     const updatedProfile = {
       ...profile,

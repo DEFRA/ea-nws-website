@@ -1,5 +1,5 @@
 const postCodeValidation = (postcode) => {
-  if (!postcode.trim()) {
+  if (!postcode || !postcode.trim()) {
     // EMPTY case
     return 'Enter a postcode in England'
   }

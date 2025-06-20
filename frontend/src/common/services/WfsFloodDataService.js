@@ -380,3 +380,61 @@ export const getBoundaries = async (name) => {
 
   return wfsBoundaries
 }
+
+export const getGroupFloodLocation = (locations) => {
+  const group = {}
+  const locationCounts = {}
+
+  locations.forEach((location) => {
+    const locationAdditional = location.additionals.find(
+      (add) => add.id === 'locationName'
+    )
+    if (locationAdditional) {
+      const locationValue = locationAdditional.value.s
+      locationCounts[locationValue] = (locationCounts[locationValue] || 0) + 1
+    }
+  })
+
+  //add to group if appears more than once
+  locations.forEach((location) => {
+    const locationAdditional = location.additionals.find(
+      (add) => add.id === 'locationName'
+    )
+
+    if (locationAdditional) {
+      const locationValue = locationAdditional.value.s
+      if (locationCounts[locationValue] > 1) {
+        if (!group[locationValue]) {
+          group[locationValue] = []
+        }
+        group[locationValue].push(location)
+      }
+    }
+  })
+  return group
+}
+
+export const getNonGroupFloodLocation = (locations) => {
+  const nonGroup = []
+  const groupLocations = getGroupFloodLocation(locations)
+  const groupedLocationValues = new Set(Object.keys(groupLocations))
+
+  locations.forEach((location) => {
+    const hasLocationName = location.additionals.some(
+      (add) => add.id === 'locationName'
+    )
+
+    if (!hasLocationName) {
+      nonGroup.push(location)
+    } else {
+      const locationAdditional = location.additionals.find(
+        (add) => add.id === 'locationName'
+      )
+      const locationValue = locationAdditional.value.s
+      if (!groupedLocationValues.has(locationValue)) {
+        nonGroup.push(location)
+      }
+    }
+  })
+  return nonGroup
+}

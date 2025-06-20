@@ -21,6 +21,7 @@ import {
   getRegistrationParams,
   removeLocation
 } from '../../../common/services/ProfileServices'
+import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationInFloodAreasLayout({
   continueToNextPage,
@@ -34,11 +35,11 @@ export default function LocationInFloodAreasLayout({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const { latitude, longitude } = selectedLocation.coordinates
   const locationAlertTypes = getLocationOtherAdditional(
     selectedLocation?.additionals,
     'alertTypes'
   )
-  const [floodAreas, setFloodAreas] = useState([])
   const [severeWarningAreas, setSevereWarningAreas] = useState(new Set())
   const [alertAreas, setAlertAreas] = useState(new Set())
 
@@ -181,29 +182,45 @@ export default function LocationInFloodAreasLayout({
     return data.profile
   }
 
+  // load flood areas that the user will receive
   useEffect(() => {
-    let severeAreas = []
-    let alertAreas = []
-    floodAreas?.forEach((area) => {
-      const category = area?.properties?.category?.toLowerCase()
-      if (!category) return
+    async function fetchFloodAreasAffectingLocation() {
+      let floodAreas = []
+      let severeAreas = []
+      let alertAreas = []
+      const { alertArea, warningArea } = await getSurroundingFloodAreas(
+        latitude,
+        longitude,
+        0.001
+      )
 
-      const areaData = {
-        TA_CODE: area.properties.TA_CODE,
-        TA_Name: area.properties.TA_Name,
-        category: category.includes('warning') ? 'Flood warning' : 'Flood alert'
-      }
+      floodAreas.push(...alertArea?.features)
+      floodAreas.push(...warningArea?.features)
 
-      if (category.toLowerCase().includes('warning')) {
-        severeAreas.push(areaData)
-      } else if (category.toLowerCase().includes('alert')) {
-        alertAreas.push(areaData)
-      }
-    })
+      floodAreas?.forEach((area) => {
+        const category = area?.properties?.category?.toLowerCase()
+        if (!category) return
 
-    setSevereWarningAreas(severeAreas)
-    setAlertAreas(alertAreas)
-  }, [floodAreas])
+        const areaData = {
+          TA_CODE: area.properties.TA_CODE,
+          TA_Name: area.properties.TA_Name,
+          category: category.includes('warning')
+            ? 'Flood warning'
+            : 'Flood alert'
+        }
+
+        if (category.toLowerCase().includes('warning')) {
+          severeAreas.push(areaData)
+        } else if (category.toLowerCase().includes('alert')) {
+          alertAreas.push(areaData)
+        }
+      })
+
+      setSevereWarningAreas(severeAreas)
+      setAlertAreas(alertAreas)
+    }
+    fetchFloodAreasAffectingLocation()
+  }, [])
 
   const [showFullMap, setShowFullMap] = useState(false)
 
@@ -239,7 +256,6 @@ export default function LocationInFloodAreasLayout({
                 >
                   <Map
                     types={mapAreas}
-                    setFloodAreas={setFloodAreas}
                     interactive={!isMobile}
                     resetMapButton={!isMobile}
                     fullScreen={isMobile ? () => toggleFullScreen() : undefined}

@@ -326,7 +326,11 @@ export default function Map({
           {fullScreen && <FullScreenMapButton />}
           {exitMap && <ExitMapButton />}
           {showMarker && (
-            <Marker position={[latitude, longitude]} interactive={false}>
+            <Marker
+              position={[latitude, longitude]}
+              interactive={false}
+              icon={DefaultIcon}
+            >
               <Popup />
             </Marker>
           )}

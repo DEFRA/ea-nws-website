@@ -64,7 +64,7 @@ export default function FloodMessageReviewTable() {
             </th>
             <td className='govuk-table__cell' style={{ borderBottom: 'none' }}>
               <Link
-                to='/signup/review/change-flood-alert'
+                to='/signup/review/change-location-search'
                 className='govuk-link'
                 style={{ cursor: 'pointer' }}
                 aria-label={`Change whether you get optional flood alerts`}

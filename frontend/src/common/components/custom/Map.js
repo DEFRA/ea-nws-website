@@ -203,8 +203,6 @@ export default function Map({
     iconAnchor: [12, 41]
   })
 
-  console.log('locationPin', locationPin)
-
   L.Marker.prototype.options.icon = DefaultIcon
 
   async function getApiKey() {

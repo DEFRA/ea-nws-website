@@ -17,6 +17,14 @@ const osPostCodeApiCall = async (postCode) => {
   try {
     const response = await axios.get(url)
 
+    // Handle "NOT_REAL" case - OS API returned no matches at all
+    if (!response.data.results || response.data.results.length === 0) {
+      return {
+        status: 400,
+        errorMessage: 'Enter a real postcode'
+      }
+    }
+
     // Check that postcode is in England
     if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
       responseData = response.data.results.map((result) => {
@@ -31,6 +39,7 @@ const osPostCodeApiCall = async (postCode) => {
 
       return { status: response.status, data: responseData }
     } else {
+      // NOT_IN_ENGLAND case
       return {
         status: 500,
         errorMessage: 'Enter a full postcode in England'
@@ -39,10 +48,13 @@ const osPostCodeApiCall = async (postCode) => {
   } catch (error) {
     logger.error(error)
 
-    if (error.response && error.response.status === 400) {
-      return {
-        status: 400,
-        errorMessage: 'Postcode not recognised - try again'
+    if (error.response) {
+      if (error.response.status === 400) {
+        // INCORRECT_FORMAT case
+        return {
+          status: 400,
+          errorMessage: 'Enter a postcode in the correct format, like KT3 3QQ'
+        }
       }
     } else {
       return {

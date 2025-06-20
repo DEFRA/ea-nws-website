@@ -35,32 +35,7 @@ export default function AccountDetailsTable({ profile }) {
             </tr>
             <tr className='govuk-table__row'>
               <th
-                className='govuk-table__cell govuk-!-width-one-third'
-                scope='row'
-              >
-                Email to sign in
-              </th>
-              <td className='govuk-table__cell  govuk-!-width-full'>
-                {profile.emails[0]}
-              </td>
-
-              <td className='govuk-table__cell'>
-                <Link
-                  role='button'
-                  to='/signup/review/change-account-name'
-                  className='govuk-link'
-                  style={{ cursor: 'pointer' }}
-                  aria-label={`Change [${
-                    profile.firstname + ' ' + profile.lastname
-                  }] as your full name`}
-                >
-                  Change
-                </Link>
-              </td>
-            </tr>
-            <tr className='govuk-table__row'>
-              <th
-                className='govuk-table__header  govuk-!-width-one-half'
+                className='govuk-table__header govuk-!-width-one-third'
                 scope='row'
               >
                 Email to sign in

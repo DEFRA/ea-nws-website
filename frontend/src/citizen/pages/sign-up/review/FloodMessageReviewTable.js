@@ -1,12 +1,13 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import AlertType from '../../../../common/enums/AlertType'
 import { getLocationOtherAdditional } from '../../../../common/redux/userSlice'
 
 export default function FloodMessageReviewTable() {
   const locationsSelected = useSelector((state) => state.session.profile.pois)
-  const floodWarningAreas = []
-  const floodAlertAreas = []
+  const floodWarningAreasSet = new Set()
+  const floodAlertAreasSet = new Set()
   locationsSelected.forEach((location) => {
     const locationTargetAreas = getLocationOtherAdditional(
       location.additionals,
@@ -15,14 +16,37 @@ export default function FloodMessageReviewTable() {
     if (locationTargetAreas) {
       locationTargetAreas.map((targetArea) => {
         if (targetArea.category === 'Flood Warning') {
-          floodWarningAreas.push(targetArea.TA_Name)
+          floodWarningAreasSet.add(targetArea.TA_Name)
         }
         if (targetArea.category === 'Flood alert') {
-          floodAlertAreas.push(targetArea.TA_Name)
+          floodAlertAreasSet.add(targetArea.TA_Name)
+        }
+      })
+    } else {
+      const locationLevels = getLocationOtherAdditional(
+        location.additionals,
+        'alertTypes'
+      )
+
+      const warningLevels = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING
+      ]
+      const alertLevels = [AlertType.FLOOD_ALERT]
+
+      locationLevels.map((level) => {
+        if (warningLevels.includes(level)) {
+          floodWarningAreasSet.add(location.address)
+        }
+        if (alertLevels.includes(level)) {
+          floodAlertAreasSet.add(location.address)
         }
       })
     }
   })
+
+  const floodWarningAreas = [...floodWarningAreasSet]
+  const floodAlertAreas = [...floodAlertAreasSet]
 
   return (
     <div className='govuk-!-padding-bottom-4'>

@@ -203,6 +203,8 @@ export default function Map({
     iconAnchor: [12, 41]
   })
 
+  console.log('locationPin', locationPin)
+
   L.Marker.prototype.options.icon = DefaultIcon
 
   async function getApiKey() {
@@ -326,7 +328,11 @@ export default function Map({
           {fullScreen && <FullScreenMapButton />}
           {exitMap && <ExitMapButton />}
           {showMarker && (
-            <Marker position={[latitude, longitude]} interactive={false}>
+            <Marker
+              position={[latitude, longitude]}
+              interactive={false}
+              icon={DefaultIcon}
+            >
               <Popup />
             </Marker>
           )}

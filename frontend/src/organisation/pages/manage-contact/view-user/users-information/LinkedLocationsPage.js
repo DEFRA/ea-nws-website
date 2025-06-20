@@ -84,7 +84,8 @@ export default function LinkedLocationsPage() {
         'api/alert/list',
         navigate
       )
-      const alertsList = alertsResponse.alerts || []
+
+      const alertsList = alertsResponse?.alerts || []
 
       // Loop through locations, attaching a count of how many alerts match their TA_CODE
       return locations.map((loc) => {
@@ -156,6 +157,9 @@ export default function LinkedLocationsPage() {
             location.linked_contacts.push(contactID)
           })
         }
+
+        const floodAreas = location?.additionals?.other?.targetAreas || []
+        location.within = floodAreas?.length > 0
       }
 
       const fullLocationData = await attachMessageCounts(locationsUpdate)
@@ -306,7 +310,10 @@ export default function LinkedLocationsPage() {
   return (
     <>
       <Helmet>
-        <title>{contactName}'s linked locations - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          {contactName}'s linked locations - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>

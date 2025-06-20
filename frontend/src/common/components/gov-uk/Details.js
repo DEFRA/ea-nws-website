@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Details ({ title, text }) {
+export default function Details({ title, text }) {
   return (
     <>
       <details className='govuk-details'>

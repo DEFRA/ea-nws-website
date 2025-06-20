@@ -6,15 +6,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
+import AlertType from '../../../common/enums/AlertType'
 import {
+  getLocationOtherAdditional,
   setFloodAlertCount,
+  setFloodAreasAlreadyAdded,
+  setNearbyTargetAreasAdded,
   setNearbyTargetAreasFlow,
-  setSelectedFloodAlertArea,
-  setSelectedFloodWarningArea,
   setSelectedLocation,
-  setSevereFloodWarningCount,
-  setShowOnlySelectedFloodArea
+  setSevereFloodWarningCount
 } from '../../../common/redux/userSlice'
+import { setLocationOtherAdditionals } from '../../../common/services/ProfileServices'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
@@ -29,6 +31,7 @@ export default function LocationSearchResultsLayout({
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
+  const profileLocations = useSelector((state) => state.session.profile?.pois)
   const locationSearchType = useSelector(
     (state) => state.session.locationSearchType
   )
@@ -64,13 +67,11 @@ export default function LocationSearchResultsLayout({
 
     setLoading(true)
     try {
-      dispatch(setSelectedLocation(selectedLocation))
-
       // reset map display - these are only required when user is taken through location in proximity to flood areas
       // they are updated with data only in proximity flow
-      dispatch(setSelectedFloodAlertArea(null))
-      dispatch(setSelectedFloodWarningArea(null))
-      dispatch(setShowOnlySelectedFloodArea(false))
+      // dispatch(setSelectedFloodAlertArea(null))
+      // dispatch(setSelectedFloodWarningArea(null))
+      // dispatch(setShowOnlySelectedFloodArea(false))
       dispatch(setNearbyTargetAreasFlow(false))
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
@@ -97,6 +98,31 @@ export default function LocationSearchResultsLayout({
           warningArea
         )
 
+      const allAlerts = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.FLOOD_ALERT,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
+      ]
+
+      const alertsOnly = [AlertType.FLOOD_ALERT, AlertType.INFO]
+
+      // update selected location with the alerts it can receive - this is used on the next page
+      // to display the correct flood areas on the map
+      const locationWithAlertTypes = {
+        ...selectedLocation,
+        additionals: setLocationOtherAdditionals(
+          [],
+          'alertTypes',
+          isInWarningArea ? allAlerts : alertsOnly
+        )
+      }
+
+      dispatch(setSelectedLocation(locationWithAlertTypes))
+
+      // what even is this? please remind me to come back to this when reviewing
       if (isInAlertArea) {
         setHistoricalAlertNumber(alertArea.features[0].properties.TA_CODE)
       }
@@ -113,7 +139,40 @@ export default function LocationSearchResultsLayout({
         isWithinAlertAreaProximity = alertArea?.features.length > 0
       }
 
+      // this needs reset when on the view location page
+      if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+        dispatch(setNearbyTargetAreasFlow(true))
+        dispatch(setNearbyTargetAreasAdded([]))
+      } else {
+        dispatch(setNearbyTargetAreasFlow(false))
+        dispatch(setNearbyTargetAreasAdded([]))
+      }
+
+      const floodAreas = alertArea?.features.concat(warningArea?.features)
+      let floodAreasAlreadyAdded = []
+      floodAreas?.forEach((area) => {
+        profileLocations?.forEach((loc) => {
+          const locationsTargetAreas = getLocationOtherAdditional(
+            loc?.additionals,
+            'targetAreas'
+          )
+
+          if (
+            loc.address === area.properties.TA_Name ||
+            (locationsTargetAreas &&
+              locationsTargetAreas?.some((targetArea) => {
+                return targetArea.TA_Name === area.properties.TA_Name
+              }))
+          ) {
+            floodAreasAlreadyAdded.push(area.properties.TA_Name)
+          }
+        })
+      })
+
+      dispatch(setFloodAreasAlreadyAdded(floodAreasAlreadyAdded))
+
       continueToNextPage(
+        floodAreasAlreadyAdded,
         isInWarningArea,
         isInAlertArea,
         isWithinWarningAreaProximity,

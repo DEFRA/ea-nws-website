@@ -7,7 +7,8 @@ const Button = forwardRef(function Button(
     onClick,
     imageSrc = null,
     imageHgt = '20px',
-    disable = false
+    disable = false,
+    ariaLabel
   },
   ref
 ) {
@@ -22,6 +23,7 @@ const Button = forwardRef(function Button(
         style={{ cursor }}
         disabled={cursor === 'wait' || disable}
         ref={ref}
+        aria-label={ariaLabel}
       >
         {imageSrc && (
           <img

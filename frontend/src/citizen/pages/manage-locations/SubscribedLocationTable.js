@@ -4,16 +4,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import AlertType from '../../../common/enums/AlertType'
 import {
-  getLocationOtherAdditional,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
 export default function SubscribedLocationTable({ setError }) {
   const navigate = useNavigate()
@@ -72,64 +69,8 @@ export default function SubscribedLocationTable({ setError }) {
   }, [])
 
   const viewSelectedLocation = async (location) => {
-    // need to check if location was added as a nearby target area (TA)
-    // if added as a nearby TA, location name will be that nearby TA name
-    // 1.5km bbox is set as placename search radius is set at 1.5km
-    const { alertArea, warningArea } = await getSurroundingFloodAreas(
-      location.coordinates.latitude,
-      location.coordinates.longitude,
-      1.5
-    )
-
-    const locationIsWarningArea = isSavedLocationTargetArea(
-      location.address,
-      warningArea.features
-    )
-
-    const locationIsAlertArea = isSavedLocationTargetArea(
-      location.address,
-      alertArea.features
-    )
-
     dispatch(setSelectedLocation(location))
-
-    const alertTypes = getLocationOtherAdditional(
-      location.additionals,
-      'alertTypes'
-    )
-
-    if (
-      locationIsWarningArea.length === 0 &&
-      locationIsAlertArea.length === 0
-    ) {
-      // location was not added as a nearby target area
-      // check first if location was added as an alert only location
-      if (
-        alertTypes.includes(AlertType.FLOOD_ALERT) &&
-        alertTypes.length === 2
-      ) {
-        navigate(`/manage-locations/view/${'alert'}`)
-      } else {
-        // location is subscribed to more than alerts only, so show all TAs nearby
-        navigate(`/manage-locations/view/${'both'}`)
-      }
-    } else {
-      // location was added as a nearby TA
-      dispatch(setShowOnlySelectedFloodArea(true))
-      if (locationIsWarningArea.length > 0) {
-        // locations name matches a warning TA
-        dispatch(setSelectedFloodWarningArea(locationIsWarningArea[0]))
-        navigate(`/manage-locations/view/${'severe'}`)
-      } else if (locationIsAlertArea.length > 0) {
-        // locations name matches an alert TA
-        dispatch(setSelectedFloodAlertArea(locationIsAlertArea[0]))
-        navigate(`/manage-locations/view/${'alert'}`)
-      }
-    }
-  }
-
-  const isSavedLocationTargetArea = (locationName, areas) => {
-    return areas.filter((area) => locationName === area.properties.TA_Name)
+    navigate('/manage-locations/view')
   }
 
   const onClickAddLocation = async (event) => {
@@ -144,7 +85,7 @@ export default function SubscribedLocationTable({ setError }) {
   const locationTable = () => {
     const viewColumn = (location, arrayLength, index) => {
       return (
-        <td className='govuk-table__cell'>
+        <td className='govuk-table__cell text-nowrap'>
           <Link
             onClick={(e) => {
               e.preventDefault()
@@ -152,11 +93,11 @@ export default function SubscribedLocationTable({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
-            aria-label={`View location ${arrayLength > 1 && index} - ${
-              location.address
-            }`}
+            aria-label={`Manage preferences for location ${
+              arrayLength > 1 ? `${index + 1}` : ''
+            } - ${location.address}`}
           >
-            View
+            Manage preferences
           </Link>
         </td>
       )
@@ -174,9 +115,9 @@ export default function SubscribedLocationTable({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
-            aria-label={`Remove location ${arrayLength > 1 && index} - ${
-              location.address
-            }`}
+            aria-label={`Remove location ${
+              arrayLength > 1 ? `${index + 1}` : ''
+            } - ${location.address}`}
           >
             Remove
           </Link>

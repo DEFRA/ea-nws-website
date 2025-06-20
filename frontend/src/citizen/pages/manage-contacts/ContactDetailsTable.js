@@ -82,9 +82,7 @@ export default function ContactDetailsTable({
 
   const getLabel = (contact, arrayLength, index, type) => {
     let confirmLabel, removeLabel
-    const contactLabel = `${
-      arrayLength > 1 && index ? `${index} - ` : ''
-    }${contact}`
+    const contactLabel = `${arrayLength > 1 ? `${index + 1} - ` : ''}${contact}`
 
     switch (contactType) {
       case UserContactType.Email:

@@ -419,8 +419,13 @@
   width: 100%;
 }
 
-.view-location-map {
-  width: 37vw;
+.view-location-map.desktop {
+  width: 712px;
+  height: 475px;
+}
+
+.view-location-map.mobile {
+  width: 90vw;
   height: 40vh;
 }
 
@@ -430,8 +435,8 @@
 }
 
 .location-in-flood-area-map.desktop {
-  width: 50vw;
-  height: 40vh;
+  width: 960px;
+  height: 640px;
 }
 
 .location-in-flood-area--full-screen-map {
@@ -444,8 +449,17 @@
 }
 
 .nearby-flood-areas-map.mobile {
-  width: 370px;
-  height: 220px;
+  width: 100%;
+  position: relative;
+  padding-top: 66.666%;
+}
+
+.nearby-flood-areas-map.mobile .map-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .nearby-flood-areas-map.desktop {

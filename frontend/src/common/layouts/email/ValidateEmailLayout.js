@@ -65,6 +65,12 @@ export default function ValidateEmailLayout({
         ) {
           setCodeExpired(true)
         } else {
+          if (
+            errorMessage ===
+            'The email address you entered is already being used'
+          ) {
+            await removeEmailFromProfile()
+          }
           setError(errorMessage)
         }
       } else {

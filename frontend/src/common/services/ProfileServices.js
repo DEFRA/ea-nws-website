@@ -211,10 +211,8 @@ const addLocation = (profile, newLocation) => {
   return updatedProfile
 }
 
-const removeLocation = (profile, address) => {
-  const newLocationList = profile.pois.filter(
-    (location) => location.address !== address
-  )
+const removeLocation = (profile, id) => {
+  const newLocationList = profile.pois.filter((location) => location.id !== id)
 
   const updatedProfile = {
     ...profile,

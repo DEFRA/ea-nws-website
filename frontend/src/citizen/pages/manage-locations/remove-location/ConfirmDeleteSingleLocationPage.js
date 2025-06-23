@@ -38,7 +38,7 @@ export default function ConfirmDeleteSingleLocationPage() {
     if (!errorMessage) {
       const updatedProfile = removeLocation(
         session.profile,
-        location.state.name
+        location.state.locationId
       )
 
       const dataToSend = {
@@ -78,7 +78,10 @@ export default function ConfirmDeleteSingleLocationPage() {
   return (
     <>
       <Helmet>
-        <title>Are you sure you want to remove this location? - Get flood warnings - GOV.UK</title>
+        <title>
+          Are you sure you want to remove this location? - Get flood warnings -
+          GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {error && <ErrorSummary errorList={[error]} />}

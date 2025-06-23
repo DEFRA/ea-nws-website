@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
-import AlertType from '../../../common/enums/AlertType'
 import {
-  getLocationOtherAdditional,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
@@ -13,6 +11,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
+  getFloodWarningAndAlerts,
   getGroupFloodLocation,
   getNonGroupFloodLocation
 } from '../../../common/services/WfsFloodDataService'
@@ -82,32 +81,6 @@ export default function SubscribedLocationTable({ setError }) {
       navigate('/manage-locations/add/search')
     } else {
       setError('Maximum number of locations already added')
-    }
-  }
-
-  const getFloodWarningAndAlerts = (location) => {
-    const { additionals } = location
-    const alertTypes = getLocationOtherAdditional(additionals, 'alertTypes')
-    let serverFloodWarnings = null
-    let floodWarnings = null
-    let floodAlerts = null
-
-    if (!alertTypes.length) return ''
-
-    serverFloodWarnings = alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
-    floodWarnings = alertTypes.includes(AlertType.FLOOD_WARNING)
-    floodAlerts = alertTypes.includes(AlertType.FLOOD_ALERT)
-
-    if (serverFloodWarnings && floodWarnings && floodAlerts) {
-      return 'Severe flood warnings, flood warnings and flood alerts'
-    }
-
-    if (serverFloodWarnings && floodWarnings) {
-      return 'Severe flood warnings and flood warnings'
-    }
-
-    if (floodAlerts) {
-      return 'Flood alerts'
     }
   }
 

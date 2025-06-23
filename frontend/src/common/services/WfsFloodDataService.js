@@ -1,6 +1,8 @@
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
+import AlertType from '../enums/AlertType'
+import { getLocationOtherAdditional } from '../redux/userSlice'
 import { backendCall } from './BackendService'
 
 const wfsCallWithFilter = async (type, property, value) => {
@@ -437,4 +439,30 @@ export const getNonGroupFloodLocation = (locations) => {
     }
   })
   return nonGroup
+}
+
+export const getFloodWarningAndAlerts = (location) => {
+  const { additionals } = location
+  const alertTypes = getLocationOtherAdditional(additionals, 'alertTypes')
+  let serverFloodWarnings = null
+  let floodWarnings = null
+  let floodAlerts = null
+
+  if (!alertTypes.length) return ''
+
+  serverFloodWarnings = alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
+  floodWarnings = alertTypes.includes(AlertType.FLOOD_WARNING)
+  floodAlerts = alertTypes.includes(AlertType.FLOOD_ALERT)
+
+  if (serverFloodWarnings && floodWarnings && floodAlerts) {
+    return 'Severe flood warnings, flood warnings and flood alerts'
+  }
+
+  if (serverFloodWarnings && floodWarnings) {
+    return 'Severe flood warnings and flood warnings'
+  }
+
+  if (floodAlerts) {
+    return 'Flood alerts'
+  }
 }

@@ -38,7 +38,7 @@ const citizenPOIs = [
       latitude: 51.4998415 * 10 ** 6,
       longitude: -0.1246377 * 10 ** 6
     },
-    id: 1,
+    id: '1',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',
@@ -86,7 +86,7 @@ const citizenPOIs = [
       latitude: 54.1992721 * 10 ** 6,
       longitude: -3.0970548 * 10 ** 6
     },
-    id: 2,
+    id: '2',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',
@@ -113,7 +113,7 @@ const citizenPOIs = [
       latitude: 54.1992721 * 10 ** 6,
       longitude: -3.0970548 * 10 ** 6
     },
-    id: 3,
+    id: '3',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',
@@ -140,7 +140,7 @@ const citizenPOIs = [
       latitude: 54.1992721 * 10 ** 6,
       longitude: -3.0970548 * 10 ** 6
     },
-    id: 4,
+    id: '4',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',
@@ -167,7 +167,7 @@ const citizenPOIs = [
       latitude: 54.1992721 * 10 ** 6,
       longitude: -3.0970548 * 10 ** 6
     },
-    id: 5,
+    id: '5',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',

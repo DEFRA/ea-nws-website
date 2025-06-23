@@ -14,7 +14,7 @@ import {
   getFloodWarningAndAlerts,
   getGroupFloodLocation,
   getNonGroupFloodLocation
-} from '../../../common/services/WfsFloodDataService'
+} from '../../../common/utils/FloodLocationGroupingAndWarningMessages'
 
 export default function SubscribedLocationTable({ setError }) {
   const navigate = useNavigate()
@@ -179,7 +179,7 @@ export default function SubscribedLocationTable({ setError }) {
                       <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
                         {key}
                       </p>
-                      <p className=''>
+                      <p>
                         {'You will get flood messages for these nearby areas'}
                       </p>
                     </td>
@@ -191,45 +191,15 @@ export default function SubscribedLocationTable({ setError }) {
                         <p className='govuk-!-margin-bottom-0'>
                           {location.address}
                         </p>
-                        <p
-                          style={{ fontSize: '1rem' }}
-                          className='govuk-hint govuk-!-margin-bottom-0'
-                        >
+                        <p className='govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                           {getFloodWarningAndAlerts(location)}
                         </p>
                       </td>
-                      <td className='govuk-table__cell text-nowrap'>
-                        <Link
-                          onClick={(e) => {
-                            e.preventDefault()
-                            viewSelectedLocation(location)
-                          }}
-                          className='govuk-link'
-                          style={{ cursor: 'pointer' }}
-                          aria-label={`View or manage for location ${
-                            locations.length > 1 ? `${index + 1}` : ''
-                          } - ${location.address}`}
-                        >
-                          View or manage
-                        </Link>
-                      </td>
-                      <td className='govuk-table__cell'>
-                        <Link
-                          to='/manage-locations/remove'
-                          state={{
-                            name: location.address,
-                            locationId: location.id,
-                            partnerId
-                          }}
-                          className='govuk-link'
-                          style={{ cursor: 'pointer' }}
-                          aria-label={`Remove location ${
-                            locations.length > 1 ? `${index + 1}` : ''
-                          } - ${location.address}`}
-                        >
-                          Remove
-                        </Link>
-                      </td>
+
+                      {viewColumn(location)}
+
+                      {locations.length > 1 &&
+                        removeColumn(location, locations.length, index)}
                     </tr>
                   ))}
                 </>

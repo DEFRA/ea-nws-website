@@ -251,7 +251,6 @@ export default function DashboardHeader({
   setErrorMessage
 }) {
 
-  console.log(locations)
   const navigate = useNavigate()
 
   const floodRiskDetails = (

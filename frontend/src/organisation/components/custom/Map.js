@@ -501,7 +501,7 @@ export default function Map({
         attributionControl={false}
         minZoom={7}
         maxBounds={maxBounds}
-        className='map-container'
+        className='map-container-org'
       >
         {apiKey && apiKey !== 'error' ? (
           <>

@@ -84,7 +84,7 @@ export default function SignUpPage() {
             <div className='govuk-body'>
               <p>We'll send flood messages to this address. </p>
               <p>
-                You'll also use this to signin to your account to update your
+                You'll also use this to sign in to your account to update your
                 locations, flood messages or contact details.{' '}
               </p>
               <InsetText text='We recommend using an email address you can access 24 hours a day.' />

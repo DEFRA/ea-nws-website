@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink.js'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner.js'
 import Button from '../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../common/enums/AlertState.js'
+import AlertType from '../../../../common/enums/AlertType.js'
 import { getAdditional } from '../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
@@ -14,6 +15,7 @@ import FloodReportFilter from '../components/FloodReportFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
 
 export default function LiveFloodWarningsDashboardPage() {
+  const location = useLocation()
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
@@ -33,6 +35,26 @@ export default function LiveFloodWarningsDashboardPage() {
     []
   )
   const toggleFilterButtonRef = useRef(null)
+
+  useEffect(() => {
+    // Once data is loaded, apply any incoming filter from router state
+    if (locationsAffected.length > 0 && location.state?.filter) {
+      const initialType = location.state.filter
+
+      updateFilter('selectedWarningTypes', [initialType])
+
+      const mapLabelToEnum = {
+        'Severe flood warnings': AlertType.SEVERE_FLOOD_WARNING,
+        'Flood warnings': AlertType.FLOOD_WARNING,
+        'Flood alerts': AlertType.FLOOD_ALERT
+      }
+
+      const targetFilter = mapLabelToEnum[initialType]
+      setFilteredLocationsAffected(
+        locationsAffected.filter((row) => row.floodData.type === targetFilter)
+      )
+    }
+  }, [locationsAffected, location.state])
 
   useEffect(() => {
     if (toggleFilterButtonRef.current) {

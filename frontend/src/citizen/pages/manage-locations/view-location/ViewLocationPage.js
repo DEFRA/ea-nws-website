@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -14,9 +15,9 @@ import AlertType from '../../../../common/enums/AlertType'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-    getLocationOtherAdditional,
-    getRegistrationParams,
-    updateLocationsAlertTypes
+  getLocationOtherAdditional,
+  getRegistrationParams,
+  updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
@@ -289,13 +290,22 @@ export default function ViewLocationPage() {
                   text={successMessage}
                 />
               )}
-              <h1 className='govuk-!-margin-top-4 govuk-heading-l' id="main-content">
+              <h1
+                className='govuk-!-margin-top-4 govuk-heading-l'
+                id='main-content'
+              >
                 {selectedLocation.address}
               </h1>
               {isLoading ? (
                 <LoadingSpinner />
               ) : (
-                <div className='view-location-map'>
+                <div
+                  className={
+                    isMobile
+                      ? 'view-location-map mobile'
+                      : 'view-location-map desktop'
+                  }
+                >
                   <Map
                     types={locationsAlertTypes}
                     interactive={selectedFloodArea === null}

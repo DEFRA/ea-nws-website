@@ -4,7 +4,7 @@ const {
 } = require('../../../services/GenericErrorResponse')
 const {
   phoneValidation
-} = require('../../../../../frontend/src/common/services/validations/PhoneValidation')
+} = require('../../../services/validations/PhoneValidation')
 const {
   normalisePhoneNumber
 } = require('../../../services/formatters/NormalisePhoneNumber')

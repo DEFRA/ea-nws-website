@@ -5,15 +5,16 @@
 replicaCount: 1
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: ''
+fullnameOverride: ''
 
 serviceAccount: {}
 
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
 containers:
@@ -23,7 +24,7 @@ containers:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "frontend-0.4.4-patch2"
+      tag: 'frontend-0.4.7'
     livenessProbe:
       httpGet:
         path: /
@@ -51,7 +52,6 @@ service:
       port: 3000
       protocol: TCP
       targetPort: 3000
-
 
 autoscaling:
   enabled: false

@@ -1,4 +1,3 @@
-import { React } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -58,12 +57,12 @@ export default function CheckYourAnswersPage() {
         <title>Check your answers - Get flood warnings - GOV.UK</title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row '>
-          <div className='govuk-grid-column-three-quarters'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l' id='main-content'>
               Check your answers
             </h1>
-            <LocationReviewTable locations={profile.pois} />
+            <LocationReviewTable />
             <FloodMessageReviewTable registration={registration} />
             <ContactReviewTable contacts={contacts} />
             <AccountDetailsTable profile={profile} />

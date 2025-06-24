@@ -9,14 +9,12 @@ export default function AccountDetailsTable({ profile }) {
         <title>Your account - Get flood warnings - GOV.UK</title>
       </Helmet>
       <div className='govuk-padding-bottom-4'>
-        <h2 className='govuk-heading-m' id='main-content'>
-          Your account
-        </h2>
+        <h2 className='govuk-heading-m'>Your account</h2>
         <table className='govuk-table'>
           <tbody className='govuk-table__body'>
             <tr className='govuk-table__row'>
               <th
-                className='govuk-table__header govuk-!-width-one-half'
+                className='govuk-table__cell govuk-!-width-one-third'
                 scope='row'
               >
                 Full name
@@ -27,13 +25,9 @@ export default function AccountDetailsTable({ profile }) {
 
               <td className='govuk-table__cell'>
                 <Link
-                  role='button'
                   to='/signup/review/change-account-name'
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
-                  aria-label={`Change [${
-                    profile.firstname + ' ' + profile.lastname
-                  }] as your full name`}
                 >
                   Change
                 </Link>
@@ -41,7 +35,7 @@ export default function AccountDetailsTable({ profile }) {
             </tr>
             <tr className='govuk-table__row'>
               <th
-                className='govuk-table__header  govuk-!-width-one-half'
+                className='govuk-table__header govuk-!-width-one-third'
                 scope='row'
               >
                 Email to sign in

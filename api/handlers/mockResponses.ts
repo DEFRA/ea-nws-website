@@ -45,6 +45,10 @@ const citizenPOIs = [
     metadata: { nbAttachedContacts: 0 },
     additionals: [
       {
+        id: 'locationName',
+        value: { s: '1, Sun Street, Ulverston,  LA12 7BX' }
+      },
+      {
         id: 'other',
         value: {
           s: JSON.stringify({
@@ -77,13 +81,12 @@ const citizenPOIs = [
   // below is a nearby target area added
   {
     name: '',
-    address:
-      'Town Beck at Ulverston from The Gill downstream to The Ellers area',
+    address: 'Upper hull river catchment',
     coordinates: {
       latitude: 54.1992721 * 10 ** 6,
       longitude: -3.0970548 * 10 ** 6
     },
-    id: '1',
+    id: '2',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',
@@ -91,13 +94,94 @@ const citizenPOIs = [
     additionals: [
       {
         id: 'locationName',
-        value: { s: '1, Sun Street, Ulverston,  LA12 7BX' }
+        value: { s: 'Marlow, SL7, Buckinghamshire' }
       },
       {
         id: 'other',
         value: {
           s: JSON.stringify({
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+          })
+        }
+      }
+    ]
+  },
+  {
+    name: '',
+    address: 'Lower river catchment',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '3',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: 'Marlow, SL7, Buckinghamshire' }
+      },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+          })
+        }
+      }
+    ]
+  },
+  {
+    name: '',
+    address: 'Upper hull river catchment',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '4',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
+      },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+          })
+        }
+      }
+    ]
+  },
+  {
+    name: '',
+    address: 'Lower river catchment',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '5',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
+      },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            alertTypes: ['ALERT_LVL_3']
           })
         }
       }

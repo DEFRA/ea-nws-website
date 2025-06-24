@@ -34,6 +34,19 @@ module.exports = [
         }
       } catch (error) {
         logger.error(error)
+
+        // Check the specific GeoSafe error
+        if (
+          error?.response?.status === 500 &&
+          error?.response?.errorMessage?.includes('already registered')
+        ) {
+          return h.response({
+            status: 400,
+            errorMessage: 'The email address you entered is already being used'
+          })
+        }
+
+        // Generic error
         return createGenericErrorResponse(h)
       }
     }

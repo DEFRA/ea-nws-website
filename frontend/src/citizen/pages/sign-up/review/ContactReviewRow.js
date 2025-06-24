@@ -52,10 +52,13 @@ export default function ContactReviewRow({
 
   return (
     <tr className='govuk-table__row'>
-      <th className='govuk-table__header text-nowrap' scope='row'>
+      <th
+        className='govuk-table__cell text-nowrap govuk-!-width-one-third'
+        scope='row'
+      >
         {details.titleRow}
       </th>
-      <td className='custom-table-cell govuk-table__cell'>
+      <td className='govuk-table__cell govuk-!-width-full'>
         {contact}
         {!isConfirmed && (
           <>
@@ -65,7 +68,7 @@ export default function ContactReviewRow({
           </>
         )}
       </td>
-      <td className='custom-table-cell govuk-table__cell'>
+      <td className='govuk-table__cell'>
         {details.showDelete && (
           <Link
             role='button'

@@ -4,7 +4,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const getSecretKeyValue = require('../../services/SecretsManager')
-const { parse } = require('date-fns')
+const { parse, isValid, isAfter } = require('date-fns')
 const fetch = require('node-fetch')
 
 const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
@@ -204,6 +204,7 @@ module.exports = [
         }
 
         const { options } = request.payload
+        options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         const { filterDate } = request.payload
 
         const response = await apiCall({ options: options }, 'alert/list')
@@ -242,17 +243,24 @@ module.exports = [
           }
         }
 
-        if (filterDate) {
-          response.data.alerts = response.data.alerts.filter((alert) => {
-            const lastModifiedDate = parse(
-              getLastModifiedDate(alert),
-              'dd/MM/yyyy HH:mm:ss',
-              new Date()
-            )
+        // removing for justnow - last modified date is not the correct field to base this off
+        // if (filterDate) {
+        //   const possibleFormats = ['dd/MM/yyyy HH:mm:ss', 'dd/MM/yyyy HH:mm']
 
-            return lastModifiedDate >= new Date(filterDate)
-          })
-        }
+        //   response.data.alerts = response.data.alerts.filter((alert) => {
+        //     const rawDate = getLastModifiedDate(alert)
+        //     let parsedDate = null
+        //     for (const format of possibleFormats) {
+        //       const attempt = parse(rawDate, format, new Date())
+        //       if (isValid(attempt)) {
+        //         parsedDate = attempt
+        //         break
+        //       }
+        //     }
+
+        //     return parsedDate && isAfter(parsedDate, filterDate)
+        //   })
+        // }
 
         return h.response(response)
       } catch (error) {

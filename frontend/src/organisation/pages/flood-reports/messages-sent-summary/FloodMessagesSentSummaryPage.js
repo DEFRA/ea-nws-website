@@ -38,7 +38,6 @@ export default function FloodMessagesSentSummaryPage() {
   }
   const [data, setData] = useState(initialData)
   const [locationsCount, setLocationsCount] = useState(0)
-
   useEffect(() => {
     const loadData = async () => {
       setData(initialData)
@@ -191,15 +190,15 @@ export default function FloodMessagesSentSummaryPage() {
   function isTargetAreaMatch(targetArea, category) {
     switch (category) {
       case 'severeWarningsOnly':
-        return targetArea.category.includes('Warning')
+        return targetArea.category.toLowerCase().includes('warning')
       case 'alertsOnly':
-        return targetArea.category.includes('Alert')
+        return targetArea.category.toLowerCase().includes('alert')
       case 'all':
       case 'messagesTurnedOff':
       default:
         return (
-          targetArea.category.includes('Warning') ||
-          targetArea.category.includes('Alert')
+          targetArea.category.toLowerCase().includes('warning') ||
+          targetArea.category.toLowerCase().includes('alert')
         )
     }
   }
@@ -414,13 +413,18 @@ export default function FloodMessagesSentSummaryPage() {
   return (
     <>
       <Helmet>
-        <title>Summary of flood messages sent - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Summary of flood messages sent - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l' id="main-content">Summary of flood messages sent</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Summary of flood messages sent
+            </h1>
             <div className='govuk-body'>
               {locationTableHead(
                 'Locations that get flood messages',

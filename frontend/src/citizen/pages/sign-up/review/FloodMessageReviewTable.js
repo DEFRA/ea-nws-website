@@ -15,10 +15,10 @@ export default function FloodMessageReviewTable() {
     )
     if (locationTargetAreas) {
       locationTargetAreas.map((targetArea) => {
-        if (targetArea.category === 'Flood Warning') {
+        if (targetArea.category.toLowerCase().includes('warning')) {
           floodWarningAreasSet.add(targetArea.TA_Name)
         }
-        if (targetArea.category === 'Flood alert') {
+        if (targetArea.category.toLowerCase().includes('alert')) {
           floodAlertAreasSet.add(targetArea.TA_Name)
         }
       })

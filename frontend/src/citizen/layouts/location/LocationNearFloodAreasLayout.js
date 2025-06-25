@@ -13,9 +13,7 @@ import Details from '../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import AlertType from '../../../common/enums/AlertType'
 import {
-  getAdditional,
-  getLocationOtherAdditional,
-  setNearbyTargetAreasAdded,
+  getAdditional, setNearbyTargetAreasAdded,
   setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -44,10 +42,6 @@ export default function LocationNearFloodAreasLayout({
     (state) => state.session.selectedLocation
   )
   const { latitude, longitude } = selectedLocation.coordinates
-  const locationAlertTypes = getLocationOtherAdditional(
-    selectedLocation?.additionals,
-    'alertTypes'
-  )
   const [floodAreas, setFloodAreas] = useState([])
   const [partnerId, setPartnerId] = useState(false)
   const [error, setError] = useState(null)
@@ -211,6 +205,7 @@ export default function LocationNearFloodAreasLayout({
     floodAreas.forEach(async (area) => {
       if (area.addLocation) {
         const location = findPOIByAddress(profile, area?.properties.TA_Name)
+        const locationAlertTypes = getAreasAlertMessageTypes(area?.properties.category)
 
         const data = {
           authToken,

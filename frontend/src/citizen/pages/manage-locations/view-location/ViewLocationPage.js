@@ -84,7 +84,7 @@ export default function ViewLocationPage() {
   const floodHistoryData = useFetchAlerts()
   const [floodAlertCount, setFloodAlertCount] = useState(null)
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
-  const locationsAlertTypes = getLocationOtherAdditional(
+  let locationsAlertTypes = getLocationOtherAdditional(
     selectedLocation?.additionals || [],
     'alertTypes'
   )

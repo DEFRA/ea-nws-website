@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -64,15 +64,12 @@ export default function ValidateEmailLayout({
           'The code you have entered has expired - please request a new code'
         ) {
           setCodeExpired(true)
-        } else {
-          if (
-            errorMessage ===
-            'The email address you entered is already being used'
-          ) {
-            await removeEmailFromProfile()
-          }
-          setError(errorMessage)
+        } else if (
+          errorMessage === 'The email address you entered is already being used'
+        ) {
+          await removeEmailFromProfile()
         }
+        setError(errorMessage)
       } else {
         if (changeSignIn) {
           updateProfile(data.profile, authToken, signinType, orgId)

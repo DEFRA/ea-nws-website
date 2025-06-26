@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { setContactPreferences } from '../../../../common/redux/userSlice'
 
@@ -13,7 +12,6 @@ export default function WarningContactsPreferencePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const [error, setError] = useState('')
   const [selectedContactPreferences, setSelectedContactPreferences] = useState(
     []
   )
@@ -24,10 +22,9 @@ export default function WarningContactsPreferencePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (selectedContactPreferences.length === 0) {
-      setError('Select at least one way to get messages about flooding')
-    } else {
+    if (selectedContactPreferences.length !== 0) {
       dispatch(setContactPreferences(selectedContactPreferences))
+    } else {
       if (selectedContactPreferences.includes('Text')) {
         navigate('/signup/contactpreferences/mobile/add')
       } else if (selectedContactPreferences.includes('PhoneCall')) {
@@ -52,7 +49,10 @@ export default function WarningContactsPreferencePage() {
   return (
     <>
       <Helmet>
-        <title>Would you like to get flood messages any other way? - Get flood warnings - GOV.UK</title>
+        <title>
+          Would you like to get flood messages any other way? - Get flood
+          warnings - GOV.UK
+        </title>
       </Helmet>
       <BackLink to='/signup/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -69,7 +69,6 @@ export default function WarningContactsPreferencePage() {
             />
           )}
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
             <fieldset className='govuk-fieldset' aria-describedby='group-hint'>
               <legend className='govuk-fieldset__legend'>
                 <h1 className='govuk-heading-l' id='main-content'>
@@ -77,16 +76,7 @@ export default function WarningContactsPreferencePage() {
                   (optional)
                 </h1>
               </legend>
-              <div
-                className={
-                  error
-                    ? 'govuk-form-group govuk-form-group--error'
-                    : 'govuk-form-group'
-                }
-              >
-                <span id='group-hint'>Select at least one option</span>
-
-                {error && <p className='govuk-error-message'>{error}</p>}
+              <div className={'govuk-form-group'}>
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((preference) => (
                     <Checkbox

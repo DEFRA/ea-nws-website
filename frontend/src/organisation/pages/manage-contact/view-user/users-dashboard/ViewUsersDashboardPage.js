@@ -250,8 +250,7 @@ export default function ViewUsersDashboardPage() {
       text = defaultText
 
       if (activeAdminsNotRemoved.length > 0) {
-        const notDeleteTotal =
-          activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+        const notDeleteTotal = activeAdminsNotRemoved.length
         text = (
           <>
             {defaultText}
@@ -319,7 +318,7 @@ export default function ViewUsersDashboardPage() {
     activeAdminsNotRemoved,
     selfRemoved
   ) => {
-    const numNotDelete = activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+    const numNotDelete = activeAdminsNotRemoved.length
     let title = ''
     if (toDelete.length > 0) {
       if (numNotDelete > 0) {
@@ -554,7 +553,10 @@ export default function ViewUsersDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Manage your organisation's users - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Manage your organisation's users - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
 

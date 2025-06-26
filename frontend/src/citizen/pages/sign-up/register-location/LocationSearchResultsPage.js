@@ -39,10 +39,10 @@ export default function LocationSearchResultsPage() {
 
     dispatch(setProfile(profile))
 
-    if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
-      navigate('/signup/register-location/location-near-flood-areas')
-    } else if (isInWarningArea || isInAlertArea) {
+    if (isInWarningArea || isInAlertArea) {
       navigate('/signup/register-location/location-in-flood-areas')
+    } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+      navigate('/signup/register-location/location-near-flood-areas')
     } else if (isError) {
       navigate('/error')
     } else {

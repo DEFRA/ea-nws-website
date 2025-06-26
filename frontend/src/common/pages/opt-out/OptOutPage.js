@@ -6,10 +6,10 @@ import floodWarningIcon from '../../assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../assets/images/severe_flood_warning.svg'
 import BackLink from '../../components/custom/BackLink'
 import ContactDetails, {
-    TelephoneNumber
+  TelephoneNumber
 } from '../../layouts/footer-link-layouts/ContactDetails'
 
-export default function OptOutPage () {
+export default function OptOutPage() {
   const navigate = useNavigate()
 
   return (
@@ -22,7 +22,7 @@ export default function OptOutPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 This phone number has been automatically opted-in to receive
                 flood warnings
               </h1>

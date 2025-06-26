@@ -28,7 +28,7 @@ export default function OrganisationServiceSelectionPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Select service</h1>
+            <h1 className='govuk-heading-l'  id='main-content'>Select service</h1>
             <div className='govuk-body'>
               <div className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
                 <div className='outline-1px'>

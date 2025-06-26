@@ -4,20 +4,26 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 
-export default function OrganisationConfirmServicePage () {
+export default function OrganisationConfirmServicePage() {
   const navigate = useNavigate()
 
   return (
     <>
       <Helmet>
-        <title>You've chosen the professional service - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          You've chosen the professional service - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body govuk-!-margin-top-6'>
-              <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+              <h1
+                className='govuk-heading-l govuk-!-margin-top-6'
+                id='main-content'
+              >
                 You've chosen the professional
                 <span style={{ display: 'block' }} />
                 (organisation) service
@@ -34,7 +40,10 @@ export default function OrganisationConfirmServicePage () {
                 <Button
                   className='govuk-button'
                   text='Continue'
-                  onClick={(event) => { event.preventDefault(); navigate('/organisation/sign-up') }}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    navigate('/organisation/sign-up')
+                  }}
                 />
                 &nbsp; &nbsp;
                 <Link

@@ -16,10 +16,10 @@ export default function ChangeLocationSearchResultPage() {
     isWithinAlertAreaProximity,
     isError
   ) => {
-    if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
-      navigate('/signup/review/change-location-near-flood-areas')
-    } else if (isInWarningArea || isInAlertArea) {
+    if (isInWarningArea || isInAlertArea) {
       navigate('/signup/review/change-location-in-flood-areas')
+    } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+      navigate('/signup/review/change-location-near-flood-areas')
     } else if (isError) {
       navigate('/error')
     } else {

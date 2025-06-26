@@ -22,9 +22,10 @@ export default function WarningContactsPreferencePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (selectedContactPreferences.length !== 0) {
-      dispatch(setContactPreferences(selectedContactPreferences))
+    if (selectedContactPreferences.length == 0) {
+      navigate('/signup/accountname/add')
     } else {
+      dispatch(setContactPreferences(selectedContactPreferences))
       if (selectedContactPreferences.includes('Text')) {
         navigate('/signup/contactpreferences/mobile/add')
       } else if (selectedContactPreferences.includes('PhoneCall')) {

@@ -15,10 +15,10 @@ export default function LocationSearchResultsPage() {
   ) => {
     if (floodAreasAlreadyAdded.length > 0) {
       navigate('/manage-locations/add/location-already-added')
-    } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
-      navigate('/manage-locations/add/location-near-flood-areas')
     } else if (isInWarningArea || isInAlertArea) {
       navigate('/manage-locations/add/location-in-flood-areas')
+    } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+      navigate('/manage-locations/add/location-near-flood-areas')
     } else if (isError) {
       navigate('/error')
     } else {

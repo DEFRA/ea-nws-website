@@ -4,18 +4,21 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../components/gov-uk/Button'
 import ContactDetails from '../../layouts/footer-link-layouts/ContactDetails'
 
-export default function StartPage () {
+export default function StartPage() {
   const navigate = useNavigate()
 
   return (
     <>
       <Helmet>
-        <title>Get flood warnings by text, phone or email - Get flood warnings - GOV.UK</title>
+        <title>
+          Get flood warnings by text, phone or email - Get flood warnings -
+          GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Get flood warnings by text, phone or email
             </h1>
           </div>

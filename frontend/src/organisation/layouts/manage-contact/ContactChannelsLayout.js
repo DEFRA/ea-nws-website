@@ -1,12 +1,12 @@
 import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 
-import { Link } from 'react-router-dom'
 import UserType from '../../../common/enums/UserType'
 import {
   setOrgCurrentContactEmails,
@@ -116,6 +116,9 @@ export default function ContactChannelsLayout({
     const validateEmailAndCheckDuplicate = async (email, first) => {
       if (email) {
         const emailValid = emailValidation(email)
+        console.log('HERE')
+        console.log('addingAdmin ?', addingAdmin)
+        console.log('userType ?', userType)
         if (emailValid) {
           first
             ? setEmailError((errs) => [
@@ -124,7 +127,9 @@ export default function ContactChannelsLayout({
               ])
             : setEmailError((errs) => [
                 errs[0],
-                'Enter email address 2 in the correct format, like name@example.com'
+                addingAdmin
+                  ? 'Enter an additional email address in the correct format, like name@example.com'
+                  : 'Enter email address 2 in the correct format, like name@example.com'
               ])
         }
         const emailsAlreadyAdded = await fetchEmailsAlreadyAdded()
@@ -195,7 +200,7 @@ export default function ContactChannelsLayout({
       !homeInput[1]
     ) {
       setError(
-        'Enter at least 1 email address, mobile number or telephone number'
+        'Enter at least one email address, mobile number or telephone number'
       )
       return false
     }
@@ -391,6 +396,8 @@ export default function ContactChannelsLayout({
                 userType === UserType.Admin ||
                 userType === UserType.PendingAdmin ? (
                   <>
+                    {/* {console.log('addingAdmin ?', addingAdmin)}
+                    {console.log('userType ?', userType)} */}
                     {renderFirstEmail()}
                     <Input
                       id='additional-email-2'
@@ -409,9 +416,19 @@ export default function ContactChannelsLayout({
                   </>
                 ) : (
                   <>
+                    {/* {console.log('addingAdmin :', addingAdmin)}
+                    {console.log('userType :', userType)} */}
+                    <p className='govuk-!-margin-top-6'>
+                      You need to add at least one way for contacts to get flood
+                      messages.
+                    </p>
+
+                    <p className='govuk-!-font-weight-bold govuk-!-margin-top-6'>
+                      Email addresses (optional)
+                    </p>
                     <Input
                       id='email-address-1'
-                      name='Email addresses (optional)'
+                      name='Email address 1'
                       inputType='text'
                       inputMode='email'
                       onChange={(val) =>
@@ -420,11 +437,11 @@ export default function ContactChannelsLayout({
                       value={emailInput[0]}
                       error={emailError[0]}
                       className='govuk-input govuk-input--width-20'
-                      isNameBold
                       labelSize='s'
                     />
                     <Input
                       id='email-address-2'
+                      name='Email address 2'
                       inputType='text'
                       inputMode='email'
                       onChange={(val) =>
@@ -436,7 +453,7 @@ export default function ContactChannelsLayout({
                     />
                   </>
                 )}
-                {userType === UserType.PendingAdmin ? (
+                {userType === UserType.PendingAdmin && (
                   <>
                     {renderFirstEmail()}
                     <Input
@@ -454,50 +471,25 @@ export default function ContactChannelsLayout({
                       labelSize='s'
                     />
                   </>
-                ) : (
-                  <>
-                    <Input
-                      id='email-address-1'
-                      name='Email addresses (optional)'
-                      inputType='text'
-                      inputMode='email'
-                      onChange={(val) =>
-                        setEmailInput((inputs) => [val, inputs[1]])
-                      }
-                      value={emailInput[0]}
-                      error={emailError[0]}
-                      className='govuk-input govuk-input--width-20'
-                      isNameBold
-                      labelSize='s'
-                    />
-                    <Input
-                      id='email-address-2'
-                      inputType='text'
-                      inputMode='email'
-                      onChange={(val) =>
-                        setEmailInput((inputs) => [inputs[0], val])
-                      }
-                      value={emailInput[1]}
-                      error={emailError[1]}
-                      className='govuk-input govuk-input--width-20'
-                    />
-                  </>
                 )}
+                <p className='govuk-!-font-weight-bold govuk-!-margin-top-8'>
+                  UK mobile telephone numbers for text messages (optional)
+                </p>
                 <Input
                   id='uk-mobile-number-1'
-                  name='UK mobile numbers for text messages (optional)'
+                  name='UK mobile telephone number 1'
                   inputType='text'
                   onChange={(val) =>
                     setMobileInput((inputs) => [val, inputs[1]])
                   }
                   value={mobileInput[0]}
                   className='govuk-input govuk-input--width-20'
-                  isNameBold
                   labelSize='s'
                   error={mobilePhoneError[0]}
                 />
                 <Input
                   id='uk-mobile-number-2'
+                  name='UK mobile telephone number 2'
                   inputType='text'
                   onChange={(val) =>
                     setMobileInput((inputs) => [inputs[0], val])
@@ -506,19 +498,23 @@ export default function ContactChannelsLayout({
                   className='govuk-input govuk-input--width-20'
                   error={mobilePhoneError[1]}
                 />
+
+                <p className='govuk-!-font-weight-bold govuk-!-margin-top-8'>
+                  UK telephone numbers for voice messages (optional)
+                </p>
                 <Input
                   id='uk-telephone-number-1'
-                  name='UK telephone numbers for voice messages (optional)'
+                  name='UK telephone number 1'
                   inputType='text'
                   onChange={(val) => setHomeInput((inputs) => [val, inputs[1]])}
                   className='govuk-input govuk-input--width-20'
-                  isNameBold
                   labelSize='s'
                   value={homeInput[0]}
                   error={homePhoneError[0]}
                 />
                 <Input
                   id='uk-telephone-number-2'
+                  name='UK telephone number 2'
                   inputType='text'
                   onChange={(val) => setHomeInput((inputs) => [inputs[0], val])}
                   className='govuk-input govuk-input--width-20'
@@ -531,6 +527,14 @@ export default function ContactChannelsLayout({
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              {addingAdmin && (
+                <Link
+                  to='/organisation/manage-contacts/add/keywords'
+                  className='govuk-link inline-link govuk-body'
+                >
+                  Skip
+                </Link>
+              )}
             </div>
           </div>
         </div>

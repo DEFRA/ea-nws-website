@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import KeywordsLayout from '../../../../layouts/optional-info/KeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddKeywordsPage () {
+export default function AddKeywordsPage() {
   const navigate = useNavigate()
 
   const keywordText = (
     <p>
-      You can add new keywords. Or you can remove existing keywords associated
-      with this location by unticking the relevant box.
+      You can add new keywords. Or you can remove existing keywords by unticking
+      the relevant box.
       <br /> <br />
       <strong> Why add keywords </strong>
       <br /> <br />
@@ -33,7 +33,10 @@ export default function AddKeywordsPage () {
   return (
     <>
       <Helmet>
-        <title>Add keywords for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Add keywords for this location - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <KeywordsLayout
         navigateToNextPage={navigateToNextPage}

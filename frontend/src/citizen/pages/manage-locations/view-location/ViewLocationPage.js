@@ -231,6 +231,18 @@ export default function ViewLocationPage() {
     let updatedProfile
 
     // cp 27/06/25 - this will need re-worked once we figure out how to get alert types of migrated locations
+    // currently just giving migrated locations the option turned off so users are forced to turn it back on
+    // when viewing location
+    if (!locationsAlertTypes) {
+      locationsAlertTypes = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.INFO
+      ]
+    }
+
     if (pendingOptionalAlerts) {
       if (!locationsAlertTypes.includes(AlertType.FLOOD_ALERT)) {
         locationsAlertTypes = [...locationsAlertTypes, AlertType.FLOOD_ALERT]

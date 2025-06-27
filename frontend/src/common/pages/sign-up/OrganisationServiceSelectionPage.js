@@ -21,14 +21,19 @@ export default function OrganisationServiceSelectionPage () {
   return (
     <>
       <Helmet>
-        <title>Select standard or professional service - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Select standard or professional service - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'  id='main-content'>Select service</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Select service
+            </h1>
             <div className='govuk-body'>
               <div className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
                 <div className='outline-1px'>
@@ -101,7 +106,7 @@ export default function OrganisationServiceSelectionPage () {
                       className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4'
                       style={{ color: '#0b0c0c' }}
                     >
-                      <ul className='gouk-list no-bullets'>
+                      <ul className='govuk-list'>
                         {panelItem('Account usually opened in 3 to 5 days')}
                         {panelItem('Unlimited locations')}
                         {panelItem(

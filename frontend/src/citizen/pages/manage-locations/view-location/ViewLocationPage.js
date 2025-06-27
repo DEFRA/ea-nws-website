@@ -92,8 +92,7 @@ export default function ViewLocationPage() {
     selectedLocation?.additionals || [],
     'alertTypes'
   )
-  // cp 27/06/25 - need to speak with john on this one - how will we find out migrated locations alert types if it isnt included as a field in additionals
-  // the below will just assume the location added as a xy coord will not receive alert notifications
+  // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
   const initialAlerts = locationsAlertTypes
     ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
     : false
@@ -230,9 +229,7 @@ export default function ViewLocationPage() {
     e.preventDefault()
     let updatedProfile
 
-    // cp 27/06/25 - this will need re-worked once we figure out how to get alert types of migrated locations
-    // currently just giving migrated locations the option turned off so users are forced to turn it back on
-    // when viewing location
+    // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
     if (!locationsAlertTypes) {
       locationsAlertTypes = [
         AlertType.SEVERE_FLOOD_WARNING,

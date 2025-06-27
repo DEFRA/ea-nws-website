@@ -1,9 +1,21 @@
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import { backendCall } from '../../../common/services/BackendService'
 
-export default function HelpAndGuidancePage() {
+export default function HelpAndGuidancePage () {
   const navigate = useNavigate()
+  const [templateUrl, setTemplateUrl] = useState(null)
+
+  async function getGuideUrl() {
+    const { data } = await backendCall('data', 'api/info/download_guide')
+    setTemplateUrl(data)
+  }
+
+  useEffect(() => {
+    getGuideUrl()
+  }, [])
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -32,9 +44,9 @@ export default function HelpAndGuidancePage() {
           <p className='govuk-!-margin-bottom-6'>
             This will guide you through the steps to set up your account.
           </p>
-          <Link className='govuk-link'>
+          <a className='govuk-link ' href={templateUrl}>
             Get flood warnings - quick start guide
-          </Link>
+          </a>
         </div>
       </main>
     </>

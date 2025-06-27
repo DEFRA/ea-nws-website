@@ -1,4 +1,5 @@
 import { orgFloodReportsUrls } from '../../../organisation/routes/flood-reports/FloodReportsRoutes'
+import { infoUrls } from '../../../organisation/routes/info/InfoRoutes'
 import { orgManageContactsUrls } from '../../../organisation/routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 import SubNavigation from './SubNavigation'
@@ -11,7 +12,8 @@ export default function OrganisationAccountNavigation ({ currentPage }) {
     },
     { title: 'Locations', link: orgManageLocationsUrls.view.dashboard },
     { title: 'Users', link: orgManageContactsUrls.view.dashboard },
-    { title: 'Reports', link: orgFloodReportsUrls.overview }
+    { title: 'Reports', link: orgFloodReportsUrls.overview },
+    { title: 'Help', link: infoUrls.help }
   ]
 
   return <SubNavigation pages={pages} currentPage={currentPage} type='org' />

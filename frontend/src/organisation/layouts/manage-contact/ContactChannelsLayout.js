@@ -116,9 +116,6 @@ export default function ContactChannelsLayout({
     const validateEmailAndCheckDuplicate = async (email, first) => {
       if (email) {
         const emailValid = emailValidation(email)
-        console.log('HERE')
-        console.log('addingAdmin ?', addingAdmin)
-        console.log('userType ?', userType)
         if (emailValid) {
           first
             ? setEmailError((errs) => [
@@ -294,8 +291,8 @@ export default function ContactChannelsLayout({
     if (userType === UserType.Admin && profile.emails[0] === emailInput[0]) {
       return (
         <Input
-          id='additional-email-1'
-          name='Additionals email address (optional)'
+          id='main-email-address'
+          name='Main email address'
           inputType='text'
           inputMode='email'
           onChange={(val) => setEmailInput((inputs) => [inputs[0], val])}
@@ -304,6 +301,7 @@ export default function ContactChannelsLayout({
           className='govuk-input govuk-input--width-20'
           isNameBold
           labelSize='s'
+          hint='For sign in and flood messages'
         />
       )
     }
@@ -328,15 +326,16 @@ export default function ContactChannelsLayout({
     // pending admin user
     return (
       <div className='govuk-inset-text'>
-        <strong>Main email address (pending admin)</strong>
-        <br />
+        <p className='govuk-!-margin-bottom-0'>
+          <strong>Main email address</strong> (pending admin)
+        </p>
         {emailInput[0]}
-        <br />
-        <br />
-        <div className='govuk-hint'>For sign in and flood messages.</div>
-        <br />
-        <br />
-        <div className='govuk-hint'>
+
+        <div className='govuk-hint govuk-!-padding-top-5'>
+          For sign in and flood messages.
+        </div>
+
+        <div className='govuk-hint govuk-!-padding-top-3'>
           To change this, you must{' '}
           <Link className='govuk-link'>withdraw their invitation</Link> to join
           as admin and re-invite them.
@@ -396,8 +395,6 @@ export default function ContactChannelsLayout({
                 userType === UserType.Admin ||
                 userType === UserType.PendingAdmin ? (
                   <>
-                    {/* {console.log('addingAdmin ?', addingAdmin)}
-                    {console.log('userType ?', userType)} */}
                     {renderFirstEmail()}
                     <Input
                       id='additional-email-2'
@@ -416,8 +413,6 @@ export default function ContactChannelsLayout({
                   </>
                 ) : (
                   <>
-                    {/* {console.log('addingAdmin :', addingAdmin)}
-                    {console.log('userType :', userType)} */}
                     <p className='govuk-!-margin-top-6'>
                       You need to add at least one way for contacts to get flood
                       messages.
@@ -450,25 +445,6 @@ export default function ContactChannelsLayout({
                       value={emailInput[1]}
                       error={emailError[1]}
                       className='govuk-input govuk-input--width-20'
-                    />
-                  </>
-                )}
-                {userType === UserType.PendingAdmin && (
-                  <>
-                    {renderFirstEmail()}
-                    <Input
-                      id='additional-email-2'
-                      name='Additionals email address (optional)'
-                      inputType='text'
-                      inputMode='email'
-                      onChange={(val) =>
-                        setEmailInput((inputs) => [inputs[0], val])
-                      }
-                      value={emailInput[1]}
-                      error={emailError[1]}
-                      className='govuk-input govuk-input--width-20'
-                      isNameBold
-                      labelSize='s'
                     />
                   </>
                 )}

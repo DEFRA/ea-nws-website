@@ -20,11 +20,8 @@ module.exports = [
 
         if (TA_CODE) {
           let result
-          console.log('getting TA')
           result = await getTAData(redis, TA_CODE)
-          console.log(result)
           if (result === null) {
-            console.log('finding in qgis')
             result = await getFloodAreaByTaCode(TA_CODE)
             await setTAData(redis, TA_CODE, result)
           }

@@ -99,19 +99,12 @@ export default function AlternativeContactDetailsLayout({
               Enter details for an alternative contact at your organisation
             </h1>
             <div className='govuk-body'>
-              {isAdmin ? (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case you're
-                  unavailable in the future. They will not be given
-                  administrator rights.
-                </p>
-              ) : (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case{' '}
-                  {profile.firstname} {profile.lastname} is unavailable in the
-                  future. They will not be given administrator rights.
-                </p>
-              )}
+              <p className='govuk-hint govuk-!-margin-bottom-7'>
+                We'll only contact them about this account, if we are unable to
+                reach you. They will not get flood messages or admin rights
+                unless you set them up for these after your account is approved.
+              </p>
+
               <Input
                 id='full-name'
                 inputType='text'

@@ -66,7 +66,9 @@ export default function LiveFloodMonitoringPage() {
   return (
     <>
       <Helmet>
-        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Live flood warnings - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-5 govuk-body'>
@@ -164,6 +166,20 @@ export default function LiveFloodMonitoringPage() {
                   >
                     add locations
                   </Link>
+                </p>
+
+                <p className='govuk-!-font-weight-bold govuk-!-margin-top-6 govuk-!-margin-bottom-0'>
+                  If you need help
+                </p>
+                <p>
+                  You can read a step-by-step{' '}
+                  <Link
+                    to={orgManageLocationsUrls.add.options}
+                    className='govuk-link'
+                  >
+                    guide
+                  </Link>{' '}
+                  to setting up your account
                 </p>
               </>
             )}

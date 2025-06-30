@@ -2,7 +2,8 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { infoUrls } from '../../../organisation/routes/info/InfoRoutes'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 
@@ -116,6 +117,16 @@ export default function OrganisationServiceSelectionPage () {
                         {panelItem('Live monitoring with maps')}
                         {panelItem('Historic flood data')}
                         {panelItem('Reports')}
+                        <li>
+                          <Link
+                            className='govuk-link'
+                            to={infoUrls.preview}
+                            target='_blank'
+                          >
+                            Preview what the professional service offers
+                          </Link>
+                          <hr className='org-service-selection-hr govuk-!-margin-top-2 govuk-!-margin-bottom-2' />
+                        </li>
                       </ul>
                     </div>
                   </div>

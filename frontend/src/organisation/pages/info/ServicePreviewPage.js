@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 
 export default function ServicePreviewPage () {
   const FeatureSection = ({ title, description, imgSrc, imgAlt }) => (
@@ -21,10 +22,18 @@ export default function ServicePreviewPage () {
 
       <div className='service-overview-banner'>
         <div className='govuk-width-container service-overview-banner__inner '>
-          <img
-            src='/assets/images/govuk-overview-page-icon.png'
-            className='service-overview-banner__icon'
-          />
+          <Link
+            to={'/'}
+            className='service-overview-banner__icon govuk-header__link'
+          >
+            <img
+              src='/assets/images/govuk-overview-page-icon.svg'
+              className='service-overview-banner__icon'
+            />
+            <span className='service-overview-banner__icon-text'>GOV.UK</span>
+          </Link>
+          <br />
+          <br />
           <h1
             className='govuk-heading-xl service-overview-banner__title'
             id='main-content'

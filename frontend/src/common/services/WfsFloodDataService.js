@@ -172,12 +172,6 @@ export const getFloodAreaByTaCode = async (code) => {
   return areas[0] || []
 }
 
-export const getFloodAreaByTaName = async (name) => {
-  const areas = await getFilteredFloodAreas('TA_Name', name)
-  // TA_Name is unique so there will only be one element in the array
-  return areas[0] || []
-}
-
 export const isLocationInFloodArea = (lat, lng, areaData) => {
   // check if location entered is in target area
   const isInFloodArea = checkPointInPolygon(lat, lng, areaData)

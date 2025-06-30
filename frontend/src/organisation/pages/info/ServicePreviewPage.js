@@ -21,7 +21,6 @@ export default function ServicePreviewPage () {
 
       <div className='service-overview-banner'>
         <div className='govuk-width-container service-overview-banner__inner '>
-          {/* <div className='govuk-width-container'> */}
           <img
             src='/assets/images/govuk-overview-page-icon.png'
             className='service-overview-banner__icon'

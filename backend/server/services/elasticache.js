@@ -645,6 +645,22 @@ const orgSignOut = async (client, profileId, orgId) => {
   }
 }
 
+const setTAData = async (client, TA_CODE, data) => {
+  const key = 'TAData:' + TA_CODE
+  const json = data
+  await client.json.set(key, '$', json)
+}
+
+const getTAData = async (client, TA_CODE) => {
+  const key = 'TAData:' + TA_CODE
+  let TAData = null
+  const dataExists = await checkKeyExists(client, key)
+  if (dataExists) {
+    TAData = await getJsonData(client, key)
+  }
+  return TAData
+}
+
 module.exports = {
   setJsonData,
   getJsonData,
@@ -674,5 +690,7 @@ module.exports = {
   orgSignOut,
   checkKeyExists,
   addOrgActiveAdmins,
-  getOrgActiveAdmins
+  getOrgActiveAdmins,
+  setTAData,
+  getTAData
 }

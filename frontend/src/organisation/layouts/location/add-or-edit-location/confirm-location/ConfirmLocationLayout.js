@@ -200,33 +200,38 @@ export default function ConfirmLocationLayout({
 
     // since we added to currentLocation we need to get that information to pass to the api
     const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+    const isUpdate = Boolean(currentLocation?.id)
+    const apiEndpoint = isUpdate ? 'api/location/update' : 'api/location/create'
     const { data, errorMessage } = await backendCall(
       dataToSend,
-      'api/location/create',
+      apiEndpoint,
       navigate
     )
 
     if (data) {
-      const registerData = {
-        authToken,
-        locationId: data.id,
-        partnerId,
-        params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
-          channelMobileAppEnabled: true,
-          partnerCanView: true,
-          partnerCanEdit: true,
-          alertTypes: newWebLocation.additionals.other.alertTypes
+      if (!isUpdate) {
+        // Only register new locations
+        const registerData = {
+          authToken,
+          locationId: data.id,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: newWebLocation.additionals.other.alertTypes
+          }
         }
-      }
 
-      await backendCall(
-        registerData,
-        'api/location/register_to_partner',
-        navigate
-      )
+        await backendCall(
+          registerData,
+          'api/location/register_to_partner',
+          navigate
+        )
+      }
 
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))

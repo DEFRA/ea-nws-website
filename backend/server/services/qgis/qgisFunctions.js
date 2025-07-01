@@ -2,6 +2,41 @@ const { getWfsData } = require('../WfsData')
 
 const turf = require('@turf/turf')
 
+const wfsCallWithFilter = async (type, property, value) => {
+  const filter = `<Filter><And><PropertyIsEqualTo><PropertyName>${property}</PropertyName><Literal>${value}</Literal></PropertyIsEqualTo></And></Filter>`
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-nfws.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: type,
+    srsname: 'EPSG:4326',
+    filter,
+    outputFormat: 'GEOJSON'
+  }
+  const result = await getWfsData(WFSParams)
+  return result
+}
+
+const getFloodAreaByTaCode = async (code) => {
+
+  const { data: filteredWarningAreas } = await wfsCallWithFilter(
+    'flood_warnings',
+    'TA_CODE',
+    code
+  )
+  const { data: filteredAlertAreas } = await wfsCallWithFilter(
+    'flood_alerts',
+    'TA_CODE',
+    code
+  )
+  const alertAreasFeatures = filteredAlertAreas?.features || []
+  const warningAreasFeatures = filteredWarningAreas?.features || []
+  const allFilteredAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
+  // TA CODE is unique so the array will only contain one target area
+  return allFilteredAreas[0] || []
+}
+
 const wfsCall = async (bbox, map, type) => {
   const WFSParams = {
     service: 'WFS',
@@ -13,7 +48,7 @@ const wfsCall = async (bbox, map, type) => {
     bbox,
     outputFormat: 'GEOJSON'
   }
-  const result = await getWfsData(WFSParams, 'api/wfs')
+  const result = await getWfsData(WFSParams)
   return result
 }
 
@@ -121,4 +156,4 @@ const findTAs = async (lng, lat) => {
   return allAreas
 }
 
-module.exports = { findTAs, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation }
+module.exports = { findTAs, getGroundwaterFloodRiskRatingOfLocation, getRiversAndSeaFloodRiskRatingOfLocation, getFloodAreaByTaCode }

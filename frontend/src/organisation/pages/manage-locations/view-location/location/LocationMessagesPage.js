@@ -21,7 +21,7 @@ import {
   setCurrentTA
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -202,6 +202,7 @@ export default function LocationMessagesPage() {
         }
       })
       const floodArea = {
+        code: targetArea.TA_CODE,
         name: targetArea.TA_Name,
         type: targetArea.category,
         severeWarningMessagesCount: severeWarningsCount,
@@ -282,9 +283,9 @@ export default function LocationMessagesPage() {
     setIsBannerDisplayed(false)
   }
 
-  const onClick = async (e, areaName) => {
+  const onClick = async (e, areaCode) => {
     e.preventDefault()
-    const floodArea = await getFloodAreaByTaName(areaName)
+    const floodArea = await getFloodAreaByTaCode(areaCode)
     dispatch(setCurrentTA(floodArea))
     navigate(orgManageLocationsUrls.view.viewFloodArea)
   }
@@ -451,7 +452,7 @@ export default function LocationMessagesPage() {
                         }}
                       >
                         <Link
-                          onClick={(e) => onClick(e, area.name)}
+                          onClick={(e) => onClick(e, area.code)}
                           className='govuk-link'
                         >
                           {area.name}

@@ -1,5 +1,6 @@
 import FloodAreasPage from '../../pages/info/FloodAreasPage'
 import FloodTypesPage from '../../pages/info/FloodTypesPage'
+import HelpAndGuidancePage from '../../pages/info/HelpAndGuidancePage'
 import ServicePreviewPage from '../../pages/info/ServicePreviewPage'
 
 const urlOrgInfo = '/organisation/info'
@@ -9,6 +10,7 @@ const infoUrls = {
   floodTypes: urlOrgInfo + '/flood-types',
   floodAreas: urlOrgInfo + '/flood-areas',
   levels: urlOrgInfo + '/levels',
+  help: urlOrgInfo + '/help',
   preview: urlOrgInfo + '/preview'
 }
 
@@ -25,6 +27,10 @@ const infoRoutes = [
   {
     path: infoUrls.floodLevels
     // component: <FloodLevelsPage />
+  },
+  {
+    path: infoUrls.help,
+    component: <HelpAndGuidancePage />
   },
   {
     path: infoUrls.preview,

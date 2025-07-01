@@ -9,6 +9,7 @@ import floodSevereWarningIcon from '../../../common/assets/images/severe_flood_w
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
+import { infoUrls } from '../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
@@ -173,10 +174,7 @@ export default function LiveFloodMonitoringPage() {
                 </p>
                 <p>
                   You can read a step-by-step{' '}
-                  <Link
-                    to={orgManageLocationsUrls.add.options}
-                    className='govuk-link'
-                  >
+                  <Link to={infoUrls.help} className='govuk-link'>
                     guide
                   </Link>{' '}
                   to setting up your account

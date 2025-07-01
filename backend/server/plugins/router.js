@@ -69,7 +69,8 @@ const routes = [].concat(
   require('../routes/alert/list'),
   require('../routes/alert/get'),
   require('../routes/sign_in/org_signin'),
-  require('../routes/sign_in/org_signin_status')
+  require('../routes/sign_in/org_signin_status'),
+  require('../routes/info/download_guide')
 )
 
 module.exports = {

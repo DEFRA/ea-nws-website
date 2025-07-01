@@ -661,6 +661,29 @@ const getTAData = async (client, TA_CODE) => {
   return TAData
 }
 
+const setFloodHistory = async (client, value) => {
+  const key = 'TAHistoryCount'
+  const d = new Date(), e = new Date(d);
+  const secondsSinceMidnight = (e - d.setHours(0,0,0,0))/1000;
+  const secondsInDay = 60 * 60 * 24
+  const secondsTillMidnight = parseInt(secondsInDay - secondsSinceMidnight)
+  // send the data
+  await client.json.set(key, '$', json)
+  await client.expire(key, secondsTillMidnight)
+  await setJsonData(client, key, value)
+}
+
+const getFloodHistory = async (client) => {
+  const key = 'TAHistoryCount'
+  let floodHistory = null
+  const dataExists = await checkKeyExists(client, key)
+  if (dataExists) {
+    floodHistory = await getJsonData(client, key)
+
+  }
+  return floodHistory
+}
+
 module.exports = {
   setJsonData,
   getJsonData,
@@ -692,5 +715,7 @@ module.exports = {
   addOrgActiveAdmins,
   getOrgActiveAdmins,
   setTAData,
-  getTAData
+  getTAData,
+  setFloodHistory,
+  getFloodHistory
 }

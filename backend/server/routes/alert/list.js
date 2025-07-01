@@ -6,6 +6,7 @@ const {
 const getSecretKeyValue = require('../../services/SecretsManager')
 const { parse, isValid, isAfter } = require('date-fns')
 const fetch = require('node-fetch')
+const { getFloodHistory, setFloodHistory } = require('../../services/elasticache')
 
 const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
   const rows = text.split(/\r?\n|\r|\n/g)
@@ -206,29 +207,36 @@ module.exports = [
         const { options } = request.payload
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         const { filterDate } = request.payload
+        const { redis } = request.server.app
 
         const response = await apiCall({ options: options }, 'alert/list')
 
         if (options.states.includes('PAST')) {
-          // we need to load the historical data from file now
-          const historicFloodDataUrl = await getSecretKeyValue(
-            'nws/website',
-            'organisationFloodHistoryUrl'
-          )
+          // check elasticache for the flood history first
+          let floodHistoryFileData = await getFloodHistory(redis)
+          if (floodHistoryFileData === null) {
+            // we need to load the historical data from file now
+            const historicFloodDataUrl = await getSecretKeyValue(
+              'nws/website',
+              'organisationFloodHistoryUrl'
+            )
 
-          // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
-          if (historicFloodDataUrl) {
-            let floodHistoryFileData
+            // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
+            if (historicFloodDataUrl) {
 
-            await fetch(historicFloodDataUrl)
-              .then((response) => response.text())
-              .then((data) => {
-                floodHistoryFileData = csvToJson(data)
-              })
-              .catch((e) =>
-                console.error('Could not fetch Historic Flood Warning file', e)
-              )
+              await fetch(historicFloodDataUrl)
+                .then((response) => response.text())
+                .then((data) => {
+                  floodHistoryFileData = csvToJson(data)
+                })
+                .catch((e) =>
+                  console.error('Could not fetch Historic Flood Warning file', e)
+                )
+              await setFloodHistory(redis, floodHistoryFileData)
+            }
+          }
 
+          if (floodHistoryFileData !== null) {
             // filter out any updates - we only want to know when a flood alert was added and removed
             floodHistoryFileData = floodHistoryFileData.filter((item) =>
               allowedMessageTypes.includes(item['Message Type'])
@@ -241,6 +249,7 @@ module.exports = [
               sortedHistoricFileData
             )
           }
+          
         }
 
         // removing for justnow - last modified date is not the correct field to base this off

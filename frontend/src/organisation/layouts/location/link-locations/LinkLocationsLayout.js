@@ -18,8 +18,7 @@ import {
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getFloodAreaByTaName,
-  getSurroundingFloodAreas,
+  getFloodAreaByTaCode, getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
@@ -499,9 +498,9 @@ export default function LinkLocationsLayout({
     }
   }, [currentLocation])
 
-  const onClick = async (e, areaName) => {
+  const onClick = async (e, areaCode) => {
     e.preventDefault()
-    const floodArea = await getFloodAreaByTaName(areaName)
+    const floodArea = await getFloodAreaByTaCode(areaCode)
     dispatch(setCurrentTA(floodArea))
     navigate(orgManageLocationsUrls.view.viewFloodArea)
   }
@@ -552,7 +551,7 @@ export default function LinkLocationsLayout({
             <tr key={area.id} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 <Link
-                  onClick={(e) => onClick(e, area.areaName)}
+                  onClick={(e) => onClick(e, area.areaCode)}
                   className='govuk-link'
                 >
                   {area.areaName}

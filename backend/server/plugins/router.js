@@ -41,6 +41,7 @@ const routes = [].concat(
   require('../routes/elasticache/list_contacts'),
   require('../routes/elasticache/list_linked_contacts'),
   require('../routes/elasticache/list_linked_locations'),
+  require('../routes/elasticache/get_ta_data'),
   require('../routes/location/create'),
   require('../routes/location/remove'),
   require('../routes/location/update'),

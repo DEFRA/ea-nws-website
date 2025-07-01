@@ -63,9 +63,7 @@ export default function SelectAlternativeLandlineLayout({
       )
       // Invalid number input
       if (phoneValidationErrors) {
-        setValidationError(
-          'Enter a UK landline or mobile telephone number, like 01632 960 001 or 07700 900 982 or 08000 07700 900 982 if you’re using an RNIB number'
-        )
+        setValidationError(phoneValidationErrors)
         return
       }
     }

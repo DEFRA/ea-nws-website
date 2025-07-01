@@ -96,7 +96,9 @@ export default function ManageContactsPage() {
   return (
     <>
       <Helmet>
-        <title>Your email address and telephone numbers - Get flood warnings - GOV.UK</title>
+        <title>
+          Your email address and telephone numbers - Get flood warnings - GOV.UK
+        </title>
       </Helmet>
       {location.state !== null && location.state.removedContact && (
         <NotificationBanner
@@ -155,7 +157,7 @@ export default function ManageContactsPage() {
               )}
             <ContactDetailsTable
               contacts={contacts.mobilePhones}
-              unregisteredContact={contacts.unverifiedMobilePhones || []}
+              unregisteredContact={contacts.unverifiedMobiles || []}
               contactTitle='Texts'
               contactType={UserContactType.Mobile}
               primaryContact={null}

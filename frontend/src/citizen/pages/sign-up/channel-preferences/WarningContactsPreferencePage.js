@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { setContactPreferences } from '../../../../common/redux/userSlice'
 
@@ -13,7 +12,6 @@ export default function WarningContactsPreferencePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const [error, setError] = useState('')
   const [selectedContactPreferences, setSelectedContactPreferences] = useState(
     []
   )
@@ -25,8 +23,8 @@ export default function WarningContactsPreferencePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (selectedContactPreferences.length === 0) {
-      setError('Select at least one way to get messages about flooding')
+    if (selectedContactPreferences.length == 0) {
+      navigate('/signup/accountname/add')
     } else {
       dispatch(setContactPreferences(selectedContactPreferences))
       if (selectedContactPreferences.includes('Text')) {
@@ -53,7 +51,10 @@ export default function WarningContactsPreferencePage() {
   return (
     <>
       <Helmet>
-        <title>Would you like to get flood messages any other way? - Get flood warnings - GOV.UK</title>
+        <title>
+          Would you like to get flood messages any other way? - Get flood
+          warnings - GOV.UK
+        </title>
       </Helmet>
       <BackLink to='/signup/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

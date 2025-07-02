@@ -1,18 +1,21 @@
 import React, { useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet'
 
-export default function ErrorSummary ({ errorList }) {
+export default function ErrorSummary({ errorList }) {
+  //Remove null and flatten the errorList
+  const errors = errorList.filter((item) => item !== null).flat()
+
   const summaryRef = useRef(null)
   const focusFlag = useRef(false)
 
   useEffect(() => {
-    if (!focusFlag.current && errorList.length > 0 && summaryRef.current) {
+    if (!focusFlag.current && errors.length > 0 && summaryRef.current) {
       summaryRef.current.focus()
       focusFlag.current = true
     }
-  }, [errorList])
+  }, [errors])
 
-  if (errorList.length === 0) return null
+  if (errors.length === 0) return null
 
   // Prepend 'Error: ' to title only if not already present
   const newTitle = document.title.startsWith('Error: ')
@@ -37,7 +40,7 @@ export default function ErrorSummary ({ errorList }) {
         </h2>
         <div className='govuk-error-summary__body'>
           <ul className='govuk-list govuk-error-summary__list'>
-            {errorList.map((error, index) => {
+            {errors.map((error, index) => {
               // If an object, render a link to jump to that section
               if (typeof error === 'object' && error.componentId) {
                 return (

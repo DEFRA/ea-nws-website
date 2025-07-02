@@ -1,17 +1,18 @@
 const { logger } = require('../plugins/logging')
 const getSecretKeyValue = require('./SecretsManager')
-const getDownloadTemplateUrl = async () => {
+
+const getDownloadUrl = async (secretKey) => {
   try {
     const response = await getSecretKeyValue(
       'nws/website/organisation',
-      'addressTemplateUrl'
+      secretKey
     )
     return {
       status: 200,
       data: response
     }
   } catch (error) {
-    logger.error(error)
+    logger.error(`Error fetching ${secretKey}: ${error}`)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'
@@ -19,6 +20,15 @@ const getDownloadTemplateUrl = async () => {
   }
 }
 
+const getDownloadTemplateUrl = async () => {
+  return await getDownloadUrl('addressTemplateUrl')
+}
+
+const getDownloadQuickStartUrl = async () => {
+  return await getDownloadUrl('quickStartGuideUrl')
+}
+
 module.exports = {
-  getDownloadTemplateUrl
+  getDownloadTemplateUrl,
+  getDownloadQuickStartUrl
 }

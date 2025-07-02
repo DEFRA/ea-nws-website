@@ -192,7 +192,9 @@ export default function SignInValidatePage() {
                   />
                 )}
                 {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
-                <h2 className='govuk-heading-l'>Confirm email address </h2>
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Confirm email address{' '}
+                </h2>
                 <div className='govuk-body'>
                   We've sent an email with a code to:
                   <InsetText text={location.state.email} />

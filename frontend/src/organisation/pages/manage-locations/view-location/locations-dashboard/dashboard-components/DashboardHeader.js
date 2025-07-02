@@ -250,6 +250,7 @@ export default function DashboardHeader({
   linkSource,
   setErrorMessage
 }) {
+
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -342,6 +343,9 @@ export default function DashboardHeader({
                 type='floodMessages'
                 locations={locations}
                 onClickLinked={onClickLinked}
+                handleFloodAreas={() => {
+                  navigate(infoUrls.floodAreas)
+                }}
               />
               {(locations.filter(
                 (item) =>
@@ -357,16 +361,16 @@ export default function DashboardHeader({
                   type='noFloodMessages'
                   locations={locations}
                   onClickLinked={onClickLinked}
-                  handleFloodAreas={(e) => {
-                    e.preventDefault()
-                    navigate(infoUrls.floodAreas)
-                  }}
                 />
               )}
               {locations.filter((item) => item.linked_contacts?.length === 0)
                 .length > 0 && (
                 <div style={{ width: '100%' }}>
-                  <FloodBanner type='noContacts' />
+                  <FloodBanner
+                    type='noContacts' 
+                    locations={locations}
+                    onClickLinked={onClickLinked}
+                  />
                   <div style={{ paddingLeft: '0.5rem' }}>
                     <Details
                       title='Linking locations to contacts so that they can get flood messages'

@@ -54,7 +54,7 @@ export default function SignInPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[{text: error, componentId: emailAddressId}]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l'  id='main-content'>
               Sign in to your flood warnings account
             </h1>
             <div className='govuk-body'>

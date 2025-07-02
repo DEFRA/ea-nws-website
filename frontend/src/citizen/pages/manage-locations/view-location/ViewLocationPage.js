@@ -12,10 +12,12 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import AlertType from '../../../../common/enums/AlertType'
-import { setProfile } from '../../../../common/redux/userSlice'
-import { backendCall } from '../../../../common/services/BackendService'
 import {
   getLocationOtherAdditional,
+  setProfile
+} from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import {
   getRegistrationParams,
   updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
@@ -84,25 +86,16 @@ export default function ViewLocationPage() {
   const floodHistoryData = useFetchAlerts()
   const [floodAlertCount, setFloodAlertCount] = useState(null)
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
-  const locationsAlertTypes = getLocationOtherAdditional(
+  const [locationType, setLocationType] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  let locationsAlertTypes = getLocationOtherAdditional(
     selectedLocation?.additionals || [],
     'alertTypes'
   )
-  const [isLoading, setIsLoading] = useState(true)
-
-  const locationType = () => {
-    if (
-      locationsAlertTypes.includes(AlertType.FLOOD_WARNING) &&
-      locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
-    ) {
-      return 'both'
-    } else if (locationsAlertTypes.includes(AlertType.FLOOD_WARNING)) {
-      return 'severe'
-    } else if (locationsAlertTypes.includes(AlertType.FLOOD_ALERT)) {
-      return 'alert'
-    }
-  }
-  const initialAlerts = locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
+  // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
+  const initialAlerts = locationsAlertTypes
+    ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
+    : false
   const [savedOptionalAlerts, setSavedOptionalAlerts] = useState(initialAlerts)
   const [pendingOptionalAlerts, setPendingOptionalAlerts] =
     useState(initialAlerts)
@@ -141,9 +134,14 @@ export default function ViewLocationPage() {
       )
 
       if (locationIsWarningArea.length > 0) {
+        setLocationType('severe')
         setSelectedFloodArea(locationIsWarningArea[0])
       } else if (locationIsAlertArea.length > 0) {
+        setLocationType('alert')
         setSelectedFloodArea(locationIsAlertArea[0])
+      } else {
+        // location was added as a xy-coord location
+        setLocationType('both')
       }
 
       const isError = !warningArea && !alertArea
@@ -158,6 +156,17 @@ export default function ViewLocationPage() {
     setupSelectedLocation()
     getPartnerId()
   }, [])
+
+  const mapType = () => {
+    switch (locationType) {
+      case 'severe':
+        return [AlertType.FLOOD_WARNING]
+      case 'alert':
+        return [AlertType.FLOOD_ALERT]
+      case 'both':
+        return [AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+    }
+  }
 
   // get flood history data
   useEffect(() => {
@@ -219,6 +228,17 @@ export default function ViewLocationPage() {
   const handleOptionalAlertSave = async (e) => {
     e.preventDefault()
     let updatedProfile
+
+    // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
+    if (!locationsAlertTypes) {
+      locationsAlertTypes = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.INFO
+      ]
+    }
 
     if (pendingOptionalAlerts) {
       if (!locationsAlertTypes.includes(AlertType.FLOOD_ALERT)) {
@@ -307,7 +327,7 @@ export default function ViewLocationPage() {
                   }
                 >
                   <Map
-                    types={locationsAlertTypes}
+                    types={mapType()}
                     interactive={selectedFloodArea === null}
                     selectedFloodArea={selectedFloodArea}
                     showOnlySelectedFloodArea={selectedFloodArea !== null}
@@ -315,13 +335,13 @@ export default function ViewLocationPage() {
                   />
                 </div>
               )}
-              <FloodWarningKey type={locationType()} />
+              <FloodWarningKey type={locationType} />
               <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
                 Flood messages you get
               </h2>
 
               {/* flood warnings card */}
-              {(locationType() === 'both' || locationType() === 'severe') && (
+              {(locationType === 'both' || locationType === 'severe') && (
                 <div className='govuk-summary-card'>
                   <div
                     className='govuk-summary-card__title-wrapper'
@@ -347,7 +367,7 @@ export default function ViewLocationPage() {
               )}
 
               {/* flood alerts card */}
-              {(locationType() === 'both' || locationType() === 'alert') && (
+              {(locationType === 'both' || locationType === 'alert') && (
                 <div className='govuk-summary-card'>
                   <div className='govuk-summary-card__title-wrapper govuk-!-padding-0'>
                     <div
@@ -355,13 +375,13 @@ export default function ViewLocationPage() {
                       style={{ flexDirection: 'column' }}
                     >
                       <h2 className='govuk-summary-card__title govuk-!-font-size-24'>
-                        Flood alerts {locationType() === 'both' && '(optional)'}
+                        Flood alerts {locationType === 'both' && '(optional)'}
                       </h2>
                       <p className='govuk-!-margin-bottom-1 govuk-!-margin-top-0'>
                         Early alerts that flooding is possible - be prepared
                       </p>
                     </div>
-                    {locationType() === 'both' && (
+                    {locationType === 'both' && (
                       <div
                         className='govuk-summary-card__title-wrapper'
                         style={{ alignItems: 'center' }}

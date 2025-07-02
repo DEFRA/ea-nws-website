@@ -40,7 +40,9 @@ export default function ServiceSelectionPage() {
   return (
     <>
       <Helmet>
-        <title>Who are the flood warnings for? - Get flood warnings - GOV.UK</title>
+        <title>
+          Who are the flood warnings for? - Get flood warnings - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
@@ -55,7 +57,7 @@ export default function ServiceSelectionPage() {
             )}
             <fieldset className='govuk-fieldset'>
               <legend className='govuk-fieldset__legend'>
-                <h1 className='govuk-heading-l'>
+                <h1 className='govuk-heading-l' id='main-content'>
                   Who are the flood warnings for?
                 </h1>
               </legend>

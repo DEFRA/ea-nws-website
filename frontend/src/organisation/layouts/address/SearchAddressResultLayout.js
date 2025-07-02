@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setOrganizationAddress } from '../../../common/redux/userSlice'
 
 export default function SelectAddressLayout({
@@ -15,11 +14,6 @@ export default function SelectAddressLayout({
   const locations = useSelector((state) => state.session.locationSearchResults)
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
-  )
-  const locationsPerPage = 20
-  const displayedLocations = locations.slice(
-    (currentPage - 1) * locationsPerPage,
-    currentPage * locationsPerPage
   )
 
   const handleSelectedLocation = (event, selectedLocation) => {
@@ -61,7 +55,7 @@ export default function SelectAddressLayout({
                     <tr className='govuk-table__row'>
                       <td className='govuk-table__cell' />
                     </tr>
-                    {displayedLocations.map((location, index) => (
+                    {locations.map((location, index) => (
                       <tr key={index} className='govuk-table__row'>
                         <td className='govuk-table__cell'>
                           <Link
@@ -77,10 +71,6 @@ export default function SelectAddressLayout({
                     ))}
                   </tbody>
                 </table>
-                <Pagination
-                  totalPages={Math.ceil(locations.length / locationsPerPage)}
-                  onPageChange={(val) => setCurrentPage(val)}
-                />
               </div>
             </div>
           </div>

@@ -1,25 +1,30 @@
 import { useEffect, useState } from 'react'
+import AlertState from '../../enums/AlertState'
 import { backendCall } from '../BackendService'
-import { csvToJson } from '../CsvToJson'
-
 export function useFetchAlerts () {
   const [data, setData] = useState(null)
-  const [historyUrl, setHistoryUrl] = useState(null)
+  const [historicalAlerts, setHistoricalAlerts] = useState(null)
 
   useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
+    const loadHistoricalAlerts = async () => {
+      const options = {
+        states: [AlertState.PAST],
+        boundingBox: null,
+        channels: []
+      }
+      
+
+      const { data: alerts } = await backendCall(
+        { options, historic: true },
+        'api/alert/list',
+        navigate
       )
-      setHistoryUrl(data)
+      return alerts
     }
-    getHistoryUrl()
 
-    historyUrl && fetch(historyUrl)
-      .then((response) => response.text())
-      .then((data) => setData(csvToJson(data)))
-  }, [historyUrl])
+    const alerts = loadHistoricalAlerts()
+    setHistoricalAlerts(alerts)
+  }, [setHistoricalAlerts])
 
-  return data
+  return historicalAlerts
 }

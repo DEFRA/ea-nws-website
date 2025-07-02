@@ -66,7 +66,7 @@ export default function FloodWarningHistoryDashboardPage() {
 
     // load alerts
     const { data: alerts } = await backendCall(
-      { options },
+      { options, historic: true },
       'api/alert/list',
       navigate
     )

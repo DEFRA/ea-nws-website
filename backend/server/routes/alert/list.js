@@ -61,8 +61,8 @@ const createGeoSafeAlertObject = (historicData) => {
     version: 1,
     name: historicData.name,
     description: { en: 'Flood', additionalLabels: [] },
-    effectiveDate: historicData.createdDate,
-    expirationDate: historicData.endDate,
+    effectiveDate: Math.floor(new Date(historicData.createdDate).getTime() / 1000),
+    expirationDate: Math.floor(new Date(historicData.createdDate).getTime() / 1000),
     duration: {},
     urgency: '',
     severity: '',
@@ -185,14 +185,6 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
   return result
 }
 
-const getLastModifiedDate = (alert) => {
-  const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-  for (let i = 0; i < extraInfo?.length; i++) {
-    if (extraInfo[i].key === 'lastmodifieddate') {
-      return extraInfo[i].value?.s
-    }
-  }
-}
 
 const getAllPastAlerts = async(request) => {
   const { redis } = request.server.app
@@ -270,24 +262,20 @@ module.exports = [
           response = await apiCall({ options: options }, 'alert/list')
         }
 
-        // removing for justnow - last modified date is not the correct field to base this off
-        // if (filterDate) {
-        //   const possibleFormats = ['dd/MM/yyyy HH:mm:ss', 'dd/MM/yyyy HH:mm']
-
-        //   response.data.alerts = response.data.alerts.filter((alert) => {
-        //     const rawDate = getLastModifiedDate(alert)
-        //     let parsedDate = null
-        //     for (const format of possibleFormats) {
-        //       const attempt = parse(rawDate, format, new Date())
-        //       if (isValid(attempt)) {
-        //         parsedDate = attempt
-        //         break
-        //       }
-        //     }
-
-        //     return parsedDate && isAfter(parsedDate, filterDate)
-        //   })
-        // }
+        if (filterDate) {
+          const dateFormat = 'dd/MM/yyyy HH:mm:ss'
+          response.data.alerts = response.data.alerts.filter((alert) => {
+            const rawDate = alert.effectiveDate
+            const formattedDate = format(new Date(rawDate * 1000), dateFormat)
+            let parsedDate = null
+            const attempt = parse(formattedDate, dateFormat, new Date())
+            if (isValid(attempt)) {
+              parsedDate = attempt
+            }
+            
+            return parsedDate && isAfter(parsedDate, filterDate)
+          })
+        }
 
         return h.response(response)
       } catch (error) {

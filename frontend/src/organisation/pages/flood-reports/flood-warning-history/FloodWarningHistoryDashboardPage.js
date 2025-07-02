@@ -99,19 +99,10 @@ export default function FloodWarningHistoryDashboardPage() {
 
           const severity = liveAlert.type
 
-          let [day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'createddate'
-          ).split(/[:\/\s]+/)
-
-          const startDate = new Date(year, month - 1, day, hour, minute)
-
-          ;[day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'lastmodifieddate'
-          ).split(/[:\/\s]+/)
-
-          const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
+          // when alerts are updated there is a new alert in the list
+          // Need to handle that here
+          const startDate = new Date(liveAlert.effectiveDate * 1000)
+          const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
           for (const location of locations) {
             processLocation(

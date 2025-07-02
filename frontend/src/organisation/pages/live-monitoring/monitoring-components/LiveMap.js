@@ -175,11 +175,7 @@ export default function LiveMap ({
             'TA_CODE'
           )
           const severity = liveAlert.type
-          const [day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'lastmodifieddate'
-          ).split(/[:\/\s]+/)
-          const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
+          const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
           return getFloodAreaByTaCode(TA_CODE).then((floodArea) => ({
             floodArea,

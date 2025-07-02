@@ -427,10 +427,18 @@ export default function LinkLocationsLayout({
             1.0
           )
 
-        alertAreas = alertArea.features.filter(
+        // Pull out the features (if not already array)
+        const alertFeatures = Array.isArray(alertArea)
+          ? alertArea
+          : alertArea.features || []
+        const warningFeatures = Array.isArray(warningArea)
+          ? warningArea
+          : warningArea.features || []
+
+        alertAreas = alertFeatures.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)
         )
-        warningAreas = warningArea.features.filter(
+        warningAreas = warningFeatures.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)
         )
       } else {

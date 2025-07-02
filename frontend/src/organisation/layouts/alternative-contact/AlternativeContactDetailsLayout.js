@@ -101,9 +101,10 @@ export default function AlternativeContactDetailsLayout({
             <div className='govuk-body'>
               {isAdmin ? (
                 <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case you're
-                  unavailable in the future. They will not be given
-                  administrator rights.
+                  We'll only contact them about this account, if we're unable to
+                  reach you. They will not get flood messages or admin rights
+                  unless you set them up for these after your account is
+                  approved.
                 </p>
               ) : (
                 <p className='govuk-body govuk-!-margin-bottom-5'>

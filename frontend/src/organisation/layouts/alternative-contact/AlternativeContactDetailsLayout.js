@@ -107,9 +107,10 @@ export default function AlternativeContactDetailsLayout({
                 </p>
               ) : (
                 <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case{' '}
-                  {profile.firstname} {profile.lastname} is unavailable in the
-                  future. They will not be given administrator rights.
+                  We'll only contact them about this account, if we're unable to
+                  reach {profile.firstname} {profile.surname}. They will not get
+                  flood messages or admin rights unless you set them up for
+                  these after your account is approved.
                 </p>
               )}
               <Input

@@ -213,8 +213,9 @@ module.exports = [
 
         if (options.states.includes('PAST')) {
           // check elasticache for the flood history first
-          let floodHistoryFileData = await getFloodHistory(redis)
-          if (floodHistoryFileData === null) {
+          let historicAlerts = await getFloodHistory(redis)
+          if (historicAlerts === null) {
+            let floodHistoryFileData
             // we need to load the historical data from file now
             const historicFloodDataUrl = await getSecretKeyValue(
               'nws/website',
@@ -232,11 +233,8 @@ module.exports = [
                 .catch((e) =>
                   console.error('Could not fetch Historic Flood Warning file', e)
                 )
-              await setFloodHistory(redis, floodHistoryFileData)
             }
-          }
 
-          if (floodHistoryFileData !== null) {
             // filter out any updates - we only want to know when a flood alert was added and removed
             floodHistoryFileData = floodHistoryFileData.filter((item) =>
               allowedMessageTypes.includes(item['Message Type'])
@@ -245,10 +243,14 @@ module.exports = [
             const sortedHistoricFileData =
               mergeHistoricFloodEntries(floodHistoryFileData)
 
-            response.data.alerts = response.data.alerts.concat(
+            historicAlerts = response.data.alerts.concat(
               sortedHistoricFileData
             )
+
+            await setFloodHistory(redis, historicAlerts)
           }
+
+          response.data.alerts = historicAlerts
           
         }
 

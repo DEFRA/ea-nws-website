@@ -42,7 +42,9 @@ export default function LocationSearchResultsPage() {
     if (isInWarningArea || isInAlertArea) {
       navigate('/signup/register-location/location-in-flood-areas')
     } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
-      navigate('/signup/register-location/location-near-flood-areas')
+      navigate(
+        '/signup/register-location/location-cannot-get-direct-flood-messages'
+      )
     } else if (isError) {
       navigate('/error')
     } else {

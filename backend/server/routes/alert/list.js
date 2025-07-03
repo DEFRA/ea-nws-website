@@ -4,7 +4,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const getSecretKeyValue = require('../../services/SecretsManager')
-const { parse, isValid, isAfter } = require('date-fns')
+const { parse, isValid, isAfter, format } = require('date-fns')
 const fetch = require('node-fetch')
 const { getFloodHistory, setFloodHistory } = require('../../services/elasticache')
 
@@ -61,8 +61,8 @@ const createGeoSafeAlertObject = (historicData) => {
     version: 1,
     name: historicData.name,
     description: { en: 'Flood', additionalLabels: [] },
-    effectiveDate: Math.floor(new Date(historicData.createdDate).getTime() / 1000),
-    expirationDate: Math.floor(new Date(historicData.createdDate).getTime() / 1000),
+    effectiveDate: Math.floor(new Date(historicData.endDate).getTime() / 1000),
+    expirationDate: Math.floor(new Date(historicData.endDate).getTime() / 1000),
     duration: {},
     urgency: '',
     severity: '',
@@ -165,7 +165,7 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
           type: alertTypeMap[currentType],
           createdDate: currentEntry['Approved'],
           endDate: nextEntry['Approved'],
-          name: currentType + currentTA
+          name: nextEntry['Message Type'] + currentTA
         }
 
         result.push(createGeoSafeAlertObject(newAlert))
@@ -257,7 +257,7 @@ module.exports = [
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         let response
         if (historic) {
-          response = getAllPastAlerts(request)
+          response = await getAllPastAlerts(request)
         } else {
           response = await apiCall({ options: options }, 'alert/list')
         }

@@ -668,9 +668,8 @@ const setFloodHistory = async (client, value) => {
   const secondsInDay = 60 * 60 * 24
   const secondsTillMidnight = parseInt(secondsInDay - secondsSinceMidnight)
   // send the data
-  await client.json.set(key, '$', json)
+  await client.json.set(key, '$', value)
   await client.expire(key, secondsTillMidnight)
-  await setJsonData(client, key, value)
 }
 
 const getFloodHistory = async (client) => {

@@ -179,7 +179,7 @@ export default function ViewLocationPage() {
 
         const filteredAlert = floodHistoryData
           .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+          .filter((inDate) => moment(inDate.effectiveDate * 1000) > oneYearAgo)
 
         setFloodAlertCount(filteredAlert.length)
       }
@@ -195,7 +195,7 @@ export default function ViewLocationPage() {
 
         const filteredWarning = floodHistoryData
           .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+          .filter((inDate) => moment(inDate.effectiveDate * 1000) > oneYearAgo)
 
         setSevereFloodWarningCount(filteredWarning.length)
       }

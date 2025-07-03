@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -16,7 +17,7 @@ import { postCodeValidation } from '../../../common/services/validations/PostCod
 
 export default function AddAddressLayout({
   navigateToNextPage,
-  NavigateToPreviousPage,
+  navigateToPreviousPage,
   navigateToConfirmPage
 }) {
   const navigate = useNavigate()
@@ -72,7 +73,7 @@ export default function AddAddressLayout({
 
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigateToPreviousPage()
   }
 
   return (
@@ -110,6 +111,8 @@ export default function AddAddressLayout({
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              <br />
+              <Link to={'/home'}>Enter address manually</Link>
             </div>
           </div>
         </div>

@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import AddAddressLayout from '../../layouts/address/AddAddressLayout'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function AddAddressPage () {
+export default function AddAddressPage() {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
     navigate(orgSignUpUrls.address.select)
   }
 
-  const NavigateToPreviousPage = () => {
+  const navigateToPreviousPage = () => {
     navigate(navigate(-1))
   }
 
@@ -19,14 +19,17 @@ export default function AddAddressPage () {
     navigate(orgSignUpUrls.address.confirm)
   }
 
-  return (
+  const enterAddressManually = orgSignUpUrls.address.return(
     <>
       <Helmet>
-        <title>Your organisation's head office address - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Your organisation's head office address - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <AddAddressLayout
         navigateToNextPage={navigateToNextPage}
-        NavigateToPreviousPage={NavigateToPreviousPage}
+        navigateToPreviousPage={navigateToPreviousPage}
         navigateToConfirmPage={navigateToConfirmPage}
       />
     </>

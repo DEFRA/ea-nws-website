@@ -61,6 +61,10 @@ const orgSignUpRoutes = [
     component: <AddAddressPage />
   },
   {
+    path: orgSignUpUrls.address.manuallyAdd,
+    component: <EnterAddressManuallyPage />
+  },
+  {
     path: orgSignUpUrls.address.select,
     component: <SelectAddressPage />
   },

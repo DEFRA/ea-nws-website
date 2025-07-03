@@ -86,6 +86,7 @@ export const getSurroundingFloodAreasFromShape = async (
   const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, {
     units: 'kilometers'
   })
+
   // Get the boundary box for the buffered shape - it will be a square
   const bbox = turf.bbox(bufferedShape)
   const bboxInput =
@@ -105,6 +106,7 @@ export const getSurroundingFloodAreasFromShape = async (
     'flood_alerts'
   )
   const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
+
   return {
     alertArea: filteredAlertData,
     warningArea: filteredWarningData

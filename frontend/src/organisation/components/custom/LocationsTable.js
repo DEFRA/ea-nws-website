@@ -539,22 +539,36 @@ export default function LocationsTable({
                 <>
                   {' '}
                   <td className='govuk-table__cell'>
-                    <span
-                      className={`flood-risk-container ${location.riverSeaRisk?.className}`}
-                    >
-                      {location.riverSeaRisk?.title === 'Unavailable'
-                        ? '-'
-                        : location.riverSeaRisk?.title}
-                    </span>
+                    {location.riverSeaRisk?.title === 'Unavailable' ? (
+                      <span
+                        className={`flood-risk-container ${location.riverSeaRisk?.className}`}
+                        aria-label='Not available'
+                      >
+                        -
+                      </span>
+                    ) : (
+                      <span
+                        className={`flood-risk-container ${location.riverSeaRisk?.className}`}
+                      >
+                        {location.riverSeaRisk?.title}
+                      </span>
+                    )}
                   </td>
                   <td className='govuk-table__cell'>
-                    <span
-                      className={`flood-risk-container ${location.groundWaterRisk?.className}`}
-                    >
-                      {location.groundWaterRisk?.title === 'Unavailable'
-                        ? '-'
-                        : location.groundWaterRisk?.title}
-                    </span>
+                    {location.groundWaterRisk?.title === 'Unavailable' ? (
+                      <span
+                        className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                        aria-label='Not available'
+                      >
+                        -
+                      </span>
+                    ) : (
+                      <span
+                        className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                      >
+                        {location.groundWaterRisk?.title}
+                      </span>
+                    )}
                   </td>
                 </>
               )}

@@ -168,38 +168,11 @@ export default function LiveMap ({
       )
 
       if (!errorMessage) {
-        // loop through live alerts - loop through all locations to find affected locations
-        const alertPromises = liveAlertsData?.alerts.map(async (liveAlert) => {
-          const TA_CODE = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_CODE'
-          )
-          const severity = liveAlert.type
-          const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
-
-          return getFloodAreaByTaCode(TA_CODE).then((floodArea) => ({
-            floodArea,
-            severity,
-            lastUpdatedTime,
-            TA_CODE
-          }))
-        })
-
-        const alertResults = await Promise.all(alertPromises)
-
-        for (const {
-          floodArea,
-          severity,
-          lastUpdatedTime,
-          TA_CODE
-        } of alertResults) {
+        for (const liveAlert of liveAlertsData?.alerts) {
           const locationPromises = locations.map((location) =>
             processLocation(
               location,
-              floodArea,
-              severity,
-              lastUpdatedTime,
-              TA_CODE
+              liveAlert
             )
           )
           await Promise.all(locationPromises)
@@ -210,13 +183,16 @@ export default function LiveMap ({
     }
   }
 
-  const processLocation = (
+  const processLocation = async(
     location,
-    floodArea,
-    severity,
-    lastUpdatedTime,
-    TA_CODE
+    liveAlert
   ) => {
+
+    const TA_CODE = getAdditional(
+      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+      'TA_CODE'
+    )
+
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type
     const locationIntersectsWithFloodArea = additionals.other?.targetAreas?.some(
@@ -224,6 +200,11 @@ export default function LiveMap ({
     )
 
     if (!locationIntersectsWithFloodArea) return
+
+    const severity = liveAlert.type
+    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
+
+    const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
     setLocationsAffected((prevLoc) => [...prevLoc, location.id])
 

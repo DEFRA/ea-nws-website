@@ -44,6 +44,7 @@ export default function ConfirmLocationLayout({
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
+  const locationConfirmationId = 'location-confirmation'
 
   const currentPostCode = useSelector((state) =>
     getLocationOther(state, 'postcode')
@@ -292,10 +293,8 @@ export default function ConfirmLocationLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l' id='main-content'>
-              Confirm location
-            </h1>
+            {error && <ErrorSummary errorList={[{ text: error, componentId: locationConfirmationId }]} />}
+            <h1 className='govuk-heading-l' id={locationConfirmationId}>Confirm location</h1>
 
             <h2 className='govuk-heading-m govuk-!-margin-top-8'>
               {locationName}

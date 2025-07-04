@@ -36,6 +36,9 @@ export default function AdminDetailsLayout({
   const organizationAdditionals = JSON.parse(organization.description)
   const isAdmin = organizationAdditionals.isAdminRegistering
 
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     setErrorFullName('')
@@ -118,7 +121,12 @@ export default function AdminDetailsLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(errorFullName || errorEmail) && (
-              <ErrorSummary errorList={[errorFullName, errorEmail]} />
+              <ErrorSummary
+                errorList={[
+                  errorFullName && { text: errorFullName, componentId: fullNameId },
+                  errorEmail && { text: errorEmail, componentId: emailAddressId }
+                ].filter(Boolean)}
+              />
             )}
             {isAdmin ? (
               <h1 className='govuk-heading-l' id='main-content'>
@@ -144,7 +152,7 @@ export default function AdminDetailsLayout({
                 </p>
               )}
               <Input
-                id='full-name'
+                id={fullNameId}
                 name='Full name'
                 inputType='text'
                 value={fullName}
@@ -155,7 +163,7 @@ export default function AdminDetailsLayout({
                 isNameBold
               />
               <Input
-                id='email-address'
+                id={emailAddressId}
                 name='Email address'
                 inputType='text'
                 inputMode='email'

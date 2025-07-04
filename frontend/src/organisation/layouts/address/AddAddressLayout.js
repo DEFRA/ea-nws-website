@@ -24,6 +24,7 @@ export default function AddAddressLayout({
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
+  const postcodeId = 'postcode'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -81,13 +82,15 @@ export default function AddAddressLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary errorList={[{ text: error, componentId: postcodeId }]} />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               Your organisation's UK head office address
             </h1>
             <div className='govuk-body'>
               <Input
-                id='postcode'
+                id={postcodeId}
                 inputType='text'
                 value={postCode}
                 name='Postcode'

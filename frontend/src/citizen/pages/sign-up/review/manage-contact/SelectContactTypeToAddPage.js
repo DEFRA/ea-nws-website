@@ -18,6 +18,7 @@ export default function SelectContactTypeToAddPage() {
       value: 'Telephone Number (phone calls)'
     }
   ]
+  const contactTypeGroupId = 'contact-type-group'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -52,7 +53,11 @@ export default function SelectContactTypeToAddPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: contactTypeGroupId }]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               Select type of contact you want to add
             </h1>
@@ -63,11 +68,24 @@ export default function SelectContactTypeToAddPage() {
                   : 'govuk-form-group'
               }
             >
-              <fieldset className='govuk-fieldset'>
+              <fieldset
+                id={contactTypeGroupId}
+                className='govuk-fieldset'
+                aria-describedby={
+                  error
+                    ? 'contact-type-hint contact-type-error'
+                    : 'contact-type-hint'
+                }
+              >
                 <legend className='govuk-fieldset__legend'>
                   Select type of contact you want to add
                 </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {error}
+                  </p>
+                )}
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((contact) => (
                     <Radio

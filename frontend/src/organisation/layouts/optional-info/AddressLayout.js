@@ -20,6 +20,7 @@ export default function AddressLayout({
   )
   const [address, setAddress] = useState(currentAddress || '')
   const charLimit = 200
+  const locationAddressId = 'location-address'
 
   useEffect(() => {
     if (address.length > charLimit) {
@@ -47,13 +48,13 @@ export default function AddressLayout({
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: locationAddressId}]} />}
             <h1 className='govuk-heading-l' id='main-content'>
               What is the address?
             </h1>
             {additionalInfo && <>{additionalInfo}</>}
             <TextArea
-              id='location-address'
+              id={locationAddressId}
               error={error}
               className='govuk-textarea'
               rows={5}

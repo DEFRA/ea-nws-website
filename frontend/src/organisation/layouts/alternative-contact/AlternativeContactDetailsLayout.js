@@ -25,6 +25,9 @@ export default function AlternativeContactDetailsLayout({
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
   const isAdmin = organizationAdditionals.isAdminRegistering
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
+  const telephoneNumberId = 'telephone-number'
 
   useEffect(() => {
     setErrorFullName('')
@@ -92,8 +95,21 @@ export default function AlternativeContactDetailsLayout({
           <div className='govuk-grid-column-two-thirds'>
             {(errorFullName || errorEmail || errorTelephone) && (
               <ErrorSummary
-                errorList={[errorFullName, errorEmail, errorTelephone]}
-              />
+                errorList={[
+                  errorFullName && {
+                    text: errorFullName,
+                    component: fullNameId
+                  },
+                  errorEmail && {
+                    text: errorEmail,
+                    component: emailAddressId
+                  },
+                  errorTelephone && {
+                    text: errorTelephone,
+                    componentId: telephoneNumberId
+                  }
+                ].filter(Boolean)}
+            />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Enter details for an alternative contact at your organisation
@@ -115,7 +131,7 @@ export default function AlternativeContactDetailsLayout({
                 </p>
               )}
               <Input
-                id='full-name'
+                id={fullNameId}
                 inputType='text'
                 value={fullName}
                 name='Full name'
@@ -126,7 +142,7 @@ export default function AlternativeContactDetailsLayout({
                 isNameBold
               />
               <Input
-                id='email-address'
+                id={emailAddressId}
                 inputType='text'
                 inputMode='email'
                 value={email}
@@ -137,7 +153,7 @@ export default function AlternativeContactDetailsLayout({
                 isNameBold
               />
               <Input
-                id='telephone-number'
+                id={telephoneNumberId}
                 inputType='text'
                 value={telephone}
                 name='Telephone number'

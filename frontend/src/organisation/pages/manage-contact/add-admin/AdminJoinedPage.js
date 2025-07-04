@@ -17,6 +17,7 @@ export default function AdminJoinedPage() {
   const [errorText, setErrorText] = useState('')
   const profile = useSelector((state) => state.session.profile)
   const dispatch = useDispatch()
+  const adminNextActionId = 'admin-next-action'
 
   const infoSections = [
     {
@@ -87,7 +88,7 @@ export default function AdminJoinedPage() {
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {errorText && <ErrorSummary errorList={[errorText]} />}
+            {errorText && <ErrorSummary errorList={[{text: errorText, componentId: adminNextActionId}]} />}
             <h1 className='govuk-heading-l' id='main-content'>
               You've now joined as admin for your organisation and can manage
               the following.
@@ -107,9 +108,10 @@ export default function AdminJoinedPage() {
                   What would you like to do first?
                 </h1>
                 {errorText && (
-                  <p className='govuk-error-message'>{errorText}</p>
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span> {errorText}</p>
                 )}
-                <div className='govuk-radios' data-module='govuk-radios'>
+                <div id={adminNextActionId} className='govuk-radios' data-module='govuk-radios'>
                   <Radio
                     key='check_profile'
                     name='radios'

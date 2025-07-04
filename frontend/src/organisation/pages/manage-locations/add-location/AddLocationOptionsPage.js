@@ -42,6 +42,7 @@ export default function AddLocationOptionsPage() {
       hint: "You'll need to do this as a shapefile in a ZIP file"
     }
   ]
+  const addLocationOptionsId = 'add-location-options'
 
   useEffect(() => {
     setAddLocationTypeError('')
@@ -86,7 +87,7 @@ export default function AddLocationOptionsPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {addLocationTypeError && (
-              <ErrorSummary errorList={[addLocationTypeError]} />
+              <ErrorSummary errorList={[{text: addLocationTypeError, componentId: addLocationOptionsId}]} />
             )}
 
             <h1 className='govuk-heading-l' id='main-content'>
@@ -100,10 +101,10 @@ export default function AddLocationOptionsPage() {
                     : 'govuk-form-group'
                 }
               >
-                <div className='govuk-radios' data-module='govuk-radios'>
+                <div id={addLocationOptionsId} className='govuk-radios' data-module='govuk-radios'>
                   {addLocationTypeError && (
                     <p className='govuk-error-message'>
-                      {addLocationTypeError}
+                      <span className='govuk-visually-hidden'>Error:</span> {addLocationTypeError}
                     </p>
                   )}
                   {addLocationOptions.map((option) => (

@@ -5,6 +5,7 @@ const ConditionalWrapper = ({ condition, wrapper, children }) =>
   condition ? wrapper(children) : children
 
 export default function Radio({
+  id,
   label,
   value,
   name,
@@ -16,6 +17,7 @@ export default function Radio({
   conditionalQuestion,
   conditionalInput,
   conditionalError,
+  conditionalId,
   hint
 }) {
   return (
@@ -33,7 +35,7 @@ export default function Radio({
             value={value}
             name={name}
             onChange={onChange}
-            id={'id' + label}
+            id= {id || 'id' + label}
             checked={checked}
           />
           <label
@@ -57,6 +59,7 @@ export default function Radio({
                 <div className='govuk-hint'>{conditionalHint}</div>
               )}
               <Input
+                id={conditionalId}
                 name={conditionalQuestion}
                 className='govuk-input govuk-!-width-one-half'
                 inputType='text'

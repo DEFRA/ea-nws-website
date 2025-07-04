@@ -51,6 +51,8 @@ export default function SelectPredefinedBoundaryPage() {
   )
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const boundaryTypeId = 'BoundaryType'
+  const boundaryId = 'Boundary'
 
   const [partnerId, setPartnerId] = useState(false)
 
@@ -236,7 +238,7 @@ export default function SelectPredefinedBoundaryPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(boundaryTypeError || boundaryError) && (
-              <ErrorSummary errorList={[boundaryTypeError, boundaryError]} />
+              <ErrorSummary errorList={[{text: boundaryTypeError, componentId: boundaryTypeId}, {text: boundaryError, componentId: boundaryId}]} />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Add predefined boundary
@@ -247,6 +249,7 @@ export default function SelectPredefinedBoundaryPage() {
                 <div className='govuk-grid-column-one-third'>
                   <br />
                   <Select
+                    id={boundaryTypeId}
                     name='BoundaryType'
                     label='Boundary type'
                     options={boundaryTypes}
@@ -257,6 +260,7 @@ export default function SelectPredefinedBoundaryPage() {
                     }
                   />
                   <Select
+                    id={boundaryId}
                     name='Boundary'
                     label='Boundary'
                     options={boundaries.map((boundary) => {

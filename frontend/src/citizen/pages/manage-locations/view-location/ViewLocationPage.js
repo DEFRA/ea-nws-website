@@ -133,24 +133,17 @@ export default function ViewLocationPage() {
         alertArea.features
       )
 
-      if (
-        !locationsAlertTypes.includes(AlertType.SEVERE_FLOOD_WARNING) ||
-        !locationsAlertTypes.includes(AlertType.FLOOD_WARNING)
-      ) {
+      if (locationIsWarningArea.length > 0) {
+        setLocationType('severe')
+        setSelectedFloodArea(locationIsWarningArea[0])
+      } else if (locationIsAlertArea.length > 0) {
         setLocationType('alert')
         setSelectedFloodArea(locationIsAlertArea[0])
       } else {
-        if (locationsAlertTypes.includes(AlertType.FLOOD_ALERT)) {
+        if (warningArea?.features.length > 0) {
           setLocationType('both')
         } else {
-          setLocationType('severe')
-        }
-
-        if (locationIsWarningArea.length > 0) {
-          setSelectedFloodArea(locationIsWarningArea[0])
-        }
-        if (locationIsAlertArea.length > 0) {
-          setSelectedFloodArea(locationIsAlertArea[0])
+          setLocationType('alert')
         }
       }
 

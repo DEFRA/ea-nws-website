@@ -71,19 +71,10 @@ export default function WarningContactsPreferencePage() {
             />
           )}
           <div className='govuk-grid-column-two-thirds'>
-            {error && (
-              <ErrorSummary
-                errorList={[
-                  { text: error, componentId: contactPrefGroupId }
-                ]}
-              />
-            )}
             <fieldset
               id={contactPrefGroupId}
               className='govuk-fieldset'
-              aria-describedby={
-                error ? 'group-hint contact-preferences-error' : 'group-hint'
-              }
+              aria-describedby='group-hint'
             >
               <legend className='govuk-fieldset__legend'>
                 <h1 className='govuk-heading-l' id='main-content'>
@@ -91,24 +82,7 @@ export default function WarningContactsPreferencePage() {
                   (optional)
                 </h1>
               </legend>
-              <div
-                className={
-                  error
-                    ? 'govuk-form-group govuk-form-group--error'
-                    : 'govuk-form-group'
-                }
-              >
-                <span id='group-hint'>Select at least one option</span>
-
-                {error && (
-                  <p
-                    id='contact-preferences-error'
-                    className='govuk-error-message'
-                  >
-                    <span className='govuk-visually-hidden'>Error:</span>{' '}
-                    {error}
-                  </p>
-                )}
+              <div className='govuk-form-group'>
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((preference) => (
                     <Checkbox

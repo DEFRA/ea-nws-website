@@ -41,12 +41,12 @@ export default function LocationSearchResultsLayout({
   const floodHistoryData = useFetchAlerts()
 
   const setHistoricalAlertNumber = (AlertArea) => {
-    const oneYearAgo = moment().subtract(1, 'years')
+    const oneYearAgo = moment().subtract(1, 'years')  
 
     const areaAlert = floodHistoryData.filter(
       (alert) =>
         alert.CODE === AlertArea &&
-        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+        moment(alert.effectiveDate * 1000) > oneYearAgo
     )
     dispatch(setFloodAlertCount(areaAlert.length))
   }
@@ -57,7 +57,7 @@ export default function LocationSearchResultsLayout({
     const areaWarning = floodHistoryData.filter(
       (alert) =>
         alert.CODE === WarningArea &&
-        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+        moment(alert.effectiveDate * 1000) > oneYearAgo
     )
     dispatch(setSevereFloodWarningCount(areaWarning.length))
   }

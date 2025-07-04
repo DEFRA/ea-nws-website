@@ -66,7 +66,7 @@ export default function FloodWarningHistoryDashboardPage() {
 
     // load alerts
     const { data: alerts } = await backendCall(
-      { options },
+      { options, historic: true },
       'api/alert/list',
       navigate
     )
@@ -124,19 +124,8 @@ export default function FloodWarningHistoryDashboardPage() {
 
     const severity = liveAlert.type
 
-    let [day, month, year, hour, minute] = getAdditional(
-      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-      'createddate'
-    ).split(/[:\/\s]+/)
-
-    const startDate = new Date(year, month - 1, day, hour, minute)
-
-    ;[day, month, year, hour, minute] = getAdditional(
-      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-      'lastmodifieddate'
-    ).split(/[:\/\s]+/)
-
-    const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
+    const startDate = new Date(liveAlert.effectiveDate * 1000)
+    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
     // add required data to location row object
     const createLocationWithFloodData = () => {

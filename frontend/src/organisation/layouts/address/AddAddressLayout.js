@@ -97,6 +97,7 @@ export default function AddAddressLayout({
                 onChange={(val) => setPostCode(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
                 defaultValue={postCode}
               />
               <Input
@@ -106,6 +107,7 @@ export default function AddAddressLayout({
                 name='Building name or number (optional)'
                 onChange={(val) => setBuildingNum(val)}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
                 defaultValue={buildingNum}
               />
               <Button

@@ -2225,3 +2225,53 @@ govuk-menu-toggle.button-menu > button {
     margin-bottom: 30px;
   }
 }
+
+.service-overview-banner {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  background-color: #1d70b8;
+}
+
+.service-overview-banner__inner {
+  margin: 0 auto;
+  padding: 1rem 1rem 4rem;
+}
+
+.service-overview-banner__icon {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.service-overview-banner__icon-text {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.service-overview-banner__title {
+  color: #ffffff;
+  margin: 0;
+}
+
+.service-overview-banner__subtitle {
+  color: #d3e2f1;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.service-overview-banner__text {
+  color: #d3e2f1;
+  margin: 0 0 0;
+}
+
+.service-overview-section-hr {
+  border: 0;
+  border-top: 1px solid #d8d8d8;
+  margin: 4rem;
+}

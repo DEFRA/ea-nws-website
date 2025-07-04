@@ -79,6 +79,10 @@ export default function CompaniesHouseNumLayout({
                   <legend className='govuk-visually-hidden'>
                     Does your organisation have a Companies House number?
                   </legend>
+                  <div className='govuk-hint'>
+                    Limited companies and limited liability partnerships have
+                    these numbers.
+                  </div>
                   <div className='govuk-radios'>
                     <Radio
                       key='radio_yes'

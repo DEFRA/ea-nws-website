@@ -151,7 +151,9 @@ export default function ValidateEmailLayout({
                   />
                 )}
                 {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
-                <h2 className='govuk-heading-l' id='main-content'>Confirm email address</h2>
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Confirm email address
+                </h2>
                 <div className='govuk-body'>
                   <p className='govuk-!-margin-top-6'>
                     We've sent an email with a code to:

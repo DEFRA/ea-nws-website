@@ -88,39 +88,10 @@ export default function FloodWarningHistoryDashboardPage() {
 
       if (locations) {
         for (const liveAlert of alerts?.alerts) {
-          const TA_CODE = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_CODE'
-          )
-          const TA_NAME = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_Name'
-          )
-
-          const severity = liveAlert.type
-
-          let [day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'createddate'
-          ).split(/[:\/\s]+/)
-
-          const startDate = new Date(year, month - 1, day, hour, minute)
-
-          ;[day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'lastmodifieddate'
-          ).split(/[:\/\s]+/)
-
-          const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
-
           for (const location of locations) {
             processLocation(
               location,
-              severity,
-              TA_CODE,
-              TA_NAME,
-              startDate,
-              lastUpdatedTime
+              liveAlert
             )
           }
         }
@@ -130,12 +101,14 @@ export default function FloodWarningHistoryDashboardPage() {
 
   const processLocation = (
     location,
-    severity,
-    TA_CODE,
-    TA_NAME,
-    startDate,
-    lastUpdatedTime
+    liveAlert
   ) => {
+
+    const TA_CODE = getAdditional(
+      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+      'TA_CODE'
+    )
+    
     const { additionals } = location
     const locationIntersectsWithFloodArea =
       additionals.other?.targetAreas?.some(
@@ -143,6 +116,27 @@ export default function FloodWarningHistoryDashboardPage() {
       )
 
     if (!locationIntersectsWithFloodArea) return
+
+    const TA_NAME = getAdditional(
+      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+      'TA_Name'
+    )
+
+    const severity = liveAlert.type
+
+    let [day, month, year, hour, minute] = getAdditional(
+      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+      'createddate'
+    ).split(/[:\/\s]+/)
+
+    const startDate = new Date(year, month - 1, day, hour, minute)
+
+    ;[day, month, year, hour, minute] = getAdditional(
+      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
+      'lastmodifieddate'
+    ).split(/[:\/\s]+/)
+
+    const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
 
     // add required data to location row object
     const createLocationWithFloodData = () => {

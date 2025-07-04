@@ -120,7 +120,7 @@ export default function ViewLocationPage() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude,
-        1.5
+        0.001
       )
 
       const locationIsWarningArea = isSavedLocationTargetArea(
@@ -133,15 +133,25 @@ export default function ViewLocationPage() {
         alertArea.features
       )
 
-      if (locationIsWarningArea.length > 0) {
-        setLocationType('severe')
-        setSelectedFloodArea(locationIsWarningArea[0])
-      } else if (locationIsAlertArea.length > 0) {
+      if (
+        !locationsAlertTypes.includes(AlertType.SEVERE_FLOOD_WARNING) ||
+        !locationsAlertTypes.includes(AlertType.FLOOD_WARNING)
+      ) {
         setLocationType('alert')
         setSelectedFloodArea(locationIsAlertArea[0])
       } else {
-        // location was added as a xy-coord location
-        setLocationType('both')
+        if (locationsAlertTypes.includes(AlertType.FLOOD_ALERT)) {
+          setLocationType('both')
+        } else {
+          setLocationType('severe')
+        }
+
+        if (locationIsWarningArea.length > 0) {
+          setSelectedFloodArea(locationIsWarningArea[0])
+        }
+        if (locationIsAlertArea.length > 0) {
+          setSelectedFloodArea(locationIsAlertArea[0])
+        }
       }
 
       const isError = !warningArea && !alertArea

@@ -1,4 +1,4 @@
-import { distance, point, pointToPolygonDistance } from '@turf/turf'
+import { cleanCoords, distance, point, pointToPolygonDistance } from '@turf/turf'
 import moment from 'moment'
 import { toWords } from 'number-to-words'
 import React, { useEffect, useState } from 'react'
@@ -76,7 +76,7 @@ export default function LinkLocationsLayout({
           (alert) =>
             alert.CODE === taCode &&
             alert.TYPE === messageType &&
-            moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+            moment(alert.effectiveDate * 1000) > twoYearsAgo
         )
         newCount.counts.push({ type: messageType, count: filteredData.length })
       }
@@ -404,7 +404,7 @@ export default function LinkLocationsLayout({
 
     coords.forEach((coord) => {
       const pt = point(coord)
-      const dist = pointToPolygonDistance(pt, floodPolygon, { units: 'meters' })
+      const dist = pointToPolygonDistance(pt, cleanCoords(floodPolygon), { units: 'meters' })
       if (dist >= 0 && dist < minDistance) {
         minDistance = dist
       }
@@ -427,20 +427,13 @@ export default function LinkLocationsLayout({
             1.0
           )
 
-        // Pull out the features (if not already array)
-        const alertFeatures = Array.isArray(alertArea)
-          ? alertArea
-          : alertArea.features || []
-        const warningFeatures = Array.isArray(warningArea)
-          ? warningArea
-          : warningArea.features || []
+        alertAreas = alertArea.filter(
+          (area) => !currentLinked?.includes(area.properties.TA_CODE)
+        )
+        warningAreas = warningArea.filter(
+          (area) => !currentLinked?.includes(area.properties.TA_CODE)
+        )
 
-        alertAreas = alertFeatures.filter(
-          (area) => !currentLinked?.includes(area.properties.TA_CODE)
-        )
-        warningAreas = warningFeatures.filter(
-          (area) => !currentLinked?.includes(area.properties.TA_CODE)
-        )
       } else {
         const { alertArea, warningArea } = await getSurroundingFloodAreas(
           currentLocation.coordinates.latitude,
@@ -481,7 +474,7 @@ export default function LinkLocationsLayout({
           } else if (currentLocation.geometry) {
             // For shapefile locations, compute the smallest positive distance
             distanceM = computeMinPositiveDistance(
-              currentLocation.geometry,
+              JSON.parse(currentLocation.geometry.geoJson).geometry,
               area.geometry
             )
           }

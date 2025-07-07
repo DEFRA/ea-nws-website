@@ -44,6 +44,7 @@ export default function ConfirmLocationLayout({
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
+  const locationConfirmationId = 'location-confirmation'
 
   const currentPostCode = useSelector((state) =>
     getLocationOther(state, 'postcode')
@@ -200,33 +201,38 @@ export default function ConfirmLocationLayout({
 
     // since we added to currentLocation we need to get that information to pass to the api
     const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+    const isUpdate = Boolean(currentLocation?.id)
+    const apiEndpoint = isUpdate ? 'api/location/update' : 'api/location/create'
     const { data, errorMessage } = await backendCall(
       dataToSend,
-      'api/location/create',
+      apiEndpoint,
       navigate
     )
 
     if (data) {
-      const registerData = {
-        authToken,
-        locationId: data.id,
-        partnerId,
-        params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
-          channelMobileAppEnabled: true,
-          partnerCanView: true,
-          partnerCanEdit: true,
-          alertTypes: newWebLocation.additionals.other.alertTypes
+      if (!isUpdate) {
+        // Only register new locations
+        const registerData = {
+          authToken,
+          locationId: data.id,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: newWebLocation.additionals.other.alertTypes
+          }
         }
-      }
 
-      await backendCall(
-        registerData,
-        'api/location/register_to_partner',
-        navigate
-      )
+        await backendCall(
+          registerData,
+          'api/location/register_to_partner',
+          navigate
+        )
+      }
 
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
@@ -287,10 +293,8 @@ export default function ConfirmLocationLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l' id='main-content'>
-              Confirm location
-            </h1>
+            {error && <ErrorSummary errorList={[{ text: error, componentId: locationConfirmationId }]} />}
+            <h1 className='govuk-heading-l' id={locationConfirmationId}>Confirm location</h1>
 
             <h2 className='govuk-heading-m govuk-!-margin-top-8'>
               {locationName}

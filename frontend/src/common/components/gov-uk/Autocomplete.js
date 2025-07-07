@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import '../../css/autocomplete.css'
 
 export default function Autocomplete ({
+  id,
   name,
   className,
   value,
@@ -222,7 +223,7 @@ export default function Autocomplete ({
               error === '' ? className : className + ' govuk-input--error'
             }
             name={name}
-            id='govuk-text-input'
+            id={id || 'govuk-text-input'}
             onClick={handleChange}
             onChange={handleChange}
             onBlur={() => setMenuOpen(false)}

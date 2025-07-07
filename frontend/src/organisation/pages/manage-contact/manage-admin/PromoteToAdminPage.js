@@ -28,6 +28,7 @@ export default function PromoteToAdminPage() {
     emailCount === 1 ? contactEmails[0] : ''
   )
   const [errorMessage, setErrorMessage] = useState('')
+  const emailAddressId = 'email-address'
 
   let heading, emailRadios
   switch (true) {
@@ -128,7 +129,7 @@ export default function PromoteToAdminPage() {
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
+            {errorMessage && <ErrorSummary errorList={[{text: errorMessage, componentId: emailAddressId}]} />}
             <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>{heading}</h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.
@@ -142,7 +143,7 @@ export default function PromoteToAdminPage() {
               emailRadios
             ) : (
               <Input
-                id='email-address'
+                id={emailAddressId}
                 inputType='text'
                 inputMode='email'
                 value={selectedEmail}

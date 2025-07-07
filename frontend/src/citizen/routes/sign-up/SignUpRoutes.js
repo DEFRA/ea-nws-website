@@ -14,6 +14,7 @@ import ValidateLandlinePhonePage from '../../pages/sign-up/channel-preferences/l
 import AddMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import LocationCannotGetFloodMessagesPage from '../../pages/sign-up/register-location/LocationCannotGetFloodMessagesPage'
 import LocationInFloodAreasPage from '../../pages/sign-up/register-location/LocationInFloodAreasPage'
 import LocationNearFloodAreasPage from '../../pages/sign-up/register-location/LocationNearFloodAreasPage'
 import LocationNotNearDangerPage from '../../pages/sign-up/register-location/LocationNotNearDangerPage'
@@ -23,6 +24,7 @@ import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPag
 import ChangeAccountEmailPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailPage'
 import ChangeAccountEmailValidationPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailValidatePage'
 import ChangeAccountNamePage from '../../pages/sign-up/review/change-account/ChangeAccountNamePage'
+import ChangeLocationCannotGetFloodMessagesPage from '../../pages/sign-up/review/change-location/ChangeLocationCannotGetFloodMessagesPage'
 import ChangeLocationInFloodAreasPage from '../../pages/sign-up/review/change-location/ChangeLocationInFloodAreasPage'
 import ChangeLocationNearFloodAreasPage from '../../pages/sign-up/review/change-location/ChangeLocationNearFloodAreasPage'
 import ChangeLocationNotNearDangerPage from '../../pages/sign-up/review/change-location/ChangeLocationNotNearDangerPage'
@@ -58,6 +60,10 @@ const signupRoutes = [
   {
     path: '/signup/register-location/search-results',
     component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/signup/register-location/location-cannot-get-direct-flood-messages',
+    component: <LocationCannotGetFloodMessagesPage />
   },
   {
     path: '/signup/register-location/location-in-flood-areas',
@@ -157,6 +163,10 @@ const signupRoutes = [
   {
     path: '/signup/review/change-location-results',
     component: <ChangeLocationSearchResultPage />
+  },
+  {
+    path: '/signup/review/location-cannot-get-direct-flood-messages',
+    component: <ChangeLocationCannotGetFloodMessagesPage />
   },
   {
     path: '/signup/review/change-location-in-flood-areas',

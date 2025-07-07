@@ -70,7 +70,7 @@ export default function LinkedLocationsPage() {
       )
 
       const options = {
-        states: [AlertState.CURRENT, AlertState.PAST],
+        states: [AlertState.PAST],
         boundingBox: null,
         channels: [],
         partnerId
@@ -80,7 +80,7 @@ export default function LinkedLocationsPage() {
       twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
       const { data: alertsResponse } = await backendCall(
-        { options, filterDate: twoYearsAgo },
+        { options, filterDate: twoYearsAgo, historic: true },
         'api/alert/list',
         navigate
       )

@@ -37,6 +37,7 @@ export default function DuplicateLocationComparisonPage() {
   const flow = location?.state?.flow || null
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const existingOrNewRadiosId = 'existing-or-new-radios'
 
   const notFoundLocations = useSelector(
     (state) => state.session.notFoundLocations
@@ -240,7 +241,7 @@ export default function DuplicateLocationComparisonPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: existingOrNewRadiosId}]} />}
             <h1 className='govuk-heading-l' id='main-content'>
               {newLocation.additionals.locationName} already exists in this
               account
@@ -250,7 +251,7 @@ export default function DuplicateLocationComparisonPage() {
                 Select if you want to keep the existing location or use the new
                 location uploaded.
               </div>
-              <div className='org-location-comparison'>
+              <div id={existingOrNewRadiosId} className='org-location-comparison'>
                 <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
                   <div className='outline-1px org-location-comparison-box'>
                     <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>

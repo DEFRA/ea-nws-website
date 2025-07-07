@@ -41,6 +41,7 @@ export default function ValidateEmailLayout({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const enterCodeId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -193,7 +194,7 @@ export default function ValidateEmailLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Check your email
                 </h2>
@@ -210,7 +211,7 @@ export default function ValidateEmailLayout({
                     it will expire.
                   </p>
                   <Input
-                    id='enter-code'
+                    id={enterCodeId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

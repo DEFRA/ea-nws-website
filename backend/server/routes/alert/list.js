@@ -4,8 +4,9 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const getSecretKeyValue = require('../../services/SecretsManager')
-const { parse, isValid, isAfter } = require('date-fns')
+const { parse, isValid, isAfter, format } = require('date-fns')
 const fetch = require('node-fetch')
+const { getFloodHistory, setFloodHistory } = require('../../services/elasticache')
 
 const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
   const rows = text.split(/\r?\n|\r|\n/g)
@@ -60,8 +61,8 @@ const createGeoSafeAlertObject = (historicData) => {
     version: 1,
     name: historicData.name,
     description: { en: 'Flood', additionalLabels: [] },
-    effectiveDate: historicData.createdDate,
-    expirationDate: historicData.endDate,
+    effectiveDate: Math.floor(new Date(historicData.endDate).getTime() / 1000),
+    expirationDate: Math.floor(new Date(historicData.endDate).getTime() / 1000),
     duration: {},
     urgency: '',
     severity: '',
@@ -164,7 +165,7 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
           type: alertTypeMap[currentType],
           createdDate: currentEntry['Approved'],
           endDate: nextEntry['Approved'],
-          name: currentType + currentTA
+          name: nextEntry['Message Type'] + currentTA
         }
 
         result.push(createGeoSafeAlertObject(newAlert))
@@ -184,14 +185,63 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
   return result
 }
 
-const getLastModifiedDate = (alert) => {
-  const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-  for (let i = 0; i < extraInfo?.length; i++) {
-    if (extraInfo[i].key === 'lastmodifieddate') {
-      return extraInfo[i].value?.s
+
+const getAllPastAlerts = async(request) => {
+  const { redis } = request.server.app
+  const { options } = request.payload
+  let response
+  // check elasticache for the flood history first
+  let historicAlerts = await getFloodHistory(redis)
+  if (historicAlerts === null) {
+    let floodHistoryFileData
+    // we need to load the historical data from file now
+    const historicFloodDataUrl = await getSecretKeyValue(
+      'nws/website',
+      'organisationFloodHistoryUrl'
+    )
+
+    // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
+    if (historicFloodDataUrl) {
+
+      await fetch(historicFloodDataUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          floodHistoryFileData = csvToJson(data)
+        })
+        .catch((e) =>
+          console.error('Could not fetch Historic Flood Warning file', e)
+        )
+    }
+
+    // filter out any updates - we only want to know when a flood alert was added and removed
+    floodHistoryFileData = floodHistoryFileData.filter((item) =>
+      allowedMessageTypes.includes(item['Message Type'])
+    )
+
+    const sortedHistoricFileData =
+      mergeHistoricFloodEntries(floodHistoryFileData)
+
+    // get past alerts from geosafe
+    response = await apiCall({ options: options }, 'alert/list')
+
+    historicAlerts = response.data.alerts.concat(
+      sortedHistoricFileData
+    )
+    response.data.alerts = historicAlerts
+
+    await setFloodHistory(redis, historicAlerts)
+  } else {
+    response = {
+      status: 200,
+      data: {
+        alerts: historicAlerts
+      }
     }
   }
+
+  return response        
 }
+
 
 module.exports = [
   {
@@ -203,64 +253,29 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { options } = request.payload
+        const { options, filterDate, historic } = request.payload
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
-        const { filterDate } = request.payload
-
-        const response = await apiCall({ options: options }, 'alert/list')
-
-        if (options.states.includes('PAST')) {
-          // we need to load the historical data from file now
-          const historicFloodDataUrl = await getSecretKeyValue(
-            'nws/website',
-            'organisationFloodHistoryUrl'
-          )
-
-          // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
-          if (historicFloodDataUrl) {
-            let floodHistoryFileData
-
-            await fetch(historicFloodDataUrl)
-              .then((response) => response.text())
-              .then((data) => {
-                floodHistoryFileData = csvToJson(data)
-              })
-              .catch((e) =>
-                console.error('Could not fetch Historic Flood Warning file', e)
-              )
-
-            // filter out any updates - we only want to know when a flood alert was added and removed
-            floodHistoryFileData = floodHistoryFileData.filter((item) =>
-              allowedMessageTypes.includes(item['Message Type'])
-            )
-
-            const sortedHistoricFileData =
-              mergeHistoricFloodEntries(floodHistoryFileData)
-
-            response.data.alerts = response.data.alerts.concat(
-              sortedHistoricFileData
-            )
-          }
+        let response
+        if (historic) {
+          response = await getAllPastAlerts(request)
+        } else {
+          response = await apiCall({ options: options }, 'alert/list')
         }
 
-        // removing for justnow - last modified date is not the correct field to base this off
-        // if (filterDate) {
-        //   const possibleFormats = ['dd/MM/yyyy HH:mm:ss', 'dd/MM/yyyy HH:mm']
-
-        //   response.data.alerts = response.data.alerts.filter((alert) => {
-        //     const rawDate = getLastModifiedDate(alert)
-        //     let parsedDate = null
-        //     for (const format of possibleFormats) {
-        //       const attempt = parse(rawDate, format, new Date())
-        //       if (isValid(attempt)) {
-        //         parsedDate = attempt
-        //         break
-        //       }
-        //     }
-
-        //     return parsedDate && isAfter(parsedDate, filterDate)
-        //   })
-        // }
+        if (filterDate) {
+          const dateFormat = 'dd/MM/yyyy HH:mm:ss'
+          response.data.alerts = response.data.alerts.filter((alert) => {
+            const rawDate = alert.effectiveDate
+            const formattedDate = format(new Date(rawDate * 1000), dateFormat)
+            let parsedDate = null
+            const attempt = parse(formattedDate, dateFormat, new Date())
+            if (isValid(attempt)) {
+              parsedDate = attempt
+            }
+            
+            return parsedDate && isAfter(parsedDate, filterDate)
+          })
+        }
 
         return h.response(response)
       } catch (error) {

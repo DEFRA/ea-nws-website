@@ -135,7 +135,7 @@ export default function LocationMessagesPage() {
       )
 
       const options = {
-        states: [AlertState.CURRENT, AlertState.PAST],
+        states: [AlertState.PAST],
         boundingBox: null,
         channels: [],
         partnerId
@@ -145,7 +145,7 @@ export default function LocationMessagesPage() {
       twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
       const { data: alertsData } = await backendCall(
-        { options, filterDate: twoYearsAgo },
+        { options, filterDate: twoYearsAgo, historic: true },
         'api/alert/list',
         navigate
       )
@@ -296,7 +296,7 @@ export default function LocationMessagesPage() {
         Message settings
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {availableAlerts.length > 0 ? (
+      {availableAlerts.size > 0 ? (
         <p>
           You can choose which flood messages to get for each location if
           they're available.
@@ -377,7 +377,7 @@ export default function LocationMessagesPage() {
         </tbody>
       </table>
 
-      {availableAlerts.length > 0 && (
+      {availableAlerts.size > 0 && (
         <Button
           text='Save message settings'
           className='govuk-button'

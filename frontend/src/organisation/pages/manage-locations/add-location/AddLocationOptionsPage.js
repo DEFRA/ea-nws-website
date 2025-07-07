@@ -13,7 +13,7 @@ import {
 } from '../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationOptionsPage () {
+export default function AddLocationOptionsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   // Clear the current location when adding a new one
@@ -22,17 +22,27 @@ export default function AddLocationOptionsPage () {
   const [addLocationTypeError, setAddLocationTypeError] = useState('')
   const addLocationOptions = [
     {
+      value: 'Manual',
+      label: 'Add locations one at a time',
+      hint: 'Using postcodes, coordinates or find on a map'
+    },
+    {
       value: 'BulkCoordinates',
-      label:
-        'Upload locations using a postcode or X and Y coordinates in a CSV file'
+      label: 'Bulk-upload multiople locations in a file',
+      hint: 'Using postcodes or coordinates in a CSV file'
+    },
+    {
+      value: 'PredefinedBoundaries',
+      label: 'Choose predefined boundaries',
+      hint: 'Like counties, police forces and other areas'
     },
     {
       value: 'BulkShapefile',
-      label: 'Upload a location as a shapefile in a ZIP file'
-    },
-    { value: 'Manual', label: 'Manually add locations' },
-    { value: 'PredefinedBoundaries', label: 'Select predefined boundaries' }
+      label: 'Upload a location as a polyglon or line',
+      hint: "You'll need to do this as a shapefile in a ZIP file"
+    }
   ]
+  const addLocationOptionsId = 'add-location-options'
 
   useEffect(() => {
     setAddLocationTypeError('')
@@ -67,41 +77,23 @@ export default function AddLocationOptionsPage () {
   return (
     <>
       <Helmet>
-        <title>How do you want to add locations? - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          How do you want to add locations? - Manage locations - Get flood
+          warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {addLocationTypeError && (
-              <ErrorSummary errorList={[addLocationTypeError]} />
+              <ErrorSummary errorList={[{text: addLocationTypeError, componentId: addLocationOptionsId}]} />
             )}
 
             <h1 className='govuk-heading-l' id='main-content'>
               How do you want to add locations?
             </h1>
             <div className='govuk-body'>
-              <p>
-                There are different ways you can add locations to this account.
-              </p>
-              <p>
-                If you want to add locations using a postcode or X and Y
-                coordinates you can either bulk upload these locations in a CSV
-                file or add the locations manually.
-              </p>
-              <p>
-                If you want to add your location as a polygon or a line your
-                organisation has created, you need to upload your location as a
-                shapefile in a ZIP file.
-              </p>
-              <p>
-                You can also add locations as boundaries, for example a county
-                or police boundary, so your organisation can get flood messages
-                for that area.
-                <br />
-                Boundaries are predefined areas so you need to select them
-                manually in this account.
-              </p>
               <div
                 className={
                   addLocationTypeError
@@ -109,10 +101,10 @@ export default function AddLocationOptionsPage () {
                     : 'govuk-form-group'
                 }
               >
-                <div className='govuk-radios' data-module='govuk-radios'>
+                <div id={addLocationOptionsId} className='govuk-radios' data-module='govuk-radios'>
                   {addLocationTypeError && (
                     <p className='govuk-error-message'>
-                      {addLocationTypeError}
+                      <span className='govuk-visually-hidden'>Error:</span> {addLocationTypeError}
                     </p>
                   )}
                   {addLocationOptions.map((option) => (
@@ -121,6 +113,7 @@ export default function AddLocationOptionsPage () {
                       name='addLocationOptionsRadios'
                       label={option.label}
                       value={option.value}
+                      hint={option.hint}
                       onChange={(e) => setAddLocationType(e.target.value)}
                     />
                   ))}

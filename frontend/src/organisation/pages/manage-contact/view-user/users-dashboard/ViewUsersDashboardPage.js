@@ -192,7 +192,7 @@ export default function ViewUsersDashboardPage() {
       const filteredData = floodHistoryData.filter(
         (alert) =>
           alert.CODE === taCode &&
-          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+          moment(alert.effectiveDate * 1000) > twoYearsAgo
       )
       floodCount.push(filteredData.length)
     }

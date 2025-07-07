@@ -185,15 +185,6 @@ export default function DuplicateLocationComparisonPage() {
           'api/location/update_registration',
           navigate
         )
-      } else if (existingOrNew === 'Existing') {
-        // Keeping existing location -> remove the new location before exiting
-        await backendCall(
-          { orgId, locationId: newLocation.id },
-          'api/bulk_uploads/remove_invalid_location',
-          navigate
-        )
-        navigate(orgManageLocationsUrls.view.dashboard)
-        return
       }
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id
@@ -222,9 +213,15 @@ export default function DuplicateLocationComparisonPage() {
           newLocation.additionals.other?.location_data_type ===
             LocationDataType.SHAPE_LINE
         ) {
-          await verifyLocationInFloodAreaAndNavigate(
-            orgManageLocationsUrls.add.linkLocationToContacts
-          )
+          if (existingOrNew === 'Existing') {
+            navigate(orgManageLocationsUrls.view.dashboard, {
+              state: { successMessage: 'Existing location kept' }
+            })
+          } else {
+            await verifyLocationInFloodAreaAndNavigate(
+              orgManageLocationsUrls.add.linkLocationToContacts
+            )
+          }
         } else {
           navigate(orgManageLocationsUrls.add.contactLinkInfo)
         }

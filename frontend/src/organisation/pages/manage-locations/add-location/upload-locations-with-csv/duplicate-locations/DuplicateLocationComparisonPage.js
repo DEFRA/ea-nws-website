@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -9,8 +9,8 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
-    setNotFoundLocations,
-    setNotInEnglandLocations
+  setNotFoundLocations,
+  setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import {
@@ -185,6 +185,15 @@ export default function DuplicateLocationComparisonPage() {
           'api/location/update_registration',
           navigate
         )
+      } else if (existingOrNew === 'Existing') {
+        // Keeping existing location -> remove the new location before exiting
+        await backendCall(
+          { orgId, locationId: newLocation.id },
+          'api/bulk_uploads/remove_invalid_location',
+          navigate
+        )
+        navigate(orgManageLocationsUrls.view.dashboard)
+        return
       }
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id
@@ -235,13 +244,22 @@ export default function DuplicateLocationComparisonPage() {
   return (
     <>
       <Helmet>
-        <title>Duplicate location comparison - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Duplicate location comparison - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: existingOrNewRadiosId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  { text: error, componentId: existingOrNewRadiosId }
+                ]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               {newLocation.additionals.locationName} already exists in this
               account
@@ -251,7 +269,10 @@ export default function DuplicateLocationComparisonPage() {
                 Select if you want to keep the existing location or use the new
                 location uploaded.
               </div>
-              <div id={existingOrNewRadiosId} className='org-location-comparison'>
+              <div
+                id={existingOrNewRadiosId}
+                className='org-location-comparison'
+              >
                 <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
                   <div className='outline-1px org-location-comparison-box'>
                     <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>

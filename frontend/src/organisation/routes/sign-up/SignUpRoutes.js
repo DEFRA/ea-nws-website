@@ -4,22 +4,24 @@ import AlternativeContactDetailsPage from '../../pages/sign-up/AlternativeContac
 import CompaniesHouseNumPage from '../../pages/sign-up/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/sign-up/ConfirmAddressPage'
 import DuplicateNamePage from '../../pages/sign-up/DuplicateNamePage'
+import EnterAddressManuallyPage from '../../pages/sign-up/EnterAddressManuallyPage'
+import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
+import SectorPage from '../../pages/sign-up/SectorPage'
+import TermsAndConditionsPage from '../../pages/sign-up/TermsAndConditionsPage'
+import TimedOutPage from '../../pages/sign-up/TimedOutPage'
 import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetailsPage'
 import DuplicateAdminEmailPage from '../../pages/sign-up/mainAdministrator/DuplicateAdminEmailPage'
 import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
+import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
+import ChangeAddressManuallyPage from '../../pages/sign-up/review/change-details/ChangeAddressManuallyPage'
 import ChangeAddressPage from '../../pages/sign-up/review/change-details/ChangeAddressPage'
 import ChangeAdminDetailsPage from '../../pages/sign-up/review/change-details/ChangeAdminDetailsPage'
 import ChangeAlternativeContactDetailsPage from '../../pages/sign-up/review/change-details/ChangeAlternativeContactsDetailPage'
 import ChangeCompHouseNumPage from '../../pages/sign-up/review/change-details/ChangeCompHouseNumPage'
 import ChangeOrgNamePage from '../../pages/sign-up/review/change-details/ChangeOrgNamePage'
 import ChangeSectorPage from '../../pages/sign-up/review/change-details/ChangeSectorPage'
-import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
-import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
-import SectorPage from '../../pages/sign-up/SectorPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
-import TermsAndConditionsPage from '../../pages/sign-up/TermsAndConditionsPage'
-import TimedOutPage from '../../pages/sign-up/TimedOutPage'
 
 const orgSignUpUrl = '/organisation/sign-up'
 
@@ -28,6 +30,7 @@ const orgSignUpUrls = {
   address: {
     add: orgSignUpUrl + '/address',
     select: orgSignUpUrl + '/address-search',
+    manuallyAdd: orgSignUpUrl + '/manual-address',
     confirm: orgSignUpUrl + '/address-confirm'
   },
   compHouseNum: orgSignUpUrl + '/number',
@@ -46,6 +49,7 @@ const orgSignUpUrls = {
   change: {
     name: orgSignUpUrl + '/change/name',
     address: orgSignUpUrl + '/change/address',
+    manuallyAdd: orgSignUpUrl + '/change/manual-address',
     compHouseNum: orgSignUpUrl + '/change/number',
     sector: orgSignUpUrl + '/change/sector',
     mainAdmin: orgSignUpUrl + '/change/admin-details',
@@ -115,6 +119,10 @@ const orgSignUpRoutes = [
   },
   { path: orgSignUpUrls.change.name, component: <ChangeOrgNamePage /> },
   { path: orgSignUpUrls.change.address, component: <ChangeAddressPage /> },
+  {
+    path: orgSignUpUrls.change.addressManually,
+    component: <ChangeAddressManuallyPage />
+  },
   {
     path: orgSignUpUrls.change.compHouseNum,
     component: <ChangeCompHouseNumPage />

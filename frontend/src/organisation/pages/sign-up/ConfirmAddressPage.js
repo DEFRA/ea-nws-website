@@ -7,7 +7,7 @@ import { updateAdditionals } from '../../../common/services/ProfileServices'
 import ConfirmAddressLayout from '../../layouts/address/ConfirmAddressLayout'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function ConfirmAddressPage () {
+export default function ConfirmAddressPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
@@ -36,18 +36,28 @@ export default function ConfirmAddressPage () {
     }
   }
 
-  const NavigateToPreviousPage = () => {
+  const navigateToAddAddressPage = () => navigate(orgSignUpUrls.address.add)
+
+  const navigateToEnterAddressManuallyPage = () => {
+    navigate(orgSignUpUrls.address.manuallyAdd)
+  }
+
+  const navigateToSearchResultsPage = () => {
     navigate(orgSignUpUrls.address.select)
   }
 
   return (
     <>
       <Helmet>
-        <title>Confirm address - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Confirm address - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <ConfirmAddressLayout
         navigateToNextPage={navigateToNextPage}
-        NavigateToPreviousPage={NavigateToPreviousPage}
+        navigateToEnterAddressManuallyPage={navigateToEnterAddressManuallyPage}
+        navigateToAddAddressPage={navigateToAddAddressPage}
+        navigateToSearchResultsPage={navigateToSearchResultsPage}
       />
     </>
   )

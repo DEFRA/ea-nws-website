@@ -32,9 +32,9 @@ export default function OrganisationConfirmServicePage() {
                 To continue you'll need your:
               </p>
               <ul className='govuk-list govuk-list--bullet govuk-!-margin-left-2'>
-                <li>organisation name and address</li>
+                <li>Organisation name and address</li>
                 <li>Companies house number, if you have one</li>
-                <li>details for an administrator and an alternative contact</li>
+                <li>Details for an administrator and an alternative contact</li>
               </ul>
               <div className='govuk-!-margin-top-8'>
                 <Button

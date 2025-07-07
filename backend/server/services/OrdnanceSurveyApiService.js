@@ -8,7 +8,22 @@ const {
   createGenericErrorResponse
 } = require('../services/GenericErrorResponse')
 
-const osPostCodeApiCall = async (postCode) => {
+const formatResults = (results) => {
+  return results.map((result) => {
+    const formattedAddress = addressFormatter(result.DPA.ADDRESS)
+    return {
+      name: result.DPA.UPRN,
+      address: formattedAddress,
+      coordinates: {
+        latitude: result.DPA.LAT,
+        longitude: result.DPA.LNG
+      },
+      postcode: result.DPA.POSTCODE
+    }
+  })
+}
+
+const osPostCodeApiCall = async (postCode, englandOnly) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
 
@@ -26,16 +41,13 @@ const osPostCodeApiCall = async (postCode) => {
     }
 
     // Check that postcode is in England
-    if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
-      responseData = response.data.results.map((result) => {
-        const formattedAddress = addressFormatter(result.DPA.ADDRESS)
-        return {
-          name: result.DPA.UPRN,
-          address: formattedAddress,
-          coordinates: { latitude: result.DPA.LAT, longitude: result.DPA.LNG },
-          postcode: result.DPA.POSTCODE
-        }
-      })
+    if (englandOnly && response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
+      responseData = formatResults(response.data.results)
+
+      return { status: response.status, data: responseData }
+    } else if (!englandOnly) {
+      // return all results in UK
+      responseData = formatResults(response.data.results)
 
       return { status: response.status, data: responseData }
     } else {

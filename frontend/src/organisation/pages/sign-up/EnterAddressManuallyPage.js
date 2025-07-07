@@ -1,26 +1,22 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
-import AddAddressLayout from '../../layouts/address/AddAddressLayout'
+import EnterAddressManuallyLayout from '../../layouts/address/EnterAddressManuallyLayout'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function AddAddressPage() {
+export default function ManuallyAddAddressPage() {
   const navigate = useNavigate()
-
-  const navigateToNextPage = () => {
-    navigate(orgSignUpUrls.address.select)
-  }
-
-  const navigateToPreviousPage = () => {
-    navigate(-1)
-  }
 
   const navigateToConfirmPage = () => {
     navigate(orgSignUpUrls.address.confirm)
   }
 
-  const navigateToEnterAddressManuallyPage = () => {
-    navigate(orgSignUpUrls.address.manuallyAdd)
+  const navigateToSearchResultsPage = () => {
+    navigate(orgSignUpUrls.address.select)
+  }
+
+  const navigateToAddAddressPage = () => {
+    navigate(orgSignUpUrls.address.add)
   }
 
   return (
@@ -31,11 +27,10 @@ export default function AddAddressPage() {
           (professional) - GOV.UK
         </title>
       </Helmet>
-      <AddAddressLayout
-        navigateToNextPage={navigateToNextPage}
-        navigateToPreviousPage={navigateToPreviousPage}
+      <EnterAddressManuallyLayout
         navigateToConfirmPage={navigateToConfirmPage}
-        navigateToEnterAddressManuallyPage={navigateToEnterAddressManuallyPage}
+        navigateToSearchResultsPage={navigateToSearchResultsPage}
+        navigateToAddAddressPage={navigateToAddAddressPage}
       />
     </>
   )

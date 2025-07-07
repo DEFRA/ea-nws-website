@@ -12,11 +12,15 @@ export default function ChangeAddressPage() {
   }
 
   const navigateToPreviousPage = () => {
-    navigate(navigate(-1))
+    navigate(-1)
   }
 
   const navigateToConfirmPage = () => {
     navigate(orgSignUpUrls.address.confirm, { state: { returnToReview: true } })
+  }
+
+  const navigateToEnterAddressManuallyPage = () => {
+    navigate(orgSignUpUrls.address.manuallyAdd)
   }
 
   return (
@@ -31,6 +35,7 @@ export default function ChangeAddressPage() {
         navigateToNextPage={navigateToNextPage}
         navigateToPreviousPage={navigateToPreviousPage}
         navigateToConfirmPage={navigateToConfirmPage}
+        navigateToEnterAddressManuallyPage={navigateToEnterAddressManuallyPage}
       />
     </>
   )

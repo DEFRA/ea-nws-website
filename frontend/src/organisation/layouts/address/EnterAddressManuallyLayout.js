@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setOrganizationAddress } from '../../../common/redux/userSlice'
+import {
+  setEnterAddressManuallyFlow,
+  setOrganizationAddress
+} from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout({
-  navigateToNextPage,
-  navigateToPreviousPage,
-  navigateToConfirmPage
+export default function EnterAddressManuallyLayout({
+  navigateToConfirmPage,
+  navigateToSearchResultsPage,
+  navigateToAddAddressPage
 }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
@@ -24,6 +29,16 @@ export default function AddAddressLayout({
     townOrCityError: '',
     postcodeError: ''
   })
+  let noErrors = Object.values(errors).every((value) => value === '')
+  const locations = useSelector((state) => state.session.locationSearchResults)
+  const previousOrgAddress = useSelector(
+    (state) => state.session.previousOrgAddress
+  )
+
+  // reset enter address manually flow
+  useEffect(() => {
+    dispatch(setEnterAddressManuallyFlow(null))
+  }, [])
 
   const validateFields = () => {
     if (!addressLine1) {
@@ -35,7 +50,7 @@ export default function AddAddressLayout({
     if (!townOrCity) {
       setErrors((prev) => ({
         ...prev,
-        addressLine1Error: 'Enter a town or city'
+        townOrCityError: 'Enter a town or city'
       }))
     }
     if (!postcode) {
@@ -50,15 +65,42 @@ export default function AddAddressLayout({
     event.preventDefault()
 
     validateFields()
-    const noErrors = Object.values(errors).every((value) => value === '')
-
     if (noErrors) {
-      // this needs updated - reminder to look at figma requirements
-      const postCodeValidationError = postCodeValidation(postCode)
+      const postCodeValidationError = postCodeValidation(postcode)
 
       if (!postCodeValidationError) {
-        // this needs updated aswell - do we include everything just comma seperated?
-        dispatch(setOrganizationAddress())
+        // validate postcode is in UK
+        const dataToSend = {
+          englandOnly: false,
+          postCode: postcode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+        }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/os-api/postcode-search',
+          navigate
+        )
+
+        // no results returned
+        if (errorMessage) {
+          setErrors((prev) => ({
+            ...prev,
+            postcodeError: 'Enter a postcode in the UK'
+          }))
+          return
+        }
+
+        const orgAddress = [
+          addressLine1,
+          addressLine2,
+          townOrCity,
+          county,
+          postcode.toUpperCase()
+        ]
+          .filter((part) => part.trim() !== '')
+          .join(', ')
+
+        dispatch(setOrganizationAddress(orgAddress))
+        dispatch(setEnterAddressManuallyFlow(true))
         navigateToConfirmPage()
       } else {
         setErrors((prev) => ({
@@ -71,7 +113,13 @@ export default function AddAddressLayout({
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigateToPreviousPage()
+    if (previousOrgAddress) {
+      navigateToConfirmPage()
+    } else if (locations) {
+      navigateToSearchResultsPage()
+    } else {
+      navigateToAddAddressPage()
+    }
   }
 
   return (
@@ -80,7 +128,7 @@ export default function AddAddressLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {errors && <ErrorSummary errorList={[error]} />}
+            {!noErrors && <ErrorSummary errorList={Object.values(errors)} />}
             <h1 className='govuk-heading-l' id='main-content'>
               What's your organisation's UK head office address?
             </h1>
@@ -90,9 +138,17 @@ export default function AddAddressLayout({
                 inputType='text'
                 value={addressLine1}
                 name='Address line 1'
-                onChange={(val) => setAddressLine1(val)}
+                onChange={(val) => {
+                  setAddressLine1(val)
+                  setErrors((prev) => ({
+                    ...prev,
+                    addressLine1Error: ''
+                  }))
+                }}
                 error={errors.addressLine1Error}
-                className='govuk-input govuk-input--width-20'
+                className='govuk-input govuk-!-width-two-thirds'
+                isNameBold={true}
+                labelSize='s'
               />
               <Input
                 id='address-line-2'
@@ -100,7 +156,9 @@ export default function AddAddressLayout({
                 value={addressLine2}
                 name='Address line 2 (optional)'
                 onChange={(val) => setAddressLine2(val)}
-                className='govuk-input govuk-input--width-20'
+                className='govuk-input govuk-!-width-two-thirds'
+                isNameBold={true}
+                labelSize='s'
               />
               <Input
                 id='town-or-city'
@@ -108,8 +166,16 @@ export default function AddAddressLayout({
                 value={townOrCity}
                 name='Town or city'
                 error={errors.townOrCityError}
-                onChange={(val) => setTownOrCity(val)}
-                className='govuk-input govuk-input--width-20'
+                onChange={(val) => {
+                  setTownOrCity(val)
+                  setErrors((prev) => ({
+                    ...prev,
+                    townOrCityError: ''
+                  }))
+                }}
+                className='govuk-input govuk-!-width-one-half'
+                isNameBold={true}
+                labelSize='s'
               />
               <Input
                 id='county'
@@ -117,7 +183,9 @@ export default function AddAddressLayout({
                 value={county}
                 name='County (optional)'
                 onChange={(val) => setCounty(val)}
-                className='govuk-input govuk-input--width-20'
+                className='govuk-input govuk-!-width-one-half'
+                isNameBold={true}
+                labelSize='s'
               />
               <Input
                 id='postcode'
@@ -125,16 +193,22 @@ export default function AddAddressLayout({
                 value={postcode}
                 name='Postcode'
                 error={errors.postcodeError}
-                onChange={(val) => setPostcode(val)}
-                className='govuk-input govuk-input--width-20'
+                onChange={(val) => {
+                  setPostcode(val)
+                  setErrors((prev) => ({
+                    ...prev,
+                    postcodeError: ''
+                  }))
+                }}
+                className='govuk-input govuk-!-width-one-third'
+                isNameBold={true}
+                labelSize='s'
               />
               <Button
                 text='Continue'
                 className='govuk-button'
                 onClick={handleSubmit}
               />
-              <br />
-              <Link to={'/home'}>Enter address manually</Link>
             </div>
           </div>
         </div>

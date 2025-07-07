@@ -1,4 +1,4 @@
-import { area, bbox, centroid } from '@turf/turf'
+import { area, bbox, buffer, centroid } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,20 +35,31 @@ export default function LocationLoadingShapefilePage() {
 
   // Takes a GeoJSON FeatureCollection and converts to a MultiPolygon (for shapefile handling)
   const convertToMultiPolygon = (geojsonData) => {
-    const multiPolygonCoords = geojsonData.features
-      .filter(
-        (feature) =>
-          feature.geometry?.type === 'Polygon' ||
-          feature.geometry?.type === 'MultiPolygon'
-      )
-      .map(
-        (feature) =>
-          feature.geometry.type === 'Polygon'
-            ? [feature.geometry.coordinates] // Wrap Polygon coords as MultiPolygon
-            : feature.geometry.coordinates // Keep MultiPolygon as is
-      )
-      .flat()
 
+    const multiPolygonCoords = geojsonData.features
+      .filter((feature) =>
+        ['Polygon', 'MultiPolygon', 'LineString', 'MultiLineString'].includes(
+          feature.geometry?.type
+        )
+      )
+      .map((feature) => {
+        // If it's a line, buffer into a thin (rectangular) polygon
+        if (
+          feature.geometry.type === 'LineString' ||
+          feature.geometry.type === 'MultiLineString'
+        ) {
+          const temp = buffer(feature, 0.005, { units: 'kilometers' }) // Recommendation was 5m thick lines
+          return temp.geoemetry.type === 'Polygon'
+            ? [temp.geometry.coordinates]
+            : temp.geometry.coordinates
+        }
+
+        // Otherwise, wrap Polygons into MultiPolygon coords
+        return feature.geometry.type === 'Polygon'
+          ? [feature.geometry.coordinates]
+          : feature.geometry.coordinates
+      })
+      .flat()
     const properties = geojsonData.features[0]?.properties || {}
 
     const multiPolygonGeoJSON = {
@@ -114,7 +125,7 @@ export default function LocationLoadingShapefilePage() {
       const existingLocation = await checkDuplicateLocation(locationName)
 
       // Calculate coords of centre of polygon to display the map properly
-      const polygonCentre = centroid(geojsonData.geometry)
+      const polygonCentre = centroid(geojsonData)
       const shapeArea = calculateShapeArea(geojsonData)
 
       // TODO: make map work without coordinates since shapefile aree only geoJson
@@ -219,7 +230,10 @@ export default function LocationLoadingShapefilePage() {
   return (
     <>
       <Helmet>
-        <title>Loading - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Loading - Manage locations - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>

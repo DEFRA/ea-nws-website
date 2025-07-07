@@ -28,7 +28,7 @@ export default function AddLocationOptionsPage() {
     },
     {
       value: 'BulkCoordinates',
-      label: 'Bulk-upload multiople locations in a file',
+      label: 'Bulk-upload multiple locations in a file',
       hint: 'Using postcodes or coordinates in a CSV file'
     },
     {
@@ -55,20 +55,20 @@ export default function AddLocationOptionsPage() {
     } else {
       switch (addLocationType) {
         case addLocationOptions[0].value:
-          navigate(orgManageLocationsUrls.add.addressInfo)
-          dispatch(setCurrentLocationDataType(LocationDataType.X_AND_Y_COORDS))
-          break
-        case addLocationOptions[1].value:
-          navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)
-          // Note: Data type for shape file is decided once we know if it is a polygon or a line
-          break
-        case addLocationOptions[2].value:
           navigate(orgManageLocationsUrls.add.name)
           dispatch(setCurrentLocationDataType(LocationDataType.X_AND_Y_COORDS))
           break
-        case addLocationOptions[3].value:
+        case addLocationOptions[1].value:
+          navigate(orgManageLocationsUrls.add.addressInfo)
+          dispatch(setCurrentLocationDataType(LocationDataType.X_AND_Y_COORDS))
+          break
+        case addLocationOptions[2].value:
           navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
           dispatch(setCurrentLocationDataType(LocationDataType.BOUNDARY))
+          break
+        case addLocationOptions[3].value:
+          navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)
+          // Note: Data type for shape file is decided once we know if it is a polygon or a line
           break
       }
     }

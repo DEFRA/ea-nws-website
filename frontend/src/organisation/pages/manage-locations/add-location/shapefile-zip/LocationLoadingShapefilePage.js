@@ -35,7 +35,6 @@ export default function LocationLoadingShapefilePage() {
 
   // Takes a GeoJSON FeatureCollection and converts to a MultiPolygon (for shapefile handling)
   const convertToMultiPolygon = (geojsonData) => {
-
     const multiPolygonCoords = geojsonData.features
       .filter((feature) =>
         ['Polygon', 'MultiPolygon', 'LineString', 'MultiLineString'].includes(
@@ -44,10 +43,7 @@ export default function LocationLoadingShapefilePage() {
       )
       .map((feature) => {
         // If it's a line, buffer into a thin (rectangular) polygon
-        if (
-          feature.geometry.type === 'LineString' ||
-          feature.geometry.type === 'MultiLineString'
-        ) {
+        if (['LineString', 'MultiLineString'].includes(feature.geometry.type)) {
           const temp = buffer(feature, 0.005, { units: 'kilometers' }) // Recommendation was 5m thick lines
           return temp.geoemetry.type === 'Polygon'
             ? [temp.geometry.coordinates]

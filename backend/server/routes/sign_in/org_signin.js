@@ -67,8 +67,11 @@ module.exports = [
           // store user session data for serverside validation
           const sessionId = uuidv4()
           const sessionKey = `session:${sessionId}`
-          const sessionData = { authToken, orgId: organization.id }
-          await setJsonData(client, sessionKey, sessionData)
+          const sessionData = {
+            authToken: orgData.authToken,
+            orgId: orgData.organization.id
+          }
+          await setJsonData(redis, sessionKey, sessionData)
           request.cookieAuth.set({ sessionId })
 
           const elasticacheKey = 'signin_status:' + orgData.authToken

@@ -22,6 +22,9 @@ module.exports = [
           const sessionKey = `session:${sessionId}`
           const sessionData = await getJsonData(redis, sessionKey)
 
+          console.log('org id passed by request', orgId)
+          console.log('org id in session', sessionData.orgId)
+
           if (!sessionData || sessionData.orgId !== orgId) {
             return createGenericErrorResponse(h)
           }

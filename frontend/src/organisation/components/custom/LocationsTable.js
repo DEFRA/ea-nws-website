@@ -206,6 +206,9 @@ export default function LocationsTable({
 
   const viewLocation = (e, location) => {
     e.preventDefault()
+    if (typeof location?.geometry?.geoJson !== 'object') {
+      location.geometry.geoJson = JSON.parse(location.geometry.geoJson)
+    }
     dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
     navigate(orgManageLocationsUrls.view.viewLocation)
   }

@@ -44,7 +44,6 @@ export default function AddAddressLayout({
       )
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
-        console.log('data[0].postcode', data[0].postcode)
         dispatch(setOrganizationPostalCode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
 
@@ -94,7 +93,9 @@ export default function AddAddressLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && (
-              <ErrorSummary errorList={[{ text: error, componentId: postcodeId }]} />
+              <ErrorSummary
+                errorList={[{ text: error, componentId: postcodeId }]}
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Your organisation's UK head office address

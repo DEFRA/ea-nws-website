@@ -8,11 +8,11 @@ export default function ManuallyAddAddressPage() {
   const navigate = useNavigate()
 
   const navigateToConfirmPage = () => {
-    navigate(orgSignUpUrls.address.confirm, { state: { returnToReview: true } })
+    navigate(orgSignUpUrls.change.confirmAddress)
   }
 
   const navigateToSearchResultsPage = () => {
-    navigate(orgSignUpUrls.address.select, { state: { returnToReview: true } })
+    navigate(orgSignUpUrls.change.selectAddress)
   }
 
   const navigateToAddAddressPage = () => {

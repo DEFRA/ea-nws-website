@@ -34,7 +34,12 @@ export default function ConfirmAddressLayout({
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const orgAddress = previousOrgAddress ? previousOrgAddress : address
+    const orgAddress =
+      enterAddressManuallyFlow && address
+        ? address
+        : previousOrgAddress
+        ? previousOrgAddress
+        : address
     dispatch(setOrganizationAddress(orgAddress))
 
     navigateToNextPage()

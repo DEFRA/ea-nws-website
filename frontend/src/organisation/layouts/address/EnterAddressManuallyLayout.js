@@ -66,7 +66,7 @@ export default function EnterAddressManuallyLayout({
 
     validateFields()
     if (noErrors) {
-      const postCodeValidationError = postCodeValidation(postcode)
+      const postCodeValidationError = postCodeValidation(postcode, false)
 
       if (!postCodeValidationError) {
         // validate postcode is in UK

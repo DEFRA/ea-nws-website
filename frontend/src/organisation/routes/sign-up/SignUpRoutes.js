@@ -19,7 +19,9 @@ import ChangeAddressPage from '../../pages/sign-up/review/change-details/ChangeA
 import ChangeAdminDetailsPage from '../../pages/sign-up/review/change-details/ChangeAdminDetailsPage'
 import ChangeAlternativeContactDetailsPage from '../../pages/sign-up/review/change-details/ChangeAlternativeContactsDetailPage'
 import ChangeCompHouseNumPage from '../../pages/sign-up/review/change-details/ChangeCompHouseNumPage'
+import ChangeConfirmAddressPage from '../../pages/sign-up/review/change-details/ChangeConfirmAddressPage'
 import ChangeOrgNamePage from '../../pages/sign-up/review/change-details/ChangeOrgNamePage'
+import ChangeSelectAddressPage from '../../pages/sign-up/review/change-details/ChangeSearchAddressResultPage'
 import ChangeSectorPage from '../../pages/sign-up/review/change-details/ChangeSectorPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 
@@ -49,7 +51,9 @@ const orgSignUpUrls = {
   change: {
     name: orgSignUpUrl + '/change/name',
     address: orgSignUpUrl + '/change/address',
+    selectAddress: orgSignUpUrl + 'change/select-address',
     manuallyAdd: orgSignUpUrl + '/change/manual-address',
+    confirmAddress: orgSignUpUrl + 'change/confirm-address',
     compHouseNum: orgSignUpUrl + '/change/number',
     sector: orgSignUpUrl + '/change/sector',
     mainAdmin: orgSignUpUrl + '/change/admin-details',
@@ -120,8 +124,16 @@ const orgSignUpRoutes = [
   { path: orgSignUpUrls.change.name, component: <ChangeOrgNamePage /> },
   { path: orgSignUpUrls.change.address, component: <ChangeAddressPage /> },
   {
-    path: orgSignUpUrls.change.addressManually,
+    path: orgSignUpUrls.change.manuallyAdd,
     component: <ChangeAddressManuallyPage />
+  },
+  {
+    path: orgSignUpUrls.change.confirmAddress,
+    component: <ChangeConfirmAddressPage />
+  },
+  {
+    path: orgSignUpUrls.change.selectAddress,
+    component: <ChangeSelectAddressPage />
   },
   {
     path: orgSignUpUrls.change.compHouseNum,

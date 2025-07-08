@@ -56,6 +56,10 @@ const convertShapefile = async (zipFileName) => {
       return f
     })
 
+    // Front end needs to know what the feature types were before
+    // they were all converted to polygon
+    const original = geojson
+
     const processed = {
       type: 'FeatureCollection',
       features: bufferedFeatures,
@@ -63,7 +67,7 @@ const convertShapefile = async (zipFileName) => {
     }
 
     return {
-      data: processed
+      data: { original, processed }
     }
   } catch (error) {
     logger.error(error)

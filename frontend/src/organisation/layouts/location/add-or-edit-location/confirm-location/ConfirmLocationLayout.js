@@ -70,6 +70,7 @@ export default function ConfirmLocationLayout({
   )
 
   const shapeArea = location.state?.shapeArea
+  const areaUnit = location.state?.unit
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId() {
@@ -366,7 +367,9 @@ export default function ConfirmLocationLayout({
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Polygon
                 </h3>
-                <p>{shapeArea} square metres</p>
+                <p>
+                  {shapeArea} {areaUnit}
+                </p>
 
                 <div className='govuk-!-margin-top-8'>
                   <Button

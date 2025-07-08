@@ -19,7 +19,7 @@ import iconClickedUrl from '../../../../../common/assets/images/location_pin_cli
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import { setCurrentLocation, setCurrentTA } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { createShapefilePattern } from '../../../../components/custom/FloodAreaPatterns'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -203,9 +203,9 @@ export default function FloodAreaMap ({
     )
   }
 
-  const onTAClick = async (e, areaName) => {
+  const onTAClick = async (e, areaCode) => {
     e.preventDefault()
-    const floodArea = await getFloodAreaByTaName(areaName)
+    const floodArea = await getFloodAreaByTaCode(areaCode)
     dispatch(setCurrentTA(floodArea))
     setShowMap(false)
     navigate(orgManageLocationsUrls.view.viewFloodArea)
@@ -247,7 +247,7 @@ export default function FloodAreaMap ({
       : (
         <span style={{ padding: '0 15px 15px 15px', display: 'block' }}>
           <Link
-            onClick={(e) => onTAClick(e, targetArea.properties.TA_Name)}
+            onClick={(e) => onTAClick(e, targetArea.properties.TA_CODE)}
             className='govuk-body govuk-linkgovuk-!-margin-0'
           >
             {targetArea.properties.TA_Name}

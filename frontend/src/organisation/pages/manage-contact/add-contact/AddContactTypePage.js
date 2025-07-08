@@ -17,6 +17,7 @@ export default function AddContactTypePage() {
 
   const [userType, setUserType] = useState('')
   const [reasonError, setReasonError] = useState('')
+  const userTypeId = 'user-type'
 
   useEffect(() => {
     setReasonError('')
@@ -68,8 +69,8 @@ export default function AddContactTypePage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {/* Error summary */}
-            {reasonError && <ErrorSummary errorList={[reasonError]} />}
-            <h1 className='govuk-heading-l' id='main-content'>
+            {reasonError && <ErrorSummary errorList={[{text: reasonError, componentId: userTypeId}]} />}
+            <h1 id={userTypeId} className='govuk-heading-l' id='main-content'>
               Select type of new user
             </h1>
             <div className='govuk-body'>
@@ -81,7 +82,8 @@ export default function AddContactTypePage() {
                 }
               >
                 {reasonError && (
-                  <p className='govuk-error-message'>{reasonError}</p>
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span> {reasonError}</p>
                 )}
                 <fieldset className='govuk-fieldset'>
                   <Radio

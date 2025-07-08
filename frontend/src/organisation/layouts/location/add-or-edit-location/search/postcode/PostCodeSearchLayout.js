@@ -22,6 +22,7 @@ export default function PostCodeSearchLayout({
   const navigate = useNavigate()
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
+  const postcodeId = 'postcode'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -64,7 +65,7 @@ export default function PostCodeSearchLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: postcodeId}]} />}
             <h1 className='govuk-heading-l' id='main-content'>
               What is the location's postcode?
             </h1>
@@ -72,7 +73,7 @@ export default function PostCodeSearchLayout({
 
             <div className='govuk-body'>
               <Input
-                id='postcode'
+                id={postcodeId}
                 name='Postcode'
                 isNameBold='true'
                 nameSize='s'

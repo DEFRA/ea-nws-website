@@ -39,6 +39,9 @@ export default function ChangeAdminDetailsPage() {
   const signinType = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
+
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
@@ -129,12 +132,18 @@ export default function ChangeAdminDetailsPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
           {(error || errorEmail || errorName) && (
-            <ErrorSummary errorList={[error, errorEmail, errorName]} />
+              <ErrorSummary
+              errorList={[
+                error,
+                errorName && { text: errorName, componentId: fullNameId },
+                errorEmail && { text: errorEmail, componentId: emailAddressId }
+              ].filter(Boolean)}
+            />
           )}
           <h1 className='govuk-heading-l' id="main-content">Change administrator details</h1>
 
           <Input
-            id='full-name'
+            id={fullNameId}
             inputType='text'
             value={fullName}
             name='Full name'
@@ -146,7 +155,7 @@ export default function ChangeAdminDetailsPage() {
           />
 
           <Input
-            id='email-address'
+            id={emailAddressId}
             inputType='text'
             inputMode='email'
             value={email}

@@ -1,25 +1,43 @@
 import { useEffect, useState } from 'react'
+import AlertState from '../../enums/AlertState'
+import { getAdditional } from '../../redux/userSlice'
 import { backendCall } from '../BackendService'
-import { csvToJson } from '../CsvToJson'
 
 export function useFetchAlerts () {
-  const [data, setData] = useState(null)
-  const [historyUrl, setHistoryUrl] = useState(null)
+  const [historicalAlerts, setHistoricalAlerts] = useState([])
 
   useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
+    const loadHistoricalAlerts = async () => {
+      let filteredAlerts = []
+      const options = {
+        states: [AlertState.PAST],
+        boundingBox: null,
+        channels: []
+      }
+    
+      const { data: alerts } = await backendCall(
+        { options, historic: true },
+        'api/alert/list'
       )
-      setHistoryUrl(data)
+
+      if (alerts?.alerts) {
+        filteredAlerts = alerts.alerts.filter((alert) => {
+          alert.CODE = getAdditional(
+            alert.mode.zoneDesc.placemarks[0].extraInfo,
+            'TA_CODE'
+          )
+          alert.TYPE = getAdditional(
+            alert.mode.zoneDesc.placemarks[0].extraInfo,
+            'category'
+          )
+          return alert.name.toLowerCase().includes('remove')
+        })
+      }
+      setHistoricalAlerts(filteredAlerts)
     }
-    getHistoryUrl()
 
-    historyUrl && fetch(historyUrl)
-      .then((response) => response.text())
-      .then((data) => setData(csvToJson(data)))
-  }, [historyUrl])
+    loadHistoricalAlerts()
+  }, [setHistoricalAlerts])
 
-  return data
+  return historicalAlerts
 }

@@ -20,6 +20,7 @@ export default function DeclarationOfAgreementPage() {
   const [error, setError] = useState('')
   const profile = session.profile
   const navigate = useNavigate()
+  const termsAgreementId = 'terms-agreement'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -78,7 +79,11 @@ export default function DeclarationOfAgreementPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: termsAgreementId }]}
+              />
+            )}
             <div className='govuk-body'>
               <h1 className='govuk-heading-l' id='main-content'>
                 Check the terms and conditions
@@ -156,8 +161,13 @@ export default function DeclarationOfAgreementPage() {
                     : 'govuk-form-group'
                 }
               >
-                {error && <p className='govuk-error-message'>{error}</p>}
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>{error}</span>
+                  </p>
+                )}
                 <Checkbox
+                  id={termsAgreementId}
                   onChange={() => setIsChecked(!isChecked)}
                   checked={isChecked}
                   label='I agree to the terms and conditions'

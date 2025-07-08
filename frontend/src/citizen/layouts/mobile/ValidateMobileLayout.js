@@ -34,6 +34,7 @@ export default function ValidateMobileLayout({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const enterCodeInputId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -193,7 +194,7 @@ export default function ValidateMobileLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeInputId}]} />}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Check your mobile phone
                 </h2>
@@ -203,7 +204,7 @@ export default function ValidateMobileLayout({
                   Use the code within 4 hours or it will expire.
                   <br /> <br />
                   <Input
-                    id='enter-code'
+                    id={enterCodeInputId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

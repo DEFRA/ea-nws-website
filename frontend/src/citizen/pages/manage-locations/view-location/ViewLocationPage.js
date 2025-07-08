@@ -120,7 +120,7 @@ export default function ViewLocationPage() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude,
-        1.5
+        0.001
       )
 
       const locationIsWarningArea = isSavedLocationTargetArea(
@@ -140,8 +140,11 @@ export default function ViewLocationPage() {
         setLocationType('alert')
         setSelectedFloodArea(locationIsAlertArea[0])
       } else {
-        // location was added as a xy-coord location
-        setLocationType('both')
+        if (warningArea?.features.length > 0) {
+          setLocationType('both')
+        } else {
+          setLocationType('alert')
+        }
       }
 
       const isError = !warningArea && !alertArea

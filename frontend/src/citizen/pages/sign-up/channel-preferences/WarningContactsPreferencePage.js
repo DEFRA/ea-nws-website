@@ -83,8 +83,6 @@ export default function WarningContactsPreferencePage() {
                 </h1>
               </legend>
               <div className='govuk-form-group'>
-                <span id='group-hint'>Select at least one option</span>
-
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((preference) => (
                     <Checkbox

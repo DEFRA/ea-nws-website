@@ -23,6 +23,7 @@ export default function SearchAddressResultsLayout({
   // reset enter address manually flow
   useEffect(() => {
     dispatch(setEnterAddressManuallyFlow(null))
+    dispatch(setPreviousOrgAddress(null))
   }, [])
 
   const handleSelectedLocation = (event, selectedLocation) => {

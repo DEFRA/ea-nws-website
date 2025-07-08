@@ -18,6 +18,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
+  const emailAddressInputId = 'email-address'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -82,7 +83,11 @@ export default function AddEmailLayout({ navigateToNextPage }) {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: emailAddressInputId }]}
+              />
+            )}
             <h2 className='govuk-heading-l' id='main-content'>
               Enter an email address to get flood messages
             </h2>
@@ -92,7 +97,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
                 day.
               </p>
               <Input
-                id='email-address'
+                id={emailAddressInputId}
                 name='Email address'
                 inputType='text'
                 inputMode='email'

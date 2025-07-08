@@ -25,6 +25,9 @@ export default function LocationSearchLayout({
   const [postCodeError, setPostCodeError] = useState('')
   const [placeNameError, setPlaceNameError] = useState('')
   const [error, setError] = useState('')
+  const searchOptionsId = 'search-options-radios'
+  const postcodeInputId = 'postcode-input'
+  const placenameInputId = 'placename-input'
 
   // remove any errors if user changes search option
   useEffect(() => {
@@ -123,7 +126,17 @@ export default function LocationSearchLayout({
           <div className='govuk-grid-column-two-thirds'>
             {(error || postCodeError || placeNameError) && (
               <ErrorSummary
-                errorList={[error, postCodeError, placeNameError]}
+                errorList={[
+                  error && { text: error, componentId: searchOptionsId },
+                  postCodeError && {
+                    text: postCodeError,
+                    componentId: postcodeInputId
+                  },
+                  placeNameError && {
+                    text: placeNameError,
+                    componentId: placenameInputId
+                  }
+                ].filter(Boolean)}
               />
             )}
             <div className='govuk-body'>
@@ -146,6 +159,7 @@ export default function LocationSearchLayout({
                   </p>
                   {error && <p className='govuk-error-message'>{error}</p>}
                   <Radio
+                    id='searchOptionsRadios'
                     label='Postcode'
                     value='Postcode'
                     name='searchOptionsRadios'
@@ -154,6 +168,7 @@ export default function LocationSearchLayout({
                     conditionalHint='Postcode in England'
                     conditionalInput={(val) => setPostCode(val)}
                     conditionalError={postCodeError}
+                    conditionalId='postcode-input'
                   />
                   <Radio
                     label='Town or place name'
@@ -164,6 +179,7 @@ export default function LocationSearchLayout({
                     conditionalHint='Be as specific as possible. For example, enter a town or village, rather than a large city'
                     conditionalInput={(val) => setPlaceName(val)}
                     conditionalError={placeNameError}
+                    conditionalId='placename-input'
                   />
                 </div>
               </fieldset>

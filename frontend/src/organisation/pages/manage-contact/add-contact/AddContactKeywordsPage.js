@@ -37,7 +37,11 @@ export default function AddContactKeywordsPage() {
   return (
     <>
       <Helmet>
-        <title>Add keywords for {currentContact?.firstname} {currentContact?.lastname} - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Add keywords for {currentContact?.firstname}{' '}
+          {currentContact?.lastname} - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <KeywordsLayout
         keywordType='contact'

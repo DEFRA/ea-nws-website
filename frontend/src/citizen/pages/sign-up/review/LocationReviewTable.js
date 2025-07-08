@@ -1,12 +1,16 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { getAdditional } from '../../../../common/redux/userSlice'
 
 export default function LocationReviewTable() {
   const navigate = useNavigate()
-  const selectedLocation = useSelector(
-    (state) => state.session.selectedLocation
-  )
+  const locationsSelected = useSelector((state) => state.session.profile.pois)
+
+  const firstLocation = locationsSelected[0]
+
+  const locationName = getAdditional(firstLocation.additionals, 'locationName')
+
+  const location = locationName === '' ? firstLocation.address : locationName
 
   const selectLocationToBeChanged = (event) => {
     event.preventDefault()
@@ -16,7 +20,7 @@ export default function LocationReviewTable() {
   return (
     <div className='govuk-!-padding-bottom-4'>
       <h2 className='govuk-heading-m'>Location you selected</h2>
-      {selectedLocation && (
+      {location && (
         <table className='govuk-table'>
           <tbody className='govuk-table__body'>
             <tr className='govuk-table__row'>
@@ -27,7 +31,7 @@ export default function LocationReviewTable() {
                 Location
               </th>
               <td className='govuk-table__cell govuk-!-width-full'>
-                {selectedLocation.address}
+                {location}
               </td>
 
               <td className='govuk-table__cell'>
@@ -35,7 +39,7 @@ export default function LocationReviewTable() {
                   onClick={(e) => selectLocationToBeChanged(e)}
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
-                  aria-label={`Change address for location ${selectedLocation.address}`}
+                  aria-label={`Change address for location ${location}`}
                 >
                   Change
                 </Link>

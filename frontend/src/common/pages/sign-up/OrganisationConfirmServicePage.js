@@ -29,13 +29,22 @@ export default function OrganisationConfirmServicePage() {
                 (organisation) service
               </h1>
               <p className='govuk-!-margin-top-6'>
-                To continue you'll need your:
+                To continue, you must have the authority to agree to our terms
+                and conditions on behalf of your organisation.
+              </p>
+              <p className='govuk-!-margin-top-6'>
+                We'll need you to provide the following information so we can
+                verify your organisation:
               </p>
               <ul className='govuk-list govuk-list--bullet govuk-!-margin-left-2'>
                 <li>Organisation name and address</li>
                 <li>Companies house number, if you have one</li>
                 <li>Details for an administrator and an alternative contact</li>
               </ul>
+              <p className='govuk-!-margin-top-6'>
+                If you've already signed up for the standard service, you'll
+                need to use a different email address here.
+              </p>
               <div className='govuk-!-margin-top-8'>
                 <Button
                   className='govuk-button'

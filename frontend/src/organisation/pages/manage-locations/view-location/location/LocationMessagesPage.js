@@ -21,7 +21,7 @@ import {
   setCurrentTA
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -135,7 +135,7 @@ export default function LocationMessagesPage() {
       )
 
       const options = {
-        states: [AlertState.CURRENT, AlertState.PAST],
+        states: [AlertState.PAST],
         boundingBox: null,
         channels: [],
         partnerId
@@ -145,7 +145,7 @@ export default function LocationMessagesPage() {
       twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
       const { data: alertsData } = await backendCall(
-        { options, filterDate: twoYearsAgo },
+        { options, filterDate: twoYearsAgo, historic: true },
         'api/alert/list',
         navigate
       )
@@ -202,6 +202,7 @@ export default function LocationMessagesPage() {
         }
       })
       const floodArea = {
+        code: targetArea.TA_CODE,
         name: targetArea.TA_Name,
         type: targetArea.category,
         severeWarningMessagesCount: severeWarningsCount,
@@ -282,9 +283,9 @@ export default function LocationMessagesPage() {
     setIsBannerDisplayed(false)
   }
 
-  const onClick = async (e, areaName) => {
+  const onClick = async (e, areaCode) => {
     e.preventDefault()
-    const floodArea = await getFloodAreaByTaName(areaName)
+    const floodArea = await getFloodAreaByTaCode(areaCode)
     dispatch(setCurrentTA(floodArea))
     navigate(orgManageLocationsUrls.view.viewFloodArea)
   }
@@ -295,7 +296,7 @@ export default function LocationMessagesPage() {
         Message settings
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {availableAlerts.length > 0 ? (
+      {availableAlerts.size > 0 ? (
         <p>
           You can choose which flood messages to get for each location if
           they're available.
@@ -376,7 +377,7 @@ export default function LocationMessagesPage() {
         </tbody>
       </table>
 
-      {availableAlerts.length > 0 && (
+      {availableAlerts.size > 0 && (
         <Button
           text='Save message settings'
           className='govuk-button'
@@ -451,7 +452,7 @@ export default function LocationMessagesPage() {
                         }}
                       >
                         <Link
-                          onClick={(e) => onClick(e, area.name)}
+                          onClick={(e) => onClick(e, area.code)}
                           className='govuk-link'
                         >
                           {area.name}

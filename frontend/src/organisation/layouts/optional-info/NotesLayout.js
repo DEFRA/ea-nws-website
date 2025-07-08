@@ -30,6 +30,7 @@ export default function NotesLayout({
   )
   const [notes, setNotes] = useState(currentNotes || '')
   const charLimit = 500
+  const locationNotesId = 'location-notes'
 
   useEffect(() => {
     if (notes.length > charLimit) {
@@ -71,14 +72,14 @@ export default function NotesLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: locationNotesId}]} />}
             <h1 className='govuk-heading-l' id='main-content'>
               {title || 'Notes (optional)'}
             </h1>
             <div className='govuk-body'>
               <p className='govuk-hint'>{instructionText}</p>
               <TextArea
-                id='location-notes'
+                id={locationNotesId}
                 error={error}
                 inputType='text'
                 rows='5'

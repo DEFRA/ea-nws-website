@@ -20,31 +20,33 @@ module.exports = [
         const { authToken, email, code } = request.payload
         const { error, code: formattedCode } = authCodeValidation(code)
 
-        if (!error && authToken) {
-          const response = await apiCall(
-            { authToken: authToken, email: email, code: formattedCode },
-            'member/verifyEmailValidate'
-          )
-          return h.response(response)
-        } else {
+        if (error || !authToken) {
           return h.response({
             status: 500,
             errorMessage: !error ? 'Oops, something happened!' : error
           })
         }
-      } catch (error) {
-        logger.error(error)
+
+        const response = await apiCall(
+          { authToken: authToken, email: email, code: formattedCode },
+          'member/verifyEmailValidate'
+        )
 
         // Check the specific GeoSafe error
         if (
-          error?.response?.status === 500 &&
-          error?.response?.errorMessage?.includes('already registered')
+          response.status === 500 &&
+          response.errorMessage?.includes('already registered')
         ) {
           return h.response({
             status: 400,
             errorMessage: 'The email address you entered is already being used'
           })
         }
+
+        // Success
+        return h.response(response)
+      } catch (error) {
+        logger.error(error)
 
         // Generic error
         return createGenericErrorResponse(h)

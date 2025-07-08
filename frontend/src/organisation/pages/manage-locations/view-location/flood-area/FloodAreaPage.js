@@ -114,7 +114,7 @@ export default function FloodAreaPage() {
           (alert) =>
             alert.CODE === taCode &&
             alert.TYPE === messageType &&
-            moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+            moment(alert.effectiveDate * 1000) > twoYearsAgo
         )
         newCount.push({ type: messageType, count: filteredData.length })
         setFloodCount(newCount)

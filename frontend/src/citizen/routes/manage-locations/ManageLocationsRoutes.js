@@ -1,4 +1,5 @@
 import LocationAlreadyAddedPage from '../../pages/manage-locations/add-location/LocationAlreadyAddedPage'
+import LocationCannotGetFloodMessagesPage from '../../pages/manage-locations/add-location/LocationCannotGetFloodMessagesPage'
 import LocationInFloodAreasPage from '../../pages/manage-locations/add-location/LocationInFloodAreasPage'
 import LocationNearFloodAreasPage from '../../pages/manage-locations/add-location/LocationNearFloodAreasPage'
 import LocationNotNearDangerPage from '../../pages/manage-locations/add-location/LocationNotNearDangerPage'
@@ -17,6 +18,10 @@ const manageLocationRoutes = [
   {
     path: '/manage-locations/add/search-results',
     component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/manage-locations/add/location-cannot-get-direct-flood-messages',
+    component: <LocationCannotGetFloodMessagesPage />
   },
   {
     path: '/manage-locations/add/location-in-flood-areas',

@@ -350,11 +350,9 @@ export default function ViewUsersDashboardPage() {
     return title
   }
   const deleteDialog = (contactsToBeDeleted) => {
-    const toDelete = contactsToBeDeleted.filter(
-      (c) => !adminIds.has(c.id) && c.id !== profileId
-    )
+    const toDelete = contactsToBeDeleted.filter((c) => !adminIds.has(c.id))
     const activeAdminsNotRemoved = contactsToBeDeleted.filter(
-      (c) => adminIds.has(c.id) || c.id === profileId
+      (c) => adminIds.has(c.id) && c.id !== profileId
     )
     const selfRemoved = activeAdminsNotRemoved.some((c) => c.id === profileId)
 
@@ -487,7 +485,7 @@ export default function ViewUsersDashboardPage() {
 
   const handleDelete = async () => {
     if (targetContact) {
-      if (adminIds.has(targetContact.id) || targetContact.id === profileId) {
+      if (adminIds.has(targetContact.id)) {
         // Re-invoke deleteDialog to show the "you can't delete this admin" message
         deleteDialog([targetContact])
         return

@@ -2225,3 +2225,80 @@ govuk-menu-toggle.button-menu > button {
     margin-bottom: 30px;
   }
 }
+
+/* accessibile panel */
+.accessible-map-legend-conatiner {
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  left: 10px;
+  outline: 0;
+  padding: 10px;
+  pointer-events: auto;
+  position: absolute;
+  top: 10px;
+  z-index: 500;
+}
+
+.accessible-map-legend-conatiner.keyboard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  align-items: start;
+}
+
+.accessible-map-legend-conatiner.keyboard h3 {
+  margin-bottom: 10px;
+}
+
+.accessible-map-legend-conatiner.keyboard kbd:first-of-type {
+  margin-left: 0;
+}
+
+.accessible-map-legend-conatiner kbd {
+  font-family: GDS Transport, arial, sans-serif;
+  color: #0b0c0c;
+  border: 2px solid #b1b4b6;
+  background-color: white;
+  border-radius: 4px;
+  font-size: 0.825rem;
+  padding: 5px;
+  margin: 0 5px;
+}
+
+.keyboard-list {
+  margin: 0;
+  width: 100%;
+}
+
+.keyboard-list__item {
+  padding: 10px 0;
+  border-top: 1px solid #b1b4b6;
+}
+
+.keyboard-list__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.keyboard-list dt {
+  margin-bottom: 7px;
+}
+
+.map-marker {
+  z-index: 600;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.drop-pin-container {
+  z-index: 1000;
+  position: absolute;
+  cursor: pointer;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}

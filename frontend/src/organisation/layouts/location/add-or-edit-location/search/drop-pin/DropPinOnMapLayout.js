@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -342,6 +342,7 @@ export default function DropPinOnMapLayout({
                 showFloodWarningAreas={showFloodWarningAreas}
                 showFloodAlertAreas={showFloodAlertAreas}
                 showMarker={showMarkerInitially}
+                accessibleMap={true}
               />
             </div>
             <div className='govuk-grid-column-one-quarter'>

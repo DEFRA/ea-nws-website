@@ -152,7 +152,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
     }
   } catch (error) {
     logger.error(error)
-    return createGenericErrorResponse(h)
+    throw error
   }
 }
 

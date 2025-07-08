@@ -191,7 +191,7 @@ const FloodBanner = React.memo(function FloodBanner({
                 isLowRisk(item) &&
                 item.additionals.other?.alertTypes?.length === 0
             ).length > 0 && (
-              <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
+              <div style={{ width: '100%', padding: '0rem 0rem 0rem 1.5rem' }}>
                 <p className='body-text-strong'>{count[1]}</p>
                 <Link
                   className='govuk-link'
@@ -250,7 +250,6 @@ export default function DashboardHeader({
   linkSource,
   setErrorMessage
 }) {
-
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -367,7 +366,7 @@ export default function DashboardHeader({
                 .length > 0 && (
                 <div style={{ width: '100%' }}>
                   <FloodBanner
-                    type='noContacts' 
+                    type='noContacts'
                     locations={locations}
                     onClickLinked={onClickLinked}
                   />
@@ -387,7 +386,9 @@ export default function DashboardHeader({
           </>
         ) : (
           <>
-            <h1 className='govuk-heading-l' id='main-content'>Link contact to locations</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Link contact to locations
+            </h1>
             <p>
               Select the locations you want to link to this contact from the
               list. Then select

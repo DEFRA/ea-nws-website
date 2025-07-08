@@ -1350,6 +1350,11 @@
   line-height: 1.1111111111;
   font-weight: 700;
 }
+
+.govuk-details__summary-text {
+  font-size: 18px;
+}
+
 @media (min-width: 40.0625em) {
   .govuk-header__org-service-name {
     font-size: 1.5rem;

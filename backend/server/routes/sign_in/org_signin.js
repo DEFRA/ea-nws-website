@@ -8,6 +8,7 @@ const {
   setJsonData
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
+const { v4: uuidv4 } = require('uuid')
 
 // geosafe api restricted to 1024 locations per response
 // recall to api required to collect all locations
@@ -63,6 +64,13 @@ module.exports = [
         const { redis } = request.server.app
 
         if (orgData) {
+          // store user session data for serverside validation
+          const sessionId = uuidv4()
+          const sessionKey = `session:${sessionId}`
+          const sessionData = { authToken, orgId: organization.id }
+          await setJsonData(client, sessionKey, sessionData)
+          request.cookieAuth.set({ sessionId })
+
           const elasticacheKey = 'signin_status:' + orgData.authToken
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving locations',

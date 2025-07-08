@@ -145,7 +145,9 @@ const removeLocationFromKeywords = async (client, orgId, locationID) => {
     const keywordArr = await getJsonData(client, key)
     const updatedKeywordArr = keywordArr
       .map((keyword) => {
-        keyword.linked_ids = keyword.linked_ids.filter((id) => id !== locationID)
+        keyword.linked_ids = keyword.linked_ids.filter(
+          (id) => id !== locationID
+        )
         return keyword
       })
       .filter((keyword) => keyword.linked_ids.length > 0)
@@ -568,7 +570,14 @@ const getOrgActiveAdmins = async (client, orgId) => {
   return activeAdmins
 }
 
-const orgSignIn = async (client, profile, organization, locations, contacts, authToken) => {
+const orgSignIn = async (
+  client,
+  profile,
+  organization,
+  locations,
+  contacts,
+  authToken
+) => {
   await setJsonData(client, profile.id + ':profile', profile)
   await addOrgActiveAdmins(client, organization.id, profile.id)
   const orgExists = await checkKeyExists(client, organization.id + ':org_data')
@@ -663,8 +672,9 @@ const getTAData = async (client, TA_CODE) => {
 
 const setFloodHistory = async (client, value) => {
   const key = 'TAHistoryCount'
-  const d = new Date(), e = new Date(d);
-  const secondsSinceMidnight = (e - d.setHours(0,0,0,0))/1000;
+  const d = new Date(),
+    e = new Date(d)
+  const secondsSinceMidnight = (e - d.setHours(0, 0, 0, 0)) / 1000
   const secondsInDay = 60 * 60 * 24
   const secondsTillMidnight = parseInt(secondsInDay - secondsSinceMidnight)
   // send the data
@@ -678,7 +688,6 @@ const getFloodHistory = async (client) => {
   const dataExists = await checkKeyExists(client, key)
   if (dataExists) {
     floodHistory = await getJsonData(client, key)
-
   }
   return floodHistory
 }

@@ -95,14 +95,25 @@ const osFindNameApiCall = async (name, filters, loop) => {
     let response = await axios.get(url)
     results.push(...response.data.results)
 
+    const pageSize = 100
+    const totalResults = response.data.header.totalresults
+    const totalPages = Math.ceil(totalResults / pageSize)
+
     // we must filter through all results returned since OS api only returns first 100
-    if (response.data.header.totalresults > 100 && loop === true) {
-      const totalRecalls = Math.floor(response.data.header.totalresults / 100)
-      let i = 1
-      while (i <= totalRecalls) {
-        response = await axios.get(url + `&offset=${i * 100}`)
-        results.push(...response.data.results)
-        i++
+    if (loop && totalPages > 1) {
+      // Pages are 1-based i.e. page 1 has already been fetched
+      for (let page = 2; page <= totalPages; page++) {
+        const offset = (page - 1) * pageSize
+        const pagedUrl = `${url}&offset=${offset}`
+
+        try {
+          const pageResponse = await axios.get(pagedUrl)
+          if (!pageResponse.data.results.length) break // No results mean we've reached the end before expected
+          results.push(...pageResponse.data.results)
+        } catch (err) {
+          logger.error(`Pagination failed at offset ${offset}: ${err}`)
+          break
+        }
       }
     }
 

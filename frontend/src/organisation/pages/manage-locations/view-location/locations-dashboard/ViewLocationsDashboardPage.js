@@ -56,7 +56,6 @@ export default function ViewLocationsDashboardPage() {
   const [linkSource, setLinkSource] = useState(location.state?.linkSource || 0)
   const [loading, setLoading] = useState(true)
   const authToken = useSelector((state) => state.session.authToken)
-  const sessionKey = useSelector((state) => state.session.sessionKey)
   const [errorMessage, setErrorMessage] = useState('')
   const toggleFilterButtonRef = useRef(null)
 
@@ -118,7 +117,7 @@ export default function ViewLocationsDashboardPage() {
   useEffect(() => {
     const getLocations = async () => {
       const { data } = await backendCall(
-        {sessionKey},
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -154,7 +153,7 @@ export default function ViewLocationsDashboardPage() {
       })
 
       locationsUpdate.forEach(async (location) => {
-        const contactsDataToSend = { sessionKey , location }
+        const contactsDataToSend = { authToken, location }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_contacts',
@@ -607,7 +606,7 @@ export default function ViewLocationsDashboardPage() {
       locationsToEdit[i].additionals.other.alertTypes = chosenAlerts
 
       const updateData = {
-        sessionKey,
+        authToken,
         location: webToGeoSafeLocation(locationsToEdit[i])
       }
       await backendCall(updateData, 'api/location/update', navigate)
@@ -681,7 +680,7 @@ export default function ViewLocationsDashboardPage() {
       )
     }
 
-    const dataToSend = { sessionKey, locationIds }
+    const dataToSend = { authToken, locationIds }
 
     const { errorMessage } = await backendCall(
       dataToSend,

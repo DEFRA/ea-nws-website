@@ -50,7 +50,6 @@ export default function SelectPredefinedBoundaryPage() {
     (state) => state.session.consecutiveBoundariesAdded
   )
   const authToken = useSelector((state) => state.session.authToken)
-  const sessionKey = useSelector((state) => state.session.sessionKey)
   const boundaryTypeId = 'BoundaryType'
   const boundaryId = 'Boundary'
 
@@ -63,7 +62,7 @@ export default function SelectPredefinedBoundaryPage() {
 
   async function getBoundarysAlreadyAdded() {
     const { data: locationsData, errorMessage } = await backendCall(
-      { sessionKey },
+      { authToken },
       'api/elasticache/list_locations',
       navigate
     )
@@ -184,7 +183,7 @@ export default function SelectPredefinedBoundaryPage() {
 
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
-      const dataToSend = { sessionKey, location: newGeosafeLocation }
+      const dataToSend = { authToken, location: newGeosafeLocation }
       const { data } = await backendCall(
         dataToSend,
         'api/location/create',

@@ -51,6 +51,9 @@ module.exports = [
               response.data.organization.id
             )
           }
+
+          console.log('response', response)
+
           return h.response(response)
         } else {
           return h.response({

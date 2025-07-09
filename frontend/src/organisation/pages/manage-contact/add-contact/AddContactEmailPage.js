@@ -21,7 +21,6 @@ export default function AddContactEmailPage() {
   const [errors, setErrors] = useState([])
   const [emailError, setEmailError] = useState('')
   const [emailInput, setEmailInput] = useState('')
-  const sessionKey = useSelector((state) => state.session.sessionKey)
   const authToken = useSelector((state) => state.session.authToken)
 
   const navigateBack = (event) => {
@@ -58,7 +57,7 @@ export default function AddContactEmailPage() {
 
   const addContact = async () => {
     const originalContacts = await backendCall(
-      { sessionKey },
+      { authToken },
       'api/elasticache/list_contacts',
       navigate
     )
@@ -66,7 +65,7 @@ export default function AddContactEmailPage() {
     const contactToAdd = JSON.parse(
       JSON.stringify(store.getState().session.orgCurrentContact)
     )
-    const dataToSend = { sessionKey, contacts: [contactToAdd] }
+    const dataToSend = { authToken, contacts: [contactToAdd] }
     const { errorMessage: addContactError } = await backendCall(
       dataToSend,
       'api/organization/create_contacts',
@@ -75,7 +74,7 @@ export default function AddContactEmailPage() {
 
     if (!addContactError) {
       const newContacts = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -97,7 +96,7 @@ export default function AddContactEmailPage() {
       JSON.stringify(store.getState().session.orgCurrentContact)
     )
     const promoteData = {
-      sessionKey,
+      authToken,
       contactId: contactToPromote.id,
       role: 'ADMIN'
     }

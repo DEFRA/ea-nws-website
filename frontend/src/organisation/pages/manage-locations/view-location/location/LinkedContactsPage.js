@@ -33,7 +33,7 @@ export default function LinkedContactsPage() {
   const currentLocation = geoSafeToWebLocation(
     useSelector((state) => state.session.currentLocation)
   )
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const contactsPerPage = 10
 
@@ -57,7 +57,7 @@ export default function LinkedContactsPage() {
 
   useEffect(() => {
     const getLinkedContacts = async () => {
-      const locationsDataToSend = { sessionKey, location: currentLocation }
+      const locationsDataToSend = { authToken, location: currentLocation }
       const { data } = await backendCall(
         locationsDataToSend,
         'api/elasticache/list_linked_contacts',
@@ -72,7 +72,7 @@ export default function LinkedContactsPage() {
       }
 
       for (const contact of contactsUpdate) {
-        const contactsDataToSend = { sessionKey, contact }
+        const contactsDataToSend = { authToken, contact }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_locations',
@@ -136,7 +136,7 @@ export default function LinkedContactsPage() {
       return contact.id
     })
     const dataToSend = {
-      sessionKey,
+      authToken,
       locationId: currentLocation.id,
       contactIds: contactIDs
     }

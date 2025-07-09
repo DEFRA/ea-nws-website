@@ -48,7 +48,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
     const fetchContacts = async () => {
       try {
         const contactsData = await backendCall(
-          { sessionKey },
+          { authToken },
           'api/elasticache/list_contacts',
           navigate
         )

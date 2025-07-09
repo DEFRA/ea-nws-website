@@ -16,7 +16,7 @@ import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodR
 
 export default function FloodWarningHistoryDashboardPage() {
   const navigate = useNavigate()
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -74,7 +74,7 @@ export default function FloodWarningHistoryDashboardPage() {
     if (alerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )

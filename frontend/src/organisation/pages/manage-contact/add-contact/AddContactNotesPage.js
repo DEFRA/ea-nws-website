@@ -11,7 +11,6 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function AddContactNotesPage() {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
-  const sessionKey = useSelector((state) => state.session.sessionKey)
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
@@ -24,7 +23,7 @@ export default function AddContactNotesPage() {
     const contact = JSON.parse(
       JSON.stringify(store.getState().session.orgCurrentContact)
     )
-    const dataToSend = { sessionKey, contact }
+    const dataToSend = { authToken, contact }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/organization/update_contact',
@@ -43,7 +42,7 @@ export default function AddContactNotesPage() {
 
   const onAddContact = async () => {
     const originalContacts = await backendCall(
-      { sessionKey },
+      { authToken },
       'api/elasticache/list_contacts',
       navigate
     )
@@ -51,7 +50,7 @@ export default function AddContactNotesPage() {
     const contactToAdd = JSON.parse(
       JSON.stringify(store.getState().session.orgCurrentContact)
     )
-    const dataToSend = { sessionKey, contacts: [contactToAdd] }
+    const dataToSend = { authToken, contacts: [contactToAdd] }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/create_contacts',
@@ -60,7 +59,7 @@ export default function AddContactNotesPage() {
 
     if (!errorMessage) {
       const newContacts = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )

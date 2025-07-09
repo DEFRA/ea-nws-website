@@ -42,7 +42,7 @@ export default function LiveMap({
   setAccountHasLocations
 }) {
   const navigate = useNavigate()
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.authToken)
   const [apiKey, setApiKey] = useState(null)
   const [loading, setLoading] = useState(true)
   const [zoomLevel, setZoomLevel] = useState(null)
@@ -101,7 +101,7 @@ export default function LiveMap({
 
     // get orgs locations
     const { data: locationsData, errorMessage } = await backendCall(
-      { sessionKey },
+      { authToken },
       'api/elasticache/list_locations',
       navigate
     )

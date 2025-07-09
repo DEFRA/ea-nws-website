@@ -79,20 +79,18 @@ export default function ManageKeywordsPage() {
     )
   }, [filteredKeywords, currentPage])
 
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.authToken)
 
   useMemo(() => {
     // whoever is reviewing this - please remind me to update this
     // might have to make a seperate endpoint to get orgs keywords
     const getKeywords = async () => {
-      const key =
-        sessionKey +
-        (keywordType === 'location'
+      const type =
+        keywordType === 'location'
           ? ':t_Keywords_location'
-          : ':t_Keywords_contact')
-      const dataToSend = { key }
+          : ':t_Keywords_contact'
       const { data } = await backendCall(
-        dataToSend,
+        { type },
         'api/elasticache/get_data',
         navigate
       )
@@ -108,7 +106,7 @@ export default function ManageKeywordsPage() {
   useEffect(() => {
     const getLocations = async () => {
       const { data } = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -124,7 +122,7 @@ export default function ManageKeywordsPage() {
 
     const getContacts = async () => {
       const { data } = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -321,11 +319,11 @@ export default function ManageKeywordsPage() {
           const dataToSend =
             keywordType === 'location'
               ? {
-                  sessionKey,
+                  authToken,
                   location: webToGeoSafeLocation(locationOrContactToUpdate)
                 }
               : {
-                  sessionKey,
+                  authToken,
                   contact: webToGeoSafeContact(locationOrContactToUpdate)
                 }
           const { data, errorMessage } = await backendCall(

@@ -14,8 +14,10 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { key, paths } = request.payload
+        const { type, paths } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(client, authToken)
+        const key = sessionData?.orgId + type
 
         if (key) {
           let result

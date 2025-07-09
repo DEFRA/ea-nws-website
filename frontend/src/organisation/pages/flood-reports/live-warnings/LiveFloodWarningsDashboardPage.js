@@ -17,7 +17,7 @@ import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
 export default function LiveFloodWarningsDashboardPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -93,7 +93,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
     if (alerts) {
       const { data: locationsData } = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -137,7 +137,7 @@ export default function LiveFloodWarningsDashboardPage() {
     const severity = liveAlert.type
     const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
-    const contactsDataToSend = { sessionKey, location }
+    const contactsDataToSend = { authToken, location }
     const { data } = await backendCall(
       contactsDataToSend,
       'api/elasticache/list_linked_contacts',

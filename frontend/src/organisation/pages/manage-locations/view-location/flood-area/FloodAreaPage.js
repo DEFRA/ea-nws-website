@@ -27,7 +27,7 @@ export default function FloodAreaPage() {
   const floodHistoryData = useFetchAlerts()
   const [historicalMessages, setHistoricalMessages] = useState([])
   const [floodCount, setFloodCount] = useState([])
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const openMap = () => {
     setShowMap(true)
@@ -145,7 +145,7 @@ export default function FloodAreaPage() {
   useEffect(() => {
     const getLocations = async () => {
       const { data } = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )

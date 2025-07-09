@@ -3,7 +3,7 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { removeLocation } = require('../../services/elasticache')
+const { removeLocation, getJsonData } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -15,18 +15,21 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, orgId, locationIds } = request.payload
+        const { authToken, locationIds } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (authToken && locationIds && orgId) {
+        if (authToken && locationIds && sessionData.orgId) {
           const response = await apiCall(
             { authToken: authToken, locationIds: locationIds },
             'location/remove'
           )
           if (response.status === 200) {
-            await Promise.all(locationIds.map(async (id) => {
-              await removeLocation(redis, orgId, id)
-            }))
+            await Promise.all(
+              locationIds.map(async (id) => {
+                await removeLocation(redis, sessionData.orgId, id)
+              })
+            )
             return h.response({ status: 200 })
           } else {
             return createGenericErrorResponse(h)

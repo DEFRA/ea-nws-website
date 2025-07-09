@@ -25,8 +25,9 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, fileName } = request.payload
+        const { authToken, fileName } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
         if (fileName) {
           const elasticacheKey = 'shapefile:' + fileName.split('.')[0]
@@ -35,10 +36,11 @@ module.exports = [
           if (result) {
             if (result.data) {
               // Check invalid locations for duplicates
-              const locationName = result.data.properties?.name ||
-              result.data.properties?.lrf15nm ||
-              result.data.properties?.fileName
-              if (await isDuplicate(redis, orgId, locationName)) {
+              const locationName =
+                result.data.properties?.name ||
+                result.data.properties?.lrf15nm ||
+                result.data.properties?.fileName
+              if (await isDuplicate(redis, sessionData.orgId, locationName)) {
                 // An invalid location should already have at least one error
                 // but do not assume this is the case
                 if (Array.isArray(result.data.properties.error)) {

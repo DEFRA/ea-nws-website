@@ -3,7 +3,10 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { findLocationByName } = require('../../services/elasticache')
+const {
+  findLocationByName,
+  getJsonData
+} = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -14,13 +17,21 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, locationName } = request.payload
+        const { authToken, locationName } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
         if (locationName && orgId) {
-          const duplicate = await findLocationByName(redis, orgId, locationName)
+          const duplicate = await findLocationByName(
+            redis,
+            sessionData.orgId,
+            locationName
+          )
           if (duplicate.length !== 0) {
-            return h.response({ status: 500, errorMessage: 'duplicate location' })
+            return h.response({
+              status: 500,
+              errorMessage: 'duplicate location'
+            })
           } else {
             return h.response({ status: 200 })
           }

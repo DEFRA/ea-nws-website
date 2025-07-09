@@ -16,12 +16,10 @@ import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
-  setOrgId,
   setOrganization,
   setProfile,
   setProfileId,
   setRegistrations,
-  setSessionKey,
   setSigninType
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
@@ -50,12 +48,7 @@ export default function SignInValidatePage() {
     if (orgData) {
       const startProcessing = async () => {
         const dataToSend = { orgData }
-        const { data } = await backendCall(
-          dataToSend,
-          'api/org_signin',
-          navigate
-        )
-        dispatch(setSessionKey(data.sessionKey))
+        await backendCall(dataToSend, 'api/org_signin', navigate)
       }
       startProcessing()
       const interval = setInterval(async function getStatus() {
@@ -120,7 +113,6 @@ export default function SignInValidatePage() {
         dispatch(setProfile(data.profile))
         if (data.organization) {
           dispatch(setProfileId(data.profile.id))
-          dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
         }

@@ -4,7 +4,8 @@ const {
 
 const {
   findLocationByName,
-  findInvLocationByName
+  findInvLocationByName,
+  getJsonData
 } = require('../../services/elasticache')
 
 module.exports = [
@@ -16,14 +17,19 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, locationName, type } = request.payload
+        const { authToken, locationName, type } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (locationName && orgId) {
+        if (locationName && sessionData.orgId) {
           const result =
             type === 'valid'
-              ? await findLocationByName(redis, orgId, locationName)
-              : await findInvLocationByName(redis, orgId, locationName)
+              ? await findLocationByName(redis, sessionData.orgId, locationName)
+              : await findInvLocationByName(
+                  redis,
+                  sessionData.orgId,
+                  locationName
+                )
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

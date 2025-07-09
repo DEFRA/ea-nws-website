@@ -1,4 +1,9 @@
-import { cleanCoords, distance, point, pointToPolygonDistance } from '@turf/turf'
+import {
+  cleanCoords,
+  distance,
+  point,
+  pointToPolygonDistance
+} from '@turf/turf'
 import moment from 'moment'
 import { toWords } from 'number-to-words'
 import React, { useEffect, useState } from 'react'
@@ -18,7 +23,8 @@ import {
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getFloodAreaByTaCode, getSurroundingFloodAreas,
+  getFloodAreaByTaCode,
+  getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
@@ -38,7 +44,7 @@ export default function LinkLocationsLayout({
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
   const floodHistoryData = useFetchAlerts()
@@ -192,7 +198,7 @@ export default function LinkLocationsLayout({
   }
 
   const getParentLinkedContacts = async (currentLocation) => {
-    const contactsDataToSend = { authToken, orgId, location: currentLocation }
+    const contactsDataToSend = { sessionKey, location: currentLocation }
     const { data } = await backendCall(
       contactsDataToSend,
       'api/elasticache/list_linked_contacts',
@@ -262,7 +268,7 @@ export default function LinkLocationsLayout({
           ]
         }
 
-        const dataToSend = { authToken, orgId, location: locationToAdd }
+        const dataToSend = { sessionKey, location: locationToAdd }
         const { data, errorMessage } = await backendCall(
           dataToSend,
           'api/location/create',
@@ -273,8 +279,7 @@ export default function LinkLocationsLayout({
           const linkedContacts = await getParentLinkedContacts(currentLocation)
           if (linkedContacts && linkedContacts.length > 0) {
             const dataToSend = {
-              authToken,
-              orgId,
+              sessionKey,
               locationId: data.id,
               contactIds: linkedContacts
             }
@@ -323,7 +328,7 @@ export default function LinkLocationsLayout({
       JSON.parse(JSON.stringify(currentLocation)),
       childrenIDs
     )
-    const dataToSend = { authToken, orgId, location: locationToAdd }
+    const dataToSend = { sessionKey, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/update',
@@ -404,7 +409,9 @@ export default function LinkLocationsLayout({
 
     coords.forEach((coord) => {
       const pt = point(coord)
-      const dist = pointToPolygonDistance(pt, cleanCoords(floodPolygon), { units: 'meters' })
+      const dist = pointToPolygonDistance(pt, cleanCoords(floodPolygon), {
+        units: 'meters'
+      })
       if (dist >= 0 && dist < minDistance) {
         minDistance = dist
       }
@@ -433,7 +440,6 @@ export default function LinkLocationsLayout({
         warningAreas = warningArea.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)
         )
-
       } else {
         const { alertArea, warningArea } = await getSurroundingFloodAreas(
           currentLocation.coordinates.latitude,

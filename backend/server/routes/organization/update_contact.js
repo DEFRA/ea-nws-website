@@ -3,7 +3,7 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { updateContact } = require('../../services/elasticache')
+const { updateContact, getJsonData } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -15,10 +15,11 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, orgId, contact } = request.payload
+        const { authToken, contact } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (authToken && orgId && contact) {
+        if (authToken && sessionData.orgId && contact) {
           // remove any null fields from each contact
           Object.keys(contact).forEach((key) => {
             if (contact[key] === null && key !== 'id') {

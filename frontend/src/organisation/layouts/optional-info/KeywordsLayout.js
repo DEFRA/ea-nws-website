@@ -26,6 +26,7 @@ export default function KeywordsLayout({
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
 
+  // UPDATE HERE - need to update he actual endpoint
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
   useEffect(() => {
     const getOrgKeywordsOriginal = async () => {

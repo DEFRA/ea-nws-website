@@ -57,7 +57,6 @@ export default function DropPinOnMapLayout({
   )
 
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const [displayCoords, setDisplayCoords] = useState('')
   const [pinCoords, setPinCoords] = useState(null)
   const [error, setError] = useState('')
@@ -105,7 +104,7 @@ export default function DropPinOnMapLayout({
 
   const checkDuplicateLocation = async () => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -197,7 +196,7 @@ export default function DropPinOnMapLayout({
 
         const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
-        const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+        const dataToSend = { authToken, location: newGeosafeLocation }
         const { data, errorMessage } = await backendCall(
           dataToSend,
           'api/location/create',
@@ -231,7 +230,7 @@ export default function DropPinOnMapLayout({
           // Remove invalid location from elasticache
           if (flow?.includes('unmatched-locations')) {
             await backendCall(
-              { orgId, locationId: locationToAdd.id },
+              { authToken, locationId: locationToAdd.id },
               'api/bulk_uploads/remove_invalid_location',
               navigate
             )

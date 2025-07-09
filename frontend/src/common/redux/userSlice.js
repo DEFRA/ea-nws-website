@@ -89,10 +89,8 @@ const userSlice = createSlice({
   initialState: {
     lastActivity: null,
     authToken: null,
-    sessionKey: null,
     registerToken: null,
     profileId: null,
-    orgId: null,
     notFoundLocations: null,
     notInEnglandLocations: null,
     profile: {
@@ -247,17 +245,11 @@ const userSlice = createSlice({
     setAuthToken: (state, action) => {
       state.authToken = action.payload
     },
-    setSessionKey: (state, action) => {
-      state.sessionKey = action.payload
-    },
     setRegisterToken: (state, action) => {
       state.registerToken = action.payload
     },
     setProfileId: (state, action) => {
       state.profileId = action.payload
-    },
-    setOrgId: (state, action) => {
-      state.orgId = action.payload
     },
     setNotFoundLocations: (state, action) => {
       state.notFoundLocations = action.payload
@@ -559,7 +551,6 @@ const userSlice = createSlice({
     },
     // org data
     setOrganization: (state, action) => {
-      state.organization.id = action.payload?.id || null
       state.organization.name = action.payload?.name || null
       state.organization.description =
         action.payload?.description ||
@@ -586,9 +577,6 @@ const userSlice = createSlice({
       state.organization.alertDiffusionZoneBoundingBox =
         action.payload?.alertDiffusionZoneBoundingBox || null
       state.organization.urlSlug = action.payload?.urlSlug || null
-    },
-    setOrganizationId: (state, action) => {
-      state.organization.id = action.payload
     },
     setOrganizationName: (state, action) => {
       state.organization.name = action.payload
@@ -795,10 +783,8 @@ const userSlice = createSlice({
     clearAuth: (state) => {
       state.lastActivity = null
       state.authToken = null
-      state.sessionKey = null
       state.registerToken = null
       state.profileId = null
-      state.orgId = null
       state.notFoundLocations = null
       state.notInEnglandLocations = null
       state.profile = {
@@ -1029,10 +1015,8 @@ const userSlice = createSlice({
 export const {
   setLastActivity,
   setAuthToken,
-  setSessionKey,
   setRegisterToken,
   setProfileId,
-  setOrgId,
   setNotFoundLocations,
   setNotInEnglandLocations,
   setProfile,

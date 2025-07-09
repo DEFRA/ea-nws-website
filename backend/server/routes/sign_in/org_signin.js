@@ -64,15 +64,6 @@ module.exports = [
         const { redis } = request.server.app
 
         if (orgData) {
-          // store user session data for serverside validation
-          const sessionId = uuidv4()
-          const sessionKey = `session:${sessionId}`
-          const sessionData = {
-            authToken: orgData.authToken,
-            orgId: orgData.organization.id
-          }
-          await setJsonData(redis, sessionKey, sessionData)
-
           const elasticacheKey = 'signin_status:' + orgData.authToken
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving locations',

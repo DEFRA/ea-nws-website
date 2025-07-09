@@ -7,10 +7,10 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
 import {
-    setCurrentLocationCoordinates,
-    setCurrentLocationDataType,
-    setCurrentLocationGeometry,
-    setCurrentLocationName
+  setCurrentLocationCoordinates,
+  setCurrentLocationDataType,
+  setCurrentLocationGeometry,
+  setCurrentLocationName
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
@@ -24,7 +24,7 @@ export default function LocationLoadingShapefilePage() {
   const [stage, setStage] = useState('Scanning upload')
   const [geojsonData, setGeojsonData] = useState(null)
   const location = useLocation()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const fileName = location.state?.fileName
   const [errors, setErrors] = useState(null)
 
@@ -78,7 +78,7 @@ export default function LocationLoadingShapefilePage() {
 
   const checkDuplicateLocation = async (locationName) => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -167,7 +167,7 @@ export default function LocationLoadingShapefilePage() {
   // Check the status of the processing and update state
   useEffect(() => {
     const interval = setInterval(async () => {
-      const dataToSend = { orgId, fileName }
+      const dataToSend = { authToken, fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/shapefile/process_status',
@@ -219,7 +219,10 @@ export default function LocationLoadingShapefilePage() {
   return (
     <>
       <Helmet>
-        <title>Loading - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Loading - Manage locations - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>

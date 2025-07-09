@@ -11,9 +11,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 export default function WithdrawInvitePage () {
   const navigate = useNavigate()
   const location = useLocation()
-
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const pendingAdmin = location.state?.pendingAdmin
   const pendingAdminName =
@@ -22,7 +20,7 @@ export default function WithdrawInvitePage () {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      const dataToSend = { authToken, orgId, contactId: pendingAdmin.id }
+      const dataToSend = { authToken, contactId: pendingAdmin.id }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/organization/demote_contact',

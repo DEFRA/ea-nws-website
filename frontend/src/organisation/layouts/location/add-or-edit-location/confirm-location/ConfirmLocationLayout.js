@@ -40,7 +40,7 @@ export default function ConfirmLocationLayout({
   const location = useLocation()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -83,7 +83,7 @@ export default function ConfirmLocationLayout({
 
   const checkDuplicateLocation = async () => {
     const dataToSend = {
-      orgId,
+      sessionKey,
       locationName,
       type: 'valid'
     }
@@ -200,7 +200,7 @@ export default function ConfirmLocationLayout({
     const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
     // since we added to currentLocation we need to get that information to pass to the api
-    const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+    const dataToSend = { sessionKey, location: newGeosafeLocation }
     const isUpdate = Boolean(currentLocation?.id)
     const apiEndpoint = isUpdate ? 'api/location/update' : 'api/location/create'
     const { data, errorMessage } = await backendCall(
@@ -240,7 +240,7 @@ export default function ConfirmLocationLayout({
       // Remove invalid location from elasticache
       if (flow?.includes('unmatched-locations')) {
         backendCall(
-          { orgId, locationId: currentLocation.id },
+          { sessionKey, locationId: currentLocation.id },
           'api/bulk_uploads/remove_invalid_location',
           navigate
         )
@@ -293,8 +293,16 @@ export default function ConfirmLocationLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[{ text: error, componentId: locationConfirmationId }]} />}
-            <h1 className='govuk-heading-l' id={locationConfirmationId}>Confirm location</h1>
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  { text: error, componentId: locationConfirmationId }
+                ]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id={locationConfirmationId}>
+              Confirm location
+            </h1>
 
             <h2 className='govuk-heading-m govuk-!-margin-top-8'>
               {locationName}

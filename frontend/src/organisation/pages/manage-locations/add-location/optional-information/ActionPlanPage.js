@@ -16,7 +16,6 @@ export default function ActionPlanPage () {
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const [error, setError] = useState(null)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const locationType = useSelector((state) =>
     getLocationOther(state, 'location_data_type')
@@ -24,7 +23,7 @@ export default function ActionPlanPage () {
 
   const navigateToNextPage = async () => {
     const locationToAdd = store.getState().session.currentLocation
-    const dataToSend = { authToken, orgId, location: locationToAdd }
+    const dataToSend = { authToken, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/update',

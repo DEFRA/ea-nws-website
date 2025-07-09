@@ -12,8 +12,6 @@ import NotificationBanner from '../../../common/components/gov-uk/NotificationBa
 import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
-  setOrgId,
-  setOrganizationId,
   setProfile,
   setProfileId,
   setRegisterToken
@@ -77,8 +75,6 @@ export default function ValidateEmailLayout({
       } else {
         setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
-        dispatch(setOrgId(data.organization.id))
-        dispatch(setOrganizationId(data.organization.id))
         const updatedProfile = updateAdditionals(profile, [
           { id: 'signupComplete', value: { s: 'false' } },
           {
@@ -150,7 +146,11 @@ export default function ValidateEmailLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Confirm email address
                 </h2>

@@ -10,7 +10,6 @@ export default function SignOutManuallyPage () {
   const dispatch = useDispatch()
   const signinType = useSelector((state) => state.session.signinType)
   const profileId = useSelector((state) => state.session.profileId)
-  const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
@@ -18,7 +17,7 @@ export default function SignOutManuallyPage () {
   useEffect(() => {
     const signout = async () => {
       // need to call the backend to remove data from elasticache once signed out
-      await backendCall({ profileId, orgId, authToken }, 'api/sign_out')
+      await backendCall({ profileId,  authToken }, 'api/sign_out')
     }
     if (signinType === 'org') {
       // need to call the backend to remove data from elasticache once signed out

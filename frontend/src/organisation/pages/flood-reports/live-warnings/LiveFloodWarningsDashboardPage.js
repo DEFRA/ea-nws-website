@@ -105,13 +105,21 @@ export default function LiveFloodWarningsDashboardPage() {
         locations.push(geoSafeToWebLocation(location))
       }
 
+      const contactsDataToSend = { authToken, orgId }
+      const { data: contactCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
+
       if (locations) {
         // loop through live alerts - loop through all locations to find affected locations
         for (const liveAlert of alerts?.alerts) {
           for (const location of locations) {
             await processLocation(
               location,
-              liveAlert
+              liveAlert,
+              contactCount
             )
           }
         }
@@ -121,7 +129,8 @@ export default function LiveFloodWarningsDashboardPage() {
 
   const processLocation = async (
     location,
-    liveAlert
+    liveAlert,
+    contactCount
   ) => {
 
     const TA_CODE = getAdditional(
@@ -145,19 +154,7 @@ export default function LiveFloodWarningsDashboardPage() {
     const severity = liveAlert.type
     const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
-    const contactsDataToSend = { authToken, orgId, location }
-    const { data } = await backendCall(
-      contactsDataToSend,
-      'api/elasticache/list_linked_contacts',
-      navigate
-    )
-
-    location.linked_contacts = []
-    if (data) {
-      data.forEach((contact) => {
-        location.linked_contacts.push(contact.id)
-      })
-    }
+    location.linked_contacts = contactCount[location.id] || 0
 
     // add required data to location row object
     const createLocationWithFloodData = () => {

@@ -122,18 +122,17 @@ export default function ViewUsersDashboardPage() {
       }
 
       contactsUpdate.forEach(async (contact) => {
-        const contactsDataToSend = { authToken, orgId, contact }
+        const contactsDataToSend = { authToken, orgId, contactId: contact.id }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_locations',
           navigate
         )
 
-        contact.linked_locations = []
+        contact.linked_locations = data.length || 0
         contact.message_count = 0
         if (data && data.length > 0) {
           data.forEach(async function (location) {
-            contact.linked_locations.push(location.id)
             const floodAreas = await getWithinAreas(
               geoSafeToWebLocation(location)
             )

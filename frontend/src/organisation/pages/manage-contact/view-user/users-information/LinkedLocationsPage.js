@@ -107,9 +107,9 @@ export default function LinkedLocationsPage() {
     }
 
     const getLinkedLocations = async () => {
-      const contactsDataToSend = { orgId, contact: currentContact }
+      const LocationsDataToSend = { orgId, contactId: currentContact.id }
       const { data } = await backendCall(
-        contactsDataToSend,
+        LocationsDataToSend,
         'api/elasticache/list_linked_locations',
         navigate
       )
@@ -143,21 +143,16 @@ export default function LinkedLocationsPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      for (const location of locationsUpdate) {
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
+      const contactsDataToSend = { authToken, orgId }
+        const { data: contactCount } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_contacts',
           navigate
         )
 
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contactID) => {
-            location.linked_contacts.push(contactID)
-          })
-        }
+      for (const location of locationsUpdate) {
 
+        location.linked_contacts = contactCount[location.id] || 0
         const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
       }

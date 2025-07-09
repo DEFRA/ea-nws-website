@@ -1,4 +1,4 @@
-import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -261,6 +261,7 @@ export default function Map({
     if (!accessibleMap) return
     setShowMapLegend(false)
     setMapLegendOpen(false)
+    setTouchInput(false)
   }
 
   const handleTouchStart = () => {
@@ -274,6 +275,10 @@ export default function Map({
       e.preventDefault()
       setMapLegendOpen(true)
     }
+  }
+
+  const handleCloseKeyboardLegend = () => {
+    setMapLegendOpen(false)
   }
 
   const onEachWarningAreaFeature = (feature, layer) => {
@@ -588,11 +593,22 @@ export default function Map({
                     </span>
                     <kbd>Alt</kbd> + <kbd>K</kbd>{' '}
                     <span className='govuk-visually-hidden'>Show</span> keyboard
-                    controls<span className='govuk-visually-hidden'>.</span>
+                    controls
+                    <span className='govuk-visually-hidden'>.</span>
                   </>
                 ) : (
                   <>
                     <h3 className='govuk-heading-m'>Keyboard</h3>
+                    <div
+                      className='map-legend-close-container'
+                      tabIndex={0}
+                      onClick={handleCloseKeyboardLegend}
+                    >
+                      <FontAwesomeIcon
+                        icon={faXmark}
+                        className='warnings-selected-filter-icon'
+                      />
+                    </div>
                     <dl className='keyboard-list govuk-body-s'>
                       <div className='keyboard-list__item'>
                         <dt>Select a map control</dt>

@@ -2303,6 +2303,12 @@ govuk-menu-toggle.button-menu > button {
   transform: translate(-50%, 50%);
 }
 
+.map-legend-close-container {
+  margin-left: auto;
+  margin-top: -35px;
+  padding-bottom: 10px;
+}
+
 .service-overview-banner {
   position: relative;
   left: 50%;

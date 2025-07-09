@@ -16,7 +16,7 @@ import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodR
 
 export default function FloodWarningHistoryDashboardPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -74,7 +74,7 @@ export default function FloodWarningHistoryDashboardPage() {
     if (alerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(
-        { orgId },
+        { sessionKey },
         'api/elasticache/list_locations',
         navigate
       )
@@ -89,26 +89,19 @@ export default function FloodWarningHistoryDashboardPage() {
       if (locations) {
         for (const liveAlert of alerts?.alerts) {
           for (const location of locations) {
-            processLocation(
-              location,
-              liveAlert
-            )
+            processLocation(location, liveAlert)
           }
         }
       }
     }
   }
 
-  const processLocation = (
-    location,
-    liveAlert
-  ) => {
-
+  const processLocation = (location, liveAlert) => {
     const TA_CODE = getAdditional(
       liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
       'TA_CODE'
     )
-    
+
     const { additionals } = location
     const locationIntersectsWithFloodArea =
       additionals.other?.targetAreas?.some(
@@ -249,7 +242,9 @@ export default function FloodWarningHistoryDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Flood warning history - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Flood warning history - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

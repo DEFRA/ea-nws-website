@@ -14,29 +14,20 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId } = request.payload
+        const { sessionKey } = request.payload
         const { redis } = request.server.app
 
-        if (orgId) {
-          const { sessionId } = request.auth.credentials
-          const sessionKey = `session:${sessionId}`
-          const sessionData = await getJsonData(redis, sessionKey)
+        const sessionData = await getJsonData(redis, sessionKey)
 
-          console.log('org id passed by request', orgId)
-          console.log('org id in session', sessionData.orgId)
-
-          if (!sessionData || sessionData.orgId !== orgId) {
-            return createGenericErrorResponse(h)
-          }
-
-          const result = await listContacts(redis, orgId)
-          if (result) {
-            return h.response({ status: 200, data: result })
-          } else {
-            return h.response({ status: 200 })
-          }
-        } else {
+        if (!sessionData) {
           return createGenericErrorResponse(h)
+        }
+
+        const result = await listContacts(redis, sessionData?.orgId)
+        if (result) {
+          return h.response({ status: 200, data: result })
+        } else {
+          return h.response({ status: 200 })
         }
       } catch (error) {
         logger.error(error)

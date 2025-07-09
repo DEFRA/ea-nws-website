@@ -72,7 +72,6 @@ module.exports = [
             orgId: orgData.organization.id
           }
           await setJsonData(redis, sessionKey, sessionData)
-          request.cookieAuth.set({ sessionId })
 
           const elasticacheKey = 'signin_status:' + orgData.authToken
           await setJsonData(redis, elasticacheKey, {
@@ -155,7 +154,7 @@ module.exports = [
             status: 'complete'
           })
 
-          return h.response({ status: 200 })
+          return h.response({ status: 200, data: { sessionKey } })
         } else {
           return createGenericErrorResponse(h)
         }

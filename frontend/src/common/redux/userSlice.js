@@ -89,6 +89,7 @@ const userSlice = createSlice({
   initialState: {
     lastActivity: null,
     authToken: null,
+    sessionKey: null,
     registerToken: null,
     profileId: null,
     orgId: null,
@@ -245,6 +246,9 @@ const userSlice = createSlice({
     },
     setAuthToken: (state, action) => {
       state.authToken = action.payload
+    },
+    setSessionKey: (state, action) => {
+      state.sessionKey = action.payload
     },
     setRegisterToken: (state, action) => {
       state.registerToken = action.payload
@@ -791,6 +795,7 @@ const userSlice = createSlice({
     clearAuth: (state) => {
       state.lastActivity = null
       state.authToken = null
+      state.sessionKey = null
       state.registerToken = null
       state.profileId = null
       state.orgId = null
@@ -1024,6 +1029,7 @@ const userSlice = createSlice({
 export const {
   setLastActivity,
   setAuthToken,
+  setSessionKey,
   setRegisterToken,
   setProfileId,
   setOrgId,

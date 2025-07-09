@@ -18,7 +18,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
 
-export default function LinkedContactsPage () {
+export default function LinkedContactsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -33,8 +33,7 @@ export default function LinkedContactsPage () {
   const currentLocation = geoSafeToWebLocation(
     useSelector((state) => state.session.currentLocation)
   )
-  const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
 
   const contactsPerPage = 10
 
@@ -58,7 +57,7 @@ export default function LinkedContactsPage () {
 
   useEffect(() => {
     const getLinkedContacts = async () => {
-      const locationsDataToSend = { orgId, location: currentLocation }
+      const locationsDataToSend = { sessionKey, location: currentLocation }
       const { data } = await backendCall(
         locationsDataToSend,
         'api/elasticache/list_linked_contacts',
@@ -73,7 +72,7 @@ export default function LinkedContactsPage () {
       }
 
       for (const contact of contactsUpdate) {
-        const contactsDataToSend = { authToken, orgId, contact }
+        const contactsDataToSend = { sessionKey, contact }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_locations',
@@ -137,8 +136,7 @@ export default function LinkedContactsPage () {
       return contact.id
     })
     const dataToSend = {
-      authToken,
-      orgId,
+      sessionKey,
       locationId: currentLocation.id,
       contactIds: contactIDs
     }
@@ -152,7 +150,7 @@ export default function LinkedContactsPage () {
     if (errorMessage) {
       console.log(errorMessage)
     }
-    
+
     setUnlinkNotification(getUnlinkText(contactsToUnlink))
 
     const updatedContacts = linkedContacts.filter(
@@ -217,7 +215,10 @@ export default function LinkedContactsPage () {
   return (
     <>
       <Helmet>
-        <title>Users linked to this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Users linked to this location - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>

@@ -9,15 +9,14 @@ import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContac
 export default function UpdateContactAndNavigate(setError, message) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
 
   const navigateToNextPage = async () => {
     const contact = webToGeoSafeContact(
       store.getState().session.orgCurrentContact
     )
 
-    const dataToSend = { authToken, orgId, contact }
+    const dataToSend = { sessionKey, contact }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/organization/update_contact',

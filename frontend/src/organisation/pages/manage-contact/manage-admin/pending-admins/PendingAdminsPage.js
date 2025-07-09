@@ -14,7 +14,7 @@ export default function PendingAdminsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
 
   const [nameSort, setNameSort] = useState('none')
   const [statusSort, setStatusSort] = useState('none')
@@ -25,9 +25,8 @@ export default function PendingAdminsPage() {
 
   useEffect(() => {
     const getPendingAdmins = async () => {
-      const dataToSend = { orgId }
       const contactsData = await backendCall(
-        dataToSend,
+        { sessionKey },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -74,7 +73,10 @@ export default function PendingAdminsPage() {
   return (
     <>
       <Helmet>
-        <title>Pending admins who still need to accept their invitation - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Pending admins who still need to accept their invitation - Manage
+          users - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
@@ -88,7 +90,10 @@ export default function PendingAdminsPage() {
             />
           )}
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               Pending admins who still need to accept their invitation
             </h1>
             <p className='govuk-!-margin-bottom-3 warnings-reports-paragraph'>

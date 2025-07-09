@@ -21,6 +21,7 @@ import {
   setProfile,
   setProfileId,
   setRegistrations,
+  setSessionKey,
   setSigninType
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
@@ -49,7 +50,12 @@ export default function SignInValidatePage() {
     if (orgData) {
       const startProcessing = async () => {
         const dataToSend = { orgData }
-        await backendCall(dataToSend, 'api/org_signin', navigate)
+        const { data } = await backendCall(
+          dataToSend,
+          'api/org_signin',
+          navigate
+        )
+        dispatch(setSessionKey(data.sessionKey))
       }
       startProcessing()
       const interval = setInterval(async function getStatus() {
@@ -191,7 +197,11 @@ export default function SignInValidatePage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Confirm email address{' '}
                 </h2>

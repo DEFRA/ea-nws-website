@@ -16,7 +16,7 @@ import { backendCall } from '../../../common/services/BackendService'
 export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
 
   const [firstnameError, setFirstNameError] = useState('')
   const [lastnameError, setLastNameError] = useState('')
@@ -47,9 +47,8 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const dataToSend = { orgId }
         const contactsData = await backendCall(
-          dataToSend,
+          { sessionKey },
           'api/elasticache/list_contacts',
           navigate
         )
@@ -138,9 +137,18 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
             {(firstnameError || lastnameError || jobTitleError || error) && (
               <ErrorSummary
                 errorList={[
-                  firstnameError && { text: firstnameError, componentId: firstNameId },
-                  lastnameError && { text: lastnameError, componentId: lastNameId },
-                  jobTitleError && { text: jobTitleError, componentId: jobTitleId },
+                  firstnameError && {
+                    text: firstnameError,
+                    componentId: firstNameId
+                  },
+                  lastnameError && {
+                    text: lastnameError,
+                    componentId: lastNameId
+                  },
+                  jobTitleError && {
+                    text: jobTitleError,
+                    componentId: jobTitleId
+                  },
                   error && { text: error, componentId: mainBodyId }
                 ].filter(Boolean)}
               />

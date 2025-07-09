@@ -5,7 +5,6 @@ const { scheduledLPMTransfer } = require('./services/LPM-S3-Transfer')
 const redis = require('redis')
 const getSecretKeyValue = require('./services/SecretsManager')
 const { logger } = require('./plugins/logging')
-const Cookie = require('@hapi/cookie')
 
 async function createServer() {
   // Create the hapi server
@@ -42,22 +41,6 @@ async function createServer() {
   await server.register(require('./plugins/logging'))
   await server.register(require('./plugins/health'))
   await server.register(require('blipp'))
-  await server.register(Cookie)
-
-  const cookiePassword = await getSecretKeyValue(
-    'nws/website',
-    'backendCookiePassword'
-  )
-  server.auth.strategy('session', 'cookie', {
-    cookie: {
-      name: 'session',
-      password: cookiePassword,
-      isSecure: !conf.isDev,
-      isHttpOnly: true,
-      ttl: 24 * 60 * 60 * 1000
-    },
-    redirectTo: false
-  })
 
   if (!conf.isDev) {
     // Send logs to bucket every hour

@@ -17,8 +17,7 @@ import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
 export default function LiveFloodWarningsDashboardPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -94,7 +93,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
     if (alerts) {
       const { data: locationsData } = await backendCall(
-        { orgId },
+        { sessionKey },
         'api/elasticache/list_locations',
         navigate
       )
@@ -109,21 +108,14 @@ export default function LiveFloodWarningsDashboardPage() {
         // loop through live alerts - loop through all locations to find affected locations
         for (const liveAlert of alerts?.alerts) {
           for (const location of locations) {
-            await processLocation(
-              location,
-              liveAlert
-            )
+            await processLocation(location, liveAlert)
           }
         }
       }
     }
   }
 
-  const processLocation = async (
-    location,
-    liveAlert
-  ) => {
-
+  const processLocation = async (location, liveAlert) => {
     const TA_CODE = getAdditional(
       liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
       'TA_CODE'
@@ -145,7 +137,7 @@ export default function LiveFloodWarningsDashboardPage() {
     const severity = liveAlert.type
     const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
-    const contactsDataToSend = { authToken, orgId, location }
+    const contactsDataToSend = { sessionKey, location }
     const { data } = await backendCall(
       contactsDataToSend,
       'api/elasticache/list_linked_contacts',
@@ -285,7 +277,9 @@ export default function LiveFloodWarningsDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Live flood warnings - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -43,7 +43,7 @@ export default function ViewUsersDashboardPage() {
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+  const sessionKey = useSelector((state) => state.session.sessionKey)
   const profileId = useSelector((state) => state.session.profileId)
   const [contactsPerPage, setContactsPerPage] = useState(defaultContactsPerPage)
   const [dialog, setDialog] = useState({
@@ -71,7 +71,7 @@ export default function ViewUsersDashboardPage() {
 
   async function getActiveAdmins() {
     const { data } = await backendCall(
-      { orgId },
+      { sessionKey },
       'api/elasticache/get_active_admins'
     )
     setActiveAdmins(data)
@@ -108,9 +108,8 @@ export default function ViewUsersDashboardPage() {
 
   useEffect(() => {
     const getContacts = async () => {
-      const dataToSend = { orgId }
       const contactsData = await backendCall(
-        dataToSend,
+        { sessionKey },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -122,7 +121,7 @@ export default function ViewUsersDashboardPage() {
       }
 
       contactsUpdate.forEach(async (contact) => {
-        const contactsDataToSend = { authToken, orgId, contact }
+        const contactsDataToSend = { sessionKey, contact }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_locations',
@@ -462,7 +461,7 @@ export default function ViewUsersDashboardPage() {
       removeContactIDs.push(contact.id)
     })
 
-    const dataToSend = { authToken, orgId, removeContactIDs }
+    const dataToSend = { sessionKey, removeContactIDs }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/remove_contacts',
@@ -551,7 +550,10 @@ export default function ViewUsersDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Manage your organisation's users - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Manage your organisation's users - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
 

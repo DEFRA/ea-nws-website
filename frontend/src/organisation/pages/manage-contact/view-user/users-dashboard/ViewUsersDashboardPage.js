@@ -43,7 +43,6 @@ export default function ViewUsersDashboardPage() {
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
-  const sessionKey = useSelector((state) => state.session.sessionKey)
   const profileId = useSelector((state) => state.session.profileId)
   const [contactsPerPage, setContactsPerPage] = useState(defaultContactsPerPage)
   const [dialog, setDialog] = useState({
@@ -71,7 +70,7 @@ export default function ViewUsersDashboardPage() {
 
   async function getActiveAdmins() {
     const { data } = await backendCall(
-      { sessionKey },
+      { authToken },
       'api/elasticache/get_active_admins'
     )
     setActiveAdmins(data)
@@ -109,7 +108,7 @@ export default function ViewUsersDashboardPage() {
   useEffect(() => {
     const getContacts = async () => {
       const contactsData = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -121,7 +120,7 @@ export default function ViewUsersDashboardPage() {
       }
 
       contactsUpdate.forEach(async (contact) => {
-        const contactsDataToSend = { sessionKey, contact }
+        const contactsDataToSend = { authToken, contact }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_locations',
@@ -461,7 +460,7 @@ export default function ViewUsersDashboardPage() {
       removeContactIDs.push(contact.id)
     })
 
-    const dataToSend = { sessionKey, removeContactIDs }
+    const dataToSend = { authToken, removeContactIDs }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/remove_contacts',

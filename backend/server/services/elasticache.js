@@ -578,35 +578,42 @@ const orgSignIn = async (
   contacts,
   authToken
 ) => {
+  const sessionData = await getJsonData(client, authToken)
+
+  console.log('session data', sessionData)
+
   await setJsonData(client, profile.id + ':profile', profile)
-  await addOrgActiveAdmins(client, organization.id, profile.id)
-  const orgExists = await checkKeyExists(client, organization.id + ':org_data')
+  await addOrgActiveAdmins(client, sessionData.orgId, profile.id)
+  const orgExists = await checkKeyExists(
+    client,
+    sessionData.orgId + ':org_data'
+  )
   if (orgExists) {
-    const existingLocations = await getLocationKeys(client, organization.id)
+    const existingLocations = await getLocationKeys(client, sessionData.orgId)
     const existingLocationIds = existingLocations.map((location) =>
       location.split(':').slice(2).join(':')
     )
     for (const location of locations) {
       if (!existingLocationIds.includes(location.id)) {
-        await addLocation(client, organization.id, location)
+        await addLocation(client, sessionData.orgId, location)
       }
     }
-    const existingContacts = await getContactKeys(client, organization.id)
+    const existingContacts = await getContactKeys(client, sessionData.orgId)
     const existingContactIds = existingContacts.map((contact) =>
       contact.split(':').slice(2).join(':')
     )
     for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {
-        await addContact(client, organization.id, contact)
+        await addContact(client, sessionData.orgId, contact)
       }
     }
   } else {
-    await setJsonData(client, organization.id + ':org_data', organization)
+    await setJsonData(client, sessionData.orgId + ':org_data', organization)
     for (const location of locations) {
-      await addLocation(client, organization.id, location)
+      await addLocation(client, sessionData.orgId, location)
     }
     for (const contact of contacts) {
-      await addContact(client, organization.id, contact)
+      await addContact(client, sessionData.orgId, contact)
     }
   }
 }

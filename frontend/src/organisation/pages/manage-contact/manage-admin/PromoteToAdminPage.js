@@ -16,7 +16,7 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function PromoteToAdminPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.authToken)
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const contactEmails = currentContact?.emails
@@ -79,7 +79,7 @@ export default function PromoteToAdminPage() {
         }
       }
 
-      const dataToSend = { sessionKey, contact: updatedContact }
+      const dataToSend = { authToken, contact: updatedContact }
       const { errorMessage: updateError } = await backendCall(
         dataToSend,
         'api/organization/update_contact',
@@ -88,7 +88,7 @@ export default function PromoteToAdminPage() {
 
       if (!updateError) {
         const promoteData = {
-          sessionKey,
+          authToken,
           contactId: updatedContact.id,
           role: 'ADMIN'
         }

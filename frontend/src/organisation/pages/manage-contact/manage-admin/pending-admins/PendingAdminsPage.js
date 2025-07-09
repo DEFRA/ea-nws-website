@@ -14,8 +14,7 @@ export default function PendingAdminsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const sessionKey = useSelector((state) => state.session.sessionKey)
-
+  const authToken = useSelector((state) => state.session.authToken)
   const [nameSort, setNameSort] = useState('none')
   const [statusSort, setStatusSort] = useState('none')
 
@@ -26,7 +25,7 @@ export default function PendingAdminsPage() {
   useEffect(() => {
     const getPendingAdmins = async () => {
       const contactsData = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )

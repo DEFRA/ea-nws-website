@@ -11,8 +11,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 export default function ResendInvitePage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const sessionKey = useSelector((state) => state.session.sessionKey)
-
+  const authToken = useSelector((state) => state.session.authToken)
   const pendingAdmin = location.state?.pendingAdmin
   const pendingAdminEmail = pendingAdmin?.emails[0]
   const pendingAdminName =
@@ -22,7 +21,7 @@ export default function ResendInvitePage() {
     event.preventDefault()
     try {
       const dataToSend = {
-        sessionKey,
+        authToken,
         contactId: pendingAdmin.id,
         role: 'ADMIN'
       }

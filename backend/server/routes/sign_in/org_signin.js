@@ -145,7 +145,7 @@ module.exports = [
             status: 'complete'
           })
 
-          return h.response({ status: 200, data: { sessionKey } })
+          return h.response({ status: 200 })
         } else {
           return createGenericErrorResponse(h)
         }

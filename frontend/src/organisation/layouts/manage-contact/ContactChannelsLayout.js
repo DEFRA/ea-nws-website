@@ -49,7 +49,7 @@ export default function ContactChannelsLayout({
   const lastname = useSelector(
     (state) => state.session.orgCurrentContact.lastname
   )
-  const sessionKey = useSelector((state) => state.session.sessionKey)
+  const authToken = useSelector((state) => state.session.sessioauthTokennKey)
   const originalEmails =
     useSelector((state) => state.session.orgCurrentContact.emails) || []
 
@@ -95,7 +95,7 @@ export default function ContactChannelsLayout({
     const emailsAlreadyAdded = []
     try {
       const contactsData = await backendCall(
-        { sessionKey },
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )

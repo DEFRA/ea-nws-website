@@ -44,7 +44,6 @@ export default function LinkLocationsLayout({
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
-  const sessionKey = useSelector((state) => state.session.sessionKey)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
   const floodHistoryData = useFetchAlerts()
@@ -198,7 +197,7 @@ export default function LinkLocationsLayout({
   }
 
   const getParentLinkedContacts = async (currentLocation) => {
-    const contactsDataToSend = { sessionKey, location: currentLocation }
+    const contactsDataToSend = { authToken, location: currentLocation }
     const { data } = await backendCall(
       contactsDataToSend,
       'api/elasticache/list_linked_contacts',
@@ -268,7 +267,7 @@ export default function LinkLocationsLayout({
           ]
         }
 
-        const dataToSend = { sessionKey, location: locationToAdd }
+        const dataToSend = { authToken, location: locationToAdd }
         const { data, errorMessage } = await backendCall(
           dataToSend,
           'api/location/create',
@@ -279,7 +278,7 @@ export default function LinkLocationsLayout({
           const linkedContacts = await getParentLinkedContacts(currentLocation)
           if (linkedContacts && linkedContacts.length > 0) {
             const dataToSend = {
-              sessionKey,
+              authToken,
               locationId: data.id,
               contactIds: linkedContacts
             }
@@ -328,7 +327,7 @@ export default function LinkLocationsLayout({
       JSON.parse(JSON.stringify(currentLocation)),
       childrenIDs
     )
-    const dataToSend = { sessionKey, location: locationToAdd }
+    const dataToSend = { authToken, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/update',

@@ -14,10 +14,9 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { sessionKey } = request.payload
+        const { authToken } = request.payload
         const { redis } = request.server.app
-
-        const sessionData = await getJsonData(redis, sessionKey)
+        const sessionData = await getJsonData(redis, authToken)
 
         if (!sessionData) {
           return createGenericErrorResponse(h)

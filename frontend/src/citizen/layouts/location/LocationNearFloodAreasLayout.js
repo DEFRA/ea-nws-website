@@ -13,7 +13,8 @@ import Details from '../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import AlertType from '../../../common/enums/AlertType'
 import {
-  getAdditional, setNearbyTargetAreasAdded,
+  getAdditional,
+  setNearbyTargetAreasAdded,
   setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -83,26 +84,32 @@ export default function LocationNearFloodAreasLayout({
           : 0.5
       )
 
-      warningArea.features = warningArea.features.map((area) => ({
-        ...area,
-        addLocation: !inSignUpFlow && floodAreaExistsInProfile(area)
-      }))
-      alertArea.features = alertArea.features.map((area) => ({
-        ...area,
-        addLocation: !inSignUpFlow && floodAreaExistsInProfile(area)
-      }))
+      // Combine area lists
+      let allAreas = [...warningArea.features, ...alertArea.features].map(
+        (area) => {
+          const name = area.properties.TA_Name
+          let addLocationFlag
 
-      areas.push(...warningArea.features)
-      areas.push(...alertArea.features)
+          if (inSignUpFlow) {
+            // Seed ticked locations in case the user has previously selected some then navigated back
+            addLocationFlag = floodAreasRecentlyAdded.includes(name)
+          } else {
+            // Normal flow, seed from user's profile
+            addLocationFlag = floodAreaExistsInProfile(area)
+          }
+
+          return { ...area, addLocation: addLocationFlag }
+        }
+      )
 
       if (!inSignUpFlow) {
         // remove the choice of picking any
-        const filteredAreas = areas.filter(
+        const filteredAreas = allAreas.filter(
           (area) => !floodAreasAlreadyAdded.includes(area?.properties?.TA_Name)
         )
         setFloodAreas(filteredAreas)
       } else {
-        setFloodAreas(areas)
+        setFloodAreas(allAreas)
       }
     }
     fetchFloodAreaData()
@@ -151,35 +158,40 @@ export default function LocationNearFloodAreasLayout({
     // we need to get a common name to group nearby target area locations added through an address
     const locationName = selectedLocation.address
 
-    // if user decides to navigate back, we need to know the exact flood areas added to remove from geosafe
-    let floodAreasAdded = []
+    // We must check what has already been added to prevent duplicates
+    // (in the case of a user navigating back)
+    const alreadyAdded = new Set([
+      ...floodAreasAlreadyAdded,
+      ...floodAreasRecentlyAdded
+    ])
+    const toAdd = floodAreas.filter(
+      (area) => area.addLocation && !alreadyAdded.has(area?.properties?.TA_Name)
+    )
 
-    floodAreas.forEach((area) => {
-      if (area.addLocation) {
-        floodAreasAdded.push(area.properties.TA_Name)
+    const floodAreasAdded = toAdd.map((area) => area.properties.TA_Name)
 
-        const additionals = [
-          { id: 'locationName', value: { s: locationName } },
-          {
-            id: 'other',
-            value: {
-              s: JSON.stringify({
-                alertTypes: getAreasAlertMessageTypes(area.properties.category)
-              })
-            }
+    for (const area of toAdd) {
+      const additionals = [
+        { id: 'locationName', value: { s: locationName } },
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({
+              alertTypes: getAreasAlertMessageTypes(area.properties.category)
+            })
           }
-        ]
-
-        const targetArea = {
-          name: '',
-          address: area.properties.TA_Name,
-          coordinates: getCoordsOfFloodArea(area),
-          additionals: additionals
         }
+      ]
 
-        updatedProfile = addLocation(updatedProfile, targetArea)
+      const targetArea = {
+        name: '',
+        address: area.properties.TA_Name,
+        coordinates: getCoordsOfFloodArea(area),
+        additionals: additionals
       }
-    })
+
+      updatedProfile = addLocation(updatedProfile, targetArea)
+    }
 
     dispatch(setNearbyTargetAreasAdded(floodAreasAdded))
     dispatch(setProfile(updatedProfile))

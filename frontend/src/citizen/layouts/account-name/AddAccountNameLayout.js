@@ -40,7 +40,7 @@ export default function AddAccountNameLayout({
       // Split the full name into first name and last name assuming they are separated by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')
-      const lastname = lastnameParts.join(' ')
+      const lastname = lastnameParts.join(' ') || ''
 
       const profile = addAccountName(session.profile, firstname, lastname)
       dispatch(setProfile(profile))

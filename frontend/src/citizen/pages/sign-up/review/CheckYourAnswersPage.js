@@ -46,7 +46,6 @@ export default function CheckYourAnswersPage() {
     return (
       profile.emails[0] &&
       profile.firstname &&
-      profile.lastname &&
       profile.pois.length !== 0
     )
   }

@@ -16,9 +16,10 @@ module.exports = [
 
         const { profileId, authToken } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (profileId) {
-          await orgSignOut(redis, profileId, authToken)
+        if (profileId && sessionData.orgId) {
+          await orgSignOut(redis, profileId, sessionData.orgId, authToken)
           return h.response({
             status: 200
           })

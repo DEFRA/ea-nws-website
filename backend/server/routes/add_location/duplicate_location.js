@@ -21,7 +21,7 @@ module.exports = [
         const { redis } = request.server.app
         const sessionData = await getJsonData(redis, authToken)
 
-        if (locationName && orgId) {
+        if (locationName && sessionData.orgId) {
           const duplicate = await findLocationByName(
             redis,
             sessionData.orgId,

@@ -82,8 +82,6 @@ export default function ManageKeywordsPage() {
   const authToken = useSelector((state) => state.session.authToken)
 
   useMemo(() => {
-    // whoever is reviewing this - please remind me to update this
-    // might have to make a seperate endpoint to get orgs keywords
     const getKeywords = async () => {
       const type =
         keywordType === 'location'

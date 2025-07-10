@@ -19,6 +19,8 @@ module.exports = [
         const sessionData = await getJsonData(client, authToken)
         const key = sessionData?.orgId + type
 
+        console.log('key', key)
+
         if (key) {
           let result
           if (paths) {

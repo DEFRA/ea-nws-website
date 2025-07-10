@@ -616,24 +616,22 @@ const orgSignIn = async (
   }
 }
 
-const orgSignOut = async (client, profileId, authToken) => {
+const orgSignOut = async (client, profileId, orgId, authToken) => {
   const sessionData = getJsonData(client, authToken)
-  //delete session data
-  await deleteJsonData(client, authToken)
   // delete profile
   await deleteJsonData(client, profileId + ':profile')
-  await removeOrgActiveAdmins(client, sessionData.orgId, profileId)
+  await removeOrgActiveAdmins(client, orgId, profileId)
   // get the new list to see if there are any admins still logged in
   const activeAdmins = await getOrgActiveAdmins(client, orgId)
   // delete all data from elasticache if there are no org Admins logged in
   if (activeAdmins.length === 0) {
     // delete org
-    await deleteJsonData(client, sessionData.orgId + ':org_data')
+    await deleteJsonData(client, orgId + ':org_data')
     // delete locations
     // delete contacts
-    const locationKeys = await getLocationKeys(client, sessionData.orgId)
-    const invLocationKeys = await getInvLocationKeys(client, sessionData.orgId)
-    const contactKeys = await getContactKeys(client, sessionData.orgId)
+    const locationKeys = await getLocationKeys(client, orgId)
+    const invLocationKeys = await getInvLocationKeys(client, orgId)
+    const contactKeys = await getContactKeys(client, orgId)
     await Promise.all(
       locationKeys.map(async (key) => {
         await deleteJsonData(client, key)
@@ -650,15 +648,18 @@ const orgSignOut = async (client, profileId, authToken) => {
       })
     )
 
-    await deleteData(client, sessionData.orgId + ':t_POIS_locID')
-    await deleteData(client, sessionData.orgId + ':t_invPOIS_locID')
-    await deleteData(client, sessionData.orgId + ':t_Contacts_ID')
+    await deleteData(client, orgId + ':t_POIS_locID')
+    await deleteData(client, orgId + ':t_invPOIS_locID')
+    await deleteData(client, orgId + ':t_Contacts_ID')
     // delete contact and location keywords
-    await deleteJsonData(client, sessionData.orgId + ':t_Keywords_location')
-    await deleteJsonData(client, sessionData.orgId + ':t_Keywords_contact')
-    await deleteJsonData(client, sessionData.orgId + ':alertLocations')
-    await deleteJsonData(client, sessionData.orgId + ':t_Linked_locations')
-    await deleteJsonData(client, sessionData.orgId + ':t_Linked_contacts')
+    await deleteJsonData(client, orgId + ':t_Keywords_location')
+    await deleteJsonData(client, orgId + ':t_Keywords_contact')
+    await deleteJsonData(client, orgId + ':alertLocations')
+    await deleteJsonData(client, orgId + ':t_Linked_locations')
+    await deleteJsonData(client, orgId + ':t_Linked_contacts')
+
+    // delete session data
+    await deleteJsonData(client, authToken)
   }
 }
 

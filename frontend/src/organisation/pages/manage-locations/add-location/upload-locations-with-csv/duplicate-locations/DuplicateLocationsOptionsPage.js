@@ -66,7 +66,7 @@ export default function DuplicateLocationsOptionsPage() {
     getPartnerId()
   }, [])
 
-  const getLocation = async (locationName, type) => {
+  const getLocation = async (authToken, locationName, type) => {
     const dataToSend = {
       authToken,
       locationName,

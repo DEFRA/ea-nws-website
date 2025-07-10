@@ -8,7 +8,6 @@ const {
   setJsonData
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
-const { v4: uuidv4 } = require('uuid')
 
 // geosafe api restricted to 1024 locations per response
 // recall to api required to collect all locations

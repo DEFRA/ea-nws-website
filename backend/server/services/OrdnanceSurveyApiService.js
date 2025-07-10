@@ -74,6 +74,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
         // Retry on first 500 call to mask any error
         return await axios.get(url)
       }
+      console.log(err)
       throw err
     }
   }
@@ -82,7 +83,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
   // remove special characters from name
   const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
-  let url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
+  let url = `https://ronan.com/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
   if (filters !== null) {
     let filterStr = ''
     filters.forEach((filter) => {
@@ -119,7 +120,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
         const pagedUrl = `${url}&offset=${offset}`
 
         try {
-          const pageResponse = await axios.get(pagedUrl)
+          const pageResponse = await fetchOnce(pagedUrl)
           if (!pageResponse.data.results.length) break // No results mean we've reached the end before expected
           results.push(...pageResponse.data.results)
         } catch (err) {

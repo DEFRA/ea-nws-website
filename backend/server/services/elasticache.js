@@ -580,44 +580,45 @@ const orgSignIn = async (
 ) => {
   const sessionData = await getJsonData(client, authToken)
 
-  await setJsonData(client, profile.id + ':profile', profile)
-  await addOrgActiveAdmins(client, sessionData.orgId, profile.id)
-  const orgExists = await checkKeyExists(
-    client,
-    sessionData.orgId + ':org_data'
-  )
-  if (orgExists) {
-    const existingLocations = await getLocationKeys(client, sessionData.orgId)
-    const existingLocationIds = existingLocations.map((location) =>
-      location.split(':').slice(2).join(':')
+  if (sessionData) {
+    await setJsonData(client, profile.id + ':profile', profile)
+    await addOrgActiveAdmins(client, sessionData.orgId, profile.id)
+    const orgExists = await checkKeyExists(
+      client,
+      sessionData.orgId + ':org_data'
     )
-    for (const location of locations) {
-      if (!existingLocationIds.includes(location.id)) {
+    if (orgExists) {
+      const existingLocations = await getLocationKeys(client, sessionData.orgId)
+      const existingLocationIds = existingLocations.map((location) =>
+        location.split(':').slice(2).join(':')
+      )
+      for (const location of locations) {
+        if (!existingLocationIds.includes(location.id)) {
+          await addLocation(client, sessionData.orgId, location)
+        }
+      }
+      const existingContacts = await getContactKeys(client, sessionData.orgId)
+      const existingContactIds = existingContacts.map((contact) =>
+        contact.split(':').slice(2).join(':')
+      )
+      for (const contact of contacts) {
+        if (!existingContactIds.includes(contact.id)) {
+          await addContact(client, sessionData.orgId, contact)
+        }
+      }
+    } else {
+      await setJsonData(client, sessionData.orgId + ':org_data', organization)
+      for (const location of locations) {
         await addLocation(client, sessionData.orgId, location)
       }
-    }
-    const existingContacts = await getContactKeys(client, sessionData.orgId)
-    const existingContactIds = existingContacts.map((contact) =>
-      contact.split(':').slice(2).join(':')
-    )
-    for (const contact of contacts) {
-      if (!existingContactIds.includes(contact.id)) {
+      for (const contact of contacts) {
         await addContact(client, sessionData.orgId, contact)
       }
-    }
-  } else {
-    await setJsonData(client, sessionData.orgId + ':org_data', organization)
-    for (const location of locations) {
-      await addLocation(client, sessionData.orgId, location)
-    }
-    for (const contact of contacts) {
-      await addContact(client, sessionData.orgId, contact)
     }
   }
 }
 
 const orgSignOut = async (client, profileId, orgId, authToken) => {
-  const sessionData = getJsonData(client, authToken)
   // delete profile
   await deleteJsonData(client, profileId + ':profile')
   await removeOrgActiveAdmins(client, orgId, profileId)

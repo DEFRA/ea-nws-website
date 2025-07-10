@@ -533,16 +533,18 @@ export default function LocationMessagesPage() {
         </>
       )}
 
+      {/* Only render button if location is not a predefined boundary */}
+      {!isPredefinedBoundary && (
       <Button
         imageSrc={linkIcon}
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
-        // TODO: Add link to nearby flood areas
         onClick={(event) => {
           event.preventDefault()
           navigate(orgManageLocationsUrls.add.linkToTargetArea)
         }}
       />
+      )}
     </>
   )
 
@@ -585,14 +587,13 @@ export default function LocationMessagesPage() {
           </div>
         </div>
 
-        {/* Only render flood areas section if location is not a predefined boundary */}
-        {!isPredefinedBoundary && (
+        
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-full govuk-!-margin-top-9'>
               {floodAreasSection}
             </div>
           </div>
-        )}
+        
 
         {unlinkID && (
           <Popup

@@ -580,8 +580,6 @@ const orgSignIn = async (
 ) => {
   const sessionData = await getJsonData(client, authToken)
 
-  console.log('session data', sessionData)
-
   await setJsonData(client, profile.id + ':profile', profile)
   await addOrgActiveAdmins(client, sessionData.orgId, profile.id)
   const orgExists = await checkKeyExists(

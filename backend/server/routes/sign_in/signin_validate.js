@@ -40,19 +40,11 @@ module.exports = [
               })
             }
 
-            console.log('setting org id')
-            console.log('org id', response.data.organization.id)
-            console.log('authtoken', response.data.authToken)
-
             // store the organisation ID serverside
-            await setJsonData(
-              redis,
-              response.data.authToken,
-              response.data.organization.id
-            )
+            await setJsonData(redis, response.data.authToken, {
+              orgId: response.data.organization.id
+            })
           }
-
-          console.log('response', response)
 
           return h.response(response)
         } else {

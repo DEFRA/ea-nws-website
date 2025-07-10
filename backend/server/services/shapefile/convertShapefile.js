@@ -1,6 +1,7 @@
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../SecretsManager')
 const { logger } = require('../../plugins/logging')
+const turf = require('@turf/turf')
 
 const convertShapefile = async (zipFileName) => {
   try {
@@ -43,12 +44,30 @@ const convertShapefile = async (zipFileName) => {
     const { parseZip } = await import('shpjs')
     const geojson = await parseZip(shapefileArrayBuffer)
 
-    if (!geojson) {
+    if (!geojson || !geojson.features) {
       throw new Error('Could not read shapefile')
     }
 
+    // Buffer any LineString / MultiLineString into a thin polygon (5m total width)
+    const bufferedFeatures = geojson.features.map((f) => {
+      if (['LineString', 'MultiLineString'].includes(f.geometry.type)) {
+        return turf.buffer(f, 0.005, { units: 'kilometers' })
+      }
+      return f
+    })
+
+    // Front end needs to know what the feature types were before
+    // they were all converted to polygon
+    const original = geojson
+
+    const processed = {
+      type: 'FeatureCollection',
+      features: bufferedFeatures,
+      fileName: geojson.fileName
+    }
+
     return {
-      data: geojson
+      data: { original, processed }
     }
   } catch (error) {
     logger.error(error)

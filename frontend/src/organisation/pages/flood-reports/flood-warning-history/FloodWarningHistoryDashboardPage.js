@@ -8,7 +8,6 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary.js'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../common/enums/AlertState.js'
-import { getAdditional } from '../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter'
@@ -104,10 +103,7 @@ export default function FloodWarningHistoryDashboardPage() {
     liveAlert
   ) => {
 
-    const TA_CODE = getAdditional(
-      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-      'TA_CODE'
-    )
+    const TA_CODE = liveAlert.TA_CODE
     
     const { additionals } = location
     const locationIntersectsWithFloodArea =
@@ -117,10 +113,7 @@ export default function FloodWarningHistoryDashboardPage() {
 
     if (!locationIntersectsWithFloodArea) return
 
-    const TA_NAME = getAdditional(
-      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-      'TA_Name'
-    )
+    const TA_NAME = liveAlert.TA_Name
 
     const severity = liveAlert.type
 

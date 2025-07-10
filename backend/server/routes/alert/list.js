@@ -55,7 +55,58 @@ const alertRemovalMap = {
   'Flood Alert': 'Remove Flood Alert'
 }
 
-const createGeoSafeAlertObject = (historicData) => {
+const getAdditional = (additionals, id) => {
+  if (Array.isArray(additionals)) {
+    for (let i = 0; i < additionals?.length; i++) {
+      if (additionals[i].id === id) {
+        return additionals[i].value?.s
+      }
+      if (additionals[i].key === id) {
+        return additionals[i].value?.s
+      }
+    }
+  } else {
+    return additionals[id] || ''
+  }
+  return ''
+}
+
+const geosafeToWebAlertFormat = (alert) => {
+  const TA_CODE = getAdditional(
+    alert.mode.zoneDesc.placemarks[0].extraInfo,
+    'TA_CODE'
+  )
+  const TA_Name = getAdditional(
+    alert.mode.zoneDesc.placemarks[0].extraInfo,
+    'TA_Name'
+  )
+  const category = getAdditional(
+    alert.mode.zoneDesc.placemarks[0].extraInfo,
+    'category'
+  )
+  return {
+    id: alert.id,
+    version: alert.version,
+    name: alert.name,
+    description: alert.description,
+    effectiveDate: alert.effectiveDate,
+    expirationDate: alert.expirationDate,
+    TA_CODE: TA_CODE,
+    TA_Name: TA_Name,
+    category: category,
+    type: alert.type
+  }
+}
+
+const convertGeosafeAlerts = (alerts) => {
+  const result = []
+  alerts.forEach((alert) => {
+    result.push(geosafeToWebAlertFormat(alert))
+  })
+  return result
+}
+
+const historicToWebAlertFormat = (historicData) => {
   return {
     id: '1',
     version: 1,
@@ -63,71 +114,10 @@ const createGeoSafeAlertObject = (historicData) => {
     description: { en: 'Flood', additionalLabels: [] },
     effectiveDate: Math.floor(new Date(historicData.endDate).getTime() / 1000),
     expirationDate: Math.floor(new Date(historicData.endDate).getTime() / 1000),
-    duration: {},
-    urgency: '',
-    severity: '',
-    certainty: '',
-    mode: {
-      zoneDesc: {
-        name: '',
-        placemarks: [
-          {
-            id: '',
-            name: '',
-            geometry: {
-              rings: [],
-              circles: [],
-              polygons: []
-            },
-            geocodes: [],
-            extraInfo: [
-              {
-                key: 'TA_CODE',
-                value: { s: historicData.taCode }
-              },
-              {
-                key: 'TA_Name',
-                value: {
-                  s: historicData.taName
-                }
-              },
-              {
-                key: 'category',
-                value: {
-                  s: historicData.type
-                }
-              },
-              {
-                key: 'createddate',
-                value: {
-                  s: historicData.createdDate
-                }
-              },
-              {
-                key: 'lastmodifieddate',
-                value: {
-                  s: historicData.endDate
-                }
-              }
-            ]
-          }
-        ]
-      }
-    },
-    channels: [{ channelId: '', placemarks: [0], countryCodes: [] }],
-    type: historicData.type,
-    sender: '',
-    scope: 'PUBLIC',
-    capStatus: '',
-    categories: [''],
-    eventType: {
-      en: 'Flood',
-      additionalLabels: []
-    },
-    eventCode: { domain: 'NWS', code: 'FLOOD' },
-    execution: {},
-    workspaceId: '1',
-    workspaceName: 'National Workspace'
+    TA_CODE: historicData.taCode,
+    TA_Name: historicData.taName,
+    category: historicData.type,
+    type: historicData.type
   }
 }
 
@@ -168,7 +158,7 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
           name: nextEntry['Message Type'] + currentTA
         }
 
-        result.push(createGeoSafeAlertObject(newAlert))
+        result.push(historicToWebAlertFormat(newAlert))
         toRemove.add(i)
         toRemove.add(j)
         break
@@ -223,8 +213,9 @@ const getAllPastAlerts = async(request) => {
 
     // get past alerts from geosafe
     response = await apiCall({ options: options }, 'alert/list')
+    const geoSafeAlerts = convertGeosafeAlerts(response.data.alerts)
 
-    historicAlerts = response.data.alerts.concat(
+    historicAlerts = geoSafeAlerts.concat(
       sortedHistoricFileData
     )
     response.data.alerts = historicAlerts
@@ -260,12 +251,16 @@ module.exports = [
           response = await getAllPastAlerts(request)
         } else {
           response = await apiCall({ options: options }, 'alert/list')
+          response.data.alerts = convertGeosafeAlerts(response.data.alerts)
         }
 
         if (filterDate) {
           const dateFormat = 'dd/MM/yyyy HH:mm:ss'
           response.data.alerts = response.data.alerts.filter((alert) => {
-            const rawDate = alert.effectiveDate
+            let rawDate = alert.effectiveDate
+            if (typeof rawDate !== 'number') {
+              rawDate = 0
+            }
             const formattedDate = format(new Date(rawDate * 1000), dateFormat)
             let parsedDate = null
             const attempt = parse(formattedDate, dateFormat, new Date())

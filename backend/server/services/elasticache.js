@@ -576,44 +576,37 @@ const orgSignIn = async (
   organization,
   locations,
   contacts,
-  authToken
+  orgId
 ) => {
-  const sessionData = await getJsonData(client, authToken)
-
-  if (sessionData) {
-    await setJsonData(client, profile.id + ':profile', profile)
-    await addOrgActiveAdmins(client, sessionData.orgId, profile.id)
-    const orgExists = await checkKeyExists(
-      client,
-      sessionData.orgId + ':org_data'
+  await setJsonData(client, profile.id + ':profile', profile)
+  await addOrgActiveAdmins(client, orgId, profile.id)
+  const orgExists = await checkKeyExists(client, orgId + ':org_data')
+  if (orgExists) {
+    const existingLocations = await getLocationKeys(client, orgId)
+    const existingLocationIds = existingLocations.map((location) =>
+      location.split(':').slice(2).join(':')
     )
-    if (orgExists) {
-      const existingLocations = await getLocationKeys(client, sessionData.orgId)
-      const existingLocationIds = existingLocations.map((location) =>
-        location.split(':').slice(2).join(':')
-      )
-      for (const location of locations) {
-        if (!existingLocationIds.includes(location.id)) {
-          await addLocation(client, sessionData.orgId, location)
-        }
+    for (const location of locations) {
+      if (!existingLocationIds.includes(location.id)) {
+        await addLocation(client, orgId, location)
       }
-      const existingContacts = await getContactKeys(client, sessionData.orgId)
-      const existingContactIds = existingContacts.map((contact) =>
-        contact.split(':').slice(2).join(':')
-      )
-      for (const contact of contacts) {
-        if (!existingContactIds.includes(contact.id)) {
-          await addContact(client, sessionData.orgId, contact)
-        }
+    }
+    const existingContacts = await getContactKeys(client, orgId)
+    const existingContactIds = existingContacts.map((contact) =>
+      contact.split(':').slice(2).join(':')
+    )
+    for (const contact of contacts) {
+      if (!existingContactIds.includes(contact.id)) {
+        await addContact(client, orgId, contact)
       }
-    } else {
-      await setJsonData(client, sessionData.orgId + ':org_data', organization)
-      for (const location of locations) {
-        await addLocation(client, sessionData.orgId, location)
-      }
-      for (const contact of contacts) {
-        await addContact(client, sessionData.orgId, contact)
-      }
+    }
+  } else {
+    await setJsonData(client, orgId + ':org_data', organization)
+    for (const location of locations) {
+      await addLocation(client, orgId, location)
+    }
+    for (const contact of contacts) {
+      await addContact(client, orgId, contact)
     }
   }
 }

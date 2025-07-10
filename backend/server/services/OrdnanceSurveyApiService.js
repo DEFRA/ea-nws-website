@@ -83,7 +83,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
   // remove special characters from name
   const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
-  let url = `https://ronan.com/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
+  let url = `https://api.os.co.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
   if (filters !== null) {
     let filterStr = ''
     filters.forEach((filter) => {

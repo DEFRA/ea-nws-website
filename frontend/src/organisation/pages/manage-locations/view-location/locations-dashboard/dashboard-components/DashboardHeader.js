@@ -250,7 +250,6 @@ export default function DashboardHeader({
   linkSource,
   setErrorMessage
 }) {
-
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -367,13 +366,13 @@ export default function DashboardHeader({
                 .length > 0 && (
                 <div style={{ width: '100%' }}>
                   <FloodBanner
-                    type='noContacts' 
+                    type='noContacts'
                     locations={locations}
                     onClickLinked={onClickLinked}
                   />
                   <div style={{ paddingLeft: '0.5rem' }}>
                     <Details
-                      title='Linking locations to contacts so that they can get flood messages'
+                      title='How to link locations to contacts so that they can get flood messages'
                       text={noContactsDetails}
                     />
                   </div>
@@ -387,7 +386,9 @@ export default function DashboardHeader({
           </>
         ) : (
           <>
-            <h1 className='govuk-heading-l' id='main-content'>Link contact to locations</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Link contact to locations
+            </h1>
             <p>
               Select the locations you want to link to this contact from the
               list. Then select

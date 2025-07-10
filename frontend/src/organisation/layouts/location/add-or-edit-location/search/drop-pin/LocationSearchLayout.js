@@ -106,11 +106,18 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {placeNameTownOrPostcodeError && (
-              <ErrorSummary errorList={[{text: placeNameTownOrPostcodeError, componentId: locationSearchId}]} />
+              <ErrorSummary
+                errorList={[
+                  {
+                    text: placeNameTownOrPostcodeError,
+                    componentId: locationSearchId
+                  }
+                ]}
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Find the location on a map

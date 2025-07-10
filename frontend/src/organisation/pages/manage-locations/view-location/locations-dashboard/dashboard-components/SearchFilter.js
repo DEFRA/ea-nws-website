@@ -316,15 +316,17 @@ export default function SearchFilter({
             id={`${filterTitle.toLowerCase().replace(/\s+/g, '-')}`}
             className='govuk-checkboxes govuk-checkboxes--small locations-select-filter'
           >
-            {filterType.map((option) => (
-              <CheckBox
-                key={option}
-                label={option}
-                value={option}
-                checked={selectedFilterType.includes(option)}
-                onChange={(e) => handleFilterChange(e, setSelectedFilterType)}
-              />
-            ))}
+            {filterType
+              .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+              .map((option) => (
+                <CheckBox
+                  key={option}
+                  label={option}
+                  value={option}
+                  checked={selectedFilterType.includes(option)}
+                  onChange={(e) => handleFilterChange(e, setSelectedFilterType)}
+                />
+              ))}
           </div>
         )}
       </>

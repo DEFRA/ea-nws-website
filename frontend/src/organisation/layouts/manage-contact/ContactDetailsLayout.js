@@ -132,15 +132,24 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(firstnameError || lastnameError || jobTitleError || error) && (
               <ErrorSummary
                 errorList={[
-                  firstnameError && { text: firstnameError, componentId: firstNameId },
-                  lastnameError && { text: lastnameError, componentId: lastNameId },
-                  jobTitleError && { text: jobTitleError, componentId: jobTitleId },
+                  firstnameError && {
+                    text: firstnameError,
+                    componentId: firstNameId
+                  },
+                  lastnameError && {
+                    text: lastnameError,
+                    componentId: lastNameId
+                  },
+                  jobTitleError && {
+                    text: jobTitleError,
+                    componentId: jobTitleId
+                  },
                   error && { text: error, componentId: mainBodyId }
                 ].filter(Boolean)}
               />

@@ -13,7 +13,8 @@ import Details from '../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import AlertType from '../../../common/enums/AlertType'
 import {
-  getAdditional, setNearbyTargetAreasAdded,
+  getAdditional,
+  setNearbyTargetAreasAdded,
   setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -205,7 +206,9 @@ export default function LocationNearFloodAreasLayout({
     floodAreas.forEach(async (area) => {
       if (area.addLocation) {
         const location = findPOIByAddress(profile, area?.properties.TA_Name)
-        const locationAlertTypes = getAreasAlertMessageTypes(area?.properties.category)
+        const locationAlertTypes = getAreasAlertMessageTypes(
+          area?.properties.category
+        )
 
         const data = {
           authToken,
@@ -437,7 +440,7 @@ export default function LocationNearFloodAreasLayout({
       ) : (
         <>
           <BackLink onClick={() => handleUserNavigatingBack()} />
-          <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
             <div className='govuk-grid-row govuk-body'>
               {error && <ErrorSummary errorList={[error]} />}
               <div className='govuk-grid-column-full'>
@@ -512,15 +515,16 @@ export default function LocationNearFloodAreasLayout({
                 <div className='govuk-!-margin-top-7'>
                   <Button
                     text='I want these'
-                    className={`govuk-button ${
+                    className={`govuk-button govuk-!-margin-right-2 ${
                       isMobile && 'custom-width-button'
                     }`}
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     to={searchResultsPage}
-                    className='govuk-link'
+                    className={`govuk-link ${
+                      isMobile && 'link-mobile-alignment'
+                    }`}
                     style={{
                       display: 'inline-block',
                       padding: '8px 10px 7px',

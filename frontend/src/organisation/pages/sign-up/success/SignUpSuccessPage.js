@@ -105,7 +105,10 @@ export default function SignUpSuccessPage() {
   return (
     <>
       <Helmet>
-        <title>Organisation details submitted for approval - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Organisation details submitted for approval - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -122,7 +125,7 @@ export default function SignUpSuccessPage() {
                   organisation.
                 </p>
                 <p className='govuk-!-margin-top-6'>
-                  This usually takes 2 to 3 working days.
+                  This usually takes 3-5 days.
                 </p>
                 <p className='govuk-!-margin-top-6'>
                   Once approved, we will email you and explain how the service

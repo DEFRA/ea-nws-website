@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -22,6 +22,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
     useState('')
   const [results, setResults] = useState(null)
   const locationSearchId = 'location-search'
+  const debounceRef = useRef(null)
 
   // remove error if user changes place name, town or postcode
   useEffect(() => {
@@ -30,45 +31,40 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
     }
   }, [placeNameTownOrPostcode])
 
+  const fetchLocationResults = async (value) => {
+    const dataToSend = {
+      name: value,
+      filters: [
+        'City',
+        'Hamlet',
+        'Harbour',
+        'Other_Settlement',
+        'Suburban_Area',
+        'Town',
+        'Urban_Greenspace',
+        'Village'
+      ],
+      loop: false
+    }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/os-api/name-search',
+      navigate
+    )
+    if (!errorMessage) {
+      setResults(data)
+      setPlaceNameTownOrPostcodeError('')
+      setShowNotFound(false)
+    } else {
+      // show error message from OS Api postcode search
+      setPlaceNameTownOrPostcodeError(errorMessage)
+      setShowNotFound(true)
+    }
+  }
+
   const handleInputChange = async (value) => {
     setPlaceNameTownOrPostcode(value)
     setResults([])
-
-    const valueEmpty = value.length === 0
-    const valueLongEnough = value.length >= 4
-    const valueValid = !valueEmpty && valueLongEnough
-    if (valueValid) {
-      const dataToSend = {
-        name: value,
-        filters: [
-          'City',
-          'Hamlet',
-          'Harbour',
-          'Other_Settlement',
-          'Suburban_Area',
-          'Town',
-          'Urban_Greenspace',
-          'Village'
-        ],
-        loop: false
-      }
-      const { data, errorMessage } = await backendCall(
-        dataToSend,
-        'api/os-api/name-search',
-        navigate
-      )
-      if (!errorMessage) {
-        setResults(data)
-        setPlaceNameTownOrPostcodeError('')
-        setShowNotFound(false)
-      } else {
-        // show error message from OS Api postcode search
-        setPlaceNameTownOrPostcodeError(errorMessage)
-        setShowNotFound(true)
-      }
-    } else {
-      setShowNotFound(false)
-    }
   }
 
   const handleOnClick = (value) => {
@@ -93,6 +89,25 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
     }
   }
 
+  // 1 second debounce on the OS API call
+  useEffect(() => {
+    if (placeNameTownOrPostcode.length < 3) {
+      setResults([])
+      return
+    }
+
+    // Clear timer
+    clearTimeout(debounceRef.current)
+
+    // Schedule fetch
+    debounceRef.current = setTimeout(() => {
+      fetchLocationResults(placeNameTownOrPostcode)
+    }, 1000)
+
+    // Cleanup on exit
+    return () => clearTimeout(debounceRef.current)
+  }, [placeNameTownOrPostcode])
+
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
@@ -105,7 +120,14 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {placeNameTownOrPostcodeError && (
-              <ErrorSummary errorList={[{text: placeNameTownOrPostcodeError, componentId: locationSearchId}]} />
+              <ErrorSummary
+                errorList={[
+                  {
+                    text: placeNameTownOrPostcodeError,
+                    componentId: locationSearchId
+                  }
+                ]}
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Find the location on a map

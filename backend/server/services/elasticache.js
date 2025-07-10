@@ -28,8 +28,6 @@ const getJsonData = async (client, key, path) => {
   } else {
     result = await client.json.get(key)
   }
-  console.log(path)
-  console.log(result)
   return result
 }
 

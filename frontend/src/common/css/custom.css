@@ -2226,8 +2226,8 @@ govuk-menu-toggle.button-menu > button {
   }
 }
 
-/* accessibile panel */
-.accessible-map-legend-conatiner {
+/* accessible panel */
+.accessible-map-legend-container {
   align-items: center;
   background-color: white;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
@@ -2241,22 +2241,22 @@ govuk-menu-toggle.button-menu > button {
   z-index: 500;
 }
 
-.accessible-map-legend-conatiner.keyboard {
+.accessible-map-legend-container.keyboard {
   display: flex;
   flex-direction: column;
   width: 300px;
   align-items: start;
 }
 
-.accessible-map-legend-conatiner.keyboard h3 {
+.accessible-map-legend-container.keyboard h3 {
   margin-bottom: 10px;
 }
 
-.accessible-map-legend-conatiner.keyboard kbd:first-of-type {
+.accessible-map-legend-container.keyboard kbd:first-of-type {
   margin-left: 0;
 }
 
-.accessible-map-legend-conatiner kbd {
+.accessible-map-legend-container kbd {
   font-family: GDS Transport, arial, sans-serif;
   color: #0b0c0c;
   border: 2px solid #b1b4b6;

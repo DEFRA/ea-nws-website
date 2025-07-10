@@ -582,7 +582,7 @@ export default function Map({
           <>
             {showMapLegend && (
               <div
-                className={`accessible-map-legend-conatiner govuk-body-s ${
+                className={`accessible-map-legend-container govuk-body-s ${
                   mapLegendOpen ? 'keyboard' : ''
                 }`}
               >

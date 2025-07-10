@@ -36,7 +36,7 @@ export default function UserInformationPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { authToken, contact: currentContact }
+      const dataToSend = { authToken, contactId: currentContact.id }
       const linkLocationsRes = await backendCall(
         dataToSend,
         'api/elasticache/list_linked_locations',
@@ -220,7 +220,7 @@ export default function UserInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{currentContact.comments}</p>
+                <p className='note-body'>{currentContact.comments}</p>
               </div>
             )}
 

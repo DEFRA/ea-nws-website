@@ -107,7 +107,6 @@ module.exports = [
             orgData.organization,
             locations,
             contactRes.data.contacts,
-            orgData.authToken,
             sessionData.orgId
           )
 

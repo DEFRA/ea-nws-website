@@ -197,7 +197,10 @@ export default function LinkLocationsLayout({
   }
 
   const getParentLinkedContacts = async (currentLocation) => {
-    const contactsDataToSend = { authToken, location: currentLocation }
+    const contactsDataToSend = {
+      authToken,
+      locationId: currentLocation.id
+    }
     const { data } = await backendCall(
       contactsDataToSend,
       'api/elasticache/list_linked_contacts',

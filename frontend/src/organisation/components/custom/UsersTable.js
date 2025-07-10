@@ -197,6 +197,7 @@ export default function UsersTable({
           <tr className='govuk-table__row'>
             <th scope='col' className='govuk-table__header'>
               <div
+                style={{ marginTop: '-10px' }}
                 className='govuk-checkboxes govuk-checkboxes--small'
                 data-module='govuk-checkboxes'
               >
@@ -337,6 +338,7 @@ export default function UsersTable({
             <tr className='govuk-table__row' key={index}>
               <th scope='row' className='govuk-table__header'>
                 <div
+                  style={{ marginTop: '-10px' }}
                   className='govuk-checkboxes govuk-checkboxes--small'
                   data-module='govuk-checkboxes'
                 >
@@ -386,12 +388,12 @@ export default function UsersTable({
               {!filterVisible && (
                 <>
                   <td className='govuk-table__cell'>
-                    {contact.linked_locations?.length !== undefined ? (
+                    {contact.linked_locations !== undefined ? (
                       <Link
                         className='govuk-link'
                         onClick={(e) => viewLinkedLocations(e, contact)}
                       >
-                        {contact.linked_locations?.length}
+                        {contact.linked_locations}
                       </Link>
                     ) : (
                       LoadingDots

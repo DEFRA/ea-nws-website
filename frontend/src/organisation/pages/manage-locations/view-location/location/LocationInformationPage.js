@@ -293,7 +293,7 @@ export default function LocationInformationPage () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <pre>{additionalData.action_plan}</pre>
+                <p className='action-plan-body'>{additionalData.action_plan}</p>
               </div>
             )}
 
@@ -313,7 +313,7 @@ export default function LocationInformationPage () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{additionalData.notes}</p>
+                <p className='notes-body'>{additionalData.notes}</p>
               </div>
             )}
 

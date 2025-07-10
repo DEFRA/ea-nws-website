@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import {
-    getLocationAdditional,
-    getLocationOther
+  getLocationAdditional,
+  getLocationOther
 } from '../../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationNotInEnglandInfoPage () {
+export default function LocationNotInEnglandInfoPage() {
   const navigate = useNavigate()
 
   const locationName = useSelector((state) =>
@@ -42,10 +42,13 @@ export default function LocationNotInEnglandInfoPage () {
   return (
     <>
       <Helmet>
-        <title>Location not in england information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Location not in england information - Manage locations - Get flood
+          warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l '>Location not in England</h1>

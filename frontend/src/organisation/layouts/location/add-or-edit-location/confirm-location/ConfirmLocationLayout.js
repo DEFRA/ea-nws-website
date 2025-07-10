@@ -69,6 +69,7 @@ export default function ConfirmLocationLayout({
   )
 
   const shapeArea = location.state?.shapeArea
+  const areaUnit = location.state?.unit
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId() {
@@ -289,7 +290,7 @@ export default function ConfirmLocationLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {error && (
@@ -373,7 +374,9 @@ export default function ConfirmLocationLayout({
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Polygon
                 </h3>
-                <p>{shapeArea} square metres</p>
+                <p>
+                  {shapeArea} {areaUnit}
+                </p>
 
                 <div className='govuk-!-margin-top-8'>
                   <Button

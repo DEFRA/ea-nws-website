@@ -79,7 +79,7 @@ export default function LocationAddConfirmPage() {
         </title>
       </Helmet>
       <BackLink onClick={() => navigate(-2)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-two-thirds'>
           {error && <ErrorSummary errorList={[error]} />}
           <h1

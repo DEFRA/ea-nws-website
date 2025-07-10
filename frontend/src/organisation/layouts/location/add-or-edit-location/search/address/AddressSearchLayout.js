@@ -74,7 +74,7 @@ export default function AddressSearchLayout({
           navigateToPreviousPage()
         }}
       />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
             {loading ? (

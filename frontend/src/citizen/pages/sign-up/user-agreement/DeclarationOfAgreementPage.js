@@ -7,8 +7,8 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import {
-    setProfile,
-    setRegistrations
+  setProfile,
+  setRegistrations
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
@@ -73,7 +73,9 @@ export default function DeclarationOfAgreementPage() {
   return (
     <>
       <Helmet>
-        <title>Check the terms and conditions - Get flood warnings - GOV.UK</title>
+        <title>
+          Check the terms and conditions - Get flood warnings - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -129,14 +131,14 @@ export default function DeclarationOfAgreementPage() {
                   help emergency services and local councils respond to flooding
                 </li>
                 <li>
-                  help with out work on flood warning and local flood risk
+                  help with our work on flood warning and local flood risk
                   management
                 </li>
               </ul>
 
               <p>
                 We may give your information to our agents or representatives so
-                they can do any of these things for us. And we may share you
+                they can do any of these things for us. And we may share your
                 information with other organisations if the laws say we must.
               </p>
 
@@ -149,7 +151,7 @@ export default function DeclarationOfAgreementPage() {
                   rel='noreferrer'
                 >
                   {' '}
-                  privacy notice (open new window){' '}
+                  privacy notice (opens new window){' '}
                 </a>
                 explains how we treat your personal information.
               </p>

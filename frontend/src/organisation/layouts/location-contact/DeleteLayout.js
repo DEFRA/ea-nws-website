@@ -109,7 +109,7 @@ export default function DeleteLayout() {
         </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         {error && <ErrorSummary errorList={[error]} />}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>

@@ -67,7 +67,7 @@ export default function LocationAlreadyAddedLayout() {
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-full'>
             {!loading && (

@@ -66,6 +66,18 @@ const osPostCodeApiCall = async (postCode) => {
 }
 
 const osFindNameApiCall = async (name, filters, loop) => {
+  const fetchOnce = async (url) => {
+    try {
+      return await axios.get(url)
+    } catch (err) {
+      if (err.response?.status === 500) {
+        // Retry on first 500 call to mask any error
+        return await axios.get(u)
+      }
+      throw err
+    }
+  }
+
   let responseData = []
   // remove special characters from name
   const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
@@ -92,7 +104,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
 
   try {
     let results = []
-    let response = await axios.get(url)
+    let response = await fetchOnce(url)
     results.push(...response.data.results)
 
     const pageSize = 100

@@ -35,22 +35,17 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
     setResults([])
 
     const valueEmpty = value.length === 0
-    const valueLongEnough = value.length >= 3
+    const valueLongEnough = value.length >= 4
     const valueValid = !valueEmpty && valueLongEnough
     if (valueValid) {
       const dataToSend = {
         name: value,
         filters: [
-          'Bay',
           'City',
-          'Coastal_Headland',
-          'Estuary',
-          'Group_Of_Islands',
+          'Hamlet',
           'Harbour',
-          'Island',
           'Other_Settlement',
           'Suburban_Area',
-          'Tidal_Water',
           'Town',
           'Urban_Greenspace',
           'Village'

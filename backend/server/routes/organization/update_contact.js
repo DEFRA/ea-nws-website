@@ -19,8 +19,6 @@ module.exports = [
         const { redis } = request.server.app
         const sessionData = await getJsonData(redis, authToken)
 
-        console.log('sessiondata', sessionData.orgId)
-
         if (authToken && sessionData.orgId && contact) {
           // remove any null fields from each contact
           Object.keys(contact).forEach((key) => {

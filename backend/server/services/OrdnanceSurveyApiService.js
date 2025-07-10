@@ -72,7 +72,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
     } catch (err) {
       if (err.response?.status === 500) {
         // Retry on first 500 call to mask any error
-        return await axios.get(u)
+        return await axios.get(url)
       }
       throw err
     }

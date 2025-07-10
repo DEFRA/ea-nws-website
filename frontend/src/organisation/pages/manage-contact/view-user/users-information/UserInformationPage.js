@@ -37,7 +37,7 @@ export default function UserInformationPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { authToken, orgId, contact: currentContact }
+      const dataToSend = { authToken, orgId, contactId: currentContact.id }
       const linkLocationsRes = await backendCall(
         dataToSend,
         'api/elasticache/list_linked_locations',

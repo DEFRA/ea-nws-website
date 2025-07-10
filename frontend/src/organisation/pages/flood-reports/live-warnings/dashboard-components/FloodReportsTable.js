@@ -115,8 +115,8 @@ export default function FloodReportsTable({
       setLinkedContactsSort('ascending')
       setDisplayedLocationsAffected(
         [...locationsAffected].sort((a, b) => {
-          return a.locationData.linked_contacts?.length >
-            b.locationData.linked_contacts?.length
+          return a.locationData.linked_contacts >
+            b.locationData.linked_contacts
             ? 1
             : -1
         })
@@ -126,8 +126,8 @@ export default function FloodReportsTable({
       setLinkedContactsSort('descending')
       setDisplayedLocationsAffected(
         [...locationsAffected].sort((a, b) => {
-          return a.locationData.linked_contacts?.length <
-            b.locationData.linked_contacts?.length
+          return a.locationData.linked_contacts <
+            b.locationData.linked_contacts
             ? 1
             : -1
         })
@@ -357,7 +357,7 @@ export default function FloodReportsTable({
                     .business_criticality || '-'}
                 </td>
                 <td className='govuk-table__cell'>
-                  {location.locationData.linked_contacts?.length}
+                  {location.locationData.linked_contacts}
                 </td>
                 {/* should this get the most recent flood updated time? */}
                 <td className='govuk-table__cell'>

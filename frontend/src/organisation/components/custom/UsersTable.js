@@ -388,12 +388,12 @@ export default function UsersTable({
               {!filterVisible && (
                 <>
                   <td className='govuk-table__cell'>
-                    {contact.linked_locations?.length !== undefined ? (
+                    {contact.linked_locations !== undefined ? (
                       <Link
                         className='govuk-link'
                         onClick={(e) => viewLinkedLocations(e, contact)}
                       >
-                        {contact.linked_locations?.length}
+                        {contact.linked_locations}
                       </Link>
                     ) : (
                       LoadingDots

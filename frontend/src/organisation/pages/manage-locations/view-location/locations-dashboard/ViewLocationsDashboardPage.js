@@ -154,21 +154,15 @@ export default function ViewLocationsDashboardPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
+      const contactsDataToSend = { authToken, orgId }
+      const { data: contactCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
+
       locationsUpdate.forEach(async (location) => {
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
-
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contact) => {
-            location.linked_contacts.push(contact.id)
-          })
-        }
-
+        location.linked_contacts = contactCount[location.id] || 0
         location.message_count = 0
         const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
@@ -571,7 +565,7 @@ export default function ViewLocationsDashboardPage() {
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
       updatedFilteredLocations = locations.filter(
-        (location) => location.linked_contacts?.length === 0
+        (location) => location.linked_contacts === 0
       )
       setSelectedLinkedFilters(['No'])
       setSelectedFilters(['No'])

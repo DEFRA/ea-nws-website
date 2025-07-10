@@ -58,7 +58,7 @@ export default function LinkedContactsPage () {
 
   useEffect(() => {
     const getLinkedContacts = async () => {
-      const locationsDataToSend = { orgId, location: currentLocation }
+      const locationsDataToSend = { orgId, locationId: currentLocation.id }
       const { data } = await backendCall(
         locationsDataToSend,
         'api/elasticache/list_linked_contacts',
@@ -72,20 +72,15 @@ export default function LinkedContactsPage () {
         })
       }
 
-      for (const contact of contactsUpdate) {
-        const contactsDataToSend = { authToken, orgId, contact }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_locations',
-          navigate
-        )
+      const contactsDataToSend = { authToken, orgId }
+      const { data: locationCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_locations',
+        navigate
+      )
 
-        contact.linked_locations = []
-        if (data) {
-          data.forEach((locationID) => {
-            contact.linked_locations.push(locationID)
-          })
-        }
+      for (const contact of contactsUpdate) {
+        contact.linked_locations = locationCount[contact.id] || 0
       }
 
       setLinkedContacts(contactsUpdate)

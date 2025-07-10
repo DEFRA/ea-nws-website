@@ -2283,3 +2283,9 @@ govuk-menu-toggle.button-menu > button {
   border-top: 1px solid #d8d8d8;
   margin: 4rem;
 }
+
+.action-plan-body,
+.notes-body {
+  overflow-wrap: break-word;
+  word-break: break-all;
+}

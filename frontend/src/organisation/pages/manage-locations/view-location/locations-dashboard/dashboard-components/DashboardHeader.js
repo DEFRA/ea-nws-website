@@ -372,7 +372,7 @@ export default function DashboardHeader({
                   />
                   <div style={{ paddingLeft: '0.5rem' }}>
                     <Details
-                      title='Linking locations to contacts so that they can get flood messages'
+                      title='How to link locations to contacts so that they can get flood messages'
                       text={noContactsDetails}
                     />
                   </div>

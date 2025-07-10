@@ -1026,6 +1026,9 @@
   .one-login-header__nav {
     width: 100%;
   }
+  .link-mobile-alignment {
+    padding-left: 2px !important;
+  }
 }
 @media (min-width: 40.0625em) {
   .one-login-header__nav {

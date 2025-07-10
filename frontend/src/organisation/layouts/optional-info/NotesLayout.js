@@ -69,10 +69,14 @@ export default function NotesLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: locationNotesId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: locationNotesId }]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               {title || 'Notes (optional)'}
             </h1>

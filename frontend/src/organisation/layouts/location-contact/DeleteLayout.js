@@ -103,11 +103,14 @@ export default function DeleteLayout() {
 
   return (
     <>
-      <Helmet> 
-        <title>Delete {nameToDelete} - Manage {isLocation ? 'locations' : 'users'} - Get flood warnings (professional) - GOV.UK</title>
+      <Helmet>
+        <title>
+          Delete {nameToDelete} - Manage {isLocation ? 'locations' : 'users'} -
+          Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         {error && <ErrorSummary errorList={[error]} />}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>

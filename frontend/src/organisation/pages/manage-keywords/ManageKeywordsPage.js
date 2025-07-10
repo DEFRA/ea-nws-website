@@ -18,8 +18,8 @@ import {
   webToGeoSafeContact
 } from '../../../common/services/formatters/ContactFormatter'
 import {
-    geoSafeToWebLocation,
-    webToGeoSafeLocation
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
 } from '../../../common/services/formatters/LocationFormatter'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
@@ -481,7 +481,7 @@ export default function ManageKeywordsPage() {
         <title>Manage keywords - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {error && <ErrorSummary errorList={[{text: error, componentId: keywordSearchId}]} />}

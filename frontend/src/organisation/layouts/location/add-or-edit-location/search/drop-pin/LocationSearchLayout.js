@@ -116,7 +116,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {placeNameTownOrPostcodeError && (

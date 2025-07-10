@@ -66,11 +66,24 @@ const osPostCodeApiCall = async (postCode) => {
 }
 
 const osFindNameApiCall = async (name, filters, loop) => {
+  const fetchOnce = async (url) => {
+    try {
+      return await axios.get(url)
+    } catch (err) {
+      if (err.response?.status === 500) {
+        // Retry on first 500 call to mask any error
+        return await axios.get(url)
+      }
+      console.log(err)
+      throw err
+    }
+  }
+
   let responseData = []
   // remove special characters from name
   const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
-  let url = `https://api.os.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
+  let url = `https://api.os.co.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
   if (filters !== null) {
     let filterStr = ''
     filters.forEach((filter) => {
@@ -92,17 +105,28 @@ const osFindNameApiCall = async (name, filters, loop) => {
 
   try {
     let results = []
-    let response = await axios.get(url)
+    let response = await fetchOnce(url)
     results.push(...response.data.results)
 
+    const pageSize = 100
+    const totalResults = response.data.header.totalresults
+    const totalPages = Math.ceil(totalResults / pageSize)
+
     // we must filter through all results returned since OS api only returns first 100
-    if (response.data.header.totalresults > 100 && loop === true) {
-      const totalRecalls = Math.floor(response.data.header.totalresults / 100)
-      let i = 1
-      while (i <= totalRecalls) {
-        response = await axios.get(url + `&offset=${i * 100}`)
-        results.push(...response.data.results)
-        i++
+    if (loop && totalPages > 1) {
+      // Pages are 1-based i.e. page 1 has already been fetched
+      for (let page = 2; page <= totalPages; page++) {
+        const offset = (page - 1) * pageSize
+        const pagedUrl = `${url}&offset=${offset}`
+
+        try {
+          const pageResponse = await fetchOnce(pagedUrl)
+          if (!pageResponse.data.results.length) break // No results mean we've reached the end before expected
+          results.push(...pageResponse.data.results)
+        } catch (err) {
+          logger.error(`Pagination failed at offset ${offset}: ${err}`)
+          break
+        }
       }
     }
 
@@ -152,7 +176,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
     }
   } catch (error) {
     logger.error(error)
-    return createGenericErrorResponse(h)
+    throw error
   }
 }
 

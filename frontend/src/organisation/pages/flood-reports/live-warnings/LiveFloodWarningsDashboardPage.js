@@ -17,7 +17,6 @@ export default function LiveFloodWarningsDashboardPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -93,7 +92,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
     if (alerts) {
       const { data: locationsData } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -104,14 +103,17 @@ export default function LiveFloodWarningsDashboardPage() {
         locations.push(geoSafeToWebLocation(location))
       }
 
+      const { data: contactCount } = await backendCall(
+        { authToken },
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
+
       if (locations) {
         // loop through live alerts - loop through all locations to find affected locations
         for (const liveAlert of alerts?.alerts) {
           for (const location of locations) {
-            await processLocation(
-              location,
-              liveAlert
-            )
+            await processLocation(location, liveAlert, contactCount)
           }
         }
       }
@@ -120,7 +122,8 @@ export default function LiveFloodWarningsDashboardPage() {
 
   const processLocation = async (
     location,
-    liveAlert
+    liveAlert,
+    contactCount
   ) => {
 
     const TA_CODE = liveAlert.TA_CODE
@@ -138,19 +141,7 @@ export default function LiveFloodWarningsDashboardPage() {
     const severity = liveAlert.type
     const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
-    const contactsDataToSend = { authToken, orgId, location }
-    const { data } = await backendCall(
-      contactsDataToSend,
-      'api/elasticache/list_linked_contacts',
-      navigate
-    )
-
-    location.linked_contacts = []
-    if (data) {
-      data.forEach((contact) => {
-        location.linked_contacts.push(contact.id)
-      })
-    }
+    location.linked_contacts = contactCount[location.id] || 0
 
     // add required data to location row object
     const createLocationWithFloodData = () => {
@@ -278,7 +269,9 @@ export default function LiveFloodWarningsDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Live flood warnings - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

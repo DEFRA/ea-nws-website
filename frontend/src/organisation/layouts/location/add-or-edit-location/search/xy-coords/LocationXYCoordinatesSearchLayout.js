@@ -89,14 +89,20 @@ export default function LocationXYCoordinatesSearchLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(xCoordinateError || yCoordinateError) && (
               <ErrorSummary
                 errorList={[
-                  xCoordinateError && { text: xCoordinateError, componentId: xCoordinateId },
-                  yCoordinateError && { text: yCoordinateError, componentId: yCoordinateId }
+                  xCoordinateError && {
+                    text: xCoordinateError,
+                    componentId: xCoordinateId
+                  },
+                  yCoordinateError && {
+                    text: yCoordinateError,
+                    componentId: yCoordinateId
+                  }
                 ].filter(Boolean)}
               />
             )}

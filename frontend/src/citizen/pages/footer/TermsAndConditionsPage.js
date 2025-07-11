@@ -72,7 +72,7 @@ export default function TermsAndConditionsPage() {
                   target='_blank'
                   style={{ cursor: 'pointer' }}
                 >
-                  privacy notice (open new window)
+                  privacy notice (opens new window)
                 </Link>{' '}
                 explains how we treat your personal information.
               </p>

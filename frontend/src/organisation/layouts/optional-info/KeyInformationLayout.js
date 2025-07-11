@@ -23,7 +23,6 @@ export default function KeyInformationLayout({
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const [locationName, setLocationName] = useState(
     additionalData.locationName ? additionalData.locationName : ''
@@ -53,7 +52,7 @@ export default function KeyInformationLayout({
       // only execute if location name has been changed
       if (locationName !== additionalData.locationName) {
         if (locationName) {
-          const dataToSend = { authToken, orgId, locationName }
+          const dataToSend = { authToken, locationName }
           const { errorMessage } = await backendCall(
             dataToSend,
             'api/locations/check_duplicate',
@@ -121,7 +120,12 @@ export default function KeyInformationLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(locationNameError || error) && (
-              <ErrorSummary errorList={[{text: locationNameError, componentId: locationNameId}, error]} />
+              <ErrorSummary
+                errorList={[
+                  { text: locationNameError, componentId: locationNameId },
+                  error
+                ]}
+              />
             )}
             <h1
               className='govuk-heading-l govuk-!-margin-top-3'

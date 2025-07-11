@@ -17,7 +17,7 @@ export default function LocationCannotGetFloodMessagesLayout({
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>

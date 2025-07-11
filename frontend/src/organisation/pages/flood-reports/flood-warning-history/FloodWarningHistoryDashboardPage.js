@@ -15,7 +15,7 @@ import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodR
 
 export default function FloodWarningHistoryDashboardPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -73,7 +73,7 @@ export default function FloodWarningHistoryDashboardPage() {
     if (alerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -88,10 +88,7 @@ export default function FloodWarningHistoryDashboardPage() {
       if (locations) {
         for (const liveAlert of alerts?.alerts) {
           for (const location of locations) {
-            processLocation(
-              location,
-              liveAlert
-            )
+            processLocation(location, liveAlert)
           }
         }
       }
@@ -242,7 +239,9 @@ export default function FloodWarningHistoryDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Flood warning history - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Flood warning history - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

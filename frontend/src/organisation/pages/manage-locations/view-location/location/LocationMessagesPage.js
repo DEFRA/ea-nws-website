@@ -28,7 +28,6 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
   const [locationUnlinked, setLocationUnlinked] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -59,7 +58,7 @@ export default function LocationMessagesPage() {
       'api/location/unregister_from_partner',
       navigate
     )
-    const dataToSend = { authToken, orgId, locationIds: [unlinkID] }
+    const dataToSend = { authToken, locationIds: [unlinkID] }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/location/remove',
@@ -73,7 +72,7 @@ export default function LocationMessagesPage() {
         )
       )
       const locationToUpdate = store.getState().session.currentLocation
-      const dataToSend = { authToken, orgId, location: locationToUpdate }
+      const dataToSend = { authToken, location: locationToUpdate }
       await backendCall(dataToSend, 'api/location/update', navigate)
       setLocationUnlinked(true)
       setUnlinkID(null)
@@ -241,7 +240,7 @@ export default function LocationMessagesPage() {
 
       const locationToUpdate = store.getState().session.currentLocation
 
-      const updateData = { authToken, orgId, location: locationToUpdate }
+      const updateData = { authToken, location: locationToUpdate }
       await backendCall(updateData, 'api/location/update', navigate)
 
       const locationIDsToUpdate = [

@@ -241,7 +241,7 @@ export default function LocationInFloodAreasLayout({
       ) : (
         <>
           <BackLink onClick={() => handleUserNavigatingBack()} />
-          <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
             <div className='govuk-grid-row govuk-body'>
               <div className='govuk-grid-column-full'>
                 <h1 className='govuk-heading-l'>
@@ -279,13 +279,12 @@ export default function LocationInFloodAreasLayout({
                 <div className='govuk-!-margin-top-7'>
                   <Button
                     text='I want these'
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     to={searchResultsPage}
-                    className='govuk-link'
+                    className='govuk-link link-mobile-alignment'
                     style={{
                       display: 'inline-block',
                       padding: '8px 10px 7px',

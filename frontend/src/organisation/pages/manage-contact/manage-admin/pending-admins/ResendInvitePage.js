@@ -11,10 +11,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 export default function ResendInvitePage() {
   const navigate = useNavigate()
   const location = useLocation()
-
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
-
   const pendingAdmin = location.state?.pendingAdmin
   const pendingAdminEmail = pendingAdmin?.emails[0]
   const pendingAdminName =
@@ -25,7 +22,6 @@ export default function ResendInvitePage() {
     try {
       const dataToSend = {
         authToken,
-        orgId,
         contactId: pendingAdmin.id,
         role: 'ADMIN'
       }
@@ -55,7 +51,10 @@ export default function ResendInvitePage() {
   return (
     <>
       <Helmet>
-        <title>Do you want to resend an admin invitation to {pendingAdminName}? - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Do you want to resend an admin invitation to {pendingAdminName}? -
+          Manage users - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>

@@ -39,7 +39,6 @@ export default function LinkedLocationsPage() {
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const locationsPerPage = 10
 
@@ -104,9 +103,9 @@ export default function LinkedLocationsPage() {
     }
 
     const getLinkedLocations = async () => {
-      const contactsDataToSend = { orgId, contact: currentContact }
+      const LocationsDataToSend = { authToken, contactId: currentContact.id }
       const { data } = await backendCall(
-        contactsDataToSend,
+        LocationsDataToSend,
         'api/elasticache/list_linked_locations',
         navigate
       )
@@ -140,21 +139,15 @@ export default function LinkedLocationsPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
+      const contactsDataToSend = { authToken }
+      const { data: contactCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
+
       for (const location of locationsUpdate) {
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
-
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contactID) => {
-            location.linked_contacts.push(contactID)
-          })
-        }
-
+        location.linked_contacts = contactCount[location.id] || 0
         const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
       }
@@ -225,7 +218,6 @@ export default function LinkedLocationsPage() {
       setStage(`unlinking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
       const dataToSend = {
         authToken,
-        orgId,
         locationId: location.id,
         contactIds: [currentContact.id]
       }

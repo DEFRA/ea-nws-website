@@ -50,7 +50,6 @@ export default function SelectPredefinedBoundaryPage() {
     (state) => state.session.consecutiveBoundariesAdded
   )
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const boundaryTypeId = 'BoundaryType'
   const boundaryId = 'Boundary'
 
@@ -63,7 +62,7 @@ export default function SelectPredefinedBoundaryPage() {
 
   async function getBoundarysAlreadyAdded() {
     const { data: locationsData, errorMessage } = await backendCall(
-      { orgId },
+      { authToken },
       'api/elasticache/list_locations',
       navigate
     )
@@ -184,7 +183,7 @@ export default function SelectPredefinedBoundaryPage() {
 
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
-      const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+      const dataToSend = { authToken, location: newGeosafeLocation }
       const { data } = await backendCall(
         dataToSend,
         'api/location/create',
@@ -231,14 +230,22 @@ export default function SelectPredefinedBoundaryPage() {
   return (
     <>
       <Helmet>
-        <title>Select a predefined boundary for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Select a predefined boundary for this location - Manage locations -
+          Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(boundaryTypeError || boundaryError) && (
-              <ErrorSummary errorList={[{text: boundaryTypeError, componentId: boundaryTypeId}, {text: boundaryError, componentId: boundaryId}]} />
+              <ErrorSummary
+                errorList={[
+                  { text: boundaryTypeError, componentId: boundaryTypeId },
+                  { text: boundaryError, componentId: boundaryId }
+                ]}
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Add predefined boundary

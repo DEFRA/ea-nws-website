@@ -41,7 +41,7 @@ export default function LocationSearchResultsLayout({
   const floodHistoryData = useFetchAlerts()
 
   const setHistoricalAlertNumber = (AlertArea) => {
-    const oneYearAgo = moment().subtract(1, 'years')  
+    const oneYearAgo = moment().subtract(1, 'years')
 
     const areaAlert = floodHistoryData.filter(
       (alert) =>
@@ -274,7 +274,7 @@ export default function LocationSearchResultsLayout({
                         <tr key={index} className='govuk-table__row'>
                           <td className='govuk-table__cell'>
                             <Link
-                              className='govuk-link'
+                              className='govuk-link govuk-link--no-visited-state'
                               onClick={(event) =>
                                 handleSelectedLocation(event, location)
                               }

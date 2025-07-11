@@ -15,7 +15,7 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 export default function LocationAlreadyExists() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -23,7 +23,7 @@ export default function LocationAlreadyExists() {
 
   const handleEditLocation = async () => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }

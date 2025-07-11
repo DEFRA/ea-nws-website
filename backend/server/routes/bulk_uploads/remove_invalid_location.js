@@ -2,7 +2,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { removeInvLocation } = require('../../services/elasticache')
+const { removeInvLocation, getJsonData } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -13,11 +13,16 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, locationId } = request.payload
+        const { authToken, locationId } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (orgId && locationId) {
-          const result = await removeInvLocation(redis, orgId, locationId)
+        if (sessionData.orgId && locationId) {
+          const result = await removeInvLocation(
+            redis,
+            sessionData.orgId,
+            locationId
+          )
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

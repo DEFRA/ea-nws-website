@@ -3,7 +3,10 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { getJsonData, getOrgActiveAdmins } = require('../../services/elasticache')
+const {
+  getJsonData,
+  getOrgActiveAdmins
+} = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -14,12 +17,16 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, userId } = request.payload
+        const { authToken, userId } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (orgId) {
+        if (sessionData?.orgId) {
           let result
-          const activeAdmins = await getOrgActiveAdmins(redis, orgId)
+          const activeAdmins = await getOrgActiveAdmins(
+            redis,
+            sessionData?.orgId
+          )
           if (userId) {
             result = activeAdmins.includes(userId)
           } else {

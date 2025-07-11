@@ -90,7 +90,7 @@ const FloodBanner = React.memo(function FloodBanner({
   } else if (type === 'noContacts') {
     heading[0] = 'Locations not linked to contacts'
     count.push(
-      locations.filter((item) => item.linked_contacts?.length === 0).length
+      locations.filter((item) => item.linked_contacts === 0).length
     )
     message[0] = 'not linked to contacts'
   }
@@ -362,7 +362,7 @@ export default function DashboardHeader({
                   onClickLinked={onClickLinked}
                 />
               )}
-              {locations.filter((item) => item.linked_contacts?.length === 0)
+              {locations.filter((item) => item.linked_contacts === 0)
                 .length > 0 && (
                 <div style={{ width: '100%' }}>
                   <FloodBanner
@@ -372,7 +372,7 @@ export default function DashboardHeader({
                   />
                   <div style={{ paddingLeft: '0.5rem' }}>
                     <Details
-                      title='Linking locations to contacts so that they can get flood messages'
+                      title='How to link locations to contacts so that they can get flood messages'
                       text={noContactsDetails}
                     />
                   </div>

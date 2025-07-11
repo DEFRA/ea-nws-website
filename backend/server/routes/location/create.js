@@ -3,7 +3,7 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { addLocation } = require('../../services/elasticache')
+const { addLocation, getJsonData } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -15,16 +15,17 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, orgId, location } = request.payload
+        const { authToken, location } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (authToken && location && orgId) {
+        if (authToken && location && sessionData.orgId) {
           const response = await apiCall(
             { authToken: authToken, location: location },
             'location/create'
           )
           if (response.data.location) {
-            await addLocation(redis, orgId, response.data.location)
+            await addLocation(redis, sessionData.orgId, response.data.location)
             return h.response({ status: 200, data: response.data.location })
           } else {
             return createGenericErrorResponse(h)

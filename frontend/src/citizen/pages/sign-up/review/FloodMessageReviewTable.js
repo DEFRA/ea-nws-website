@@ -83,7 +83,7 @@ export default function FloodMessageReviewTable() {
               scope='row'
             >
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                Servere flood warnings
+                Severe flood warnings
               </h3>
               <span className='govuk-caption-m' style={{ fontSize: '16px' }}>
                 Danger to life - act now

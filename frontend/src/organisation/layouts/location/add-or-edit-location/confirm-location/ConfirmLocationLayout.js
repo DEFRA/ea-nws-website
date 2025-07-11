@@ -198,9 +198,15 @@ export default function ConfirmLocationLayout({
 
     const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
+    // If updating, make certain that the correct location is being changed
+    if (isUpdate) {
+      newGeosafeLocation.id = currentLocation.id
+    }
+
     // since we added to currentLocation we need to get that information to pass to the api
     const dataToSend = { authToken, orgId, location: newGeosafeLocation }
-    const isUpdate = Boolean(currentLocation?.id)
+    const isUpdate =
+      flow?.includes('change-coords') || Boolean(currentLocation?.id)
     const apiEndpoint = isUpdate ? 'api/location/update' : 'api/location/create'
     const { data, errorMessage } = await backendCall(
       dataToSend,

@@ -70,7 +70,6 @@ export default function LocationNearFloodAreasLayout({
   // get nearby flood areas to setup map
   useEffect(() => {
     async function fetchFloodAreaData() {
-      let areas = []
       let { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
@@ -84,26 +83,26 @@ export default function LocationNearFloodAreasLayout({
           : 0.5
       )
 
-      warningArea.features = warningArea.features.map((area) => ({
-        ...area,
-        addLocation: !inSignUpFlow && floodAreaExistsInProfile(area)
-      }))
-      alertArea.features = alertArea.features.map((area) => ({
-        ...area,
-        addLocation: !inSignUpFlow && floodAreaExistsInProfile(area)
-      }))
-
-      areas.push(...warningArea.features)
-      areas.push(...alertArea.features)
+      // Combine area lists
+      const alreadySelected = new Set([
+        ...floodAreasAlreadyAdded,
+        ...floodAreasRecentlyAdded
+      ])
+      const allAreas = [...warningArea.features, ...alertArea.features].map(
+        (area) => ({
+          ...area,
+          addLocation: alreadySelected.has(area.properties.TA_Name)
+        })
+      )
 
       if (!inSignUpFlow) {
         // remove the choice of picking any
-        const filteredAreas = areas.filter(
+        const filteredAreas = allAreas.filter(
           (area) => !floodAreasAlreadyAdded.includes(area?.properties?.TA_Name)
         )
         setFloodAreas(filteredAreas)
       } else {
-        setFloodAreas(areas)
+        setFloodAreas(allAreas)
       }
     }
     fetchFloodAreaData()
@@ -152,35 +151,40 @@ export default function LocationNearFloodAreasLayout({
     // we need to get a common name to group nearby target area locations added through an address
     const locationName = selectedLocation.address
 
-    // if user decides to navigate back, we need to know the exact flood areas added to remove from geosafe
-    let floodAreasAdded = []
+    // We must check what has already been added to prevent duplicates
+    // (in the case of a user navigating back)
+    const alreadyAdded = new Set([
+      ...floodAreasAlreadyAdded,
+      ...floodAreasRecentlyAdded
+    ])
+    const toAdd = floodAreas.filter(
+      (area) => area.addLocation && !alreadyAdded.has(area?.properties?.TA_Name)
+    )
 
-    floodAreas.forEach((area) => {
-      if (area.addLocation) {
-        floodAreasAdded.push(area.properties.TA_Name)
+    const floodAreasAdded = toAdd.map((area) => area.properties.TA_Name)
 
-        const additionals = [
-          { id: 'locationName', value: { s: locationName } },
-          {
-            id: 'other',
-            value: {
-              s: JSON.stringify({
-                alertTypes: getAreasAlertMessageTypes(area.properties.category)
-              })
-            }
+    for (const area of toAdd) {
+      const additionals = [
+        { id: 'locationName', value: { s: locationName } },
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({
+              alertTypes: getAreasAlertMessageTypes(area.properties.category)
+            })
           }
-        ]
-
-        const targetArea = {
-          name: '',
-          address: area.properties.TA_Name,
-          coordinates: getCoordsOfFloodArea(area),
-          additionals: additionals
         }
+      ]
 
-        updatedProfile = addLocation(updatedProfile, targetArea)
+      const targetArea = {
+        name: '',
+        address: area.properties.TA_Name,
+        coordinates: getCoordsOfFloodArea(area),
+        additionals: additionals
       }
-    })
+
+      updatedProfile = addLocation(updatedProfile, targetArea)
+    }
 
     dispatch(setNearbyTargetAreasAdded(floodAreasAdded))
     dispatch(setProfile(updatedProfile))

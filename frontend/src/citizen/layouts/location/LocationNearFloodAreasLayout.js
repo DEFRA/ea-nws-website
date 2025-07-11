@@ -70,7 +70,6 @@ export default function LocationNearFloodAreasLayout({
   // get nearby flood areas to setup map
   useEffect(() => {
     async function fetchFloodAreaData() {
-      let areas = []
       let { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude,
@@ -85,21 +84,15 @@ export default function LocationNearFloodAreasLayout({
       )
 
       // Combine area lists
-      let allAreas = [...warningArea.features, ...alertArea.features].map(
-        (area) => {
-          const name = area.properties.TA_Name
-          let addLocationFlag
-
-          if (inSignUpFlow) {
-            // Seed ticked locations in case the user has previously selected some then navigated back
-            addLocationFlag = floodAreasRecentlyAdded.includes(name)
-          } else {
-            // Normal flow, seed from user's profile
-            addLocationFlag = floodAreaExistsInProfile(area)
-          }
-
-          return { ...area, addLocation: addLocationFlag }
-        }
+      const alreadySelected = new Set([
+        ...floodAreasAlreadyAdded,
+        ...floodAreasRecentlyAdded
+      ])
+      const allAreas = [...warningArea.features, ...alertArea.features].map(
+        (area) => ({
+          ...area,
+          addLocation: alreadySelected.has(area.properties.TA_Name)
+        })
       )
 
       if (!inSignUpFlow) {

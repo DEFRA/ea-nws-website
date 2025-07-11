@@ -15,6 +15,7 @@ export default function Header() {
     location.pathname.includes('organisation') &&
     !location.pathname.includes('sign-up')
 
+
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)

@@ -41,31 +41,31 @@ export default function EnterAddressManuallyLayout({
   }, [])
 
   const validateFields = () => {
+    const newErrors = {
+      addressLine1Error: '',
+      townOrCityError: '',
+      postcodeError: ''
+    }
+
     if (!addressLine1) {
-      setErrors((prev) => ({
-        ...prev,
-        addressLine1Error: 'Enter address line 1'
-      }))
+      newErrors.addressLine1Error = 'Enter address line 1'
     }
     if (!townOrCity) {
-      setErrors((prev) => ({
-        ...prev,
-        townOrCityError: 'Enter a town or city'
-      }))
+      newErrors.townOrCityError = 'Enter a town or city'
     }
     if (!postcode) {
-      setErrors((prev) => ({
-        ...prev,
-        postcodeError: 'Enter a postcode'
-      }))
+      newErrors.postcodeError = 'Enter a postcode'
     }
+
+    setErrors(newErrors)
+    return Object.values(newErrors).every((value) => value === '')
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    validateFields()
-    if (noErrors) {
+    const isValid = validateFields()
+    if (isValid) {
       const postCodeValidationError = postCodeValidation(postcode, false)
 
       if (!postCodeValidationError) {

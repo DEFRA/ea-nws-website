@@ -13,7 +13,6 @@ import AlertState from '../../../../../common/enums/AlertState'
 import AlertType from '../../../../../common/enums/AlertType'
 import store from '../../../../../common/redux/store'
 import {
-  getAdditional,
   getLocationAdditionals,
   getLocationOther,
   setCurrentLocationAlertTypes,
@@ -183,8 +182,7 @@ export default function LocationMessagesPage() {
         warningsCount = 0,
         alertsCount = 0
       alerts.forEach((alert) => {
-        const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-        const alertTaCode = getAdditional(extraInfo, 'TA_CODE')
+        const alertTaCode = alert.TA_CODE
         const alertType = alert.type
         if (alertTaCode === targetArea.TA_CODE) {
           switch (alertType) {

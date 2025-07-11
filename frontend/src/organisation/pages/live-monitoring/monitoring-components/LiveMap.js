@@ -25,7 +25,6 @@ import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
 import AlertType from '../../../../common/enums/AlertType'
 import LocationDataType from '../../../../common/enums/LocationDataType'
-import { getAdditional } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
 import { getFloodAreaByTaCode } from '../../../../common/services/WfsFloodDataService'
@@ -180,11 +179,12 @@ export default function LiveMap({
     }
   }
 
-  const processLocation = async (location, liveAlert) => {
-    const TA_CODE = getAdditional(
-      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-      'TA_CODE'
-    )
+  const processLocation = async(
+    location,
+    liveAlert
+  ) => {
+
+    const TA_CODE = liveAlert.TA_CODE
 
     const { coordinates, geometry, additionals } = location
     const locationType = additionals.other.location_data_type

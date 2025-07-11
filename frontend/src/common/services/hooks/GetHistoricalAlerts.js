@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import AlertState from '../../enums/AlertState'
-import { getAdditional } from '../../redux/userSlice'
 import { backendCall } from '../BackendService'
 
 export function useFetchAlerts () {
@@ -22,14 +21,8 @@ export function useFetchAlerts () {
 
       if (alerts?.alerts) {
         filteredAlerts = alerts.alerts.filter((alert) => {
-          alert.CODE = getAdditional(
-            alert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_CODE'
-          )
-          alert.TYPE = getAdditional(
-            alert.mode.zoneDesc.placemarks[0].extraInfo,
-            'category'
-          )
+          alert.CODE = alert.TA_CODE
+          alert.TYPE = alert.category
           return alert.name.toLowerCase().includes('remove')
         })
       }

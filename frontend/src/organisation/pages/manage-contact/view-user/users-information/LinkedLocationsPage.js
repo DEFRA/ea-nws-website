@@ -10,7 +10,6 @@ import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../../common/enums/AlertState.js'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import {
-  getAdditional,
   setCurrentLocation
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService.js'
@@ -92,9 +91,7 @@ export default function LinkedLocationsPage() {
         const taCodes = targetAreas.map((ta) => ta.TA_CODE)
 
         const count = alertsList.filter((alert) => {
-          const placemark = alert.mode?.zoneDesc?.placemarks?.[0]
-          if (!placemark?.extraInfo) return false
-          const alertCode = getAdditional(placemark.extraInfo, 'TA_CODE')
+          const alertCode = alert.TA_CODE
           return alertCode && taCodes.includes(alertCode)
         }).length
 

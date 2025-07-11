@@ -8,7 +8,6 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary.js'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../common/enums/AlertState.js'
-import { getAdditional } from '../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter'
@@ -16,7 +15,7 @@ import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodR
 
 export default function FloodWarningHistoryDashboardPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -74,7 +73,7 @@ export default function FloodWarningHistoryDashboardPage() {
     if (alerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -89,10 +88,7 @@ export default function FloodWarningHistoryDashboardPage() {
       if (locations) {
         for (const liveAlert of alerts?.alerts) {
           for (const location of locations) {
-            processLocation(
-              location,
-              liveAlert
-            )
+            processLocation(location, liveAlert)
           }
         }
       }
@@ -104,10 +100,7 @@ export default function FloodWarningHistoryDashboardPage() {
     liveAlert
   ) => {
 
-    const TA_CODE = getAdditional(
-      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-      'TA_CODE'
-    )
+    const TA_CODE = liveAlert.TA_CODE
     
     const { additionals } = location
     const locationIntersectsWithFloodArea =
@@ -117,10 +110,7 @@ export default function FloodWarningHistoryDashboardPage() {
 
     if (!locationIntersectsWithFloodArea) return
 
-    const TA_NAME = getAdditional(
-      liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-      'TA_Name'
-    )
+    const TA_NAME = liveAlert.TA_Name
 
     const severity = liveAlert.type
 
@@ -249,7 +239,9 @@ export default function FloodWarningHistoryDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Flood warning history - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Flood warning history - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

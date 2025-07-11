@@ -10,9 +10,9 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 /* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
+import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact'
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
-import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact'
 
 export default function UserInformationPage() {
   const navigate = useNavigate()
@@ -24,7 +24,6 @@ export default function UserInformationPage() {
   const [locations, setLocations] = useState([])
   /* const [showMap, setShowMap] = useState(false) */
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -37,7 +36,7 @@ export default function UserInformationPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { authToken, orgId, contact: currentContact }
+      const dataToSend = { authToken, contactId: currentContact.id }
       const linkLocationsRes = await backendCall(
         dataToSend,
         'api/elasticache/list_linked_locations',
@@ -221,7 +220,7 @@ export default function UserInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{currentContact.comments}</p>
+                <p className='note-body'>{currentContact.comments}</p>
               </div>
             )}
 

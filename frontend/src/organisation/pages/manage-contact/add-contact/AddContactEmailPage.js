@@ -21,7 +21,6 @@ export default function AddContactEmailPage() {
   const [errors, setErrors] = useState([])
   const [emailError, setEmailError] = useState('')
   const [emailInput, setEmailInput] = useState('')
-  const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
 
   const navigateBack = (event) => {
@@ -57,9 +56,8 @@ export default function AddContactEmailPage() {
   }
 
   const addContact = async () => {
-    const listDataToSend = { orgId }
     const originalContacts = await backendCall(
-      listDataToSend,
+      { authToken },
       'api/elasticache/list_contacts',
       navigate
     )
@@ -67,7 +65,7 @@ export default function AddContactEmailPage() {
     const contactToAdd = JSON.parse(
       JSON.stringify(store.getState().session.orgCurrentContact)
     )
-    const dataToSend = { authToken, orgId, contacts: [contactToAdd] }
+    const dataToSend = { authToken, contacts: [contactToAdd] }
     const { errorMessage: addContactError } = await backendCall(
       dataToSend,
       'api/organization/create_contacts',
@@ -76,7 +74,7 @@ export default function AddContactEmailPage() {
 
     if (!addContactError) {
       const newContacts = await backendCall(
-        listDataToSend,
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -100,8 +98,7 @@ export default function AddContactEmailPage() {
     const promoteData = {
       authToken,
       contactId: contactToPromote.id,
-      role: 'ADMIN',
-      orgId
+      role: 'ADMIN'
     }
 
     const { errorMessage: promoteError, data: contactData } = await backendCall(
@@ -139,10 +136,13 @@ export default function AddContactEmailPage() {
   return (
     <>
       <Helmet>
-        <title>Enter email address - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Enter email address - Manage users - Get flood warnings (professional)
+          - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(emailError || errors.length > 0) && (

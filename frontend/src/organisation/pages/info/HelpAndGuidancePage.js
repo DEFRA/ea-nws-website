@@ -44,7 +44,7 @@ export default function HelpAndGuidancePage () {
           <p className='govuk-!-margin-bottom-6'>
             This will guide you through the steps to set up your account.
           </p>
-          <a className='govuk-link ' href={templateUrl}>
+          <a className='govuk-link ' href={templateUrl} target='_blank' rel='noopener noreferrer'>
             Get flood warnings - quick start guide
           </a>
         </div>

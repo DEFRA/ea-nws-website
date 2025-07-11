@@ -36,7 +36,6 @@ export default function DuplicateLocationComparisonPage() {
   const numDuplicates = location?.state?.numDuplicates
   const flow = location?.state?.flow || null
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const existingOrNewRadiosId = 'existing-or-new-radios'
 
   const notFoundLocations = useSelector(
@@ -162,7 +161,7 @@ export default function DuplicateLocationComparisonPage() {
         )
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id
-        const dataToSend = { authToken, orgId, location: locationToUpdate }
+        const dataToSend = { authToken, location: locationToUpdate }
         await backendCall(dataToSend, 'api/location/update', navigate)
         // update registrations as the new location will have all alerts enabled by default
         const registerData = {
@@ -189,7 +188,7 @@ export default function DuplicateLocationComparisonPage() {
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id
       await backendCall(
-        { orgId, locationId: locationIdToRemove },
+        { authToken, locationId: locationIdToRemove },
         'api/bulk_uploads/remove_invalid_location',
         navigate
       )

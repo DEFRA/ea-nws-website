@@ -18,8 +18,8 @@ import {
   webToGeoSafeContact
 } from '../../../common/services/formatters/ContactFormatter'
 import {
-    geoSafeToWebLocation,
-    webToGeoSafeLocation
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
 } from '../../../common/services/formatters/LocationFormatter'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
@@ -56,7 +56,6 @@ export default function ManageKeywordsPage() {
   const [locations, setLocations] = useState([])
   const [contacts, setContacts] = useState([])
   const [error, setError] = useState('')
-  const authToken = useSelector((state) => state.session.authToken)
   const keywordSearchId = 'keyword-search'
 
   const setTab = (tab) => {
@@ -80,18 +79,16 @@ export default function ManageKeywordsPage() {
     )
   }, [filteredKeywords, currentPage])
 
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   useMemo(() => {
     const getKeywords = async () => {
-      const key =
-        orgId +
-        (keywordType === 'location'
+      const type =
+        keywordType === 'location'
           ? ':t_Keywords_location'
-          : ':t_Keywords_contact')
-      const dataToSend = { key }
+          : ':t_Keywords_contact'
       const { data } = await backendCall(
-        dataToSend,
+        { type },
         'api/elasticache/get_data',
         navigate
       )
@@ -106,9 +103,8 @@ export default function ManageKeywordsPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -123,9 +119,8 @@ export default function ManageKeywordsPage() {
     }
 
     const getContacts = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -323,12 +318,10 @@ export default function ManageKeywordsPage() {
             keywordType === 'location'
               ? {
                   authToken,
-                  orgId,
                   location: webToGeoSafeLocation(locationOrContactToUpdate)
                 }
               : {
                   authToken,
-                  orgId,
                   contact: webToGeoSafeContact(locationOrContactToUpdate)
                 }
           const { data, errorMessage } = await backendCall(
@@ -478,13 +471,19 @@ export default function ManageKeywordsPage() {
   return (
     <>
       <Helmet>
-        <title>Manage keywords - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Manage keywords - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: keywordSearchId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: keywordSearchId }]}
+              />
+            )}
             {notificationText && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
@@ -533,9 +532,7 @@ export default function ManageKeywordsPage() {
                   >
                     Search for a {keywordType} keyword
                   </label>
-                  <div
-                    className='keyword-search-input-container'
-                  >
+                  <div className='keyword-search-input-container'>
                     <Autocomplete
                       id={keywordSearchId}
                       className='govuk-input govuk-input--width-20 keyword-search-input'

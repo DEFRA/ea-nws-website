@@ -17,12 +17,12 @@ export default function UserHeader({
   const location = useLocation()
   const navigate = useNavigate()
   const [activeAdmin, setActiveAdmin] = useState(false)
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const profileId = useSelector((state) => state.session.profileId)
 
   async function getActiveAdmin() {
     const { data } = await backendCall(
-      { orgId: orgId, userId: contactId },
+      { authToken, userId: contactId },
       'api/elasticache/get_active_admins'
     )
     setActiveAdmin(data)

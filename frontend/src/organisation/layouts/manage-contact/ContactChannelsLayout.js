@@ -49,7 +49,7 @@ export default function ContactChannelsLayout({
   const lastname = useSelector(
     (state) => state.session.orgCurrentContact.lastname
   )
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.sessioauthTokennKey)
   const originalEmails =
     useSelector((state) => state.session.orgCurrentContact.emails) || []
 
@@ -94,9 +94,8 @@ export default function ContactChannelsLayout({
   const fetchEmailsAlreadyAdded = async () => {
     const emailsAlreadyAdded = []
     try {
-      const dataToSend = { orgId }
       const contactsData = await backendCall(
-        dataToSend,
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -347,7 +346,7 @@ export default function ContactChannelsLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error ||

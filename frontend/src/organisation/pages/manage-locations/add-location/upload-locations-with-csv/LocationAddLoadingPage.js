@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
 import {
-    setNotFoundLocations,
-    setNotInEnglandLocations
+  setNotFoundLocations,
+  setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage () {
+export default function LocationAddLoadingPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [status, setStatus] = useState('')
@@ -19,7 +19,7 @@ export default function LocationAddLoadingPage () {
   const [invalidLocations, setInvalidLocations] = useState(null)
   const [duplicateLocations, setDuplicateLocations] = useState(null)
   const location = useLocation()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const fileName = location.state?.fileName
   const [errors, setErrors] = useState(null)
 
@@ -59,7 +59,7 @@ export default function LocationAddLoadingPage () {
 
   // Check the status of the processing and update state
   useEffect(() => {
-    const interval = setInterval(async function getStatus () {
+    const interval = setInterval(async function getStatus() {
       if (getStatus.isRunning) return
       getStatus.isRunning = true
       const dataToSend = { fileName }
@@ -124,7 +124,7 @@ export default function LocationAddLoadingPage () {
 
   useEffect(() => {
     const startProcessing = async () => {
-      const dataToSend = { Message: fileName, orgId }
+      const dataToSend = { Message: fileName, authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_file',
@@ -140,11 +140,16 @@ export default function LocationAddLoadingPage () {
   return (
     <>
       <Helmet>
-        <title>Loading - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Loading - Manage locations - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
-          <h1 className='govuk-heading-l' id='main-content'>{stage}</h1>
+          <h1 className='govuk-heading-l' id='main-content'>
+            {stage}
+          </h1>
           <div className='govuk-body'>
             <Spinner size='75' />
           </div>

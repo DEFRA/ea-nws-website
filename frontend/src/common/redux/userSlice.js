@@ -91,7 +91,6 @@ const userSlice = createSlice({
     authToken: null,
     registerToken: null,
     profileId: null,
-    orgId: null,
     notFoundLocations: null,
     notInEnglandLocations: null,
     profile: {
@@ -255,9 +254,6 @@ const userSlice = createSlice({
     },
     setProfileId: (state, action) => {
       state.profileId = action.payload
-    },
-    setOrgId: (state, action) => {
-      state.orgId = action.payload
     },
     setNotFoundLocations: (state, action) => {
       state.notFoundLocations = action.payload
@@ -569,7 +565,6 @@ const userSlice = createSlice({
     },
     // org data
     setOrganization: (state, action) => {
-      state.organization.id = action.payload?.id || null
       state.organization.name = action.payload?.name || null
       state.organization.description =
         action.payload?.description ||
@@ -596,9 +591,6 @@ const userSlice = createSlice({
       state.organization.alertDiffusionZoneBoundingBox =
         action.payload?.alertDiffusionZoneBoundingBox || null
       state.organization.urlSlug = action.payload?.urlSlug || null
-    },
-    setOrganizationId: (state, action) => {
-      state.organization.id = action.payload
     },
     setOrganizationName: (state, action) => {
       state.organization.name = action.payload
@@ -807,7 +799,6 @@ const userSlice = createSlice({
       state.authToken = null
       state.registerToken = null
       state.profileId = null
-      state.orgId = null
       state.notFoundLocations = null
       state.notInEnglandLocations = null
       state.profile = {
@@ -1044,7 +1035,6 @@ export const {
   setAuthToken,
   setRegisterToken,
   setProfileId,
-  setOrgId,
   setNotFoundLocations,
   setNotInEnglandLocations,
   setProfile,

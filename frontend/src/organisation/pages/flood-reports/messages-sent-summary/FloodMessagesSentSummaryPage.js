@@ -6,14 +6,13 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import AlertState from '../../../../common/enums/AlertState'
 import AlertType from '../../../../common/enums/AlertType'
-import { getAdditional } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 
 export default function FloodMessagesSentSummaryPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const initialData = {
     all: {
       locations: 0,
@@ -65,7 +64,7 @@ export default function FloodMessagesSentSummaryPage() {
 
       // get orgs locations
       const { data: locationsData, errorMessage } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -149,9 +148,7 @@ export default function FloodMessagesSentSummaryPage() {
         alerts
           .filter((alert) => isAlertMatch(alert, category))
           .forEach((alert) => {
-            const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-            const taCode = getAdditional(extraInfo, 'TA_CODE')
-
+            const taCode = alert.TA_CODE
             if (taCode === targetArea.TA_CODE) {
               updateMessageCounts(category, alert.type)
             }

@@ -11,7 +11,6 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function RemoveAdminPage() {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
@@ -25,7 +24,7 @@ export default function RemoveAdminPage() {
 
   const handleSubmit = async () => {
     try {
-      const dataToSend = { authToken, orgId, contactId: currentContact.id }
+      const dataToSend = { authToken, contactId: currentContact.id }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/organization/demote_contact',

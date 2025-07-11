@@ -62,10 +62,14 @@ export default function PostCodeSearchLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: postcodeId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: postcodeId }]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               What is the location's postcode?
             </h1>

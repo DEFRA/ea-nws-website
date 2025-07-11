@@ -16,7 +16,6 @@ import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
-  setOrgId,
   setOrganization,
   setProfile,
   setProfileId,
@@ -114,7 +113,6 @@ export default function SignInValidatePage() {
         dispatch(setProfile(data.profile))
         if (data.organization) {
           dispatch(setProfileId(data.profile.id))
-          dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
         }
@@ -191,7 +189,11 @@ export default function SignInValidatePage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Confirm email address{' '}
                 </h2>

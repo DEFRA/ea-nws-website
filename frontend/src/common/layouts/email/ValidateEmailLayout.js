@@ -35,7 +35,6 @@ export default function ValidateEmailLayout({
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
-  const orgId = useSelector((state) => state.session.orgId)
   const session = useSelector((state) => state.session)
   const email = session.currentContact
   const [codeResent, setCodeResent] = useState(false)
@@ -73,7 +72,7 @@ export default function ValidateEmailLayout({
         setError(errorMessage)
       } else {
         if (changeSignIn) {
-          updateProfile(data.profile, authToken, signinType, orgId)
+          updateProfile(data.profile, authToken, signinType)
           setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
@@ -194,7 +193,11 @@ export default function ValidateEmailLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Check your email
                 </h2>

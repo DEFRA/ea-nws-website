@@ -14,11 +14,12 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { profileId, orgId, authToken } = request.payload
+        const { profileId, authToken } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (profileId && orgId) {
-          await orgSignOut(redis, profileId, orgId, authToken)
+        if (profileId && sessionData?.orgId) {
+          await orgSignOut(redis, profileId, sessionData.orgId, authToken)
           return h.response({
             status: 200
           })

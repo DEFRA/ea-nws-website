@@ -180,12 +180,15 @@ export default function SelectAlternativeLandlineLayout({
                 }
               >
                 {mobileNumbers.length > 0 ? (
-                  <fieldset className='govuk-fieldset' id='phone-number-fieldset'>
+                  <fieldset
+                    className='govuk-fieldset'
+                    id='phone-number-fieldset'
+                  >
                     {optionError && (
                       <p className='govuk-error-message'>
-                      <span className='govuk-visually-hidden'>Error:</span>{' '}
-                      {optionError}
-                    </p>
+                        <span className='govuk-visually-hidden'>Error:</span>{' '}
+                        {optionError}
+                      </p>
                     )}
                     {mobileNumbers.map((mobileNumber, index) => (
                       <div

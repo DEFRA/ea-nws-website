@@ -1989,8 +1989,23 @@ govuk-menu-toggle.button-menu > button {
   outline: 1px solid lightgray;
 }
 
+.org-service-selection-comparison {
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+}
+
 .org-service-selection-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.org-service-selection-container > .outline-1px {
   background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .org-service-selection-header {
@@ -2000,6 +2015,7 @@ govuk-menu-toggle.button-menu > button {
 }
 
 .org-service-selection-footer {
+  margin-top: auto;
   background-color: #f3f2f1;
   padding: 0.625rem 0 0.625rem 0.625rem;
 }

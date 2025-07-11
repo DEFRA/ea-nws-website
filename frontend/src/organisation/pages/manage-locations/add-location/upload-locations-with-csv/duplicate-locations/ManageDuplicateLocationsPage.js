@@ -13,7 +13,7 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 
 export default function ManageDuplicateLocationsPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const [duplicateLocations, setDuplicateLocations] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const location = useLocation()
@@ -31,9 +31,8 @@ export default function ManageDuplicateLocationsPage() {
 
   useEffect(() => {
     const getDupLocations = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
@@ -64,9 +63,9 @@ export default function ManageDuplicateLocationsPage() {
     setLocationsPerPage(null)
   }
 
-  const getLocation = async (orgId, locationName, type) => {
+  const getLocation = async (locationName, type) => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type
     }
@@ -88,12 +87,12 @@ export default function ManageDuplicateLocationsPage() {
 
     // Get the existing location (note type is 'valid')
     const existingLocation = geoSafeToWebLocation(
-      await getLocation(orgId, location.additionals.locationName, 'valid')
+      await getLocation(location.additionals.locationName, 'valid')
     )
 
     // Get the new, duplicate location (note type is 'invalid')
     const newLocation = geoSafeToWebLocation(
-      await getLocation(orgId, location.additionals.locationName, 'invalid')
+      await getLocation(location.additionals.locationName, 'invalid')
     )
 
     if (existingLocation && newLocation) {
@@ -127,7 +126,10 @@ export default function ManageDuplicateLocationsPage() {
   return (
     <>
       <Helmet>
-        <title>Manage duplicate locations - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Manage duplicate locations - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       {location.state && (

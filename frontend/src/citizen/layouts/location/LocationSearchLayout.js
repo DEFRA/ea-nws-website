@@ -76,16 +76,11 @@ export default function LocationSearchLayout({
             const dataToSend = {
               name: placeName,
               filters: [
-                'Bay',
                 'City',
-                'Coastal_Headland',
-                'Estuary',
-                'Group_Of_Islands',
+                'Hamlet',
                 'Harbour',
-                'Island',
                 'Other_Settlement',
                 'Suburban_Area',
-                'Tidal_Water',
                 'Town',
                 'Urban_Greenspace',
                 'Village'

@@ -1,19 +1,31 @@
 import { Link, useLocation } from 'react-router-dom'
-export default function Footer () {
+export default function Footer() {
   const location = useLocation()
+  const isOrganisationPage =
+    location.pathname.includes('organisation') &&
+    !location.pathname.includes('sign-up')
 
   return (
     <>
-      <footer className='govuk-footer'>
-        <div className='govuk-width-container'>
+      <footer className='govuk-footer app-footer'>
+        <div
+          className={
+            isOrganisationPage
+              ? 'custom-width-container'
+              : 'govuk-width-container'
+          }
+        >
           <div className='govuk-footer__meta'>
             <div className='govuk-footer__meta-item govuk-footer__meta-item--grow'>
               <h2 className='govuk-visually-hidden'>Support links</h2>
               <ul className='govuk-footer__inline-list'>
                 <li className='govuk-footer__inline-list-item'>
                   <Link
-                    className='govuk-footer__link' to={
-                      location.pathname.includes('organisation') ? '/organisation/contact' : '/contact'
+                    className='govuk-footer__link'
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/contact'
+                        : '/contact'
                     }
                   >
                     Contact
@@ -21,8 +33,11 @@ export default function Footer () {
                 </li>
                 <li className='govuk-footer__inline-list-item'>
                   <Link
-                    className='govuk-footer__link' to={
-                      location.pathname.includes('organisation') ? '/organisation/privacy' : '/privacy'
+                    className='govuk-footer__link'
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/privacy'
+                        : '/privacy'
                     }
                   >
                     Privacy
@@ -32,7 +47,9 @@ export default function Footer () {
                   <Link
                     className='govuk-footer__link'
                     to={
-                      location.pathname.includes('organisation') ? '/organisation/cookies' : '/cookies'
+                      location.pathname.includes('organisation')
+                        ? '/organisation/cookies'
+                        : '/cookies'
                     }
                   >
                     Cookies
@@ -42,7 +59,9 @@ export default function Footer () {
                   <Link
                     className='govuk-footer__link'
                     to={
-                      location.pathname.includes('organisation') ? '/organisation/accessibility-statement' : '/accessibility-statement'
+                      location.pathname.includes('organisation')
+                        ? '/organisation/accessibility-statement'
+                        : '/accessibility-statement'
                     }
                   >
                     Accessibility statement
@@ -51,7 +70,11 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link'
-                    to={location.pathname.includes('organisation') ? '/organisation/terms-and-conditions' : '/terms-and-conditions'}
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/terms-and-conditions'
+                        : '/terms-and-conditions'
+                    }
                   >
                     Terms and conditions
                   </Link>

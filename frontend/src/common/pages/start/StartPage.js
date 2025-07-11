@@ -31,7 +31,7 @@ export default function StartPage() {
                 England is at risk of flooding.{' '}
               </p>
               <p>
-                These are sent by the Environment Agency, the offical source of
+                These are sent by the Environment Agency, the official source of
                 flood information in England. They help you:
               </p>
               <ul className='govuk-list govuk-list--bullet'>

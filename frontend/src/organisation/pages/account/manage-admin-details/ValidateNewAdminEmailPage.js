@@ -7,7 +7,7 @@ import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 
-export default function ValidateNewAdminEmailPage () {
+export default function ValidateNewAdminEmailPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
@@ -17,14 +17,14 @@ export default function ValidateNewAdminEmailPage () {
     navigate(orgAccountUrls.admin.changeDetails)
   }
 
-  const updateProfile = async (profile, authToken, signinType, orgId) => {
+  const updateProfile = async (profile, authToken, signinType) => {
     // The sign in email is always the first one in the array
     // Pop out the last email added and put it in first position
     const profileEmails = profile.emails
     profileEmails[0] = profileEmails.pop()
     profile.emails = profileEmails
 
-    const dataToSend = { profile, authToken, signinType, orgId }
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',

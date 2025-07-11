@@ -1026,6 +1026,9 @@
   .one-login-header__nav {
     width: 100%;
   }
+  .link-mobile-alignment {
+    padding-left: 2px !important;
+  }
 }
 @media (min-width: 40.0625em) {
   .one-login-header__nav {
@@ -1350,6 +1353,11 @@
   line-height: 1.1111111111;
   font-weight: 700;
 }
+
+.govuk-details__summary-text {
+  font-size: 18px;
+}
+
 @media (min-width: 40.0625em) {
   .govuk-header__org-service-name {
     font-size: 1.5rem;
@@ -2357,4 +2365,10 @@ govuk-menu-toggle.button-menu > button {
   border: 0;
   border-top: 1px solid #d8d8d8;
   margin: 4rem;
+}
+
+.action-plan-body,
+.notes-body {
+  overflow-wrap: break-word;
+  word-break: break-all;
 }

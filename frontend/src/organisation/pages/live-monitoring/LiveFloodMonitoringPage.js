@@ -165,7 +165,7 @@ export default function LiveFloodMonitoringPage() {
                     to={orgManageLocationsUrls.add.options}
                     className='govuk-link'
                   >
-                    add locations
+                    add locations.
                   </Link>
                 </p>
 

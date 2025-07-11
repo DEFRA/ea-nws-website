@@ -16,7 +16,7 @@ import { backendCall } from '../../../common/services/BackendService'
 export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const [firstnameError, setFirstNameError] = useState('')
   const [lastnameError, setLastNameError] = useState('')
@@ -47,9 +47,8 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const dataToSend = { orgId }
         const contactsData = await backendCall(
-          dataToSend,
+          { authToken },
           'api/elasticache/list_contacts',
           navigate
         )
@@ -132,15 +131,24 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(firstnameError || lastnameError || jobTitleError || error) && (
               <ErrorSummary
                 errorList={[
-                  firstnameError && { text: firstnameError, componentId: firstNameId },
-                  lastnameError && { text: lastnameError, componentId: lastNameId },
-                  jobTitleError && { text: jobTitleError, componentId: jobTitleId },
+                  firstnameError && {
+                    text: firstnameError,
+                    componentId: firstNameId
+                  },
+                  lastnameError && {
+                    text: lastnameError,
+                    componentId: lastNameId
+                  },
+                  jobTitleError && {
+                    text: jobTitleError,
+                    componentId: jobTitleId
+                  },
                   error && { text: error, componentId: mainBodyId }
                 ].filter(Boolean)}
               />

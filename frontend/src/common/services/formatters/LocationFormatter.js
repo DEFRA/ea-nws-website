@@ -67,7 +67,10 @@ const webToGeoSafeLocation = (webLocation) => {
     ]
   }
 
-  if (location?.geometry?.geoJson) {
+  if (
+    typeof location?.geometry?.geoJson === 'object' &&
+    location?.geometry?.geoJson
+  ) {
     location.geometry.geoJson = JSON.stringify(location?.geometry?.geoJson)
   }
 

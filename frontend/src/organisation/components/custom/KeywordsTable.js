@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function KeywordsTable ({
+export default function KeywordsTable({
   keywords,
   displayedKeywords,
   filteredKeywords,
@@ -97,6 +97,7 @@ export default function KeywordsTable ({
           <tr className='govuk-table__row'>
             <th scope='col' className='govuk-table__header govuk-!-padding-0'>
               <div
+                style={{ marginTop: '-10px' }}
                 className='govuk-checkboxes govuk-checkboxes--small'
                 data-module='govuk-checkboxes'
               >
@@ -137,6 +138,7 @@ export default function KeywordsTable ({
             <tr className='govuk-table__row' key={index}>
               <th scope='row' className='govuk-table__header govuk-!-padding-0'>
                 <div
+                  style={{ marginTop: '-10px' }}
                   className='govuk-checkboxes govuk-checkboxes--small'
                   data-module='govuk-checkboxes'
                 >

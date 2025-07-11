@@ -3,8 +3,10 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { addContact } = require('../../services/elasticache')
-const { normalisePhoneNumber } = require('../../services/formatters/NormalisePhoneNumber')
+const { addContact, getJsonData } = require('../../services/elasticache')
+const {
+  normalisePhoneNumber
+} = require('../../services/formatters/NormalisePhoneNumber')
 
 module.exports = [
   {
@@ -16,22 +18,23 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, orgId, contacts } = request.payload
+        const { authToken, contacts } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (authToken && orgId && contacts) {
+        if (authToken && sessionData.orgId && contacts) {
           // remove any null fields from each contact
-          contacts.forEach(contact => {
+          contacts.forEach((contact) => {
             if (Array.isArray(contact.mobilePhones)) {
               if (contact.mobilePhones.length > 0) {
-                contact.mobilePhones = contact.mobilePhones.map(mobilePhone =>
+                contact.mobilePhones = contact.mobilePhones.map((mobilePhone) =>
                   normalisePhoneNumber(mobilePhone)
                 )
               }
             }
             if (Array.isArray(contact.homePhones)) {
               if (contact.homePhones.length > 0) {
-                contact.homePhones = contact.homePhones.map(homePhone =>
+                contact.homePhones = contact.homePhones.map((homePhone) =>
                   normalisePhoneNumber(homePhone)
                 )
               }
@@ -54,9 +57,11 @@ module.exports = [
             )
 
             if (contactRes.data.contacts) {
-              await Promise.all(contactRes.data.contacts.map(async (contact) => {
-                await addContact(redis, orgId, contact)
-              }))
+              await Promise.all(
+                contactRes.data.contacts.map(async (contact) => {
+                  await addContact(redis, sessionData.orgId, contact)
+                })
+              )
             } else {
               return createGenericErrorResponse(h)
             }

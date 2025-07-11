@@ -24,7 +24,7 @@ containers:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: 'backend-0.5.0'
+      tag: 'backend-0.5.1'
     livenessProbe:
       httpGet:
         path: /liveness

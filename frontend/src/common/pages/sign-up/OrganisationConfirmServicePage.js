@@ -37,9 +37,13 @@ export default function OrganisationConfirmServicePage() {
                 verify your organisation:
               </p>
               <ul className='govuk-list govuk-list--bullet govuk-!-margin-left-2'>
-                <li>Organisation name and address</li>
-                <li>Companies house number, if you have one</li>
-                <li>Details for an administrator and an alternative contact</li>
+                <li>your organisation name and address</li>
+                <li>your work email address</li>
+                <li>
+                  details for an alternative person at your organisation we can
+                  contact
+                </li>
+                <li>your Companies House number, if you have one</li>
               </ul>
               <p className='govuk-!-margin-top-6'>
                 If you've already signed up for the standard service, you'll

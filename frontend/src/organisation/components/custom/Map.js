@@ -601,7 +601,6 @@ export default function Map({
                     <h3 className='govuk-heading-m'>Keyboard</h3>
                     <div
                       className='map-legend-close-container'
-                      tabIndex={0}
                       onClick={handleCloseKeyboardLegend}
                     >
                       <FontAwesomeIcon

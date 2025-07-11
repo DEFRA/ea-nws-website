@@ -47,7 +47,7 @@ export default function SelectAlternativeLandlineLayout({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (!selectedOption) {
+    if (mobileNumbers.length > 0 && !selectedOption) {
       setOptionError('Which telephone number do you want to use?')
       return
     }

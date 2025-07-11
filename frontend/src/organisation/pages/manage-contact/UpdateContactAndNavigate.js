@@ -10,14 +10,13 @@ export default function UpdateContactAndNavigate(setError, message) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateToNextPage = async () => {
     const contact = webToGeoSafeContact(
       store.getState().session.orgCurrentContact
     )
 
-    const dataToSend = { authToken, orgId, contact }
+    const dataToSend = { authToken, contact }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/organization/update_contact',

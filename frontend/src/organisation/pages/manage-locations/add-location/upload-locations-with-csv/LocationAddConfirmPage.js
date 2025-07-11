@@ -16,7 +16,6 @@ export default function LocationAddConfirmPage() {
   const authToken = useSelector((state) => state.session.authToken)
   const locationsValid = location?.state?.valid || 0
   const fileName = location?.state?.fileName || ''
-  const orgId = useSelector((state) => state.session.orgId)
   const [error, setError] = useState(null)
   const [saveLocations, setSaveLocations] = useState(false)
   const [stage, setStage] = useState('Adding locations')
@@ -24,7 +23,7 @@ export default function LocationAddConfirmPage() {
   useEffect(() => {
     if (saveLocations) {
       const upload = async () => {
-        const dataToSend = { authToken, orgId, fileName }
+        const dataToSend = { authToken, fileName }
         await backendCall(
           dataToSend,
           'api/bulk_uploads/save_locations',

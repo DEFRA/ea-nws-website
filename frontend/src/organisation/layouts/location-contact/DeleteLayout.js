@@ -16,7 +16,6 @@ export default function DeleteLayout() {
   const location = useLocation()
 
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const isLocation = location.pathname.includes(orgManageLocationsUrls.delete)
   const contactId = useSelector((state) => state.session.orgCurrentContact.id)
   const currentLocation = useSelector((state) => state.session.currentLocation)
@@ -71,8 +70,8 @@ export default function DeleteLayout() {
     }
 
     const dataToSend = isLocation
-      ? { authToken, orgId, locationIds: idsToDelete }
-      : { authToken, orgId, removeContactIDs: idsToDelete }
+      ? { authToken, locationIds: idsToDelete }
+      : { authToken, removeContactIDs: idsToDelete }
 
     const { errorMessage } = await backendCall(
       dataToSend,

@@ -25,7 +25,7 @@ export default function LocationLoadingShapefilePage() {
   const [geojsonData, setGeojsonData] = useState(null)
   const [rawGeojsonData, setRawGeojsonData] = useState(null)
   const location = useLocation()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const fileName = location.state?.fileName
   const [errors, setErrors] = useState(null)
 
@@ -86,7 +86,7 @@ export default function LocationLoadingShapefilePage() {
 
   const checkDuplicateLocation = async (locationName) => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -209,7 +209,7 @@ export default function LocationLoadingShapefilePage() {
   // Check the status of the processing and update state
   useEffect(() => {
     const interval = setInterval(async () => {
-      const dataToSend = { orgId, fileName }
+      const dataToSend = { authToken, fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/shapefile/process_status',

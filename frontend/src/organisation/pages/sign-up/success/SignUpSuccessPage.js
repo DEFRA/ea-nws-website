@@ -11,6 +11,7 @@ export default function SignUpSuccessPage() {
   // need to check for authToken
   const navigate = useNavigate()
   const profile = useSelector((state) => state.session.profile)
+  const authToken = useSelector((state) => state.session.authToken)
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
   const responderValue = organizationAdditionals.emergencySector ? 'yes' : 'no'
@@ -36,7 +37,6 @@ export default function SignUpSuccessPage() {
     const dataToSend = {
       email: eaEmail,
       adminEmail: profile.emails[0],
-      refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
       companyHouseNumber: compHouseNum,
@@ -50,7 +50,8 @@ export default function SignUpSuccessPage() {
       alternativeContactTelephone:
         organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: jobTitle,
-      submissionDateTime
+      submissionDateTime,
+      authToken
     }
     await backendCall(dataToSend, 'api/notify/account_pending_ea', navigate)
   }

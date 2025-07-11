@@ -6,7 +6,7 @@ const redis = require('redis')
 const getSecretKeyValue = require('./services/SecretsManager')
 const { logger } = require('./plugins/logging')
 
-async function createServer () {
+async function createServer() {
   // Create the hapi server
   const conf = await config()
 

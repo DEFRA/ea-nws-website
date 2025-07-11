@@ -56,7 +56,6 @@ export default function ViewLocationsDashboardPage() {
   const [linkSource, setLinkSource] = useState(location.state?.linkSource || 0)
   const [loading, setLoading] = useState(true)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const [errorMessage, setErrorMessage] = useState('')
   const toggleFilterButtonRef = useRef(null)
 
@@ -117,7 +116,7 @@ export default function ViewLocationsDashboardPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { orgId }
+      const dataToSend = { authToken }
       const { data } = await backendCall(
         dataToSend,
         'api/elasticache/list_locations',
@@ -154,7 +153,7 @@ export default function ViewLocationsDashboardPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      const contactsDataToSend = { authToken, orgId }
+      const contactsDataToSend = { authToken }
       const { data: contactCount } = await backendCall(
         contactsDataToSend,
         'api/elasticache/list_linked_contacts',
@@ -603,7 +602,6 @@ export default function ViewLocationsDashboardPage() {
 
       const updateData = {
         authToken,
-        orgId,
         location: webToGeoSafeLocation(locationsToEdit[i])
       }
       await backendCall(updateData, 'api/location/update', navigate)
@@ -677,7 +675,7 @@ export default function ViewLocationsDashboardPage() {
       )
     }
 
-    const dataToSend = { authToken, orgId, locationIds }
+    const dataToSend = { authToken, locationIds }
 
     const { errorMessage } = await backendCall(
       dataToSend,

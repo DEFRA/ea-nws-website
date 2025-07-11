@@ -3,7 +3,10 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { listLinkedLocations, getLinkedLocationsCount } = require('../../services/elasticache')
+const {
+  listLinkedLocations,
+  getLinkedLocationsCount
+} = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -15,15 +18,20 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { orgId, contactId } = request.payload
+        const { authToken, contactId } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
-        if (orgId) {
+        if (sessionData?.orgId) {
           let result
           if (contactId) {
-            result = await listLinkedLocations(redis, orgId, contactId)
+            result = await listLinkedLocations(
+              redis,
+              sessionData.orgId,
+              contactId
+            )
           } else {
-            result = await getLinkedLocationsCount(redis, orgId)
+            result = await getLinkedLocationsCount(redis, sessionData.orgId)
           }
 
           if (result) {

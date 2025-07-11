@@ -40,7 +40,6 @@ export default function ConfirmLocationLayout({
   const location = useLocation()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -84,7 +83,7 @@ export default function ConfirmLocationLayout({
 
   const checkDuplicateLocation = async () => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -201,7 +200,7 @@ export default function ConfirmLocationLayout({
     const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
     // since we added to currentLocation we need to get that information to pass to the api
-    const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+    const dataToSend = { authToken, location: newGeosafeLocation }
     const isUpdate = Boolean(currentLocation?.id)
     const apiEndpoint = isUpdate ? 'api/location/update' : 'api/location/create'
     const { data, errorMessage } = await backendCall(
@@ -241,7 +240,7 @@ export default function ConfirmLocationLayout({
       // Remove invalid location from elasticache
       if (flow?.includes('unmatched-locations')) {
         backendCall(
-          { orgId, locationId: currentLocation.id },
+          { authToken, locationId: currentLocation.id },
           'api/bulk_uploads/remove_invalid_location',
           navigate
         )

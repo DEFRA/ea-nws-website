@@ -40,7 +40,6 @@ export default function LinkedLocationsPage() {
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const locationsPerPage = 10
 
@@ -107,7 +106,7 @@ export default function LinkedLocationsPage() {
     }
 
     const getLinkedLocations = async () => {
-      const LocationsDataToSend = { orgId, contactId: currentContact.id }
+      const LocationsDataToSend = { authToken, contactId: currentContact.id }
       const { data } = await backendCall(
         LocationsDataToSend,
         'api/elasticache/list_linked_locations',
@@ -143,15 +142,14 @@ export default function LinkedLocationsPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      const contactsDataToSend = { authToken, orgId }
-        const { data: contactCount } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
+      const contactsDataToSend = { authToken }
+      const { data: contactCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
 
       for (const location of locationsUpdate) {
-
         location.linked_contacts = contactCount[location.id] || 0
         const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
@@ -223,7 +221,6 @@ export default function LinkedLocationsPage() {
       setStage(`unlinking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
       const dataToSend = {
         authToken,
-        orgId,
         locationId: location.id,
         contactIds: [currentContact.id]
       }

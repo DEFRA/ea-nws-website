@@ -24,19 +24,17 @@ export default function KeywordsLayout({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
 
+  // UPDATE HERE - need to update he actual endpoint
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
   useEffect(() => {
     const getOrgKeywordsOriginal = async () => {
-      const key =
-        orgId +
-        (keywordType === 'location'
+      const type =
+        keywordType === 'location'
           ? ':t_Keywords_location'
-          : ':t_Keywords_contact')
-      const dataToSend = { key }
+          : ':t_Keywords_contact'
       const { data } = await backendCall(
-        dataToSend,
+        { type },
         'api/elasticache/get_data',
         navigate
       )

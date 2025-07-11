@@ -16,7 +16,7 @@ import { backendCall } from '../../../common/services/BackendService'
 export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const [firstnameError, setFirstNameError] = useState('')
   const [lastnameError, setLastNameError] = useState('')
@@ -47,9 +47,8 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const dataToSend = { orgId }
         const contactsData = await backendCall(
-          dataToSend,
+          { authToken },
           'api/elasticache/list_contacts',
           navigate
         )

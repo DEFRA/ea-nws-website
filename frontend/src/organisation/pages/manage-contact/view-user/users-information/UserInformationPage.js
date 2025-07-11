@@ -24,7 +24,6 @@ export default function UserInformationPage() {
   const [locations, setLocations] = useState([])
   /* const [showMap, setShowMap] = useState(false) */
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -37,7 +36,7 @@ export default function UserInformationPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { authToken, orgId, contactId: currentContact.id }
+      const dataToSend = { authToken, contactId: currentContact.id }
       const linkLocationsRes = await backendCall(
         dataToSend,
         'api/elasticache/list_linked_locations',

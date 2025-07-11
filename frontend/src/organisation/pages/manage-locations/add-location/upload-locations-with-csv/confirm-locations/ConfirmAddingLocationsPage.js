@@ -27,7 +27,6 @@ export default function ConfirmAddingLocationsPage() {
     notFoundLocations +
     notInEnglandLocations
   const fileName = location?.state?.fileName || ''
-  const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
   const [saveLocations, setSaveLocations] = useState(false)
   const [stage, setStage] = useState('Adding locations')
@@ -35,7 +34,7 @@ export default function ConfirmAddingLocationsPage() {
   useEffect(() => {
     if (saveLocations) {
       const upload = async () => {
-        const dataToSend = { authToken, orgId, fileName }
+        const dataToSend = { authToken, fileName }
         await backendCall(
           dataToSend,
           'api/bulk_uploads/save_locations',
@@ -65,7 +64,6 @@ export default function ConfirmAddingLocationsPage() {
                   // Get the existing location (note type is 'valid')
                   const existingLocation = geoSafeToWebLocation(
                     await getLocation(
-                      orgId,
                       location.additionals.locationName,
                       'valid'
                     )
@@ -130,9 +128,9 @@ export default function ConfirmAddingLocationsPage() {
     }
   }, [saveLocations])
 
-  const getLocation = async (orgId, locationName, type) => {
+  const getLocation = async (locationName, type) => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type
     }
@@ -150,9 +148,8 @@ export default function ConfirmAddingLocationsPage() {
   }
 
   const getDupLocation = async () => {
-    const dataToSend = { orgId }
     const { data } = await backendCall(
-      dataToSend,
+      { authToken },
       'api/bulk_uploads/get_invalid_locations',
       navigate
     )
@@ -202,7 +199,10 @@ export default function ConfirmAddingLocationsPage() {
   return (
     <>
       <Helmet>
-        <title>Confirm adding locations - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Confirm adding locations - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

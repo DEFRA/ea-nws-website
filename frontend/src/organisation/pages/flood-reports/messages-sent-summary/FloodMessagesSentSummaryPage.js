@@ -13,7 +13,7 @@ import { infoUrls } from '../../../routes/info/InfoRoutes'
 
 export default function FloodMessagesSentSummaryPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const initialData = {
     all: {
       locations: 0,
@@ -65,7 +65,7 @@ export default function FloodMessagesSentSummaryPage() {
 
       // get orgs locations
       const { data: locationsData, errorMessage } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )

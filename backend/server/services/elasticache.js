@@ -14,7 +14,7 @@ const setJsonData = async (client, key, json, path) => {
   const time = 60 * 60 * 24
   // send the data
   if (path) {
-    await client.json.set(key, '$.'+path, json)
+    await client.json.set(key, '$.' + path, json)
   } else {
     await client.json.set(key, '$', json)
   }
@@ -24,7 +24,7 @@ const setJsonData = async (client, key, json, path) => {
 const getJsonData = async (client, key, path) => {
   let result
   if (path) {
-    result = (await client.json.get(key, {path: '$.'+path}))[0]
+    result = (await client.json.get(key, { path: '$.' + path }))[0]
   } else {
     result = await client.json.get(key)
   }
@@ -34,7 +34,7 @@ const getJsonData = async (client, key, path) => {
 const deleteJsonData = async (client, key, path) => {
   // delete the data
   if (path) {
-    await client.json.del(key, '$.'+path)
+    await client.json.del(key, '$.' + path)
   } else {
     await client.json.del(key)
   }
@@ -114,7 +114,6 @@ const setLocations = async (client, orgId, locations) => {
   })
 }
 
-
 const addLocation = async (client, orgId, location) => {
   const locationID = location.id
   const key = orgId + ':t_POIS'
@@ -141,7 +140,9 @@ const removeLocationFromKeywords = async (client, orgId, locationID) => {
     const keywordArr = await getJsonData(client, key)
     const updatedKeywordArr = keywordArr
       .map((keyword) => {
-        keyword.linked_ids = keyword.linked_ids.filter((id) => id !== locationID)
+        keyword.linked_ids = keyword.linked_ids.filter(
+          (id) => id !== locationID
+        )
         return keyword
       })
       .filter((keyword) => keyword.linked_ids.length > 0)
@@ -165,7 +166,6 @@ const updateLocation = async (client, orgId, location) => {
   await addLocation(client, orgId, location)
 }
 
-
 const listLocations = async (client, orgId) => {
   const locations = await getJsonData(client, orgId + ':t_POIS')
   const locationArr = []
@@ -182,7 +182,6 @@ const listLocations = async (client, orgId) => {
   return locationArr
 }
 
-
 const findLocationByName = async (client, orgId, locationName) => {
   const locations = await getJsonData(client, orgId + ':t_POIS')
   const matchingLocations = []
@@ -196,7 +195,7 @@ const findLocationByName = async (client, orgId, locationName) => {
       }
     })
   })
-  
+
   return matchingLocations
 }
 
@@ -212,7 +211,7 @@ const listLocationNames = async (client, orgId) => {
       }
     })
   })
-  
+
   return locationNames
 }
 
@@ -542,12 +541,22 @@ const getOrgActiveAdmins = async (client, orgId) => {
   return activeAdmins
 }
 
-const orgSignIn = async (client, profile, organization, locations, contacts, authToken) => {
+const orgSignIn = async (
+  client,
+  profile,
+  organization,
+  locations,
+  contacts,
+  orgId
+) => {
   await setJsonData(client, profile.id + ':profile', profile)
-  await addOrgActiveAdmins(client, organization.id, profile.id)
-  const orgExists = await checkKeyExists(client, organization.id + ':org_data')
+  await addOrgActiveAdmins(client, orgId, profile.id)
+  const orgExists = await checkKeyExists(client, orgId + ':org_data')
   if (orgExists) {
-    const existingLocations = await getJsonData(client, organization.id + ':t_POIS')
+    const existingLocations = await getJsonData(
+      client,
+      organization.id + ':t_POIS'
+    )
     const existingLocationIds = existingLocations.map((location) =>
       location.split(':').slice(2).join(':')
     )
@@ -556,25 +565,25 @@ const orgSignIn = async (client, profile, organization, locations, contacts, aut
         await addLocation(client, organization.id, location)
       }
     }
-    const existingContacts = await getContactKeys(client, organization.id)
+    const existingContacts = await getContactKeys(client, orgId)
     const existingContactIds = existingContacts.map((contact) =>
       contact.split(':').slice(2).join(':')
     )
     for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {
-        await addContact(client, organization.id, contact)
+        await addContact(client, orgId, contact)
       }
     }
   } else {
     await setJsonData(client, organization.id + ':org_data', organization)
     await setLocations(client, organization.id, locations)
     for (const contact of contacts) {
-      await addContact(client, organization.id, contact)
+      await addContact(client, orgId, contact)
     }
   }
 }
 
-const orgSignOut = async (client, profileId, orgId) => {
+const orgSignOut = async (client, profileId, orgId, authToken) => {
   // delete profile
   await deleteJsonData(client, profileId + ':profile')
   await removeOrgActiveAdmins(client, orgId, profileId)
@@ -608,6 +617,9 @@ const orgSignOut = async (client, profileId, orgId) => {
     await deleteJsonData(client, orgId + ':t_Keywords_contact')
     await deleteJsonData(client, orgId + ':t_Linked_locations')
     await deleteJsonData(client, orgId + ':t_Linked_contacts')
+
+    // delete session data
+    await deleteJsonData(client, authToken)
   }
 }
 
@@ -629,8 +641,9 @@ const getTAData = async (client, TA_CODE) => {
 
 const setFloodHistory = async (client, value) => {
   const key = 'TAHistoryCount'
-  const d = new Date(), e = new Date(d);
-  const secondsSinceMidnight = (e - d.setHours(0,0,0,0))/1000;
+  const d = new Date(),
+    e = new Date(d)
+  const secondsSinceMidnight = (e - d.setHours(0, 0, 0, 0)) / 1000
   const secondsInDay = 60 * 60 * 24
   const secondsTillMidnight = parseInt(secondsInDay - secondsSinceMidnight)
   // send the data
@@ -644,7 +657,6 @@ const getFloodHistory = async (client) => {
   const dataExists = await checkKeyExists(client, key)
   if (dataExists) {
     floodHistory = await getJsonData(client, key)
-
   }
   return floodHistory
 }

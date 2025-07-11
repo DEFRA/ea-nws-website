@@ -37,7 +37,6 @@ export default function ChangeAdminDetailsPage() {
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const fullNameId = 'full-name'
   const emailAddressId = 'email-address'
@@ -47,8 +46,8 @@ export default function ChangeAdminDetailsPage() {
     navigate(-1)
   }
 
-  const updateProfile = async (profile, authToken, signinType, orgId) => {
-    const dataToSend = { profile, authToken, signinType, orgId }
+  const updateProfile = async (profile, authToken, signinType) => {
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',
@@ -85,7 +84,7 @@ export default function ChangeAdminDetailsPage() {
         updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
         successMessages.push('Email address changed')
       }
-      await updateProfile(updatedProfile, authToken, signinType, orgId)
+      await updateProfile(updatedProfile, authToken, signinType)
 
       if (email) {
         const dataToSend = { email, authToken }

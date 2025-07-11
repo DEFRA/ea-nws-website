@@ -1,14 +1,16 @@
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import InsetText from '../../../common/components/gov-uk/InsetText'
+import { setNearbyTargetAreasFlow } from '../../../common/redux/userSlice'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationAlreadyAddedLayout() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -58,6 +60,7 @@ export default function LocationAlreadyAddedLayout() {
 
   const navigateToNextPage = () => {
     if (moreFloodAreasAvailable) {
+      dispatch(setNearbyTargetAreasFlow(true))
       navigate('/manage-locations/add/location-near-flood-areas')
     } else {
       navigate(-1)

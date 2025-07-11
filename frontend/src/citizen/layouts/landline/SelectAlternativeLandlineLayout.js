@@ -17,7 +17,6 @@ import {
 } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-import Input from '../../../common/components/gov-uk/Input'
 
 export default function SelectAlternativeLandlineLayout({
   NextPageWithoutValidation,

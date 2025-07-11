@@ -109,21 +109,21 @@ export default function AlternativeContactDetailsLayout({
                     componentId: telephoneNumberId
                   }
                 ].filter(Boolean)}
-            />
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Enter details for an alternative contact at your organisation
             </h1>
             <div className='govuk-body'>
               {isAdmin ? (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
+                <p className='govuk-body govuk-hint govuk-!-margin-bottom-5'>
                   We'll only contact them about this account, if we're unable to
                   reach you. They will not get flood messages or admin rights
                   unless you set them up for these after your account is
                   approved.
                 </p>
               ) : (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
+                <p className='govuk-body govuk-hint govuk-!-margin-bottom-5'>
                   We'll only contact them about this account, if we're unable to
                   reach {profile.firstname} {profile.surname}. They will not get
                   flood messages or admin rights unless you set them up for

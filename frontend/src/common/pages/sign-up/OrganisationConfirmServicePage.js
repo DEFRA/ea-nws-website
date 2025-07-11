@@ -43,7 +43,7 @@ export default function OrganisationConfirmServicePage() {
                   details for an alternative person at your organisation we can
                   contact
                 </li>
-                <li>you Companies house number, if you have one</li>
+                <li>your Companies House number, if you have one</li>
               </ul>
               <p className='govuk-!-margin-top-6'>
                 If you've already signed up for the standard service, you'll

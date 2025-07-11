@@ -4,21 +4,19 @@ import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink.js'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner.js'
-import Button from '../../../../common/components/gov-uk/Button'
-import Pagination from '../../../../common/components/gov-uk/Pagination'
+import Button from '../../../../common/components/gov-uk/Button.js'
+import Pagination from '../../../../common/components/gov-uk/Pagination.js'
 import AlertState from '../../../../common/enums/AlertState.js'
 import AlertType from '../../../../common/enums/AlertType.js'
-import { getAdditional } from '../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
-import FloodReportFilter from '../components/FloodReportFilter'
+import FloodReportFilter from '../components/FloodReportFilter.js'
 import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
 
 export default function LiveFloodWarningsDashboardPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -94,7 +92,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
     if (alerts) {
       const { data: locationsData } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -102,63 +100,34 @@ export default function LiveFloodWarningsDashboardPage() {
       const locations = []
       // link contacts and convert to web format
       for (let location of locationsData) {
-        location = geoSafeToWebLocation(location)
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
-
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contact) => {
-            location.linked_contacts.push(contact.id)
-          })
-        }
-        locations.push(location)
+        locations.push(geoSafeToWebLocation(location))
       }
+
+      const { data: contactCount } = await backendCall(
+        { authToken },
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
 
       if (locations) {
         // loop through live alerts - loop through all locations to find affected locations
         for (const liveAlert of alerts?.alerts) {
-          const TA_CODE = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_CODE'
-          )
-          const TA_NAME = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_Name'
-          )
-
-          const severity = liveAlert.type
-          const [day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'lastmodifieddate'
-          ).split(/[:\/\s]+/)
-          const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
-
           for (const location of locations) {
-            processLocation(
-              location,
-              severity,
-              lastUpdatedTime,
-              TA_CODE,
-              TA_NAME
-            )
+            await processLocation(location, liveAlert, contactCount)
           }
         }
       }
     }
   }
 
-  const processLocation = (
+  const processLocation = async (
     location,
-    severity,
-    lastUpdatedTime,
-    TA_CODE,
-    TA_NAME
+    liveAlert,
+    contactCount
   ) => {
+
+    const TA_CODE = liveAlert.TA_CODE
+
     const { additionals } = location
     const locationIntersectsWithFloodArea =
       additionals.other?.targetAreas?.some(
@@ -166,6 +135,13 @@ export default function LiveFloodWarningsDashboardPage() {
       )
 
     if (!locationIntersectsWithFloodArea) return
+
+    const TA_NAME = liveAlert.TA_Name
+
+    const severity = liveAlert.type
+    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
+
+    location.linked_contacts = contactCount[location.id] || 0
 
     // add required data to location row object
     const createLocationWithFloodData = () => {
@@ -293,7 +269,9 @@ export default function LiveFloodWarningsDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Live flood warnings - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

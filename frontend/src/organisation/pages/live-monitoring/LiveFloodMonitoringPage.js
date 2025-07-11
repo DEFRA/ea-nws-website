@@ -9,6 +9,7 @@ import floodSevereWarningIcon from '../../../common/assets/images/severe_flood_w
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
+import { infoUrls } from '../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
@@ -66,7 +67,9 @@ export default function LiveFloodMonitoringPage() {
   return (
     <>
       <Helmet>
-        <title>Live flood warnings - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Live flood warnings - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-5 govuk-body'>
@@ -162,8 +165,19 @@ export default function LiveFloodMonitoringPage() {
                     to={orgManageLocationsUrls.add.options}
                     className='govuk-link'
                   >
-                    add locations
+                    add locations.
                   </Link>
+                </p>
+
+                <p className='govuk-!-font-weight-bold govuk-!-margin-top-6 govuk-!-margin-bottom-0'>
+                  If you need help
+                </p>
+                <p>
+                  You can read a step-by-step{' '}
+                  <Link to={infoUrls.help} className='govuk-link'>
+                    guide
+                  </Link>{' '}
+                  to setting up your account
                 </p>
               </>
             )}

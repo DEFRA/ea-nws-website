@@ -16,7 +16,6 @@ export default function LocationAddConfirmPage() {
   const authToken = useSelector((state) => state.session.authToken)
   const locationsValid = location?.state?.valid || 0
   const fileName = location?.state?.fileName || ''
-  const orgId = useSelector((state) => state.session.orgId)
   const [error, setError] = useState(null)
   const [saveLocations, setSaveLocations] = useState(false)
   const [stage, setStage] = useState('Adding locations')
@@ -24,7 +23,7 @@ export default function LocationAddConfirmPage() {
   useEffect(() => {
     if (saveLocations) {
       const upload = async () => {
-        const dataToSend = { authToken, orgId, fileName }
+        const dataToSend = { authToken, fileName }
         await backendCall(
           dataToSend,
           'api/bulk_uploads/save_locations',
@@ -74,10 +73,13 @@ export default function LocationAddConfirmPage() {
   return (
     <>
       <Helmet>
-        <title>Confirm add location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Confirm add location - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-2)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-two-thirds'>
           {error && <ErrorSummary errorList={[error]} />}
           <h1

@@ -25,6 +25,9 @@ export default function AlternativeContactDetailsLayout({
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
   const isAdmin = organizationAdditionals.isAdminRegistering
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
+  const telephoneNumberId = 'telephone-number'
 
   useEffect(() => {
     setErrorFullName('')
@@ -92,7 +95,20 @@ export default function AlternativeContactDetailsLayout({
           <div className='govuk-grid-column-two-thirds'>
             {(errorFullName || errorEmail || errorTelephone) && (
               <ErrorSummary
-                errorList={[errorFullName, errorEmail, errorTelephone]}
+                errorList={[
+                  errorFullName && {
+                    text: errorFullName,
+                    component: fullNameId
+                  },
+                  errorEmail && {
+                    text: errorEmail,
+                    component: emailAddressId
+                  },
+                  errorTelephone && {
+                    text: errorTelephone,
+                    componentId: telephoneNumberId
+                  }
+                ].filter(Boolean)}
               />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
@@ -100,20 +116,22 @@ export default function AlternativeContactDetailsLayout({
             </h1>
             <div className='govuk-body'>
               {isAdmin ? (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case you're
-                  unavailable in the future. They will not be given
-                  administrator rights.
+                <p className='govuk-body govuk-hint govuk-!-margin-bottom-5'>
+                  We'll only contact them about this account, if we're unable to
+                  reach you. They will not get flood messages or admin rights
+                  unless you set them up for these after your account is
+                  approved.
                 </p>
               ) : (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case{' '}
-                  {profile.firstname} {profile.lastname} is unavailable in the
-                  future. They will not be given administrator rights.
+                <p className='govuk-body govuk-hint govuk-!-margin-bottom-5'>
+                  We'll only contact them about this account, if we're unable to
+                  reach {profile.firstname} {profile.surname}. They will not get
+                  flood messages or admin rights unless you set them up for
+                  these after your account is approved.
                 </p>
               )}
               <Input
-                id='full-name'
+                id={fullNameId}
                 inputType='text'
                 value={fullName}
                 name='Full name'
@@ -124,7 +142,7 @@ export default function AlternativeContactDetailsLayout({
                 isNameBold
               />
               <Input
-                id='email-address'
+                id={emailAddressId}
                 inputType='text'
                 inputMode='email'
                 value={email}
@@ -135,7 +153,7 @@ export default function AlternativeContactDetailsLayout({
                 isNameBold
               />
               <Input
-                id='telephone-number'
+                id={telephoneNumberId}
                 inputType='text'
                 value={telephone}
                 name='Telephone number'

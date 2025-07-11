@@ -19,7 +19,7 @@ export default function ChangeLocationSearchResultPage() {
     if (isInWarningArea || isInAlertArea) {
       navigate('/signup/review/change-location-in-flood-areas')
     } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
-      navigate('/signup/review/change-location-near-flood-areas')
+      navigate('/signup/review/location-cannot-get-direct-flood-messages')
     } else if (isError) {
       navigate('/error')
     } else {

@@ -13,7 +13,6 @@ import AlertState from '../../../../../common/enums/AlertState'
 import AlertType from '../../../../../common/enums/AlertType'
 import store from '../../../../../common/redux/store'
 import {
-  getAdditional,
   getLocationAdditionals,
   getLocationOther,
   setCurrentLocationAlertTypes,
@@ -21,7 +20,7 @@ import {
   setCurrentTA
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -29,7 +28,6 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
   const [locationUnlinked, setLocationUnlinked] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -60,7 +58,7 @@ export default function LocationMessagesPage() {
       'api/location/unregister_from_partner',
       navigate
     )
-    const dataToSend = { authToken, orgId, locationIds: [unlinkID] }
+    const dataToSend = { authToken, locationIds: [unlinkID] }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/location/remove',
@@ -74,7 +72,7 @@ export default function LocationMessagesPage() {
         )
       )
       const locationToUpdate = store.getState().session.currentLocation
-      const dataToSend = { authToken, orgId, location: locationToUpdate }
+      const dataToSend = { authToken, location: locationToUpdate }
       await backendCall(dataToSend, 'api/location/update', navigate)
       setLocationUnlinked(true)
       setUnlinkID(null)
@@ -135,7 +133,7 @@ export default function LocationMessagesPage() {
       )
 
       const options = {
-        states: [AlertState.CURRENT, AlertState.PAST],
+        states: [AlertState.PAST],
         boundingBox: null,
         channels: [],
         partnerId
@@ -145,7 +143,7 @@ export default function LocationMessagesPage() {
       twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
       const { data: alertsData } = await backendCall(
-        { options, filterDate: twoYearsAgo },
+        { options, filterDate: twoYearsAgo, historic: true },
         'api/alert/list',
         navigate
       )
@@ -184,8 +182,7 @@ export default function LocationMessagesPage() {
         warningsCount = 0,
         alertsCount = 0
       alerts.forEach((alert) => {
-        const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-        const alertTaCode = getAdditional(extraInfo, 'TA_CODE')
+        const alertTaCode = alert.TA_CODE
         const alertType = alert.type
         if (alertTaCode === targetArea.TA_CODE) {
           switch (alertType) {
@@ -202,6 +199,7 @@ export default function LocationMessagesPage() {
         }
       })
       const floodArea = {
+        code: targetArea.TA_CODE,
         name: targetArea.TA_Name,
         type: targetArea.category,
         severeWarningMessagesCount: severeWarningsCount,
@@ -242,7 +240,7 @@ export default function LocationMessagesPage() {
 
       const locationToUpdate = store.getState().session.currentLocation
 
-      const updateData = { authToken, orgId, location: locationToUpdate }
+      const updateData = { authToken, location: locationToUpdate }
       await backendCall(updateData, 'api/location/update', navigate)
 
       const locationIDsToUpdate = [
@@ -282,9 +280,9 @@ export default function LocationMessagesPage() {
     setIsBannerDisplayed(false)
   }
 
-  const onClick = async (e, areaName) => {
+  const onClick = async (e, areaCode) => {
     e.preventDefault()
-    const floodArea = await getFloodAreaByTaName(areaName)
+    const floodArea = await getFloodAreaByTaCode(areaCode)
     dispatch(setCurrentTA(floodArea))
     navigate(orgManageLocationsUrls.view.viewFloodArea)
   }
@@ -295,7 +293,7 @@ export default function LocationMessagesPage() {
         Message settings
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {availableAlerts.length > 0 ? (
+      {availableAlerts.size > 0 ? (
         <p>
           You can choose which flood messages to get for each location if
           they're available.
@@ -376,7 +374,7 @@ export default function LocationMessagesPage() {
         </tbody>
       </table>
 
-      {availableAlerts.length > 0 && (
+      {availableAlerts.size > 0 && (
         <Button
           text='Save message settings'
           className='govuk-button'
@@ -451,7 +449,7 @@ export default function LocationMessagesPage() {
                         }}
                       >
                         <Link
-                          onClick={(e) => onClick(e, area.name)}
+                          onClick={(e) => onClick(e, area.code)}
                           className='govuk-link'
                         >
                           {area.name}
@@ -532,16 +530,18 @@ export default function LocationMessagesPage() {
         </>
       )}
 
+      {/* Only render button if location is not a predefined boundary */}
+      {!isPredefinedBoundary && (
       <Button
         imageSrc={linkIcon}
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
-        // TODO: Add link to nearby flood areas
         onClick={(event) => {
           event.preventDefault()
           navigate(orgManageLocationsUrls.add.linkToTargetArea)
         }}
       />
+      )}
     </>
   )
 
@@ -584,14 +584,13 @@ export default function LocationMessagesPage() {
           </div>
         </div>
 
-        {/* Only render flood areas section if location is not a predefined boundary */}
-        {!isPredefinedBoundary && (
+        
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-full govuk-!-margin-top-9'>
               {floodAreasSection}
             </div>
           </div>
-        )}
+        
 
         {unlinkID && (
           <Popup

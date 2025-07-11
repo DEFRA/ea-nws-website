@@ -11,6 +11,8 @@ export default function ServiceSelectionPage() {
 
   const [serviceOption, setServiceOption] = useState('')
   const [reasonError, setReasonError] = useState('')
+  
+  const serviceSelectionId = 'service-selection'
 
   useEffect(() => {
     setReasonError('')
@@ -48,7 +50,11 @@ export default function ServiceSelectionPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {/* Error summary */}
-            {reasonError && <ErrorSummary errorList={[reasonError]} />}
+            {reasonError && (
+              <ErrorSummary
+                errorList={[{ text: reasonError, componentId: serviceSelectionId }]}
+              />
+            )}
             <fieldset className='govuk-fieldset'>
               <legend className='govuk-fieldset__legend'>
                 <h1 className='govuk-heading-l' id='main-content'>
@@ -57,9 +63,16 @@ export default function ServiceSelectionPage() {
               </legend>
               <div className='govuk-body'>
                 <div>
-                  <div className='govuk-radios' data-module='govuk-radios'>
+                  <div
+                    id={serviceSelectionId}
+                    className='govuk-radios'
+                    data-module='govuk-radios'
+                  >
                     {reasonError && (
-                      <p className='govuk-error-message'>{reasonError}</p>
+                      <p className='govuk-error-message'>
+                        <span className='govuk-visually-hidden'>Error:</span>{' '}
+                        {reasonError}
+                      </p>
                     )}
                     <Radio
                       key='citizen'

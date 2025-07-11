@@ -21,7 +21,6 @@ export default function LinkBanner({
   const navigate = useNavigate()
 
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const currentLocation = geoSafeToWebLocation(
     useSelector((state) => state.session.currentLocation)
   )
@@ -119,7 +118,6 @@ export default function LinkBanner({
         setStage(`Linking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
         const dataToSend = {
           authToken,
-          orgId,
           locationId: locationID,
           contactIds: linkContactIDs
         }

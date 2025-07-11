@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
-export default function ContactReviewTable ({ alternativeContact }) {
+export default function ContactReviewTable({ alternativeContact }) {
   const fullName = `${alternativeContact.firstName} ${alternativeContact.lastName}`
   return (
     <>
       <h3 className='govuk-heading-m govuk-!-margin-top-9'>
-        Alternative contact
+        Alternative person
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>

@@ -57,6 +57,11 @@ export default function SignUpDuplicateEmailPageLayout() {
                     If this is your account, you can sign in by getting a code
                   </p>
                   <br />
+                  <p className='govuk-!-margin-bottom-5'>
+                    If you already have a standard flood warnings accounts and
+                    want a professional account, you'll need to use a different
+                    email address here.
+                  </p>
                   <Button
                     className='govuk-button'
                     text='Get code to sign in'

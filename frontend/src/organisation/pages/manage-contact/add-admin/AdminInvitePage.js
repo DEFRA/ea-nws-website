@@ -9,7 +9,6 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import {
   setAuthToken,
   setContactPreferences,
-  setOrgId,
   setOrganization,
   setProfile,
   setProfileId,
@@ -83,7 +82,6 @@ export default function AdminInvitePage() {
       dispatch(setAuthToken(data.authToken))
       dispatch(setProfile(data.profile))
       dispatch(setProfileId(data.profile.id))
-      dispatch(setOrgId(data.organization.id))
       dispatch(setOrganization(data.organization))
       dispatch(setSigninType('org'))
       dispatch(
@@ -106,7 +104,10 @@ export default function AdminInvitePage() {
   return (
     <>
       <Helmet>
-        <title>You've been invited to join as an admin for your organisation - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          You've been invited to join as an admin for your organisation - Get
+          flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

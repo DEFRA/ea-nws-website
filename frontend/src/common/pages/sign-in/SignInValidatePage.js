@@ -16,7 +16,6 @@ import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
-  setOrgId,
   setOrganization,
   setProfile,
   setProfileId,
@@ -43,6 +42,7 @@ export default function SignInValidatePage() {
   const [cookies, setCookie] = useCookies(['authToken'])
   const [orgData, setOrgData] = useState(null)
   const [stage, setStage] = useState('Retrieving locations')
+  const enterCodeId = 'enter-code'
 
   useEffect(() => {
     if (orgData) {
@@ -113,7 +113,6 @@ export default function SignInValidatePage() {
         dispatch(setProfile(data.profile))
         if (data.organization) {
           dispatch(setProfileId(data.profile.id))
-          dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
         }
@@ -190,7 +189,11 @@ export default function SignInValidatePage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Confirm email address{' '}
                 </h2>
@@ -198,7 +201,7 @@ export default function SignInValidatePage() {
                   We've sent an email with a code to:
                   <InsetText text={location.state.email} />
                   <Input
-                    id='enter-code'
+                    id={enterCodeId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

@@ -38,6 +38,8 @@ export default function LocationXYCoordinatesSearchLayout({
     Math.trunc(currentYCoordinate) || ''
   )
   const [yCoordinateError, setYCoordinateError] = useState('')
+  const xCoordinateId = 'x-coordinate'
+  const yCoordinateId = 'y-coordinate'
 
   useEffect(() => {
     if (xCoordinateError) {
@@ -87,11 +89,22 @@ export default function LocationXYCoordinatesSearchLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(xCoordinateError || yCoordinateError) && (
-              <ErrorSummary errorList={[xCoordinateError, yCoordinateError]} />
+              <ErrorSummary
+                errorList={[
+                  xCoordinateError && {
+                    text: xCoordinateError,
+                    componentId: xCoordinateId
+                  },
+                  yCoordinateError && {
+                    text: yCoordinateError,
+                    componentId: yCoordinateId
+                  }
+                ].filter(Boolean)}
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               What are the X and Y coordinates?
@@ -101,7 +114,7 @@ export default function LocationXYCoordinatesSearchLayout({
 
             <div className='govuk-body'>
               <Input
-                id='x-coordinate'
+                id={xCoordinateId}
                 name='X coordinate'
                 hint="A number representing how far east or west a location is (also known as an 'easting'), for example: 362105."
                 inputType='text'
@@ -112,7 +125,7 @@ export default function LocationXYCoordinatesSearchLayout({
                 className='govuk-input govuk-input--width-20'
               />
               <Input
-                id='y-coordinate'
+                id={yCoordinateId}
                 name='Y coordinate'
                 hint="A number representing how far north or south a location is (also known as a 'northing'), for example: 387217."
                 inputType='text'

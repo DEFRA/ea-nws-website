@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -35,12 +35,12 @@ export default function ValidateEmailLayout({
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
-  const orgId = useSelector((state) => state.session.orgId)
   const session = useSelector((state) => state.session)
   const email = session.currentContact
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const enterCodeId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -64,18 +64,15 @@ export default function ValidateEmailLayout({
           'The code you have entered has expired - please request a new code'
         ) {
           setCodeExpired(true)
-        } else {
-          if (
-            errorMessage ===
-            'The email address you entered is already being used'
-          ) {
-            await removeEmailFromProfile()
-          }
-          setError(errorMessage)
+        } else if (
+          errorMessage === 'The email address you entered is already being used'
+        ) {
+          await removeEmailFromProfile()
         }
+        setError(errorMessage)
       } else {
         if (changeSignIn) {
-          updateProfile(data.profile, authToken, signinType, orgId)
+          updateProfile(data.profile, authToken, signinType)
           setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
@@ -196,7 +193,11 @@ export default function ValidateEmailLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Check your email
                 </h2>
@@ -213,7 +214,7 @@ export default function ValidateEmailLayout({
                     it will expire.
                   </p>
                   <Input
-                    id='enter-code'
+                    id={enterCodeId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'

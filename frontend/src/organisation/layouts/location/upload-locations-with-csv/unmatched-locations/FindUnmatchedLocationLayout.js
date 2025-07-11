@@ -25,6 +25,7 @@ export default function FindUnmatchedLocationLayout({
   const dispatch = useDispatch()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')
+  const findLocationOptionsId = 'find-location-options'
 
   const currentLocName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
@@ -135,10 +136,16 @@ export default function FindUnmatchedLocationLayout({
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  { text: error, componentId: findLocationOptionsId }
+                ]}
+              />
+            )}
 
             {/* Heading */}
             <h1 className='govuk-heading-l' id='main-content'>
@@ -170,20 +177,36 @@ export default function FindUnmatchedLocationLayout({
                     : 'govuk-form-group'
                 }
               >
-                {error && <p className='govuk-error-message'>{error}</p>}
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  {findLocationOptions.map((option) => (
-                    <Radio
-                      key={option.value}
-                      id={option.value}
-                      name='findLocationOptionRadios'
-                      label={option.label}
-                      type='radio'
-                      value={option.value}
-                      onChange={() => setFindLocationOption(option.value)}
-                    />
-                  ))}
-                </div>
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {error}
+                  </p>
+                )}
+                <fieldset
+                  className='govuk-fieldset'
+                  aria-describedby={
+                    error ? 'find-location-options-error' : undefined
+                  }
+                >
+                  <div
+                    id={findLocationOptionsId}
+                    className='govuk-radios'
+                    data-module='govuk-radios'
+                  >
+                    {findLocationOptions.map((option) => (
+                      <Radio
+                        key={option.value}
+                        id={option.value}
+                        name='findLocationOptionRadios'
+                        label={option.label}
+                        type='radio'
+                        value={option.value}
+                        onChange={() => setFindLocationOption(option.value)}
+                      />
+                    ))}
+                  </div>
+                </fieldset>
               </div>
             </div>
             <br />

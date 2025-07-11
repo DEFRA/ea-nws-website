@@ -80,13 +80,13 @@ const locations = [
             targetAreas: [
               {
                 TA_CODE: '113WACT1D',
-                TA_NAME: 'South Devon Estuaries',
+                TA_Name: 'South Devon Estuaries',
                 category: 'Flood Warning Rapid Response'
               },
 
               {
                 TA_CODE: '011WAFDU',
-                TA_NAME: 'South Devon Estuaries',
+                TA_Name: 'South Devon Estuaries',
                 category: 'Flood Alert Groundwater'
               }
             ],

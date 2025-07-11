@@ -148,7 +148,7 @@ export default function LocationsTable({
       setLinkedContactsSort('ascending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          return a.linked_contacts?.length > b.linked_contacts?.length ? 1 : -1
+          return a.linked_contacts > b.linked_contacts ? 1 : -1
         })
       )
     }
@@ -156,7 +156,7 @@ export default function LocationsTable({
       setLinkedContactsSort('descending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          return a.linked_contacts?.length < b.linked_contacts?.length ? 1 : -1
+          return a.linked_contacts < b.linked_contacts ? 1 : -1
         })
       )
     }
@@ -273,6 +273,7 @@ export default function LocationsTable({
           <tr className='govuk-table__row'>
             <th scope='col' className='govuk-table__header'>
               <div
+                style={{ marginTop: '-10px' }}
                 className='govuk-checkboxes govuk-checkboxes--small'
                 data-module='govuk-checkboxes'
               >
@@ -474,6 +475,7 @@ export default function LocationsTable({
             <tr className='govuk-table__row' key={index}>
               <th scope='row' className='govuk-table__header'>
                 <div
+                  style={{ marginTop: '-10px' }}
                   className='govuk-checkboxes govuk-checkboxes--small'
                   data-module='govuk-checkboxes'
                 >
@@ -517,12 +519,12 @@ export default function LocationsTable({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.linked_contacts?.length !== undefined ? (
+                {location.linked_contacts !== undefined ? (
                   <Link
                     className='govuk-link'
                     onClick={(e) => viewLinkedContacts(e, location)}
                   >
-                    {location.linked_contacts?.length}
+                    {location.linked_contacts}
                   </Link>
                 ) : (
                   LoadingDots
@@ -539,22 +541,36 @@ export default function LocationsTable({
                 <>
                   {' '}
                   <td className='govuk-table__cell'>
-                    <span
-                      className={`flood-risk-container ${location.riverSeaRisk?.className}`}
-                    >
-                      {location.riverSeaRisk?.title === 'Unavailable'
-                        ? '-'
-                        : location.riverSeaRisk?.title}
-                    </span>
+                    {location.riverSeaRisk?.title === 'Unavailable' ? (
+                      <span
+                        className={`flood-risk-container ${location.riverSeaRisk?.className}`}
+                        aria-label='Not available'
+                      >
+                        -
+                      </span>
+                    ) : (
+                      <span
+                        className={`flood-risk-container ${location.riverSeaRisk?.className}`}
+                      >
+                        {location.riverSeaRisk?.title}
+                      </span>
+                    )}
                   </td>
                   <td className='govuk-table__cell'>
-                    <span
-                      className={`flood-risk-container ${location.groundWaterRisk?.className}`}
-                    >
-                      {location.groundWaterRisk?.title === 'Unavailable'
-                        ? '-'
-                        : location.groundWaterRisk?.title}
-                    </span>
+                    {location.groundWaterRisk?.title === 'Unavailable' ? (
+                      <span
+                        className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                        aria-label='Not available'
+                      >
+                        -
+                      </span>
+                    ) : (
+                      <span
+                        className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                      >
+                        {location.groundWaterRisk?.title}
+                      </span>
+                    )}
                   </td>
                 </>
               )}

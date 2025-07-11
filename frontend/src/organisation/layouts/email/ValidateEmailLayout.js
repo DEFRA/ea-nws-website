@@ -12,8 +12,6 @@ import NotificationBanner from '../../../common/components/gov-uk/NotificationBa
 import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
-  setOrgId,
-  setOrganizationId,
   setProfile,
   setProfileId,
   setRegisterToken
@@ -40,6 +38,7 @@ export default function ValidateEmailLayout({
   const signinType = useSelector((state) => state.session.signinType)
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
+  const enterCodeId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -76,8 +75,6 @@ export default function ValidateEmailLayout({
       } else {
         setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
-        dispatch(setOrgId(data.organization.id))
-        dispatch(setOrganizationId(data.organization.id))
         const updatedProfile = updateAdditionals(profile, [
           { id: 'signupComplete', value: { s: 'false' } },
           {
@@ -149,8 +146,14 @@ export default function ValidateEmailLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l' id='main-content'>Confirm email address</h2>
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Confirm email address
+                </h2>
                 <div className='govuk-body'>
                   <p className='govuk-!-margin-top-6'>
                     We've sent an email with a code to:
@@ -159,7 +162,7 @@ export default function ValidateEmailLayout({
                   Enter the code within 4 hours or it will expire.
                   <div className='govuk-!-margin-top-6'>
                     <Input
-                      id='enter-code'
+                      id={enterCodeId}
                       className='govuk-input govuk-input--width-10'
                       inputType='text'
                       value={code}

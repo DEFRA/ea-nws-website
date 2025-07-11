@@ -91,7 +91,6 @@ const userSlice = createSlice({
     authToken: null,
     registerToken: null,
     profileId: null,
-    orgId: null,
     notFoundLocations: null,
     notInEnglandLocations: null,
     profile: {
@@ -145,6 +144,10 @@ const userSlice = createSlice({
     // linked locations/contacts
     linkLocations: null,
     linkContacts: null,
+    // required for entering an org address manually
+    enterAddressManuallyFlow: null,
+    orgBuildingName: null,
+    previousOrgAddress: null,
     // org location data
     currentLocation: {
       id: null,
@@ -252,9 +255,6 @@ const userSlice = createSlice({
     setProfileId: (state, action) => {
       state.profileId = action.payload
     },
-    setOrgId: (state, action) => {
-      state.orgId = action.payload
-    },
     setNotFoundLocations: (state, action) => {
       state.notFoundLocations = action.payload
     },
@@ -348,6 +348,16 @@ const userSlice = createSlice({
     },
     setLinkContacts: (state, action) => {
       state.linkContacts = action.payload
+    },
+    // add org address at signup
+    setEnterAddressManuallyFlow: (state, action) => {
+      state.enterAddressManuallyFlow = action.payload
+    },
+    setOrgBuildingName: (state, action) => {
+      state.orgBuildingName = action.payload
+    },
+    setPreviousOrgAddress: (state, action) => {
+      state.previousOrgAddress = action.payload
     },
     // org location data
     setCurrentTA: (state, action) => {
@@ -555,7 +565,6 @@ const userSlice = createSlice({
     },
     // org data
     setOrganization: (state, action) => {
-      state.organization.id = action.payload?.id || null
       state.organization.name = action.payload?.name || null
       state.organization.description =
         action.payload?.description ||
@@ -582,9 +591,6 @@ const userSlice = createSlice({
       state.organization.alertDiffusionZoneBoundingBox =
         action.payload?.alertDiffusionZoneBoundingBox || null
       state.organization.urlSlug = action.payload?.urlSlug || null
-    },
-    setOrganizationId: (state, action) => {
-      state.organization.id = action.payload
     },
     setOrganizationName: (state, action) => {
       state.organization.name = action.payload
@@ -793,7 +799,6 @@ const userSlice = createSlice({
       state.authToken = null
       state.registerToken = null
       state.profileId = null
-      state.orgId = null
       state.notFoundLocations = null
       state.notInEnglandLocations = null
       state.profile = {
@@ -843,6 +848,10 @@ const userSlice = createSlice({
       state.selectedBoundary = null
       state.consecutiveBoundariesAdded = 0
       state.predefinedBoundaryFlow = null
+      // required for entering an org address manually
+      state.enterAddressManuallyFlow = null
+      state.orgBuildingName = null
+      state.previousOrgAddress = null
       // org location data
       state.currentTA = null
       state.currentLocation = {
@@ -1026,7 +1035,6 @@ export const {
   setAuthToken,
   setRegisterToken,
   setProfileId,
-  setOrgId,
   setNotFoundLocations,
   setNotInEnglandLocations,
   setProfile,
@@ -1064,6 +1072,10 @@ export const {
   setPredefinedBoundaryFlow,
   setLinkLocations,
   setLinkContacts,
+  // org address at sign up flow
+  setEnterAddressManuallyFlow,
+  setOrgBuildingName,
+  setPreviousOrgAddress,
   // org location data
   setCurrentTA,
   setCurrentLocation,

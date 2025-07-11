@@ -46,7 +46,7 @@ export default function LocationSearchResultsLayout({
     const areaAlert = floodHistoryData.filter(
       (alert) =>
         alert.CODE === AlertArea &&
-        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+        moment(alert.effectiveDate * 1000) > oneYearAgo
     )
     dispatch(setFloodAlertCount(areaAlert.length))
   }
@@ -57,7 +57,7 @@ export default function LocationSearchResultsLayout({
     const areaWarning = floodHistoryData.filter(
       (alert) =>
         alert.CODE === WarningArea &&
-        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+        moment(alert.effectiveDate * 1000) > oneYearAgo
     )
     dispatch(setSevereFloodWarningCount(areaWarning.length))
   }
@@ -274,7 +274,7 @@ export default function LocationSearchResultsLayout({
                         <tr key={index} className='govuk-table__row'>
                           <td className='govuk-table__cell'>
                             <Link
-                              className='govuk-link'
+                              className='govuk-link govuk-link--no-visited-state'
                               onClick={(event) =>
                                 handleSelectedLocation(event, location)
                               }

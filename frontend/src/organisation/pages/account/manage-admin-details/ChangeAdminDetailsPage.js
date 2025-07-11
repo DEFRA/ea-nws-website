@@ -37,15 +37,17 @@ export default function ChangeAdminDetailsPage() {
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
 
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
-  const updateProfile = async (profile, authToken, signinType, orgId) => {
-    const dataToSend = { profile, authToken, signinType, orgId }
+  const updateProfile = async (profile, authToken, signinType) => {
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',
@@ -82,7 +84,7 @@ export default function ChangeAdminDetailsPage() {
         updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
         successMessages.push('Email address changed')
       }
-      await updateProfile(updatedProfile, authToken, signinType, orgId)
+      await updateProfile(updatedProfile, authToken, signinType)
 
       if (email) {
         const dataToSend = { email, authToken }
@@ -129,12 +131,18 @@ export default function ChangeAdminDetailsPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
           {(error || errorEmail || errorName) && (
-            <ErrorSummary errorList={[error, errorEmail, errorName]} />
+              <ErrorSummary
+              errorList={[
+                error,
+                errorName && { text: errorName, componentId: fullNameId },
+                errorEmail && { text: errorEmail, componentId: emailAddressId }
+              ].filter(Boolean)}
+            />
           )}
           <h1 className='govuk-heading-l' id="main-content">Change administrator details</h1>
 
           <Input
-            id='full-name'
+            id={fullNameId}
             inputType='text'
             value={fullName}
             name='Full name'
@@ -146,7 +154,7 @@ export default function ChangeAdminDetailsPage() {
           />
 
           <Input
-            id='email-address'
+            id={emailAddressId}
             inputType='text'
             inputMode='email'
             value={email}

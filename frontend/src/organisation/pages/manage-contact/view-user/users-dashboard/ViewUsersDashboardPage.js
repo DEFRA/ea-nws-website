@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -43,7 +43,6 @@ export default function ViewUsersDashboardPage() {
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const profileId = useSelector((state) => state.session.profileId)
   const [contactsPerPage, setContactsPerPage] = useState(defaultContactsPerPage)
   const [dialog, setDialog] = useState({
@@ -62,6 +61,10 @@ export default function ViewUsersDashboardPage() {
   const historyData = useFetchAlerts()
   const [activeAdmins, setActiveAdmins] = useState([])
   const toggleFilterButtonRef = useRef(null)
+  const adminIds = useMemo(
+    () => new Set(activeAdmins.map((a) => a.id)),
+    [activeAdmins]
+  )
 
   useEffect(() => {
     if (toggleFilterButtonRef.current) {
@@ -71,7 +74,7 @@ export default function ViewUsersDashboardPage() {
 
   async function getActiveAdmins() {
     const { data } = await backendCall(
-      { orgId },
+      { authToken },
       'api/elasticache/get_active_admins'
     )
     setActiveAdmins(data)
@@ -108,9 +111,8 @@ export default function ViewUsersDashboardPage() {
 
   useEffect(() => {
     const getContacts = async () => {
-      const dataToSend = { orgId }
       const contactsData = await backendCall(
-        dataToSend,
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -122,18 +124,17 @@ export default function ViewUsersDashboardPage() {
       }
 
       contactsUpdate.forEach(async (contact) => {
-        const contactsDataToSend = { authToken, orgId, contact }
+        const contactsDataToSend = { authToken, contactId: contact.id }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_locations',
           navigate
         )
 
-        contact.linked_locations = []
+        contact.linked_locations = data.length || 0
         contact.message_count = 0
         if (data && data.length > 0) {
           data.forEach(async function (location) {
-            contact.linked_locations.push(location.id)
             const floodAreas = await getWithinAreas(
               geoSafeToWebLocation(location)
             )
@@ -192,7 +193,7 @@ export default function ViewUsersDashboardPage() {
       const filteredData = floodHistoryData.filter(
         (alert) =>
           alert.CODE === taCode &&
-          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+          moment(alert.effectiveDate * 1000) > twoYearsAgo
       )
       floodCount.push(filteredData.length)
     }
@@ -247,8 +248,7 @@ export default function ViewUsersDashboardPage() {
       text = defaultText
 
       if (activeAdminsNotRemoved.length > 0) {
-        const notDeleteTotal =
-          activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+        const notDeleteTotal = activeAdminsNotRemoved.length
         text = (
           <>
             {defaultText}
@@ -316,7 +316,7 @@ export default function ViewUsersDashboardPage() {
     activeAdminsNotRemoved,
     selfRemoved
   ) => {
-    const numNotDelete = activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+    const numNotDelete = activeAdminsNotRemoved.length
     let title = ''
     if (toDelete.length > 0) {
       if (numNotDelete > 0) {
@@ -336,7 +336,7 @@ export default function ViewUsersDashboardPage() {
       if (activeAdminsNotRemoved.length > 0) {
         title = (
           <>
-            you cannot delete {numNotDelete} user{numNotDelete > 1 ? 's' : ''}
+            You cannot delete {numNotDelete} user{numNotDelete > 1 ? 's' : ''}
           </>
         )
       } else if (selfRemoved) {
@@ -347,17 +347,11 @@ export default function ViewUsersDashboardPage() {
     return title
   }
   const deleteDialog = (contactsToBeDeleted) => {
-    const toDelete = contactsToBeDeleted.filter(
-      (el) => !activeAdmins.includes(el.id)
+    const toDelete = contactsToBeDeleted.filter((c) => !adminIds.has(c.id))
+    const activeAdminsNotRemoved = contactsToBeDeleted.filter(
+      (c) => adminIds.has(c.id) && c.id !== profileId
     )
-    const activeAdminsNotRemoved = activeAdmins
-      .filter((el) =>
-        contactsToBeDeleted.map((contact) => contact.id).includes(el)
-      )
-      .filter((el) => el !== profileId)
-    const selfRemoved = contactsToBeDeleted
-      .map((contact) => contact.id)
-      .includes(profileId)
+    const selfRemoved = activeAdminsNotRemoved.some((c) => c.id === profileId)
 
     if (contactsToBeDeleted && contactsToBeDeleted.length > 0) {
       setDialog({
@@ -462,7 +456,7 @@ export default function ViewUsersDashboardPage() {
       removeContactIDs.push(contact.id)
     })
 
-    const dataToSend = { authToken, orgId, removeContactIDs }
+    const dataToSend = { authToken, removeContactIDs }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/remove_contacts',
@@ -488,6 +482,11 @@ export default function ViewUsersDashboardPage() {
 
   const handleDelete = async () => {
     if (targetContact) {
+      if (adminIds.has(targetContact.id)) {
+        // Re-invoke deleteDialog to show the "you can't delete this admin" message
+        deleteDialog([targetContact])
+        return
+      }
       await removeContacts([targetContact])
       if (selectedContacts.length > 0) {
         const updatedSelectedContacts = selectedContacts.filter(
@@ -496,9 +495,7 @@ export default function ViewUsersDashboardPage() {
         setSelectedContacts(updatedSelectedContacts)
       }
     } else if (selectedContacts.length > 0) {
-      const toDelete = selectedContacts.filter(
-        (el) => !activeAdmins.includes(el.id)
-      )
+      const toDelete = selectedContacts.filter((el) => !adminIds.has(el.id))
       const contactsToRemove = [...toDelete]
       await removeContacts(contactsToRemove)
     }
@@ -551,7 +548,10 @@ export default function ViewUsersDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Manage your organisation's users - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Manage your organisation's users - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
 

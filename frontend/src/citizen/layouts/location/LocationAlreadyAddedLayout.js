@@ -1,20 +1,23 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import InsetText from '../../../common/components/gov-uk/InsetText'
+import { setNearbyTargetAreasFlow } from '../../../common/redux/userSlice'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationAlreadyAddedLayout() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
   const [severeWarningAreaNames, setSevereWarningAreaNames] = useState([])
   const [alertAreaNames, setAlertAreaNames] = useState([])
   const [moreFloodAreasAvailable, setMoreFloodAreasAvailable] = useState(false)
+  const [loading, setLoading] = useState(true)
   const locationSearchType = useSelector(
     (state) => state.session.locationSearchType
   )
@@ -50,12 +53,14 @@ export default function LocationAlreadyAddedLayout() {
       )
       setSevereWarningAreaNames(severeAreas)
       setAlertAreaNames(alertAreas)
+      setLoading(false)
     }
     fetchFloodAreasAlreadyAdded()
   }, [])
 
   const navigateToNextPage = () => {
     if (moreFloodAreasAvailable) {
+      dispatch(setNearbyTargetAreasFlow(true))
       navigate('/manage-locations/add/location-near-flood-areas')
     } else {
       navigate(-1)
@@ -65,64 +70,68 @@ export default function LocationAlreadyAddedLayout() {
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>
-              {moreFloodAreasAvailable
-                ? 'You already get some flood messages for this location'
-                : 'You already get all available flood messages for this location'}
-            </h1>
-            <InsetText text={selectedLocation.address} />
-            {severeWarningAreaNames.length > 0 && (
+            {!loading && (
               <>
-                <h2 class='govuk-heading-m'>
-                  Severe warnings and flood warnings
-                </h2>
-                <ul class='govuk-list govuk-list--bullet'>
-                  {severeWarningAreaNames.map((name) => {
-                    return <li>{name}</li>
-                  })}
-                </ul>
-              </>
-            )}
-            {alertAreaNames.length > 0 && (
-              <>
-                <h2 class='govuk-heading-m'>Flood alerts</h2>
-                <p>You already get these for:</p>
-                <ul class='govuk-list govuk-list--bullet'>
-                  {alertAreaNames.map((name) => {
-                    return <li>{name}</li>
-                  })}
-                </ul>
-              </>
-            )}
-            {moreFloodAreasAvailable && (
-              <h2 class='govuk-heading-m'>
-                There are other nearby areas you can add
-              </h2>
-            )}
-            <div className='govuk-!-margin-top-7'>
-              <Button
-                text={
-                  moreFloodAreasAvailable
-                    ? 'View other nearby areas'
-                    : 'Choose different location'
-                }
-                className='govuk-button'
-                onClick={() => navigateToNextPage()}
-              />
-              {moreFloodAreasAvailable && (
-                <>
-                  &nbsp; &nbsp;
+                <h1 className='govuk-heading-l'>
+                  {moreFloodAreasAvailable
+                    ? 'You already get some flood messages for this location'
+                    : 'You already get all available flood messages for this location'}
+                </h1>
+                <InsetText text={selectedLocation.address} />
+                {severeWarningAreaNames.length > 0 && (
+                  <>
+                    <h2 class='govuk-heading-m'>
+                      Severe warnings and flood warnings
+                    </h2>
+                    <ul class='govuk-list govuk-list--bullet'>
+                      {severeWarningAreaNames.map((name, index) => {
+                        return <li key={index}>{name}</li>
+                      })}
+                    </ul>
+                  </>
+                )}
+                {alertAreaNames.length > 0 && (
+                  <>
+                    <h2 class='govuk-heading-m'>Flood alerts</h2>
+                    <p>You already get these for:</p>
+                    <ul class='govuk-list govuk-list--bullet'>
+                      {alertAreaNames.map((name, index) => {
+                        return <li key={index}>{name}</li>
+                      })}
+                    </ul>
+                  </>
+                )}
+                {moreFloodAreasAvailable && (
+                  <h2 class='govuk-heading-m'>
+                    There are other nearby areas you can add
+                  </h2>
+                )}
+                <div className='govuk-!-margin-top-7'>
                   <Button
-                    text='Choose different location'
-                    className='govuk-button  govuk-button--secondary'
-                    onClick={() => navigate(-1)}
+                    text={
+                      moreFloodAreasAvailable
+                        ? 'View other nearby areas'
+                        : 'Choose different location'
+                    }
+                    className='govuk-button'
+                    onClick={() => navigateToNextPage()}
                   />
-                </>
-              )}
-            </div>
+                  {moreFloodAreasAvailable && (
+                    <>
+                      &nbsp; &nbsp;
+                      <Button
+                        text='Choose different location'
+                        className='govuk-button  govuk-button--secondary'
+                        onClick={() => navigate(-1)}
+                      />
+                    </>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>

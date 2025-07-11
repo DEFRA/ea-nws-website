@@ -22,6 +22,7 @@ export default function AddMobileLayout({
   const dispatch = useDispatch()
   const sessionProfile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
+  const mobileNumberInputId = 'uk-mobile-telephone-number'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -77,7 +78,7 @@ export default function AddMobileLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: mobileNumberInputId}]} />}
             <h2 className='govuk-heading-l' id='main-content'>
               Enter a mobile number to get flood messages by text
             </h2>
@@ -87,7 +88,7 @@ export default function AddMobileLayout({
                 hours a day.
               </p>
               <Input
-                id='uk-mobile-telephone-number'
+                id={mobileNumberInputId}
                 name='UK mobile telephone number'
                 inputType='text'
                 error={error}

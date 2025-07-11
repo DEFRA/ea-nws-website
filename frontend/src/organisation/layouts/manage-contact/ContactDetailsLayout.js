@@ -16,7 +16,7 @@ import { backendCall } from '../../../common/services/BackendService'
 export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const [firstnameError, setFirstNameError] = useState('')
   const [lastnameError, setLastNameError] = useState('')
@@ -33,6 +33,11 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
     useSelector((state) => getContactAdditional(state, 'jobTitle')) || ''
   )
 
+  const firstNameId = 'first-name'
+  const lastNameId = 'last-name'
+  const jobTitleId = 'job-title'
+  const mainBodyId = 'main-body'
+
   const charLimit = 20
   const originalFirstName =
     useSelector((state) => state.session.orgCurrentContact.firstname) || ''
@@ -42,9 +47,8 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const dataToSend = { orgId }
         const contactsData = await backendCall(
-          dataToSend,
+          { authToken },
           'api/elasticache/list_contacts',
           navigate
         )
@@ -127,25 +131,34 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(firstnameError || lastnameError || jobTitleError || error) && (
               <ErrorSummary
                 errorList={[
-                  firstnameError,
-                  lastnameError,
-                  jobTitleError,
-                  error
-                ]}
+                  firstnameError && {
+                    text: firstnameError,
+                    componentId: firstNameId
+                  },
+                  lastnameError && {
+                    text: lastnameError,
+                    componentId: lastNameId
+                  },
+                  jobTitleError && {
+                    text: jobTitleError,
+                    componentId: jobTitleId
+                  },
+                  error && { text: error, componentId: mainBodyId }
+                ].filter(Boolean)}
               />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               User details
             </h1>
-            <div className='govuk-body'>
+            <div id={mainBodyId} className='govuk-body'>
               <Input
-                id='first-name'
+                id={firstNameId}
                 name='First name'
                 inputType='text'
                 onChange={(val) =>
@@ -163,7 +176,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
                 nameSize='s'
               />
               <Input
-                id='last-name'
+                id={lastNameId}
                 name='Last name'
                 inputType='text'
                 onChange={(val) =>
@@ -181,7 +194,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
                 nameSize='s'
               />
               <Input
-                id='job-title'
+                id={jobTitleId}
                 name='Job title (optional)'
                 inputType='text'
                 onChange={(val) =>

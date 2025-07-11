@@ -5,7 +5,8 @@ const {
 const {
   orgSignIn,
   addLinkedLocations,
-  setJsonData
+  setJsonData,
+  getJsonData
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
@@ -61,8 +62,9 @@ module.exports = [
 
         const { orgData } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, orgData?.authToken)
 
-        if (orgData) {
+        if (orgData && sessionData) {
           const elasticacheKey = 'signin_status:' + orgData.authToken
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving locations',
@@ -105,7 +107,7 @@ module.exports = [
             orgData.organization,
             locations,
             contactRes.data.contacts,
-            orgData.authToken
+            sessionData.orgId
           )
 
           for (const contact of contactRes.data.contacts) {

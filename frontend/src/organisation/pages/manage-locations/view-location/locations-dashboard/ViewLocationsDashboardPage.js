@@ -56,7 +56,6 @@ export default function ViewLocationsDashboardPage() {
   const [linkSource, setLinkSource] = useState(location.state?.linkSource || 0)
   const [loading, setLoading] = useState(true)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const [errorMessage, setErrorMessage] = useState('')
   const toggleFilterButtonRef = useRef(null)
 
@@ -117,7 +116,7 @@ export default function ViewLocationsDashboardPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { orgId }
+      const dataToSend = { authToken }
       const { data } = await backendCall(
         dataToSend,
         'api/elasticache/list_locations',
@@ -154,21 +153,15 @@ export default function ViewLocationsDashboardPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
+      const contactsDataToSend = { authToken }
+      const { data: contactCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
+
       locationsUpdate.forEach(async (location) => {
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
-
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contact) => {
-            location.linked_contacts.push(contact.id)
-          })
-        }
-
+        location.linked_contacts = contactCount[location.id] || 0
         location.message_count = 0
         const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
@@ -218,7 +211,7 @@ export default function ViewLocationsDashboardPage() {
       const filteredData = floodHistoryData.filter(
         (alert) =>
           alert.CODE === taCode &&
-          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+          moment(alert.effectiveDate * 1000) > twoYearsAgo
       )
       floodCount.push(filteredData.length)
     }
@@ -571,7 +564,7 @@ export default function ViewLocationsDashboardPage() {
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
       updatedFilteredLocations = locations.filter(
-        (location) => location.linked_contacts?.length === 0
+        (location) => location.linked_contacts === 0
       )
       setSelectedLinkedFilters(['No'])
       setSelectedFilters(['No'])
@@ -609,7 +602,6 @@ export default function ViewLocationsDashboardPage() {
 
       const updateData = {
         authToken,
-        orgId,
         location: webToGeoSafeLocation(locationsToEdit[i])
       }
       await backendCall(updateData, 'api/location/update', navigate)
@@ -683,7 +675,7 @@ export default function ViewLocationsDashboardPage() {
       )
     }
 
-    const dataToSend = { authToken, orgId, locationIds }
+    const dataToSend = { authToken, locationIds }
 
     const { errorMessage } = await backendCall(
       dataToSend,

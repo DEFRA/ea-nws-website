@@ -8,7 +8,6 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary.js'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../common/enums/AlertState.js'
-import { getAdditional } from '../../../../common/redux/userSlice.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter'
@@ -16,7 +15,7 @@ import HistoricalFloodReportsTable from './dashboard-components/HistoricalFloodR
 
 export default function FloodWarningHistoryDashboardPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const defaultLocationsPerPage = 20
   const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -66,7 +65,7 @@ export default function FloodWarningHistoryDashboardPage() {
 
     // load alerts
     const { data: alerts } = await backendCall(
-      { options },
+      { options, historic: true },
       'api/alert/list',
       navigate
     )
@@ -74,7 +73,7 @@ export default function FloodWarningHistoryDashboardPage() {
     if (alerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -88,40 +87,8 @@ export default function FloodWarningHistoryDashboardPage() {
 
       if (locations) {
         for (const liveAlert of alerts?.alerts) {
-          const TA_CODE = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_CODE'
-          )
-          const TA_NAME = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'TA_Name'
-          )
-
-          const severity = liveAlert.type
-
-          let [day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'createddate'
-          ).split(/[:\/\s]+/)
-
-          const startDate = new Date(year, month - 1, day, hour, minute)
-
-          ;[day, month, year, hour, minute] = getAdditional(
-            liveAlert.mode.zoneDesc.placemarks[0].extraInfo,
-            'lastmodifieddate'
-          ).split(/[:\/\s]+/)
-
-          const lastUpdatedTime = new Date(year, month - 1, day, hour, minute)
-
           for (const location of locations) {
-            processLocation(
-              location,
-              severity,
-              TA_CODE,
-              TA_NAME,
-              startDate,
-              lastUpdatedTime
-            )
+            processLocation(location, liveAlert)
           }
         }
       }
@@ -130,12 +97,11 @@ export default function FloodWarningHistoryDashboardPage() {
 
   const processLocation = (
     location,
-    severity,
-    TA_CODE,
-    TA_NAME,
-    startDate,
-    lastUpdatedTime
+    liveAlert
   ) => {
+
+    const TA_CODE = liveAlert.TA_CODE
+    
     const { additionals } = location
     const locationIntersectsWithFloodArea =
       additionals.other?.targetAreas?.some(
@@ -143,6 +109,13 @@ export default function FloodWarningHistoryDashboardPage() {
       )
 
     if (!locationIntersectsWithFloodArea) return
+
+    const TA_NAME = liveAlert.TA_Name
+
+    const severity = liveAlert.type
+
+    const startDate = new Date(liveAlert.effectiveDate * 1000)
+    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
 
     // add required data to location row object
     const createLocationWithFloodData = () => {
@@ -266,7 +239,9 @@ export default function FloodWarningHistoryDashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Flood warning history - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Flood warning history - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

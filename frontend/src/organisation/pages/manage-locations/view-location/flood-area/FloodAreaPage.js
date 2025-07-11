@@ -27,7 +27,7 @@ export default function FloodAreaPage() {
   const floodHistoryData = useFetchAlerts()
   const [historicalMessages, setHistoricalMessages] = useState([])
   const [floodCount, setFloodCount] = useState([])
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const openMap = () => {
     setShowMap(true)
@@ -114,7 +114,7 @@ export default function FloodAreaPage() {
           (alert) =>
             alert.CODE === taCode &&
             alert.TYPE === messageType &&
-            moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+            moment(alert.effectiveDate * 1000) > twoYearsAgo
         )
         newCount.push({ type: messageType, count: filteredData.length })
         setFloodCount(newCount)
@@ -144,9 +144,8 @@ export default function FloodAreaPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const contactsDataToSend = { orgId }
       const { data } = await backendCall(
-        contactsDataToSend,
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -236,7 +235,10 @@ export default function FloodAreaPage() {
   return (
     <>
       <Helmet>
-        <title>Flood area - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Flood area - Manage locations - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>

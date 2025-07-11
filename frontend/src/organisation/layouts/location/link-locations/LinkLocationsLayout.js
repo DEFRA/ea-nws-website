@@ -1,4 +1,9 @@
-import { distance, point, pointToPolygonDistance } from '@turf/turf'
+import {
+  cleanCoords,
+  distance,
+  point,
+  pointToPolygonDistance
+} from '@turf/turf'
 import moment from 'moment'
 import { toWords } from 'number-to-words'
 import React, { useEffect, useState } from 'react'
@@ -18,7 +23,7 @@ import {
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getFloodAreaByTaName,
+  getFloodAreaByTaCode,
   getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
 } from '../../../../common/services/WfsFloodDataService'
@@ -39,7 +44,6 @@ export default function LinkLocationsLayout({
   const exisitingChildrenIDs = useSelector((state) =>
     getLocationOther(state, 'childrenIDs')
   )
-  const orgId = useSelector((state) => state.session.orgId)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
   const floodHistoryData = useFetchAlerts()
@@ -77,7 +81,7 @@ export default function LinkLocationsLayout({
           (alert) =>
             alert.CODE === taCode &&
             alert.TYPE === messageType &&
-            moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+            moment(alert.effectiveDate * 1000) > twoYearsAgo
         )
         newCount.counts.push({ type: messageType, count: filteredData.length })
       }
@@ -193,7 +197,10 @@ export default function LinkLocationsLayout({
   }
 
   const getParentLinkedContacts = async (currentLocation) => {
-    const contactsDataToSend = { authToken, orgId, location: currentLocation }
+    const contactsDataToSend = {
+      authToken,
+      locationId: currentLocation.id
+    }
     const { data } = await backendCall(
       contactsDataToSend,
       'api/elasticache/list_linked_contacts',
@@ -263,7 +270,7 @@ export default function LinkLocationsLayout({
           ]
         }
 
-        const dataToSend = { authToken, orgId, location: locationToAdd }
+        const dataToSend = { authToken, location: locationToAdd }
         const { data, errorMessage } = await backendCall(
           dataToSend,
           'api/location/create',
@@ -275,7 +282,6 @@ export default function LinkLocationsLayout({
           if (linkedContacts && linkedContacts.length > 0) {
             const dataToSend = {
               authToken,
-              orgId,
               locationId: data.id,
               contactIds: linkedContacts
             }
@@ -324,7 +330,7 @@ export default function LinkLocationsLayout({
       JSON.parse(JSON.stringify(currentLocation)),
       childrenIDs
     )
-    const dataToSend = { authToken, orgId, location: locationToAdd }
+    const dataToSend = { authToken, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/update',
@@ -405,7 +411,9 @@ export default function LinkLocationsLayout({
 
     coords.forEach((coord) => {
       const pt = point(coord)
-      const dist = pointToPolygonDistance(pt, floodPolygon, { units: 'meters' })
+      const dist = pointToPolygonDistance(pt, cleanCoords(floodPolygon), {
+        units: 'meters'
+      })
       if (dist >= 0 && dist < minDistance) {
         minDistance = dist
       }
@@ -428,10 +436,10 @@ export default function LinkLocationsLayout({
             1.0
           )
 
-        alertAreas = alertArea.features.filter(
+        alertAreas = alertArea.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)
         )
-        warningAreas = warningArea.features.filter(
+        warningAreas = warningArea.filter(
           (area) => !currentLinked?.includes(area.properties.TA_CODE)
         )
       } else {
@@ -474,7 +482,7 @@ export default function LinkLocationsLayout({
           } else if (currentLocation.geometry) {
             // For shapefile locations, compute the smallest positive distance
             distanceM = computeMinPositiveDistance(
-              currentLocation.geometry,
+              JSON.parse(currentLocation.geometry.geoJson).geometry,
               area.geometry
             )
           }
@@ -499,9 +507,9 @@ export default function LinkLocationsLayout({
     }
   }, [currentLocation])
 
-  const onClick = async (e, areaName) => {
+  const onClick = async (e, areaCode) => {
     e.preventDefault()
-    const floodArea = await getFloodAreaByTaName(areaName)
+    const floodArea = await getFloodAreaByTaCode(areaCode)
     dispatch(setCurrentTA(floodArea))
     navigate(orgManageLocationsUrls.view.viewFloodArea)
   }
@@ -552,7 +560,7 @@ export default function LinkLocationsLayout({
             <tr key={area.id} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 <Link
-                  onClick={(e) => onClick(e, area.areaName)}
+                  onClick={(e) => onClick(e, area.areaCode)}
                   className='govuk-link'
                 >
                   {area.areaName}

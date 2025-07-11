@@ -202,7 +202,10 @@ export default function UserMap ({ locations }) {
                     key={index}
                     position={[marker.latitude, marker.longitude]}
                   >
-                    <Popup />
+                    <Popup>
+                      {locations[index]?.additionals?.locationName ||
+                        'Name not found'}
+                    </Popup>
                   </Marker>
                 ))}
               {geoJsonShapes &&

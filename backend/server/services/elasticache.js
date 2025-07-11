@@ -557,9 +557,6 @@ const orgSignIn = async (
       client,
       organization.id + ':t_POIS'
     )
-    const existingLocationIds = existingLocations.map((location) =>
-      location.split(':').slice(2).join(':')
-    )
     for (const location of locations) {
       if (!Object.keys(existingLocations).includes(location.id)) {
         await addLocation(client, organization.id, location)

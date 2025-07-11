@@ -1,5 +1,5 @@
 const { logger } = require('../../plugins/logging')
-const { orgSignOut } = require('../../services/elasticache')
+const { orgSignOut, getJsonData } = require('../../services/elasticache')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')

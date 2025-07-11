@@ -5,7 +5,8 @@ const {
 
 const {
   listLinkedContacts,
-  getLinkedContactsCount
+  getLinkedContactsCount,
+  getJsonData
 } = require('../../services/elasticache')
 
 module.exports = [

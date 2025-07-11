@@ -3,6 +3,7 @@ const {
   createGenericErrorResponse
 } = require('../../../services/GenericErrorResponse')
 const { sendEmailNotification } = require('../../../services/GovUkNotify')
+const { getJsonData } = require('../../../services/elasticache')
 
 module.exports = [
   {

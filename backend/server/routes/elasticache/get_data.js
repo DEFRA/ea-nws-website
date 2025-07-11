@@ -16,7 +16,7 @@ module.exports = [
         }
         const { type, paths } = request.payload
         const { redis } = request.server.app
-        const sessionData = await getJsonData(client, authToken)
+        const sessionData = await getJsonData(redis, authToken)
         const key = sessionData?.orgId + type
 
         if (key) {

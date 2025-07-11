@@ -62,7 +62,7 @@ module.exports = [
 
         const { orgData } = request.payload
         const { redis } = request.server.app
-        const sessionData = await getJsonData(client, orgData?.authToken)
+        const sessionData = await getJsonData(redis, orgData?.authToken)
 
         if (orgData && sessionData) {
           const elasticacheKey = 'signin_status:' + orgData.authToken

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -8,6 +9,7 @@ import Input from '../../../common/components/gov-uk/Input'
 import {
   setLocationPostCode,
   setLocationSearchResults,
+  setOrgBuildingName,
   setOrganizationAddress,
   setOrganizationPostalCode
 } from '../../../common/redux/userSlice'
@@ -16,8 +18,9 @@ import { postCodeValidation } from '../../../common/services/validations/PostCod
 
 export default function AddAddressLayout({
   navigateToNextPage,
-  NavigateToPreviousPage,
-  navigateToConfirmPage
+  navigateToPreviousPage,
+  navigateToConfirmPage,
+  navigateToEnterAddressManuallyPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -42,8 +45,10 @@ export default function AddAddressLayout({
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
         dispatch(setOrganizationPostalCode(data[0].postcode))
+        dispatch(setLocationSearchResults(data))
 
         if (buildingNum) {
+          dispatch(setOrgBuildingName(buildingNum))
           const normalisedBuildingNum = buildingNum.toLowerCase().trim()
           const address = data.filter((location) =>
             location.address
@@ -51,17 +56,16 @@ export default function AddAddressLayout({
               .trim()
               .includes(normalisedBuildingNum)
           )
+          // exact match found
           if (address.length === 1) {
             dispatch(setOrganizationAddress(address[0].address))
             navigateToConfirmPage()
-            return // Ensure none of the following code is executed
-          } else {
-            // Multiple addresses with buildingNum returned, take them to pagination to confirm
-            dispatch(setLocationSearchResults(address))
+            return
           }
         } else {
-          dispatch(setLocationSearchResults(data))
+          dispatch(setOrgBuildingName(''))
         }
+
         navigateToNextPage()
       } else {
         setError(errorMessage)
@@ -73,7 +77,13 @@ export default function AddAddressLayout({
 
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigateToPreviousPage()
+  }
+
+  const navigateToEnterAddressManually = (event) => {
+    event.preventDefault()
+    dispatch(setLocationSearchResults(null))
+    navigateToEnterAddressManuallyPage()
   }
 
   return (
@@ -83,7 +93,9 @@ export default function AddAddressLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && (
-              <ErrorSummary errorList={[{ text: error, componentId: postcodeId }]} />
+              <ErrorSummary
+                errorList={[{ text: error, componentId: postcodeId }]}
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               Your organisation's UK head office address
@@ -115,6 +127,10 @@ export default function AddAddressLayout({
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              <br />
+              <Link onClick={navigateToEnterAddressManually}>
+                Enter address manually
+              </Link>
             </div>
           </div>
         </div>

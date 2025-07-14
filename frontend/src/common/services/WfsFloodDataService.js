@@ -4,7 +4,18 @@ import leafletPip from 'leaflet-pip'
 import { backendCall } from './BackendService'
 
 export const getFloodAreaByTaCode = async (code) => {
-  const result = await backendCall({TA_CODE: code}, 'api/elasticache/get_ta_data')
+  const result = await backendCall(
+    { TA_CODE: code },
+    'api/elasticache/get_ta_data'
+  )
+  return result.data || []
+}
+
+export const getOperationalBoundaryByTaCode = async (code) => {
+  const result = await backendCall(
+    { TA_CODE: code },
+    'api/elasticache/get_ob_data'
+  )
   return result.data || []
 }
 

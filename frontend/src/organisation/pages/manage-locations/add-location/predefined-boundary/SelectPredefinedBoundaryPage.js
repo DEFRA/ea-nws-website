@@ -12,7 +12,8 @@ import store from '../../../../../common/redux/store'
 import {
   setConsecutiveBoundariesAdded,
   setCurrentLocation,
-  setCurrentLocationGeometry,
+  setCurrentLocationDataType,
+  setCurrentLocationGeocode,
   setCurrentLocationName,
   setCurrentLocationType,
   setPredefinedBoundaryFlow,
@@ -22,7 +23,8 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getBoundaryTypes,
-  getFloodAreasFromShape
+  getFloodAreasFromShape,
+  getOperationalBoundaryByTaCode
 } from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
@@ -118,20 +120,10 @@ export default function SelectPredefinedBoundaryPage() {
     }
 
     if (selectedBoundaryType && selectedBoundary) {
-      const locationBoundary = {
-        boundary_type: selectedBoundaryType,
-        boundary: selectedBoundary
-      }
-      dispatch(
-        setCurrentLocationGeometry({
-          geoJson: JSON.stringify(locationBoundary.boundary)
-        })
-      )
-      // This might change at a later date, but store in the additional name field for now
-      dispatch(
-        setCurrentLocationName(locationBoundary.boundary.properties.TA_Name)
-      )
-      dispatch(setCurrentLocationType(locationBoundary.boundary_type))
+      dispatch(setCurrentLocationName(selectedBoundary.properties.TA_Name))
+      dispatch(setCurrentLocationGeocode(selectedBoundary.properties.TA_CODE))
+      dispatch(setCurrentLocationType(selectedBoundaryType))
+      dispatch(setCurrentLocationDataType(LocationDataType.BOUNDARY))
       // since we added to currentLocation we need to get that information to pass to the api
       const locationToAdd = store.getState().session.currentLocation
 
@@ -139,10 +131,13 @@ export default function SelectPredefinedBoundaryPage() {
       const newWebLocation = geoSafeToWebLocation(
         JSON.parse(JSON.stringify(locationToAdd))
       )
-      // get the target areas
-      const TAs = await getFloodAreasFromShape(
-        newWebLocation?.geometry?.geoJson
+
+      const w = await getOperationalBoundaryByTaCode(
+        selectedBoundary.properties.TA_CODE
       )
+
+      // get the target areas
+      const TAs = await getFloodAreasFromShape(selectedBoundary?.geometry)
       newWebLocation.additionals.other.targetAreas = []
       TAs.forEach((area) => {
         newWebLocation.additionals.other.targetAreas.push({

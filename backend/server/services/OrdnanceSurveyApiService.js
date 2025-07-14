@@ -257,7 +257,7 @@ const osFindApiCall = async (address, minmatch) => {
     logger.error(error)
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: 'The system encountered an unexpected error'
     }
   }
 }
@@ -289,7 +289,7 @@ const osOAuth2ApiCall = async () => {
     logger.error(error)
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: 'The system encountered an unexpected error'
     }
   }
 }

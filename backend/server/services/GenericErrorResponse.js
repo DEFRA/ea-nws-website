@@ -1,7 +1,8 @@
 const createGenericErrorResponse = (h) => {
   return h.response({
     status: 500,
-    errorMessage: 'Oops, something happened!'
+    errorMessage:
+      'The system encountered an unexpected error'
   })
 }
 

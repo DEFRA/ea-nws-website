@@ -1,6 +1,5 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Link } from 'react-router-dom'
 import ContactDetails from '../layouts/footer-link-layouts/ContactDetails'
 
 export default function ErrorPage () {
@@ -11,7 +10,7 @@ export default function ErrorPage () {
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-body govuk-grid-column-two-thirds'>
+          <div className='govuk-body govuk-grid-column'>
             <h1 className='govuk-heading-l'>
               Sorry, there is a problem with the service
             </h1>

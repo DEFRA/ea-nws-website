@@ -2,7 +2,9 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { apiCall } = require('../../services/ApiService')
-const { authCodeValidation } = require('../../services/validations/AuthCodeValidation')
+const {
+  authCodeValidation
+} = require('../../services/validations/AuthCodeValidation')
 const { setJsonData } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
@@ -30,7 +32,9 @@ module.exports = [
         } else {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error
+              ? 'The system encountered an unexpected error'
+              : error
           })
         }
       } catch (error) {

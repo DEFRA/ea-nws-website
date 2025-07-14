@@ -19,7 +19,7 @@ const getServicePhase = async () => {
   } catch {
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: 'The system encountered an unexpected error'
     }
   }
 }

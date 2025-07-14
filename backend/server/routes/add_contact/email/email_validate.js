@@ -23,7 +23,9 @@ module.exports = [
         if (error || !authToken) {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error
+              ? 'The system encountered an unexpected error'
+              : error
           })
         }
 

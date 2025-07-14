@@ -23,7 +23,7 @@ const unzipShapefile = async (zipFileName) => {
     )
     if (!zipFileStream) {
       return {
-        errorMessage: 'Oops, something happened!'
+        errorMessage: 'The system encountered an unexpected error'
       }
     }
 

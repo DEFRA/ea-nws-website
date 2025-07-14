@@ -15,7 +15,7 @@ const getDownloadUrl = async (secretKey) => {
     logger.error(`Error fetching ${secretKey}: ${error}`)
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: 'The system encountered an unexpected error'
     }
   }
 }

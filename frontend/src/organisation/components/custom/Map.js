@@ -110,7 +110,6 @@ export default function Map({
         currentLocationDataType === LocationDataType.BOUNDARY &&
         locationGeometry
       ) {
-        console.log('loading surrounding flood areas', locationGeometry)
         floodAreas = await getSurroundingFloodAreasFromShape(locationGeometry)
       } else {
         floodAreas = await getSurroundingFloodAreas(latitude, longitude)

@@ -208,7 +208,7 @@ export default function ManageKeywordsPage() {
         <>
           If you continue this keyword will be deleted from this account and no
           longer associated with {keywordToBeDeleted.linked_ids.length}{' '}
-          locations.
+          {keywordToBeDeleted.linked_ids.length > 1 ? 'locations' : 'location'}.
           <br />
           <br />
           Deleting this keyword does not unlink contacts and locations. If you
@@ -437,7 +437,7 @@ export default function ManageKeywordsPage() {
           keyword in a list.
         </p>
         <p>
-          Once you use a keyword it will be saved so you can select it for any
+          Once you use a keyword, it will be saved so you can select it for any
           other locations.
         </p>
       </>
@@ -453,7 +453,7 @@ export default function ManageKeywordsPage() {
           show all of the contacts with that keyword in a list.
         </p>
         <p>
-          Once you use a keyword it will be saved so you can select it for any
+          Once you use a keyword, it will be saved so you can select it for any
           other contacts.
         </p>
         <p>
@@ -495,13 +495,18 @@ export default function ManageKeywordsPage() {
               Manage keywords
             </h1>
             <div className='govuk-body'>
-              <p>
-                As an admin you can edit and delete keywords. Deleting a keyword
-                will remove it from this account and you will no longer be able
-                to use it to filter any locations or contacts that were
-                previously associated with it.
-              </p>
-              <Details title='Why add keywords?' text={detailsText} />
+              <div className='govuk-grid-column-one-half govuk-!-padding-0'>
+                <p>
+                  As an admin, you can edit and delete keywords. Deleting a keyword
+                  will remove it from this account and you will no longer be able
+                  to use it to filter any locations or contacts that were
+                  previously associated with it.
+                </p>
+                <Details title='Why add keywords?' text={detailsText} />
+              </div>
+
+              <div className='clearfix'></div>
+
               <nav aria-label='Sub navigation'>
                 <ul className='sub-navigation__list'>
                   <li className='sub-navigation__item'>

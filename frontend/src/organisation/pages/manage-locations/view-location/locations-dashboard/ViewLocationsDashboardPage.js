@@ -123,7 +123,8 @@ export default function ViewLocationsDashboardPage() {
         navigate
       )
 
-      const locationsUpdate = []
+      let locationsUpdate = []
+
       if (data) {
         data.forEach((location) => {
           locationsUpdate.push(geoSafeToWebLocation(location))
@@ -182,6 +183,11 @@ export default function ViewLocationsDashboardPage() {
         if (nameA < nameB) return -1
         if (nameA > nameB) return 1
         return 0
+      })
+
+      // Remove duplicate locations
+      locationsUpdate = locationsUpdate.filter((item, index, self) => {
+        return index === self.findIndex((t) => t.address === item.address)
       })
 
       setLocations(locationsUpdate)

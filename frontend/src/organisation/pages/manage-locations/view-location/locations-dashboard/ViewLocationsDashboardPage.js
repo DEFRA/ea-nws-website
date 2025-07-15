@@ -124,9 +124,14 @@ export default function ViewLocationsDashboardPage() {
       )
 
       const locationsUpdate = []
+      const seenAddresses = new Set()
+
       if (data) {
         data.forEach((location) => {
-          locationsUpdate.push(geoSafeToWebLocation(location))
+          if (!seenAddresses.has(location.address)) {
+            seenAddresses.add(location.address)
+            locationsUpdate.push(geoSafeToWebLocation(location))
+          }
         })
       }
 

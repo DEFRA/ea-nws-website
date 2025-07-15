@@ -1,8 +1,9 @@
+const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
+
 const createGenericErrorResponse = (h) => {
   return h.response({
     status: 500,
-    errorMessage:
-      'The system encountered an unexpected error'
+    errorMessage: GENERIC_ERROR_MSG
   })
 }
 

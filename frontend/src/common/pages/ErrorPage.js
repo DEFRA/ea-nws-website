@@ -1,6 +1,5 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import ContactDetails from '../layouts/footer-link-layouts/ContactDetails'
 
 export default function ErrorPage () {
   return (
@@ -19,15 +18,21 @@ export default function ErrorPage () {
             <p className='govuk-!-padding-top-6'>
               <b>Contact us, if you need help</b>
               <br />
-              <ContactDetails />
+              <>
+                <ul class='govuk-list'>
+                  <li>Telephone: 0345 988 188</li>
+                  <li>Textphone: 0345 602 6340</li>
+                  <li>Open 24 hours a day, 7 days a week</li>
+                </ul>
+              </>{' '}
             </p>
             <p>
               Email:{' '}
               <a
                 class='govuk-link'
-                href='mailto:enquiries@environment-agency.gov.uk'
+                href='mailto:getfloodwarnings@environment-agency.gov.uk'
               >
-                enquiries@environment-agency.gov.uk
+                getfloodwarnings@environment-agency.gov.uk
               </a>
               <br />
               Monday to Friday, 8am to 6pm

@@ -4,6 +4,7 @@ const getSecretKeyValue = require('../SecretsManager')
 const unzipper = require('unzipper')
 const { PassThrough } = require('stream')
 const { logger } = require('../../plugins/logging')
+const { GENERIC_ERROR_MSG } = require('../../constants/errorMessages')
 
 const unzipShapefile = async (zipFileName) => {
   try {
@@ -23,7 +24,7 @@ const unzipShapefile = async (zipFileName) => {
     )
     if (!zipFileStream) {
       return {
-        errorMessage: 'The system encountered an unexpected error'
+        errorMessage: GENERIC_ERROR_MSG
       }
     }
 

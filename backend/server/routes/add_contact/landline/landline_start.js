@@ -9,6 +9,7 @@ const {
   normalisePhoneNumber
 } = require('../../../services/formatters/NormalisePhoneNumber')
 const { logger } = require('../../../plugins/logging')
+const { GENERIC_ERROR_MSG } = require('../../../constants/errorMessages')
 
 module.exports = [
   {
@@ -34,9 +35,7 @@ module.exports = [
         } else {
           return h.response({
             status: 500,
-            errorMessage: !error
-              ? 'The system encountered an unexpected error'
-              : error
+            errorMessage: !error ? GENERIC_ERROR_MSG : error
           })
         }
       } catch (error) {

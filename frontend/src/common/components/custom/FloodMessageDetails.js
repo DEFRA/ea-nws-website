@@ -24,7 +24,7 @@ export default function FloodMessageDetails() {
               scope='col'
               className='govuk-table__header govuk-!-width-one-third'
             >
-              What's at the risk?
+              What's at risk?
             </th>
           </tr>
         </thead>

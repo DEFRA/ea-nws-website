@@ -90,7 +90,9 @@ export default function NotesLayout({
                 onChange={(val) => setNotes(val)}
                 value={notes}
                 className='govuk-textarea'
-                additionalInfo={`You can enter up to ${charLimit} characters`}
+                additionalInfo={`You can enter up to ${
+                  charLimit - notes.length
+                } characters`}
               />
               <br />
               <Button

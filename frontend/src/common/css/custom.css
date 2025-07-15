@@ -2388,3 +2388,7 @@ govuk-menu-toggle.button-menu > button {
   overflow-wrap: break-word;
   word-break: break-all;
 }
+
+.clearfix {
+  clear: both;
+}

@@ -71,7 +71,11 @@ export default function LinkContactToLocationPage() {
   return (
     <>
       <Helmet>
-        <title>If {currentContact?.firstname} {currentContact?.lastname} needs flood messages, you need to link them to locations - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          If {currentContact?.firstname} {currentContact?.lastname} needs flood
+          messages, you need to link them to locations - Manage users - Get
+          flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

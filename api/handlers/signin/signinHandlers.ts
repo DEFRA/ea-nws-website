@@ -51,4 +51,22 @@ async function getSigninValidate(
     organization: organization
   }
 }
-module.exports = { getSigninStart, getSigninValidate }
+
+async function getSigninVerify(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  console.log('Received SignInVerify request for: ', req.payload)
+  const { authToken } = req.payload as { authToken: string }
+
+  if (!authToken) {
+    return res.response({ errorMessage: 'Missing authToken' }).code(500)
+  }
+
+  return {
+    profile: mockResponses.citizenContact2
+  }
+}
+
+module.exports = { getSigninStart, getSigninValidate, getSigninVerify }

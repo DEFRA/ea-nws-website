@@ -1,6 +1,7 @@
 const routes = [].concat(
   require('../routes/sign_in/signin_start'),
   require('../routes/sign_in/signin_validate'),
+  require('../routes/sign_in/signin_verify'),
   require('../routes/sign_up/signup_start'),
   require('../routes/sign_up/org_start'),
   require('../routes/sign_up/org_validate'),

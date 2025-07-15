@@ -135,6 +135,13 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
+            const response = await backendCall(
+              { authToken: data.authToken },
+              'api/sign_in_verify'
+            )
+
+            console.log('Sign in verify response:', response)
+
             navigate('/home')
           }
         }

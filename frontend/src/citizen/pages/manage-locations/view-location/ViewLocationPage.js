@@ -92,7 +92,6 @@ export default function ViewLocationPage() {
     selectedLocation?.additionals || [],
     'alertTypes'
   )
-  // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
   const initialAlerts = locationsAlertTypes
     ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
     : false
@@ -232,7 +231,6 @@ export default function ViewLocationPage() {
     e.preventDefault()
     let updatedProfile
 
-    // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
     if (!locationsAlertTypes) {
       locationsAlertTypes = [
         AlertType.SEVERE_FLOOD_WARNING,

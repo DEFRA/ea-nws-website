@@ -112,6 +112,7 @@ const userSlice = createSlice({
     },
     contactPreferences: null,
     registrations: null,
+    locationRegistrations: null,
     currentContact: null,
     signinType: null,
     // location data
@@ -269,6 +270,9 @@ const userSlice = createSlice({
     },
     setRegistrations: (state, action) => {
       state.registrations = action.payload
+    },
+    setLocationRegistrations: (state, action) => {
+      state.locationRegistrations = action.payload
     },
     setCurrentContact: (state, action) => {
       state.currentContact = action.payload
@@ -820,6 +824,7 @@ const userSlice = createSlice({
       }
       state.contactPreferences = null
       state.registrations = null
+      state.locationRegistrations = null
       state.currentContact = null
       state.signinType = null
       // location data
@@ -1039,6 +1044,7 @@ export const {
   setNotInEnglandLocations,
   setProfile,
   setRegistrations,
+  setLocationRegistrations,
   setContactPreferences,
   setCurrentContact,
   addContactPreference,

@@ -65,7 +65,8 @@ async function getSigninVerify(
   }
 
   return {
-    profile: mockResponses.citizenContact2
+    profile: mockResponses.citizenProfile2,
+    locationRegistrations: mockResponses.locationRegistrations
   }
 }
 

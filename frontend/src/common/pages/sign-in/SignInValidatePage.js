@@ -16,6 +16,7 @@ import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
+  setLocationRegistrations,
   setOrganization,
   setProfile,
   setProfileId,
@@ -135,12 +136,18 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
-            const response = await backendCall(
+            const { errorMessage, data: verifyData } = await backendCall(
               { authToken: data.authToken },
               'api/sign_in_verify'
             )
 
-            console.log('Sign in verify response:', response)
+            if (!errorMessage) {
+              console.log('verifyData:', verifyData)
+              dispatch(
+                setLocationRegistrations(verifyData.locationRegistrations)
+              )
+              dispatch(setProfile(verifyData.profile))
+            }
 
             navigate('/home')
           }

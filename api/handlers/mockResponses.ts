@@ -284,6 +284,36 @@ const registrations = {
   }
 }
 
+const locationRegistrations = [
+  {
+    locationId: '121',
+    partner: registrations.partner,
+    registrationDate: '1683741990',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_3']
+    }
+  },
+  {
+    locationId: '131',
+    partner: registrations.partner,
+    registrationDate: '1683741995',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_1']
+    }
+  },
+  {
+    locationId: '141',
+    partner: registrations.partner,
+    registrationDate: '1683741999',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2']
+    }
+  }
+]
+
 const organization = {
   id: '13',
   name: 'Flood Inc.',
@@ -337,5 +367,6 @@ module.exports = {
   citizenProfile: citizenContact,
   citizenProfile2: citizenContact2,
   registrations: registrations,
+  locationRegistrations: locationRegistrations,
   organization: organization
 }

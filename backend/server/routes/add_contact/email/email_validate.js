@@ -43,6 +43,15 @@ module.exports = [
           })
         }
 
+        // Any other error gets generic message
+        if (response.status !== 200) {
+          return h.response({
+            status: response.status,
+            errorMessage:
+              'Code not recognised - try again or request a new code'
+          })
+        }
+
         // Success
         return h.response(response)
       } catch (error) {

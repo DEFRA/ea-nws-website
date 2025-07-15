@@ -128,8 +128,8 @@ export default function ViewLocationsDashboardPage() {
 
       if (data) {
         data.forEach((location) => {
-          if (!seenAddresses.has(location.address)) {
-            seenAddresses.add(location.address)
+          if (!seenAddresses.has(location.id)) {
+            seenAddresses.add(location.id)
             locationsUpdate.push(geoSafeToWebLocation(location))
           }
         })

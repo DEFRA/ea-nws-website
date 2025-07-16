@@ -139,8 +139,8 @@ export default function FullscreenMap ({
   // Leaflet Marker Icon
   const DefaultIcon = L.icon({
     iconUrl,
-    iconSize: [34, 40],
-    iconAnchor: [17, 20]
+    iconSize: [54.5, 64],
+    iconAnchor: [27.5, 38.2]
   })
   L.Marker.prototype.options.icon = DefaultIcon
 

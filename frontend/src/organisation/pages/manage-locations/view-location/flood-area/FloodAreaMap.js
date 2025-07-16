@@ -94,14 +94,14 @@ export default function FloodAreaMap ({
   // Leaflet Marker Icon
   const DefaultIcon = L.icon({
     iconUrl,
-    iconSize: [53, 69],
-    iconAnchor: [26, 69]
+    iconSize: [54.5, 64],
+    iconAnchor: [27.5, 38.2]
   })
 
   const ClickedIcon = L.icon({
     iconUrl: iconClickedUrl,
-    iconSize: [53, 69],
-    iconAnchor: [26, 69]
+    iconSize: [54.5, 64],
+    iconAnchor: [27.5, 38.2]
   })
   L.Marker.prototype.options.icon = DefaultIcon
 

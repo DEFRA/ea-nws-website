@@ -6,6 +6,10 @@ const {
   createGenericErrorResponse
 } = require('../../../services/GenericErrorResponse')
 const { logger } = require('../../../plugins/logging')
+const {
+  GENERIC_ERROR_MSG,
+  GENERIC_OTP_ERROR_MSG
+} = require('../../../constants/errorMessages')
 
 module.exports = [
   {
@@ -39,9 +43,7 @@ module.exports = [
           // Generic message
           return h.response({
             status: 500,
-            errorMessage: !error
-              ? 'Code not recognised - try again or request a new code'
-              : error
+            errorMessage: !error ? GENERIC_OTP_ERROR_MSG : error
           })
         }
       } catch (error) {

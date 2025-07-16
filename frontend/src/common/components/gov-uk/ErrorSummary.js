@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 
 export default function ErrorSummary({ errorList }) {
   //Remove null and flatten the errorList
   const errors = errorList.filter((item) => item !== null).flat()
+
+  const genericError = 'The system encountered an unexpected error'
 
   const summaryRef = useRef(null)
   const focusFlag = useRef(false)
@@ -41,6 +44,22 @@ export default function ErrorSummary({ errorList }) {
         <div className='govuk-error-summary__body'>
           <ul className='govuk-list govuk-error-summary__list'>
             {errors.map((error, index) => {
+              // Extract the string (if an object)
+              const errorText = typeof error === 'object' ? error.text : error
+
+              // If it exactly equals the generic error, render full sentence + link
+              if (errorText === genericError) {
+                return (
+                  <li key={index} className='govuk-error-summary__list-item'>
+                    {genericError}. Please retry and if the problem persists{' '}
+                    <Link to='/contact' className='govuk-link'>
+                      contact us
+                    </Link>
+                    .
+                  </li>
+                )
+              }
+
               // If an object, render a link to jump to that section
               if (typeof error === 'object' && error.componentId) {
                 return (
@@ -48,14 +67,14 @@ export default function ErrorSummary({ errorList }) {
                     key={index}
                     style={{ color: '#d4351c', fontWeight: '700' }}
                   >
-                    <a href={`#${error.componentId}`}>{error.text}</a>
+                    <a href={`#${error.componentId}`}>{errorText}</a>
                   </li>
                 )
               }
               // Otherwise, just show the message
               return (
                 <li key={index} style={{ color: '#d4351c', fontWeight: '700' }}>
-                  {error}
+                  {errorText}
                 </li>
               )
             })}

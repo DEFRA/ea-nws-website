@@ -26,7 +26,11 @@ const getAdditionalLocations = async (
     while (i <= totalRecalls) {
       let options = {
         offset: 1000 * i,
-        limit: 1000
+        limit: 1000,
+        sort: [{
+          fieldName: 'id',
+          order: 'ASCENDING'
+        }]
       }
       if (contactId) options.contactId = contactId
       fetchLocationsPromises.push(
@@ -73,7 +77,11 @@ module.exports = [
 
           let locations = []
           let options = {
-            limit: 1000
+            limit: 1000,
+            sort: [{
+              fieldName: 'id',
+              order: 'ASCENDING'
+            }]
           }
           const locationRes = await apiCall(
             { authToken: orgData.authToken, options: options },
@@ -112,7 +120,14 @@ module.exports = [
 
           for (const contact of contactRes.data.contacts) {
             let contactsLocations = []
-            const options = { contactId: contact.id, limit: 1000 }
+            const options = {
+              contactId: contact.id,
+              limit: 1000,
+              sort: [{
+                fieldName: 'id',
+                order: 'ASCENDING'
+              }]
+            }
             const linkLocationsRes = await apiCall(
               {
                 authToken: orgData.authToken,

@@ -1,3 +1,7 @@
+const {
+  GENERIC_ERROR_MSG,
+  GENERIC_OTP_ERROR_MSG
+} = require('../../../constants/errorMessages')
 const { logger } = require('../../../plugins/logging')
 const { apiCall } = require('../../../services/ApiService')
 const {
@@ -23,7 +27,7 @@ module.exports = [
         if (error || !authToken) {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error ? GENERIC_ERROR_MSG : error
           })
         }
 
@@ -56,8 +60,7 @@ module.exports = [
         if (response.status !== 200) {
           return h.response({
             status: response.status,
-            errorMessage:
-              'Code not recognised - try again or request a new code'
+            errorMessage: GENERIC_OTP_ERROR_MSG
           })
         }
 

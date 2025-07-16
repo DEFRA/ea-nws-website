@@ -41,6 +41,15 @@ module.exports = [
             status: 400,
             errorMessage: 'The email address you entered is already being used'
           })
+        } else if (
+          response.status === 500 &&
+          response.errorMessage?.includes('expired')
+        ) {
+          return h.response({
+            status: 400,
+            errorMessage:
+              'The code you have entered has expired - please request a new code'
+          })
         }
 
         // Any other error gets generic message

@@ -26,10 +26,22 @@ module.exports = [
             'member/verifyMobilePhoneValidate'
           )
           return h.response(response)
+        } else if (
+          response.status === 500 &&
+          response.errorMessage?.includes('expired')
+        ) {
+          return h.response({
+            status: 400,
+            errorMessage:
+              'The code you have entered has expired - please request a new code'
+          })
         } else {
+          // Generic message
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error
+              ? 'Code not recognised - try again or request a new code'
+              : error
           })
         }
       } catch (error) {

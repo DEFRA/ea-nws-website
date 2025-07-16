@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
@@ -142,7 +142,6 @@ export default function SignInValidatePage() {
             )
 
             if (!errorMessage) {
-              console.log('verifyData:', verifyData)
               dispatch(
                 setLocationRegistrations(verifyData.locationRegistrations)
               )

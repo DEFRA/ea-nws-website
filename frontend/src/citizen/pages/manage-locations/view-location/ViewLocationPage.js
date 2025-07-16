@@ -12,10 +12,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import AlertType from '../../../../common/enums/AlertType'
-import {
-  getLocationOtherAdditional,
-  setProfile
-} from '../../../../common/redux/userSlice'
+import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
   getRegistrationParams,
@@ -79,6 +76,9 @@ export default function ViewLocationPage() {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations
+  )
   const canRemoveLocation = profile.pois.length > 1
   const [selectedFloodArea, setSelectedFloodArea] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
@@ -88,10 +88,11 @@ export default function ViewLocationPage() {
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
   const [locationType, setLocationType] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  let locationsAlertTypes = getLocationOtherAdditional(
-    selectedLocation?.additionals || [],
-    'alertTypes'
-  )
+
+  let locationsAlertTypes =
+    locationRegistrations.find((loc) => loc.locationId === selectedLocation.id)
+      ?.params?.alertTypes || []
+
   const initialAlerts = locationsAlertTypes
     ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
     : false

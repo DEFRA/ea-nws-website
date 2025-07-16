@@ -12,7 +12,8 @@ export default function Input({
   error = '',
   isNameBold = false,
   labelSize = hint ? 's' : 'm',
-  nameSize = null
+  nameSize = null,
+  hideLabel = false
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -30,7 +31,9 @@ export default function Input({
         <label
           className={`govuk-label ${
             isNameBold && !nameSize ? `govuk-label--${labelSize}` : ''
-          } ${isNameBold && nameSize ? `govuk-label--${nameSize}` : ''}`}
+          }
+          ${isNameBold && nameSize ? `govuk-label--${nameSize}` : ''}
+          ${hideLabel && 'govuk-visually-hidden'}`}
           htmlFor={id}
         >
           {' '}

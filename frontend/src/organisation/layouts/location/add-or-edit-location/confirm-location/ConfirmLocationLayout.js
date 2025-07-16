@@ -201,7 +201,8 @@ export default function ConfirmLocationLayout({
 
     // since we added to currentLocation we need to get that information to pass to the api
     const dataToSend = { authToken, location: newGeosafeLocation }
-    const isUpdate = Boolean(currentLocation?.id)
+    const isUpdate =
+      flow?.includes('change-coords') || Boolean(currentLocation?.id)
     const apiEndpoint = isUpdate ? 'api/location/update' : 'api/location/create'
     const { data, errorMessage } = await backendCall(
       dataToSend,

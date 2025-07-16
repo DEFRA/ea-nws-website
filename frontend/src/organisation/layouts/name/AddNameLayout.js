@@ -82,7 +82,7 @@ export default function AddNameLayout({
                 id={orgNameId}
                 inputType='text'
                 value={name}
-                name='Organisation name'
+                name="Organisation/'s name"
                 onChange={(val) => setName(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'

@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -12,6 +12,7 @@ import Details from '../../../common/components/gov-uk/Details'
 import AlertType from '../../../common/enums/AlertType'
 import {
   getLocationOtherAdditional,
+  setLocationRegistrations,
   setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -34,6 +35,9 @@ export default function LocationInFloodAreasLayout({
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
+  )
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations
   )
   const { latitude, longitude } = selectedLocation.coordinates
   const locationAlertTypes = getLocationOtherAdditional(
@@ -74,8 +78,20 @@ export default function LocationInFloodAreasLayout({
 
       // if user is in sign up flow, then profile returned will be undefined
       if (updatedProfile) {
-        await registerLocationToPartner(updatedProfile)
+        const locationId = await registerLocationToPartner(updatedProfile)
         dispatch(setProfile(updatedProfile))
+
+        const updatedLocationRegistrations = [
+          ...locationRegistrations,
+          {
+            locationId,
+            params: {
+              ...locationRegistrations.params,
+              alertTypes: locationAlertTypes
+            }
+          }
+        ]
+        dispatch(setLocationRegistrations(updatedLocationRegistrations))
       }
     }
     continueToNextPage(updatedProfile)
@@ -126,6 +142,8 @@ export default function LocationInFloodAreasLayout({
       'api/partner/register_location_to_partner',
       navigate
     )
+
+    return location.id
   }
 
   const handleUserNavigatingBack = async () => {

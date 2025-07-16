@@ -141,7 +141,9 @@ export default function SignInValidatePage() {
               'api/sign_in_verify'
             )
 
-            if (!errorMessage) {
+            if (errorMessage) {
+              setError(errorMessage)
+            } else {
               dispatch(
                 setLocationRegistrations(verifyData.locationRegistrations)
               )

@@ -1,3 +1,4 @@
+const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
 const getSecretKeyValue = require('./SecretsManager')
 const getServicePhase = async () => {
   try {
@@ -19,7 +20,7 @@ const getServicePhase = async () => {
   } catch {
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: GENERIC_ERROR_MSG
     }
   }
 }

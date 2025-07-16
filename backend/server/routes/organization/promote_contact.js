@@ -27,6 +27,15 @@ module.exports = [
           if (response?.data?.contact) {
             await updateContact(redis, sessionData.orgId, response.data.contact)
             return h.response({ status: 200, data: response.data.contact })
+          }
+          // Checking in case the contact is already registered on another citizen / org account
+          // GeoSafe returns {code: 107, desc: 'already existing account}
+          else if (response?.data?.code === 107) {
+            return h.response({
+              status: 409,
+              errorMessage:
+                'This email address is registered on another account' // Waiting for UCD approved message
+            })
           } else {
             return createGenericErrorResponse(h)
           }

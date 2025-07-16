@@ -437,6 +437,17 @@ export default function LocationNearFloodAreasLayout({
     </div>
   )
 
+  const getAccessibleLabel = (area) => {
+    const locationName = area.properties.TA_Name
+    const floodType = area?.properties?.category
+      .toLowerCase()
+      .includes('warning')
+      ? 'warnings'
+      : 'alerts'
+
+    return `${locationName} to get flood ${floodType} for this location.`
+  }
+
   return (
     <>
       {showFullMap ? (
@@ -475,6 +486,7 @@ export default function LocationNearFloodAreasLayout({
                           <div class='govuk-summary-card__title-wrapper'>
                             <Checkbox
                               label='Select'
+                              screenReaderAdditional={getAccessibleLabel(area)}
                               style={{ fontWeight: 'bold' }}
                               checked={!!area.addLocation}
                               onChange={() => {

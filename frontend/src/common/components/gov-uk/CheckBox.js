@@ -6,7 +6,8 @@ export default function Checkbox({
   value,
   checked,
   onChange,
-  style
+  style,
+  screenReaderAdditional = ''
 }) {
   const formattedId = id || 'id_' + label.split(' ').join('_') // replaces spaces with underscores in ids
   return (
@@ -25,6 +26,11 @@ export default function Checkbox({
         htmlFor={formattedId}
       >
         {label}
+        {screenReaderAdditional !== '' && (
+          <span className='govuk-visually-hidden'>
+            {screenReaderAdditional}
+          </span>
+        )}
       </label>
     </div>
   )

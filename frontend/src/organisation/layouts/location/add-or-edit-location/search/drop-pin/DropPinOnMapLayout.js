@@ -196,10 +196,18 @@ export default function DropPinOnMapLayout({
 
         const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
+        const isUpdate = flow?.includes('change-coords')
+        if (isUpdate) {
+          // Ensure api knows which location to update
+          newGeosafeLocation.id = locationToAdd.id
+        }
+        const apiEndpoint = isUpdate
+          ? 'api/location/update'
+          : 'api/location/create'
         const dataToSend = { authToken, location: newGeosafeLocation }
         const { data, errorMessage } = await backendCall(
           dataToSend,
-          'api/location/create',
+          apiEndpoint,
           navigate
         )
 

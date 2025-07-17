@@ -187,7 +187,7 @@ export default function SubscribedLocationTable({ setError }) {
 
                   {locations.map((location, index) => (
                     <tr key={index} className='govuk-table__row'>
-                      <td className='govuk-table__cell text-nowrap'>
+                      <td className='govuk-table__cell'>
                         <p className='govuk-!-margin-bottom-0'>
                           {location.address}
                         </p>

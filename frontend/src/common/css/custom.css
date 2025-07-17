@@ -1048,6 +1048,9 @@
   .responsive-table td {
     border: none;
     padding: 0.5rem 0;
+    p {
+      width: 100%;
+    }
     p.govuk-hint {
       font-size: 1rem !important;
     }

@@ -44,7 +44,7 @@ export default function SearchFilter({
     ...new Set(
       locations.map((location) => {
         const temp = location.additionals.other?.location_type
-        return temp.trim() !== '' ? temp : EMPTY_LABEL
+        return temp?.trim() !== '' ? temp : EMPTY_LABEL
       })
     )
   ]
@@ -57,7 +57,7 @@ export default function SearchFilter({
     ...new Set(
       locations.map((location) => {
         const temp = location.additionals.other?.business_criticality
-        return temp.trim() !== '' ? temp : EMPTY_LABEL
+        return temp?.trim() !== '' ? temp : EMPTY_LABEL
       })
     )
   ]
@@ -335,7 +335,7 @@ export default function SearchFilter({
                 // Ensure that '(empty)' appears at bottom
                 if (a === EMPTY_LABEL) return 1
                 if (b === EMPTY_LABEL) return -1
-                return a.toLowerCase().localeCompare(b.toLowerCase())
+                return a?.toLowerCase().localeCompare(b?.toLowerCase())
               })
               .map((option) => (
                 <CheckBox

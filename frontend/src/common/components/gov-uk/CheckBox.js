@@ -9,7 +9,7 @@ export default function Checkbox({
   style,
   screenReaderAdditional = ''
 }) {
-  const formattedId = id || 'id_' + label.split(' ').join('_') // replaces spaces with underscores in ids
+  const formattedId = id || 'id_' + label?.split(' ').join('_') // replaces spaces with underscores in ids
   return (
     <div className='govuk-checkboxes__item'>
       <input

@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import {
-    getLocationOtherAdditional,
-    setProfile
-} from '../../../../common/redux/userSlice'
+import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-    getRegistrationParams,
-    updateAdditionals
+  getRegistrationParams,
+  updateAdditionals
 } from '../../../../common/services/ProfileServices'
 import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLayout'
 
@@ -17,6 +14,9 @@ export default function AddFullNamePage () {
   const dispatch = useDispatch()
   const [error, setError] = useState()
   const [partnerId, setPartnerId] = useState(false)
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || null
+  )
 
   async function getPartnerId () {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -57,10 +57,9 @@ export default function AddFullNamePage () {
 
   const updateAllLocationsRegistrations = async (authToken, profile) => {
     profile.pois.map(async (poi) => {
-      const alertTypes = getLocationOtherAdditional(
-        poi.additionals,
-        'alertTypes'
-      )
+      const alertTypes =
+        locationRegistrations.find((loc) => loc.locationId === poi.id)?.params
+          ?.alertTypes || []
 
       const data = {
         authToken,

@@ -192,6 +192,7 @@ const userSlice = createSlice({
       ]
     },
     currentTA: null,
+    currentLocationAlerts: null,
     // org data
     organization: {
       id: null,
@@ -366,6 +367,9 @@ const userSlice = createSlice({
     // org location data
     setCurrentTA: (state, action) => {
       state.currentTA = action.payload
+    },
+    setCurrentLocationAlerts: (state, action) => {
+      state.currentLocationAlerts = action.payload
     },
     setCurrentLocation: (state, action) => {
       state.currentLocation.id = action.payload.id
@@ -859,6 +863,7 @@ const userSlice = createSlice({
       state.previousOrgAddress = null
       // org location data
       state.currentTA = null
+      state.currentLocationAlerts = null
       state.currentLocation = {
         id: null,
         enabled: true,
@@ -1084,6 +1089,7 @@ export const {
   setPreviousOrgAddress,
   // org location data
   setCurrentTA,
+  setCurrentLocationAlerts,
   setCurrentLocation,
   setCurrentLocationId,
   setCurrentLocationEnabled,

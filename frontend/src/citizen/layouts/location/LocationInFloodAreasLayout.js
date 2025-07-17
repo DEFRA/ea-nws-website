@@ -11,7 +11,6 @@ import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import AlertType from '../../../common/enums/AlertType'
 import {
-  getLocationOtherAdditional,
   setLocationRegistrations,
   setProfile
 } from '../../../common/redux/userSlice'
@@ -40,9 +39,8 @@ export default function LocationInFloodAreasLayout({
     (state) => state.session.locationRegistrations
   )
   const { latitude, longitude } = selectedLocation.coordinates
-  const locationAlertTypes = getLocationOtherAdditional(
-    selectedLocation?.additionals,
-    'alertTypes'
+  const locationAlertTypes = useSelector(
+    (state) => state.session.currentLocationAlerts
   )
   const [severeWarningAreas, setSevereWarningAreas] = useState(new Set())
   const [alertAreas, setAlertAreas] = useState(new Set())

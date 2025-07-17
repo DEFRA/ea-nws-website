@@ -1,4 +1,3 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AlertType from '../../../../common/enums/AlertType'
@@ -6,6 +5,9 @@ import { getLocationOtherAdditional } from '../../../../common/redux/userSlice'
 
 export default function FloodMessageReviewTable() {
   const locationsSelected = useSelector((state) => state.session.profile.pois)
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || null
+  )
   const floodWarningAreasSet = new Set()
   const floodAlertAreasSet = new Set()
   locationsSelected.forEach((location) => {
@@ -23,10 +25,9 @@ export default function FloodMessageReviewTable() {
         }
       })
     } else {
-      const locationLevels = getLocationOtherAdditional(
-        location.additionals,
-        'alertTypes'
-      )
+      const locationLevels =
+        locationRegistrations.find((loc) => loc.locationId === location.id)
+          ?.params?.alertTypes || []
 
       const warningLevels = [
         AlertType.SEVERE_FLOOD_WARNING,

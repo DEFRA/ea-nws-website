@@ -12,7 +12,10 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import AlertType from '../../../../common/enums/AlertType'
-import { setProfile } from '../../../../common/redux/userSlice'
+import {
+  setLocationRegistrations,
+  setProfile
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
   getRegistrationParams,
@@ -286,6 +289,20 @@ export default function ViewLocationPage() {
       locationsAlertTypes
     )
     dispatch(setProfile(updatedProfile))
+
+    // Update alerts in locationRegistrations
+    const updatedLocationRegistrations = locationRegistrations.map((loc) =>
+      loc.locationId == selectedLocation.id
+        ? {
+            ...loc,
+            params: {
+              ...loc.params,
+              alertTypes: locationsAlertTypes
+            }
+          }
+        : loc
+    )
+    dispatch(setLocationRegistrations(updatedLocationRegistrations))
 
     return updatedProfile
   }

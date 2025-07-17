@@ -326,7 +326,6 @@ export const getBoundaryTypes = async () => {
   const { data: wfsFeatureTypes } = await backendCall(WFSParams, 'api/wfs')
 
   return wfsFeatureTypes.featureTypes.map((featureType) => {
-    console.log('featureType', featureType)
     return featureType.typeName
   })
 }

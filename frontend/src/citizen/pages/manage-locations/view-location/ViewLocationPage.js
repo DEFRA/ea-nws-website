@@ -12,15 +12,9 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import AlertType from '../../../../common/enums/AlertType'
-import {
-  setLocationRegistrations,
-  setProfile
-} from '../../../../common/redux/userSlice'
+import { setLocationRegistrations } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import {
-  getRegistrationParams,
-  updateLocationsAlertTypes
-} from '../../../../common/services/ProfileServices'
+import { getRegistrationParams } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
 
@@ -269,9 +263,19 @@ export default function ViewLocationPage() {
     )
 
     if (!errorMessage) {
-      updatedProfile = await updateLocationAlerts(locationsAlertTypes)
-
-      await updateGeosafeProfile(updatedProfile)
+      // Update alerts in locationRegistrations
+      const updatedLocationRegistrations = locationRegistrations.map((loc) =>
+        loc.locationId == selectedLocation.id
+          ? {
+              ...loc,
+              params: {
+                ...loc.params,
+                alertTypes: locationsAlertTypes
+              }
+            }
+          : loc
+      )
+      dispatch(setLocationRegistrations(updatedLocationRegistrations))
 
       const message = `You've turned ${
         pendingOptionalAlerts ? 'on' : 'off'
@@ -280,36 +284,6 @@ export default function ViewLocationPage() {
       setSuccessMessage(message)
       setSavedOptionalAlerts(pendingOptionalAlerts)
     }
-  }
-
-  const updateLocationAlerts = async (locationsAlertTypes) => {
-    const updatedProfile = updateLocationsAlertTypes(
-      profile,
-      selectedLocation,
-      locationsAlertTypes
-    )
-    dispatch(setProfile(updatedProfile))
-
-    // Update alerts in locationRegistrations
-    const updatedLocationRegistrations = locationRegistrations.map((loc) =>
-      loc.locationId == selectedLocation.id
-        ? {
-            ...loc,
-            params: {
-              ...loc.params,
-              alertTypes: locationsAlertTypes
-            }
-          }
-        : loc
-    )
-    dispatch(setLocationRegistrations(updatedLocationRegistrations))
-
-    return updatedProfile
-  }
-
-  const updateGeosafeProfile = async (updatedProfile) => {
-    const dataToSend = { authToken, profile: updatedProfile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (

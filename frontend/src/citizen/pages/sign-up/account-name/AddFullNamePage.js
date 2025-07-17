@@ -58,7 +58,7 @@ export default function AddFullNamePage () {
   const updateAllLocationsRegistrations = async (authToken, profile) => {
     profile.pois.map(async (poi) => {
       const alertTypes =
-        locationRegistrations.find((loc) => loc.locationId === poi.id)?.params
+        locationRegistrations?.find((loc) => loc.locationId === poi.id)?.params
           ?.alertTypes || []
 
       const data = {

@@ -87,7 +87,7 @@ export default function ViewLocationPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   let locationsAlertTypes =
-    locationRegistrations.find((loc) => loc.locationId === selectedLocation.id)
+    locationRegistrations.find((loc) => loc.locationId == selectedLocation.id)
       ?.params?.alertTypes || []
 
   const initialAlerts = locationsAlertTypes

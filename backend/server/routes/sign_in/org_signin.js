@@ -115,8 +115,12 @@ module.exports = [
             orgData.organization,
             locations,
             contactRes.data.contacts,
-            sessionData.orgId
+            sessionData.orgId,
+            orgData.authToken
           )
+
+          const numContacts = contactRes.data.contacts.length
+          let contactIndex = 1
 
           for (const contact of contactRes.data.contacts) {
             let contactsLocations = []
@@ -155,6 +159,12 @@ module.exports = [
               contact.id,
               locationIDs
             )
+
+            await setJsonData(redis, elasticacheKey, {
+              stage: 'Processing Contacts',
+              status: 'working',
+              percent: (contactIndex/numContacts)*100
+            })
           }
           await setJsonData(redis, elasticacheKey, {
             stage: 'Populating account',

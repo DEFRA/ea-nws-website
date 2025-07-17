@@ -90,13 +90,15 @@ Functions for Valid locations to be used accross the
 entire site
 */
 
-const setLocations = async (client, orgId, locations) => {
+const setLocations = async (client, orgId, locations, statusKey) => {
   const key = orgId + ':t_POIS'
   const formattedLocations = {}
   locations.forEach((location) => {
     formattedLocations[location.id] = location
   })
+  const numLocations = Object.keys(formattedLocations).length
   await setJsonData(client, key, formattedLocations)
+  let i = 1
   Object.keys(formattedLocations).forEach(async (key) => {
     const location = formattedLocations[key]
     let keywords = []
@@ -111,6 +113,12 @@ const setLocations = async (client, orgId, locations) => {
         linked_ids: [key]
       })
     }
+    await setJsonData(client, statusKey, {
+      stage: 'Processing locations',
+      status: 'working',
+      percent: (i/numLocations)*100
+    })
+    i++
   })
 }
 
@@ -547,8 +555,10 @@ const orgSignIn = async (
   organization,
   locations,
   contacts,
-  orgId
+  orgId,
+  authToken
 ) => {
+  const statusKey = 'signin_status:' + authToken
   await setJsonData(client, profile.id + ':profile', profile)
   await addOrgActiveAdmins(client, orgId, profile.id)
   const orgExists = await checkKeyExists(client, orgId + ':org_data')
@@ -557,25 +567,49 @@ const orgSignIn = async (
       client,
       organization.id + ':t_POIS'
     )
+    const numLocations = locations.length
+    let locIndex = 1
     for (const location of locations) {
       if (!Object.keys(existingLocations).includes(location.id)) {
         await addLocation(client, organization.id, location)
       }
+      await setJsonData(client, statusKey, {
+        stage: 'Processing locations',
+        status: 'working',
+        percent: (locIndex/numLocations)*100
+      })
+      locIndex++
     }
     const existingContacts = await getContactKeys(client, orgId)
     const existingContactIds = existingContacts.map((contact) =>
       contact.split(':').slice(2).join(':')
     )
+    const numContacts = contacts.length
+    let contactIndex = 1
     for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {
         await addContact(client, orgId, contact)
       }
+      await setJsonData(client, statusKey, {
+        stage: 'Retrieving Contacts',
+        status: 'working',
+        percent: (contactIndex/numContacts)*100
+      })
+      contactIndex++
     }
   } else {
     await setJsonData(client, organization.id + ':org_data', organization)
-    await setLocations(client, organization.id, locations)
+    await setLocations(client, organization.id, locations, statusKey)
+    const numContacts = contacts.length
+    let i = 1
     for (const contact of contacts) {
       await addContact(client, orgId, contact)
+      await setJsonData(client, statusKey, {
+        stage: 'Retrieving Contacts',
+        status: 'working',
+        percent: (i/numContacts)*100
+      })
+      i++
     }
   }
 }

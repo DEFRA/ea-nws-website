@@ -80,6 +80,7 @@ export default function SelectPredefinedBoundaryPage() {
   useEffect(() => {
     const getBoundaryTypesList = async () => {
       const boundaryTypesList = await getBoundaryTypes()
+      console.log('boundaryTypesList', boundaryTypesList)
       setBoundaryTypes(boundaryTypesList)
     }
     getBoundaryTypesList()

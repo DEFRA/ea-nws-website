@@ -1049,6 +1049,7 @@
     border: none;
     padding: 0.5rem 0;
     p {
+      text-wrap: auto;
       width: 100%;
     }
     p.govuk-hint {

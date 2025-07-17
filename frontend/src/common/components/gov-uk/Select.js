@@ -52,11 +52,11 @@ export default function Select({
         {options.map((option, index) =>
           disabledOptions.includes(option) ? (
             <option key={index} value={option} disabled>
-              {option}
+              {option.replace(/_/g, '').toUpperCase()}
             </option>
           ) : (
             <option key={index} value={option}>
-              {option}
+              {option.replace(/_/g, '').toUpperCase()}
             </option>
           )
         )}

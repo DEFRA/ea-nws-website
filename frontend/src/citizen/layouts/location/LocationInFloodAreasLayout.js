@@ -36,7 +36,7 @@ export default function LocationInFloodAreasLayout({
     (state) => state.session.selectedLocation
   )
   const locationRegistrations = useSelector(
-    (state) => state.session.locationRegistrations
+    (state) => state.session.locationRegistrations || null
   )
   const { latitude, longitude } = selectedLocation.coordinates
   const locationAlertTypes = useSelector(
@@ -91,8 +91,10 @@ export default function LocationInFloodAreasLayout({
         ]
         dispatch(setLocationRegistrations(updatedLocationRegistrations))
       }
+      continueToNextPage(selectedLocation.address)
+    } else {
+      continueToNextPage(updatedProfile)
     }
-    continueToNextPage(updatedProfile)
   }
 
   const addLocationWithinFloodArea = async () => {

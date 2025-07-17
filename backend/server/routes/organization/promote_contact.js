@@ -29,7 +29,6 @@ module.exports = [
             return h.response({ status: 200, data: response.data.contact })
           }
           // Checking in case the contact is already registered on another citizen / org account
-          // GeoSafe returns {code: 107, desc: 'already existing account}
           else if (
             response?.data?.code === 107 ||
             response?.data?.desc.includes('already existing account')

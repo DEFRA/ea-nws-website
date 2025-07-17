@@ -165,10 +165,10 @@ export default function LocationMessagesPage() {
         messages.forEach((message) => availableAlerts.add(message))
       })
       setAvailableAlerts(availableAlerts)
+      setLoading(false)
     }
 
     loadFloodAlertData()
-    setLoading(false)
   }, [])
 
   const getFloodMessagesSent = (
@@ -292,94 +292,98 @@ export default function LocationMessagesPage() {
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
         Message settings
       </h2>
-      <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {availableAlerts.size > 0 ? (
-        <p>
-          You can choose which flood messages to get for each location if
-          they're available.
-          <br />
-        </p>
+      {loading ? (
+        <LoadingSpinner />
       ) : (
         <>
+        <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+        {availableAlerts.size > 0 ? (
           <p>
-            Flood messages are currently unavailable for this location. This may
-            be because there are no measurement gauges in the area of the
-            location. Or the location is in an area where not many people live
-            or work.
+            You can choose which flood messages to get for each location if
+            they're available.
+            <br />
           </p>
-          <p>
-            But you may be able to link this location to any nearby flood areas
-            that can get flood messages in the Flood areas section.
-          </p>
-          <p>
-            And if any flood messages become available for this location in the
-            future we'll automatically send them to you. You can then customise
-            by choosing which flood messages to get.
-          </p>
-        </>
-      )}
-      <p>
-        <Link to={infoUrls.floodTypes} className='govuk-link'>
-          What are the different types of flood messages?
-        </Link>
-      </p>
-      <br />
-
-      <table className='govuk-table govuk-table--small-text-until-tablet'>
-        <tbody className='govuk-table__body'>
-          {messageSettings.map((message, index) => (
-            <tr className='govuk-table__row' key={index}>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
-                <strong>{message}</strong>
-              </td>
-              {availableAlerts.has(message) ? (
-                <>
-                  <td className='govuk-table__cell'>
-                    <Radio
-                      label='On'
-                      small
-                      value={'Radio_On_' + index}
-                      name={'Radio_' + index}
-                      checked={alertTypesEnabled[index]}
-                      onChange={() => handleChangeRadio(index, true)}
-                    />
-                  </td>
-                  <td className='govuk-table__cell'>
-                    <Radio
-                      label='Off'
-                      small
-                      value={'Radio_Off_' + index}
-                      name={'Radio_' + index}
-                      checked={!alertTypesEnabled[index]}
-                      onChange={() => handleChangeRadio(index, false)}
-                    />
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td className='govuk-table__cell' />
-                  <td
-                    className='govuk-table__cell'
-                    style={{ lineHeight: '50px' }}
-                  >
-                    Unavailable
-                  </td>
-                </>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {availableAlerts.size > 0 && (
-        <Button
-          text='Save message settings'
-          className='govuk-button'
-          onClick={updateMessageSettings}
-        />
+        ) : (
+          <>
+            <p>
+              Flood messages are currently unavailable for this location. This may
+              be because there are no measurement gauges in the area of the
+              location. Or the location is in an area where not many people live
+              or work.
+            </p>
+            <p>
+              But you may be able to link this location to any nearby flood areas
+              that can get flood messages in the Flood areas section.
+            </p>
+            <p>
+              And if any flood messages become available for this location in the
+              future we'll automatically send them to you. You can then customise
+              by choosing which flood messages to get.
+            </p>
+          </>
+        )}
+        <p>
+          <Link to={infoUrls.floodTypes} className='govuk-link'>
+            What are the different types of flood messages?
+          </Link>
+        </p>
+        <br />
+        <table className='govuk-table govuk-table--small-text-until-tablet'>
+          <tbody className='govuk-table__body'>
+            {messageSettings.map((message, index) => (
+              <tr className='govuk-table__row' key={index}>
+                <td
+                  className='govuk-table__cell'
+                  style={{ verticalAlign: 'middle' }}
+                >
+                  <strong>{message}</strong>
+                </td>
+                {availableAlerts.has(message) ? (
+                  <>
+                    <td className='govuk-table__cell'>
+                      <Radio
+                        label='On'
+                        small
+                        value={'Radio_On_' + index}
+                        name={'Radio_' + index}
+                        checked={alertTypesEnabled[index]}
+                        onChange={() => handleChangeRadio(index, true)}
+                      />
+                    </td>
+                    <td className='govuk-table__cell'>
+                      <Radio
+                        label='Off'
+                        small
+                        value={'Radio_Off_' + index}
+                        name={'Radio_' + index}
+                        checked={!alertTypesEnabled[index]}
+                        onChange={() => handleChangeRadio(index, false)}
+                      />
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className='govuk-table__cell' />
+                    <td
+                      className='govuk-table__cell'
+                      style={{ lineHeight: '50px' }}
+                    >
+                      Unavailable
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {availableAlerts.size > 0 && (
+          <Button
+            text='Save message settings'
+            className='govuk-button'
+            onClick={updateMessageSettings}
+          />
+        )}
+      </>
       )}
     </>
   )

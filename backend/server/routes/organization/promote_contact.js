@@ -30,11 +30,14 @@ module.exports = [
           }
           // Checking in case the contact is already registered on another citizen / org account
           // GeoSafe returns {code: 107, desc: 'already existing account}
-          else if (response?.data?.code === 107) {
+          else if (
+            response?.data?.code === 107 ||
+            response?.data?.desc.includes('already existing account')
+          ) {
             return h.response({
               status: 409,
               errorMessage:
-                'This email address is registered on another account' // Waiting for UCD approved message
+                "You cannot enter this email address as it's already in use - try a different email address"
             })
           } else {
             return createGenericErrorResponse(h)

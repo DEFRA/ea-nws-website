@@ -28,6 +28,7 @@ import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
+import { formatSentenceCase } from '../../../../../common/utils/FormatSentenceCase'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -263,8 +264,11 @@ export default function SelectPredefinedBoundaryPage() {
                     onSelect={onBoundaryTypeSelected}
                     error={boundaryTypeError}
                     initialSelectOptionText={
-                      selectedBoundaryType || 'Select type'
+                      selectedBoundaryType
+                        ? formatSentenceCase(selectedBoundaryType)
+                        : 'Select type'
                     }
+                    snakeCaseText={true}
                   />
                   <Select
                     id={boundaryId}

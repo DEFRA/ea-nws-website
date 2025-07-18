@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -14,6 +14,8 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import AlertType from '../../../common/enums/AlertType'
 import {
   getAdditional,
+  setFloodAreasInfo,
+  setLocationRegistrations,
   setNearbyTargetAreasAdded,
   setProfile
 } from '../../../common/redux/userSlice'
@@ -41,6 +43,9 @@ export default function LocationNearFloodAreasLayout({
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
+  )
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || null
   )
   const { latitude, longitude } = selectedLocation.coordinates
   const [floodAreas, setFloodAreas] = useState([])
@@ -138,6 +143,19 @@ export default function LocationNearFloodAreasLayout({
           await registerLocationsToPartner(updatedProfile)
           dispatch(setProfile(updatedProfile))
         }
+      } else {
+        let floodAreasInfo = new Array()
+        floodAreas?.forEach((area, index) => {
+          const floodAlerts = getFloodAlertDetails(area?.properties?.category)
+
+          if (area.addLocation) {
+            floodAreasInfo.push({
+              address: area?.properties?.TA_Name,
+              alertTypes: floodAlerts
+            })
+          }
+        })
+        dispatch(setFloodAreasInfo(floodAreasInfo))
       }
 
       continueToNextPage(updatedProfile)
@@ -207,6 +225,7 @@ export default function LocationNearFloodAreasLayout({
   }
 
   const registerLocationsToPartner = async (profile) => {
+    let updatedLocationRegistrations = [...locationRegistrations] || null
     floodAreas.forEach(async (area) => {
       if (area.addLocation) {
         const location = findPOIByAddress(profile, area?.properties.TA_Name)
@@ -226,8 +245,21 @@ export default function LocationNearFloodAreasLayout({
           'api/partner/register_location_to_partner',
           navigate
         )
+
+        updatedLocationRegistrations = [
+          ...locationRegistrations,
+          {
+            locationId: location.id,
+            params: {
+              ...locationRegistrations.params,
+              alertTypes: locationAlertTypes
+            }
+          }
+        ]
       }
     })
+
+    dispatch(setLocationRegistrations(updatedLocationRegistrations))
   }
 
   const handleUserNavigatingBack = async () => {
@@ -317,6 +349,16 @@ export default function LocationNearFloodAreasLayout({
           </ul>
         )
       }
+    }
+  }
+
+  const getFloodAlertDetails = (category) => {
+    if (category.toLowerCase().includes('warning')) {
+      return [AlertType.FLOOD_WARNING]
+    } else if (category.toLowerCase().includes('alert')) {
+      return [AlertType.FLOOD_ALERT]
+    } else {
+      return []
     }
   }
 

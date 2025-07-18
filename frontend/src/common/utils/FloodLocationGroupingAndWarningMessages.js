@@ -60,7 +60,7 @@ export const getNonGroupFloodLocation = (locations) => {
 
 export const getFloodWarningAndAlerts = (location, locationRegistrations) => {
   const alertTypes =
-    locationRegistrations.find((loc) => loc.locationId == location.id)?.params
+    locationRegistrations?.find((loc) => loc.locationId == location.id)?.params
       ?.alertTypes || []
 
   let serverFloodWarnings = null

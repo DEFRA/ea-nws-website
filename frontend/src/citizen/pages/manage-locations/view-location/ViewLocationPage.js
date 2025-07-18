@@ -74,7 +74,7 @@ export default function ViewLocationPage() {
     (state) => state.session.selectedLocation
   )
   const locationRegistrations = useSelector(
-    (state) => state.session.locationRegistrations
+    (state) => state.session.locationRegistrations || null
   )
   const canRemoveLocation = profile.pois.length > 1
   const [selectedFloodArea, setSelectedFloodArea] = useState(null)
@@ -87,7 +87,7 @@ export default function ViewLocationPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   let locationsAlertTypes =
-    locationRegistrations.find((loc) => loc.locationId == selectedLocation.id)
+    locationRegistrations?.find((loc) => loc.locationId == selectedLocation.id)
       ?.params?.alertTypes || []
 
   const initialAlerts = locationsAlertTypes

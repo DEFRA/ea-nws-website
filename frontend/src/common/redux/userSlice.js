@@ -113,6 +113,7 @@ const userSlice = createSlice({
     contactPreferences: null,
     registrations: null,
     locationRegistrations: null,
+    floodAreasInfo: null,
     currentContact: null,
     signinType: null,
     // location data
@@ -274,6 +275,9 @@ const userSlice = createSlice({
     },
     setLocationRegistrations: (state, action) => {
       state.locationRegistrations = action.payload
+    },
+    setFloodAreasInfo: (state, action) => {
+      state.floodAreasInfo = action.payload
     },
     setCurrentContact: (state, action) => {
       state.currentContact = action.payload
@@ -829,6 +833,7 @@ const userSlice = createSlice({
       state.contactPreferences = null
       state.registrations = null
       state.locationRegistrations = null
+      state.floodAreasInfo = null
       state.currentContact = null
       state.signinType = null
       // location data
@@ -1050,6 +1055,7 @@ export const {
   setProfile,
   setRegistrations,
   setLocationRegistrations,
+  setFloodAreasInfo,
   setContactPreferences,
   setCurrentContact,
   addContactPreference,

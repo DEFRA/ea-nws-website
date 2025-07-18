@@ -125,8 +125,8 @@ export default function UserMap ({ locations }) {
     iconUrl: locationPin,
     iconRetinaUrl,
     shadowUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    iconSize: [54.5, 64],
+    iconAnchor: [27.5, 38.2]
   })
 
   L.Marker.prototype.options.icon = DefaultIcon

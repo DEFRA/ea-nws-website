@@ -2419,3 +2419,18 @@ govuk-menu-toggle.button-menu > button {
 .clearfix {
   clear: both;
 }
+
+/* Check your answers mobile */
+
+@media (max-width: 40.0525em) {
+  .check-your-answers-table td,
+  .check-your-answers-table th {
+    display: block;
+  }
+}
+
+@media (min-width: 40.0525em) {
+  .check-your-answers-table .govuk-list {
+    margin-left: -20px;
+  }
+}

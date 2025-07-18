@@ -1,4 +1,7 @@
-const { GENERIC_ERROR_MSG } = require('../../../constants/errorMessages')
+const {
+  GENERIC_ERROR_MSG,
+  GENERIC_OTP_ERROR_MSG
+} = require('../../../constants/errorMessages')
 const { logger } = require('../../../plugins/logging')
 const { apiCall } = require('../../../services/ApiService')
 const {
@@ -41,6 +44,23 @@ module.exports = [
           return h.response({
             status: 400,
             errorMessage: 'The email address you entered is already being used'
+          })
+        } else if (
+          response.status === 500 &&
+          response.errorMessage?.includes('expired')
+        ) {
+          return h.response({
+            status: 400,
+            errorMessage:
+              'The code you have entered has expired - please request a new code'
+          })
+        }
+
+        // Any other error gets generic message
+        if (response.status !== 200) {
+          return h.response({
+            status: response.status,
+            errorMessage: GENERIC_OTP_ERROR_MSG
           })
         }
 

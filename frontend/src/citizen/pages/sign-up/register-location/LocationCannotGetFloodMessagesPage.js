@@ -5,7 +5,7 @@ import LocationCannotGetFloodMessagesLayout from '../../../layouts/location/Loca
 export default function LocationCannotGetFloodMessagesPage() {
   const nearbyFloodAreasPage =
     '/signup/register-location/location-near-flood-areas'
-  const searchResultsPage = '/signup/register-location/search-results'
+  const searchResultsPage = '/signup/register-location/search'
 
   return (
     <>

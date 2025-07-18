@@ -22,7 +22,7 @@ module.exports = [
         return h.response(response)
       } catch (error) {
         logger.error(error)
-        createGenericErrorResponse(h)
+        return createGenericErrorResponse(h)
       }
     }
   }

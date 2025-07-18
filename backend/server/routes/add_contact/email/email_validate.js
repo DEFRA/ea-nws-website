@@ -1,3 +1,4 @@
+const { GENERIC_ERROR_MSG } = require('../../../constants/errorMessages')
 const { logger } = require('../../../plugins/logging')
 const { apiCall } = require('../../../services/ApiService')
 const {
@@ -23,7 +24,7 @@ module.exports = [
         if (error || !authToken) {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error ? GENERIC_ERROR_MSG : error
           })
         }
 

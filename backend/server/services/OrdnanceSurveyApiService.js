@@ -7,6 +7,7 @@ const { logger } = require('../plugins/logging')
 const {
   createGenericErrorResponse
 } = require('../services/GenericErrorResponse')
+const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
 
 const formatResults = (results) => {
   return results.map((result) => {
@@ -257,7 +258,7 @@ const osFindApiCall = async (address, minmatch) => {
     logger.error(error)
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: GENERIC_ERROR_MSG
     }
   }
 }
@@ -289,7 +290,7 @@ const osOAuth2ApiCall = async () => {
     logger.error(error)
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: GENERIC_ERROR_MSG
     }
   }
 }

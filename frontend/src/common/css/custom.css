@@ -2426,6 +2426,10 @@ govuk-menu-toggle.button-menu > button {
   .check-your-answers-table td,
   .check-your-answers-table th {
     display: block;
+    border: none;
+  }
+  .check-your-answers-table tr {
+    border-bottom: 1px solid #b1b4b6;
   }
 }
 

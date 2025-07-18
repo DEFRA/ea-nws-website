@@ -62,15 +62,17 @@ export default function ConfirmDeleteSingleLocationPage() {
         dispatch(setProfile(data.profile))
 
         // Remove the location based on Id
-        const filtered = locationRegistrations.filter(
+        const filtered = locationRegistrations?.filter(
           (loc) => loc.locationId != location.state.locationId
         )
-        // Renumber location Ids starting from 1
-        const updatedLocationRegistrations = filtered.map((loc, index) => ({
-          ...loc,
-          locationId: String(index + 1)
-        }))
-        dispatch(setLocationRegistrations(updatedLocationRegistrations))
+        if (filtered) {
+          // Renumber location Ids starting from 1
+          const updatedLocationRegistrations = filtered.map((loc, index) => ({
+            ...loc,
+            locationId: String(index + 1)
+          }))
+          dispatch(setLocationRegistrations(updatedLocationRegistrations))
+        }
 
         navigate('/home', {
           state: {

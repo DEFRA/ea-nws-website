@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
+import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import {
@@ -45,7 +46,8 @@ const FloodBanner = React.memo(function FloodBanner({
   type,
   locations,
   onClickLinked,
-  handleFloodAreas
+  handleFloodAreas,
+  loading = false
 }) {
   const count = []
   const message = []
@@ -89,9 +91,7 @@ const FloodBanner = React.memo(function FloodBanner({
     message.push('potentially at flood risk')
   } else if (type === 'noContacts') {
     heading[0] = 'Locations not linked to contacts'
-    count.push(
-      locations.filter((item) => item.linked_contacts === 0).length
-    )
+    count.push(locations.filter((item) => item.linked_contacts === 0).length)
     message[0] = 'not linked to contacts'
   }
 
@@ -104,120 +104,134 @@ const FloodBanner = React.memo(function FloodBanner({
       }}
     >
       <h2 className='govuk-body govuk-!-font-weight-bold'>{heading}</h2>
-      <div
-        style={{
-          border: '2px solid lightGrey',
-          padding: '1.5rem 1.5rem',
-          height: '10rem'
-        }}
-      >
-        {type === 'floodMessages' && (
-          <div style={{ display: 'flex' }}>
-            <div
-              style={{
-                width: '100%',
-                padding: '0rem 1rem 0rem 0rem'
-              }}
-            >
-              <p className='body-text-strong'>{count[0]}</p>
-              <Link
-                className='govuk-link'
-                onClick={() => onClickLinked('messages')}
-              >
-                {count[0] === 1 ? 'location' : 'locations'} {message[0]}
-              </Link>
-            </div>
-            {locations.filter(
-              (item) =>
-                item.additionals.other?.childrenIDs?.length > 0 &&
-                item.additionals.other?.alertTypes?.length > 0 &&
-                item.within !== true
-            ).length > 0 && (
+      {loading ? (
+        <div
+          style={{
+            border: '2px solid lightGrey',
+            padding: '1.5rem 1.5rem',
+            height: '10rem'
+          }}
+          className='flood-banner-loading-container'
+        >
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <div
+          style={{
+            border: '2px solid lightGrey',
+            padding: '1.5rem 1.5rem',
+            height: '10rem'
+          }}
+        >
+          {type === 'floodMessages' && (
+            <div style={{ display: 'flex' }}>
               <div
                 style={{
                   width: '100%',
-                  padding: '0rem 1.5rem',
-                  borderLeft: '2px solid lightGrey'
+                  padding: '0rem 1rem 0rem 0rem'
                 }}
               >
-                <p className='body-text-strong'>{count[1]}</p>
+                <p className='body-text-strong'>{count[0]}</p>
                 <Link
                   className='govuk-link'
-                  onClick={() => onClickLinked('linked-locations')}
-                >
-                  {count[1] === 1 ? 'location' : 'locations'} {message[1]}
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
-        {type === 'noFloodMessages' && (
-          <div style={{ display: 'flex' }}>
-            {locations.filter(
-              (item) =>
-                isMediumHighOrUnavailableRisk(item) &&
-                item.additionals.other?.alertTypes?.length === 0
-            ).length > 0 && (
-              <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
-                <p className='body-text-strong' style={{ color: '#FD6214' }}>
-                  {count[0]}
-                </p>
-                <Link
-                  className='govuk-link'
-                  onClick={() => onClickLinked('high-medium-risk')}
+                  onClick={() => onClickLinked('messages')}
                 >
                   {count[0] === 1 ? 'location' : 'locations'} {message[0]}
                 </Link>
               </div>
-            )}
-            {locations.filter(
-              (item) =>
-                isMediumHighOrUnavailableRisk(item) &&
-                item.additionals.other?.alertTypes?.length === 0
-            ).length > 0 &&
-              locations.filter(
+              {locations.filter(
+                (item) =>
+                  item.additionals.other?.childrenIDs?.length > 0 &&
+                  item.additionals.other?.alertTypes?.length > 0 &&
+                  item.within !== true
+              ).length > 0 && (
+                <div
+                  style={{
+                    width: '100%',
+                    padding: '0rem 1.5rem',
+                    borderLeft: '2px solid lightGrey'
+                  }}
+                >
+                  <p className='body-text-strong'>{count[1]}</p>
+                  <Link
+                    className='govuk-link'
+                    onClick={() => onClickLinked('linked-locations')}
+                  >
+                    {count[1] === 1 ? 'location' : 'locations'} {message[1]}
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+          {type === 'noFloodMessages' && (
+            <div style={{ display: 'flex' }}>
+              {locations.filter(
+                (item) =>
+                  isMediumHighOrUnavailableRisk(item) &&
+                  item.additionals.other?.alertTypes?.length === 0
+              ).length > 0 && (
+                <div style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
+                  <p className='body-text-strong' style={{ color: '#FD6214' }}>
+                    {count[0]}
+                  </p>
+                  <Link
+                    className='govuk-link'
+                    onClick={() => onClickLinked('high-medium-risk')}
+                  >
+                    {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+                  </Link>
+                </div>
+              )}
+              {locations.filter(
+                (item) =>
+                  isMediumHighOrUnavailableRisk(item) &&
+                  item.additionals.other?.alertTypes?.length === 0
+              ).length > 0 &&
+                locations.filter(
+                  (item) =>
+                    isLowRisk(item) &&
+                    item.additionals.other?.alertTypes?.length === 0
+                ).length > 0 && (
+                  <div
+                    style={{
+                      borderRight: '2px solid lightGrey'
+                    }}
+                  />
+                )}
+              {locations.filter(
                 (item) =>
                   isLowRisk(item) &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div
-                  style={{
-                    borderRight: '2px solid lightGrey'
-                  }}
-                />
-              )}
-            {locations.filter(
-              (item) =>
-                isLowRisk(item) &&
-                item.additionals.other?.alertTypes?.length === 0
-            ).length > 0 && (
-              <div style={{ width: '100%', padding: '0rem 0rem 0rem 1.5rem' }}>
-                <p className='body-text-strong'>{count[1]}</p>
-                <Link
-                  className='govuk-link'
-                  onClick={() => onClickLinked('low-risk')}
+                  style={{ width: '100%', padding: '0rem 0rem 0rem 1.5rem' }}
                 >
-                  {count[1] === 1 ? 'location' : 'locations'} {message[1]}
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
-        {type === 'noContacts' && (
-          <>
-            <p className='body-text-strong' style={{ color: 'crimson' }}>
-              {count[0]}
-            </p>
-            <Link
-              className='govuk-link'
-              onClick={() => onClickLinked('no-links')}
-            >
-              {count[0] === 1 ? 'location' : 'locations'} {message[0]}
-            </Link>
-          </>
-        )}
-      </div>
-
+                  <p className='body-text-strong'>{count[1]}</p>
+                  <Link
+                    className='govuk-link'
+                    onClick={() => onClickLinked('low-risk')}
+                  >
+                    {count[1] === 1 ? 'location' : 'locations'} {message[1]}
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+          {type === 'noContacts' && (
+            <>
+              <p className='body-text-strong' style={{ color: 'crimson' }}>
+                {count[0]}
+              </p>
+              <Link
+                className='govuk-link'
+                onClick={() => onClickLinked('no-links')}
+              >
+                {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+              </Link>
+            </>
+          )}
+        </div>
+      )}
       <p className='govuk-!-margin-top-2'>
         {type === 'floodMessages' && (
           <Link
@@ -248,7 +262,8 @@ export default function DashboardHeader({
   selectedLocations,
   onOnlyShowSelected,
   linkSource,
-  setErrorMessage
+  setErrorMessage,
+  loading
 }) {
   const navigate = useNavigate()
 
@@ -345,6 +360,7 @@ export default function DashboardHeader({
                 handleFloodAreas={() => {
                   navigate(infoUrls.floodAreas)
                 }}
+                loading={loading}
               />
               {(locations.filter(
                 (item) =>
@@ -360,15 +376,17 @@ export default function DashboardHeader({
                   type='noFloodMessages'
                   locations={locations}
                   onClickLinked={onClickLinked}
+                  loading={loading}
                 />
               )}
-              {locations.filter((item) => item.linked_contacts === 0)
-                .length > 0 && (
+              {locations.filter((item) => item.linked_contacts === 0).length >
+                0 && (
                 <div style={{ width: '100%' }}>
                   <FloodBanner
                     type='noContacts'
                     locations={locations}
                     onClickLinked={onClickLinked}
+                    loading={loading}
                   />
                   <div style={{ paddingLeft: '0.5rem' }}>
                     <Details

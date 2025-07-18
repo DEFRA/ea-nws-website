@@ -2433,4 +2433,19 @@ govuk-menu-toggle.button-menu > button {
   .check-your-answers-table .govuk-list {
     margin-left: -20px;
   }
+/* loading spinner */
+
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.loading-spinner-container .loading-spinner {
+  margin-top: 0.2rem;
+}
+
+.flood-banner-loading-container .loading-spinner-container {
+  margin-top: 0;
 }

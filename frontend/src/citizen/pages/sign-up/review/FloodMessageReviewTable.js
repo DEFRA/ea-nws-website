@@ -1,4 +1,3 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AlertType from '../../../../common/enums/AlertType'
@@ -75,7 +74,7 @@ export default function FloodMessageReviewTable() {
           </tr>
         </tbody>
       </table>
-      <table className='govuk-table'>
+      <table className='govuk-table check-your-answers-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
             <th
@@ -97,10 +96,7 @@ export default function FloodMessageReviewTable() {
             </th>
             <td className='govuk-table__cell govuk-!-width-full'>
               {floodWarningAreas.length > 0 ? (
-                <ul
-                  className='govuk-list govuk-list--bullet'
-                  style={{ marginLeft: '-20px' }}
-                >
+                <ul className='govuk-list govuk-list--bullet'>
                   {floodWarningAreas.map((item, key) => (
                     <li key={key}>{item}</li>
                   ))}
@@ -124,10 +120,7 @@ export default function FloodMessageReviewTable() {
             </th>
             <td className='govuk-table__cell govuk-!-width-full'>
               {floodAlertAreas.length > 0 ? (
-                <ul
-                  className='govuk-list govuk-list--bullet'
-                  style={{ marginLeft: '-20px' }}
-                >
+                <ul className='govuk-list govuk-list--bullet'>
                   {floodAlertAreas.map((item, key) => (
                     <li key={key}>{item}</li>
                   ))}

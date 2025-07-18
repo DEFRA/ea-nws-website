@@ -112,8 +112,7 @@ export default function LocationInFloodAreasLayout({
         id: 'other',
         value: {
           s: JSON.stringify({
-            targetAreas: allAreasAffectingLocation,
-            alertTypes: locationAlertTypes
+            targetAreas: allAreasAffectingLocation
           })
         }
       }

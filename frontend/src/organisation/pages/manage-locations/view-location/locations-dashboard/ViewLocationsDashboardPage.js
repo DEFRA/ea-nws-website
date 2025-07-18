@@ -812,6 +812,7 @@ export default function ViewLocationsDashboardPage() {
               onOnlyShowSelected={onOnlyShowSelected}
               linkSource={linkSource}
               setErrorMessage={setErrorMessage}
+              loading={loading}
             />
           </div>
           <div className='govuk-grid-column-full govuk-body'>

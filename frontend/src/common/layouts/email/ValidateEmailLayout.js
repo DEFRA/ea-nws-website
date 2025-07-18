@@ -60,13 +60,17 @@ export default function ValidateEmailLayout({
       )
       if (errorMessage !== null) {
         if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
+          setCodeExpired(true)
+        } else if (
           errorMessage === 'The email address you entered is already being used'
         ) {
           await removeEmailFromProfile()
           setError(errorMessage)
-        } else {
-          setError(errorMessage)
         }
+        setError(errorMessage)
       } else {
         if (changeSignIn) {
           updateProfile(data.profile, authToken, signinType)

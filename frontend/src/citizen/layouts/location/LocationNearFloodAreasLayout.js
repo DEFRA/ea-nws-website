@@ -525,7 +525,7 @@ export default function LocationNearFloodAreasLayout({
                     title={
                       'Read more on the difference between warnings and alerts'
                     }
-                    text={'Shakir to add details here'}
+                    text={<FloodMessageDetails />}
                   />
                 )}
                 <div className='govuk-!-margin-top-7'>

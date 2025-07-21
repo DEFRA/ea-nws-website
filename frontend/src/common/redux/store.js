@@ -5,6 +5,8 @@ import userReducer from './userSlice'
 
 const preloadedState = loadState()
 
+console.log('preloadedState', preloadedState)
+
 const store = configureStore({
   reducer: {
     session: userReducer

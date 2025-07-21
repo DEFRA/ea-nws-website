@@ -2,20 +2,27 @@ const responseCodes = require('../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
 const mockLiveAlerts = require('../mockLiveAlerts')
+const mockPastAlerts = require('../mockPastAlerts')
 
 async function getAlertsList(
   context: Context,
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  // NEED TO ADD OPTIONS
-  //   const {  options } = req.payload as {
-  //     options: { contactId: string }
-  //   }
+  const { options } = req.payload as {
+    options: { contactId: string; states: Array<string> }
+  }
 
-  return {
-    alerts: mockLiveAlerts.liveAlerts.alerts,
-    total: mockLiveAlerts.liveAlerts.total
+  if (options?.states.includes('PAST')) {
+    return {
+      alerts: mockPastAlerts.pastAlerts.alerts,
+      total: mockPastAlerts.pastAlerts.total
+    }
+  } else {
+    return {
+      alerts: mockLiveAlerts.liveAlerts.alerts,
+      total: mockLiveAlerts.liveAlerts.total
+    }
   }
 }
 

@@ -108,6 +108,7 @@ export default function LiveFloodMonitoringPage() {
                     warningDescription='Severe flooding - danger to life'
                     showFloodType={showSevereLocations}
                     updateFloodTypeVisibility={setShowSevereLocations}
+                    urlLink={orgFloodReportsUrls.live}
                   />
                   <br />
                   <FloodTypeFilter
@@ -118,6 +119,7 @@ export default function LiveFloodMonitoringPage() {
                     warningDescription='Flooding expected - act now'
                     showFloodType={showWarningLocations}
                     updateFloodTypeVisibility={setShowWarningLocations}
+                    urlLink={orgFloodReportsUrls.live}
                   />
                   <br />
                   <FloodTypeFilter
@@ -128,6 +130,7 @@ export default function LiveFloodMonitoringPage() {
                     warningDescription='Early alert of possible flooding - be prepared'
                     showFloodType={showAlertLocations}
                     updateFloodTypeVisibility={setShowAlertLocations}
+                    urlLink={orgFloodReportsUrls.live}
                   />
                   <br />
                   <p className='govuk-body govuk-!-font-weight-bold'>
@@ -139,6 +142,7 @@ export default function LiveFloodMonitoringPage() {
                     warningType='Removed'
                     warningText='Warnings removed'
                     warningDescription=''
+                    urlLink={orgFloodReportsUrls.removed}
                   />
                   <Button
                     text='Apply filter'

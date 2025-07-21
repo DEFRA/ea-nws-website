@@ -6,7 +6,10 @@ const {
 const getSecretKeyValue = require('../../services/SecretsManager')
 const { parse, isValid, isAfter, format } = require('date-fns')
 const fetch = require('node-fetch')
-const { getFloodHistory, setFloodHistory } = require('../../services/elasticache')
+const {
+  getFloodHistory,
+  setFloodHistory
+} = require('../../services/elasticache')
 
 const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
   const rows = text.split(/\r?\n|\r|\n/g)
@@ -175,8 +178,7 @@ const mergeHistoricFloodEntries = (historicAlerts) => {
   return result
 }
 
-
-const getAllPastAlerts = async(request) => {
+const getAllPastAlerts = async (request) => {
   const { redis } = request.server.app
   const { options } = request.payload
   let response
@@ -192,7 +194,6 @@ const getAllPastAlerts = async(request) => {
 
     // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
     if (historicFloodDataUrl) {
-
       await fetch(historicFloodDataUrl)
         .then((response) => response.text())
         .then((data) => {
@@ -215,9 +216,7 @@ const getAllPastAlerts = async(request) => {
     response = await apiCall({ options: options }, 'alert/list')
     const geoSafeAlerts = convertGeosafeAlerts(response.data.alerts)
 
-    historicAlerts = geoSafeAlerts.concat(
-      sortedHistoricFileData
-    )
+    historicAlerts = geoSafeAlerts.concat(sortedHistoricFileData)
     response.data.alerts = historicAlerts
 
     await setFloodHistory(redis, historicAlerts)
@@ -230,9 +229,8 @@ const getAllPastAlerts = async(request) => {
     }
   }
 
-  return response        
+  return response
 }
-
 
 module.exports = [
   {
@@ -262,12 +260,13 @@ module.exports = [
               rawDate = 0
             }
             const formattedDate = format(new Date(rawDate * 1000), dateFormat)
+            console.log('formattedDate', formattedDate)
             let parsedDate = null
             const attempt = parse(formattedDate, dateFormat, new Date())
             if (isValid(attempt)) {
               parsedDate = attempt
             }
-            
+
             return parsedDate && isAfter(parsedDate, filterDate)
           })
         }

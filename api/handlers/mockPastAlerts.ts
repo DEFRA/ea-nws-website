@@ -1,12 +1,26 @@
-function getTodayWithRandomTimeUnix() {
-  const now = new Date()
-  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const randomSeconds = Math.floor(Math.random() * 86400) // 24 * 60 * 60
-  const randomTime = new Date(midnight.getTime() + randomSeconds * 1000)
-  return Math.floor(randomTime.getTime() / 1000)
+function getRandomPastUnixOlderThan2Weeks() {
+  const now = Date.now() // current time in ms
+  const twoWeeksInMs = 14 * 24 * 60 * 60 * 1000
+
+  const max = now - twoWeeksInMs // latest allowed date = 2 weeks ago
+  const min = new Date(2000, 0, 1).getTime() // earliest reasonable date (customize if needed)
+
+  const randomPastMs = Math.floor(Math.random() * (max - min) + min)
+
+  return Math.floor(randomPastMs / 1000) // convert to Unix seconds
 }
 
-const liveAlerts = {
+function getRandomRecentDateUnix() {
+  const now = Date.now() // current time in ms
+  const oneDayInMs = 24 * 60 * 60 * 1000
+
+  const randomMsAgo = Math.floor(Math.random() * oneDayInMs)
+  const randomRecentDate = new Date(now - randomMsAgo)
+
+  return Math.floor(randomRecentDate.getTime() / 1000) // Unix timestamp (seconds)
+}
+
+const pastAlerts = {
   total: 6,
   alerts: [
     {
@@ -17,7 +31,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix(), // unix time
+      effectiveDate: getRandomRecentDateUnix(), // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'IMMEDIATE',
@@ -88,7 +102,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Severe flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix(), // unix time
+      effectiveDate: getRandomRecentDateUnix(), // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -158,7 +172,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood alert warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -226,7 +240,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Severe flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -295,7 +309,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood alert',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -363,7 +377,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -431,7 +445,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -499,7 +513,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -567,7 +581,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -635,7 +649,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -703,7 +717,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Severe flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -771,7 +785,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -839,7 +853,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -907,7 +921,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -975,7 +989,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -1043,7 +1057,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood warning',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -1111,7 +1125,7 @@ const liveAlerts = {
       version: 123456,
       name: 'Flood alert',
       description: { en: 'Flood', additionalLabels: [] },
-      effectiveDate: getTodayWithRandomTimeUnix, // unix time
+      effectiveDate: getRandomPastUnixOlderThan2Weeks, // unix time
       expirationDate: 1734004381,
       duration: {},
       urgency: 'SEVERE',
@@ -1177,5 +1191,5 @@ const liveAlerts = {
 }
 
 module.exports = {
-  liveAlerts: liveAlerts
+  pastAlerts: pastAlerts
 }

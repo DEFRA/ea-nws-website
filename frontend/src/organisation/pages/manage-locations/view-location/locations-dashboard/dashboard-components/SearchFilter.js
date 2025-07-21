@@ -38,11 +38,14 @@ export default function SearchFilter({
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
 
+  const EMPTY_LABEL = '(empty)'
+
   const locationTypes = [
     ...new Set(
-      locations
-        .map((location) => location.additionals.other?.location_type)
-        .filter((locationType) => locationType) // filters out undefined entries
+      locations.map((location) => {
+        const temp = location.additionals.other?.location_type
+        return temp?.trim() !== '' ? temp : EMPTY_LABEL
+      })
     )
   ]
 
@@ -52,9 +55,10 @@ export default function SearchFilter({
 
   const businessCriticality = [
     ...new Set(
-      locations
-        .map((location) => location.additionals.other?.business_criticality)
-        .filter((businessCriticality) => businessCriticality) // filters out undefined entries
+      locations.map((location) => {
+        const temp = location.additionals.other?.business_criticality
+        return temp?.trim() !== '' ? temp : EMPTY_LABEL
+      })
     )
   ]
 
@@ -74,9 +78,13 @@ export default function SearchFilter({
     )
   ]
 
-  const keywords = [
-    ...new Set(locations.flatMap((location) => location.additionals.keywords))
-  ]
+  const keywordSet = new Set(
+    locations.flatMap((location) => location.additionals.keywords)
+  )
+  if (locations.some((location) => !location.additionals.keywords?.length)) {
+    keywordSet.add(EMPTY_LABEL) // If no keywords, add '(empty)'
+  }
+  const keywords = [...keywordSet]
 
   const linkedLocations = [...new Set(['No', 'Yes'])]
 
@@ -138,11 +146,13 @@ export default function SearchFilter({
 
     // Apply Location Type filter
     if (selectedLocationTypeFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        selectedLocationTypeFilters.includes(
-          location.additionals.other?.location_type
+      filteredLocations = filteredLocations.filter((location) => {
+        const temp = location.additionals?.other?.location_type || ''
+        const isEmpty = temp.trim() === ''
+        return selectedLocationTypeFilters.some((f) =>
+          f === EMPTY_LABEL ? isEmpty : f === temp
         )
-      )
+      })
     }
 
     // Apply Flood Messages filter
@@ -178,11 +188,13 @@ export default function SearchFilter({
 
     // Apply Business Criticality filter
     if (selectedBusinessCriticalityFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        selectedBusinessCriticalityFilters.includes(
-          location.additionals.other?.business_criticality
+      filteredLocations = filteredLocations.filter((location) => {
+        const temp = location.additionals?.other?.business_criticality || ''
+        const isEmpty = temp.trim() === ''
+        return selectedBusinessCriticalityFilters.some((f) =>
+          f === EMPTY_LABEL ? isEmpty : f === temp
         )
-      )
+      })
     }
 
     // Apply river sea risk filter
@@ -201,11 +213,13 @@ export default function SearchFilter({
 
     // Apply keyword filter
     if (selectedKeywordFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        selectedKeywordFilters.some((keyword) =>
-          location.additionals.keywords.includes(keyword)
+      filteredLocations = filteredLocations.filter((location) => {
+        const temp = location.additionals?.keywords || []
+        const isEmpty = temp.length === 0
+        return selectedKeywordFilters.some((f) =>
+          f === EMPTY_LABEL ? isEmpty : temp.includes(f)
         )
-      )
+      })
     }
 
     // Apply linked locations filter
@@ -317,7 +331,12 @@ export default function SearchFilter({
             className='govuk-checkboxes govuk-checkboxes--small locations-select-filter'
           >
             {filterType
-              .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+              .sort((a, b) => {
+                // Ensure that '(empty)' appears at bottom
+                if (a === EMPTY_LABEL) return 1
+                if (b === EMPTY_LABEL) return -1
+                return a?.toLowerCase().localeCompare(b?.toLowerCase())
+              })
               .map((option) => (
                 <CheckBox
                   key={option}

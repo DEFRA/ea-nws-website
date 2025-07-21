@@ -1,3 +1,4 @@
+const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
 const getSecretKeyValue = require('./SecretsManager')
 const getEAEmail = async () => {
   try {
@@ -19,7 +20,7 @@ const getEAEmail = async () => {
   } catch {
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: GENERIC_ERROR_MSG
     }
   }
 }

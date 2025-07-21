@@ -25,6 +25,7 @@ export default function AdminInvitePage() {
   const dispatch = useDispatch()
   const [orgData, setOrgData] = useState(null)
   const [stage, setStage] = useState('Retrieving locations')
+  const [percent, setPercent] = useState(null)
   const [error, setError] = useState('')
 
   const useQuery = () => {
@@ -53,6 +54,11 @@ export default function AdminInvitePage() {
           if (data?.stage !== stage) {
             setStage(data.stage)
           }
+          if (data?.percent) {
+            setPercent(data.percent)
+          } else {
+            setPercent(null)
+          }
           if (data?.status === 'complete') {
             navigate(orgInviteUrls.admin.joined)
           }
@@ -61,7 +67,7 @@ export default function AdminInvitePage() {
           setError(errorMessage)
         }
         getStatus.isRunning = false
-      }, 2000)
+      }, 1000)
       return () => {
         clearInterval(interval)
       }
@@ -133,6 +139,7 @@ export default function AdminInvitePage() {
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+              percent={percent}
             />
           </div>
         </div>

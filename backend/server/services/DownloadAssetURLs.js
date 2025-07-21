@@ -1,3 +1,4 @@
+const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
 const { logger } = require('../plugins/logging')
 const getSecretKeyValue = require('./SecretsManager')
 
@@ -15,7 +16,7 @@ const getDownloadUrl = async (secretKey) => {
     logger.error(`Error fetching ${secretKey}: ${error}`)
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: GENERIC_ERROR_MSG
     }
   }
 }

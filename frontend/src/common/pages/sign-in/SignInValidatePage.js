@@ -43,6 +43,7 @@ export default function SignInValidatePage() {
   const [cookies, setCookie] = useCookies(['authToken'])
   const [orgData, setOrgData] = useState(null)
   const [stage, setStage] = useState('Retrieving locations')
+  const [percent, setPercent] = useState(null)
   const enterCodeId = 'enter-code'
 
   useEffect(() => {
@@ -65,6 +66,11 @@ export default function SignInValidatePage() {
           if (data?.stage !== stage) {
             setStage(data.stage)
           }
+          if (data?.percent) {
+            setPercent(data.percent)
+          } else {
+            setPercent(null)
+          }
           if (data?.status === 'complete') {
             navigate(orgManageLocationsUrls.monitoring.view)
           }
@@ -73,7 +79,7 @@ export default function SignInValidatePage() {
           setError(errorMessage)
         }
         getStatus.isRunning = false
-      }, 2000)
+      }, 1000)
       return () => {
         clearInterval(interval)
       }
@@ -249,6 +255,7 @@ export default function SignInValidatePage() {
               <div className='popup-dialog-container govuk-!-padding-bottom-6'>
                 <LoadingSpinner
                   loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                  percent={percent}
                 />
               </div>
             </div>

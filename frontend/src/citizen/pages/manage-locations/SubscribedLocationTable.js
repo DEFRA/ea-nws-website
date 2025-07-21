@@ -145,7 +145,7 @@ export default function SubscribedLocationTable({ setError }) {
     }
 
     return (
-      <table className='govuk-table'>
+      <table className='govuk-table responsive-table'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
             <th
@@ -160,7 +160,7 @@ export default function SubscribedLocationTable({ setError }) {
         </thead>
         <tbody className='govuk-table__body'>
           {nonGroupFloodLocation.map((location, index) => (
-            <tr key={index} className='govuk-table__row'>
+            <tr key={index} className='govuk-table__row non-grouped'>
               {addressColumn(location)}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {locations.length === 1 && <td className='govuk-table__cell' />}
@@ -174,7 +174,7 @@ export default function SubscribedLocationTable({ setError }) {
             Object.entries(groupFloodLocation).map(
               ([key, locations], index) => (
                 <>
-                  <tr key={index} className='govuk-table__row'>
+                  <tr key={index} className='govuk-table__row grouped'>
                     <td
                       className='govuk-table__cell govuk-!-width-full govuk-!-padding-top-6'
                       style={{ borderBottom: '2px solid #fff' }}
@@ -190,7 +190,7 @@ export default function SubscribedLocationTable({ setError }) {
 
                   {locations.map((location, index) => (
                     <tr key={index} className='govuk-table__row'>
-                      <td className='govuk-table__cell text-nowrap'>
+                      <td className='govuk-table__cell'>
                         <p className='govuk-!-margin-bottom-0'>
                           {location.address}
                         </p>

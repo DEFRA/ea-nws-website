@@ -57,9 +57,12 @@ export default function CompaniesHouseNumLayout({
           <div className='govuk-grid-column-two-thirds'>
             {(error || numberError) && (
               <ErrorSummary
-              errorList={[
+                errorList={[
                   error && { text: error, componentId: compHouseRadiosId },
-                  numberError && { text: numberError, compHouseNumberId: compHouseNumberId }
+                  numberError && {
+                    text: numberError,
+                    compHouseNumberId: compHouseNumberId
+                  }
                 ].filter(Boolean)}
               />
             )}
@@ -102,7 +105,10 @@ export default function CompaniesHouseNumLayout({
                       key='radio_no'
                       name='comp-house-radios'
                       label='No'
-                      onChange={() => setCompanyNum(false)}
+                      onChange={() => {
+                        setCompanyNumExists(false)
+                        setCompanyNum(false)
+                      }}
                     />
                     <br />
                   </div>

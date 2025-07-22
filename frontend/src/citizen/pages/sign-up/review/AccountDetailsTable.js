@@ -1,4 +1,3 @@
-import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +9,7 @@ export default function AccountDetailsTable({ profile }) {
       </Helmet>
       <div className='govuk-padding-bottom-4'>
         <h2 className='govuk-heading-m'>Your account</h2>
-        <table className='govuk-table'>
+        <table className='govuk-table check-your-answers-table'>
           <tbody className='govuk-table__body'>
             <tr className='govuk-table__row'>
               <th

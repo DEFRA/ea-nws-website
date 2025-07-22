@@ -150,7 +150,8 @@ export default function LiveFloodMonitoringPage() {
                 </>
               ) : (
                 <p>
-                  There are currently no warnings in force across your locations
+                  There are currently no warnings in force across your
+                  locations.
                 </p>
               )
             ) : (

@@ -27,6 +27,17 @@ module.exports = [
           if (response?.data?.contact) {
             await updateContact(redis, sessionData.orgId, response.data.contact)
             return h.response({ status: 200, data: response.data.contact })
+          }
+          // Checking in case the contact is already registered on another citizen / org account
+          else if (
+            response?.data?.code === 107 ||
+            response?.data?.desc.includes('already existing account')
+          ) {
+            return h.response({
+              status: 409,
+              errorMessage:
+                "You cannot enter this email address as it's already in use - try a different email address"
+            })
           } else {
             return createGenericErrorResponse(h)
           }

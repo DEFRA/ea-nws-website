@@ -19,7 +19,7 @@ export default function SectorLayout({
     event.preventDefault()
     if (emergencySector === null) {
       setError(
-        'Select whether your organisation is involved in responding to public emergencies or incidents'
+        'Select whether your organisation is a Category 1 or Category 2 responder'
       )
       return
     }
@@ -38,7 +38,11 @@ export default function SectorLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: emergencySectorId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: emergencySectorId }]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               Is your organisation a Category 1 or Category 2 responder?
             </h1>
@@ -63,21 +67,23 @@ export default function SectorLayout({
                 <div id={emergencySectorId} className='govuk-radios'>
                   <fieldset
                     className='govuk-form-group govuk-fieldset'
-                    aria-describedby={error ? 'emergency-sector-error' : undefined}
+                    aria-describedby={
+                      error ? 'emergency-sector-error' : undefined
+                    }
                   >
-                  <Radio
-                    key='radio_yes'
-                    name='emergencySectorRadio'
-                    label='Yes'
-                    onChange={() => setEmergencySector(true)}
-                  />
-                  <Radio
-                    key='radio_no'
-                    name='emergencySectorRadio'
-                    label='No'
-                    onChange={() => setEmergencySector(false)}
-                  />
-                  <br />
+                    <Radio
+                      key='radio_yes'
+                      name='emergencySectorRadio'
+                      label='Yes'
+                      onChange={() => setEmergencySector(true)}
+                    />
+                    <Radio
+                      key='radio_no'
+                      name='emergencySectorRadio'
+                      label='No'
+                      onChange={() => setEmergencySector(false)}
+                    />
+                    <br />
                   </fieldset>
                 </div>
               </div>

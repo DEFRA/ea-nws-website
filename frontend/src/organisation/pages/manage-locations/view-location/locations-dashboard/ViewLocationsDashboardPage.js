@@ -124,9 +124,14 @@ export default function ViewLocationsDashboardPage() {
       )
 
       const locationsUpdate = []
+      const seenAddresses = new Set()
+
       if (data) {
         data.forEach((location) => {
-          locationsUpdate.push(geoSafeToWebLocation(location))
+          if (!seenAddresses.has(location.id)) {
+            seenAddresses.add(location.id)
+            locationsUpdate.push(geoSafeToWebLocation(location))
+          }
         })
       }
 
@@ -807,6 +812,7 @@ export default function ViewLocationsDashboardPage() {
               onOnlyShowSelected={onOnlyShowSelected}
               linkSource={linkSource}
               setErrorMessage={setErrorMessage}
+              loading={loading}
             />
           </div>
           <div className='govuk-grid-column-full govuk-body'>

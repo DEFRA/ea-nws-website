@@ -21,7 +21,7 @@ export default function LocationReviewTable() {
     <div className='govuk-!-padding-bottom-4'>
       <h2 className='govuk-heading-m'>Location you selected</h2>
       {location && (
-        <table className='govuk-table'>
+        <table className='govuk-table check-your-answers-table'>
           <tbody className='govuk-table__body'>
             <tr className='govuk-table__row'>
               <th

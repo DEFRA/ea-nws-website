@@ -23,13 +23,13 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getBoundaryTypes,
-  getFloodAreasFromShape,
-  getOperationalBoundaryByTaCode
+  getFloodAreasFromShape
 } from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
+import { formatSentenceCase } from '../../../../../common/utils/FormatSentenceCase'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -131,11 +131,6 @@ export default function SelectPredefinedBoundaryPage() {
       const newWebLocation = geoSafeToWebLocation(
         JSON.parse(JSON.stringify(locationToAdd))
       )
-
-      const w = await getOperationalBoundaryByTaCode(
-        selectedBoundary.properties.TA_CODE
-      )
-
       // get the target areas
       const TAs = await getFloodAreasFromShape(selectedBoundary?.geometry)
       newWebLocation.additionals.other.targetAreas = []
@@ -258,8 +253,11 @@ export default function SelectPredefinedBoundaryPage() {
                     onSelect={onBoundaryTypeSelected}
                     error={boundaryTypeError}
                     initialSelectOptionText={
-                      selectedBoundaryType || 'Select type'
+                      selectedBoundaryType
+                        ? formatSentenceCase(selectedBoundaryType)
+                        : 'Select type'
                     }
+                    snakeCaseText={true}
                   />
                   <Select
                     id={boundaryId}

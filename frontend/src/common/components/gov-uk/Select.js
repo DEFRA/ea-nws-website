@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatSentenceCase } from '../../utils/FormatSentenceCase'
 
 export default function Select({
   id,
@@ -10,7 +11,8 @@ export default function Select({
   error = '',
   initialSelectOptionText,
   disabledOptions = [],
-  value
+  value,
+  snakeCaseText = false
 }) {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value
@@ -49,17 +51,30 @@ export default function Select({
         <option value='' disabled>
           {initialSelectOptionText}
         </option>
-        {options.map((option, index) =>
-          disabledOptions.includes(option) ? (
-            <option key={index} value={option} disabled>
-              {option}
-            </option>
-          ) : (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          )
-        )}
+        {!snakeCaseText &&
+          options.map((option, index) =>
+            disabledOptions.includes(option) ? (
+              <option key={index} value={option} disabled>
+                {option}
+              </option>
+            ) : (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            )
+          )}
+        {snakeCaseText &&
+          options.map((option, index) =>
+            disabledOptions.includes(option) ? (
+              <option key={index} value={option} disabled>
+                {formatSentenceCase(option)}
+              </option>
+            ) : (
+              <option key={index} value={option}>
+                {formatSentenceCase(option)}
+              </option>
+            )
+          )}
       </select>
     </div>
   )

@@ -28,7 +28,7 @@ export default function TermsAndConditionsPage() {
     event.preventDefault()
     if (!isChecked) {
       setError(
-        'You must tick to confirm that you’ve read and are authorised to agree to these terms and conditions on behalf of your organisation'
+        "Tick to warrant that you're authorised to agree to the terms and conditions"
       )
     } else {
       // Save lastAccessedUrl so users are taken to next page if logging in after abandoning at this point
@@ -55,13 +55,20 @@ export default function TermsAndConditionsPage() {
   return (
     <>
       <Helmet>
-        <title>Check the terms and conditions - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Check the terms and conditions - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: termsAndConditionsId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: termsAndConditionsId }]}
+              />
+            )}
 
             <h1 className='govuk-heading-l' id='main-content'>
               Check the terms and conditions

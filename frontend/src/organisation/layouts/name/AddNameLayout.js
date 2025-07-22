@@ -69,7 +69,11 @@ export default function AddNameLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: orgNameId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: orgNameId }]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               Your organisation's name
             </h1>
@@ -78,10 +82,12 @@ export default function AddNameLayout({
                 id={orgNameId}
                 inputType='text'
                 value={name}
+                name="Your organisation's name"
                 onChange={(val) => setName(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={name}
+                hideLabel={true}
               />
               <Button
                 text='Continue'

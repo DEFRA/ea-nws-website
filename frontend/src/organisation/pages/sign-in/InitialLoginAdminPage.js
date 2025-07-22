@@ -93,13 +93,11 @@ export default function InitialLoginAdminPage() {
         { id: 'firstLogin', value: { s: 'false' } }
       ])
       const dataToSend = { profile: updatedProfile, authToken: authToken }
-      console.log('dataToSend', dataToSend)
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/profile/update',
         navigate
       )
-      console.log('errorMessage', errorMessage)
 
       if (!errorMessage) {
         if (nextPage === orgManageContactsUrls.view.viewContact) {

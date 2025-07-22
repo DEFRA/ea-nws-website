@@ -275,7 +275,7 @@ export default function SelectPredefinedBoundaryPage() {
                     name='Boundary'
                     label='Boundary'
                     options={boundaries
-                      .slice() // crate a shallow copy to avoid mutating orignal values
+                      .slice() // create a shallow copy to avoid mutating orignal values
                       .sort((a, b) =>
                         a.properties.TA_Name.localeCompare(b.properties.TA_Name)
                       )

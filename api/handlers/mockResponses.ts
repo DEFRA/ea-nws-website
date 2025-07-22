@@ -241,6 +241,8 @@ const citizenContact2 = {
   homePhones: ['01475721535'],
   language: 'EN',
   additionals: [
+    //uncomment below to test intial admin page 
+    { id: 'firstLogin', value: { s: 'true' } },
     { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
     { id: 'signupComplete', value: { s: 'true' } }
   ],

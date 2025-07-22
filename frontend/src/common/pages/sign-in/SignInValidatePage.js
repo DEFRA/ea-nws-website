@@ -65,7 +65,18 @@ export default function SignInValidatePage() {
             setStage(data.stage)
           }
           if (data?.status === 'complete') {
-            navigate(orgManageLocationsUrls.monitoring.view)
+            console.log('profile', orgData.profile)
+            const isAdminUsersFirstLogin = getAdditionals(
+              orgData.profile,
+              'firstLogin'
+            )
+
+            console.log('isAdminUsersFirstLogin', isAdminUsersFirstLogin)
+            if (isAdminUsersFirstLogin === 'true') {
+              navigate('/sign-in/organisation/admin-controls')
+            } else {
+              navigate(orgManageLocationsUrls.monitoring.view)
+            }
           }
         }
         if (errorMessage) {

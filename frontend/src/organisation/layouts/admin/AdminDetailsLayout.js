@@ -12,6 +12,7 @@ import {
   setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
@@ -87,12 +88,18 @@ export default function AdminDetailsLayout({
         setErrorEmail(errorMessage)
       }
     } else {
-      const updatedProfile = {
+      let updatedProfile = {
         ...profile,
         emails: [email],
         firstname,
         lastname
       }
+
+      // required to send admin users to initial login screen at sign in
+      updatedProfile = updateAdditionals(profile, [
+        { id: 'firstLogin', value: { s: 'true' } }
+      ])
+
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))
@@ -108,13 +115,16 @@ export default function AdminDetailsLayout({
   return (
     <>
       <Helmet>
-        {isAdmin 
-          ? (
-            <title>Enter your details - Get flood warnings (professional) - GOV.UK</title>
-            )
-          : (
-            <title>Enter details for the main administrator - Get flood warnings (professional) - GOV.UK</title>
-            )}
+        {isAdmin ? (
+          <title>
+            Enter your details - Get flood warnings (professional) - GOV.UK
+          </title>
+        ) : (
+          <title>
+            Enter details for the main administrator - Get flood warnings
+            (professional) - GOV.UK
+          </title>
+        )}
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -123,8 +133,14 @@ export default function AdminDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary
                 errorList={[
-                  errorFullName && { text: errorFullName, componentId: fullNameId },
-                  errorEmail && { text: errorEmail, componentId: emailAddressId }
+                  errorFullName && {
+                    text: errorFullName,
+                    componentId: fullNameId
+                  },
+                  errorEmail && {
+                    text: errorEmail,
+                    componentId: emailAddressId
+                  }
                 ].filter(Boolean)}
               />
             )}

@@ -1,6 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import UserContactType from '../../../../common/enums/UserContactType'
+import { setCurrentContact } from '../../../../common/redux/userSlice'
 
 export default function ContactReviewRow({
   contact,
@@ -10,13 +11,27 @@ export default function ContactReviewRow({
   arrayLength,
   index
 }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const getUrlFromContact = (contactType) => {
+    switch (contactType) {
+      case UserContactType.Telephone:
+        return 'landline'
+      case UserContactType.Mobile:
+        return 'mobile'
+      case UserContactType.Email:
+        return 'email'
+
+      default:
+        break
+    }
+  }
+
   const rowDetails = () => {
     const contactLabel = `${arrayLength > 1 ? `${index + 1} - ` : ''}${contact}`
     const confirmedLink =
-      isConfirmed &&
-      `/signup/review/validate-${
-        contactType === UserContactType.Telephone ? 'landline' : contactType
-      }`
+      !isConfirmed &&
+      `/signup/review/validate-${getUrlFromContact(contactType)}`
 
     const contactTypeMap = {
       [UserContactType.Telephone]: {
@@ -49,6 +64,12 @@ export default function ContactReviewRow({
   }
 
   const details = rowDetails()
+
+  const navigateToConfirm = (e) => {
+    e.preventDefault()
+    dispatch(setCurrentContact(contact))
+    navigate(details.confirmLink)
+  }
 
   return (
     <tr className='govuk-table__row'>
@@ -97,6 +118,7 @@ export default function ContactReviewRow({
               id={`confirm-${contactType}-${emailIndex ?? contact}`}
               tabIndex='0'
               aria-label={rowDetails().confirmLinkLabel}
+              onClick={navigateToConfirm}
             >
               Confirm
             </Link>

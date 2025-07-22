@@ -139,7 +139,7 @@ export default function DeclarationOfAgreementPage() {
               <p>
                 We may give your information to our agents or representatives so
                 they can do any of these things for us. And we may share your
-                information with other organisations if the laws say we must.
+                information with other organisations if the law says we must.
               </p>
 
               <p>

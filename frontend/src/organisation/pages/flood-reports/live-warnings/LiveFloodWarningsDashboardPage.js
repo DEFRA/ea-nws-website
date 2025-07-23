@@ -227,9 +227,8 @@ export default function LiveFloodWarningsDashboardPage() {
     if (locationsAffectedPerPage === null) {
       window.print()
       setLocationsAffectedPerPage(defaultLocationsPerPage)
-      setFilteredLocationsAffected(locationsAffected)
     }
-  }, [locationsAffectedPerPage])
+  }, [displayedLocationsAffected])
 
   const table = (
     <>

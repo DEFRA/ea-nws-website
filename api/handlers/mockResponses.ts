@@ -52,7 +52,6 @@ const citizenPOIs = [
         id: 'other',
         value: {
           s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1'],
             targetAreas: [
               {
                 TA_CODE: '063FWT23WestminA',
@@ -95,14 +94,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: 'Marlow, SL7, Buckinghamshire' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -122,14 +113,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: 'Marlow, SL7, Buckinghamshire' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -149,14 +132,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -176,14 +151,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_3']
-          })
-        }
       }
     ]
   }

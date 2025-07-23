@@ -61,6 +61,8 @@ export default function LiveMap({
   const [alertPoints, setAlertPoints] = useState([])
   const [alertFloodAreas, setAlertFloodAreas] = useState([])
 
+  const [visibleFeatures, setVisibleFeatures] = useState([])
+
   // flood information popup
   const [showFloodInformationData, setShowFloodInformationData] =
     useState(false)
@@ -177,6 +179,10 @@ export default function LiveMap({
     } else {
       setAccountHasLocations(false)
     }
+    setVisibleFeatures([...severeFloodAreas,
+      ...warningFloodAreas,
+      ...alertFloodAreas,
+      ...shapes])
   }
 
   const processLocation = async(
@@ -392,8 +398,7 @@ export default function LiveMap({
   }
 
   // map key
-  const [visibleFeatures, setVisibleFeatures] = useState([])
-
+  
   const FeatureTracker = () => {
     const features = [
       ...severeFloodAreas,
@@ -402,11 +407,6 @@ export default function LiveMap({
       ...shapes
     ]
     const map = useMap()
-
-    useEffect(() => {
-      // Run on initial load when the map is ready
-      checkVisibleFeatures()
-    }, [])
 
     useMapEvents({
       moveend: () => checkVisibleFeatures(),

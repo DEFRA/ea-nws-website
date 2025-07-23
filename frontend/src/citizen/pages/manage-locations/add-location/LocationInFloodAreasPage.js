@@ -4,7 +4,7 @@ import LocationInFloodAreasLayout from '../../../layouts/location/LocationInFloo
 export default function LocationInFloodAreasPage() {
   const navigate = useNavigate()
 
-  const continueToNextPage = (locationName) => {
+  const continueToNextPage = ({ locationName }) => {
     navigate('/home', {
       state: {
         locationName

@@ -76,25 +76,14 @@ export default function LocationInFloodAreasLayout({
 
       // if user is in sign up flow, then profile returned will be undefined
       if (updatedProfile) {
-        const locationId = await registerLocationToPartner(updatedProfile)
+        await registerLocationToPartner(updatedProfile)
         dispatch(setProfile(updatedProfile))
-
-        const updatedLocationRegistrations = [
-          ...locationRegistrations,
-          {
-            locationId,
-            params: {
-              ...locationRegistrations.params,
-              alertTypes: locationAlertTypes
-            }
-          }
-        ]
-        dispatch(setLocationRegistrations(updatedLocationRegistrations))
       }
-      continueToNextPage(selectedLocation.address)
-    } else {
-      continueToNextPage(updatedProfile)
     }
+    continueToNextPage({
+      locationName: selectedLocation.address,
+      profile: updatedProfile
+    })
   }
 
   const addLocationWithinFloodArea = async () => {
@@ -142,7 +131,17 @@ export default function LocationInFloodAreasLayout({
       navigate
     )
 
-    return location.id
+    const updatedLocationRegistrations = [
+      ...(locationRegistrations || []),
+      {
+        locationId: location.id,
+        params: {
+          ...data.params,
+          alertTypes: locationAlertTypes
+        }
+      }
+    ]
+    dispatch(setLocationRegistrations(updatedLocationRegistrations))
   }
 
   const handleUserNavigatingBack = async () => {

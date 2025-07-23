@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 import { orgSignUpUrls } from '../../../organisation/routes/sign-up/SignUpRoutes'
 import '../../css/custom.css'
 
@@ -19,7 +20,10 @@ export default function SubNavigation({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+            <a
+              href={orgManageLocationsUrls.monitoring.view}
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
               Get flood warnings
             </a>
             <br />

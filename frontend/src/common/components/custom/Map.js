@@ -325,8 +325,12 @@ export default function Map({
         >
           {apiKey && tileLayerWithHeader}
           {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
-          {interactive && !isMobile && <ZoomControl position='bottomright' />}
-          {resetMapButton && !isMobile && <ResetMapButton />}
+          {!isMobile && (interactive || resetMapButton) && (
+            <div role='group' aria-label='Interactive Map Controls'>
+              {interactive && <ZoomControl position='bottomright' />}
+              {resetMapButton && <ResetMapButton />}
+            </div>
+          )}
           {fullScreen && <FullScreenMapButton />}
           {exitMap && <ExitMapButton />}
           {showMarker && (

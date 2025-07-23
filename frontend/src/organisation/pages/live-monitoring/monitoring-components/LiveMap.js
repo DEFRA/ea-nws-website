@@ -179,11 +179,7 @@ export default function LiveMap({
     }
   }
 
-  const processLocation = async(
-    location,
-    liveAlert
-  ) => {
-
+  const processLocation = async (location, liveAlert) => {
     const TA_CODE = liveAlert.TA_CODE
 
     const { coordinates, geometry, additionals } = location
@@ -561,7 +557,11 @@ export default function LiveMap({
             )}
             {osmTileLayer}
             {apiKey && tileLayerWithHeader}
-            {!isDisabled && <ZoomControl position='bottomright' />}
+            {!isDisabled && (
+              <div role='group' aria-label='Interactive Map Controls'>
+                <ZoomControl position='bottomright' />
+              </div>
+            )}
             <ZoomTracker />
             {/* locations affected by live flood alert areas */}
             {showAlertLocations && (

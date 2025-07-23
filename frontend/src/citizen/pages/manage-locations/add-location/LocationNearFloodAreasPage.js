@@ -4,7 +4,7 @@ import LocationNearFloodAreasLayout from '../../../layouts/location/LocationNear
 export default function LocationNearFloodWarningsPage() {
   const navigate = useNavigate()
 
-  const continueToNextPage = (locationName) => {
+  const continueToNextPage = ({ locationName }) => {
     navigate('/home', {
       state: {
         locationName

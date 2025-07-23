@@ -157,8 +157,10 @@ export default function LocationNearFloodAreasLayout({
         })
         dispatch(setFloodAreasInfo(floodAreasInfo))
       }
-
-      continueToNextPage(updatedProfile)
+      continueToNextPage({
+        locationName: selectedLocation.address,
+        profile: updatedProfile
+      })
     } else {
       setError('Select at least one area')
     }
@@ -225,8 +227,9 @@ export default function LocationNearFloodAreasLayout({
   }
 
   const registerLocationsToPartner = async (profile) => {
-    let updatedLocationRegistrations = [...locationRegistrations] || null
-    floodAreas.forEach(async (area) => {
+    let updatedLocationRegistrations = [...(locationRegistrations || [])]
+
+    for (const area of floodAreas) {
       if (area.addLocation) {
         const location = findPOIByAddress(profile, area?.properties.TA_Name)
         const locationAlertTypes = getAreasAlertMessageTypes(
@@ -247,17 +250,17 @@ export default function LocationNearFloodAreasLayout({
         )
 
         updatedLocationRegistrations = [
-          ...locationRegistrations,
+          ...updatedLocationRegistrations,
           {
             locationId: location.id,
             params: {
-              ...locationRegistrations.params,
+              ...data.params,
               alertTypes: locationAlertTypes
             }
           }
         ]
       }
-    })
+    }
 
     dispatch(setLocationRegistrations(updatedLocationRegistrations))
   }

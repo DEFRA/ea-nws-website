@@ -6,9 +6,7 @@ import {
   Marker,
   Popup,
   TileLayer,
-  ZoomControl,
-  useMap,
-  useMapEvents
+  ZoomControl, useMapEvents
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
 import * as turf from '@turf/turf'
@@ -60,6 +58,8 @@ export default function LiveMap({
   // Alert locations
   const [alertPoints, setAlertPoints] = useState([])
   const [alertFloodAreas, setAlertFloodAreas] = useState([])
+  // All flood areas
+  const [visibleFeatures, setVisibleFeatures] = useState([])
 
   // flood information popup
   const [showFloodInformationData, setShowFloodInformationData] =
@@ -97,6 +97,7 @@ export default function LiveMap({
     setAlertFloodAreas([])
     setShapes([])
     setLocationsAffected([])
+    setVisibleFeatures([])
 
     // get orgs locations
     const { data: locationsData, errorMessage } = await backendCall(
@@ -177,6 +178,14 @@ export default function LiveMap({
     } else {
       setAccountHasLocations(false)
     }
+    const features = [
+      ...severeFloodAreas,
+      ...warningFloodAreas,
+      ...alertFloodAreas,
+      ...shapes
+    ]
+    setVisibleFeatures(features)
+
   }
 
   const processLocation = async(
@@ -391,61 +400,6 @@ export default function LiveMap({
       .map((point) => point.properties)
   }
 
-  // map key
-  const [visibleFeatures, setVisibleFeatures] = useState([])
-
-  const FeatureTracker = () => {
-    const features = [
-      ...severeFloodAreas,
-      ...warningFloodAreas,
-      ...alertFloodAreas,
-      ...shapes
-    ]
-    const map = useMap()
-
-    useEffect(() => {
-      // Run on initial load when the map is ready
-      checkVisibleFeatures()
-    }, [])
-
-    useMapEvents({
-      moveend: () => checkVisibleFeatures(),
-      zoomend: () => checkVisibleFeatures()
-    })
-
-    const checkVisibleFeatures = () => {
-      const bounds = map.getBounds()
-
-      // convert map bounds to GeoJSON polygon for intersection checking
-      const viewportGeoJSON = {
-        type: 'Feature',
-        geometry: {
-          type: 'Polygon',
-          coordinates: [
-            [
-              [bounds.getWest(), bounds.getSouth()],
-              [bounds.getEast(), bounds.getSouth()],
-              [bounds.getEast(), bounds.getNorth()],
-              [bounds.getWest(), bounds.getNorth()],
-              [bounds.getWest(), bounds.getSouth()]
-            ]
-          ]
-        }
-      }
-
-      // filter features that intersect with current bounds
-      const visibleFeatures = features.filter((feature) => {
-        // handle all other geometry types
-        return turf.booleanIntersects(feature, viewportGeoJSON)
-      })
-
-      // Only update state if the result is different
-      setVisibleFeatures(visibleFeatures)
-    }
-
-    return null
-  }
-
   const keyTypes = {
     noKey: 'noKey',
     boundaryOrShape: 'boundaryOrShape',
@@ -548,7 +502,6 @@ export default function LiveMap({
               filter: isDisabled ? 'grayscale(100%)' : 'none'
             }}
           >
-            <FeatureTracker />
             {isDisabled && (
               <div className='live-map-disabled'>
                 <Link

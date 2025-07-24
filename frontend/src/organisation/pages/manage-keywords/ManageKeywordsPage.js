@@ -147,9 +147,6 @@ export default function ManageKeywordsPage() {
 
   const handleSearch = () => {
     if (searchInput) {
-      console.log('searchInput', searchInput)
-      console.log('cacheKeywords', cacheKeywords)
-      console.log('keywords', keywords)
       const updatedFilter = keywords.filter((keyword) =>
         keyword.name.toLowerCase().includes(searchInput.toLowerCase())
       )

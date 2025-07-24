@@ -15,13 +15,27 @@ export default function SubNavigation({ pages, currentPage, type }) {
     setMenuOpen(!menuOpen)
   }
 
+  const isSignedInOrOnSignUpPath = (journey) => {
+    const signUpUrl = journey === 'org' ? orgSignUpUrls.signUp : '/signup'
+
+    return (
+      authToken !== null &&
+      !location.pathname.includes(signUpUrl) &&
+      !location.pathname.includes('declaration')
+    )
+  }
+
   if (type === 'org') {
     return (
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
             <a
-              href={orgManageLocationsUrls.monitoring.view}
+              href={
+                isSignedInOrOnSignUpPath('org')
+                  ? '/'
+                  : orgManageLocationsUrls.monitoring.view
+              }
               style={{ textDecoration: 'none', color: 'black' }}
             >
               Get flood warnings
@@ -31,21 +45,17 @@ export default function SubNavigation({ pages, currentPage, type }) {
               Professional
             </span>
           </li>
-          {authToken !== null &&
-            !location.pathname.includes(orgSignUpUrls.signUp) &&
-            !location.pathname.includes('declaration') && (
-              <li className='sub-navigation__item'>
-                <button
-                  onClick={() => toggleMenu()}
-                  className='sub-navigation__menu'
-                >
-                  Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-                </button>
-              </li>
-            )}
-          {authToken !== null &&
-            !location.pathname.includes(orgSignUpUrls.signUp) &&
-            !location.pathname.includes('declaration') &&
+          {isSignedInOrOnSignUpPath('org') && (
+            <li className='sub-navigation__item'>
+              <button
+                onClick={() => toggleMenu()}
+                className='sub-navigation__menu'
+              >
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+            </li>
+          )}
+          {isSignedInOrOnSignUpPath('org') &&
             pages.map((page, index) => (
               <li
                 key={index}
@@ -87,25 +97,24 @@ export default function SubNavigation({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+            <a
+              href={isSignedInOrOnSignUpPath('citizen') ? '/' : '/home'}
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
               Get flood warnings
             </a>
           </li>
-          {authToken !== null &&
-            !location.pathname.includes('signup') &&
-            !location.pathname.includes('declaration') && (
-              <li className='sub-navigation__item'>
-                <button
-                  onClick={() => toggleMenu()}
-                  className='sub-navigation__menu'
-                >
-                  Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-                </button>
-              </li>
-            )}
-          {authToken !== null &&
-            !location.pathname.includes('signup') &&
-            !location.pathname.includes('declaration') &&
+          {isSignedInOrOnSignUpPath('citizen') && (
+            <li className='sub-navigation__item'>
+              <button
+                onClick={() => toggleMenu()}
+                className='sub-navigation__menu'
+              >
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+            </li>
+          )}
+          {isSignedInOrOnSignUpPath('citizen') &&
             pages.map((page, index) => (
               <li
                 key={index}

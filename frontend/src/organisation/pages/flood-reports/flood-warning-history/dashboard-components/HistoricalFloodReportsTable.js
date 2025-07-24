@@ -180,10 +180,9 @@ export default function HistoricalFloodReportsTable({
         />
       )}
       <p className='govuk-!-margin-bottom-3 warnings-reports-paragraph'>
-        {filteredLocationsAffected.length !== locationsAffected.length &&
-          'Showing ' + filteredLocationsAffected.length + ' of '}
-        {locationsAffected.length}{' '}
-        {locationsAffected.length === 1 ? 'location' : 'locations'}
+        {'Showing '}{filteredLocationsAffected.length !== locationsAffected.length &&
+          filteredLocationsAffected.length + ' of '}
+        {locationsAffected.length}
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet reports-table-data-position'>
         <thead className='govuk-table__head'>

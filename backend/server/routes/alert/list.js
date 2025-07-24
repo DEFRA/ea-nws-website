@@ -125,6 +125,7 @@ module.exports = [
           // historic alerts will be matched by TA code, if the category increases then we go with the highest category achieved
           // live alerts will be matched by starting with an issue then looking through all the updates and then sticking with the last updated categoryz
           response = await apiCall({ options: options }, 'alert/list')
+          console.log('response', response.data)
           const { liveAlerts, historicAlerts } = processGeosafeAlerts(
             response.data.alerts
           )

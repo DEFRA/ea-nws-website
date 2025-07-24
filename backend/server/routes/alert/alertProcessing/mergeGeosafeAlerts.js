@@ -42,26 +42,20 @@ const createAlertObject = (startAlert, endAlert) => {
 const processGeosafeAlerts = (alerts) => {
   const historicAlerts = []
   const liveAlerts = []
-  const messages = alerts.alerts
-
-  let firstPointer = messages.length - 1
-
-  while (firstPointer >= 0) {
-    const currentAlert = messages[firstPointer]
+  for (let i = alerts.length - 1; i >= 0; i--) {
+    const currentAlert = alerts[i]
 
     if (currentAlert.name.toLowerCase().includes('issue')) {
       const currentTACode = getTACode(currentAlert)
       if (!currentTACode) {
-        firstPointer--
         continue
       }
 
-      let secondPointer = firstPointer - 1
       let alertEnded = false
       let lastValidAlert = currentAlert
 
-      while (secondPointer >= 0) {
-        const nextAlert = messages[secondPointer]
+      for (let j = i - 1; j >= 0; j--) {
+        const nextAlert = alerts[j]
         const nextTACode = getTACode(nextAlert)
 
         if (nextTACode === currentTACode) {
@@ -72,7 +66,6 @@ const processGeosafeAlerts = (alerts) => {
                 nextAlert
               )
               historicAlerts.push(historicalAlert)
-
               lastValidAlert = nextAlert
             }
             // if type is same, continue without creating new alert object
@@ -83,8 +76,6 @@ const processGeosafeAlerts = (alerts) => {
             break
           }
         }
-
-        secondPointer--
       }
 
       // If no 'remove' message found, add to live alerts
@@ -104,8 +95,6 @@ const processGeosafeAlerts = (alerts) => {
         liveAlerts.push(liveAlert)
       }
     }
-
-    firstPointer--
   }
 
   return {

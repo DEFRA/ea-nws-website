@@ -43,8 +43,10 @@ const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
 
 const allowedMessageTypes = [
   'Severe Flood Warning',
+  'Systems Update Severe Flood Warning',
   'Remove Severe Flood Warning',
   'Flood Warning',
+  'Systems Update Flood Warning',
   'Remove Flood Warning',
   'Flood Alert',
   'Remove Flood Alert'
@@ -52,51 +54,54 @@ const allowedMessageTypes = [
 
 const getAllPastAlerts = async (request) => {
   const { redis } = request.server.app
-  const { options } = request.payload
   let response
   // check elasticache for the flood history first
-  let historicAlerts = await getFloodHistory(redis)
-  if (historicAlerts === null) {
-    let floodHistoryFileData
-    // we need to load the historical data from file now
-    const historicFloodDataUrl = await getSecretKeyValue(
-      'nws/website',
-      'organisationFloodHistoryUrl'
-    )
+  // let historicAlerts = await getFloodHistory(redis)
+  // console.log('elasticahce historicAlerts', historicAlerts.length)
+  // if (historicAlerts === null) {
+  let floodHistoryFileData
+  // we need to load the historical data from file now
+  const historicFloodDataUrl = await getSecretKeyValue(
+    'nws/website',
+    'organisationFloodHistoryUrl'
+  )
 
-    // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
-    if (historicFloodDataUrl) {
-      await fetch(historicFloodDataUrl)
-        .then((response) => response.text())
-        .then((data) => {
-          floodHistoryFileData = csvToJson(data)
-        })
-        .catch((e) =>
-          console.error('Could not fetch Historic Flood Warning file', e)
-        )
-    }
-
-    // filter out any updates - we only want to know when a flood alert was added and removed
-    floodHistoryFileData = floodHistoryFileData.filter((item) =>
-      allowedMessageTypes.includes(item['Message Type'])
-    )
-
-    const sortedHistoricFileData =
-      mergeHistoricFloodEntries(floodHistoryFileData)
-
-    // this needs updated to concat the geosafe alerts with historic ones
-
-    response.data.alerts = sortedHistoricFileData
-
-    await setFloodHistory(redis, historicAlerts)
-  } else {
-    response = {
-      status: 200,
-      data: {
-        alerts: historicAlerts
-      }
-    }
+  // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
+  if (historicFloodDataUrl) {
+    await fetch(historicFloodDataUrl)
+      .then((response) => response.text())
+      .then((data) => {
+        floodHistoryFileData = csvToJson(data)
+      })
+      .catch((e) =>
+        console.error('Could not fetch Historic Flood Warning file', e)
+      )
   }
+
+  // filter out any updates - we only want to know when a flood alert was added and removed
+  floodHistoryFileData = floodHistoryFileData.filter((item) =>
+    allowedMessageTypes.includes(item['Message Type'])
+  )
+
+  console.log('about to process')
+
+  const { historicAlerts } = mergeHistoricFloodEntries(floodHistoryFileData)
+
+  console.log('sortedHistoricFileData', historicAlerts.length)
+
+  // this needs updated to concat the geosafe alerts with historic ones
+
+  response.data.alerts = sortedHistoricFileData
+
+  await setFloodHistory(redis, historicAlerts)
+  // } else {
+  //   response = {
+  //     status: 200,
+  //     data: {
+  //       alerts: historicAlerts
+  //     }
+  //   }
+  // }
 
   return response
 }
@@ -115,17 +120,12 @@ module.exports = [
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         let response
 
-        console.log('hit')
+        console.log('getting historic?', historic)
+
         if (historic) {
           response = await getAllPastAlerts(request)
         } else {
-          // i think we essentially need to call CURRENT and PAST for 'options.states' since we need to join the records together
-          // we should have a geosafe merging process which returns live alerts and then finsihed alerts
-          // we can collect historic and live alerts by working up through the list returned
-          // historic alerts will be matched by TA code, if the category increases then we go with the highest category achieved
-          // live alerts will be matched by starting with an issue then looking through all the updates and then sticking with the last updated categoryz
           response = await apiCall({ options: options }, 'alert/list')
-          console.log('response', response.data)
           const { liveAlerts, historicAlerts } = processGeosafeAlerts(
             response.data.alerts
           )

@@ -263,9 +263,14 @@ export default function SelectPredefinedBoundaryPage() {
                     id={boundaryId}
                     name='Boundary'
                     label='Boundary'
-                    options={boundaries.map((boundary) => {
-                      return boundary.properties.TA_Name
-                    })}
+                    options={boundaries
+                      .slice() // create a shallow copy to avoid mutating orignal values
+                      .sort((a, b) =>
+                        a.properties.TA_Name.localeCompare(b.properties.TA_Name)
+                      )
+                      .map((boundary) => {
+                        return boundary.properties.TA_Name
+                      })}
                     onSelect={onBoundarySelected}
                     error={boundaryError}
                     initialSelectOptionText={

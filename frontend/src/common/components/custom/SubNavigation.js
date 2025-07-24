@@ -14,6 +14,12 @@ export default function SubNavigation({ pages, currentPage, type }) {
     setMenuOpen(!menuOpen)
   }
 
+  const validation =
+    authToken !== null &&
+    !location.pathname.includes(orgSignUpUrls.signUp) &&
+    !location.pathname.includes('declaration') &&
+    !location.pathname.includes('organisation/admin-controls')
+
   if (type === 'org') {
     return (
       <nav aria-label='Sub navigation'>
@@ -27,21 +33,17 @@ export default function SubNavigation({ pages, currentPage, type }) {
               Professional
             </span>
           </li>
-          {authToken !== null &&
-            !location.pathname.includes(orgSignUpUrls.signUp) &&
-            !location.pathname.includes('declaration') && (
-              <li className='sub-navigation__item'>
-                <button
-                  onClick={() => toggleMenu()}
-                  className='sub-navigation__menu'
-                >
-                  Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-                </button>
-              </li>
-            )}
-          {authToken !== null &&
-            !location.pathname.includes(orgSignUpUrls.signUp) &&
-            !location.pathname.includes('declaration') &&
+          {validation && (
+            <li className='sub-navigation__item'>
+              <button
+                onClick={() => toggleMenu()}
+                className='sub-navigation__menu'
+              >
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+            </li>
+          )}
+          {validation &&
             pages.map((page, index) => (
               <li
                 key={index}

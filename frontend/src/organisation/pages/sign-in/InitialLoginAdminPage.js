@@ -1,24 +1,28 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import Accordion from '../../../../common/components/gov-uk/Accordion'
-import Button from '../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import Radio from '../../../../common/components/gov-uk/Radio'
-import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
-import { geoSafeToWebContact } from '../../../../common/services/formatters/ContactFormatter'
-import { infoUrls } from '../../../routes/info/InfoRoutes'
-import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
-import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
+import Accordion from '../../../common/components/gov-uk/Accordion'
+import Button from '../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import InsetText from '../../../common/components/gov-uk/InsetText'
+import Radio from '../../../common/components/gov-uk/Radio'
+import { setOrgCurrentContact } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
+import { updateAdditionals } from '../../../common/services/ProfileServices'
+import { geoSafeToWebContact } from '../../../common/services/formatters/ContactFormatter'
+import { infoUrls } from '../../routes/info/InfoRoutes'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AdminJoinedPage() {
+export default function InitialLoginAdminPage() {
   const navigate = useNavigate()
   const [nextPage, setNextPage] = useState(null)
   const [errorText, setErrorText] = useState('')
+  const adminNextActionId = 'admin-next-action'
+  const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const dispatch = useDispatch()
-  const adminNextActionId = 'admin-next-action'
 
   const infoSections = [
     {
@@ -43,6 +47,11 @@ export default function AdminJoinedPage() {
             <li>link locations to users</li>
             <li>choose which flood messages to get for each location</li>
           </ul>
+          <InsetText
+            text={
+              'You must link yourself to locations if you need flood messages personally.'
+            }
+          />
         </>
       )
     },
@@ -62,21 +71,41 @@ export default function AdminJoinedPage() {
     {
       heading: 'Reports',
       content: (
-        <p className='govuk-body'>Introductions, methods, core features.</p>
+        <>
+          <p className='govuk-body'>Create reports on:</p>
+          <ul className='govuk-list govuk-list--bullet'>
+            <li>live and historic flood warnings</li>
+            <li>locations</li>
+            <li>users</li>
+            <li>flood messages your organisation is getting</li>
+          </ul>
+        </>
       )
     }
   ]
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     if (!nextPage) {
       setErrorText('Select what you would like to do first')
     } else {
-      if (nextPage === orgManageContactsUrls.view.viewContact) {
-        dispatch(setOrgCurrentContact(geoSafeToWebContact(profile)))
-        navigate(nextPage)
-      } else {
-        navigate(nextPage)
+      const updatedProfile = updateAdditionals(profile, [
+        { id: 'firstLogin', value: { s: 'false' } }
+      ])
+      const dataToSend = { profile: updatedProfile, authToken: authToken }
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/profile/update',
+        navigate
+      )
+
+      if (!errorMessage) {
+        if (nextPage === orgManageContactsUrls.view.viewContact) {
+          dispatch(setOrgCurrentContact(geoSafeToWebContact(updatedProfile)))
+          navigate(nextPage)
+        } else {
+          navigate(nextPage)
+        }
       }
     }
   }
@@ -85,13 +114,13 @@ export default function AdminJoinedPage() {
     <>
       <Helmet>
         <title>
-          You've now joined as an admin for your organisation - Get flood
-          warnings (professional) - GOV.UK
+          Organisation admin controls - Get flood warnings (professional) -
+          GOV.UK
         </title>
       </Helmet>
-      <main className='govuk-main-wrapper'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-one-half'>
+          <div className='govuk-grid-column-two-thirds'>
             {errorText && (
               <ErrorSummary
                 errorList={[
@@ -100,12 +129,10 @@ export default function AdminJoinedPage() {
               />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
-              You've now joined as admin for your organisation and can manage
+              You've now joined as an admin for your organisation and can manage
               the following.
             </h1>
-
-            <Accordion id='admin-accordion' sections={infoSections} />
-
+            <Accordion id='admin-controls-accordion' sections={infoSections} />
             <div
               className={
                 errorText
@@ -129,18 +156,10 @@ export default function AdminJoinedPage() {
                   data-module='govuk-radios'
                 >
                   <Radio
-                    key='check_profile'
-                    name='radios'
-                    label='Check my profile and contact details'
-                    onChange={() =>
-                      setNextPage(orgManageContactsUrls.view.viewContact)
-                    }
-                  />
-                  <Radio
                     key='start'
                     name='radios'
                     label='Start using the service'
-                    hint='Check warnings, locations, users and reports'
+                    hint='Add locations and users to set up your account'
                     onChange={() =>
                       setNextPage(orgManageLocationsUrls.monitoring.view)
                     }
@@ -154,12 +173,12 @@ export default function AdminJoinedPage() {
                   />
                 </div>
               </fieldset>
-              <Button
-                className='govuk-button'
-                text='Continue'
-                onClick={(event) => handleSubmit(event)}
-              />
             </div>
+            <Button
+              className='govuk-button'
+              text='Continue'
+              onClick={(event) => handleSubmit(event)}
+            />
           </div>
         </div>
       </main>

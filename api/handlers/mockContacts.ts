@@ -4,7 +4,7 @@ const contacts = [
     enabled: true,
     firstname: 'John',
     lastname: 'Smith',
-    emails: ['updated.matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+    emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],
     language: 'EN',

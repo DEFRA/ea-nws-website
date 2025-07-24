@@ -63,7 +63,7 @@ export default function TermsAndConditionsPage() {
               <p>
                 We may give your information to our agents or representatives,
                 so they can do any of these things for us. And we may share your
-                information with other organisations if the laws says we must.
+                information with other organisations if the law says we must.
               </p>
               <p>
                 The Environment Agency manages the flood warning systems. Our{' '}

@@ -120,7 +120,7 @@ const FloodBanner = React.memo(function FloodBanner({
           style={{
             border: '2px solid lightGrey',
             padding: '1.5rem 1.5rem',
-            height: '10rem'
+            minHeight: '10rem'
           }}
         >
           {type === 'floodMessages' && (
@@ -192,20 +192,25 @@ const FloodBanner = React.memo(function FloodBanner({
                     isLowRisk(item) &&
                     item.additionals.other?.alertTypes?.length === 0
                 ).length > 0 && (
-                  <div
-                    style={{
-                      borderRight: '2px solid lightGrey'
-                    }}
-                  />
+                  <>
+                    <div
+                      style={{
+                        borderRight: '2px solid lightGrey'
+                      }}
+                    />
+                    <div
+                      style={{
+                        paddingRight: '1.5rem'
+                      }}
+                    />
+                  </>
                 )}
               {locations.filter(
                 (item) =>
                   isLowRisk(item) &&
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
-                <div
-                  style={{ width: '100%', padding: '0rem 0rem 0rem 1.5rem' }}
-                >
+                <div style={{ width: '100%' }}>
                   <p className='body-text-strong'>{count[1]}</p>
                   <Link
                     className='govuk-link'

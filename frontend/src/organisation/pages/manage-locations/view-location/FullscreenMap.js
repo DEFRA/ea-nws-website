@@ -22,12 +22,10 @@ import TileLayerWithHeader from '../../../../common/components/custom/TileLayerW
 import LocationDataType from '../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
-import {
-  getSurroundingFloodAreasFromShape
-} from '../../../../common/services/WfsFloodDataService'
+import { getSurroundingFloodAreasFromShape } from '../../../../common/services/WfsFloodDataService'
 import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
 
-export default function FullscreenMap ({
+export default function FullscreenMap({
   showMap,
   setShowMap,
   // ensure locations passed to this component are in web format
@@ -85,7 +83,8 @@ export default function FullscreenMap ({
           feature = location.geometry.geoJson
         }
 
-        location.withinFloodArea = location?.additionals?.other?.targetAreas?.length > 0
+        location.withinFloodArea =
+          location?.additionals?.other?.targetAreas?.length > 0
 
         locationsCollection.push(feature)
       }
@@ -94,7 +93,8 @@ export default function FullscreenMap ({
       // fit map to all locations
       if (locationsCollection && locationsCollection.length > 0) {
         for (const location of locationsCollection) {
-          const { alertArea, warningArea } = await getSurroundingFloodAreasFromShape(location)
+          const { alertArea, warningArea } =
+            await getSurroundingFloodAreasFromShape(location)
           setAlertArea(...alertAreas, alertArea)
           setWarningArea(...warningAreas, warningArea)
         }
@@ -124,7 +124,7 @@ export default function FullscreenMap ({
     }
   }
 
-  const fitBounds = useMemo(() => (<FitBounds />), [bounds])
+  const fitBounds = useMemo(() => <FitBounds />, [bounds])
 
   const ZoomTracker = () => {
     const map = useMapEvents({
@@ -144,7 +144,7 @@ export default function FullscreenMap ({
   })
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -359,10 +359,12 @@ export default function FullscreenMap ({
   }
 
   const isWithinFloodFilter = (location) => {
-    const isInFloodArea = showLocationsWithinFloodAreas && location.withinFloodArea
-    const isOutsideFloodArea = showLocationsOutsideFloodAreas && !location.withinFloodArea
+    const isInFloodArea =
+      showLocationsWithinFloodAreas && location.withinFloodArea
+    const isOutsideFloodArea =
+      showLocationsOutsideFloodAreas && !location.withinFloodArea
 
-    return (isInFloodArea || isOutsideFloodArea)
+    return isInFloodArea || isOutsideFloodArea
   }
 
   return (
@@ -388,10 +390,12 @@ export default function FullscreenMap ({
                       {osmTileLayer}
                       {apiKey && tileLayerWithHeader}
                       {fitBounds}
-                      <ZoomControl position='bottomright' />
-                      <ZoomTracker />
-                      <ResetMapButton />
-                      <ExitMapButton />
+                      <div role='group' aria-label='Interactive Map Controls'>
+                        <ZoomControl position='bottomright' />
+                        <ZoomTracker />
+                        <ResetMapButton />
+                        <ExitMapButton />
+                      </div>
                       {mapLocations.length > 0 &&
                         mapLocations
                           .filter(isInFilteredLocations)
@@ -417,19 +421,19 @@ export default function FullscreenMap ({
                                     {location.address}
                                   </Popup>
                                 </Marker>
-                                  ) : (
-                                    <>
-                                      {location.geometry.geoJson && (
-                                        <GeoJSON
-                                          data={location.geometry.geoJson}
-                                          onEachFeature={onEachShapefileFeature}
-                                          ref={(el) => {
-                                            shapefileRef.current = el
-                                          }}
-                                        />
-                                      )}{' '}
-                                    </>
-                                  )}
+                              ) : (
+                                <>
+                                  {location.geometry.geoJson && (
+                                    <GeoJSON
+                                      data={location.geometry.geoJson}
+                                      onEachFeature={onEachShapefileFeature}
+                                      ref={(el) => {
+                                        shapefileRef.current = el
+                                      }}
+                                    />
+                                  )}{' '}
+                                </>
+                              )}
                             </div>
                           ))}
                       {warningAreas && (

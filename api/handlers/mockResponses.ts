@@ -198,7 +198,7 @@ const orgPOI = [
       latitude: '52612444.5',
       longitude: '1724640.5'
     },
-    id: '1',
+    id: '1435',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',
@@ -241,6 +241,8 @@ const citizenContact2 = {
   homePhones: ['01475721535'],
   language: 'EN',
   additionals: [
+    //uncomment below to test intial admin page
+    //{ id: 'firstLogin', value: { s: 'true' } },
     { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
     { id: 'signupComplete', value: { s: 'true' } }
   ],
@@ -285,7 +287,7 @@ const registrations = {
 }
 
 const organization = {
-  id: '13',
+  id: '13435',
   name: 'Flood Inc.',
   description: JSON.stringify({
     name: 'Flood Inc.',

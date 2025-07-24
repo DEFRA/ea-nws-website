@@ -220,7 +220,7 @@ export default function UserInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p className='note-body'>{currentContact.comments}</p>
+                <p className='notes-body'>{currentContact.comments}</p>
               </div>
             )}
 

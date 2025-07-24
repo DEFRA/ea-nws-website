@@ -41,14 +41,16 @@ function App() {
   all website tabs (but not the browser) so there is
   still a session cookie */
   useEffect(() => {
-    const currentTime = Date.now()
-    const timeout =
-      (Number(process.env.REACT_APP_INACTIVITY_POPUP) +
-        Number(process.env.REACT_APP_TIMEOUT_POPUP)) *
-      1000
-    if (currentTime - lastActivity > timeout) {
-      removeCookie('authToken', { path: '/' })
-      dispatch(clearAuth())
+    if (lastActivity) {
+      const currentTime = Date.now()
+      const timeout =
+        (Number(process.env.REACT_APP_INACTIVITY_POPUP) +
+          Number(process.env.REACT_APP_TIMEOUT_POPUP)) *
+        1000
+      if (currentTime - lastActivity > timeout) {
+        removeCookie('authToken', { path: '/' })
+        dispatch(clearAuth())
+      }
     }
   }, [lastActivity])
 

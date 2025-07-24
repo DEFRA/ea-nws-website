@@ -23,6 +23,7 @@ export default function FloodReportFilter ({
   clearFilters,
   setFilterErrorMessages
 }) {
+  const EMPTY_LABEL = '(empty)'
   // Search filter visibility
   const [visibility, setVisibility] = useState({
     dateRange: false,
@@ -44,20 +45,21 @@ export default function FloodReportFilter ({
     ...new Set(
       locationsAffected
         .map(
-          (location) =>
-            location.locationData.additionals.other.business_criticality
+          (location) => {
+            const temp = location.locationData.additionals.other?.business_criticality || ''
+            return temp?.trim() !== '' ? temp : EMPTY_LABEL
+          }
         )
-        .filter((val) => val !== '')
     )
   ]
 
   const locationTypes = [
     ...new Set(
       locationsAffected
-        .map(
-          (location) => location.locationData.additionals.other.location_type
-        )
-        .filter((val) => val !== '')
+        .map((location) => {
+          const temp = location.locationData.additionals.other?.location_type || ''
+          return temp?.trim() !== '' ? temp : EMPTY_LABEL
+        })
     )
   ]
 
@@ -129,18 +131,24 @@ export default function FloodReportFilter ({
 
     if (filters.selectedLocationTypes.length > 0) {
       filtered = filtered.filter((location) =>
-        filters.selectedLocationTypes.includes(
-          location.locationData.additionals.other.location_type
-        )
+        {
+          const temp = location.locationData.additionals?.other?.location_type || ''
+          const isEmpty = temp.trim() === ''
+          return filters.selectedLocationTypes.some((f) =>
+            f === EMPTY_LABEL ? isEmpty : f === temp
+          )
+        }
       )
     }
 
     if (filters.selectedBusinessCriticalities.length > 0) {
-      filtered = filtered.filter((location) =>
-        filters.selectedBusinessCriticalities.includes(
-          location.locationData.additionals.other.business_criticality
+      filtered = filtered.filter((location) => {
+        const temp = location.locationData.additionals?.other?.business_criticality || ''
+        const isEmpty = temp.trim() === ''
+        return filters.selectedBusinessCriticalities.some((f) =>
+          f === EMPTY_LABEL ? isEmpty : f === temp
         )
-      )
+      })
     }
 
     setResetPaging(!resetPaging)

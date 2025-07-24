@@ -71,7 +71,15 @@ export default function SignInValidatePage() {
             setPercent(null)
           }
           if (data?.status === 'complete') {
-            navigate(orgManageLocationsUrls.monitoring.view)
+            const isAdminUsersFirstLogin = getAdditionals(
+              orgData.profile,
+              'firstLogin'
+            )
+            if (isAdminUsersFirstLogin === 'true') {
+              navigate('/sign-in/organisation/admin-controls')
+            } else {
+              navigate(orgManageLocationsUrls.monitoring.view)
+            }
           }
         }
         if (errorMessage) {

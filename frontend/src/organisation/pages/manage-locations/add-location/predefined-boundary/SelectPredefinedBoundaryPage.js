@@ -12,7 +12,8 @@ import store from '../../../../../common/redux/store'
 import {
   setConsecutiveBoundariesAdded,
   setCurrentLocation,
-  setCurrentLocationGeometry,
+  setCurrentLocationDataType,
+  setCurrentLocationGeocode,
   setCurrentLocationName,
   setCurrentLocationType,
   setPredefinedBoundaryFlow,
@@ -119,20 +120,10 @@ export default function SelectPredefinedBoundaryPage() {
     }
 
     if (selectedBoundaryType && selectedBoundary) {
-      const locationBoundary = {
-        boundary_type: selectedBoundaryType,
-        boundary: selectedBoundary
-      }
-      dispatch(
-        setCurrentLocationGeometry({
-          geoJson: JSON.stringify(locationBoundary.boundary)
-        })
-      )
-      // This might change at a later date, but store in the additional name field for now
-      dispatch(
-        setCurrentLocationName(locationBoundary.boundary.properties.TA_Name)
-      )
-      dispatch(setCurrentLocationType(locationBoundary.boundary_type))
+      dispatch(setCurrentLocationName(selectedBoundary.properties.TA_Name))
+      dispatch(setCurrentLocationGeocode(selectedBoundary.properties.TA_CODE))
+      dispatch(setCurrentLocationType(selectedBoundaryType))
+      dispatch(setCurrentLocationDataType(LocationDataType.BOUNDARY))
       // since we added to currentLocation we need to get that information to pass to the api
       const locationToAdd = store.getState().session.currentLocation
 
@@ -141,9 +132,7 @@ export default function SelectPredefinedBoundaryPage() {
         JSON.parse(JSON.stringify(locationToAdd))
       )
       // get the target areas
-      const TAs = await getFloodAreasFromShape(
-        newWebLocation?.geometry?.geoJson
-      )
+      const TAs = await getFloodAreasFromShape(selectedBoundary?.geometry)
       newWebLocation.additionals.other.targetAreas = []
       TAs.forEach((area) => {
         newWebLocation.additionals.other.targetAreas.push({
@@ -274,9 +263,14 @@ export default function SelectPredefinedBoundaryPage() {
                     id={boundaryId}
                     name='Boundary'
                     label='Boundary'
-                    options={boundaries.map((boundary) => {
-                      return boundary.properties.TA_Name
-                    })}
+                    options={boundaries
+                      .slice() // create a shallow copy to avoid mutating orignal values
+                      .sort((a, b) =>
+                        a.properties.TA_Name.localeCompare(b.properties.TA_Name)
+                      )
+                      .map((boundary) => {
+                        return boundary.properties.TA_Name
+                      })}
                     onSelect={onBoundarySelected}
                     error={boundaryError}
                     initialSelectOptionText={

@@ -102,7 +102,10 @@ const userSlice = createSlice({
       mobilePhones: [],
       homePhones: [],
       language: 'EN',
-      additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+      additionals: [
+        { id: 'signupComplete', value: { s: 'false' } },
+        { id: 'firstLogin', value: { s: 'true' } }
+      ],
       unverified: {
         emails: [],
         mobilePhones: [],
@@ -810,7 +813,10 @@ const userSlice = createSlice({
         mobilePhones: [],
         homePhones: [],
         language: 'EN',
-        additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+        additionals: [
+          { id: 'signupComplete', value: { s: 'false' } },
+          { id: 'firstLogin', value: { s: 'true' } }
+        ],
         unverified: {
           emails: [],
           mobilePhones: [],

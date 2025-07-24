@@ -88,7 +88,7 @@ export default function ManageKeywordsPage() {
           ? ':t_Keywords_location'
           : ':t_Keywords_contact'
       const { data } = await backendCall(
-        { type },
+        { type, authToken },
         'api/elasticache/get_data',
         navigate
       )

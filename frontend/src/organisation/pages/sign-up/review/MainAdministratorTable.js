@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function ContactReviewTable ({ profile }) {
   const fullName = `${profile.firstname} ${profile.lastname}`
   return (
@@ -14,7 +12,7 @@ export default function ContactReviewTable ({ profile }) {
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
-            {/* TODO: ability to change name (compatibility with geosafe)
+            {/* TODO: ability to change name (compatibility with geosafe), add aria-label
             <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
             </Link> */}
@@ -28,7 +26,7 @@ export default function ContactReviewTable ({ profile }) {
             {profile.emails[0]}
           </td>
           <td className='govuk-table__cell'>
-            {/* TODO: ability to change email (compatibility with geosafe)
+            {/* TODO: ability to change email (compatibility with geosafe), add aria-label
             <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
             </Link> */}

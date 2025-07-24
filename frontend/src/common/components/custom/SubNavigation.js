@@ -23,8 +23,6 @@ export default function SubNavigation({ pages, currentPage, type }) {
         ? [orgSignUpUrls.signUp, 'organisation/admin-controls', ...baseUrls]
         : ['/signup', ...baseUrls]
 
-    console.log(urls)
-
     return (
       authToken !== null && !urls.some((url) => location.pathname.includes(url))
     )

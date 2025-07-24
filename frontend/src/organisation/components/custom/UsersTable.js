@@ -325,7 +325,7 @@ export default function UsersTable({
                     }`}
                     onClick={() => sortMessagesReceived()}
                   >
-                    Messages received
+                    Flood messages issued
                   </button>
                 </th>
                 <th scope='col' className='govuk-table__header' />

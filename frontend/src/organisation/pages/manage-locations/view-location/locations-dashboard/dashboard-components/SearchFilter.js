@@ -43,7 +43,7 @@ export default function SearchFilter({
   const locationTypes = [
     ...new Set(
       locations.map((location) => {
-        const temp = location.additionals.other?.location_type
+        const temp = location.additionals.other?.location_type || ''
         return temp?.trim() !== '' ? temp : EMPTY_LABEL
       })
     )
@@ -56,7 +56,7 @@ export default function SearchFilter({
   const businessCriticality = [
     ...new Set(
       locations.map((location) => {
-        const temp = location.additionals.other?.business_criticality
+        const temp = location.additionals.other?.business_criticality || ''
         return temp?.trim() !== '' ? temp : EMPTY_LABEL
       })
     )

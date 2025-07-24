@@ -15,7 +15,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
     setMenuOpen(!menuOpen)
   }
 
-  const isNotSignedInOrOnSignUpPath = (journey) => {
+  const isSignedInAndNotOnSignUpPath = (journey) => {
     const baseUrls = ['declaration']
 
     const urls =
@@ -35,7 +35,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
           <li className='sub-navigation__item bold'>
             <a
               href={
-                isNotSignedInOrOnSignUpPath('org')
+                isSignedInAndNotOnSignUpPath('org')
                   ? orgManageLocationsUrls.monitoring.view
                   : '/'
               }
@@ -48,7 +48,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
               Professional
             </span>
           </li>
-          {isNotSignedInOrOnSignUpPath('org') && (
+          {isSignedInAndNotOnSignUpPath('org') && (
             <li className='sub-navigation__item'>
               <button
                 onClick={() => toggleMenu()}
@@ -58,7 +58,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
               </button>
             </li>
           )}
-          {isNotSignedInOrOnSignUpPath('org') &&
+          {isSignedInAndNotOnSignUpPath('org') &&
             pages.map((page, index) => (
               <li
                 key={index}
@@ -101,13 +101,13 @@ export default function SubNavigation({ pages, currentPage, type }) {
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
             <a
-              href={isNotSignedInOrOnSignUpPath('citizen') ? '/home' : '/'}
+              href={isSignedInAndNotOnSignUpPath('citizen') ? '/home' : '/'}
               style={{ textDecoration: 'none', color: 'black' }}
             >
               Get flood warnings
             </a>
           </li>
-          {isNotSignedInOrOnSignUpPath('citizen') && (
+          {isSignedInAndNotOnSignUpPath('citizen') && (
             <li className='sub-navigation__item'>
               <button
                 onClick={() => toggleMenu()}
@@ -117,7 +117,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
               </button>
             </li>
           )}
-          {isNotSignedInOrOnSignUpPath('citizen') &&
+          {isSignedInAndNotOnSignUpPath('citizen') &&
             pages.map((page, index) => (
               <li
                 key={index}

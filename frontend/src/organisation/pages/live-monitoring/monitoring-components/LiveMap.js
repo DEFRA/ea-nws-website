@@ -159,16 +159,12 @@ export default function LiveMap({
         partnerId
       }
 
-      console.log('fetching alerts')
-
       // load live alerts
       const { data: alerts, errorMessage } = await backendCall(
         { options },
         'api/alert/list',
         navigate
       )
-
-      console.log('live alerts', alerts?.liveAlerts)
 
       if (!errorMessage) {
         for (const liveAlert of alerts?.liveAlerts) {
@@ -197,7 +193,6 @@ export default function LiveMap({
 
     const severity = liveAlert.type
     const lastUpdatedTime = new Date(liveAlert.startDate)
-
     const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
     setLocationsAffected((prevLoc) => [...prevLoc, location.id])

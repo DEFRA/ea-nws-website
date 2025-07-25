@@ -69,8 +69,6 @@ export default function FloodWarningHistoryDashboardPage() {
       navigate
     )
 
-    console.log('hisotrical alerts returned', alerts?.historicAlerts.length)
-
     if (alerts?.historicAlerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(
@@ -109,8 +107,6 @@ export default function FloodWarningHistoryDashboardPage() {
 
     const TA_NAME = historicAlert.TA_Name
     const severity = historicAlert.type
-
-    console.log('severity', severity)
     const startDate = new Date(historicAlert.startDate)
     const lastUpdatedTime = new Date(historicAlert.endDate)
 

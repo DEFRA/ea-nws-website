@@ -90,7 +90,7 @@ const alerts = [
     version: 123456,
     name: 'removeFloodAlert',
     description: { en: 'Flood', additionalLabels: [] },
-    effectiveDate: getRandomPastUnixBeforeXdays(3, 4), // unix time
+    effectiveDate: getRandomPastUnixBeforeXdays(0, 1), // unix time
     expirationDate: 1734004381,
     duration: {},
     urgency: 'SEVERE',
@@ -226,7 +226,7 @@ const alerts = [
     version: 123456,
     name: 'removeFloodWarning', // name must have remove
     description: { en: 'Flood', additionalLabels: [] },
-    effectiveDate: getRandomPastUnixBeforeXdays(6, 7), // unix time
+    effectiveDate: getRandomPastUnixBeforeXdays(0, 1), // unix time
     expirationDate: 1734004381,
     duration: {},
     urgency: 'SEVERE',

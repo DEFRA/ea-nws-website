@@ -26,21 +26,13 @@ module.exports = [
         let { liveAlerts, historicAlerts } = processGeosafeAlerts(
           response.data.alerts
         )
-        // console.log('historicAlerts', historicAlerts)
-        // console.log('historicAlerts size', historicAlerts.length)
-        // console.log('-------------------------------')
-        // console.log('liveAlerts', liveAlerts)
 
         if (historic) {
-          console.log('getting historical alerts from file')
           // add alerts from historic file
           historicAlerts = historicAlerts.concat(
             await getAllPastAlerts(request)
           )
         }
-
-        console.log('-------------------------------')
-        console.log('historicAlerts size', historicAlerts.length)
 
         if (filterDate) {
           console.log('filtering by date ', filterDate)

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
@@ -147,25 +148,6 @@ export default function HistoricalFloodReportsTable({
           floodData: location.floodData
         }
       })
-  }
-
-  const formatDate = (date) => {
-    const options = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    }
-
-    const formattedDate = date.toLocaleString('en-GB', options)
-
-    return formattedDate
-      .replace(',', ' at')
-      .replace(':00', '')
-      .replace('PM', 'pm')
-      .replace('AM', 'am')
   }
 
   return (
@@ -340,10 +322,14 @@ export default function HistoricalFloodReportsTable({
                     .business_criticality || '-'}
                 </td>
                 <td className='govuk-table__cell'>
-                  {formatDate(location.floodData.startDate)}
+                  {dayjs(location.floodData.startDate).format(
+                    'D MMM YYYY [at] HH:mm'
+                  )}
                 </td>
                 <td className='govuk-table__cell'>
-                  {formatDate(location.floodData.lastUpdatedTime)}
+                  {dayjs(location.floodData.lastUpdatedTime).format(
+                    'D MMM YYYY [at] HH:mm'
+                  )}
                 </td>
               </tr>
             )

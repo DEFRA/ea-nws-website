@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
@@ -115,8 +116,7 @@ export default function FloodReportsTable({
       setLinkedContactsSort('ascending')
       setDisplayedLocationsAffected(
         [...locationsAffected].sort((a, b) => {
-          return a.locationData.linked_contacts >
-            b.locationData.linked_contacts
+          return a.locationData.linked_contacts > b.locationData.linked_contacts
             ? 1
             : -1
         })
@@ -126,8 +126,7 @@ export default function FloodReportsTable({
       setLinkedContactsSort('descending')
       setDisplayedLocationsAffected(
         [...locationsAffected].sort((a, b) => {
-          return a.locationData.linked_contacts <
-            b.locationData.linked_contacts
+          return a.locationData.linked_contacts < b.locationData.linked_contacts
             ? 1
             : -1
         })
@@ -169,25 +168,6 @@ export default function FloodReportsTable({
           floodData: location.floodData
         }
       })
-  }
-
-  const formatDate = (date) => {
-    const options = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    }
-
-    const formattedDate = date.toLocaleString('en-GB', options)
-
-    return formattedDate
-      .replace(',', ' at')
-      .replace(':00', '')
-      .replace('PM', 'pm')
-      .replace('AM', 'am')
   }
 
   return (
@@ -359,9 +339,10 @@ export default function FloodReportsTable({
                 <td className='govuk-table__cell'>
                   {location.locationData.linked_contacts}
                 </td>
-                {/* should this get the most recent flood updated time? */}
                 <td className='govuk-table__cell'>
-                  {formatDate(location.floodData.lastUpdatedTime)}
+                  {dayjs(location.floodData.lastUpdatedTime).format(
+                    'D MMM YYYY [at] HH:mm'
+                  )}
                 </td>
               </tr>
             )

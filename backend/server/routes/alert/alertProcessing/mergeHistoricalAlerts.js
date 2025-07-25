@@ -1,5 +1,3 @@
-// need to tidy this up as both merging processes are very similar
-
 const alertTypeMap = {
   'Severe Flood Warning': 'ALERT_LVL_1',
   'Systems Update Severe Flood Warning': 'ALERT_LVL_1',
@@ -21,10 +19,6 @@ function parseApprovedDate(dateStr) {
 }
 
 const createAlertObject = (startAlert, endAlert) => {
-  if (alertTypeMap[startAlert['Message Type']] === undefined) {
-    console.log('startAlert message type', startAlert['Message Type'])
-  }
-
   return {
     id: '1',
     version: 'historic',

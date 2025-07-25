@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,7 +11,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import AlertType from '../../../common/enums/AlertType'
 import {
-  getLocationOtherAdditional,
+  setLocationRegistrations,
   setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -35,10 +35,12 @@ export default function LocationInFloodAreasLayout({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || null
+  )
   const { latitude, longitude } = selectedLocation.coordinates
-  const locationAlertTypes = getLocationOtherAdditional(
-    selectedLocation?.additionals,
-    'alertTypes'
+  const locationAlertTypes = useSelector(
+    (state) => state.session.currentLocationAlerts
   )
   const [severeWarningAreas, setSevereWarningAreas] = useState(new Set())
   const [alertAreas, setAlertAreas] = useState(new Set())
@@ -78,7 +80,10 @@ export default function LocationInFloodAreasLayout({
         dispatch(setProfile(updatedProfile))
       }
     }
-    continueToNextPage(updatedProfile)
+    continueToNextPage({
+      locationName: selectedLocation.address,
+      profile: updatedProfile
+    })
   }
 
   const addLocationWithinFloodArea = async () => {
@@ -96,8 +101,7 @@ export default function LocationInFloodAreasLayout({
         id: 'other',
         value: {
           s: JSON.stringify({
-            targetAreas: allAreasAffectingLocation,
-            alertTypes: locationAlertTypes
+            targetAreas: allAreasAffectingLocation
           })
         }
       }
@@ -126,6 +130,18 @@ export default function LocationInFloodAreasLayout({
       'api/partner/register_location_to_partner',
       navigate
     )
+
+    const updatedLocationRegistrations = [
+      ...(locationRegistrations || []),
+      {
+        locationId: location.id,
+        params: {
+          ...data.params,
+          alertTypes: locationAlertTypes
+        }
+      }
+    ]
+    dispatch(setLocationRegistrations(updatedLocationRegistrations))
   }
 
   const handleUserNavigatingBack = async () => {

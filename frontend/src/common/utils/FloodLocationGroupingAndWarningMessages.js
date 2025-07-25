@@ -1,5 +1,4 @@
 import AlertType from '../enums/AlertType'
-import { getLocationOtherAdditional } from '../redux/userSlice'
 
 export const getGroupFloodLocation = (locations) => {
   const group = {}
@@ -59,9 +58,11 @@ export const getNonGroupFloodLocation = (locations) => {
   return nonGroup
 }
 
-export const getFloodWarningAndAlerts = (location) => {
-  const { additionals } = location
-  const alertTypes = getLocationOtherAdditional(additionals, 'alertTypes')
+export const getFloodWarningAndAlerts = (location, locationRegistrations) => {
+  const alertTypes =
+    locationRegistrations?.find((loc) => loc.locationId == location.id)?.params
+      ?.alertTypes || []
+
   let serverFloodWarnings = null
   let floodWarnings = null
   let floodAlerts = null

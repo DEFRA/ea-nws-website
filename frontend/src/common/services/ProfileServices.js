@@ -222,24 +222,6 @@ const removeLocation = (profile, id) => {
   return updatedProfile
 }
 
-const updateLocationsAlertTypes = (profile, location, updatedAlertTypes) => {
-  const parsedProfile = JSON.parse(JSON.stringify(profile))
-
-  const locationIndex = parsedProfile.pois.findIndex(
-    (poi) => poi.address === location.address
-  )
-
-  if (locationIndex !== -1) {
-    parsedProfile.pois[locationIndex].additionals = setLocationOtherAdditionals(
-      [],
-      'alertTypes',
-      updatedAlertTypes
-    )
-  }
-
-  return parsedProfile
-}
-
 const getRegistrationParams = (profile, alertTypes) => {
   const channelVoiceEnabled = true
   const channelSmsEnabled = true
@@ -307,6 +289,5 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
-  removeLocation,
-  updateLocationsAlertTypes
+  removeLocation
 }

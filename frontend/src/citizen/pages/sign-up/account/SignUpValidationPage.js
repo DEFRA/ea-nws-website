@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,7 +17,6 @@ import {
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getLocationOtherAdditional,
   getRegistrationParams,
   updateAdditionals
 } from '../../../../common/services/ProfileServices'
@@ -28,6 +27,9 @@ export default function SignUpValidationPage() {
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || []
+  )
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [codeResent, setCodeResent] = useState(false)
@@ -105,10 +107,9 @@ export default function SignUpValidationPage() {
 
   const registerAllLocations = async (authToken, profile) => {
     profile.pois.map(async (poi) => {
-      const alertTypes = getLocationOtherAdditional(
-        poi.additionals,
-        'alertTypes'
-      )
+      const alertTypes =
+        locationRegistrations.find((loc) => loc.locationId === poi.id)?.params
+          ?.alertTypes || []
 
       const data = {
         authToken,
@@ -174,7 +175,11 @@ export default function SignUpValidationPage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeId}]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Check your email
                 </h2>

@@ -1,6 +1,6 @@
 import * as turf from '@turf/turf'
 import moment from 'moment'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -9,6 +9,7 @@ import Details from '../../../common/components/gov-uk/Details'
 import AlertType from '../../../common/enums/AlertType'
 import {
   getLocationOtherAdditional,
+  setCurrentLocationAlerts,
   setFloodAlertCount,
   setFloodAreasAlreadyAdded,
   setNearbyTargetAreasAdded,
@@ -16,7 +17,6 @@ import {
   setSelectedLocation,
   setSevereFloodWarningCount
 } from '../../../common/redux/userSlice'
-import { setLocationOtherAdditionals } from '../../../common/services/ProfileServices'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
@@ -109,18 +109,10 @@ export default function LocationSearchResultsLayout({
 
       const alertsOnly = [AlertType.FLOOD_ALERT, AlertType.INFO]
 
-      // update selected location with the alerts it can receive - this is used on the next page
-      // to display the correct flood areas on the map
-      const locationWithAlertTypes = {
-        ...selectedLocation,
-        additionals: setLocationOtherAdditionals(
-          [],
-          'alertTypes',
-          isInWarningArea ? allAlerts : alertsOnly
-        )
-      }
-
-      dispatch(setSelectedLocation(locationWithAlertTypes))
+      dispatch(
+        setCurrentLocationAlerts(isInWarningArea ? allAlerts : alertsOnly)
+      )
+      dispatch(setSelectedLocation(selectedLocation))
 
       // what even is this? please remind me to come back to this when reviewing
       if (isInAlertArea) {

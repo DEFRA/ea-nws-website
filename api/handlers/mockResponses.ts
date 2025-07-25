@@ -52,7 +52,6 @@ const citizenPOIs = [
         id: 'other',
         value: {
           s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1'],
             targetAreas: [
               {
                 TA_CODE: '063FWT23WestminA',
@@ -95,14 +94,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: 'Marlow, SL7, Buckinghamshire' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -122,14 +113,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: 'Marlow, SL7, Buckinghamshire' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -149,14 +132,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -176,14 +151,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_3']
-          })
-        }
       }
     ]
   }
@@ -286,6 +253,54 @@ const registrations = {
   }
 }
 
+const locationRegistrations = [
+  {
+    locationId: '1',
+    partner: registrations.partner,
+    registrationDate: '1683741990',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+    }
+  },
+  {
+    locationId: '2',
+    partner: registrations.partner,
+    registrationDate: '1683741995',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+    }
+  },
+  {
+    locationId: '3',
+    partner: registrations.partner,
+    registrationDate: '1683741999',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+    }
+  },
+  {
+    locationId: '4',
+    partner: registrations.partner,
+    registrationDate: '1683741999',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+    }
+  },
+  {
+    locationId: '5',
+    partner: registrations.partner,
+    registrationDate: '1683741999',
+    params: {
+      ...registrations.params,
+      alertTypes: ['ALERT_LVL_3']
+    }
+  }
+]
+
 const organization = {
   id: '13435',
   name: 'Flood Inc.',
@@ -339,5 +354,6 @@ module.exports = {
   citizenProfile: citizenContact,
   citizenProfile2: citizenContact2,
   registrations: registrations,
+  locationRegistrations: locationRegistrations,
   organization: organization
 }

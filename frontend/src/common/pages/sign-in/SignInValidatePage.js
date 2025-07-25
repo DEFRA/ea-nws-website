@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
@@ -16,6 +16,7 @@ import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
+  setLocationRegistrations,
   setOrganization,
   setProfile,
   setProfileId,
@@ -149,6 +150,20 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
+            const { errorMessage, data: verifyData } = await backendCall(
+              { authToken: data.authToken },
+              'api/sign_in_verify'
+            )
+
+            if (errorMessage) {
+              setError(errorMessage)
+            } else {
+              dispatch(
+                setLocationRegistrations(verifyData.locationRegistrations)
+              )
+              dispatch(setProfile(verifyData.profile))
+            }
+
             navigate('/home')
           }
         }

@@ -5,6 +5,9 @@ import { getLocationOtherAdditional } from '../../../../common/redux/userSlice'
 
 export default function FloodMessageReviewTable() {
   const locationsSelected = useSelector((state) => state.session.profile.pois)
+  const floodAreasInfo = useSelector(
+    (state) => state.session.floodAreasInfo || null
+  )
   const floodWarningAreasSet = new Set()
   const floodAlertAreasSet = new Set()
   locationsSelected.forEach((location) => {
@@ -22,10 +25,9 @@ export default function FloodMessageReviewTable() {
         }
       })
     } else {
-      const locationLevels = getLocationOtherAdditional(
-        location.additionals,
-        'alertTypes'
-      )
+      const locationLevels =
+        floodAreasInfo?.find((area) => area.address === location.address)
+          ?.alertTypes || []
 
       const warningLevels = [
         AlertType.SEVERE_FLOOD_WARNING,

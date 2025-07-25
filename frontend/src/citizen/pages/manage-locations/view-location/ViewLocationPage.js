@@ -12,15 +12,9 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import AlertType from '../../../../common/enums/AlertType'
-import {
-  getLocationOtherAdditional,
-  setProfile
-} from '../../../../common/redux/userSlice'
+import { setLocationRegistrations } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import {
-  getRegistrationParams,
-  updateLocationsAlertTypes
-} from '../../../../common/services/ProfileServices'
+import { getRegistrationParams } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
 
@@ -79,6 +73,9 @@ export default function ViewLocationPage() {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || null
+  )
   const canRemoveLocation = profile.pois.length > 1
   const [selectedFloodArea, setSelectedFloodArea] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
@@ -88,11 +85,11 @@ export default function ViewLocationPage() {
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
   const [locationType, setLocationType] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  let locationsAlertTypes = getLocationOtherAdditional(
-    selectedLocation?.additionals || [],
-    'alertTypes'
-  )
-  // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
+
+  let locationsAlertTypes =
+    locationRegistrations?.find((loc) => loc.locationId == selectedLocation.id)
+      ?.params?.alertTypes || []
+
   const initialAlerts = locationsAlertTypes
     ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
     : false
@@ -232,7 +229,6 @@ export default function ViewLocationPage() {
     e.preventDefault()
     let updatedProfile
 
-    // cp 27/06/25 - update this when doing work for migrated locations - use geosafe signinVerify api call to get locations alert types
     if (!locationsAlertTypes) {
       locationsAlertTypes = [
         AlertType.SEVERE_FLOOD_WARNING,
@@ -267,9 +263,19 @@ export default function ViewLocationPage() {
     )
 
     if (!errorMessage) {
-      updatedProfile = await updateLocationAlerts(locationsAlertTypes)
-
-      await updateGeosafeProfile(updatedProfile)
+      // Update alerts in locationRegistrations
+      const updatedLocationRegistrations = locationRegistrations.map((loc) =>
+        loc.locationId == selectedLocation.id
+          ? {
+              ...loc,
+              params: {
+                ...loc.params,
+                alertTypes: locationsAlertTypes
+              }
+            }
+          : loc
+      )
+      dispatch(setLocationRegistrations(updatedLocationRegistrations))
 
       const message = `You've turned ${
         pendingOptionalAlerts ? 'on' : 'off'
@@ -278,22 +284,6 @@ export default function ViewLocationPage() {
       setSuccessMessage(message)
       setSavedOptionalAlerts(pendingOptionalAlerts)
     }
-  }
-
-  const updateLocationAlerts = async (locationsAlertTypes) => {
-    const updatedProfile = updateLocationsAlertTypes(
-      profile,
-      selectedLocation,
-      locationsAlertTypes
-    )
-    dispatch(setProfile(updatedProfile))
-
-    return updatedProfile
-  }
-
-  const updateGeosafeProfile = async (updatedProfile) => {
-    const dataToSend = { authToken, profile: updatedProfile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (

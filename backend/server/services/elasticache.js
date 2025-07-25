@@ -683,7 +683,7 @@ const setFloodHistory = async (client, value) => {
 }
 
 const getFloodHistory = async (client) => {
-  const key = 'TAHistoryCountt'
+  const key = 'TAHistoryCount'
   let floodHistory = null
   const dataExists = await checkKeyExists(client, key)
   if (dataExists) {

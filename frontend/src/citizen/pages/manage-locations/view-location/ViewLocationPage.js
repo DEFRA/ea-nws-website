@@ -88,7 +88,7 @@ export default function ViewLocationPage() {
 
   let locationsAlertTypes =
     locationRegistrations?.find((loc) => loc.locationId == selectedLocation.id)
-      ?.params?.alertTypes || []
+      ?.registrations[0]?.params?.alertTypes || []
 
   const initialAlerts = locationsAlertTypes
     ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
@@ -268,10 +268,14 @@ export default function ViewLocationPage() {
         loc.locationId == selectedLocation.id
           ? {
               ...loc,
-              params: {
-                ...loc.params,
-                alertTypes: locationsAlertTypes
-              }
+              registrations: [
+                {
+                  params: {
+                    ...loc?.registrations[0]?.params,
+                    alertTypes: locationsAlertTypes
+                  }
+                }
+              ]
             }
           : loc
       )

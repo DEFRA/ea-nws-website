@@ -256,48 +256,68 @@ const registrations = {
 const locationRegistrations = [
   {
     locationId: '1',
-    partner: registrations.partner,
-    registrationDate: '1683741990',
-    params: {
-      ...registrations.params,
-      alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
-    }
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741990',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
   },
   {
     locationId: '2',
-    partner: registrations.partner,
-    registrationDate: '1683741995',
-    params: {
-      ...registrations.params,
-      alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-    }
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741995',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
   },
   {
     locationId: '3',
-    partner: registrations.partner,
-    registrationDate: '1683741999',
-    params: {
-      ...registrations.params,
-      alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-    }
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
   },
   {
     locationId: '4',
-    partner: registrations.partner,
-    registrationDate: '1683741999',
-    params: {
-      ...registrations.params,
-      alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-    }
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
   },
   {
     locationId: '5',
-    partner: registrations.partner,
-    registrationDate: '1683741999',
-    params: {
-      ...registrations.params,
-      alertTypes: ['ALERT_LVL_3']
-    }
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_3']
+        }
+      }
+    ]
   }
 ]
 

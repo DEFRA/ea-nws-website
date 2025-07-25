@@ -65,14 +65,7 @@ export default function ConfirmDeleteSingleLocationPage() {
         const filtered = locationRegistrations?.filter(
           (loc) => loc.locationId != location.state.locationId
         )
-        if (filtered) {
-          // Renumber location Ids starting from 1
-          const updatedLocationRegistrations = filtered.map((loc, index) => ({
-            ...loc,
-            locationId: String(index + 1)
-          }))
-          dispatch(setLocationRegistrations(updatedLocationRegistrations))
-        }
+        filtered && dispatch(setLocationRegistrations(filtered))
 
         navigate('/home', {
           state: {

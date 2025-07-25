@@ -243,10 +243,14 @@ export default function LocationNearFloodAreasLayout({
           ...updatedLocationRegistrations,
           {
             locationId: location.id,
-            params: {
-              ...data.params,
-              alertTypes: locationAlertTypes
-            }
+            registrations: [
+              {
+                params: {
+                  ...data.params,
+                  alertTypes: locationAlertTypes
+                }
+              }
+            ]
           }
         ]
       }

@@ -135,10 +135,14 @@ export default function LocationInFloodAreasLayout({
       ...(locationRegistrations || []),
       {
         locationId: location.id,
-        params: {
-          ...data.params,
-          alertTypes: locationAlertTypes
-        }
+        registrations: [
+          {
+            params: {
+              ...data.params,
+              alertTypes: locationAlertTypes
+            }
+          }
+        ]
       }
     ]
     dispatch(setLocationRegistrations(updatedLocationRegistrations))

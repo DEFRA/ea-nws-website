@@ -62,6 +62,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
   useEffect(() => {
     ;(async () => {
+      console.log('loading live warnings')
       await loadLiveWarnings()
       setLoading(false)
     })()
@@ -83,14 +84,18 @@ export default function LiveFloodWarningsDashboardPage() {
       partnerId
     }
 
+    console.log('fetching alerts')
+
     // load alerts
-    const { data: alerts } = await backendCall(
+    const { data: liveAlerts } = await backendCall(
       { options },
       'api/alert/list',
       navigate
     )
 
-    if (alerts) {
+    console.log('alerts', liveAlerts)
+
+    if (liveAlerts) {
       const { data: locationsData } = await backendCall(
         { authToken },
         'api/elasticache/list_locations',
@@ -111,7 +116,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
       if (locations) {
         // loop through live alerts - loop through all locations to find affected locations
-        for (const liveAlert of alerts?.alerts) {
+        for (const liveAlert of liveAlerts) {
           for (const location of locations) {
             await processLocation(location, liveAlert, contactCount)
           }
@@ -120,12 +125,7 @@ export default function LiveFloodWarningsDashboardPage() {
     }
   }
 
-  const processLocation = async (
-    location,
-    liveAlert,
-    contactCount
-  ) => {
-
+  const processLocation = async (location, liveAlert, contactCount) => {
     const TA_CODE = liveAlert.TA_CODE
 
     const { additionals } = location

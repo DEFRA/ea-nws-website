@@ -144,7 +144,7 @@ export default function LiveMap({
       )
 
       const options = {
-        states: ['CURRENT'],
+        states: [],
         boundingBox: {
           southWest: {
             latitude: parseInt(bbox[1] * 10 ** 6),
@@ -159,15 +159,19 @@ export default function LiveMap({
         partnerId
       }
 
+      console.log('fetching alerts')
+
       // load live alerts
-      const { data: liveAlertsData, errorMessage } = await backendCall(
+      const { data: alerts, errorMessage } = await backendCall(
         { options },
         'api/alert/list',
         navigate
       )
 
+      console.log('live alerts', alerts?.liveAlerts)
+
       if (!errorMessage) {
-        for (const liveAlert of liveAlertsData?.alerts) {
+        for (const liveAlert of alerts?.liveAlerts) {
           const locationPromises = locations.map((location) =>
             processLocation(location, liveAlert)
           )
@@ -179,11 +183,7 @@ export default function LiveMap({
     }
   }
 
-  const processLocation = async(
-    location,
-    liveAlert
-  ) => {
-
+  const processLocation = async (location, liveAlert) => {
     const TA_CODE = liveAlert.TA_CODE
 
     const { coordinates, geometry, additionals } = location
@@ -196,7 +196,7 @@ export default function LiveMap({
     if (!locationIntersectsWithFloodArea) return
 
     const severity = liveAlert.type
-    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
+    const lastUpdatedTime = new Date(liveAlert.startDate)
 
     const floodArea = await getFloodAreaByTaCode(TA_CODE)
 

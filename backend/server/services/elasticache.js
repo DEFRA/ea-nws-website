@@ -116,7 +116,7 @@ const setLocations = async (client, orgId, locations, statusKey) => {
     await setJsonData(client, statusKey, {
       stage: 'Processing locations',
       status: 'working',
-      percent: (i/numLocations)*100
+      percent: (i / numLocations) * 100
     })
     i++
   })
@@ -576,7 +576,7 @@ const orgSignIn = async (
       await setJsonData(client, statusKey, {
         stage: 'Processing locations',
         status: 'working',
-        percent: (locIndex/numLocations)*100
+        percent: (locIndex / numLocations) * 100
       })
       locIndex++
     }
@@ -593,7 +593,7 @@ const orgSignIn = async (
       await setJsonData(client, statusKey, {
         stage: 'Retrieving Contacts',
         status: 'working',
-        percent: (contactIndex/numContacts)*100
+        percent: (contactIndex / numContacts) * 100
       })
       contactIndex++
     }
@@ -607,7 +607,7 @@ const orgSignIn = async (
       await setJsonData(client, statusKey, {
         stage: 'Retrieving Contacts',
         status: 'working',
-        percent: (i/numContacts)*100
+        percent: (i / numContacts) * 100
       })
       i++
     }
@@ -683,7 +683,7 @@ const setFloodHistory = async (client, value) => {
 }
 
 const getFloodHistory = async (client) => {
-  const key = 'TAHistoryCount'
+  const key = 'TAHistoryCountt'
   let floodHistory = null
   const dataExists = await checkKeyExists(client, key)
   if (dataExists) {

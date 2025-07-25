@@ -72,8 +72,6 @@ export default function FloodWarningsRemovedDashboardPage() {
       navigate
     )
 
-    console.log('historicAlerts', alerts?.historicAlerts)
-
     if (alerts?.historicAlerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(

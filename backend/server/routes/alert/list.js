@@ -3,7 +3,7 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { parse, isValid, isAfter, format } = require('date-fns')
+const { isAfter } = require('date-fns')
 const { processGeosafeAlerts } = require('./alertProcessing/mergeGeosafeAlerts')
 const { getAllPastAlerts } = require('./alertProcessing/getHistoricAlerts')
 

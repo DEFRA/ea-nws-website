@@ -180,10 +180,9 @@ export default function LocationSearchLayout({
               </fieldset>
               <Button
                 text='Continue'
-                className='govuk-button'
+                className='govuk-button govuk-!-margin-right-2'
                 onClick={handleSubmit}
               />
-              &nbsp; &nbsp;
               {returnToReview && (
                 <Link className='govuk-link inline-link' to={'/signup/review'}>
                   Cancel

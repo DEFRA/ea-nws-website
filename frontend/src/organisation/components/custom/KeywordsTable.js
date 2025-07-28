@@ -158,14 +158,20 @@ export default function KeywordsTable({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  onClick={() => onAction('edit', keyword)}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    onAction('edit', keyword)
+                  }}
                 >
                   Change
                 </Link>{' '}
                 <span style={{ color: '#b1b4b6' }}>|</span>{' '}
                 <Link
                   className='govuk-link'
-                  onClick={() => onAction('delete', keyword)}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    onAction('delete', keyword)
+                  }}
                 >
                   Delete
                 </Link>

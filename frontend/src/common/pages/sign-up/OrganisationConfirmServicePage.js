@@ -51,14 +51,13 @@ export default function OrganisationConfirmServicePage() {
               </p>
               <div className='govuk-!-margin-top-8'>
                 <Button
-                  className='govuk-button'
+                  className='govuk-button govuk-!-margin-right-2'
                   text='Continue'
                   onClick={(event) => {
                     event.preventDefault()
                     navigate('/organisation/sign-up')
                   }}
                 />
-                &nbsp; &nbsp;
                 <Link
                   to='/signup/organisation-service'
                   className='govuk-link inline-link'

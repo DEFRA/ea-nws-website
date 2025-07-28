@@ -239,11 +239,10 @@ export default function SignInValidatePage() {
                     onChange={(val) => setCode(val)}
                   />
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     text='Continue'
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     onClick={navigateBack}
                     className='govuk-link inline-link'

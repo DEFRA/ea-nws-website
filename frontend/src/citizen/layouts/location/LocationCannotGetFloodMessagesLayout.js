@@ -32,10 +32,9 @@ export default function LocationCannotGetFloodMessagesLayout({
             <div className='govuk-!-margin-top-7'>
               <Button
                 text='View nearby areas you can monitor'
-                className='govuk-button'
+                className='govuk-button govuk-!-margin-right-2'
                 onClick={() => navigate(navigateToNearbyFloodAreas)}
               />
-              &nbsp; &nbsp;
               <Button
                 text='Enter different location'
                 className='govuk-button  govuk-button--secondary'

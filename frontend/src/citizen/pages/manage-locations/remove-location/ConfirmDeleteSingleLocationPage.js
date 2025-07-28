@@ -109,11 +109,10 @@ export default function ConfirmDeleteSingleLocationPage() {
               You'll no longer get any flood messages for this location.
             </p>
             <Button
-              className='govuk-button govuk-button--warning'
+              className='govuk-button govuk-button--warning govuk-!-margin-right-2'
               text='Remove this location'
               onClick={handleSubmit}
             />
-            &nbsp; &nbsp;
             <Link
               onClick={() => navigate(-1)}
               className='govuk-body govuk-link'

@@ -172,11 +172,10 @@ export default function ValidateEmailLayout({
                     />
                   </div>
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     text='Confirm email address'
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     onClick={navigateBack}
                     className='govuk-link'

@@ -511,7 +511,10 @@ export default function ManageKeywordsPage() {
                 <ul className='sub-navigation__list'>
                   <li className='sub-navigation__item'>
                     <Link
-                      onClick={() => setTab('location')}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setTab('location')
+                      }}
                       className='sub-navigation__link'
                       aria-current={keywordType === 'location' ? 'page' : 'no'}
                     >
@@ -520,7 +523,10 @@ export default function ManageKeywordsPage() {
                   </li>
                   <li className='sub-navigation__item'>
                     <Link
-                      onClick={() => setTab('contact')}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setTab('contact')
+                      }}
                       className='sub-navigation__link'
                       aria-current={keywordType === 'contact' ? 'page' : 'no'}
                     >

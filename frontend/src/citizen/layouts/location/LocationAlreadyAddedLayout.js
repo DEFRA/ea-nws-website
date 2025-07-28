@@ -116,12 +116,11 @@ export default function LocationAlreadyAddedLayout() {
                         ? 'View other nearby areas'
                         : 'Choose different location'
                     }
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     onClick={() => navigateToNextPage()}
                   />
                   {moreFloodAreasAvailable && (
                     <>
-                      &nbsp; &nbsp;
                       <Button
                         text='Choose different location'
                         className='govuk-button  govuk-button--secondary'

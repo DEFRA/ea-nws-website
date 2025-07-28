@@ -170,25 +170,8 @@ export default function LiveMap({
 
       if (!errorMessage) {
         for (const liveAlert of liveAlertsData?.alerts) {
-          const floodArea = await getFloodAreaByTaCode(liveAlert.TA_CODE)
-          switch (liveAlert.type) {
-            case AlertType.SEVERE_FLOOD_WARNING:
-              const addSevere = !severeFloodAreas.find((area) => area.properties.TA_CODE === floodArea.properties.TA_CODE)
-              addSevere && setSevereFloodAreas((prevAreas) => [...prevAreas, floodArea])
-              break
-      
-            case AlertType.FLOOD_WARNING:
-              const addWarning = !warningFloodAreas.find((area) => area.properties.TA_CODE === floodArea.properties.TA_CODE)
-              addWarning && setWarningFloodAreas((prevAreas) => [...prevAreas, floodArea])
-              break
-      
-            case AlertType.FLOOD_ALERT:
-              const addAlert = !alertFloodAreas.find((area) => area.properties.TA_CODE === floodArea.properties.TA_CODE)
-              addAlert && setAlertFloodAreas((prevAreas) => [...prevAreas, floodArea])
-              break
-          }
           const locationPromises = locations.map((location) =>
-            processLocation(location, liveAlert, floodArea)
+            processLocation(location, liveAlert)
           )
           await Promise.all(locationPromises)
         }
@@ -202,7 +185,7 @@ export default function LiveMap({
       ...shapes])
   }
 
-  const processLocation = async (location, liveAlert, floodArea) => {
+  const processLocation = async (location, liveAlert) => {
     const TA_CODE = liveAlert.TA_CODE
 
     const { coordinates, geometry, additionals } = location
@@ -216,6 +199,8 @@ export default function LiveMap({
 
     const severity = liveAlert.type
     const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
+
+    const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
     setLocationsAffected((prevLoc) => [...prevLoc, location.id])
 
@@ -255,21 +240,24 @@ export default function LiveMap({
       setShapes((prevShape) => [...prevShape, geometry.geoJson])
     }
 
-    processFloodArea(severity, point)
+    processFloodArea(severity, point, floodArea)
   }
 
-  const processFloodArea = (severity, point) => {
+  const processFloodArea = (severity, point, floodArea) => {
     switch (severity) {
       case AlertType.SEVERE_FLOOD_WARNING:
         setSeverePoints((prevPoints) => [...prevPoints, point])
+        setSevereFloodAreas((prevAreas) => [...prevAreas, floodArea])
         break
 
       case AlertType.FLOOD_WARNING:
         setWarningPoints((prevPoints) => [...prevPoints, point])
+        setWarningFloodAreas((prevAreas) => [...prevAreas, floodArea])
         break
 
       case AlertType.FLOOD_ALERT:
         setAlertPoints((prevPoints) => [...prevPoints, point])
+        setAlertFloodAreas((prevAreas) => [...prevAreas, floodArea])
         break
     }
   }

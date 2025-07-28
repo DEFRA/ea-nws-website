@@ -90,14 +90,25 @@ export default function DeclarationOfAgreementPage() {
               <h1 className='govuk-heading-l' id='main-content'>
                 Check the terms and conditions
               </h1>
-              <h3 className='govuk-heading-s'>What we will do</h3>
+              <h2 className='govuk-heading-m'>What we will do</h2>
               <p>
-                We make all reasonable efforts to send the flood warnings you
-                have asked for, but we cannot guarantee they will be sent or
-                arrive. Warnings may be sent at any time of day or night.
+                We'll make all reasonable efforts to send the flood warnings
+                you’ve asked for but we cannot guarantee they will be sent or
+                arrive - for example, you may fail to receive a warning due to
+                unplanned network disruption.
+              </p>
+              <p>Warnings may be sent at any time of the day or night.</p>
+              <p>
+                We aim to develop and issue flood warnings based on the best
+                available data and as early as possible before flooding is
+                likely. However, we cannot guarantee warnings are always
+                accurate or complete due to the sometimes unpredictable nature
+                of weather and flooding. In certain circumstances we may not be
+                able to give as much early notice as we would like.
               </p>
 
-              <h3 className='govuk-heading-s'>We do not:</h3>
+              <h2 className='govuk-heading-m'>What we will not do</h2>
+              <p>We do not:</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>accept responsibility if you fail to receive a warning</li>
                 <li>
@@ -105,12 +116,14 @@ export default function DeclarationOfAgreementPage() {
                 </li>
                 <li>
                   accept responsibility for any loss, damage or costs incurred
-                  by you caused by flooding, or by issuing or failing to issue
-                  warnings, except where the law says we must
+                  by you (or anyone you share our flood warnings with) caused by
+                  flooding or by issuing or failing to issue warnings, except
+                  where the law says we must
                 </li>
               </ul>
 
-              <h3 className='govuk-heading-s'>You are responsible for:</h3>
+              <h2 className='govuk-heading-m'>What you’re responsible for</h2>
+              <p>You’re responsible for:</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>providing us with accurate contact details</li>
                 <li>
@@ -118,41 +131,19 @@ export default function DeclarationOfAgreementPage() {
                 </li>
               </ul>
 
-              <h3 className='govuk-heading-s'>
-                How will we use your personal information
-              </h3>
-              <p>We may use the personal information you provide to:</p>
-              <ul className='govuk-list govuk-list--bullet'>
-                <li>send you warnings you've asked for</li>
-                <li>
-                  send you a small number of services or administrative messages
-                </li>
-                <li>
-                  help emergency services and local councils respond to flooding
-                </li>
-                <li>
-                  help with our work on flood warning and local flood risk
-                  management
-                </li>
-              </ul>
-
+              <h2 className='govuk-heading-m'>
+                How we will use your personal information
+              </h2>
               <p>
-                We may give your information to our agents or representatives so
-                they can do any of these things for us. And we may share your
-                information with other organisations if the law says we must.
-              </p>
-
-              <p>
-                The Environment Agency manages the flood warning systems. Our
+                Our{' '}
                 <a
                   href='https://www.fws.environment-agency.gov.uk/app/olr/privacy'
                   className='govuk-link'
                   target='_blank'
                   rel='noreferrer'
                 >
-                  {' '}
-                  privacy notice (opens new window){' '}
-                </a>
+                  privacy notice (opens new window)
+                </a>{' '}
                 explains how we treat your personal information.
               </p>
 

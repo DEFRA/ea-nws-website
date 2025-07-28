@@ -58,7 +58,7 @@ export default function AccessibilityStatementPage() {
                   without the text splitting off the screen
                 </li>
               </ul>
-              <p>We've also made the text as simple as possible to use</p>
+              <p>We've also made the text as simple as possible to use.</p>
 
               <h2 className='govuk-heading-m govuk-!-padding-top-2 govuk-!-margin-bottom-0'>
                 How accessible this website is
@@ -290,18 +290,6 @@ export default function AccessibilityStatementPage() {
                 carried out by Digital Accessibility Centre (DAC). DAC retested
                 this website on 11 July 2025.
               </p>
-
-              {/* {
-What we’re doing to improve the accessibility of this website
-We intend to make sure the new website is compliant with the Web Content Accessibility Guidelines version 2.2 AA standard.
-
-We plan to fix these issues by 15 February 2026.
-
-Preparation of this accessibility statement
-This statement was prepared on 21 July 2025.
-
-This website was first tested 20 February 2025. Testing was carried out by Digital Accessibility Centre (DAC). It was retested by DAC on 11 July 2025.
- */}
 
               <h2 className='govuk-heading-m govuk-!-padding-top-2'>
                 Enforcement procedure

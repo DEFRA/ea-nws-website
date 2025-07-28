@@ -96,7 +96,7 @@ export default function AdminDetailsLayout({
       }
 
       // required to send admin users to initial login screen at sign in
-      updatedProfile = updateAdditionals(profile, [
+      updatedProfile = updateAdditionals(updatedProfile, [
         { id: 'firstLogin', value: { s: 'true' } }
       ])
 

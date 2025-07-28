@@ -6,7 +6,7 @@ const redis = require('redis')
 const getSecretKeyValue = require('./services/SecretsManager')
 const { logger } = require('./plugins/logging')
 
-async function createServer() {
+async function createServer(workerId) {
   // Create the hapi server
   const conf = await config()
 
@@ -42,7 +42,8 @@ async function createServer() {
   await server.register(require('./plugins/health'))
   await server.register(require('blipp'))
 
-  if (!conf.isDev) {
+  // only schedule S3 upload on one worker
+  if (!conf.isDev && workerId === 1) {
     // Send logs to bucket every hour
     schedule.scheduleJob('0 * * * *', async () => {
       await scheduledLPMTransfer()

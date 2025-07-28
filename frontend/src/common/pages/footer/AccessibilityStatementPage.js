@@ -58,7 +58,7 @@ export default function AccessibilityStatementPage() {
                   without the text splitting off the screen
                 </li>
               </ul>
-              <p>We've also made the text as simple as possible to use.</p>
+              <p>We’ve also made the text as simple as possible to use.</p>
 
               <h2 className='govuk-heading-m govuk-!-padding-top-2 govuk-!-margin-bottom-0'>
                 How accessible this website is
@@ -86,7 +86,7 @@ export default function AccessibilityStatementPage() {
                 Feedback and contact information
               </h2>
               <p>
-                If you find any problems not listed on this page or think we're
+                If you find any problems not listed on this page or think we’re
                 not meeting accessibility requirements, contact{' '}
                 <a
                   className='govuk-link'
@@ -110,7 +110,7 @@ export default function AccessibilityStatementPage() {
               ) : (
                 <p>
                   You can also call Floodline, who will provide all of the
-                  information that's on our website and tell you if you're
+                  information that’s on our website and tell you if you’re
                   currently at risk of flooding. They can register you to the
                   service, update your existing details and cancel your account.
                   They also provide a text relay service for people who are
@@ -201,7 +201,7 @@ export default function AccessibilityStatementPage() {
                   Role, Value (A)
                 </li>
                 <li className='govuk-!-margin-bottom-2'>
-                  It's not clear to screen reader users that maps are present.
+                  It’s not clear to screen reader users that maps are present.
                   And map controls are not always grouped together with the maps
                   to allow screenreader users to bypass them or understand their
                   purpose. This fails WCAG 2.2 success criteria 1.3.1 Info and
@@ -228,7 +228,7 @@ export default function AccessibilityStatementPage() {
                 {location.pathname.includes('organisation') && (
                   <>
                     <li className='govuk-!-margin-bottom-2'>
-                      When users press the 'More actions' button, it reveals an
+                      When users press the ‘More actions’ button, it reveals an
                       expanded dropdown list of actions. But this list is not
                       presented correctly to screen reader users so they cannot
                       quickly work out what has been shown This fails WCAG 2.2
@@ -266,7 +266,7 @@ export default function AccessibilityStatementPage() {
                 )}
               </ol>
               <h2 className='govuk-heading-m govuk-!-padding-top-2'>
-                What we're doing to improve the accessibility of this website
+                What we’re doing to improve the accessibility of this website
               </h2>
               <p>
                 We intend to make sure this website is compliant with the{' '}
@@ -298,10 +298,10 @@ export default function AccessibilityStatementPage() {
                 The Equality and Human Rights Commission (EHRC) is responsible
                 for enforcing the Public Sector Bodies (Websites and Mobile
                 Applications) (No. 2) Accessibility Regulations 2018 (the
-                'accessibility regulations').
+                ‘accessibility regulations’).
               </p>
               <p>
-                If you're not happy with how we respond to your complaint,
+                If you’re not happy with how we respond to your complaint,
                 contact the
                 <a
                   href='https://www.equalityadvisoryservice.com/'

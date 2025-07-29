@@ -42,7 +42,6 @@ function App() {
   }
 
   if (cookies?.CookieControl?.analytics) {
-    console.log('analytic cookies set')
     const tagManagerArgs = {
       gtmId: gtmId
     }
@@ -50,8 +49,6 @@ function App() {
     if (tagManagerArgs.gtmId !== null) {
       TagManager.initialize(tagManagerArgs)
     }
-  } else {
-    console.log('analytic cookies not set')
   }
 
   useEffect(() => {

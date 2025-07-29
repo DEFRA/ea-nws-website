@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
@@ -136,14 +136,14 @@ export default function DeclarationOfAgreementPage() {
               </h2>
               <p>
                 Our{' '}
-                <a
-                  href='https://www.fws.environment-agency.gov.uk/app/olr/privacy'
+                <Link
+                  to='/privacy'
                   className='govuk-link'
                   target='_blank'
-                  rel='noreferrer'
+                  style={{ cursor: 'pointer' }}
                 >
                   privacy notice (opens new window)
-                </a>{' '}
+                </Link>{' '}
                 explains how we treat your personal information.
               </p>
 

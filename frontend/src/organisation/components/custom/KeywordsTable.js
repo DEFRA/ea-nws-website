@@ -88,7 +88,10 @@ export default function KeywordsTable({
             ' keywords'
           : keywords.length + ' keywords'}{' '}
         |{' '}
-        <Link className='govuk-link'>
+        <Link
+          className='govuk-link'
+          onClick={(event) => event.preventDefault()}
+        >
           {selectedKeywords.length + ' keywords selected'}
         </Link>
       </p>

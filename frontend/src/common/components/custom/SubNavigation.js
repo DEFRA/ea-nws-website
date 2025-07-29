@@ -11,6 +11,53 @@ export default function SubNavigation({ pages, currentPage, type }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
 
+  const getActiveNavLink = (title) => {
+    const { pathname, state } = location
+
+    const matchers = [
+      {
+        condition: pathname.includes(
+          '/organisation/manage-locations/live-monitoring'
+        ),
+        result: 'no'
+      },
+      {
+        condition:
+          pathname.includes('/organisation/manage-locations') &&
+          title === 'Locations',
+        result: 'page'
+      },
+      {
+        condition:
+          pathname.includes('/organisation/manage-contacts') &&
+          title === 'Users',
+        result: 'page'
+      },
+      {
+        condition:
+          pathname.includes('/organisation/reports') && title === 'Reports',
+        result: 'page'
+      },
+      {
+        condition: pathname.includes('/organisation/info') && title === 'Help',
+        result: 'page'
+      },
+      {
+        condition: state?.type === 'contact' && title === 'Users',
+        result: 'page'
+      },
+      {
+        condition: state?.type === 'location' && title === 'Locations',
+        result: 'page'
+      }
+    ]
+
+    for (const { condition, result } of matchers) {
+      if (condition) return result
+    }
+    return 'no'
+  }
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen)
   }
@@ -67,7 +114,11 @@ export default function SubNavigation({ pages, currentPage, type }) {
                 <Link
                   to={page.link}
                   className='sub-navigation__link'
-                  aria-current={currentPage === page.link ? 'page' : 'no'}
+                  aria-current={
+                    currentPage === page.link
+                      ? 'page'
+                      : getActiveNavLink(page.title)
+                  }
                 >
                   {page.title}
                 </Link>

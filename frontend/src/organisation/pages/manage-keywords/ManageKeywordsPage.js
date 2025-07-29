@@ -571,7 +571,11 @@ export default function ManageKeywordsPage() {
                     </div>
                   </div>
                 </div>
-                <Link onClick={() => clearSearch()} className='govuk-link'>
+                <Link onClick={(event) => {
+                  event.preventDefault()
+                  clearSearch()
+                }} 
+                className='govuk-link'>
                   Clear search results
                 </Link>
               </div>

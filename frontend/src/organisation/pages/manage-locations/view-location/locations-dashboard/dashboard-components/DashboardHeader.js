@@ -351,7 +351,9 @@ export default function DashboardHeader({
                   className='govuk-button govuk-button--secondary'
                   onClick={(event) => {
                     event.preventDefault()
-                    navigate(urlManageKeywordsOrg)
+                    navigate(urlManageKeywordsOrg, {
+                      state: { type: 'location' }
+                    })
                   }}
                 />
               </div>

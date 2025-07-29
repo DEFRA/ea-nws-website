@@ -2,82 +2,117 @@ import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 
-export default function TermsAndConditionsPage () {
+export default function TermsAndConditionsPage() {
   const navigate = useNavigate()
   return (
     <>
       <Helmet>
-        <title>Terms and conditions - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Terms and conditions - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l govuk-!-padding-top-4'>Terms and conditions</h1>
+            <h1 className='govuk-heading-l govuk-!-padding-top-4'>
+              Terms and conditions
+            </h1>
             <p>
-              These are the terms and conditions under which we, the Environment Agency,
-              provide the ‘Get flood warnings (professional)’ service to your organisation.
+              These are the terms and conditions under which we, the Environment
+              Agency, provide the ‘Get flood warnings (professional)’ service to
+              your organisation.
             </p>
             <p>
-              You must have the authority to accept these terms and conditions on behalf
-              of your organisation. They are legally binding.
+              You must have the authority to accept these terms and conditions
+              on behalf of your organisation. They are legally binding.
             </p>
             <h2 className='govuk-heading-m'>What we will and will not do</h2>
             <p>
-              We make all reasonable efforts to send flood warnings for locations added to your organisation’s account.
+              We make all reasonable efforts to send flood warnings for
+              locations added to your organisation’s account.
             </p>
             <p>
-              However, we cannot guarantee they will be sent or arrive. For example, you may fail to receive a warning due to unplanned network disruption.
+              However, we cannot guarantee they will be sent or arrive. For
+              example, you may fail to receive a warning due to unplanned
+              network disruption.
             </p>
             <p>
-              We aim to develop and issue flood warnings based on the best available data
-              and as early as possible before flooding is likely. But we cannot guarantee
-              warnings are always accurate or complete due to the sometimes
-              unpredictable nature of weather and flooding. In certain circumstances, we
-              may not be able to give as much early notice as we would like.
+              We aim to develop and issue flood warnings based on the best
+              available data and as early as possible before flooding is likely.
+              But we cannot guarantee warnings are always accurate or complete
+              due to the sometimes unpredictable nature of weather and flooding.
+              In certain circumstances, we may not be able to give as much early
+              notice as we would like.
             </p>
             <p>
-              We’ll send flood warnings to email addresses and telephone numbers added by your administrators.
+              We’ll send flood warnings to email addresses and telephone numbers
+              added by your administrators.
             </p>
-            <p>
-              We do not accept responsibility for any:
-            </p>
+            <p>We do not accept responsibility for any:</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>flood warnings that fail to send or arrive</li>
-              <li>action your organisation takes or fails to take in response to a warning</li>
-              <li>losses, damage or costs you have in connection with our service except when the law says we must</li>
+              <li>
+                action your organisation takes or fails to take in response to a
+                warning
+              </li>
+              <li>
+                losses, damage or costs you have in connection with our service
+                except when the law says we must
+              </li>
             </ul>
-
-            <p>
-              We can not guarantee that this service:
-            </p>
+            <p>We can not guarantee that this service:</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>will always be available (either online or by phone)</li>
               <li>is free of errors</li>
               <li>will never suffer from malicious software attacks</li>
             </ul>
-
-            <h2 className='govuk-heading-m'>What you're responsible for</h2>
-            <p>
-              You need to:
-            </p>
+            <h2 className='govuk-heading-m'>What you’re responsible for</h2>
+            <p>You need to:</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>
-                maintain accurate details for your contacts who need flood warnings
+                maintain accurate details for your contacts who need flood
+                warnings
               </li>
-              <li>add and maintain locations your organisation needs warnings for</li>
-              <li>choose which types of warnings your organisation wants to receive</li>
-              <li>interpret and apply the flood warnings we send, to suit your needs</li>
+              <li>
+                add and maintain locations your organisation needs warnings for
+              </li>
+              <li>
+                choose which types of warnings your organisation wants to
+                receive
+              </li>
+              <li>
+                interpret and apply the flood warnings we send, to suit your
+                needs
+              </li>
             </ul>
 
+            <h2 className='govuk-heading-m'>
+              Granting us access to your account
+            </h2>
+            <p>
+              If you have problems with your account that you cannot fix on your
+              own or with our support, you can ask us in writing to become a
+              temporary administrator on your account.
+            </p>
+            <p>
+              While we have temporary administrator rights, we’ll have access to
+              your data. We’ll take all reasonable steps to make sure your
+              organisation’s confidentiality is safe.
+            </p>
+            <p>
+              After we’ve fixed any problems, we’ll delete our administrator
+              rights as soon as possible, within reasonable limits.
+            </p>
+
             <h2 className='govuk-heading-m'>How we use personal information</h2>
-            <p>Our
+            <p>
+              Our{' '}
               <a
                 href='/organisation/privacy'
                 className='govuk-link'
                 target='_blank'
               >
-                {' '}
                 privacy notice (opens new window)
               </a>{' '}
               explains more about how we treat personal information.

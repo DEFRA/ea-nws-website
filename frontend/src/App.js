@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useCookies, withCookies } from 'react-cookie'
+import TagManager from 'react-gtm-module'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
+import { backendCall } from './common/services/BackendService'
 import { removeHoverIosSafari } from './common/services/formatters/iosDoubleTapRemoval'
 import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { authenticatedRoutes, routes } from './routes'
@@ -19,13 +21,42 @@ function App() {
   const redirectTimer = useRef(null)
   const currentRoute = window.location.pathname
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
+  const [cookies, setCookie, removeCookie] = useCookies(['authToken', 'CookieControl'])
   const hasAuthCookie = cookies.authToken
   const dispatch = useDispatch()
   const lastActivity = useSelector((state) => state.session.lastActivity)
+  const [gtmId, setGtmId] = useState(null)
+
+  !cookies.CookieControl && setCookie('CookieControl', {analytics: false, preferencesSet: false, popup: true}, {maxAge: 60*60*24*365})
+
+  const getGtmId = async () => {
+    const { data } = await backendCall(
+      'data',
+      'api/values/gtm'
+    )
+    if (data) {
+      setGtmId(data)
+    } else {
+      setGtmId(null)
+    }
+  }
+
+  if (cookies?.CookieControl?.analytics) {
+    console.log('analytic cookies set')
+    const tagManagerArgs = {
+      gtmId: gtmId
+    }
+    
+    if (tagManagerArgs.gtmId !== null) {
+      TagManager.initialize(tagManagerArgs)
+    }
+  } else {
+    console.log('analytic cookies not set')
+  }
 
   useEffect(() => {
     removeHoverIosSafari()
+    getGtmId()
   }, [])
 
   /* Clear local storage if no cookies,

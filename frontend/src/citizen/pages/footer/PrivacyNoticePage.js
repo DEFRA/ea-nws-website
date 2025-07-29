@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -37,112 +37,325 @@ export default function PrivacyNoticePage() {
                   <h1 className='govuk-heading-l' id='main-content'>
                     Privacy notice
                   </h1>
-                  <h2 className='govuk-heading-m'>Who we are</h2>
                   <p>
-                    The Environment Agency is the data controller for the Flood
-                    Warning System in England. Our{' '}
-                    <a className='govuk-link'>personal information charter</a>{' '}
-                    explains your rights and how we deal with your personal
-                    information.
+                    The Environment Agency is the data controller for the Get
+                    flood warnings service in England.
                   </p>
                   <p>
-                    Natural Resources Wales use the same system and are the data
-                    controller if you ask for a service in Wales. To read about
-                    how Natural Resources Wales uses your personal information
-                    go to{' '}
-                    <a className='govuk-link'>naturalresources.wales/privacy</a>
-                    .
-                  </p>
-                  <h2 className='govuk-heading-m'>What data we collect</h2>
-                  <p>
-                    If you register with us, the personal data we collect about
-                    you includes:
-                  </p>
-                  <ul className='govuk-list govuk-list--bullet'>
-                    <li>name</li>
-                    <li>contact details</li>
-                    <li>
-                      address or locations of interest for which you would like
-                      to receive warnings
-                    </li>
-                  </ul>
-                  <h3 className='govuk-heading-s'>Cookies and analytics</h3>
-                  <p>
-                    Read our full{' '}
-                    <Link
-                      to='cookies'
+                    Our{' '}
+                    <a
                       className='govuk-link'
-                      style={{ cursor: 'pointer' }}
+                      href='https://www.gov.uk/government/organisations/environment-agency/about/personal-information-charter'
+                      target='blank'
                     >
-                      cookie notice
-                    </Link>{' '}
-                    to find out how we use cookies.
+                      personal information charter
+                    </a>{' '}
+                    explains what we do with personal data in general, your
+                    rights and how to contact our data protection officer.
                   </p>
-                  <h2 className='govuk-heading-m'>
-                    What we do with your personal data
+
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    What we do with your personal data in this service
                   </h2>
-                  <p>We may use your personal information to:</p>
+                  <p>We may use this to:</p>
                   <ul className='govuk-list govuk-list--bullet'>
-                    <li>send you the warnings you have signed up for</li>
+                    <li>send you flood warnings</li>
                     <li>
-                      send you a small number of service announcements or
-                      administrative messages
+                      send you service announcements or administrative messages
                     </li>
                     <li>
                       help emergency services and local councils respond to
                       flooding
                     </li>
                     <li>
-                      help with our work on flood warning and flood risk
+                      support our work on flood warning and flood risk
                       management
                     </li>
                   </ul>
-                  <h3 className='govuk-heading-s'>
-                    How we work with phone companies
+
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Personal data we collect and how long we keep it
+                  </h2>
+                  <p>This depends on whether:</p>
+                  <ul className='govuk-list govuk-list--bullet'>
+                    <li>
+                      you{' '}
+                      <a
+                        href='#if-you-signup-for-flood-warnings'
+                        class='govuk-link'
+                      >
+                        sign up for flood warnings
+                      </a>
+                    </li>
+                    <li>
+                      we{' '}
+                      <a
+                        href='#we-automatically-opt-you-in'
+                        className='govuk-link'
+                      >
+                        automatically opt you in
+                      </a>{' '}
+                      to get flood warnings
+                    </li>
+                  </ul>
+
+                  <h2
+                    className='govuk-heading-m govuk-!-margin-top-6'
+                    id='if-you-signup-for-flood-warnings'
+                  >
+                    If you sign up to the Get flood warnings service
+                  </h2>
+                  <p>
+                    We collect your personal data from you directly when you
+                    sign up.
+                  </p>
+                  <p>
+                    Personal data rules that apply to the account holder also
+                    apply to any family and friends added to the account.
+                  </p>
+                  <p>During sign up, we collect your:</p>
+                  <ul className='govuk-list govuk-list--bullet'>
+                    <li>name</li>
+                    <li>contact details</li>
+                    <li>locations you added (to get flood warnings)</li>
+                  </ul>
+                  <p>
+                    If you remove your data or delete the account, we’ll store
+                    your personal data for 7 years. This is so we have a log of
+                    any flood messages we sent you, in case we need to refer
+                    back to this.
+                  </p>
+                  <p>
+                    If you do not complete sign up, we’ll delete your
+                    partially-created account after one week. We’ll then store
+                    your data for 7 years so we have a record that we did not
+                    send you any flood messages.
+                  </p>
+
+                  <h3 className='govuk-heading-s govuk-!-margin-top-6'>
+                    Extra rules if you delete your account
                   </h3>
                   <p>
-                    We have a legal duty under the{' '}
-                    <a className='govuk-link'>Civil Contingencies Act</a> to
-                    maintain arrangements to warn people who may be at risk of
-                    flooding. The lawful basis for processing your personal data
-                    is to perform a task in the public interest that is set out
-                    in law.
+                    If you delete your account, we may keep a separate record of
+                    your details.
                   </p>
                   <p>
-                    We work with phone companies to obtain phone numbers for
-                    addresses where there is no customer registered for the
-                    flood warning service. We tell phone companies the
-                    unregistered addresses at risk of flooding and they send us
-                    a list of the phone numbers registered to those addresses.
-                    They do not give us the names or addresses associated with
-                    those numbers.
+                    This is so we do not{' '}
+                    <a
+                      href='#we-automatically-opt-you-in'
+                      className='govuk-link'
+                    >
+                      automatically opt you in
+                    </a>{' '}
+                    for warnings for 6 years.
                   </p>
                   <p>
-                    The phone number will stop being sent flood warnings if the
-                    phone companies no longer provide us with the phone number.
-                    This might happen if:
+                    After 6 years expires, we keep your details for a further 7
+                    years, so that we have a record that you were opted out of
+                    warnings for this period.
+                  </p>
+
+                  <h2
+                    className='govuk-heading-m govuk-!-margin-top-6'
+                    id='we-automatically-opt-you-in'
+                  >
+                    If we automatically opt you in for warnings
+                  </h2>
+                  <p>
+                    The Environment Agency has a legal duty to send emergency
+                    warnings to people at risk of flooding so they can protect
+                    themselves, their family and property.
+                  </p>
+                  <p>
+                    We may gather and use your phone number to send you these
+                    emergency warnings.
+                  </p>
+
+                  <h3 className='govuk-heading-s govuk-!-margin-top-6'>
+                    How we get your phone number
+                  </h3>
+                  <p>We work with phone companies to gather numbers.</p>
+                  <p>
+                    We send phone companies a list of addresses in flood risk
+                    areas where no one is signed up for our flood warning
+                    service.
+                  </p>
+                  <p>
+                    In return, they send us phone numbers in those areas, so
+                    that we can alert these numbers in an emergency.
+                  </p>
+                  <p>
+                    The phone companies do not tell us your name or exact
+                    address, only if your phone number is registered at an
+                    address in areas at risk.
+                  </p>
+                  <p>
+                    (We only ask the phone companies for numbers if there are 10
+                    or more addresses in that flood area not signed up for our
+                    flood warning service.)
+                  </p>
+
+                  <h3 className='govuk-heading-s govuk-!-margin-top-6'>
+                    How we use your number
+                  </h3>
+                  <p>
+                    How we use your number We use your number to send you flood
+                    warnings until either:
                   </p>
                   <ul className='govuk-list govuk-list--bullet'>
-                    <li>you change or cancel your phone number</li>
-                    <li>you move house</li>
-                    <li>we change the areas that we provide warnings to</li>
+                    <li>
+                      you{' '}
+                      <a href='#how-to-opt-out' className='govuk-link'>
+                        opt out
+                      </a>
+                    </li>
+                    <li>
+                      the phone company{' '}
+                      <a
+                        href='#phone-company-stops-providing-number'
+                        className='govuk-link'
+                      >
+                        stops providing us
+                      </a>{' '}
+                      with your number
+                    </li>
                   </ul>
-                  <h2 className='govuk-heading-m'>
-                    Where your data is processed and stored
+
+                  <h3
+                    className='govuk-heading-s govuk-!-margin-top-6'
+                    id='how-to-opt-out'
+                  >
+                    How to opt out
+                  </h3>
+                  <p>To opt out, you can do any of the following:</p>
+                  <ul className='govuk-list govuk-list--bullet'>
+                    <li>
+                      text ‘REMOVE’ to 60006, using the phone that received the
+                      original text
+                    </li>
+                    <li>
+                      call Floodline on 0345 988 1188 (
+                      <a
+                        class='govuk-link'
+                        href='https://www.gov.uk/call-charges'
+                        target='blank'
+                      >
+                        call charges
+                      </a>{' '}
+                      may apply)
+                    </li>
+                    <li>
+                      send an email, including your phone number, to {''}
+                      <Link
+                        class='govuk-link'
+                        to='mailto:enquiries@environment-agency.gov.uk'
+                      >
+                        enquiries@environment-agency.gov.uk
+                      </Link>
+                    </li>
+                  </ul>
+
+                  <h3
+                    className='govuk-heading-s govuk-!-margin-top-6'
+                    id='if-you-opt-out'
+                  >
+                    If you opt out
+                  </h3>
+                  <p>
+                    If you opt out, we’ll keep a record of your phone number and
+                    any flood warnings we’ve sent you for 6 years. This is so
+                    that we do not opt you back in during this time.
+                  </p>
+                  <p>
+                    After 6 years expires, we’ll store your number for a further
+                    7 years so we have a record that you opted out.
+                  </p>
+                  <p>
+                    We may automatically opt you back in during this 7 years but
+                    you can opt out again, if you wish.
+                  </p>
+
+                  <h3
+                    className='govuk-heading-s govuk-!-margin-top-6'
+                    id='phone-company-stops-providing-number'
+                  >
+                    If the phone company stops providing us with your number
+                  </h3>
+                  <p>
+                    Phone companies may stop providing us with your number if:
+                  </p>
+                  <ul className='govuk-list govuk-list--bullet'>
+                    <li>you sign up for warnings</li>
+                    <li>you change or cancel your number</li>
+                    <li>you move house</li>
+                    <li> we change the areas that we provide warnings for</li>
+                    <li>
+                      we stop asking the phone companies for numbers in your
+                      area
+                    </li>
+                  </ul>
+                  <p>
+                    If they stop providing us with your number, we’ll store your
+                    number for 7 years.
+                  </p>
+                  <p>
+                    We may automatically opt you back in during this 7 years but
+                    you can opt out, if you wish.
+                  </p>
+
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Cookies and analytics
+                  </h2>
+                  <p>
+                    We collect some anonymous data using cookies. Read our{' '}
+                    <Link class='govuk-link' to='/cookies'>
+                      cookies notice
+                    </Link>{' '}
+                    to find out how we use cookies.
+                  </p>
+
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Lawful basis we use to gather and keep your data
+                  </h2>
+                  <p>
+                    We have a legal duty under the{' '}
+                    <a
+                      class='govuk-link'
+                      href='https://www.gov.uk/guidance/preparation-and-planning-for-emergencies-responsibilities-of-responder-agencies-and-others'
+                      target='blank'
+                    >
+                      Civil Contingencies Act
+                    </a>{' '}
+                    to warn people who may be at risk of flooding. The lawful
+                    basis for processing your personal data is that we need to
+                    carry out a task in the public interest.
+                  </p>
+
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Where your data is used and stored
                   </h2>
                   <p>
                     We design, build and run our systems to make sure that your
-                    data is as safe as possible at all stages, both while it’s
-                    processed and when it’s stored.
+                    data is as safe as possible at all stages, both while we use
+                    and store it.
                   </p>
                   <p>
-                    Your personal information is stored and processed securely
-                    on servers in the UK and Ireland.
+                    Your personal information is used and stored securely on
+                    servers in the UK.
                   </p>
-                  <h2 className='govuk-heading-m'>
-                    Who your data might be shared with
+
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Who we share your data with
                   </h2>
-                  <h3 className='govuk-heading-s'>
+                  <h3 className='govuk-heading-s govuk-!-margin-top-6'>
+                    Legal obligations to share
+                  </h3>
+                  <p>
+                    We may share your data or disclose information because of a
+                    law, regulation or court order and to protect our interests
+                    and legal rights.
+                  </p>
+                  <h3 className='govuk-heading-s govuk-!-margin-top-6'>
                     Third party service providers
                   </h3>
                   <p>
@@ -158,40 +371,17 @@ export default function PrivacyNoticePage() {
                       share your data with third parties for marketing purposes
                     </li>
                   </ul>
-                  <h3 className='govuk-heading-s'>Legal obligations</h3>
-                  <p>
-                    We may share your data or disclose information because of a
-                    law, regulation or court order and to protect our interests
-                    and legal rights.
-                  </p>
-                  <h2 className='govuk-heading-m'>
-                    How long we keep your data
+
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Changes to this policy
                   </h2>
                   <p>
-                    We will keep your personal data for as long as your account
-                    is active, and for 6 years from the date that your flood
-                    warnings account is cancelled. This is in line with our
-                    retention policy.
+                    We may change this privacy notice. If we do, we’ll amend the
+                    ‘last updated’ date at the bottom of this page. Any changes
+                    to this privacy notice will apply to you and your data
+                    immediately.
                   </p>
-                  <p>
-                    We need to keep your details so that we can stop your phone
-                    number from being automatically added to the service again
-                    after you cancel your account. After 6 years, we will no
-                    longer have a record that you cancelled your account and
-                    your phone number could be automatically added again.
-                  </p>
-                  <h2 className='govuk-heading-m'>Changes to this policy</h2>
-                  <p>
-                    We may change this privacy notice. In that case, the ‘last
-                    updated’ date at the bottom of this page will also change.
-                    Any changes to this privacy notice will apply to you and
-                    your data immediately.
-                  </p>
-                  <p>
-                    We encourage you to review this privacy notice regularly to
-                    find out how we are protecting your data.
-                  </p>
-                  <p>Last updated: 26 September 2022</p>
+                  <p>Last updated: 10 July 2025</p>
                 </div>
               </div>
             </div>

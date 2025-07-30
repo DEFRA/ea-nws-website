@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
@@ -22,6 +22,7 @@ import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg
 import floodSevereWarningIcon from '../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../common/components/custom/FloodDataInformationPopup'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
+import OsMapTerms from '../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
 import AlertType from '../../../../common/enums/AlertType'
 import LocationDataType from '../../../../common/enums/LocationDataType'
@@ -179,10 +180,12 @@ export default function LiveMap({
     } else {
       setAccountHasLocations(false)
     }
-    setVisibleFeatures([...severeFloodAreas,
+    setVisibleFeatures([
+      ...severeFloodAreas,
       ...warningFloodAreas,
       ...alertFloodAreas,
-      ...shapes])
+      ...shapes
+    ])
   }
 
   const processLocation = async (location, liveAlert) => {
@@ -394,7 +397,7 @@ export default function LiveMap({
   }
 
   // map key
-  
+
   const FeatureTracker = () => {
     const features = [
       ...severeFloodAreas,
@@ -688,6 +691,7 @@ export default function LiveMap({
                 onEachFeature={onEachShapeFeature}
               />
             ))}
+            <OsMapTerms />
           </MapContainer>
 
           {totalAlerts.length > 0 && (

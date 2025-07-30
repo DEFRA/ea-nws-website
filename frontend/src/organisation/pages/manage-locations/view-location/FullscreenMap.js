@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import {
   GeoJSON,
@@ -18,6 +18,7 @@ import {
 import { Link } from 'react-router-dom'
 import iconUrl from '../../../../common/assets/images/location_pin.svg'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
+import OsMapTerms from '../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -458,6 +459,7 @@ export default function FullscreenMap({
                           }}
                         />
                       )}
+                      <OsMapTerms />
                     </MapContainer>
                   </div>
 

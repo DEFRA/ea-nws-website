@@ -17,6 +17,7 @@ import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import OsMapTerms from '../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../common/enums/LocationDataType'
 import {
@@ -48,7 +49,8 @@ export default function Map({
   boundaryList,
   boundariesAlreadyAdded = [],
   manualCoords,
-  accessibleMap = false
+  accessibleMap = false,
+  showOsMapTerms = true
 }) {
   const dispatch = useDispatch()
   const { latitude: currentLatitude, longitude: currentLongitude } =
@@ -784,6 +786,7 @@ export default function Map({
                   <FitBounds />
                 </>
               )}
+            {showOsMapTerms && <OsMapTerms />}
           </>
         ) : (
           <div className='map-error-container'>

@@ -7,6 +7,7 @@ import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
 import { removeHoverIosSafari } from './common/services/formatters/iosDoubleTapRemoval'
+import GoogleAnalytics from './common/services/hooks/GoogleAnalytics'
 import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { authenticatedRoutes, routes } from './routes'
 
@@ -19,13 +20,14 @@ function App() {
   const redirectTimer = useRef(null)
   const currentRoute = window.location.pathname
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
+  const [cookies, setCookie, removeCookie] = useCookies(['authToken', 'CookieControl'])
   const hasAuthCookie = cookies.authToken
   const dispatch = useDispatch()
   const lastActivity = useSelector((state) => state.session.lastActivity)
 
   useEffect(() => {
     removeHoverIosSafari()
+    !cookies.CookieControl && setCookie('CookieControl', {analytics: false, preferencesSet: false, popup: true}, {maxAge: 60*60*24*365})
   }, [])
 
   /* Clear local storage if no cookies,
@@ -119,6 +121,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <GoogleAnalytics useAnalytics={cookies?.CookieControl?.analytics} />
       <ScrollToTop />
       <Routes>
         <Route path='/' element={<Layout />}>

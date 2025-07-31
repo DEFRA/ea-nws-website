@@ -83,10 +83,10 @@ export default function LocationAlreadyAddedLayout() {
                 <InsetText text={selectedLocation.address} />
                 {severeWarningAreaNames.length > 0 && (
                   <>
-                    <h2 class='govuk-heading-m'>
+                    <h2 className='govuk-heading-m'>
                       Severe warnings and flood warnings
                     </h2>
-                    <ul class='govuk-list govuk-list--bullet'>
+                    <ul className='govuk-list govuk-list--bullet'>
                       {severeWarningAreaNames.map((name, index) => {
                         return <li key={index}>{name}</li>
                       })}
@@ -95,9 +95,9 @@ export default function LocationAlreadyAddedLayout() {
                 )}
                 {alertAreaNames.length > 0 && (
                   <>
-                    <h2 class='govuk-heading-m'>Flood alerts</h2>
+                    <h2 className='govuk-heading-m'>Flood alerts</h2>
                     <p>You already get these for:</p>
-                    <ul class='govuk-list govuk-list--bullet'>
+                    <ul className='govuk-list govuk-list--bullet'>
                       {alertAreaNames.map((name, index) => {
                         return <li key={index}>{name}</li>
                       })}
@@ -105,7 +105,7 @@ export default function LocationAlreadyAddedLayout() {
                   </>
                 )}
                 {moreFloodAreasAvailable && (
-                  <h2 class='govuk-heading-m'>
+                  <h2 className='govuk-heading-m'>
                     There are other nearby areas you can add
                   </h2>
                 )}

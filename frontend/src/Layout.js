@@ -1,9 +1,11 @@
 import { initAll } from 'govuk-frontend'
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
 import CitizenAccountNavigation from './common/components/custom/CitizenAccountNavigation'
 import OrganisationAccountNavigation from './common/components/custom/OrganisationAccountNavigation'
+import CookieBanner from './common/components/gov-uk/CookieBanner'
 import Footer from './common/components/gov-uk/Footer'
 import Header from './common/components/gov-uk/Header'
 import PhaseBanner from './common/components/gov-uk/PhaseBanner'
@@ -15,6 +17,9 @@ function Layout() {
   const auth = useSelector((state) => state.session.authToken)
   const [servicePhase, setServicePhase] = useState(false)
   const hideHeader = location.pathname.includes('preview')
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['CookieControl'])
+
 
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
@@ -28,9 +33,10 @@ function Layout() {
 
   return (
     <div className='page-container'>
+      <CookieBanner />
       <a
         href='#main-content'
-        class='govuk-skip-link'
+        className='govuk-skip-link'
         data-module='govuk-skip-link'
       >
         Skip to main content

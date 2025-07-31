@@ -74,14 +74,14 @@ export default function LiveFloodMonitoringPage() {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-5 govuk-body'>
         <div className='govuk-grid-row'>
-          <div class='govuk-grid-column-two-thirds'>
-            <h1 class='govuk-heading-l' id='main-content'>
+          <div className='govuk-grid-column-two-thirds'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Live flood warnings
             </h1>
             {accountHasLocations && (
               <>
                 <Link
-                  class='govuk-heading-m govuk-link'
+                  className='govuk-heading-m govuk-link'
                   style={{ color: '#1d70b8', marginBottom: '0' }}
                   to={orgFloodReportsUrls.live}
                 >
@@ -95,8 +95,8 @@ export default function LiveFloodMonitoringPage() {
             )}
           </div>
         </div>
-        <div class='govuk-grid-row govuk-!-padding-top-4'>
-          <div class='govuk-grid-column-one-third'>
+        <div className='govuk-grid-row govuk-!-padding-top-4'>
+          <div className='govuk-grid-column-one-third'>
             {accountHasLocations ? (
               floodData.locationsAffected > 0 ? (
                 <>
@@ -156,7 +156,7 @@ export default function LiveFloodMonitoringPage() {
               )
             ) : (
               <>
-                <h2 class='govuk-heading-m govuk-!-margin-bottom-0'>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0'>
                   Latest warnings
                 </h2>
                 <p className='govuk-!-margin-top-0'>0 to display</p>
@@ -183,7 +183,7 @@ export default function LiveFloodMonitoringPage() {
               </>
             )}
           </div>
-          <div class='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-two-thirds'>
             <LiveMap
               showSevereLocations={filters.severeAreas}
               showWarningLocations={filters.warningAreas}

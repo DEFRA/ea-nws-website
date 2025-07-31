@@ -225,10 +225,10 @@ export default function FloodReportFilter ({
       {visibility.dateRange && (
         <div className='govuk-form-group warnings-date-range-filter'>
           <div className={`${dateFromError && 'govuk-form-group--error'}`}>
-            <p class='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
+            <p className='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
               Date from
             </p>
-            <p class='govuk-caption-m govuk-!-margin-top-0'>
+            <p className='govuk-caption-m govuk-!-margin-top-0'>
               For example, 31/01/2023
             </p>
             {dateFromError && (
@@ -255,10 +255,10 @@ export default function FloodReportFilter ({
             </div>
           </div>
           <div className={`${dateToError && 'govuk-form-group--error'}`}>
-            <p class='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
+            <p className='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
               Date to
             </p>
-            <p class='govuk-caption-m govuk-!-margin-top-0'>
+            <p className='govuk-caption-m govuk-!-margin-top-0'>
               For example, 31/01/2023
             </p>
             {dateToError && (

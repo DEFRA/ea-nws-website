@@ -32,13 +32,13 @@ export default function NotificationBanner({
           {heading && (
             <h3 className='govuk-notification-banner__heading'>{heading}</h3>
           )}
-          <p className='govuk-body'>
+          <div className='govuk-body'>
             {text.map((line, index) => (
               <p key={index} className='govuk-!-margin-bottom-1'>
                 {line}
               </p>
             ))}
-          </p>
+          </div>
         </div>
       </div>
     </>

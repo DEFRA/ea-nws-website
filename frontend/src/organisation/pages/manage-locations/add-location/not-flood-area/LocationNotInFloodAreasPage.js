@@ -95,12 +95,12 @@ export default function LocationNotInFloodAreaPage () {
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half govuk-body'>
-            <h1 class='govuk-heading-l' id='main-content'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Flood messages are not available for {locationName}
             </h1>
             <InsetText text={insetTextInfo} />
             <Details title='What is flood risk' text={floodRiskInfo} />
-            <p class='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
+            <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
               Why are flood messages unavailable for some locations?
             </p>
             <p className='govuk-!-margin-top-0'>
@@ -112,7 +112,7 @@ export default function LocationNotInFloodAreaPage () {
               Locations may still be at risk of flooding even if you cannot get
               flood messages for them.
             </p>
-            <p class='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
+            <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
               How to get flood messages for this location
             </p>
             <p className='govuk-!-margin-top-0 govuk-!-margin-bottom-7'>

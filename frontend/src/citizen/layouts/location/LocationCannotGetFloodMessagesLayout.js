@@ -25,7 +25,7 @@ export default function LocationCannotGetFloodMessagesLayout({
             </h1>
             <InsetText text={selectedLocation.address} />
             <p>Possible reasons are:</p>
-            <ul class='govuk-list govuk-list--bullet'>
+            <ul className='govuk-list govuk-list--bullet'>
               <li>the risk of flooding is very low</li>
             </ul>
             <p>You may still be at risk of flooding.</p>

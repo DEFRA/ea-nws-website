@@ -80,7 +80,7 @@ export default function FloodMessagesTable({
               >
                 {severeAreasArray?.length > 1 ? (
                   <>
-                    <ul class='govuk-list govuk-list--bullet'>
+                    <ul className='govuk-list govuk-list--bullet'>
                       {severeAreasArray?.map((area) => {
                         return <li key={area.TA_CODE}>{area.TA_Name}</li>
                       })}
@@ -121,7 +121,7 @@ export default function FloodMessagesTable({
             >
               {alertAreasArray?.length > 1 ? (
                 <>
-                  <ul class='govuk-list govuk-list--bullet'>
+                  <ul className='govuk-list govuk-list--bullet'>
                     {alertAreasArray?.map((area) => {
                       return <li key={area.TA_CODE}>{area.TA_Name}</li>
                     })}

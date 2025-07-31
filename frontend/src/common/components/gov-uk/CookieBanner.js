@@ -26,11 +26,11 @@ export default function CookieBanner(){
     }
 
     const choiceMessage = (
-        <div class="govuk-cookie-banner__message govuk-width-container" role="alert">
-            <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <div class="govuk-cookie-banner__content">
-                <p class="govuk-body">You’ve {choice} analytics cookies. You can{' '}
+        <div className="govuk-cookie-banner__message govuk-width-container" role="alert">
+            <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+                <div className="govuk-cookie-banner__content">
+                <p className="govuk-body">You’ve {choice} analytics cookies. You can{' '}
                 <Link
                     className='govuk-link'
                     to={
@@ -44,7 +44,7 @@ export default function CookieBanner(){
                 </div>
             </div>
             </div>
-            <div class="govuk-button-group">
+            <div className="govuk-button-group">
             <Button
                 text='Hide cookie message'
                 className='govuk-button'

@@ -59,13 +59,14 @@ export default function CookiesPage () {
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
+                      heading='Cookies preferences saved'
                       text={bannerText}
                     />
                   </div>
                 }
                 <div className='govuk-grid-column-two-thirds'>
                   <div className='govuk-body'>
-                    <h1 className='govuk-heading-l'>Cookies</h1>
+                    <h1 className='govuk-heading-l' id='main-content'>Cookies</h1>
                     <p>Cookies are small files saved on your phone, tablet or computer when you visit a website.</p>
                     <p>We use cookies to make the ‘Get flood warnings’ service work and to collect information about how you use this service.</p>
                     <h2 className='govuk-heading-m govuk-!-margin-top-6 govuk-!-margin-bottom-6'>Essential cookies and storing information on your browser</h2>
@@ -138,13 +139,13 @@ export default function CookiesPage () {
                         <div className='govuk-radios govuk-radios--inline' data-module='govuk-radios'>
                           <div className='govuk-radios__item'>
                             <input className='govuk-radios__input' id='acceptCookies' name='acceptCookies' type='radio' value='yes' onChange={(e) => setAcceptCookies(true)} checked={acceptCookies}/>
-                            <label className='govuk-label govuk-radios__label' for='acceptCookies'>
+                            <label className='govuk-label govuk-radios__label' htmlFor='acceptCookies'>
                               Yes
                             </label>
                           </div>
                           <div className='govuk-radios__item'>
                             <input className='govuk-radios__input' id='acceptCookies-2' name='acceptCookies' type='radio' value='no' onChange={(e) => setAcceptCookies(false)} checked={!acceptCookies}/>
-                            <label className='govuk-label govuk-radios__label' for='acceptCookies-2'>
+                            <label className='govuk-label govuk-radios__label' htmlFor='acceptCookies-2'>
                               No
                             </label>
                           </div>

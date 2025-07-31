@@ -36,7 +36,7 @@ function Layout() {
       <CookieBanner />
       <a
         href='#main-content'
-        class='govuk-skip-link'
+        className='govuk-skip-link'
         data-module='govuk-skip-link'
       >
         Skip to main content

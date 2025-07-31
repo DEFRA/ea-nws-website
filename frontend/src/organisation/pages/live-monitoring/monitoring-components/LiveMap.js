@@ -698,7 +698,7 @@ export default function LiveMap({
 
           {totalAlerts.length > 0 && totalAlerts.length <= 20 && (
             <>
-              <h3 class='govuk-heading-s'>Locations affected</h3>
+              <h3 className='govuk-heading-s'>Locations affected</h3>
               {totalAlerts
                 .reduce((rows, location, index) => {
                   if (index % 2 === 0) {

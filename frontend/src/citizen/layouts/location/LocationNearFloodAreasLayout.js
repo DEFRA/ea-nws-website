@@ -329,7 +329,7 @@ export default function LocationNearFloodAreasLayout({
         icon: 'warning',
         areaCategory: 'Severe flood warnings and flood warnings area',
         messages: (
-          <ul class='govuk-list govuk-list--bullet'>
+          <ul className='govuk-list govuk-list--bullet'>
             <li>severe flood warnings</li>
             <li>flood warnings</li>
           </ul>
@@ -341,7 +341,7 @@ export default function LocationNearFloodAreasLayout({
         icon: 'alert',
         areaCategory: 'flood alerts area',
         messages: (
-          <ul class='govuk-list govuk-list--bullet'>
+          <ul className='govuk-list govuk-list--bullet'>
             <li>flood alerts</li>
           </ul>
         )
@@ -412,7 +412,7 @@ export default function LocationNearFloodAreasLayout({
             getFloodAreaDetails(area?.properties?.category).icon
           }-square left`}
         />
-        <h3 class='govuk-heading-s'>{area.properties.TA_Name}</h3>
+        <h3 className='govuk-heading-s'>{area.properties.TA_Name}</h3>
       </div>
       <p>Messages you'll get:</p>
       {getFloodAreaDetails(area?.properties?.category).messages}
@@ -517,12 +517,12 @@ export default function LocationNearFloodAreasLayout({
                     error && 'govuk-form-group--error'
                   }`}
                 >
-                  {error && <p class='govuk-error-message'>{error}</p>}
+                  {error && <p className='govuk-error-message'>{error}</p>}
                   {floodAreas.map((area) => {
                     return (
                       <>
-                        <div class='govuk-summary-card' key={area.id}>
-                          <div class='govuk-summary-card__title-wrapper'>
+                        <div className='govuk-summary-card' key={area.id}>
+                          <div className='govuk-summary-card__title-wrapper'>
                             <Checkbox
                               label='Select'
                               screenReaderAdditional={getAccessibleLabel(area)}
@@ -540,11 +540,11 @@ export default function LocationNearFloodAreasLayout({
                               }}
                             />
                           </div>
-                          <div class='govuk-summary-card__content govuk-grid-row'>
-                            <div class='govuk-grid-column-one-half'>
+                          <div className='govuk-summary-card__content govuk-grid-row'>
+                            <div className='govuk-grid-column-one-half'>
                               {isMobile ? map(area) : areaInfo(area)}
                             </div>
-                            <div class='govuk-grid-column-one-half'>
+                            <div className='govuk-grid-column-one-half'>
                               {isMobile ? (
                                 <div className='govuk-!-padding-top-4'>
                                   {areaInfo(area)}

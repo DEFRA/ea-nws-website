@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import UserType from '../../../common/enums/UserType'
 import { setOrgCurrentContact } from '../../../common/redux/userSlice'
@@ -27,6 +27,7 @@ export default function UsersTable({
   const [emailSort, setEmailSort] = useState('none')
   const [linkedLocationsSort, setLinkedLocationsSort] = useState('none')
   const [messagesReceivedSort, setMessagesReceivedSort] = useState('none')
+  const profileId = useSelector((state) => state.session.profileId)
 
   useEffect(() => {
     setUserTypeSort('none')
@@ -405,17 +406,22 @@ export default function UsersTable({
                       : LoadingDots}
                   </td>
                   <td className='govuk-table__cell'>
-                    <Link
-                      className='govuk-link'
-                      aria-label={`Delete ${contact.firstname}${
-                        contact?.lastname?.length > 0
-                          ? ' ' + contact?.lastname
-                          : ''
-                      }`}
-                      onClick={(e) => onAction(e, actionText, contact)}
-                    >
-                      {actionText}
-                    </Link>
+                    {!(
+                      contact.id === profileId &&
+                      contact.role === UserType.Admin
+                    ) && (
+                      <Link
+                        className='govuk-link'
+                        aria-label={`Delete ${contact.firstname}${
+                          contact?.lastname?.length > 0
+                            ? ' ' + contact?.lastname
+                            : ''
+                        }`}
+                        onClick={(e) => onAction(e, actionText, contact)}
+                      >
+                        {actionText}
+                      </Link>
+                    )}
                   </td>
                 </>
               )}

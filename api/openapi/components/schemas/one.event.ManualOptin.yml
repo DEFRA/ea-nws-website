@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./one.event.ManualKeywordLog.yml
+  - type: object

@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./community.event.GroupGroupLog.yml
+  - type: object
+    description: Contract left a group (group POV)

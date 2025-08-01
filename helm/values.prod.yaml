@@ -1,0 +1,143 @@
+# Default values for ea-nws-website.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+frontend:
+  replicaCount: 2
+  imagePullSecrets: []
+  nameOverride: ''
+  fullnameOverride: ''
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: 'prd-public-website-s3-service-account'
+  podAnnotations: {}
+  podLabels:
+    app: frontend
+  podSecurityContext: {}
+  containers:
+    - name: frontend
+      securityContext: {}
+      image:
+        repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+        pullPolicy: Always
+        tag: 'frontend-0.5.2'
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 3000
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+      resources: {}
+      volumeMounts: []
+  service:
+    type: ClusterIP
+    ports:
+      - name: frontend
+        port: 3000
+        protocol: TCP
+        targetPort: 3000
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+  volumes: []
+  ingress:
+    enabled: false
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: public-website-20250205094904337900000001
+
+  tolerations: []
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - frontend
+          topologyKey: 'topology.kubernetes.io/zone'
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: 'topology.kubernetes.io/zone'
+                operator: In
+                values:
+                  - eu-west-2a
+                  - eu-west-2b
+  dnsPolicy: ClusterFirst
+
+backend:
+  replicaCount: 2
+  imagePullSecrets: []
+  nameOverride: ''
+  fullnameOverride: ''
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: 'prd-public-website-s3-service-account'
+  podAnnotations: {}
+  podLabels:
+    app: backend
+  podSecurityContext: {}
+  containers:
+    - name: backend
+      securityContext: {}
+      image:
+        repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+        pullPolicy: Always
+        tag: 'backend-0.5.2'
+      livenessProbe:
+        httpGet:
+          path: /liveness
+          port: 5000
+      readinessProbe:
+        httpGet:
+          path: /readiness
+          port: 5000
+      resources: {}
+      volumeMounts: []
+  service:
+    type: ClusterIP
+    ports:
+      - name: backend
+        port: 5000
+        protocol: TCP
+        targetPort: 5000
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+  volumes: []
+  ingress:
+    enabled: false
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: public-website-20250205094904337900000001
+  tolerations: []
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - backend
+          topologyKey: 'topology.kubernetes.io/zone'
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: 'topology.kubernetes.io/zone'
+                operator: In
+                values:
+                  - eu-west-2a
+                  - eu-west-2b
+  dnsPolicy: ClusterFirst

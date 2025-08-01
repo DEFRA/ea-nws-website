@@ -1,0 +1,38 @@
+post:
+  operationId: getMobileValidate
+  tags:
+    - member
+  summary: Validate verification code of a phone number.
+  description: |-
+    This RPC verifies if the auth token is valid, and if the currently
+    authenticated user has the provided MSISDN as an unverified phone
+    number, and if the code matches the expected code. Then the phone
+    number is moved to the list of mobile phones and removed from the
+    unverified numbers.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Member.verifyMobilePhoneValidateArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Member.verifyMobilePhoneValidateRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

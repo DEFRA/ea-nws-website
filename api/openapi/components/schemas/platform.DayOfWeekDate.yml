@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./platform.WeekDate.yml
+  - type: object
+    description: A date with a day granularity, defined in the context of a week.
+    required:
+      - day
+    properties:
+      day:
+        $ref: ./platform.base.DayOfWeek.yml

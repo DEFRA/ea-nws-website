@@ -1,0 +1,80 @@
+type: object
+required:
+  - timestamp
+properties:
+  _class:
+    type: string
+  timestamp:
+    type: integer
+    format: int64
+    description: |-
+      Date of the event.
+
+      The db relies on this field for multiple features:
+
+      - KPIs time
+      - Aggregation slot in main.sc
+      - QRE scenario
+      - ...
+
+      While it's possible to not set the date field in a CDR, you should not
+      do it unless you are sure it's correct (the enabler will default to the
+      current date).
+  isTraced:
+    type: boolean
+    description: |-
+      Obsolete field.
+
+      This field is obsolete but kept in order to maintain backward
+      compatibility and to ensure the 'isTraced' name is reserved for
+      internal uses. It has been superseded by the 'tracer' field.
+    default: false
+  tags:
+    type: array
+    description: |-
+      The event will be routed to Collections accepting the given tags.
+
+      These correspond to the tag position in schema's eventTags list.
+    items:
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 255
+  tracer:
+    description: If set, the event is traced.
+    allOf:
+      - $ref: ./bigdata.base.Tracer.yml
+  dbMayWait:
+    type: boolean
+    description: |-
+      Set this field to ensure the db waits for a schema update if some
+       values are unknown in the schema.
+
+      It can be used for new values of dynamic enumerations for example.
+
+      When set to true, it introduces some latency when the event
+               is processed by the db.
+    default: false
+discriminator:
+  propertyName: _class
+  mapping:
+    bigdata.base.EventLog: ./bigdata.base.EventLog.yml
+    bigdata.base.CdrEvent: ./bigdata.base.CdrEvent.yml
+    bigdata.event.UdrEvent: ./bigdata.event.UdrEvent.yml
+    one.event.CommunicationEvent: ./one.event.CommunicationEvent.yml
+    one.event.LpmRedemptionEvent: ./one.event.LpmRedemptionEvent.yml
+    one.event.LpmRedemptionResult: ./one.event.LpmRedemptionResult.yml
+    qre.RuleEvent: ./qre.RuleEvent.yml
+    one.event.RuleListEvent: ./one.event.RuleListEvent.yml
+    one.event.WorkspaceKeywordEvent: ./one.event.WorkspaceKeywordEvent.yml
+    one.scenario.CounterEachState: ./one.scenario.CounterEachState.yml
+    qre.Bypassed: ./qre.Bypassed.yml
+    qre.LimitReached: ./qre.LimitReached.yml
+    qre.Matched: ./qre.Matched.yml
+    qre.NewEntity: ./qre.NewEntity.yml
+    qre.Started: ./qre.Started.yml
+    qre.Timeout: ./qre.Timeout.yml
+    qre.Truncated: ./qre.Truncated.yml
+    qre.SendEventStoredEvent: ./qre.SendEventStoredEvent.yml
+    qre.NoSlotAvailable: ./qre.NoSlotAvailable.yml
+    bigdata.event.MulticastEvent: ./bigdata.event.MulticastEvent.yml

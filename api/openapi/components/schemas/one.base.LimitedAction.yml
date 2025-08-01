@@ -1,0 +1,24 @@
+allOf:
+  - $ref: ./qre.base.Action.yml
+  - type: object
+    properties:
+      event:
+        oneOf:
+          - $ref: ./community.sponsorship.ClearSponsorship.yml
+          - $ref: ./one.brandOptout.BrandOptoutAction.yml
+          - $ref: ./one.event.BudgetMessageAction.yml
+          - $ref: ./one.event.CheckBudgetAction.yml
+          - $ref: ./one.event.DecrementBudgetAction.yml
+          - $ref: ./one.event.LpmRedemptionAction.yml
+          - $ref: ./one.event.RefillBudgetAction.yml
+          - $ref: ./one.event.RefillOfferAction.yml
+          - $ref: ./one.event.ShortcodeAction.yml
+          - $ref: ./one.event.ZoneEntry.yml
+          - $ref: ./one.event.ZoneLeave.yml
+          - $ref: ./one.facebook.AddToExistingCustomAudience.yml
+          - $ref: ./one.facebook.AddToNewCustomAudience.yml
+          - $ref: ./one.rule.SendMsgAction.yml
+          - $ref: ./one.rule.SendRcsMsgAction.yml
+          - $ref: ./one.rule.SendVoiceSmsAction.yml
+        discriminator:
+          propertyName: _class

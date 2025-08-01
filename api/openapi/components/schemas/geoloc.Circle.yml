@@ -1,0 +1,27 @@
+type: object
+required:
+  - center
+  - radius
+properties:
+  center:
+    $ref: ./geoloc.Coord.yml
+  radius:
+    type: integer
+    format: int32
+    description: radius in meters.
+  angleStart:
+    type: integer
+    format: int32
+    description: |-
+      starting angle in 10-6 degrees.
+
+      Note that the angle is trigonometric and not geographical (0 means
+      east, not north). By default the angle_start is 0.
+  angleEnd:
+    type: integer
+    format: int32
+    description: |-
+      ending angle in 10-6 degrees.
+
+      Note that the angle is trigonometric and not geographical (0 means
+      east, not north). By default the angle_end is 360000000.

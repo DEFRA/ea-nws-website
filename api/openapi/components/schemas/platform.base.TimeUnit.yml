@@ -1,0 +1,10 @@
+type: string
+description: Unit of time.
+enum:
+  - SECOND
+  - MINUTE
+  - HOUR
+  - DAY
+  - WEEK
+  - MONTH
+  - YEAR

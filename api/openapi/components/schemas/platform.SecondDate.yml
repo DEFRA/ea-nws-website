@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./platform.MinuteDate.yml
+  - type: object
+    description: |-
+      A date with a second granularity.
+
+      Note that this day is defined in the context of a day of a month.
+    required:
+      - second
+    properties:
+      second:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 59

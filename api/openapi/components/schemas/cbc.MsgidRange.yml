@@ -1,0 +1,15 @@
+type: object
+required:
+  - from
+  - to
+properties:
+  from:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 65535
+  to:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 65535

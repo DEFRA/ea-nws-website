@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: Sort table rows in function of one or more fields.
+    required:
+      - params
+    properties:
+      params:
+        type: array
+        description: |-
+          Sort parameters.
+
+          For multiple sort, the parameters should be put in the order you want
+          them to be applied.
+        items:
+          $ref: ./bigdata.relational.SortParam.yml
+        minItems: 1

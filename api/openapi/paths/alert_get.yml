@@ -1,0 +1,32 @@
+post:
+  operationId: getAlert
+  tags:
+    - alert
+  summary: Return a single live alert by ID
+  description: >-
+    Returns a single live alert
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Location.listRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

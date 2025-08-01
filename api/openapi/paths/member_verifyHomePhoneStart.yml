@@ -1,0 +1,36 @@
+post:
+  operationId: getHomephoneStart
+  tags:
+    - member
+  summary: Start verification of a landline phone number.
+  description: |-
+    This RPC verifies if the auth token is valid, and if the currently
+    authenticated user has the provided MSISDN as an unverified landline
+    phone number. Then a new code is generated and sent through a voice
+    broker.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Member.verifyHomePhoneStartArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Void.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - rat
+      - location
+    properties:
+      rat:
+        $ref: ./one.rffingerprint.RffRat.yml
+      location:
+        $ref: ./platform.base.Coordinates.yml

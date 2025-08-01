@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.query.LocationRef.yml
+  - type: object
+    description: Convert a location to its arc radius.

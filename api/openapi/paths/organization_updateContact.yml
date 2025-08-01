@@ -1,0 +1,42 @@
+post:
+  operationId: getOrgUpdateContact
+  tags:
+    - organization
+  summary: Update a contact of the organization.
+  description: |-
+    This RPC updates the profile of a selected contact of the organization,
+    identified by its contact id.
+
+    Only publicly visible contact
+    fields (fields marked with the attribute geosafeea:public) are updated,
+    the other fields are ignored if set. The updated profile is then
+    returned.
+
+    The user must have the admin role in this organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Organization.updateContactArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Organization.updateContactRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

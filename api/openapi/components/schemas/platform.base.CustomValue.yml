@@ -1,0 +1,53 @@
+type: object
+description: |-
+  Base-class to support application specific type of values.
+
+  This class can be extended in order to provide extra types
+  of values embeddable in standard \ref platform.base.Value.
+properties:
+  _class:
+    type: string
+discriminator:
+  propertyName: _class
+  mapping:
+    bigdata.query.CellInfo: ./bigdata.query.CellInfo.yml
+    bigdata.query.ParametricValue: ./bigdata.query.ParametricValue.yml
+    bigdata.query.TargetRestriction: ./bigdata.query.TargetRestriction.yml
+    bigdata.schema.SchemaRestriction: ./bigdata.schema.SchemaRestriction.yml
+    cbc.AllowedMsgids: ./cbc.AllowedMsgids.yml
+    geosafeea.alert.MessageExtra: ./geosafeea.alert.MessageExtra.yml
+    geosafeea.alert.WorkspaceAlertTypes: ./geosafeea.alert.WorkspaceAlertTypes.yml
+    geosafeea.alert.WorkspaceCategories: ./geosafeea.alert.WorkspaceCategories.yml
+    geosafeea.alert.WorkspaceChannels: ./geosafeea.alert.WorkspaceChannels.yml
+    geosafeea.alert.WorkspaceModes: ./geosafeea.alert.WorkspaceModes.yml
+    geosafeea.alert.WorkspaceOverlays: ./geosafeea.alert.WorkspaceOverlays.yml
+    geosafeea.alert.WorkspaceZone: ./geosafeea.alert.WorkspaceZone.yml
+    geosafeea.cfg.DestinationWsCfgAvp: ./geosafeea.cfg.DestinationWsCfgAvp.yml
+    geosafeea.contact.WorkspaceCustomFields: ./geosafeea.contact.WorkspaceCustomFields.yml
+    igl.AliasCfg: ./igl.AliasCfg.yml
+    igl.ByteArray: ./igl.ByteArray.yml
+    igl.ElectionInfo: ./igl.ElectionInfo.yml
+    igl.ExtPullCfgList: ./igl.ExtPullCfgList.yml
+    igl.ExtPushCfgList: ./igl.ExtPushCfgList.yml
+    igl.MlpSrvCfg: ./igl.MlpSrvCfg.yml
+    igl.PlanExtrasArray: ./igl.PlanExtrasArray.yml
+    igl.PoiCfg: ./igl.PoiCfg.yml
+    igl.ProvCfg: ./igl.ProvCfg.yml
+    igl.PullCfg: ./igl.PullCfg.yml
+    igl.PushCfg: ./igl.PushCfg.yml
+    igl.StringArray: ./igl.StringArray.yml
+    mcms.AllowedScGroups: ./mcms.AllowedScGroups.yml
+    mcms.SingleMessageCampaigns: ./mcms.SingleMessageCampaigns.yml
+    one.b2b.CompaniesUserActionsPerms: ./one.b2b.CompaniesUserActionsPerms.yml
+    one.message.AllowedFromList: ./one.message.AllowedFromList.yml
+    one.workspaceOverview.ExternalMembers: ./one.workspaceOverview.ExternalMembers.yml
+    platform.cfg.DynConfSetValue: ./platform.cfg.DynConfSetValue.yml
+    platform.list.RaftState: ./platform.list.RaftState.yml
+    qre.EventValue: ./qre.EventValue.yml
+    services.cerbere.CustomStateValue: ./services.cerbere.CustomStateValue.yml
+    services.cerbere.HasRead: ./services.cerbere.HasRead.yml
+    services.cerbere.LastWorkspaces: ./services.cerbere.LastWorkspaces.yml
+    services.cerbere.WorkspaceTypes: ./services.cerbere.WorkspaceTypes.yml
+    services.qdb.BinlogState: ./services.qdb.BinlogState.yml
+    services.tiebreaker.TieBreakerPlatform: ./services.tiebreaker.TieBreakerPlatform.yml
+    services.tiebreaker.TieBreakerState: ./services.tiebreaker.TieBreakerState.yml

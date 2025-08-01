@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Identify a Value which value will be replaced by another one.
+
+      This can be useful for query where the value can only be computed at
+      runtime.
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'

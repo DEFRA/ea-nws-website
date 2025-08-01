@@ -1,0 +1,78 @@
+type: object
+description: |-
+  Recursive rule for conveyance decision tree.
+
+  Conveyance rules allows to associate a conveyance to a segment depending
+   on several criteria: speed, distance, hour, location, etc...
+properties:
+  trajectories:
+    type: array
+    description: None means "any"
+    items:
+      type: string
+  speed:
+    description: Speed (in kilometer per hour).
+    allOf:
+      - $ref: ./one.geomarketing.DoubleConstraint.yml
+  dayDistance:
+    description: Distance traveled that day by the subscriber (in kilometer).
+    allOf:
+      - $ref: ./one.geomarketing.DoubleConstraint.yml
+  distance:
+    description: Distance (in kilometer).
+    allOf:
+      - $ref: ./one.geomarketing.DoubleConstraint.yml
+  duration:
+    $ref: ./one.geomarketing.UintConstraint.yml
+  nbEvents:
+    $ref: ./one.geomarketing.UintConstraint.yml
+  nbEventsPerHour:
+    $ref: ./one.geomarketing.DoubleConstraint.yml
+  isInternational:
+    type: boolean
+    description: Matched if the MCC of the source and destination CGIs are different.
+  type:
+    description: Segment type (ABSENT or MOVE).
+    allOf:
+      - $ref: ./one.geomarketing.SegmentType.yml
+  placemarks:
+    type: array
+    description: |-
+      Zone(s) of departure and/or arrival.
+
+      Name of placemarks in `zones' specified in ConveyanceParams for
+      departure or arrival.
+    items:
+      type: string
+    maxItems: 2
+  timeTable:
+    description: |-
+      A move matches the time table if any time of the move is included in
+       the time table.
+
+      Examples:
+           * timeTable = [ 9h, 16h ];
+               ** move [ 11h -> 15h ] OK;
+               ** move [ 8h30 -> 12h ] NOK;
+               ** move [ 10h -> 9h30 + 24h ] NOK;
+           * timeTable = [ 5h30, 2h20 ];
+               ** move [ 8h -> 15h ] OK;
+               ** move [ 1h -> 2h15 ] OK;
+               ** move [ 4h -> 6h ] NOK.
+    allOf:
+      - $ref: ./one.geomarketing.TimeTable.yml
+  conveyance:
+    type: string
+  subRules:
+    type: array
+    items:
+      $ref: ./one.geomarketing.ConveyanceRule.yml
+  isFlight:
+    type: boolean
+    description: |-
+      Matched if the step has been classified as flight by the flights
+       detection algorithm.
+  maxSpeed:
+    description: Maximum speed (in kilometer per hour).
+    allOf:
+      - $ref: ./one.geomarketing.UintConstraint.yml

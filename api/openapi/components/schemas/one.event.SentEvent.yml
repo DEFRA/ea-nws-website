@@ -1,0 +1,6 @@
+allOf:
+  - $ref: ./one.event.PushEvent.yml
+  - type: object
+    properties:
+      errorCode:
+        $ref: ./mcms.McmsEventError.yml

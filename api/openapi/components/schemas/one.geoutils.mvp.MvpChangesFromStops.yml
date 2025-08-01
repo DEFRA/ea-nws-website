@@ -1,0 +1,98 @@
+allOf:
+  - $ref: ./bigdata.relational.Operation.yml
+  - type: object
+    description: |-
+      Compute MVP changes from STOPS.
+
+      Inputs: coordinates, tsStart, tsEnd.
+      Output: clusterIdx, clusterCentroid, nbDaysPeriod1, nbDaysPeriod2, etc.
+    required:
+      - clusteringCfg
+    properties:
+      stopInput:
+        description: Input for STOPs.
+        oneOf:
+          - $ref: ./bigdata.aggr.Average.yml
+          - $ref: ./bigdata.aggr.Count.yml
+          - $ref: ./bigdata.aggr.CountRows.yml
+          - $ref: ./bigdata.aggr.CountUnique.yml
+          - $ref: ./bigdata.aggr.Empty.yml
+          - $ref: ./bigdata.aggr.Max.yml
+          - $ref: ./bigdata.aggr.Min.yml
+          - $ref: ./bigdata.aggr.MultiAggregation.yml
+          - $ref: ./bigdata.aggr.Quantiles.yml
+          - $ref: ./bigdata.aggr.Sum.yml
+          - $ref: ./bigdata.mde.AddFields.yml
+          - $ref: ./bigdata.mde.Complete.yml
+          - $ref: ./bigdata.mde.CsvData.yml
+          - $ref: ./bigdata.mde.DefaultRows.yml
+          - $ref: ./bigdata.mde.DefaultTable.yml
+          - $ref: ./bigdata.mde.EquiJoin.yml
+          - $ref: ./bigdata.mde.FlexibleUnion.yml
+          - $ref: ./bigdata.mde.GenerateTicks.yml
+          - $ref: ./bigdata.mde.Input.yml
+          - $ref: ./bigdata.mde.Merge.yml
+          - $ref: ./bigdata.mde.Mux.yml
+          - $ref: ./bigdata.mde.Partial.yml
+          - $ref: ./bigdata.mde.Product.yml
+          - $ref: ./bigdata.mde.StaticData.yml
+          - $ref: ./bigdata.mde.Trace.yml
+          - $ref: ./bigdata.mde.Unique.yml
+          - $ref: ./bigdata.mde.Void.yml
+          - $ref: ./bigdata.relational.Clip.yml
+          - $ref: ./bigdata.relational.CollectionTable.yml
+          - $ref: ./bigdata.relational.EquiJoin.yml
+          - $ref: ./bigdata.relational.ForEachRow.yml
+          - $ref: ./bigdata.relational.Grouping.yml
+          - $ref: ./bigdata.relational.ListTable.yml
+          - $ref: ./bigdata.relational.MapReduce.yml
+          - $ref: ./bigdata.relational.Mux.yml
+          - $ref: ./bigdata.relational.NamedTableReference.yml
+          - $ref: ./bigdata.relational.OperationChain.yml
+          - $ref: ./bigdata.relational.PlaceholderTable.yml
+          - $ref: ./bigdata.relational.Projection.yml
+          - $ref: ./bigdata.relational.Reduce.yml
+          - $ref: ./bigdata.relational.Rename.yml
+          - $ref: ./bigdata.relational.Selection.yml
+          - $ref: ./bigdata.relational.Skip.yml
+          - $ref: ./bigdata.relational.Sort.yml
+          - $ref: ./bigdata.relational.Union.yml
+          - $ref: ./bigdata.relational.WithNamedTables.yml
+          - $ref: ./one.bte.BestTimeRangeOp.yml
+          - $ref: ./one.geomarketing.CrmMapper.yml
+          - $ref: ./one.geomarketing.CrmMultiMapper.yml
+          - $ref: ./one.geomarketing.DimensionMapper.yml
+          - $ref: ./one.geomarketing.RecurrenceFilter.yml
+          - $ref: ./one.geomarketing.RelativeTimeMap.yml
+          - $ref: ./one.geomarketing.StatRefinement.yml
+          - $ref: ./one.geomarketing.TimeMap.yml
+          - $ref: ./one.geomarketing.ZoneMap.yml
+          - $ref: ./one.geoutils.CgiToCoords.yml
+          - $ref: ./one.geoutils.CgiToCoordsSmoothed.yml
+          - $ref: ./one.geoutils.EventFilter.yml
+          - $ref: ./one.geoutils.EventFilterListRemovals.yml
+          - $ref: ./one.geoutils.GridMap.yml
+          - $ref: ./one.geoutils.MultiGridMap.yml
+          - $ref: ./one.geoutils.clustering.Geoleader.yml
+          - $ref: ./one.geoutils.mvp.MvpChanges.yml
+          - $ref: ./one.geoutils.mvp.MvpChangesFromStops.yml
+          - $ref: ./one.geoutils.stopsegment.MergeShortStops.yml
+          - $ref: ./one.geoutils.stopsegment.StopSegmentLegacy.yml
+          - $ref: ./one.timeutils.MergeStays.yml
+          - $ref: ./one.timeutils.SplitTimeInterval.yml
+          - $ref: ./one.timeutils.StopsToNights.yml
+          - $ref: ./one.timeutils.TimeRangeOverlaps.yml
+        discriminator:
+          propertyName: _class
+      inputFields:
+        description: Input field names.
+        allOf:
+          - $ref: ./one.geoutils.mvp.MvpStopFields.yml
+      clusteringCfg:
+        description: Geoleader algorithm configuration.
+        allOf:
+          - $ref: ./one.geoutils.clustering.GeoleaderCfg.yml
+      mvpCfg:
+        description: Specific MVP configuration.
+        allOf:
+          - $ref: ./one.geoutils.mvp.MvpCfg.yml

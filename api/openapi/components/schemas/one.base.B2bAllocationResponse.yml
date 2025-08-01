@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    description: The response class for credit allocation request.
+    required:
+      - companyId
+    properties:
+      companyId:
+        type: string
+        description: Public company ID to which the allocation is related.

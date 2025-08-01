@@ -1,0 +1,51 @@
+{
+  "name": "back-end",
+  "version": "0.0.1",
+  "description": "National Warning System",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js | npx pino-pretty",
+    "lint": "standard",
+    "unit-test": "lab -l -v -c -r console -o stdout -r lcov -o lcov.info",
+    "test": "npm run lint && npm run unit-test",
+    "posttest": "./test/cleanup.sh"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.658.1",
+    "@aws-sdk/client-secrets-manager": "^3.614.0",
+    "@aws-sdk/lib-storage": "^3.688.0",
+    "@aws-sdk/s3-request-presigner": "^3.658.1",
+    "@googlemaps/js-api-loader": "^1.16.6",
+    "@hapi/boom": "9.1.4",
+    "@hapi/hapi": "20.3.0",
+    "@hapi/inert": "6.0.5",
+    "@hapi/joi": "17.1.1",
+    "@hapi/vision": "6.1.0",
+    "@turf/turf": "^7.1.0",
+    "axios": "^1.7.2",
+    "blipp": "4.0.2",
+    "date-fns": "^4.1.0",
+    "dbf-reader": "^1.0.3",
+    "hapi-k8s-health": "^1.1.1",
+    "hapi-pino": "9.4.0",
+    "https": "^1.0.0",
+    "node-fetch": "^2.7.0",
+    "node-schedule": "^2.1.1",
+    "nodemon": "^3.1.4",
+    "notifications-node-client": "^8.2.1",
+    "pino": "^9.2.0",
+    "pino-pretty": "^11.2.1",
+    "proj4": "^2.11.0",
+    "redis": "^4.7.0",
+    "shpjs": "^6.1.0",
+    "typescript": "^5.5.3",
+    "unzipper": "^0.12.3"
+  },
+  "devDependencies": {
+    "@hapi/code": "^8.0.7",
+    "@hapi/lab": "^24.7.1",
+    "standard": "16.0.4"
+  }
+}

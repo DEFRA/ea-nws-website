@@ -1,0 +1,185 @@
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BackLink from '../../../common/components/custom/BackLink'
+import Button from '../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../common/components/gov-uk/Input'
+import { setOrganizationAlternativeContact } from '../../../common/redux/userSlice'
+import { emailValidation } from '../../../common/services/validations/EmailValidation'
+import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
+import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
+
+export default function AlternativeContactDetailsLayout({
+  navigateToNextPage,
+  NavigateToPreviousPage
+}) {
+  const dispatch = useDispatch()
+  const [errorFullName, setErrorFullName] = useState('')
+  const [errorEmail, setErrorEmail] = useState('')
+  const [errorTelephone, setErrorTelephone] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [telephone, setTelephoneNumber] = useState('')
+  const [jobTitle, setJobTitle] = useState('')
+  const profile = useSelector((state) => state.session.profile)
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const isAdmin = organizationAdditionals.isAdminRegistering
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
+  const telephoneNumberId = 'telephone-number'
+
+  useEffect(() => {
+    setErrorFullName('')
+  }, [fullName])
+
+  useEffect(() => {
+    setErrorEmail('')
+  }, [email])
+
+  useEffect(() => {
+    setErrorTelephone('')
+  }, [telephone])
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const fullNameValidationError = fullNameValidation(fullName)
+    const emailValidationError = emailValidation(email)
+    const telephoneValidationError = phoneValidation(
+      telephone,
+      'mobileAndLandline'
+    )
+
+    if (
+      fullNameValidationError !== '' ||
+      emailValidationError !== '' ||
+      telephoneValidationError !== ''
+    ) {
+      setErrorFullName(fullNameValidationError)
+      setErrorEmail(emailValidationError)
+      setErrorTelephone(telephoneValidationError)
+    } else if (email === profile.emails[0]) {
+      // alternative contact cannot be the same as the main admin email
+      setErrorEmail(
+        'Enter a different email address to the main administrator email.'
+      )
+    } else {
+      // Split the full name into first name and last name assuming they are separeted by a space.
+      // if the string cannot be split then only the first name is set and the last name remains blank
+      const [firstname, ...lastnameParts] = fullName.trim().split(' ')
+      const lastname = lastnameParts.join(' ')
+
+      dispatch(
+        setOrganizationAlternativeContact({
+          firstName: firstname,
+          lastName: lastname,
+          email,
+          telephone,
+          jobTitle
+        })
+      )
+      navigateToNextPage()
+    }
+  }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    NavigateToPreviousPage()
+  }
+
+  return (
+    <>
+      <BackLink onClick={navigateBack} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {(errorFullName || errorEmail || errorTelephone) && (
+              <ErrorSummary
+                errorList={[
+                  errorFullName && {
+                    text: errorFullName,
+                    component: fullNameId
+                  },
+                  errorEmail && {
+                    text: errorEmail,
+                    component: emailAddressId
+                  },
+                  errorTelephone && {
+                    text: errorTelephone,
+                    componentId: telephoneNumberId
+                  }
+                ].filter(Boolean)}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Enter details for an alternative contact at your organisation
+            </h1>
+            <div className='govuk-body'>
+              {isAdmin ? (
+                <p className='govuk-body govuk-hint govuk-!-margin-bottom-5'>
+                  We'll only contact them about this account, if we're unable to
+                  reach you. They will not get flood messages or admin rights
+                  unless you set them up for these after your account is
+                  approved.
+                </p>
+              ) : (
+                <p className='govuk-body govuk-hint govuk-!-margin-bottom-5'>
+                  We'll only contact them about this account, if we're unable to
+                  reach {profile.firstname} {profile.surname}. They will not get
+                  flood messages or admin rights unless you set them up for
+                  these after your account is approved.
+                </p>
+              )}
+              <Input
+                id={fullNameId}
+                inputType='text'
+                value={fullName}
+                name='Full name'
+                onChange={(val) => setFullName(val)}
+                error={errorFullName}
+                className='govuk-input govuk-input--width-20'
+                defaultValue={fullName}
+                isNameBold
+              />
+              <Input
+                id={emailAddressId}
+                inputType='text'
+                inputMode='email'
+                value={email}
+                name='Email address'
+                onChange={(val) => setEmail(val)}
+                error={errorEmail}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+              />
+              <Input
+                id={telephoneNumberId}
+                inputType='text'
+                value={telephone}
+                name='Telephone number'
+                error={errorTelephone}
+                onChange={(val) => setTelephoneNumber(val)}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+              />
+              <Input
+                id='job-title'
+                inputType='text'
+                value={jobTitle}
+                name='Job title (optional)'
+                onChange={(val) => setJobTitle(val)}
+                className='govuk-input govuk-input--width-20'
+                isNameBold
+              />
+              <Button
+                text='Continue'
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}

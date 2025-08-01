@@ -1,0 +1,121 @@
+allOf:
+  - $ref: ./bigdata.schema.SourceRef.yml
+  - type: object
+    description: >-
+      Query on a QRRD collection.
+
+
+      To query a QRRD collection the only implemented RPC is \ref Query.Query.
+
+      The select and the extract must contain only QRRD references.
+
+
+      The root boolean expression operator must be an aggregation and only the
+
+      following operators are currently allowed in the child expression:
+
+      - or_op, and_op, not_op,
+
+      - lt, le, gt, ge, equal, not_equal,
+
+      - between, not_between,
+
+      - trivial.
+
+
+      The \ref Qrrd.ValueRef is both used at selection (to define and select the
+
+      stat) and at extraction (to extract the values). It is the only class
+
+      allowed in the select.
+
+
+      The other classes should be used to define the fields to extract:
+
+      - the \ref Qrrd.SlotRef to extract the timestamps (in seconds),
+
+      - the \ref Qrrd.ValueRef and \ref Qrrd.ValueRefRef to extract the values
+      of
+        a stat,
+      - the \ref Qrrd.WildcardRef and \ref Qrrd.WildcardRefRef to extract the
+        wildcard values (at a given index).
+
+      The class inheriting from \ref Qrrd.Ref are used to define a stat. Then
+      the
+
+      class inheriting from \ref Qrrd.RefRef are used to reference an existing
+
+      instance of a class inheriting from \ref Qrrd.Ref thanks to an identifier.
+
+
+      It is obvious that the query and the extract objects must define at least
+
+      one reference inheriting from \ref Qrrd.Ref.
+
+      Reference.
+
+      Abstract class to define a stat to select or to extract.
+
+      The \ref setElement and \ref state of the parent SourceRef are not used.
+    required:
+      - aggr
+    properties:
+      servers:
+        type: array
+        description: |-
+          QRRD server identifiers.
+
+          If empty, all the servers of the targetted QRRD collection will be
+          used.
+        items:
+          type: string
+      wildcards:
+        type: array
+        description: >-
+          Wildcard values.
+
+
+          If filled, only results matching the expanded key will be returned.
+
+          Otherwise, no filtering on wildcards is done.
+
+
+          This key is computed from the source key associated with the \ref
+          wildcards values. The number of values in \ref wildcards should not
+
+          exceed the number of wildcards in the source key.
+        items:
+          type: string
+      aggr:
+        description: |-
+          Aggregation function.
+
+          When referencing a QRRD Formula Source, this aggregation level is
+          useless as it is already specified in the formula itself.
+        allOf:
+          - $ref: ./qrrd.AggrFunc.yml
+      merging:
+        description: |-
+          Merging aggregation function.
+
+          When querying several QRRD servers, the identical results should be
+          grouped using this aggregate function.
+          If not set, the aggregate function \ref aggr is used.
+
+          The aggregate functions SUM, MIN and MAX are not modifying the input
+          type. The aggregate function AVG is in any case returning double
+          values.
+
+          The aggregate functions NONE, FIRST, LAST and COUNT are not supported.
+          If used, the min record will be transmitted.
+        allOf:
+          - $ref: ./qrrd.AggrFunc.yml
+      id:
+        type: string
+        description: |-
+          Reference identifier (within a query).
+
+          This identifier is used to register this reference inside a query. It
+          must be then unique.
+          It allows to not redefine the reference (for instance when doing a
+          selection and an extraction on a stat).

@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    required:
+      - listId
+    properties:
+      listId:
+        type: integer
+        format: int32
+        minimum: 0

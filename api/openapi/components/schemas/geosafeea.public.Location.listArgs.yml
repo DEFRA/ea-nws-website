@@ -1,0 +1,17 @@
+type: object
+required:
+  - authToken
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration
+                                or signin
+  options:
+    description: |-
+      list options, including an offset to manage
+                                pagination of the list
+    oneOf:
+      - $ref: ./geosafeea.public.LocationListOptions.yml
+    discriminator:
+      propertyName: _class

@@ -1,0 +1,20 @@
+type: string
+enum:
+  - CELL
+  - OTDOA
+  - GPS
+  - A_GPS
+  - E_OTD
+  - U_TDOA
+  - AFLT
+  - EFLT
+  - UNKNOWN
+  - OTHER
+  - GNSS
+  - A_GNSS
+  - E_CID
+  - BARO
+  - BT
+  - MBS
+  - WLAN
+  - FINGERPRINT

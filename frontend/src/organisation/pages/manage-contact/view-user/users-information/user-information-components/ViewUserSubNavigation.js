@@ -1,0 +1,17 @@
+import SubNavigation from '../../../../../../common/components/custom/SubNavigation'
+import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
+
+export default function ViewUserSubNavigation ({ currentPage }) {
+  const pages = [
+    {
+      title: 'User details',
+      link: orgManageContactsUrls.view.viewContact
+    },
+    {
+      title: 'Linked locations',
+      link: orgManageContactsUrls.view.viewLinkedLocations
+    }
+  ]
+
+  return <SubNavigation pages={pages} currentPage={currentPage} type='sub' />
+}

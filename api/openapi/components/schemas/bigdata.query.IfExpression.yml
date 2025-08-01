@@ -1,0 +1,18 @@
+type: object
+description: |-
+  Parameters of an If-Then-Else operator
+
+  Describes the condition and the branching results of an If operator.
+  When the \ref condition is evaluated to true, the \ref ifTrue expression
+  is evaluated, otherwise the \ref ifFalse expression is evaluated if
+  provided, or nil is returned.
+required:
+  - condition
+  - ifTrue
+properties:
+  condition:
+    $ref: ./bigdata.query.BoolExpr.yml
+  ifTrue:
+    $ref: ./bigdata.query.Expression.yml
+  ifFalse:
+    $ref: ./bigdata.query.Expression.yml

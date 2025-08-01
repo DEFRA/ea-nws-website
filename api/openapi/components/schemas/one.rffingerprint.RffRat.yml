@@ -1,0 +1,6 @@
+type: string
+enum:
+  - RAT_2G
+  - RAT_3G
+  - RAT_4G
+  - RAT_5G

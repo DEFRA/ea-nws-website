@@ -1,0 +1,12 @@
+services:
+  qgis:
+    image: 3liz/qgis-map-server:release-rc
+    ports:
+      - '8080:8080'
+    environment:
+      - QGSRV_SERVER_WORKERS=2
+      - QGSRV_LOGGING_LEVEL=DEBUG
+      - QGSRV_CACHE_ROOTDIR=/projects
+      - QGSRV_CACHE_SIZE=10
+    volumes:
+      - ./qgis_data:/projects

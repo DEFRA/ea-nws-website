@@ -1,0 +1,11 @@
+type: object
+required:
+  - placemark
+  - coef
+properties:
+  placemark:
+    type: string
+  coef:
+    type: number
+    format: double
+    minimum: 0

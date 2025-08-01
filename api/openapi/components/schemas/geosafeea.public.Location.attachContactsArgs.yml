@@ -1,0 +1,19 @@
+type: object
+required:
+  - authToken
+  - locationId
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration
+                              or signin
+  locationId:
+    type: string
+    description: the location identifier
+  contactIds:
+    type: array
+    description: the list of contact identifiers to attach
+    items:
+      type: string
+    maxItems: 1000

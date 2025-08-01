@@ -1,0 +1,8 @@
+type: object
+description: Category.
+properties:
+  allowedValues:
+    type: array
+    description: Group the column values by a restrictive set of values.
+    items:
+      $ref: ./platform.base.Value.yml

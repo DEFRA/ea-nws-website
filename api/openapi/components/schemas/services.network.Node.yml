@@ -1,0 +1,36 @@
+type: object
+description: Network node.
+required:
+  - uid
+properties:
+  _class:
+    type: string
+  uid:
+    type: integer
+    format: int64
+    description: |-
+      Id of the associated location, and NOT the identifier of the node.
+
+      The id of the node depends on the instantiated class (cgi for Cell, mac
+      for Access Point).
+    minimum: 0
+  startTime:
+    type: integer
+    format: int64
+    description: Beginning of validity period.
+    default: 0
+    minimum: 0
+  endTime:
+    type: integer
+    format: int64
+    description: End of validity period.
+    default: 0
+    minimum: 0
+  params:
+    description: Application specific parameters.
+    discriminator:
+      propertyName: _class
+discriminator:
+  propertyName: _class
+  mapping:
+    services.network.Cell: ./services.network.Cell.yml

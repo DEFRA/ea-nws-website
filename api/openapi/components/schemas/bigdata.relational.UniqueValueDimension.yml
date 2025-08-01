@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.relational.Dimension.yml
+  - type: object
+    description: |-
+      Unique value dimension.
+
+      Group the column values by unique value.
+
+      If done on values of type double, irregular values
+      (NaN, Infinity) will be considered as if there was no value.

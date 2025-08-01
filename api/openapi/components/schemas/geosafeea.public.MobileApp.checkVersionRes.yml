@@ -1,0 +1,10 @@
+type: object
+properties:
+  constraint:
+    $ref: ./geosafeea.public.MobileAppConstraint.yml
+example: >-
+  {"constraint":{"blocking":true,"updateAvailable":false,"reason":{"fr":"Un
+  souci au niveau d'un crash de l'application. Nos équipes travaillent sur une
+  version qui corrige ce souci dans les plus bref délais","en":"A crash issue
+  occur. Our teams are working on a new version to fix this issue as soon as
+  possible"}}}

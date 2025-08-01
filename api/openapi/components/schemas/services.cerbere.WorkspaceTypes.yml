@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Store list of workspace types.
+
+      Used in the COMPATIBLE_WORKSPACE_TYPES internal workspace role AVP, which
+      stores the list of workspace types in which a workspace role can be
+      assigned.
+    properties:
+      types:
+        type: array
+        items:
+          type: string

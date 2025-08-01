@@ -1,0 +1,29 @@
+const postCodeValidation = (postcode, englandOnly = true) => {
+  if (!postcode || !postcode.trim()) {
+    // EMPTY case
+    return `Enter a postcode${englandOnly && ' in England'}`
+  }
+
+  // Normalize input: remove any non-alphanumeric characters and extra spaces
+  postcode = postcode
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .toUpperCase()
+    .trim()
+
+  // UK postcode regex pattern
+  const postcodePattern = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i
+  const partialPostcodePattern =
+    /^[a-z](\d\d?|[a-z]\d[a-z\d]?|[a-z]?\d?\d \d[a-z]{2}|[a-z]\d [a-z] \d[a-z]{2})$/i
+
+  if (postcodePattern.test(postcode)) {
+    return ''
+  } else if (partialPostcodePattern.test(postcode)) {
+    // PARTIAL case
+    return `Enter a full postcode${englandOnly && ' in England'}`
+  } else {
+    // INCORRECT_FORMAT case
+    return 'Enter a postcode in the correct format, like KT3 3QQ'
+  }
+}
+
+module.exports = { postCodeValidation }

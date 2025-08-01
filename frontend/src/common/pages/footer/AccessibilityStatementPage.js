@@ -90,7 +90,7 @@ export default function AccessibilityStatementPage() {
                 not meeting accessibility requirements, contact{' '}
                 <a
                   className='govuk-link'
-                  href='enquiries@environment-agency.gov.uk'
+                  href='mailto:enquiries@environment-agency.gov.uk'
                 >
                   enquiries@environment-agency.gov.uk
                 </a>
@@ -101,7 +101,7 @@ export default function AccessibilityStatementPage() {
                   If you need help using this service, email us at{' '}
                   <a
                     className='govuk-link'
-                    href='getfloodwarnings@environment-agency.gov.uk'
+                    href='mailto:getfloodwarnings@environment-agency.gov.uk'
                   >
                     getfloodwarnings@environment-agency.gov.uk
                   </a>

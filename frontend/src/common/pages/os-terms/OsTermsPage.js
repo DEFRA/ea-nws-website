@@ -22,7 +22,9 @@ export default function OsTermsPage() {
               </h1>
               <p>
                 Addressing information and mapping data from{' '}
-                <a href='https://www.ordnancesurvey.co.uk/'>Ordnance Survey</a>{' '}
+                <a href='https://www.ordnancesurvey.co.uk/' target='_blank'>
+                  Ordnance Survey
+                </a>{' '}
                 is © Crown copyright and database rights 2025 OS AC0000807064.{' '}
               </p>
 

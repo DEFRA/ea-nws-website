@@ -2,7 +2,7 @@ import { faRedoAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import {
   GeoJSON,
@@ -17,6 +17,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import iconUrl from '../../../../../common/assets/images/location_pin.svg'
 import iconClickedUrl from '../../../../../common/assets/images/location_pin_clicked.svg'
+import OsMapTerms from '../../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import {
   setCurrentLocation,
@@ -524,6 +525,7 @@ export default function FloodAreaMap({
                     onEachFeature={showAlertAreas}
                   />
                 )}
+                <OsMapTerms />
               </MapContainer>
             </div>
 

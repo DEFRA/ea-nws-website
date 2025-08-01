@@ -2318,6 +2318,18 @@ govuk-menu-toggle.button-menu > button {
   margin: 0 5px;
 }
 
+/* OS Map Terms */
+.os-map-terms-container {
+  z-index: 500;
+  position: absolute;
+  bottom: 0;
+  left: 40px;
+}
+
+.os-map-terms-container a {
+  color: #0b0c0c;
+}
+
 .keyboard-list {
   margin: 0;
   width: 100%;

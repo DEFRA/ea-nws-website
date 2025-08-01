@@ -1,4 +1,3 @@
-import React from 'react'
 import citizenAccountRoutes from './citizen/routes/account/AccountRoutes'
 import footerRoutes from './citizen/routes/footer/FooterRoutes'
 import citizenHomeRoutes from './citizen/routes/home/HomeRoutes'
@@ -7,6 +6,7 @@ import citizenManageLocationRoutes from './citizen/routes/manage-locations/Manag
 import citizenSignupRoutes from './citizen/routes/sign-up/SignUpRoutes'
 import ErrorPage from './common/pages/ErrorPage'
 import Index from './common/pages/Index'
+import osTermsRoutes from './common/routes/os-terms/OsTermsRoutes'
 import signinRoutes from './common/routes/sign-in/SignInRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
@@ -39,7 +39,8 @@ export const routes = [
   ...infoRoutes,
   ...privateBetaRoutes,
   ...optOutRoutes,
-  ...orgInviteRoutes
+  ...orgInviteRoutes,
+  ...osTermsRoutes
 ]
 
 export const authenticatedRoutes = [

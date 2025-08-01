@@ -10,7 +10,7 @@ import InsetText from '../../../../../common/components/gov-uk/InsetText'
 import { getLocationAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationNotInFloodAreaPage () {
+export default function LocationNotInFloodAreaPage() {
   const navigate = useNavigate()
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
@@ -74,8 +74,7 @@ export default function LocationNotInFloodAreaPage () {
         Possible
       </p>
       <p className=' govuk-!-margin-top-0'>
-        Flooding is possible in the local area when groundwater levels are
-        high.
+        Flooding is possible in the local area when groundwater levels are high.
       </p>
       <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
         Unlikely
@@ -89,7 +88,10 @@ export default function LocationNotInFloodAreaPage () {
   return (
     <>
       <Helmet>
-        <title>Flood messages are not available for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Flood messages are not available for this location - Manage locations
+          - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
@@ -120,7 +122,7 @@ export default function LocationNotInFloodAreaPage () {
               can get flood messages.
             </p>
             <Button
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-right-2'
               text='Link to nearby flood areas'
               onClick={(event) => {
                 event.preventDefault()
@@ -130,9 +132,10 @@ export default function LocationNotInFloodAreaPage () {
                 )
               }}
             />
-            &nbsp; &nbsp;
             <Link
-              onClick={(e) => { onSkipLink(e) }}
+              onClick={(e) => {
+                onSkipLink(e)
+              }}
               className='govuk-link inline-link'
             >
               I'll do this later

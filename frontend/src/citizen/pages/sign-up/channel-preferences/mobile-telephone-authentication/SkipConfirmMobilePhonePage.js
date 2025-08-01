@@ -24,7 +24,10 @@ export default function SkipConfirmMobilePhonePage() {
   return (
     <>
       <Helmet>
-        <title>We cannot send flood messages to this number yet - Get flood warnings - GOV.UK</title>
+        <title>
+          We cannot send flood messages to this number yet - Get flood warnings
+          - GOV.UK
+        </title>
       </Helmet>
       <BackLink to='/signup/contactpreferences/mobile/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -36,10 +39,9 @@ export default function SkipConfirmMobilePhonePage() {
             </h1>
             <Button
               text="I'll confirm this later"
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-right-2'
               onClick={skipConfirm}
             />
-            &nbsp; &nbsp;
             <Link
               to='/signup/contactpreferences/mobile/validate'
               className='govuk-body govuk-link inline-link'

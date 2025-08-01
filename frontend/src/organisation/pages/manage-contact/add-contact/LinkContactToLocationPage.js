@@ -61,7 +61,7 @@ export default function LinkContactToLocationPage() {
           (currentContact.lastname.length > 0
             ? ' ' + currentContact.lastname
             : '')
-        } added as a contact`
+        } added as a ${currentContact.role === 'ADMIN' ? 'admin' : 'contact'}`
       )
     }
 
@@ -90,11 +90,10 @@ export default function LinkContactToLocationPage() {
               needs flood messages, you need to link them to locations
             </h1>
             <Button
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-right-2'
               text='Link to locations now'
               onClick={linkToLocations}
             />
-            &nbsp; &nbsp;
             <Link
               to={orgManageContactsUrls.view.dashboard}
               state={{

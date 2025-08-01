@@ -202,17 +202,16 @@ export default function SignUpValidationPage() {
                     />
                   </div>
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-4'
                     text='Confirm email address'
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     to='/signup'
                     className='govuk-link'
                     style={{
                       display: 'inline-block',
-                      padding: '8px 10px 7px',
+                      padding: '8px 0 7px',
                       cursor: 'pointer'
                     }}
                   >

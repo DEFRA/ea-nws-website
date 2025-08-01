@@ -212,7 +212,8 @@ export default function Popup({
                 {showCancel && (
                   <p className='govuk-body popup-dialog-link inline-link'>
                     <Link
-                      onClick={() => {
+                      onClick={(event) => {
+                        event.preventDefault()
                         onClose()
                         lastFocusedElement.current?.focus()
                       }}

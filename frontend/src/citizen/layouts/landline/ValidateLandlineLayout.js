@@ -219,7 +219,7 @@ export default function ValidateLandlineLayout({
                     onChange={(val) => setCode(val)}
                   />
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     text='Continue'
                     onClick={handleSubmit}
                   />
@@ -228,7 +228,7 @@ export default function ValidateLandlineLayout({
                     className='govuk-link'
                     style={{
                       display: 'inline-block',
-                      padding: '8px 10px 7px',
+                      padding: '8px 0 7px',
                       cursor: 'pointer'
                     }}
                   >

@@ -54,10 +54,9 @@ export default function AddContactAdditionalInformationPage() {
               <div className='govuk-!-margin-top-8'>
                 <Button
                   text='Yes, add now'
-                  className='govuk-button'
+                  className='govuk-button govuk-!-margin-right-2'
                   onClick={handleSubmit}
                 />
-                &nbsp; &nbsp;
                 <Link
                   className='govuk-link inline-link'
                   onClick={skipOptionalInformation}

@@ -17,7 +17,7 @@ export default function DuplicateNamePage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               An account already exists for this organisation
             </h1>
             <InsetText text={location.state.name} />

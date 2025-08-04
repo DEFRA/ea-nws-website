@@ -196,7 +196,6 @@ export default function AccountDeletePage() {
                     : 'govuk-form-group'
                 }
               >
-                <fieldset className='govuk-fieldset' />
                 <h2 className='govuk-label-wrapper'>
                   <label
                     id='more-detail-hint'

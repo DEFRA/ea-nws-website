@@ -29,6 +29,9 @@
     padding-top: 5px;
     padding-bottom: 5px;
   }
+  .mobile-table {
+    display: none;
+  }
 }
 
 .sub-navigation__list {
@@ -183,6 +186,14 @@
   padding: 10px;
 }
 
+.flood-types {
+  font-size: 1rem;
+}
+
+.flood-types-row-header {
+  width: 30%;
+}
+
 @media (min-width: 40.0625em) {
   .menu-button {
     display: none;
@@ -325,7 +336,7 @@
   font-weight: bold;
   color: white;
   cursor: pointer;
-  padding-left: 1rem;
+  padding: 0.5rem;
   line-height: 2.25rem;
 }
 
@@ -333,6 +344,7 @@
   font-size: 1.25rem;
   color: white;
   margin: 0;
+  padding-right: 0.5rem;
 }
 
 .popup-dialog-body {
@@ -402,22 +414,117 @@
   height: 100vh;
 }
 
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
 @media (max-width: 1099px) {
-  .map-container {
+  .map-container-org {
     height: 45vh;
   }
 }
 
 @media (min-width: 1100px) and (max-width: 1700px) {
-  .map-container {
+  .map-container-org {
     height: 60vh;
   }
 }
 
 @media (min-width: 1700px) {
-  .map-container {
+  .map-container-org {
     height: 40vh;
   }
+}
+.view-location-map.desktop {
+  width: 712px;
+  height: 475px;
+}
+
+.view-location-map.mobile {
+  width: 90vw;
+  height: 40vh;
+}
+
+.location-in-flood-area-map.mobile {
+  width: 90vw;
+  height: 40vh;
+}
+
+.location-in-flood-area-map.desktop {
+  width: 960px;
+  height: 640px;
+}
+
+.location-in-flood-area--full-screen-map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+.nearby-flood-areas-map.mobile {
+  width: 100%;
+  position: relative;
+  padding-top: 66.666%;
+}
+
+.nearby-flood-areas-map.mobile .map-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.nearby-flood-areas-map.desktop {
+  width: 400px;
+  height: 320px;
+}
+
+.nearby-flood-areas-full-screen-map-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .nearby-flood-areas-full-screen-map-container {
+    flex-direction: column;
+  }
+}
+
+.nearby-flood-areas-full-screen-map-container .map-desktop {
+  width: 80vw;
+  height: 100vh;
+}
+
+.nearby-flood-areas-full-screen-map-container .map-mobile {
+  width: 100vw;
+  height: 85vh;
+}
+
+.nearby-flood-areas-full-screen-map-container .area-info-desktop {
+  width: 20vw;
+  height: 100vh;
+  background-color: #f3f2f1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.nearby-flood-areas-full-screen-map-container .area-info-mobile {
+  width: 100vw;
+  height: 15vh;
+  background-color: #f3f2f1;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .flood-warning-key {
@@ -513,18 +620,28 @@
   border: none;
 }
 
-.back-map-button {
-  transform: translateX(-50%);
-  z-index: 1001;
+.full-screen-map-button {
   position: absolute;
-  top: 1rem;
-  left: 2rem;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
+  padding: 3px;
   background-color: white;
-  padding: 0.625rem;
-  border-radius: 0.3125rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.exit-map-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  padding: 5px 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .custom-width-button {
@@ -745,6 +862,15 @@
   .one-login-header__container {
     display: block;
   }
+  .desktop-table {
+    display: none;
+  }
+  .flood-types {
+    font-size: 0.875rem;
+  }
+  .flood-types-row-header {
+    width: 60%;
+  }
 }
 
 .one-login-header__logo {
@@ -899,6 +1025,36 @@
 @media (max-width: 40.0525em) {
   .one-login-header__nav {
     width: 100%;
+  }
+  .link-mobile-alignment {
+    padding-left: 2px !important;
+  }
+  .responsive-table {
+    display: grid;
+    gap: 1rem;
+  }
+  .responsive-table tbody tr {
+    border-bottom: 1px solid #b1b4b6;
+    display: grid;
+    &.non-grouped {
+      td > p:first-child {
+        font-weight: 700;
+      }
+    }
+    &.grouped {
+      padding-top: 1.25rem;
+    }
+  }
+  .responsive-table td {
+    border: none;
+    padding: 0.5rem 0;
+    p {
+      text-wrap: auto;
+      width: 100%;
+    }
+    p.govuk-hint {
+      font-size: 1rem !important;
+    }
   }
 }
 @media (min-width: 40.0625em) {
@@ -1185,7 +1341,13 @@
   color: #0b0c0c;
   text-decoration: underline;
   text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
-  text-underline-offset: 0.1578em;
+  text-underline-offset: 0.2em;
+}
+
+.service-header__nav-list-item-link:focus-visible {
+  border-radius: 1px;
+  outline: 2px solid #101010;
+  outline-offset: 2px;
 }
 
 .service-header__nav-list-item-link:link {
@@ -1218,6 +1380,11 @@
   line-height: 1.1111111111;
   font-weight: 700;
 }
+
+.govuk-details__summary-text {
+  font-size: 18px;
+}
+
 @media (min-width: 40.0625em) {
   .govuk-header__org-service-name {
     font-size: 1.5rem;
@@ -1576,11 +1743,11 @@
 }
 
 .warning-square {
-  background-color: #e5646c;
+  background-color: #e22d28;
 }
 
 .alert-square {
-  background-color: #efae6b;
+  background-color: #fc9e3c;
 }
 
 .warning-area-pattern-fill {
@@ -1849,8 +2016,23 @@ govuk-menu-toggle.button-menu > button {
   outline: 1px solid lightgray;
 }
 
+.org-service-selection-comparison {
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+}
+
 .org-service-selection-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.org-service-selection-container > .outline-1px {
   background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .org-service-selection-header {
@@ -1860,6 +2042,7 @@ govuk-menu-toggle.button-menu > button {
 }
 
 .org-service-selection-footer {
+  margin-top: auto;
   background-color: #f3f2f1;
   padding: 0.625rem 0 0.625rem 0.625rem;
 }
@@ -1886,6 +2069,10 @@ govuk-menu-toggle.button-menu > button {
 
 .right {
   float: right;
+}
+
+.left {
+  float: left;
 }
 
 .live-map-filter-container {
@@ -2048,4 +2235,234 @@ govuk-menu-toggle.button-menu > button {
   100% {
     opacity: 0;
   }
+}
+
+.body-text-strong {
+  color: #0b0c0c;
+  font-family: GDS Transport, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.0416666667;
+  display: block;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+@media print {
+  .body-text-strong {
+    color: #000;
+    font-family: sans-serif;
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .body-text-strong {
+    font-size: 2.25rem;
+    line-height: 1.1111111111;
+  }
+}
+
+@media print {
+  .body-text-strong {
+    font-size: 24pt;
+    line-height: 1.05;
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .body-text-strong {
+    margin-bottom: 30px;
+  }
+}
+
+/* accessible panel */
+.accessible-map-legend-container {
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  left: 10px;
+  outline: 0;
+  padding: 10px;
+  pointer-events: auto;
+  position: absolute;
+  top: 10px;
+  z-index: 500;
+}
+
+.accessible-map-legend-container.keyboard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  align-items: start;
+}
+
+.accessible-map-legend-container.keyboard h3 {
+  margin-bottom: 10px;
+}
+
+.accessible-map-legend-container.keyboard kbd:first-of-type {
+  margin-left: 0;
+}
+
+.accessible-map-legend-container kbd {
+  font-family: GDS Transport, arial, sans-serif;
+  color: #0b0c0c;
+  border: 2px solid #b1b4b6;
+  background-color: white;
+  border-radius: 4px;
+  font-size: 0.825rem;
+  padding: 5px;
+  margin: 0 5px;
+}
+
+/* OS Map Terms */
+.os-map-terms-container {
+  z-index: 500;
+  position: absolute;
+  bottom: 0;
+  left: 40px;
+}
+
+.os-map-terms-container a {
+  color: #0b0c0c;
+}
+
+.keyboard-list {
+  margin: 0;
+  width: 100%;
+}
+
+.keyboard-list__item {
+  padding: 10px 0;
+  border-top: 1px solid #b1b4b6;
+}
+
+.keyboard-list__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.keyboard-list dt {
+  margin-bottom: 7px;
+}
+
+.map-marker {
+  z-index: 600;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.drop-pin-container {
+  z-index: 1000;
+  position: absolute;
+  cursor: pointer;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.map-legend-close-container {
+  margin-left: auto;
+  margin-top: -35px;
+  padding-bottom: 10px;
+}
+
+.service-overview-banner {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  background-color: #1d70b8;
+}
+
+.service-overview-banner__inner {
+  margin: 0 auto;
+  padding: 1rem 1rem 4rem;
+}
+
+.service-overview-banner__icon {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.service-overview-banner__icon-text {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.service-overview-banner__title {
+  color: #ffffff;
+  margin: 0;
+}
+
+.service-overview-banner__subtitle {
+  color: #d3e2f1;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.service-overview-banner__text {
+  color: #d3e2f1;
+  margin: 0 0 0;
+}
+
+.service-overview-section-hr {
+  border: 0;
+  border-top: 1px solid #d8d8d8;
+  margin: 4rem;
+}
+
+.action-plan-body,
+.notes-body {
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.clearfix {
+  clear: both;
+}
+
+/* Check your answers mobile */
+
+@media (max-width: 40.0525em) {
+  .check-your-answers-table td,
+  .check-your-answers-table th {
+    display: block;
+    border-bottom: none;
+  }
+  .check-your-answers-table tr {
+    border-bottom: 1px solid #b1b4b6;
+  }
+}
+
+@media (min-width: 40.0525em) {
+  .check-your-answers-table .govuk-list {
+    margin-left: -20px;
+  }
+}
+/* loading spinner */
+
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.loading-spinner-container .loading-spinner {
+  margin-top: 0.2rem;
+}
+
+.flood-banner-loading-container .loading-spinner-container {
+  margin-top: 0;
 }

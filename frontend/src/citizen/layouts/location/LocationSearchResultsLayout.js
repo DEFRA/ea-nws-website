@@ -1,20 +1,21 @@
 import * as turf from '@turf/turf'
 import moment from 'moment'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
-import Pagination from '../../../common/components/gov-uk/Pagination'
+import AlertType from '../../../common/enums/AlertType'
 import {
+  getLocationOtherAdditional,
+  setCurrentLocationAlerts,
   setFloodAlertCount,
+  setFloodAreasAlreadyAdded,
+  setNearbyTargetAreasAdded,
   setNearbyTargetAreasFlow,
-  setSelectedFloodAlertArea,
-  setSelectedFloodWarningArea,
   setSelectedLocation,
-  setSevereFloodWarningCount,
-  setShowOnlySelectedFloodArea
+  setSevereFloodWarningCount
 } from '../../../common/redux/userSlice'
 import {
   getSurroundingFloodAreas,
@@ -28,19 +29,14 @@ export default function LocationSearchResultsLayout({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
+  const profileLocations = useSelector((state) => state.session.profile?.pois)
   const locationSearchType = useSelector(
     (state) => state.session.locationSearchType
   )
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
-  )
-  const locationsPerPage = 20
-  const displayedLocations = locations.slice(
-    (currentPage - 1) * locationsPerPage,
-    currentPage * locationsPerPage
   )
   const floodHistoryData = useFetchAlerts()
 
@@ -50,7 +46,7 @@ export default function LocationSearchResultsLayout({
     const areaAlert = floodHistoryData.filter(
       (alert) =>
         alert.CODE === AlertArea &&
-        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+        moment(alert.effectiveDate * 1000) > oneYearAgo
     )
     dispatch(setFloodAlertCount(areaAlert.length))
   }
@@ -61,7 +57,7 @@ export default function LocationSearchResultsLayout({
     const areaWarning = floodHistoryData.filter(
       (alert) =>
         alert.CODE === WarningArea &&
-        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+        moment(alert.effectiveDate * 1000) > oneYearAgo
     )
     dispatch(setSevereFloodWarningCount(areaWarning.length))
   }
@@ -71,13 +67,11 @@ export default function LocationSearchResultsLayout({
 
     setLoading(true)
     try {
-      dispatch(setSelectedLocation(selectedLocation))
-
       // reset map display - these are only required when user is taken through location in proximity to flood areas
       // they are updated with data only in proximity flow
-      dispatch(setSelectedFloodAlertArea(null))
-      dispatch(setSelectedFloodWarningArea(null))
-      dispatch(setShowOnlySelectedFloodArea(false))
+      // dispatch(setSelectedFloodAlertArea(null))
+      // dispatch(setSelectedFloodWarningArea(null))
+      // dispatch(setShowOnlySelectedFloodArea(false))
       dispatch(setNearbyTargetAreasFlow(false))
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
@@ -104,6 +98,23 @@ export default function LocationSearchResultsLayout({
           warningArea
         )
 
+      const allAlerts = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.FLOOD_ALERT,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.INFO
+      ]
+
+      const alertsOnly = [AlertType.FLOOD_ALERT, AlertType.INFO]
+
+      dispatch(
+        setCurrentLocationAlerts(isInWarningArea ? allAlerts : alertsOnly)
+      )
+      dispatch(setSelectedLocation(selectedLocation))
+
+      // what even is this? please remind me to come back to this when reviewing
       if (isInAlertArea) {
         setHistoricalAlertNumber(alertArea.features[0].properties.TA_CODE)
       }
@@ -120,7 +131,40 @@ export default function LocationSearchResultsLayout({
         isWithinAlertAreaProximity = alertArea?.features.length > 0
       }
 
+      // this needs reset when on the view location page
+      if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+        dispatch(setNearbyTargetAreasFlow(true))
+        dispatch(setNearbyTargetAreasAdded([]))
+      } else {
+        dispatch(setNearbyTargetAreasFlow(false))
+        dispatch(setNearbyTargetAreasAdded([]))
+      }
+
+      const floodAreas = alertArea?.features.concat(warningArea?.features)
+      let floodAreasAlreadyAdded = []
+      floodAreas?.forEach((area) => {
+        profileLocations?.forEach((loc) => {
+          const locationsTargetAreas = getLocationOtherAdditional(
+            loc?.additionals,
+            'targetAreas'
+          )
+
+          if (
+            loc.address === area.properties.TA_Name ||
+            (locationsTargetAreas &&
+              locationsTargetAreas?.some((targetArea) => {
+                return targetArea.TA_Name === area.properties.TA_Name
+              }))
+          ) {
+            floodAreasAlreadyAdded.push(area.properties.TA_Name)
+          }
+        })
+      })
+
+      dispatch(setFloodAreasAlreadyAdded(floodAreasAlreadyAdded))
+
       continueToNextPage(
+        floodAreasAlreadyAdded,
         isInWarningArea,
         isInAlertArea,
         isWithinWarningAreaProximity,
@@ -154,14 +198,27 @@ export default function LocationSearchResultsLayout({
 
   const detailsMessage = (
     <div>
-      You can view flood message areas&nbsp;
-      <Link
-        className='govuk-link'
-        onClick={(event) => selectCentreOfAllAreas(event)}
-        style={{ cursor: 'pointer' }}
-      >
-        near this postcode
-      </Link>
+      <p>
+        You can &nbsp;
+        <Link
+          className='govuk-link'
+          onClick={(event) => selectCentreOfAllAreas(event)}
+          style={{ cursor: 'pointer' }}
+        >
+          view areas in or near here
+        </Link>
+        &nbsp;where you can get flood messages.
+      </p>
+      <p>
+        Or you can try a&nbsp;
+        <Link
+          className='govuk-link'
+          onClick={() => navigate(-1)}
+          style={{ cursor: 'pointer' }}
+        >
+          different postcode
+        </Link>
+      </p>
     </div>
   )
 
@@ -176,7 +233,7 @@ export default function LocationSearchResultsLayout({
             ) : (
               <div className='govuk-grid-column-two-thirds'>
                 <div className='govuk-body'>
-                  <h1 className='govuk-heading-l'>
+                  <h1 className='govuk-heading-l' id='main-content'>
                     {locationPostCode
                       ? 'Select an address'
                       : 'Select a location'}
@@ -205,11 +262,11 @@ export default function LocationSearchResultsLayout({
                       <tr className='govuk-table__row'>
                         <td className='govuk-table__cell' />
                       </tr>
-                      {displayedLocations.map((location, index) => (
+                      {locations.map((location, index) => (
                         <tr key={index} className='govuk-table__row'>
                           <td className='govuk-table__cell'>
                             <Link
-                              className='govuk-link'
+                              className='govuk-link govuk-link--no-visited-state'
                               onClick={(event) =>
                                 handleSelectedLocation(event, location)
                               }
@@ -236,10 +293,6 @@ export default function LocationSearchResultsLayout({
                       Search using a different location
                     </Link>
                   )}
-                  <Pagination
-                    totalPages={Math.ceil(locations.length / locationsPerPage)}
-                    onPageChange={(val) => setCurrentPage(val)}
-                  />
                 </div>
               </div>
             )}

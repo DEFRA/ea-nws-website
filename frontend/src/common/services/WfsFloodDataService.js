@@ -3,37 +3,20 @@ import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 import { backendCall } from './BackendService'
 
-const wfsCallWithFilter = async (type, property, value) => {
-  const filter = `<Filter><And><PropertyIsEqualTo><PropertyName>${property}</PropertyName><Literal>${value}</Literal></PropertyIsEqualTo></And></Filter>`
-  const WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: type,
-    srsname: 'EPSG:4326',
-    filter,
-    outputFormat: 'GEOJSON'
-  }
-  const result = await backendCall(WFSParams, 'api/wfs')
-  return result
+export const getFloodAreaByTaCode = async (code) => {
+  const result = await backendCall(
+    { TA_CODE: code },
+    'api/elasticache/get_ta_data'
+  )
+  return result.data || []
 }
 
-export const getFilteredFloodAreas = async (property, value) => {
-  const { data: filteredWarningAreas } = await wfsCallWithFilter(
-    'flood_warnings',
-    property,
-    value
+export const getOperationalBoundaryByTaCode = async (code) => {
+  const result = await backendCall(
+    { TA_CODE: code },
+    'api/elasticache/get_ob_data'
   )
-  const { data: filteredAlertAreas } = await wfsCallWithFilter(
-    'flood_alerts',
-    property,
-    value
-  )
-  const alertAreasFeatures = filteredAlertAreas?.features || []
-  const warningAreasFeatures = filteredWarningAreas?.features || []
-  const allFilteredAreas = alertAreasFeatures.concat(warningAreasFeatures) || []
-  return allFilteredAreas
+  return result.data || []
 }
 
 const wfsCall = async (bbox, map, type) => {
@@ -114,6 +97,7 @@ export const getSurroundingFloodAreasFromShape = async (
   const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, {
     units: 'kilometers'
   })
+
   // Get the boundary box for the buffered shape - it will be a square
   const bbox = turf.bbox(bufferedShape)
   const bboxInput =
@@ -133,6 +117,7 @@ export const getSurroundingFloodAreasFromShape = async (
     'flood_alerts'
   )
   const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
+
   return {
     alertArea: filteredAlertData,
     warningArea: filteredWarningData
@@ -164,18 +149,6 @@ const getIntersections = (areas, bufferedShape) => {
     }
   })
   return filteredTargetData
-}
-
-export const getFloodAreaByTaCode = async (code) => {
-  const areas = await getFilteredFloodAreas('TA_CODE', code)
-  // TA_CODE is unique so there will only be one element in the array
-  return areas[0] || []
-}
-
-export const getFloodAreaByTaName = async (name) => {
-  const areas = await getFilteredFloodAreas('TA_Name', name)
-  // TA_Name is unique so there will only be one element in the array
-  return areas[0] || []
 }
 
 export const isLocationInFloodArea = (lat, lng, areaData) => {

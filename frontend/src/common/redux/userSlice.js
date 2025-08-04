@@ -91,7 +91,6 @@ const userSlice = createSlice({
     authToken: null,
     registerToken: null,
     profileId: null,
-    orgId: null,
     notFoundLocations: null,
     notInEnglandLocations: null,
     profile: {
@@ -103,7 +102,10 @@ const userSlice = createSlice({
       mobilePhones: [],
       homePhones: [],
       language: 'EN',
-      additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+      additionals: [
+        { id: 'signupComplete', value: { s: 'false' } },
+        { id: 'firstLogin', value: { s: 'true' } }
+      ],
       unverified: {
         emails: [],
         mobilePhones: [],
@@ -113,6 +115,8 @@ const userSlice = createSlice({
     },
     contactPreferences: null,
     registrations: null,
+    locationRegistrations: null,
+    floodAreasInfo: null,
     currentContact: null,
     signinType: null,
     // location data
@@ -125,11 +129,14 @@ const userSlice = createSlice({
     locationSearchType: null,
     // required for when user changes a location at sign up review
     locationToBeChanged: null,
+    // required for tracking areas already on account
+    floodAreasAlreadyAdded: null,
     // required for nearby flood areas flow
+    nearbyTargetAreaFlow: null,
+    nearbyTargetAreasAdded: null,
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
-    nearbyTargetAreaFlow: null,
     // required for historical flood warnings and alerts
     severeFloodWarningCount: null,
     floodAlertCount: null,
@@ -142,6 +149,10 @@ const userSlice = createSlice({
     // linked locations/contacts
     linkLocations: null,
     linkContacts: null,
+    // required for entering an org address manually
+    enterAddressManuallyFlow: null,
+    orgBuildingName: null,
+    previousOrgAddress: null,
     // org location data
     currentLocation: {
       id: null,
@@ -185,6 +196,7 @@ const userSlice = createSlice({
       ]
     },
     currentTA: null,
+    currentLocationAlerts: null,
     // org data
     organization: {
       id: null,
@@ -249,9 +261,6 @@ const userSlice = createSlice({
     setProfileId: (state, action) => {
       state.profileId = action.payload
     },
-    setOrgId: (state, action) => {
-      state.orgId = action.payload
-    },
     setNotFoundLocations: (state, action) => {
       state.notFoundLocations = action.payload
     },
@@ -266,6 +275,12 @@ const userSlice = createSlice({
     },
     setRegistrations: (state, action) => {
       state.registrations = action.payload
+    },
+    setLocationRegistrations: (state, action) => {
+      state.locationRegistrations = action.payload
+    },
+    setFloodAreasInfo: (state, action) => {
+      state.floodAreasInfo = action.payload
     },
     setCurrentContact: (state, action) => {
       state.currentContact = action.payload
@@ -300,6 +315,10 @@ const userSlice = createSlice({
     setLocationSearchType: (state, action) => {
       state.locationSearchType = action.payload
     },
+    // required for tracking areas already on account
+    setFloodAreasAlreadyAdded: (state, action) => {
+      state.floodAreasAlreadyAdded = action.payload
+    },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
       state.selectedFloodWarningArea = action.payload
@@ -312,6 +331,9 @@ const userSlice = createSlice({
     },
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
+    },
+    setNearbyTargetAreasAdded: (state, action) => {
+      state.nearbyTargetAreasAdded = action.payload
     },
     // required for historical flood warnings and alerts
     setSevereFloodWarningCount: (state, action) => {
@@ -339,9 +361,22 @@ const userSlice = createSlice({
     setLinkContacts: (state, action) => {
       state.linkContacts = action.payload
     },
+    // add org address at signup
+    setEnterAddressManuallyFlow: (state, action) => {
+      state.enterAddressManuallyFlow = action.payload
+    },
+    setOrgBuildingName: (state, action) => {
+      state.orgBuildingName = action.payload
+    },
+    setPreviousOrgAddress: (state, action) => {
+      state.previousOrgAddress = action.payload
+    },
     // org location data
     setCurrentTA: (state, action) => {
       state.currentTA = action.payload
+    },
+    setCurrentLocationAlerts: (state, action) => {
+      state.currentLocationAlerts = action.payload
     },
     setCurrentLocation: (state, action) => {
       state.currentLocation.id = action.payload.id
@@ -545,7 +580,6 @@ const userSlice = createSlice({
     },
     // org data
     setOrganization: (state, action) => {
-      state.organization.id = action.payload?.id || null
       state.organization.name = action.payload?.name || null
       state.organization.description =
         action.payload?.description ||
@@ -572,9 +606,6 @@ const userSlice = createSlice({
       state.organization.alertDiffusionZoneBoundingBox =
         action.payload?.alertDiffusionZoneBoundingBox || null
       state.organization.urlSlug = action.payload?.urlSlug || null
-    },
-    setOrganizationId: (state, action) => {
-      state.organization.id = action.payload
     },
     setOrganizationName: (state, action) => {
       state.organization.name = action.payload
@@ -783,7 +814,6 @@ const userSlice = createSlice({
       state.authToken = null
       state.registerToken = null
       state.profileId = null
-      state.orgId = null
       state.notFoundLocations = null
       state.notInEnglandLocations = null
       state.profile = {
@@ -795,7 +825,10 @@ const userSlice = createSlice({
         mobilePhones: [],
         homePhones: [],
         language: 'EN',
-        additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+        additionals: [
+          { id: 'signupComplete', value: { s: 'false' } },
+          { id: 'firstLogin', value: { s: 'true' } }
+        ],
         unverified: {
           emails: [],
           mobilePhones: [],
@@ -805,6 +838,8 @@ const userSlice = createSlice({
       }
       state.contactPreferences = null
       state.registrations = null
+      state.locationRegistrations = null
+      state.floodAreasInfo = null
       state.currentContact = null
       state.signinType = null
       // location data
@@ -817,11 +852,14 @@ const userSlice = createSlice({
       state.locationToBeChanged = null
       // required for extending name search flood areas radius
       state.locationSearchType = null
+      // required for tracking areas already on account
+      state.floodAreasAlreadyAdded = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      state.nearbyTargetAreasAdded = null
       // required for historical flood warnings and alerts
       state.severeFloodWarningCount = null
       state.floodAlertCount = null
@@ -830,8 +868,13 @@ const userSlice = createSlice({
       state.selectedBoundary = null
       state.consecutiveBoundariesAdded = 0
       state.predefinedBoundaryFlow = null
+      // required for entering an org address manually
+      state.enterAddressManuallyFlow = null
+      state.orgBuildingName = null
+      state.previousOrgAddress = null
       // org location data
       state.currentTA = null
+      state.currentLocationAlerts = null
       state.currentLocation = {
         id: null,
         enabled: true,
@@ -1013,11 +1056,12 @@ export const {
   setAuthToken,
   setRegisterToken,
   setProfileId,
-  setOrgId,
   setNotFoundLocations,
   setNotInEnglandLocations,
   setProfile,
   setRegistrations,
+  setLocationRegistrations,
+  setFloodAreasInfo,
   setContactPreferences,
   setCurrentContact,
   addContactPreference,
@@ -1032,11 +1076,14 @@ export const {
   setLocationToBeChanged,
   // required for extending name search flood areas radius
   setLocationSearchType,
+  // required for tracking areas already on account
+  setFloodAreasAlreadyAdded,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  setNearbyTargetAreasAdded,
   // required for historical flood warnings and alerts
   setSevereFloodWarningCount,
   setFloodAlertCount,
@@ -1048,8 +1095,13 @@ export const {
   setPredefinedBoundaryFlow,
   setLinkLocations,
   setLinkContacts,
+  // org address at sign up flow
+  setEnterAddressManuallyFlow,
+  setOrgBuildingName,
+  setPreviousOrgAddress,
   // org location data
   setCurrentTA,
+  setCurrentLocationAlerts,
   setCurrentLocation,
   setCurrentLocationId,
   setCurrentLocationEnabled,

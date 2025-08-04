@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -33,6 +34,7 @@ export default function ValidateMobileLayout({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const enterCodeInputId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -174,6 +176,9 @@ export default function ValidateMobileLayout({
 
   return (
     <>
+      <Helmet>
+        <title>Confirm your mobile number - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired ? (
         <ExpiredCodeLayout getNewCode={getNewCode} />
       ) : (
@@ -189,15 +194,21 @@ export default function ValidateMobileLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Check your mobile phone</h2>
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeInputId }]}
+                  />
+                )}
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Check your mobile phone
+                </h2>
                 <div className='govuk-body'>
                   We've sent a text with a code to:
                   <InsetText text={mobile} />
                   Use the code within 4 hours or it will expire.
                   <br /> <br />
                   <Input
-                    id='enter-code'
+                    id={enterCodeInputId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'
@@ -205,7 +216,7 @@ export default function ValidateMobileLayout({
                     onChange={(val) => setCode(val)}
                   />
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     text='Continue'
                     onClick={handleSubmit}
                   />
@@ -214,7 +225,7 @@ export default function ValidateMobileLayout({
                     className='govuk-link'
                     style={{
                       display: 'inline-block',
-                      padding: '8px 10px 7px',
+                      padding: '8px 0 7px',
                       cursor: 'pointer'
                     }}
                   >

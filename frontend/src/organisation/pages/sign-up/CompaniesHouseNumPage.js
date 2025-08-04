@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { setProfile } from '../../../common/redux/userSlice'
@@ -35,9 +36,14 @@ export default function CompaniesHouseNumPage () {
   }
 
   return (
-    <CompaniesHouseNumLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Does your organisation have a Companies House number? - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <CompaniesHouseNumLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

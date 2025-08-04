@@ -1,16 +1,78 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
+import { orgSignUpUrls } from '../../../organisation/routes/sign-up/SignUpRoutes'
 import '../../css/custom.css'
 
-export default function SubNavigation ({ pages, currentPage, type }) {
+export default function SubNavigation({ pages, currentPage, type }) {
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
 
+  const getActiveNavLink = (title) => {
+    const { pathname, state } = location
+
+    const matchers = [
+      {
+        condition: pathname.includes(
+          '/organisation/manage-locations/live-monitoring'
+        ),
+        result: 'no'
+      },
+      {
+        condition:
+          pathname.includes('/organisation/manage-locations') &&
+          title === 'Locations',
+        result: 'page'
+      },
+      {
+        condition:
+          pathname.includes('/organisation/manage-contacts') &&
+          title === 'Users',
+        result: 'page'
+      },
+      {
+        condition:
+          pathname.includes('/organisation/reports') && title === 'Reports',
+        result: 'page'
+      },
+      {
+        condition: pathname.includes('/organisation/info') && title === 'Help',
+        result: 'page'
+      },
+      {
+        condition: state?.type === 'contact' && title === 'Users',
+        result: 'page'
+      },
+      {
+        condition: state?.type === 'location' && title === 'Locations',
+        result: 'page'
+      }
+    ]
+
+    for (const { condition, result } of matchers) {
+      if (condition) return result
+    }
+    return 'no'
+  }
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen)
+  }
+
+  const isSignedInAndNotOnSignUpPath = (journey) => {
+    const baseUrls = ['declaration']
+
+    const urls =
+      journey === 'org'
+        ? [orgSignUpUrls.signUp, 'organisation/admin-controls', ...baseUrls]
+        : ['/signup', ...baseUrls]
+
+    return (
+      authToken !== null && !urls.some((url) => location.pathname.includes(url))
+    )
   }
 
   if (type === 'org') {
@@ -18,30 +80,50 @@ export default function SubNavigation ({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+            <a
+              href={
+                isSignedInAndNotOnSignUpPath('org')
+                  ? orgManageLocationsUrls.monitoring.view
+                  : '/'
+              }
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
               Get flood warnings
             </a>
             <br />
-            <span style={{ color: '#505a5f', fontSize: '12px' }}>Professional</span>
+            <span style={{ color: '#505a5f', fontSize: '12px' }}>
+              Professional
+            </span>
           </li>
-          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
+          {isSignedInAndNotOnSignUpPath('org') && (
             <li className='sub-navigation__item'>
-              <button onClick={() => toggleMenu()} className='sub-navigation__menu'>
+              <button
+                onClick={() => toggleMenu()}
+                className='sub-navigation__menu'
+              >
                 Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
               </button>
-            </li>}
-          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
-          pages.map((page, index) => (
-            <li key={index} className={`sub-navigation__item ${!menuOpen && 'closed'}`}>
-              <Link
-                to={page.link}
-                className='sub-navigation__link'
-                aria-current={currentPage === page.link ? 'page' : 'no'}
-              >
-                {page.title}
-              </Link>
             </li>
-          ))}
+          )}
+          {isSignedInAndNotOnSignUpPath('org') &&
+            pages.map((page, index) => (
+              <li
+                key={index}
+                className={`sub-navigation__item ${!menuOpen && 'closed'}`}
+              >
+                <Link
+                  to={page.link}
+                  className='sub-navigation__link'
+                  aria-current={
+                    currentPage === page.link
+                      ? 'page'
+                      : getActiveNavLink(page.title)
+                  }
+                >
+                  {page.title}
+                </Link>
+              </li>
+            ))}
         </ul>
       </nav>
     )
@@ -49,20 +131,18 @@ export default function SubNavigation ({ pages, currentPage, type }) {
     return (
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list sub'>
-          {
-            authToken !== null &&
-          pages.map((page, index) => (
-            <li key={index} className='sub-navigation__item'>
-              <Link
-                to={page.link}
-                className='sub-navigation__link'
-                aria-current={currentPage === page.link ? 'page' : 'no'}
-              >
-                {page.title}
-              </Link>
-            </li>
-          ))
-}
+          {authToken !== null &&
+            pages.map((page, index) => (
+              <li key={index} className='sub-navigation__item'>
+                <Link
+                  to={page.link}
+                  className='sub-navigation__link'
+                  aria-current={currentPage === page.link ? 'page' : 'no'}
+                >
+                  {page.title}
+                </Link>
+              </li>
+            ))}
         </ul>
       </nav>
     )
@@ -71,28 +151,38 @@ export default function SubNavigation ({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+            <a
+              href={isSignedInAndNotOnSignUpPath('citizen') ? '/home' : '/'}
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
               Get flood warnings
             </a>
           </li>
-          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
+          {isSignedInAndNotOnSignUpPath('citizen') && (
             <li className='sub-navigation__item'>
-              <button onClick={() => toggleMenu()} className='sub-navigation__menu'>
+              <button
+                onClick={() => toggleMenu()}
+                className='sub-navigation__menu'
+              >
                 Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
               </button>
-            </li>}
-          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
-          pages.map((page, index) => (
-            <li key={index} className={`sub-navigation__item ${!menuOpen && 'closed'}`}>
-              <Link
-                to={page.link}
-                className='sub-navigation__link'
-                aria-current={currentPage === page.link ? 'page' : 'no'}
-              >
-                {page.title}
-              </Link>
             </li>
-          ))}
+          )}
+          {isSignedInAndNotOnSignUpPath('citizen') &&
+            pages.map((page, index) => (
+              <li
+                key={index}
+                className={`sub-navigation__item ${!menuOpen && 'closed'}`}
+              >
+                <Link
+                  to={page.link}
+                  className='sub-navigation__link'
+                  aria-current={currentPage === page.link ? 'page' : 'no'}
+                >
+                  {page.title}
+                </Link>
+              </li>
+            ))}
         </ul>
       </nav>
     )

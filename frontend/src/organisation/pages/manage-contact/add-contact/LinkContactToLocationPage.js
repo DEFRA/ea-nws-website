@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -60,7 +61,7 @@ export default function LinkContactToLocationPage() {
           (currentContact.lastname.length > 0
             ? ' ' + currentContact.lastname
             : '')
-        } added as a contact`
+        } added as a ${currentContact.role === 'ADMIN' ? 'admin' : 'contact'}`
       )
     }
 
@@ -69,11 +70,18 @@ export default function LinkContactToLocationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          If {currentContact?.firstname} {currentContact?.lastname} needs flood
+          messages, you need to link them to locations - Manage users - Get
+          flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               If{' '}
               {currentContact.firstname +
                 (currentContact.lastname.length > 0
@@ -82,11 +90,10 @@ export default function LinkContactToLocationPage() {
               needs flood messages, you need to link them to locations
             </h1>
             <Button
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-right-2'
               text='Link to locations now'
               onClick={linkToLocations}
             />
-            &nbsp; &nbsp;
             <Link
               to={orgManageContactsUrls.view.dashboard}
               state={{

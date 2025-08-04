@@ -4,7 +4,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 
-export default function LocationSearchOptionsLayout ({
+export default function LocationSearchOptionsLayout({
   heading,
   additionalInfo,
   searchOptions,
@@ -13,6 +13,7 @@ export default function LocationSearchOptionsLayout ({
 }) {
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
+  const searchOptionsId = 'search-options'
 
   useEffect(() => {
     setError('')
@@ -39,13 +40,18 @@ export default function LocationSearchOptionsLayout ({
   }
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>{heading}</h1>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: searchOptionsId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              {heading}
+            </h1>
             {additionalInfo && <>{additionalInfo}</>}
             <div
               className={
@@ -54,9 +60,18 @@ export default function LocationSearchOptionsLayout ({
                   : 'govuk-form-group'
               }
             >
-              {error && <p className='govuk-error-message'>{error}</p>}
+              {error && (
+                <p className='govuk-error-message'>
+                  <span className='govuk-visually-hidden'>Error:</span> {error}
+                </p>
+              )}
               <fieldset className='govuk-fieldset'>
-                <div className='govuk-radios' data-module='govuk-radios'>
+                <legend className='govuk-visually-hidden'>{heading}</legend>
+                <div
+                  id={searchOptionsId}
+                  className='govuk-radios'
+                  data-module='govuk-radios'
+                >
                   {searchOptions.map((option) => (
                     <Radio
                       key={option.label}

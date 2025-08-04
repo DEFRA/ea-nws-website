@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import '../../css/autocomplete.css'
 
-export default function Autocomplete ({
+export default function Autocomplete({
+  id,
   name,
   className,
   value,
@@ -14,7 +15,8 @@ export default function Autocomplete ({
   onClick,
   position,
   showNotFound = true,
-  nameField
+  nameField,
+  ariaLabel
 }) {
   const [options, setOptions] = useState(null)
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
@@ -198,15 +200,16 @@ export default function Autocomplete ({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        {name &&
+        {name && (
           <label
             className={
-            isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
-          }
-            htmlFor='govuk-text-input'
+              isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
+            }
+            htmlFor={id || 'govuk-text-input'}
           >
             {name}
-          </label>}
+          </label>
+        )}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span> {error}
@@ -221,7 +224,7 @@ export default function Autocomplete ({
               error === '' ? className : className + ' govuk-input--error'
             }
             name={name}
-            id='govuk-text-input'
+            id={id || 'govuk-text-input'}
             onClick={handleChange}
             onChange={handleChange}
             onBlur={() => setMenuOpen(false)}
@@ -234,10 +237,10 @@ export default function Autocomplete ({
             }}
             defaultValue={defaultValue}
             autoComplete='off'
+            aria-label={ariaLabel}
           />
           <ul
-            aria-labelledby='id'
-            id='listbox'
+            id={`${name}-listbox`}
             role='listbox'
             className={menuClassList.join(' ')}
             onMouseLeave={handeListMouseLeave}

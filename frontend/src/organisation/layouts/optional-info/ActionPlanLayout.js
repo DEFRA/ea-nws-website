@@ -10,7 +10,7 @@ import {
   setCurrentLocationActionPlan
 } from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({
+export default function ActionPlanLayout({
   navigateToNextPage,
   error,
   setError
@@ -22,6 +22,7 @@ export default function ActionPlanLayout ({
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
   const charLimit = 500
+  const actionPlanId = 'action-plan'
 
   useEffect(() => {
     if (actionPlan.length > charLimit) {
@@ -51,8 +52,10 @@ export default function ActionPlanLayout ({
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Action plan (optional)</h1>
+            {error && <ErrorSummary errorList={[{text: error, componentId: actionPlanId}]} />}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Action plan (optional)
+            </h1>
             <div className='govuk-body'>
               <p>
                 Use this section to indicate what you can do to reduce the
@@ -60,6 +63,7 @@ export default function ActionPlanLayout ({
                 then move stock to the top floor and evacuate.
               </p>
               <TextArea
+                id={actionPlanId}
                 error={error}
                 inputType='text'
                 rows='5'

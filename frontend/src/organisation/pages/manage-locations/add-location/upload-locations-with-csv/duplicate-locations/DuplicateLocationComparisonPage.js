@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -35,7 +36,7 @@ export default function DuplicateLocationComparisonPage() {
   const numDuplicates = location?.state?.numDuplicates
   const flow = location?.state?.flow || null
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+  const existingOrNewRadiosId = 'existing-or-new-radios'
 
   const notFoundLocations = useSelector(
     (state) => state.session.notFoundLocations
@@ -160,7 +161,7 @@ export default function DuplicateLocationComparisonPage() {
         )
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id
-        const dataToSend = { authToken, orgId, location: locationToUpdate }
+        const dataToSend = { authToken, location: locationToUpdate }
         await backendCall(dataToSend, 'api/location/update', navigate)
         // update registrations as the new location will have all alerts enabled by default
         const registerData = {
@@ -187,7 +188,7 @@ export default function DuplicateLocationComparisonPage() {
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id
       await backendCall(
-        { orgId, locationId: locationIdToRemove },
+        { authToken, locationId: locationIdToRemove },
         'api/bulk_uploads/remove_invalid_location',
         navigate
       )
@@ -211,9 +212,15 @@ export default function DuplicateLocationComparisonPage() {
           newLocation.additionals.other?.location_data_type ===
             LocationDataType.SHAPE_LINE
         ) {
-          await verifyLocationInFloodAreaAndNavigate(
-            orgManageLocationsUrls.add.linkLocationToContacts
-          )
+          if (existingOrNew === 'Existing') {
+            navigate(orgManageLocationsUrls.view.dashboard, {
+              state: { successMessage: 'Existing location kept' }
+            })
+          } else {
+            await verifyLocationInFloodAreaAndNavigate(
+              orgManageLocationsUrls.add.linkLocationToContacts
+            )
+          }
         } else {
           navigate(orgManageLocationsUrls.add.contactLinkInfo)
         }
@@ -232,12 +239,24 @@ export default function DuplicateLocationComparisonPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Duplicate location comparison - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  { text: error, componentId: existingOrNewRadiosId }
+                ]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
               {newLocation.additionals.locationName} already exists in this
               account
             </h1>
@@ -246,7 +265,10 @@ export default function DuplicateLocationComparisonPage() {
                 Select if you want to keep the existing location or use the new
                 location uploaded.
               </div>
-              <div className='org-location-comparison'>
+              <div
+                id={existingOrNewRadiosId}
+                className='org-location-comparison'
+              >
                 <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
                   <div className='outline-1px org-location-comparison-box'>
                     <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>

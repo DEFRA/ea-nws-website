@@ -7,7 +7,7 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrganizationCompHouseNum } from '../../../common/redux/userSlice'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout ({
+export default function CompaniesHouseNumLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -16,6 +16,8 @@ export default function CompaniesHouseNumLayout ({
   const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
+  const compHouseRadiosId = 'comp-house-radios'
+  const compHouseNumberId = 'comp-house-number'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -54,9 +56,17 @@ export default function CompaniesHouseNumLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || numberError) && (
-              <ErrorSummary errorList={[error, numberError]} />
+              <ErrorSummary
+                errorList={[
+                  error && { text: error, componentId: compHouseRadiosId },
+                  numberError && {
+                    text: numberError,
+                    compHouseNumberId: compHouseNumberId
+                  }
+                ].filter(Boolean)}
+              />
             )}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Does your organisation have a Companies House number?
             </h1>
             <div className='govuk-body'>
@@ -68,28 +78,41 @@ export default function CompaniesHouseNumLayout ({
                     : 'govuk-form-group'
                 }
               >
-                <div className='govuk-radios'>
-                  <Radio
-                    key='radio_yes'
-                    name='comp-house-radios'
-                    label='Yes'
-                    onChange={() => {
-                      setCompanyNumExists(true)
-                      setCompanyNum('')
-                    }}
-                    conditional={companyNumExists}
-                    conditionalQuestion='Companies House number'
-                    conditionalInput={(val) => setCompanyNum(val)}
-                    conditionalError={numberError}
-                  />
-                  <Radio
-                    key='radio_no'
-                    name='comp-house-radios'
-                    label='No'
-                    onChange={() => setCompanyNum(false)}
-                  />
-                  <br />
-                </div>
+                <fieldset id={compHouseRadiosId} className='govuk-fieldset'>
+                  <legend className='govuk-visually-hidden'>
+                    Does your organisation have a Companies House number?
+                  </legend>
+                  <div className='govuk-hint'>
+                    Limited companies and limited liability partnerships have
+                    these numbers.
+                  </div>
+                  <div className='govuk-radios'>
+                    <Radio
+                      key='radio_yes'
+                      name='comp-house-radios'
+                      label='Yes'
+                      onChange={() => {
+                        setCompanyNumExists(true)
+                        setCompanyNum('')
+                      }}
+                      conditional={companyNumExists}
+                      conditionalQuestion='Companies House number'
+                      conditionalInput={(val) => setCompanyNum(val)}
+                      conditionalError={numberError}
+                      conditionalId={compHouseNumberId}
+                    />
+                    <Radio
+                      key='radio_no'
+                      name='comp-house-radios'
+                      label='No'
+                      onChange={() => {
+                        setCompanyNumExists(false)
+                        setCompanyNum(false)
+                      }}
+                    />
+                    <br />
+                  </div>
+                </fieldset>
               </div>
               <Button
                 text='Continue'

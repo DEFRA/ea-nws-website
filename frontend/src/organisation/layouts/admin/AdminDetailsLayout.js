@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -11,6 +12,7 @@ import {
   setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
@@ -34,6 +36,9 @@ export default function AdminDetailsLayout({
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
   const isAdmin = organizationAdditionals.isAdminRegistering
+
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -83,12 +88,18 @@ export default function AdminDetailsLayout({
         setErrorEmail(errorMessage)
       }
     } else {
-      const updatedProfile = {
+      let updatedProfile = {
         ...profile,
         emails: [email],
         firstname,
         lastname
       }
+
+      // required to send admin users to initial login screen at sign in
+      updatedProfile = updateAdditionals(updatedProfile, [
+        { id: 'firstLogin', value: { s: 'true' } }
+      ])
+
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))
@@ -103,17 +114,42 @@ export default function AdminDetailsLayout({
 
   return (
     <>
+      <Helmet>
+        {isAdmin ? (
+          <title>
+            Enter your details - Get flood warnings (professional) - GOV.UK
+          </title>
+        ) : (
+          <title>
+            Enter details for the main administrator - Get flood warnings
+            (professional) - GOV.UK
+          </title>
+        )}
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(errorFullName || errorEmail) && (
-              <ErrorSummary errorList={[errorFullName, errorEmail]} />
+              <ErrorSummary
+                errorList={[
+                  errorFullName && {
+                    text: errorFullName,
+                    componentId: fullNameId
+                  },
+                  errorEmail && {
+                    text: errorEmail,
+                    componentId: emailAddressId
+                  }
+                ].filter(Boolean)}
+              />
             )}
             {isAdmin ? (
-              <h1 className='govuk-heading-l'>Enter your details</h1>
+              <h1 className='govuk-heading-l' id='main-content'>
+                Enter your details
+              </h1>
             ) : (
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 Enter details for main administrator
               </h1>
             )}
@@ -121,8 +157,6 @@ export default function AdminDetailsLayout({
               {isAdmin ? (
                 <p className='govuk-hint'>
                   You'll be able to set up flood warnings, locations and users.
-                  You will also receive flood messages for every locations you
-                  set up.
                 </p>
               ) : (
                 <p className='govuk-hint'>
@@ -132,7 +166,7 @@ export default function AdminDetailsLayout({
                 </p>
               )}
               <Input
-                id='full-name'
+                id={fullNameId}
                 name='Full name'
                 inputType='text'
                 value={fullName}
@@ -143,9 +177,10 @@ export default function AdminDetailsLayout({
                 isNameBold
               />
               <Input
-                id='email-address'
+                id={emailAddressId}
                 name='Email address'
                 inputType='text'
+                inputMode='email'
                 value={email}
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}

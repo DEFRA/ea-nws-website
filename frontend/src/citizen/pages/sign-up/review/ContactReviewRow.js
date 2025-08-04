@@ -1,5 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import UserContactType from '../../../../common/enums/UserContactType'
+import { setCurrentContact } from '../../../../common/redux/userSlice'
 
 export default function ContactReviewRow({
   contact,
@@ -9,28 +11,40 @@ export default function ContactReviewRow({
   arrayLength,
   index
 }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const getUrlFromContact = (contactType) => {
+    switch (contactType) {
+      case UserContactType.Telephone:
+        return 'landline'
+      case UserContactType.Mobile:
+        return 'mobile'
+      case UserContactType.Email:
+        return 'email'
+
+      default:
+        break
+    }
+  }
+
   const rowDetails = () => {
-    const contactLabel = `${
-      arrayLength > 1 && index ? `${index} - ` : ''
-    }${contact}`
+    const contactLabel = `${arrayLength > 1 ? `${index + 1} - ` : ''}${contact}`
     const confirmedLink =
-      isConfirmed &&
-      `/signup/review/validate-${
-        contactType === 'homePhone' ? 'landline' : contactType
-      }`
+      !isConfirmed &&
+      `/signup/review/validate-${getUrlFromContact(contactType)}`
 
     const contactTypeMap = {
-      homePhone: {
+      [UserContactType.Telephone]: {
         titleRow: 'By phone call',
         confirmLabel: `Confirm telephone number ${contactLabel}, for phone call warnings`,
         removeLabel: `Remove telephone number ${contactLabel}, for phone call warnings`
       },
-      mobilePhone: {
+      [UserContactType.Mobile]: {
         titleRow: 'By text',
-        confirmLabel: `Confirm telephone number ${contactLabel}, for text warnings`,
-        removeLabel: `Remove telephone number ${contactLabel}, for text warnings`
+        confirmLabel: `Confirm mobile number ${contactLabel}, for text warnings`,
+        removeLabel: `Remove mobile number ${contactLabel}, for text warnings`
       },
-      email: {
+      [UserContactType.Email]: {
         titleRow: 'By email',
         confirmLabel: `Confirm email ${contactLabel}, for email warnings`,
         removeLabel: `Remove email ${contactLabel}, for email warnings`
@@ -44,18 +58,28 @@ export default function ContactReviewRow({
       confirmLink: confirmedLink,
       confirmLinkLabel: details.confirmLabel || '',
       removeLinkLabel: details.removeLabel || '',
-      showDelete: contactType === 'email' ? emailIndex !== 0 : true
+      showDelete:
+        contactType === UserContactType.Email ? emailIndex !== 0 : true
     }
   }
 
   const details = rowDetails()
 
+  const navigateToConfirm = (e) => {
+    e.preventDefault()
+    dispatch(setCurrentContact(contact))
+    navigate(details.confirmLink)
+  }
+
   return (
     <tr className='govuk-table__row'>
-      <th className='govuk-table__header text-nowrap' scope='row'>
+      <th
+        className='govuk-table__cell text-nowrap govuk-!-width-one-third'
+        scope='row'
+      >
         {details.titleRow}
       </th>
-      <td className='custom-table-cell govuk-table__cell'>
+      <td className='govuk-table__cell govuk-!-width-full'>
         {contact}
         {!isConfirmed && (
           <>
@@ -65,7 +89,7 @@ export default function ContactReviewRow({
           </>
         )}
       </td>
-      <td className='custom-table-cell govuk-table__cell'>
+      <td className='govuk-table__cell'>
         {details.showDelete && (
           <Link
             role='button'
@@ -94,6 +118,7 @@ export default function ContactReviewRow({
               id={`confirm-${contactType}-${emailIndex ?? contact}`}
               tabIndex='0'
               aria-label={rowDetails().confirmLinkLabel}
+              onClick={navigateToConfirm}
             >
               Confirm
             </Link>

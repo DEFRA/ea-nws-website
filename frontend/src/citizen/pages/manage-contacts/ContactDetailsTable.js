@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
@@ -82,20 +81,21 @@ export default function ContactDetailsTable({
 
   const getLabel = (contact, arrayLength, index, type) => {
     let confirmLabel, removeLabel
-    const contactLabel = `${
-      arrayLength > 1 && index ? `${index} - ` : ''
-    }${contact}`
+    const contactLabel = `${arrayLength > 1 ? `${index + 1} - ` : ''}${contact}`
 
     switch (contactType) {
       case UserContactType.Email:
         confirmLabel = `Confirm email address ${contactLabel} to receive warnings for this address`
         removeLabel = `Remove email address ${contactLabel} to stop warnings for this address`
+        break
       case UserContactType.Mobile:
         confirmLabel = `Confirm mobile number ${contactLabel} to receive text warnings to this number`
         removeLabel = `Remove mobile number ${contactLabel} to stop text warnings to this number`
+        break
       case UserContactType.Telephone:
         confirmLabel = `Confirm telephone number ${contactLabel} to receive phone call warnings to this number`
         removeLabel = `Remove telephone number ${contactLabel} to stop phone call warnings to this number`
+        break
     }
 
     if (type === 'confirm') {

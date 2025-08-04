@@ -1,5 +1,5 @@
 const { logger } = require('../../plugins/logging')
-const { getDownloadTemplateUrl } = require('../../services/DownloadTemplate')
+const { getDownloadTemplateUrl } = require('../../services/DownloadAssetURLs')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')

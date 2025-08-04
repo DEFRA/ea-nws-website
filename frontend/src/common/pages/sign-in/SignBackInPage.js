@@ -1,20 +1,24 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 
-export default function SignBackInPage () {
+export default function SignBackInPage() {
   const navigate = useNavigate()
 
-  function redirect (event) {
+  function redirect(event) {
     event.preventDefault()
     navigate('/sign-in')
   }
 
   return (
     <>
+      <Helmet>
+        <title>You need to sign back in - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You need to sign back in to view this page
             </h1>
             <Button

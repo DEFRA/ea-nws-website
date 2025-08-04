@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -10,11 +11,12 @@ import { backendCall } from '../../../common/services/BackendService'
 import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function TermsAndConditionsPage () {
+export default function TermsAndConditionsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
+  const termsAndConditionsId = 'terms-and-conditions-checkbox'
 
   const [error, setError] = useState('')
   const [isChecked, setIsChecked] = useState(false)
@@ -26,7 +28,7 @@ export default function TermsAndConditionsPage () {
     event.preventDefault()
     if (!isChecked) {
       setError(
-        'You must tick to confirm that you’ve read and are authorised to agree to these terms and conditions on behalf of your organisation'
+        "Tick to warrant that you're authorised to agree to the terms and conditions"
       )
     } else {
       // Save lastAccessedUrl so users are taken to next page if logging in after abandoning at this point
@@ -52,13 +54,25 @@ export default function TermsAndConditionsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Check the terms and conditions - Get flood warnings (professional) -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: termsAndConditionsId }]}
+              />
+            )}
 
-            <h1 className='govuk-heading-l'>Check the terms and conditions</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Check the terms and conditions
+            </h1>
 
             <p>
               These are the terms and conditions under which we, the Environment
@@ -132,6 +146,24 @@ export default function TermsAndConditionsPage () {
               </li>
             </ul>
 
+            <h2 className='govuk-heading-m'>
+              Granting us access to your account
+            </h2>
+            <p>
+              If you have problems with your account that you cannot fix on your
+              own or with our support, you can ask us in writing to become a
+              temporary administrator on your account.
+            </p>
+            <p>
+              While we have temporary administrator rights, we’ll have access to
+              your data. We’ll take all reasonable steps to make sure your
+              organisation’s confidentiality is safe.
+            </p>
+            <p>
+              After we’ve fixed any problems, we’ll delete our administrator
+              rights as soon as possible, within reasonable limits.
+            </p>
+
             <h2 className='govuk-heading-m'>How we use personal information</h2>
             <p>
               Our
@@ -161,8 +193,13 @@ export default function TermsAndConditionsPage () {
                   : 'govuk-form-group'
               }
             >
-              {error && <p className='govuk-error-message'>{error}</p>}
+              {error && (
+                <p className='govuk-error-message'>
+                  <span className='govuk-visually-hidden'>Error:</span> {error}
+                </p>
+              )}
               <Checkbox
+                id={termsAndConditionsId}
                 onChange={() => setIsChecked(!isChecked)}
                 checked={isChecked}
                 label={`I warrant that I’m authorised to agree to these terms and conditions on behalf of ${organisationName}.`}

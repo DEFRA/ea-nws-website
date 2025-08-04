@@ -1,7 +1,7 @@
 export default function ContactDetails () {
   return (
     <>
-      <ul class='govuk-list'>
+      <ul className='govuk-list'>
         <li>
           Telephone: <TelephoneNumber />
         </li>
@@ -10,7 +10,7 @@ export default function ContactDetails () {
         </li>
         <li>24 hour service</li>
         <li>
-          <a class='govuk-link' href='https://www.gov.uk/call-charges'>
+          <a className='govuk-link' href='https://www.gov.uk/call-charges'>
             Find out about call charges
           </a>
         </li>

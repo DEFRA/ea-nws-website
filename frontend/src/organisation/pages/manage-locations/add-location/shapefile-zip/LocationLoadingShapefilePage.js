@@ -1,5 +1,6 @@
-import { area, bbox, centroid } from '@turf/turf'
+import { area, bbox, buffer, centroid, length } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
@@ -16,14 +17,15 @@ import { geoSafeToWebLocation } from '../../../../../common/services/formatters/
 import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationLoadingShapefilePage () {
+export default function LocationLoadingShapefilePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning upload')
   const [geojsonData, setGeojsonData] = useState(null)
+  const [rawGeojsonData, setRawGeojsonData] = useState(null)
   const location = useLocation()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const fileName = location.state?.fileName
   const [errors, setErrors] = useState(null)
 
@@ -35,19 +37,26 @@ export default function LocationLoadingShapefilePage () {
   // Takes a GeoJSON FeatureCollection and converts to a MultiPolygon (for shapefile handling)
   const convertToMultiPolygon = (geojsonData) => {
     const multiPolygonCoords = geojsonData.features
-      .filter(
-        (feature) =>
-          feature.geometry?.type === 'Polygon' ||
-          feature.geometry?.type === 'MultiPolygon'
+      .filter((feature) =>
+        ['Polygon', 'MultiPolygon', 'LineString', 'MultiLineString'].includes(
+          feature.geometry?.type
+        )
       )
-      .map(
-        (feature) =>
-          feature.geometry.type === 'Polygon'
-            ? [feature.geometry.coordinates] // Wrap Polygon coords as MultiPolygon
-            : feature.geometry.coordinates // Keep MultiPolygon as is
-      )
-      .flat()
+      .map((feature) => {
+        // If it's a line, buffer into a thin (rectangular) polygon
+        if (['LineString', 'MultiLineString'].includes(feature.geometry.type)) {
+          const temp = buffer(feature, 0.005, { units: 'kilometers' }) // Recommendation was 5m thick lines
+          return temp.geoemetry.type === 'Polygon'
+            ? [temp.geometry.coordinates]
+            : temp.geometry.coordinates
+        }
 
+        // Otherwise, wrap Polygons into MultiPolygon coords
+        return feature.geometry.type === 'Polygon'
+          ? [feature.geometry.coordinates]
+          : feature.geometry.coordinates
+      })
+      .flat()
     const properties = geojsonData.features[0]?.properties || {}
 
     const multiPolygonGeoJSON = {
@@ -77,7 +86,7 @@ export default function LocationLoadingShapefilePage () {
 
   const checkDuplicateLocation = async (locationName) => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -94,13 +103,39 @@ export default function LocationLoadingShapefilePage () {
     }
   }
 
+  const calculateLineLength = (featureCollection) => {
+    // turf returns length in km
+    const km = featureCollection.features.reduce((sum, feature) => {
+      if (
+        feature.geometry.type === 'LineString' ||
+        feature.geometry.type === 'MultiLineString'
+      ) {
+        return sum + length(feature, { units: 'kilometers' })
+      }
+      return sum
+    }, 0)
+
+    const metres = Math.round(km * 1000)
+    return metres.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate value with commas
+  }
+
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = async () => {
-      geojsonData.geometry.type === 'Polygon' ||
-      geojsonData.geometry.type === 'MultiPolygon'
-        ? dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_POLYGON))
-        : dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_LINE))
+      // Decide whether the user uploaded only lines (no polygon features)
+      const isLineOnly = rawGeojsonData.features.every(
+        (f) =>
+          f.geometry.type === 'LineString' ||
+          f.geometry.type === 'MultiLineString'
+      )
+
+      dispatch(
+        setCurrentLocationDataType(
+          isLineOnly
+            ? LocationDataType.SHAPE_LINE
+            : LocationDataType.SHAPE_POLYGON
+        )
+      )
 
       const bbox = geojsonData.bbox
       const inEngland =
@@ -113,8 +148,16 @@ export default function LocationLoadingShapefilePage () {
       const existingLocation = await checkDuplicateLocation(locationName)
 
       // Calculate coords of centre of polygon to display the map properly
-      const polygonCentre = centroid(geojsonData.geometry)
-      const shapeArea = calculateShapeArea(geojsonData)
+      const polygonCentre = centroid(geojsonData)
+
+      let shapeArea, unit
+      if (isLineOnly) {
+        shapeArea = calculateLineLength(rawGeojsonData)
+        unit = 'metres'
+      } else {
+        shapeArea = calculateShapeArea(geojsonData)
+        unit = 'square metres'
+      }
 
       // TODO: make map work without coordinates since shapefile aree only geoJson
       dispatch(
@@ -123,14 +166,18 @@ export default function LocationLoadingShapefilePage () {
           longitude: polygonCentre.geometry.coordinates[0]
         })
       )
-      dispatch(setCurrentLocationGeometry({ geoJson: JSON.stringify(geojsonData) }))
+      dispatch(
+        setCurrentLocationGeometry({ geoJson: JSON.stringify(geojsonData) })
+      )
       dispatch(setCurrentLocationName(locationName))
 
-      const newLocation = JSON.parse(JSON.stringify(store.getState().session.currentLocation))
+      const newLocation = JSON.parse(
+        JSON.stringify(store.getState().session.currentLocation)
+      )
 
       if (inEngland && !existingLocation) {
         navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
-          state: { shapeArea }
+          state: { shapeArea, unit }
         })
       } else if (inEngland && existingLocation) {
         navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
@@ -162,7 +209,7 @@ export default function LocationLoadingShapefilePage () {
   // Check the status of the processing and update state
   useEffect(() => {
     const interval = setInterval(async () => {
-      const dataToSend = { orgId, fileName }
+      const dataToSend = { authToken, fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/shapefile/process_status',
@@ -178,7 +225,10 @@ export default function LocationLoadingShapefilePage () {
           }
           if (data?.data) {
             // TODO: Process file for featureCollection only. GeoJson type can be feature, featureCollection, polygon or multi-polygon
-            const processedGeojsonData = convertToMultiPolygon(data.data)
+            setRawGeojsonData(data.data.original)
+            const processedGeojsonData = convertToMultiPolygon(
+              data.data.processed
+            )
             setGeojsonData(processedGeojsonData)
           }
           setStatus(data.status)
@@ -213,9 +263,17 @@ export default function LocationLoadingShapefilePage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Loading - Manage locations - Get flood warnings (professional) -
+          GOV.UK
+        </title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
-          <h1 className='govuk-heading-l'>{stage}</h1>
+          <h1 className='govuk-heading-l' id='main-content'>
+            {stage}
+          </h1>
           <div className='govuk-body'>
             <Spinner size='75' />
           </div>

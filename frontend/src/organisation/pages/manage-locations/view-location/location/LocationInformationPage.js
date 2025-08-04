@@ -1,5 +1,6 @@
 import { area } from '@turf/turf'
 /* import { useState } from 'react' */
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 /* import locationPin from '../../../../../common/assets/images/location_pin.svg' */
@@ -167,6 +168,9 @@ export default function LocationInformationPage () {
 
   return (
     <>
+      <Helmet>
+        <title>{additionalData.locationName ? additionalData.locationName : 'This location'}'s information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <LocationHeader
@@ -289,7 +293,7 @@ export default function LocationInformationPage () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <pre>{additionalData.action_plan}</pre>
+                <p className='action-plan-body'>{additionalData.action_plan}</p>
               </div>
             )}
 
@@ -309,7 +313,7 @@ export default function LocationInformationPage () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{additionalData.notes}</p>
+                <p className='notes-body'>{additionalData.notes}</p>
               </div>
             )}
 

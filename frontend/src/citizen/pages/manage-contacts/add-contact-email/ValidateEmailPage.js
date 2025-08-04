@@ -25,12 +25,14 @@ export default function ValidateEmailPage () {
   }
 
   return (
-    <ValidateEmailLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentEmail}
-      SkipValidation={SkipValidation}
-      DifferentEmail={DifferentEmail}
-      buttonText='Continue'
-    />
+    <>
+      <ValidateEmailLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentEmail}
+        SkipValidation={SkipValidation}
+        DifferentEmail={DifferentEmail}
+        buttonText='Continue'
+      />
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -57,7 +57,6 @@ export default function DropPinOnMapLayout({
   )
 
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const [displayCoords, setDisplayCoords] = useState('')
   const [pinCoords, setPinCoords] = useState(null)
   const [error, setError] = useState('')
@@ -105,7 +104,7 @@ export default function DropPinOnMapLayout({
 
   const checkDuplicateLocation = async () => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -197,10 +196,18 @@ export default function DropPinOnMapLayout({
 
         const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
-        const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+        const isUpdate = flow?.includes('change-coords')
+        if (isUpdate) {
+          // Ensure api knows which location to update
+          newGeosafeLocation.id = locationToAdd.id
+        }
+        const apiEndpoint = isUpdate
+          ? 'api/location/update'
+          : 'api/location/create'
+        const dataToSend = { authToken, location: newGeosafeLocation }
         const { data, errorMessage } = await backendCall(
           dataToSend,
-          'api/location/create',
+          apiEndpoint,
           navigate
         )
 
@@ -231,7 +238,7 @@ export default function DropPinOnMapLayout({
           // Remove invalid location from elasticache
           if (flow?.includes('unmatched-locations')) {
             await backendCall(
-              { orgId, locationId: locationToAdd.id },
+              { authToken, locationId: locationToAdd.id },
               'api/bulk_uploads/remove_invalid_location',
               navigate
             )
@@ -292,11 +299,13 @@ export default function DropPinOnMapLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Find the location on a map</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Find the location on a map
+            </h1>
             <div className='govuk-body'>
               <p>
                 Click on the map to drop a pin where you think this location is.
@@ -340,6 +349,7 @@ export default function DropPinOnMapLayout({
                 showFloodWarningAreas={showFloodWarningAreas}
                 showFloodAlertAreas={showFloodAlertAreas}
                 showMarker={showMarkerInitially}
+                accessibleMap={true}
               />
             </div>
             <div className='govuk-grid-column-one-quarter'>

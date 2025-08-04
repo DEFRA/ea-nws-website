@@ -1,5 +1,5 @@
-import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import linkIcon from '../../../../../common/assets/images/link.svg'
@@ -9,6 +9,7 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
+import AlertState from '../../../../../common/enums/AlertState'
 import AlertType from '../../../../../common/enums/AlertType'
 import store from '../../../../../common/redux/store'
 import {
@@ -19,8 +20,7 @@ import {
   setCurrentTA
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { getFloodAreaByTaName } from '../../../../../common/services/WfsFloodDataService'
-import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
+import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -28,11 +28,8 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
-
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
   const [locationUnlinked, setLocationUnlinked] = useState(false)
-
   const [loading, setLoading] = useState(true)
   const currentLocationTAs =
     useSelector((state) => getLocationOther(state, 'targetAreas')) || []
@@ -61,7 +58,7 @@ export default function LocationMessagesPage() {
       'api/location/unregister_from_partner',
       navigate
     )
-    const dataToSend = { authToken, orgId, locationIds: [unlinkID] }
+    const dataToSend = { authToken, locationIds: [unlinkID] }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/location/remove',
@@ -75,7 +72,7 @@ export default function LocationMessagesPage() {
         )
       )
       const locationToUpdate = store.getState().session.currentLocation
-      const dataToSend = { authToken, orgId, location: locationToUpdate }
+      const dataToSend = { authToken, location: locationToUpdate }
       await backendCall(dataToSend, 'api/location/update', navigate)
       setLocationUnlinked(true)
       setUnlinkID(null)
@@ -87,16 +84,9 @@ export default function LocationMessagesPage() {
     )
   }
 
-  async function getPartnerId() {
-    const { data } = await backendCall('data', 'api/service/get_partner_id')
-    setPartnerId(data)
-  }
-
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
-  const floodHistoryData = useFetchAlerts()
-  const [floodCounts, setFloodCounts] = useState([])
   const alertTypes = additionalData.alertTypes
-  const [availableAlerts, setAvailableAlerts] = useState([])
+  const [availableAlerts, setAvailableAlerts] = useState(new Set())
   const childrenIDs =
     useSelector((state) => getLocationOther(state, 'childrenIDs')) || []
   const allAlertTypes = [
@@ -104,7 +94,6 @@ export default function LocationMessagesPage() {
     AlertType.FLOOD_WARNING,
     AlertType.FLOOD_ALERT
   ]
-  const hasFetchedArea = useRef(false)
   const [alertTypesEnabled, setAlertTypesEnabled] = useState([
     alertTypes?.includes(allAlertTypes[0]),
     alertTypes?.includes(allAlertTypes[1]),
@@ -123,164 +112,107 @@ export default function LocationMessagesPage() {
     'Flood alerts'
   ]
 
-  const onClick = async (e, areaName) => {
-    e.preventDefault()
-    const floodArea = await getFloodAreaByTaName(areaName)
-    dispatch(setCurrentTA(floodArea))
-    navigate(orgManageLocationsUrls.view.viewFloodArea)
-  }
-
-  const categoryToMessageType = (type) => {
+  const getFloodMessagesAvailableForLocation = (type) => {
     const typeMap = {
-      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Alert': ['Flood Alert'],
-      'Flood Alert Groundwater': ['Flood Alert']
+      'Flood Warning': [messageSettings[0], messageSettings[1]],
+      'Flood Warning Groundwater': [messageSettings[0], messageSettings[1]],
+      'Flood Warning Rapid Response': [messageSettings[0], messageSettings[1]],
+      'Flood Alert': [messageSettings[2]],
+      'Flood Alert Groundwater': [messageSettings[2]]
     }
     return typeMap[type] || []
   }
 
-  const setHistoricalData = (taCode, type) => {
-    const twoYearsAgo = moment().subtract(2, 'years')
-    if (taCode && type) {
-      const newCount = { TA_CODE: taCode, counts: [] }
-      const messageTypes = categoryToMessageType(type)
-      for (const messageType of messageTypes) {
-        const filteredData = floodHistoryData.filter(
-          (alert) =>
-            alert.CODE === taCode &&
-            alert.TYPE === messageType &&
-            moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
-        )
-        newCount.counts.push({ type: messageType, count: filteredData.length })
-      }
-      setFloodCounts((prev) => [...prev, newCount])
-    }
-  }
+  const [floodAreas, setFloodAreas] = useState([])
 
   useEffect(() => {
-    getPartnerId()
-  }, [])
+    const loadFloodAlertData = async () => {
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
 
-  useEffect(() => {
-    const processFloodData = () => {
-      if (floodHistoryData && hasFetchedArea) {
-        if (currentLocationTAs.length > 0) {
-          currentLocationTAs.forEach((area) =>
-            setHistoricalData(area.TA_CODE, area.category)
-          )
-        }
-        if (childrenIDs.length > 0) {
-          childrenIDs.forEach((child) =>
-            setHistoricalData(child.TA_CODE, child.category)
-          )
-        }
+      const options = {
+        states: [AlertState.PAST],
+        boundingBox: null,
+        channels: [],
+        partnerId
       }
-    }
-    processFloodData()
-  }, [floodHistoryData, hasFetchedArea])
 
-  const populateMessagesSent = (category, floodCount) => {
-    const messageSent = []
-    const messageTypes = categoryToMessageType(category)
-    for (const messageType of messageTypes) {
-      let count
-      switch (messageType) {
-        case 'Severe Flood Warning':
-          count = floodCount.counts.find(
-            (count) => count.type === messageType
-          )?.count
-          messageSent.push(
-            `${count} severe flood warning${count === 1 ? '' : 's'}`
-          )
-          break
-        case 'Flood Warning':
-          count = floodCount.counts.find(
-            (count) => count.type === messageType
-          )?.count
-          messageSent.push(`${count} flood warning${count === 1 ? '' : 's'}`)
-          break
-        case 'Flood Alert':
-          count = floodCount.counts.find(
-            (count) => count.type === messageType
-          )?.count
-          messageSent.push(`${count} flood alert${count === 1 ? '' : 's'}`)
-          break
-        case 'default':
-          messageSent.push('')
-          break
-      }
-    }
-    return messageSent
-  }
+      const twoYearsAgo = new Date()
+      twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
-  useEffect(() => {
-    const populateInputs = (currentLocationTAs, childrenIDs, floodCounts) => {
-      const updatedFloodAreas = []
-      for (const area of currentLocationTAs) {
-        const taCode = area.TA_CODE
-        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = floodCount
-          ? populateMessagesSent(area.category, floodCount)
-          : []
-        const type = categoryToMessageType(area.category)
-        updatedFloodAreas.push({
-          areaName: area.TA_Name,
-          areaType: `${
-            type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'
-          } area`,
-          messagesSent: messageSent
-        })
-      }
-      for (const area of childrenIDs) {
-        const taCode = area.TA_CODE
-        const floodCount = floodCounts.find((area) => area.TA_CODE === taCode)
-        const messageSent = floodCount
-          ? populateMessagesSent(area.category, floodCount)
-          : []
-        const type = categoryToMessageType(area.category)
-        updatedFloodAreas.push({
-          areaName: area.TA_Name,
-          areaType: `${
-            type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'
-          } area`,
-          messagesSent: messageSent,
-          linked: area.id
-        })
-      }
-      setFloodAreasInputs(updatedFloodAreas)
-    }
+      const { data: alertsData } = await backendCall(
+        { options, filterDate: twoYearsAgo, historic: true },
+        'api/alert/list',
+        navigate
+      )
 
-    if (
-      (currentLocationTAs.length > 0 || childrenIDs.length > 0) &&
-      floodCounts.length > 0
-    ) {
-      populateInputs(currentLocationTAs, childrenIDs, floodCounts)
-    }
-  }, [floodCounts])
+      let floodAreas = []
+      getFloodMessagesSent(
+        currentLocationTAs,
+        alertsData.alerts,
+        floodAreas,
+        false
+      )
+      getFloodMessagesSent(childrenIDs, alertsData.alerts, floodAreas, true)
+      setFloodAreas(floodAreas)
 
-  useEffect(() => {
-    if (floodAreasInputs.length > 0) {
-      const alertsArray = []
-      for (const area of floodAreasInputs) {
-        const typeMap = {
-          'Flood warning area': ['Flood warnings', 'Severe flood warnings'],
-          'Flood alert area': ['Flood alerts']
-        }
-        alertsArray.push(...(typeMap[area.areaType] || []))
-      }
-      setAvailableAlerts(alertsArray)
-    }
-  }, [floodAreasInputs])
-
-  useEffect(() => {
-    if (hasFetchedArea || floodAreasInputs.length > 0) {
+      // get available alerts for location
+      let availableAlerts = new Set()
+      floodAreas.forEach((area) => {
+        const messages = getFloodMessagesAvailableForLocation(area.type)
+        messages.forEach((message) => availableAlerts.add(message))
+      })
+      setAvailableAlerts(availableAlerts)
       setLoading(false)
     }
-  }, [floodAreasInputs, floodCounts, hasFetchedArea])
 
-  const handleSubmit = async (event) => {
+    loadFloodAlertData()
+  }, [])
+
+  const getFloodMessagesSent = (
+    targetAreas,
+    alerts,
+    floodAreas,
+    linkedChild
+  ) => {
+    targetAreas.forEach((targetArea) => {
+      let severeWarningsCount = 0,
+        warningsCount = 0,
+        alertsCount = 0
+      alerts.forEach((alert) => {
+        const alertTaCode = alert.TA_CODE
+        const alertType = alert.type
+        if (alertTaCode === targetArea.TA_CODE) {
+          switch (alertType) {
+            case AlertType.SEVERE_FLOOD_WARNING:
+              severeWarningsCount++
+              break
+            case AlertType.FLOOD_WARNING:
+              warningsCount++
+              break
+            case AlertType.FLOOD_ALERT:
+              alertsCount++
+              break
+          }
+        }
+      })
+      const floodArea = {
+        code: targetArea.TA_CODE,
+        name: targetArea.TA_Name,
+        type: targetArea.category,
+        severeWarningMessagesCount: severeWarningsCount,
+        warningMessagesCount: warningsCount,
+        alertMessagesCount: alertsCount,
+        linked: linkedChild ? targetArea.id : null
+      }
+
+      floodAreas.push(floodArea)
+    })
+  }
+
+  const updateMessageSettings = async (event) => {
     event.preventDefault()
     if (
       alertTypesEnabledOriginal.every(
@@ -308,7 +240,7 @@ export default function LocationMessagesPage() {
 
       const locationToUpdate = store.getState().session.currentLocation
 
-      const updateData = { authToken, orgId, location: locationToUpdate }
+      const updateData = { authToken, location: locationToUpdate }
       await backendCall(updateData, 'api/location/update', navigate)
 
       const locationIDsToUpdate = [
@@ -348,106 +280,117 @@ export default function LocationMessagesPage() {
     setIsBannerDisplayed(false)
   }
 
+  const onClick = async (e, areaCode) => {
+    e.preventDefault()
+    const floodArea = await getFloodAreaByTaCode(areaCode)
+    dispatch(setCurrentTA(floodArea))
+    navigate(orgManageLocationsUrls.view.viewFloodArea)
+  }
+
   const messageSettingsSection = (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
         Message settings
       </h2>
-      <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {availableAlerts.length > 0 ? (
-        <p>
-          You can choose which flood messages to get for each location if
-          they're available.
-          <br />
-        </p>
+      {loading ? (
+        <LoadingSpinner />
       ) : (
         <>
+        <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+        {availableAlerts.size > 0 ? (
           <p>
-            Flood messages are currently unavailable for this location. This may
-            be because there are no measurement gauges in the area of the
-            location. Or the location is in an area where not many people live
-            or work.
+            You can choose which flood messages to get for each location if
+            they're available.
+            <br />
           </p>
-          <p>
-            But you may be able to link this location to any nearby flood areas
-            that can get flood messages in the Flood areas section.
-          </p>
-          <p>
-            And if any flood messages become available for this location in the
-            future we'll automatically send them to you. You can then customise
-            by choosing which flood messages to get.
-          </p>
-        </>
-      )}
-      <p>
-        <Link to={infoUrls.floodTypes} className='govuk-link'>
-          What are the different types of flood messages?
-        </Link>
-      </p>
-      <br />
-
-      <table className='govuk-table govuk-table--small-text-until-tablet'>
-        <tbody className='govuk-table__body'>
-          {messageSettings.map((message, index) => (
-            <tr className='govuk-table__row' key={index}>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
-                <strong>{message}</strong>
-              </td>
-              {availableAlerts.includes(message) ? (
-                <>
-                  <td className='govuk-table__cell'>
-                    <Radio
-                      label='On'
-                      small
-                      value={'Radio_On_' + index}
-                      name={'Radio_' + index}
-                      checked={alertTypesEnabled[index]}
-                      onChange={() => handleChangeRadio(index, true)}
-                    />
-                  </td>
-                  <td className='govuk-table__cell'>
-                    <Radio
-                      label='Off'
-                      small
-                      value={'Radio_Off_' + index}
-                      name={'Radio_' + index}
-                      checked={!alertTypesEnabled[index]}
-                      onChange={() => handleChangeRadio(index, false)}
-                    />
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td className='govuk-table__cell' />
-                  <td
-                    className='govuk-table__cell'
-                    style={{ lineHeight: '50px' }}
-                  >
-                    Unavailable
-                  </td>
-                </>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {availableAlerts.length > 0 && (
-        <Button
-          text='Save message settings'
-          className='govuk-button'
-          onClick={handleSubmit}
-        />
+        ) : (
+          <>
+            <p>
+              Flood messages are currently unavailable for this location. This may
+              be because there are no measurement gauges in the area of the
+              location. Or the location is in an area where not many people live
+              or work.
+            </p>
+            <p>
+              But you may be able to link this location to any nearby flood areas
+              that can get flood messages in the Flood areas section.
+            </p>
+            <p>
+              And if any flood messages become available for this location in the
+              future we'll automatically send them to you. You can then customise
+              by choosing which flood messages to get.
+            </p>
+          </>
+        )}
+        <p>
+          <Link to={infoUrls.floodTypes} className='govuk-link'>
+            What are the different types of flood messages?
+          </Link>
+        </p>
+        <br />
+        <table className='govuk-table govuk-table--small-text-until-tablet'>
+          <tbody className='govuk-table__body'>
+            {messageSettings.map((message, index) => (
+              <tr className='govuk-table__row' key={index}>
+                <td
+                  className='govuk-table__cell'
+                  style={{ verticalAlign: 'middle' }}
+                >
+                  <strong>{message}</strong>
+                </td>
+                {availableAlerts.has(message) ? (
+                  <>
+                    <td className='govuk-table__cell'>
+                      <Radio
+                        label='On'
+                        small
+                        value={'Radio_On_' + index}
+                        name={'Radio_' + index}
+                        checked={alertTypesEnabled[index]}
+                        onChange={() => handleChangeRadio(index, true)}
+                      />
+                    </td>
+                    <td className='govuk-table__cell'>
+                      <Radio
+                        label='Off'
+                        small
+                        value={'Radio_Off_' + index}
+                        name={'Radio_' + index}
+                        checked={!alertTypesEnabled[index]}
+                        onChange={() => handleChangeRadio(index, false)}
+                      />
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className='govuk-table__cell' />
+                    <td
+                      className='govuk-table__cell'
+                      style={{ lineHeight: '50px' }}
+                    >
+                      Unavailable
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {availableAlerts.size > 0 && (
+          <Button
+            text='Save message settings'
+            className='govuk-button'
+            onClick={updateMessageSettings}
+          />
+        )}
+      </>
       )}
     </>
   )
 
   const floodAreasSection = (
     <>
-      <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+      <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block' id='main-content'>
         Flood areas
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
@@ -456,7 +399,7 @@ export default function LocationMessagesPage() {
         <LoadingSpinner />
       ) : (
         <>
-          {floodAreasInputs.length > 0 ? (
+          {floodAreas.length > 0 ? (
             <p className='govuk-!-width-one-half'>
               {additionalData.locationName} can get flood messages for these
               areas. You may be also able to link {additionalData.locationName}{' '}
@@ -477,10 +420,10 @@ export default function LocationMessagesPage() {
           </p>
           <br />
 
-          {floodAreasInputs.length > 0 && (
+          {floodAreas.length > 0 && (
             <>
               <span className='govuk-caption-m'>
-                {floodAreasInputs.length} flood areas
+                {floodAreas.length} flood areas
               </span>
 
               <table className='govuk-table govuk-table--small-text-until-tablet'>
@@ -500,7 +443,7 @@ export default function LocationMessagesPage() {
                   </tr>
                 </thead>
                 <tbody className='govuk-table__body'>
-                  {floodAreasInputs.map((detail, index) => (
+                  {floodAreas.map((area, index) => (
                     <tr key={index} className='govuk-table__row'>
                       <td
                         className='govuk-table__cell'
@@ -510,10 +453,10 @@ export default function LocationMessagesPage() {
                         }}
                       >
                         <Link
-                          onClick={(e) => onClick(e, detail.areaName)}
+                          onClick={(e) => onClick(e, area.code)}
                           className='govuk-link'
                         >
-                          {detail.areaName}
+                          {area.name}
                         </Link>
                       </td>
                       <td
@@ -523,7 +466,7 @@ export default function LocationMessagesPage() {
                           padding: '1.5rem 0rem'
                         }}
                       >
-                        {detail.linked && (
+                        {area.linked && (
                           <svg
                             width='26'
                             height='20'
@@ -537,7 +480,7 @@ export default function LocationMessagesPage() {
                             />
                           </svg>
                         )}{' '}
-                        {detail.areaType}
+                        {area.type}
                       </td>
                       <td
                         className='govuk-table__cell'
@@ -546,12 +489,25 @@ export default function LocationMessagesPage() {
                           padding: '1.5rem 0rem'
                         }}
                       >
-                        {detail.messagesSent.map((messageSent, index) => (
-                          <span key={index}>
-                            {messageSent}
+                        {area.severeWarningMessagesCount > 0 && (
+                          <span>
+                            {area.severeWarningMessagesCount} severe flood
+                            warnings
                             <br />
                           </span>
-                        ))}
+                        )}
+                        {area.warningMessagesCount > 0 && (
+                          <span>
+                            {area.warningMessagesCount} flood warnings
+                            <br />
+                          </span>
+                        )}
+                        {area.alertMessagesCount > 0 && (
+                          <span>
+                            {area.alertMessagesCount} flood alerts
+                            <br />
+                          </span>
+                        )}
                       </td>
                       <td
                         className='govuk-table__cell'
@@ -560,10 +516,10 @@ export default function LocationMessagesPage() {
                           padding: '1.5rem 0rem'
                         }}
                       >
-                        {detail.linked && (
+                        {area.linked && (
                           <Link
                             className='govuk-link'
-                            onClick={() => setUnlinkID(detail.linked)}
+                            onClick={() => setUnlinkID(area.linked)}
                           >
                             Unlink
                           </Link>
@@ -578,16 +534,18 @@ export default function LocationMessagesPage() {
         </>
       )}
 
+      {/* Only render button if location is not a predefined boundary */}
+      {!isPredefinedBoundary && (
       <Button
         imageSrc={linkIcon}
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
-        // TODO: Add link to nearby flood areas
         onClick={(event) => {
           event.preventDefault()
           navigate(orgManageLocationsUrls.add.linkToTargetArea)
         }}
       />
+      )}
     </>
   )
 
@@ -598,6 +556,9 @@ export default function LocationMessagesPage() {
 
   return (
     <>
+      <Helmet>
+        <title>{additionalData.locationName ? additionalData.locationName : 'This location'}'s messages - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {isBannerDisplayed && (
@@ -627,14 +588,13 @@ export default function LocationMessagesPage() {
           </div>
         </div>
 
-        {/* Only render flood areas section if location is not a predefined boundary */}
-        {!isPredefinedBoundary && (
+        
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-full govuk-!-margin-top-9'>
               {floodAreasSection}
             </div>
           </div>
-        )}
+        
 
         {unlinkID && (
           <Popup

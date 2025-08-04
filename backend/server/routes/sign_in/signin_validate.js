@@ -6,6 +6,8 @@ const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
 const { logger } = require('../../plugins/logging')
+const { setJsonData } = require('../../services/elasticache')
+const { GENERIC_ERROR_MSG } = require('../../constants/errorMessages')
 
 module.exports = [
   {
@@ -17,6 +19,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
+        const { redis } = request.server.app
         const { signinToken, code } = request.payload
         const { error, code: formattedCode } = authCodeValidation(code)
 
@@ -37,12 +40,18 @@ module.exports = [
                 errorMessage: 'account pending'
               })
             }
+
+            // store the organisation ID serverside
+            await setJsonData(redis, response.data.authToken, {
+              orgId: response.data.organization.id
+            })
           }
+
           return h.response(response)
         } else {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error ? GENERIC_ERROR_MSG : error
           })
         }
       } catch (error) {

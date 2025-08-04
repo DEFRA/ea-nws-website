@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
-import Pagination from '../../../common/components/gov-uk/Pagination'
-import AlertType from '../../../common/enums/AlertType'
 import {
-  getLocationOtherAdditional,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
+import {
+  getFloodWarningAndAlerts,
+  getGroupFloodLocation,
+  getNonGroupFloodLocation
+} from '../../../common/utils/FloodLocationGroupingAndWarningMessages'
 
 export default function SubscribedLocationTable({ setError }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [currentPage, setCurrentPage] = useState(1)
-  const locationsPerPage = 10
+
   const locations = useSelector((state) => state.session.profile.pois)
-  const displayedLocations = locations.slice(
-    (currentPage - 1) * locationsPerPage,
-    currentPage * locationsPerPage
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations
   )
   const maxLocations = 15
   const [partnerId, setPartnerId] = useState(false)
+
+  const groupFloodLocation = getGroupFloodLocation(locations)
+  const nonGroupFloodLocation = getNonGroupFloodLocation(locations)
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -72,64 +74,8 @@ export default function SubscribedLocationTable({ setError }) {
   }, [])
 
   const viewSelectedLocation = async (location) => {
-    // need to check if location was added as a nearby target area (TA)
-    // if added as a nearby TA, location name will be that nearby TA name
-    // 1.5km bbox is set as placename search radius is set at 1.5km
-    const { alertArea, warningArea } = await getSurroundingFloodAreas(
-      location.coordinates.latitude,
-      location.coordinates.longitude,
-      1.5
-    )
-
-    const locationIsWarningArea = isSavedLocationTargetArea(
-      location.address,
-      warningArea.features
-    )
-
-    const locationIsAlertArea = isSavedLocationTargetArea(
-      location.address,
-      alertArea.features
-    )
-
     dispatch(setSelectedLocation(location))
-
-    const alertTypes = getLocationOtherAdditional(
-      location.additionals,
-      'alertTypes'
-    )
-
-    if (
-      locationIsWarningArea.length === 0 &&
-      locationIsAlertArea.length === 0
-    ) {
-      // location was not added as a nearby target area
-      // check first if location was added as an alert only location
-      if (
-        alertTypes.includes(AlertType.FLOOD_ALERT) &&
-        alertTypes.length === 2
-      ) {
-        navigate(`/manage-locations/view/${'alert'}`)
-      } else {
-        // location is subscribed to more than alerts only, so show all TAs nearby
-        navigate(`/manage-locations/view/${'both'}`)
-      }
-    } else {
-      // location was added as a nearby TA
-      dispatch(setShowOnlySelectedFloodArea(true))
-      if (locationIsWarningArea.length > 0) {
-        // locations name matches a warning TA
-        dispatch(setSelectedFloodWarningArea(locationIsWarningArea[0]))
-        navigate(`/manage-locations/view/${'severe'}`)
-      } else if (locationIsAlertArea.length > 0) {
-        // locations name matches an alert TA
-        dispatch(setSelectedFloodAlertArea(locationIsAlertArea[0]))
-        navigate(`/manage-locations/view/${'alert'}`)
-      }
-    }
-  }
-
-  const isSavedLocationTargetArea = (locationName, areas) => {
-    return areas.filter((area) => locationName === area.properties.TA_Name)
+    navigate('/manage-locations/view')
   }
 
   const onClickAddLocation = async (event) => {
@@ -144,7 +90,7 @@ export default function SubscribedLocationTable({ setError }) {
   const locationTable = () => {
     const viewColumn = (location, arrayLength, index) => {
       return (
-        <td className='govuk-table__cell'>
+        <td className='govuk-table__cell text-nowrap'>
           <Link
             onClick={(e) => {
               e.preventDefault()
@@ -152,11 +98,11 @@ export default function SubscribedLocationTable({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
-            aria-label={`View location ${arrayLength > 1 && index} - ${
-              location.address
-            }`}
+            aria-label={`View or manage for location ${
+              arrayLength > 1 ? `${index + 1}` : ''
+            } - ${location.address}`}
           >
-            View
+            View or manage
           </Link>
         </td>
       )
@@ -174,9 +120,9 @@ export default function SubscribedLocationTable({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
-            aria-label={`Remove location ${arrayLength > 1 && index} - ${
-              location.address
-            }`}
+            aria-label={`Remove location ${
+              arrayLength > 1 ? `${index + 1}` : ''
+            } - ${location.address}`}
           >
             Remove
           </Link>
@@ -187,24 +133,35 @@ export default function SubscribedLocationTable({ setError }) {
     const addressColumn = (location) => {
       return (
         <td className='govuk-table__cell govuk-!-width-full'>
-          {location.address}
+          <p className='govuk-!-margin-bottom-0'>{location.address}</p>
+          <p
+            style={{ fontSize: '1rem' }}
+            className='govuk-hint govuk-!-margin-bottom-0'
+          >
+            {getFloodWarningAndAlerts(location, locationRegistrations)}
+          </p>
         </td>
       )
     }
 
     return (
-      <table className='govuk-table'>
+      <table className='govuk-table responsive-table'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
-            <th colspan='3' scope='colspan' className='govuk-table__header'>
-              {'Your locations (' + locations.length + ')'}
+            <th
+              colspan='3'
+              scope='colspan'
+              className='govuk-table__header'
+              style={{ borderBottom: '2px solid #fff' }}
+            >
+              {'Your locations'}
             </th>
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {displayedLocations.map((location, index) => (
-            <tr key={index} className='govuk-table__row'>
-              {addressColumn(location, locations.length, index)}
+          {nonGroupFloodLocation.map((location, index) => (
+            <tr key={index} className='govuk-table__row non-grouped'>
+              {addressColumn(location)}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {viewColumn(location)}
@@ -212,6 +169,48 @@ export default function SubscribedLocationTable({ setError }) {
                 removeColumn(location, locations.length, index)}
             </tr>
           ))}
+
+          {groupFloodLocation &&
+            Object.entries(groupFloodLocation).map(
+              ([key, locations], index) => (
+                <>
+                  <tr key={index} className='govuk-table__row grouped'>
+                    <td
+                      className='govuk-table__cell govuk-!-width-full govuk-!-padding-top-6'
+                      style={{ borderBottom: '2px solid #fff' }}
+                    >
+                      <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
+                        {key}
+                      </p>
+                      <p>
+                        {'You will get flood messages for these nearby areas'}
+                      </p>
+                    </td>
+                  </tr>
+
+                  {locations.map((location, index) => (
+                    <tr key={index} className='govuk-table__row'>
+                      <td className='govuk-table__cell'>
+                        <p className='govuk-!-margin-bottom-0'>
+                          {location.address}
+                        </p>
+                        <p className='govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                          {getFloodWarningAndAlerts(
+                            location,
+                            locationRegistrations
+                          )}
+                        </p>
+                      </td>
+
+                      {viewColumn(location)}
+
+                      {locations.length > 1 &&
+                        removeColumn(location, locations.length, index)}
+                    </tr>
+                  ))}
+                </>
+              )
+            )}
         </tbody>
       </table>
     )
@@ -221,10 +220,6 @@ export default function SubscribedLocationTable({ setError }) {
     <>
       <div div className='govuk-body'>
         {locations.length > 0 && locationTable()}
-        <Pagination
-          totalPages={Math.ceil(locations.length / locationsPerPage)}
-          onPageChange={(val) => setCurrentPage(val)}
-        />
         <Button
           text='Add new location'
           className='govuk-button govuk-button--secondary'

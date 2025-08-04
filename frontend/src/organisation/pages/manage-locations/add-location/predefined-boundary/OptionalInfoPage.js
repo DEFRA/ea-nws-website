@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -21,6 +22,12 @@ export default function OptionalInformationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Useful information you can include to help identify this location -
+          Manage locations - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -31,7 +38,7 @@ export default function OptionalInformationPage() {
               text='Predefined boundary location added'
             />
             &nbsp; &nbsp;
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Useful information you can include to help you easily identify
               this location
             </h1>
@@ -115,11 +122,10 @@ export default function OptionalInformationPage() {
               You can add a maximum of 500 characters.
             </p>
             <Button
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-right-2'
               text='Add useful information now'
               onClick={navigateToNextPage}
             />
-            &nbsp; &nbsp;
             <Link
               to='#' // this will change when page is created
               className='govuk-link inline-link'

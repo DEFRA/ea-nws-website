@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import NotCompletedSignUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
@@ -15,7 +16,7 @@ import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
-  setOrgId,
+  setLocationRegistrations,
   setOrganization,
   setProfile,
   setProfileId,
@@ -42,6 +43,8 @@ export default function SignInValidatePage() {
   const [cookies, setCookie] = useCookies(['authToken'])
   const [orgData, setOrgData] = useState(null)
   const [stage, setStage] = useState('Retrieving locations')
+  const [percent, setPercent] = useState(null)
+  const enterCodeId = 'enter-code'
 
   useEffect(() => {
     if (orgData) {
@@ -63,15 +66,28 @@ export default function SignInValidatePage() {
           if (data?.stage !== stage) {
             setStage(data.stage)
           }
+          if (data?.percent) {
+            setPercent(data.percent)
+          } else {
+            setPercent(null)
+          }
           if (data?.status === 'complete') {
-            navigate(orgManageLocationsUrls.monitoring.view)
+            const isAdminUsersFirstLogin = getAdditionals(
+              orgData.profile,
+              'firstLogin'
+            )
+            if (isAdminUsersFirstLogin === 'true') {
+              navigate('/sign-in/organisation/admin-controls')
+            } else {
+              navigate(orgManageLocationsUrls.monitoring.view)
+            }
           }
         }
         if (errorMessage) {
           setError(errorMessage)
         }
         getStatus.isRunning = false
-      }, 2000)
+      }, 1000)
       return () => {
         clearInterval(interval)
       }
@@ -112,7 +128,6 @@ export default function SignInValidatePage() {
         dispatch(setProfile(data.profile))
         if (data.organization) {
           dispatch(setProfileId(data.profile.id))
-          dispatch(setOrgId(data.organization.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
         }
@@ -135,6 +150,20 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
+            const { errorMessage, data: verifyData } = await backendCall(
+              { authToken: data.authToken },
+              'api/sign_in_verify'
+            )
+
+            if (errorMessage) {
+              setError(errorMessage)
+            } else {
+              dispatch(
+                setLocationRegistrations(verifyData.locationRegistrations)
+              )
+              dispatch(setProfile(verifyData.profile))
+            }
+
             navigate('/home')
           }
         }
@@ -168,6 +197,9 @@ export default function SignInValidatePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired || signUpNotComplete ? (
         (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
         (signUpNotComplete && (
@@ -186,13 +218,19 @@ export default function SignInValidatePage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Confirm email address </h2>
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Confirm email address{' '}
+                </h2>
                 <div className='govuk-body'>
                   We've sent an email with a code to:
                   <InsetText text={location.state.email} />
                   <Input
-                    id='enter-code'
+                    id={enterCodeId}
                     className='govuk-input govuk-input--width-10'
                     name='Enter code'
                     inputType='text'
@@ -201,11 +239,10 @@ export default function SignInValidatePage() {
                     onChange={(val) => setCode(val)}
                   />
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     text='Continue'
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     onClick={navigateBack}
                     className='govuk-link inline-link'
@@ -225,6 +262,7 @@ export default function SignInValidatePage() {
               <div className='popup-dialog-container govuk-!-padding-bottom-6'>
                 <LoadingSpinner
                   loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                  percent={percent}
                 />
               </div>
             </div>

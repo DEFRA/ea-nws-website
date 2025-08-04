@@ -13,7 +13,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
 
-export default function FloodReportFilter({
+export default function FloodReportFilter ({
   locationsAffected,
   setFilteredLocationsAffected,
   resetPaging,
@@ -23,6 +23,7 @@ export default function FloodReportFilter({
   clearFilters,
   setFilterErrorMessages
 }) {
+  const EMPTY_LABEL = '(empty)'
   // Search filter visibility
   const [visibility, setVisibility] = useState({
     dateRange: false,
@@ -44,20 +45,21 @@ export default function FloodReportFilter({
     ...new Set(
       locationsAffected
         .map(
-          (location) =>
-            location.locationData.additionals.other.business_criticality
+          (location) => {
+            const temp = location.locationData.additionals.other?.business_criticality || ''
+            return temp?.trim() !== '' ? temp : EMPTY_LABEL
+          }
         )
-        .filter((val) => val !== '')
     )
   ]
 
   const locationTypes = [
     ...new Set(
       locationsAffected
-        .map(
-          (location) => location.locationData.additionals.other.location_type
-        )
-        .filter((val) => val !== '')
+        .map((location) => {
+          const temp = location.locationData.additionals.other?.location_type || ''
+          return temp?.trim() !== '' ? temp : EMPTY_LABEL
+        })
     )
   ]
 
@@ -129,18 +131,24 @@ export default function FloodReportFilter({
 
     if (filters.selectedLocationTypes.length > 0) {
       filtered = filtered.filter((location) =>
-        filters.selectedLocationTypes.includes(
-          location.locationData.additionals.other.location_type
-        )
+        {
+          const temp = location.locationData.additionals?.other?.location_type || ''
+          const isEmpty = temp.trim() === ''
+          return filters.selectedLocationTypes.some((f) =>
+            f === EMPTY_LABEL ? isEmpty : f === temp
+          )
+        }
       )
     }
 
     if (filters.selectedBusinessCriticalities.length > 0) {
-      filtered = filtered.filter((location) =>
-        filters.selectedBusinessCriticalities.includes(
-          location.locationData.additionals.other.business_criticality
+      filtered = filtered.filter((location) => {
+        const temp = location.locationData.additionals?.other?.business_criticality || ''
+        const isEmpty = temp.trim() === ''
+        return filters.selectedBusinessCriticalities.some((f) =>
+          f === EMPTY_LABEL ? isEmpty : f === temp
         )
-      )
+      })
     }
 
     setResetPaging(!resetPaging)
@@ -197,7 +205,7 @@ export default function FloodReportFilter({
     }
 
     return {
-      date: date
+      date
     }
   }
 
@@ -217,10 +225,10 @@ export default function FloodReportFilter({
       {visibility.dateRange && (
         <div className='govuk-form-group warnings-date-range-filter'>
           <div className={`${dateFromError && 'govuk-form-group--error'}`}>
-            <p class='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
+            <p className='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
               Date from
             </p>
-            <p class='govuk-caption-m govuk-!-margin-top-0'>
+            <p className='govuk-caption-m govuk-!-margin-top-0'>
               For example, 31/01/2023
             </p>
             {dateFromError && (
@@ -237,8 +245,7 @@ export default function FloodReportFilter({
                 type='text'
                 value={filters.dateFrom}
                 onChange={(event) =>
-                  updateFilter('dateFrom', event.target.value)
-                }
+                  updateFilter('dateFrom', event.target.value)}
               />
               <FontAwesomeIcon
                 icon={faCalendar}
@@ -248,10 +255,10 @@ export default function FloodReportFilter({
             </div>
           </div>
           <div className={`${dateToError && 'govuk-form-group--error'}`}>
-            <p class='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
+            <p className='govuk-body govuk-!-font-weight-bold govuk-!-margin-top-3 govuk-!-margin-bottom-0'>
               Date to
             </p>
-            <p class='govuk-caption-m govuk-!-margin-top-0'>
+            <p className='govuk-caption-m govuk-!-margin-top-0'>
               For example, 31/01/2023
             </p>
             {dateToError && (
@@ -307,8 +314,7 @@ export default function FloodReportFilter({
               type='text'
               value={filters.locationName}
               onChange={(event) =>
-                updateFilter('locationName', event.target.value)
-              }
+                updateFilter('locationName', event.target.value)}
             />
           </div>
         </div>
@@ -525,17 +531,19 @@ export default function FloodReportFilter({
       )
     }
 
-    return selectedFilters.length > 0 ? (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '5px'
-        }}
-      >
-        {selectedFilters}
-      </div>
-    ) : null
+    return selectedFilters.length > 0
+      ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '5px'
+          }}
+        >
+          {selectedFilters}
+        </div>
+        )
+      : null
   }
 
   return (

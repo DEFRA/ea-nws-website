@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
@@ -25,11 +26,16 @@ export default function FindLocationByDropPinPage () {
     navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.map)
 
   return (
-    <DropPinOnMapLayout
-      navigateToNextPage={navigateToNextPage}
-      navigateToNotInEnglandPage={navigateToNotInEnglandPage}
-      navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
-      flow='unmatched-locations-not-in-england'
-    />
+    <>
+      <Helmet>
+        <title>Find location by dropping pin - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <DropPinOnMapLayout
+        navigateToNextPage={navigateToNextPage}
+        navigateToNotInEnglandPage={navigateToNotInEnglandPage}
+        navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
+        flow='unmatched-locations-not-in-england'
+      />
+    </>
   )
 }

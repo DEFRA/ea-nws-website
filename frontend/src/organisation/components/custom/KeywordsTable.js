@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function KeywordsTable ({
+export default function KeywordsTable({
   keywords,
   displayedKeywords,
   filteredKeywords,
@@ -88,7 +88,10 @@ export default function KeywordsTable ({
             ' keywords'
           : keywords.length + ' keywords'}{' '}
         |{' '}
-        <Link className='govuk-link'>
+        <Link
+          className='govuk-link'
+          onClick={(event) => event.preventDefault()}
+        >
           {selectedKeywords.length + ' keywords selected'}
         </Link>
       </p>
@@ -97,6 +100,7 @@ export default function KeywordsTable ({
           <tr className='govuk-table__row'>
             <th scope='col' className='govuk-table__header govuk-!-padding-0'>
               <div
+                style={{ marginTop: '-10px' }}
                 className='govuk-checkboxes govuk-checkboxes--small'
                 data-module='govuk-checkboxes'
               >
@@ -137,6 +141,7 @@ export default function KeywordsTable ({
             <tr className='govuk-table__row' key={index}>
               <th scope='row' className='govuk-table__header govuk-!-padding-0'>
                 <div
+                  style={{ marginTop: '-10px' }}
                   className='govuk-checkboxes govuk-checkboxes--small'
                   data-module='govuk-checkboxes'
                 >
@@ -156,14 +161,20 @@ export default function KeywordsTable ({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  onClick={() => onAction('edit', keyword)}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    onAction('edit', keyword)
+                  }}
                 >
                   Change
                 </Link>{' '}
                 <span style={{ color: '#b1b4b6' }}>|</span>{' '}
                 <Link
                   className='govuk-link'
-                  onClick={() => onAction('delete', keyword)}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    onAction('delete', keyword)
+                  }}
                 >
                   Delete
                 </Link>

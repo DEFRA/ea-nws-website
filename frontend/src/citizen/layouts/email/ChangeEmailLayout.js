@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -12,7 +13,8 @@ import { emailValidation } from '../../../common/services/validations/EmailValid
 
 export default function ChangeEmailLayout({
   navigateToNextPage,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  returnToReview
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -20,6 +22,7 @@ export default function ChangeEmailLayout({
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
+  const emailAddressInputId = 'new-email-address'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -66,12 +69,17 @@ export default function ChangeEmailLayout({
 
   return (
     <>
+      <Helmet>
+        <title>
+          Change your email address for signing in - Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            {error && <ErrorSummary errorList={[{ text: error, componentId: emailAddressInputId }]} />}
+            <h2 className='govuk-heading-l' id='main-content'>
               Change your email address for signing in
             </h2>
             <div className='govuk-body'>
@@ -86,9 +94,10 @@ export default function ChangeEmailLayout({
                 If you change it here, use your new email when you next sign in
               </p>
               <Input
-                id='new-email-address'
+                id={emailAddressInputId}
                 className='govuk-input govuk-!-width-one-half'
                 inputType='text'
+                inputMode='email'
                 name='New email address'
                 error={error}
                 onChange={(val) => setEmail(val)}
@@ -99,7 +108,7 @@ export default function ChangeEmailLayout({
                 onClick={handleSubmit}
               />
               <Link
-                to='/account'
+                to={returnToReview ? '/signup/review' : '/account'}
                 className='govuk-link inline-link'
                 style={{ cursor: 'pointer' }}
               >

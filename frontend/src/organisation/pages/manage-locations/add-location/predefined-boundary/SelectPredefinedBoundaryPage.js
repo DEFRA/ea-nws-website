@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -11,7 +12,8 @@ import store from '../../../../../common/redux/store'
 import {
   setConsecutiveBoundariesAdded,
   setCurrentLocation,
-  setCurrentLocationGeometry,
+  setCurrentLocationDataType,
+  setCurrentLocationGeocode,
   setCurrentLocationName,
   setCurrentLocationType,
   setPredefinedBoundaryFlow,
@@ -27,6 +29,7 @@ import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
+import { formatSentenceCase } from '../../../../../common/utils/FormatSentenceCase'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -49,7 +52,8 @@ export default function SelectPredefinedBoundaryPage() {
     (state) => state.session.consecutiveBoundariesAdded
   )
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
+  const boundaryTypeId = 'BoundaryType'
+  const boundaryId = 'Boundary'
 
   const [partnerId, setPartnerId] = useState(false)
 
@@ -60,7 +64,7 @@ export default function SelectPredefinedBoundaryPage() {
 
   async function getBoundarysAlreadyAdded() {
     const { data: locationsData, errorMessage } = await backendCall(
-      { orgId },
+      { authToken },
       'api/elasticache/list_locations',
       navigate
     )
@@ -116,20 +120,10 @@ export default function SelectPredefinedBoundaryPage() {
     }
 
     if (selectedBoundaryType && selectedBoundary) {
-      const locationBoundary = {
-        boundary_type: selectedBoundaryType,
-        boundary: selectedBoundary
-      }
-      dispatch(
-        setCurrentLocationGeometry({
-          geoJson: JSON.stringify(locationBoundary.boundary)
-        })
-      )
-      // This might change at a later date, but store in the additional name field for now
-      dispatch(
-        setCurrentLocationName(locationBoundary.boundary.properties.TA_Name)
-      )
-      dispatch(setCurrentLocationType(locationBoundary.boundary_type))
+      dispatch(setCurrentLocationName(selectedBoundary.properties.TA_Name))
+      dispatch(setCurrentLocationGeocode(selectedBoundary.properties.TA_CODE))
+      dispatch(setCurrentLocationType(selectedBoundaryType))
+      dispatch(setCurrentLocationDataType(LocationDataType.BOUNDARY))
       // since we added to currentLocation we need to get that information to pass to the api
       const locationToAdd = store.getState().session.currentLocation
 
@@ -138,9 +132,7 @@ export default function SelectPredefinedBoundaryPage() {
         JSON.parse(JSON.stringify(locationToAdd))
       )
       // get the target areas
-      const TAs = await getFloodAreasFromShape(
-        newWebLocation?.geometry?.geoJson
-      )
+      const TAs = await getFloodAreasFromShape(selectedBoundary?.geometry)
       newWebLocation.additionals.other.targetAreas = []
       TAs.forEach((area) => {
         newWebLocation.additionals.other.targetAreas.push({
@@ -181,7 +173,7 @@ export default function SelectPredefinedBoundaryPage() {
 
       const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
-      const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+      const dataToSend = { authToken, location: newGeosafeLocation }
       const { data } = await backendCall(
         dataToSend,
         'api/location/create',
@@ -227,39 +219,58 @@ export default function SelectPredefinedBoundaryPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Select a predefined boundary for this location - Manage locations -
+          Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(boundaryTypeError || boundaryError) && (
-              <ErrorSummary errorList={[boundaryTypeError, boundaryError]} />
+              <ErrorSummary
+                errorList={[
+                  { text: boundaryTypeError, componentId: boundaryTypeId },
+                  { text: boundaryError, componentId: boundaryId }
+                ]}
+              />
             )}
-            <h1 className='govuk-heading-l'>Add predefined boundary</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Add predefined boundary
+            </h1>
             <div className='govuk-body'>
               <p>Select a boundary to add to this account.</p>
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-one-third'>
                   <br />
                   <Select
+                    id={boundaryTypeId}
                     name='BoundaryType'
                     label='Boundary type'
                     options={boundaryTypes}
                     onSelect={onBoundaryTypeSelected}
                     error={boundaryTypeError}
                     initialSelectOptionText={
-                      selectedBoundaryType || 'Select type'
+                      selectedBoundaryType
+                        ? formatSentenceCase(selectedBoundaryType)
+                        : 'Select type'
                     }
+                    snakeCaseText={true}
                   />
                   <Select
-                    // key forces the boundary select to re-render after the boundary type is changed
-                    // when boundary type is changed, the selected boundary is reset. we must force this
-                    // re-render for the intial text option to show correctly
+                    id={boundaryId}
                     name='Boundary'
-                    key={selectedBoundary}
                     label='Boundary'
-                    options={boundaries.map((boundary) => {
-                      return boundary.properties.TA_Name
-                    })}
+                    options={boundaries
+                      .slice() // create a shallow copy to avoid mutating orignal values
+                      .sort((a, b) =>
+                        a.properties.TA_Name.localeCompare(b.properties.TA_Name)
+                      )
+                      .map((boundary) => {
+                        return boundary.properties.TA_Name
+                      })}
                     onSelect={onBoundarySelected}
                     error={boundaryError}
                     initialSelectOptionText={
@@ -270,6 +281,7 @@ export default function SelectPredefinedBoundaryPage() {
                     disabledOptions={boundariesAlreadyAdded.map((boundary) => {
                       return boundary.additionals.locationName
                     })}
+                    value={selectedBoundary?.properties?.TA_Name}
                   />
                   <Button
                     className='govuk-button govuk-!-margin-top-4'

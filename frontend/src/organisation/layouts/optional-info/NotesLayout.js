@@ -11,7 +11,7 @@ import {
   setOrgCurrentContactNotes
 } from '../../../common/redux/userSlice'
 
-export default function NotesLayout ({
+export default function NotesLayout({
   navigateToNextPage,
   keywordType,
   instructionText,
@@ -30,6 +30,7 @@ export default function NotesLayout ({
   )
   const [notes, setNotes] = useState(currentNotes || '')
   const charLimit = 500
+  const locationNotesId = 'location-notes'
 
   useEffect(() => {
     if (notes.length > charLimit) {
@@ -68,21 +69,30 @@ export default function NotesLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>{title || 'Notes (optional)'}</h1>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: locationNotesId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              {title || 'Notes (optional)'}
+            </h1>
             <div className='govuk-body'>
               <p className='govuk-hint'>{instructionText}</p>
               <TextArea
+                id={locationNotesId}
                 error={error}
                 inputType='text'
                 rows='5'
                 onChange={(val) => setNotes(val)}
                 value={notes}
                 className='govuk-textarea'
-                additionalInfo={`You can enter up to ${charLimit} characters`}
+                additionalInfo={`You can enter up to ${
+                  charLimit - notes.length
+                } characters`}
               />
               <br />
               <Button

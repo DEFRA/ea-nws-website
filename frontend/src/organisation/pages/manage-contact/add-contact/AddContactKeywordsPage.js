@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
@@ -35,6 +36,13 @@ export default function AddContactKeywordsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Add keywords for {currentContact?.firstname}{' '}
+          {currentContact?.lastname} - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <KeywordsLayout
         keywordType='contact'
         keywordTitle={KeywordTitle}

@@ -5,7 +5,8 @@ const {
 const {
   orgSignIn,
   addLinkedLocations,
-  setJsonData
+  setJsonData,
+  getJsonData
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
@@ -25,7 +26,11 @@ const getAdditionalLocations = async (
     while (i <= totalRecalls) {
       let options = {
         offset: 1000 * i,
-        limit: 1000
+        limit: 1000,
+        sort: [{
+          fieldName: 'id',
+          order: 'ASCENDING'
+        }]
       }
       if (contactId) options.contactId = contactId
       fetchLocationsPromises.push(
@@ -61,8 +66,9 @@ module.exports = [
 
         const { orgData } = request.payload
         const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, orgData?.authToken)
 
-        if (orgData) {
+        if (orgData && sessionData) {
           const elasticacheKey = 'signin_status:' + orgData.authToken
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving locations',
@@ -71,7 +77,11 @@ module.exports = [
 
           let locations = []
           let options = {
-            limit: 1000
+            limit: 1000,
+            sort: [{
+              fieldName: 'id',
+              order: 'ASCENDING'
+            }]
           }
           const locationRes = await apiCall(
             { authToken: orgData.authToken, options: options },
@@ -105,12 +115,24 @@ module.exports = [
             orgData.organization,
             locations,
             contactRes.data.contacts,
+            sessionData.orgId,
             orgData.authToken
           )
 
+          const numContacts = contactRes.data.contacts.length
+          let contactIndex = 1
+          let percent = 0
+
           for (const contact of contactRes.data.contacts) {
             let contactsLocations = []
-            const options = { contactId: contact.id, limit: 1000 }
+            const options = {
+              contactId: contact.id,
+              limit: 1000,
+              sort: [{
+                fieldName: 'id',
+                order: 'ASCENDING'
+              }]
+            }
             const linkLocationsRes = await apiCall(
               {
                 authToken: orgData.authToken,
@@ -138,6 +160,16 @@ module.exports = [
               contact.id,
               locationIDs
             )
+
+            let newPercent = Math.round((contactIndex/numContacts)*100)
+            if (percent !== newPercent) {
+              percent = newPercent
+              await setJsonData(redis, elasticacheKey, {
+                stage: 'Processing Contacts',
+                status: 'working',
+                percent: percent
+              })
+            }
           }
           await setJsonData(redis, elasticacheKey, {
             stage: 'Populating account',

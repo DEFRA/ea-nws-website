@@ -1,7 +1,6 @@
-import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -47,19 +46,22 @@ export default function CheckYourAnswersPage() {
     return (
       profile.emails[0] &&
       profile.firstname &&
-      profile.lastname &&
       profile.pois.length !== 0
     )
   }
 
   return (
     <>
-      <BackLink to='/declaration' />
+      <Helmet>
+        <title>Check your answers - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row '>
-          <div className='govuk-grid-column-three-quarters'>
-            <h1 className='govuk-heading-l'>Check your answers</h1>
-            <LocationReviewTable locations={profile.pois} />
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-full'>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Check your answers
+            </h1>
+            <LocationReviewTable />
             <FloodMessageReviewTable registration={registration} />
             <ContactReviewTable contacts={contacts} />
             <AccountDetailsTable profile={profile} />

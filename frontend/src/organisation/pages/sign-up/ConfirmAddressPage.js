@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { setProfile } from '../../../common/redux/userSlice'
@@ -6,7 +7,7 @@ import { updateAdditionals } from '../../../common/services/ProfileServices'
 import ConfirmAddressLayout from '../../layouts/address/ConfirmAddressLayout'
 import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function ConfirmAddressPage () {
+export default function ConfirmAddressPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
@@ -35,14 +36,29 @@ export default function ConfirmAddressPage () {
     }
   }
 
-  const NavigateToPreviousPage = () => {
+  const navigateToAddAddressPage = () => navigate(orgSignUpUrls.address.add)
+
+  const navigateToEnterAddressManuallyPage = () => {
+    navigate(orgSignUpUrls.address.manuallyAdd)
+  }
+
+  const navigateToSearchResultsPage = () => {
     navigate(orgSignUpUrls.address.select)
   }
 
   return (
-    <ConfirmAddressLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>
+          Confirm address - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
+      <ConfirmAddressLayout
+        navigateToNextPage={navigateToNextPage}
+        navigateToEnterAddressManuallyPage={navigateToEnterAddressManuallyPage}
+        navigateToAddAddressPage={navigateToAddAddressPage}
+        navigateToSearchResultsPage={navigateToSearchResultsPage}
+      />
+    </>
   )
 }

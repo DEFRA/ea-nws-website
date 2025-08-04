@@ -2,9 +2,12 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { apiCall } = require('../../services/ApiService')
-const { authCodeValidation } = require('../../services/validations/AuthCodeValidation')
+const {
+  authCodeValidation
+} = require('../../services/validations/AuthCodeValidation')
 const { setJsonData } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
+const { GENERIC_ERROR_MSG } = require('../../constants/errorMessages')
 
 module.exports = [
   {
@@ -30,7 +33,7 @@ module.exports = [
         } else {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error ? GENERIC_ERROR_MSG : error
           })
         }
       } catch (error) {

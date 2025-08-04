@@ -1,7 +1,7 @@
-import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
@@ -17,6 +17,7 @@ import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import OsMapTerms from '../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../common/enums/LocationDataType'
 import {
@@ -26,6 +27,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import {
   getBoundaries,
+  getOperationalBoundaryByTaCode,
   getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
 } from '../../../common/services/WfsFloodDataService'
@@ -46,7 +48,9 @@ export default function Map({
   showMarker = false,
   boundaryList,
   boundariesAlreadyAdded = [],
-  manualCoords
+  manualCoords,
+  accessibleMap = false,
+  showOsMapTerms = true
 }) {
   const dispatch = useDispatch()
   const { latitude: currentLatitude, longitude: currentLongitude } =
@@ -58,12 +62,31 @@ export default function Map({
     latitude: currentLatitude,
     longitude: currentLongitude
   }
-  const locationGeometry = useSelector(
-    (state) => state?.session?.currentLocation?.geometry
-  )
+  const [locationGeometry, setLocationGeometry] = useState(null)
   const currentLocationDataType = useSelector((state) =>
     getLocationOther(state, 'location_data_type')
   )
+  const currentLocationGeometry = useSelector(
+    (state) => state?.session?.currentLocation?.geometry
+  )
+  const currentLocationGeocode = useSelector(
+    (state) => state?.session?.currentLocation?.geocode
+  )
+
+  useEffect(() => {
+    const fetchLocationGeometry = async () => {
+      if (currentLocationDataType === LocationDataType.BOUNDARY) {
+        const boundary = await getOperationalBoundaryByTaCode(
+          currentLocationGeocode
+        )
+        setLocationGeometry(boundary)
+      } else {
+        setLocationGeometry(currentLocationGeometry)
+      }
+    }
+
+    fetchLocationGeometry()
+  }, [currentLocationDataType])
 
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
@@ -78,13 +101,18 @@ export default function Map({
     async function fetchFloodAreaData() {
       let floodAreas
       if (
-        currentLocationDataType === LocationDataType.BOUNDARY ||
-        currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
-        currentLocationDataType === LocationDataType.SHAPE_LINE
+        (currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
+          currentLocationDataType === LocationDataType.SHAPE_LINE) &&
+        locationGeometry
       ) {
         floodAreas = await getSurroundingFloodAreasFromShape(
           JSON.parse(locationGeometry.geoJson)
         )
+      } else if (
+        currentLocationDataType === LocationDataType.BOUNDARY &&
+        locationGeometry
+      ) {
+        floodAreas = await getSurroundingFloodAreasFromShape(locationGeometry)
       } else {
         floodAreas = await getSurroundingFloodAreas(latitude, longitude)
       }
@@ -179,21 +207,40 @@ export default function Map({
   )
   const ref = useRef(null)
 
+  const [keyboardNav, setKeyboardNav] = useState(false)
+  const [showMapLegend, setShowMapLegend] = useState(false)
+  const [mapLegendOpen, setMapLegendOpen] = useState(false)
+  const [touchInput, setTouchInput] = useState(false)
+
   function AddMarker() {
     useMapEvents({
       click: (e) => {
-        const mapHeight = ref.current.clientHeight
-        const mapWidth = ref.current.clientWidth
-        const { x, y } = e.containerPoint
-        if (
-          !(
-            x > mapWidth - 30 &&
-            x < mapWidth - 9 &&
-            y > mapHeight - 110 &&
-            y < mapHeight - 77
-          )
-        ) {
-          const { lat, lng } = e.latlng
+        if (e.originalEvent.target.matches('.govuk-button') && accessibleMap) {
+          const { lat, lng } = e.target.getCenter()
+          setMarker([lat, lng])
+          setCoordinates({ latitude: lat, longitude: lng })
+        } else {
+          const mapHeight = ref.current.clientHeight
+          const mapWidth = ref.current.clientWidth
+          const { x, y } = e.containerPoint
+          if (
+            !(
+              x > mapWidth - 30 &&
+              x < mapWidth - 9 &&
+              y > mapHeight - 110 &&
+              y < mapHeight - 77
+            )
+          ) {
+            const { lat, lng } = e.latlng
+            setMarker([lat, lng])
+            setCoordinates({ latitude: lat, longitude: lng })
+          }
+        }
+      },
+      keydown: (e) => {
+        if (e.originalEvent.code === 'Space' && accessibleMap) {
+          e.originalEvent.preventDefault()
+          const { lat, lng } = e.target.getCenter()
           setMarker([lat, lng])
           setCoordinates({ latitude: lat, longitude: lng })
         }
@@ -210,7 +257,56 @@ export default function Map({
     createAlertPattern()
     createExistingBoundaryPattern()
     createShapefilePattern()
+    const handleKeyDown = (e) => {
+      if (e.key === 'Tab' && accessibleMap) {
+        setKeyboardNav(true)
+      }
+    }
+
+    const handleMouseDown = (e) => {
+      setKeyboardNav(false)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('pointerdown', handleMouseDown)
+    window.addEventListener('wheel', handleMouseDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('pointerdown', handleMouseDown)
+      window.removeEventListener('wheel', handleMouseDown)
+    }
   }, [])
+
+  const handleFocus = () => {
+    if (keyboardNav && accessibleMap) {
+      setShowMapLegend(true)
+    }
+  }
+
+  const handleBlur = () => {
+    if (!accessibleMap) return
+    setShowMapLegend(false)
+    setMapLegendOpen(false)
+    setTouchInput(false)
+  }
+
+  const handleTouchStart = () => {
+    if (!accessibleMap) return
+    setTouchInput(true)
+  }
+
+  const handleKeyDown = (e) => {
+    if (!accessibleMap) return
+    if (e.altKey && e.key.toLowerCase() === 'k') {
+      e.preventDefault()
+      setMapLegendOpen(true)
+    }
+  }
+
+  const handleCloseKeyboardLegend = () => {
+    setMapLegendOpen(false)
+  }
 
   const onEachWarningAreaFeature = (feature, layer) => {
     if (showFloodWarningAreas) {
@@ -492,7 +588,13 @@ export default function Map({
   }
 
   return (
-    <div ref={ref}>
+    <div
+      ref={ref}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onTouchStart={handleTouchStart}
+      onKeyDown={handleKeyDown}
+    >
       <MapContainer
         key={centre}
         center={centre}
@@ -501,16 +603,118 @@ export default function Map({
         attributionControl={false}
         minZoom={7}
         maxBounds={maxBounds}
-        className='map-container'
+        className='map-container-org'
       >
         {apiKey && apiKey !== 'error' ? (
           <>
+            {showMapLegend && (
+              <div
+                className={`accessible-map-legend-container govuk-body-s ${
+                  mapLegendOpen ? 'keyboard' : ''
+                }`}
+              >
+                {!mapLegendOpen ? (
+                  <>
+                    <span className='govuk-visually-hidden'>
+                      Interactive map.{' '}
+                    </span>
+                    <kbd>Alt</kbd> + <kbd>K</kbd>{' '}
+                    <span className='govuk-visually-hidden'>Show</span> keyboard
+                    controls
+                    <span className='govuk-visually-hidden'>.</span>
+                  </>
+                ) : (
+                  <>
+                    <h3 className='govuk-heading-m'>Keyboard</h3>
+                    <div
+                      className='map-legend-close-container'
+                      onClick={handleCloseKeyboardLegend}
+                    >
+                      <FontAwesomeIcon
+                        icon={faXmark}
+                        className='warnings-selected-filter-icon'
+                      />
+                    </div>
+                    <dl className='keyboard-list govuk-body-s'>
+                      <div className='keyboard-list__item'>
+                        <dt>Select a map control</dt>
+                        <dd>
+                          <kbd>Tab</kbd> or <kbd>Shift</kbd> + <kbd>Tab</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Move in large steps</dt>
+                        <dd>
+                          <kbd>&larr;</kbd>, <kbd>&uarr;</kbd>,{' '}
+                          <kbd>&rarr;</kbd> or <kbd>&darr;</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Move in small steps</dt>
+                        <dd>
+                          <kbd>Shift</kbd> + <kbd>&larr;</kbd>,{' '}
+                          <kbd>&uarr;</kbd>, <kbd>&rarr;</kbd> or{' '}
+                          <kbd>&darr;</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Adjust zoom level</dt>
+                        <dd>
+                          <kbd>+</kbd> or <kbd>=</kbd> and <kbd>-</kbd> or{' '}
+                          <kbd>_</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Drop pin</dt>
+                        <dd>
+                          <kbd>Space</kbd>
+                        </dd>
+                      </div>
+                    </dl>
+                  </>
+                )}
+              </div>
+            )}
+            {(showMapLegend || touchInput) && (
+              <div className='map-marker' aria-label='Map marker'>
+                <svg
+                  width='66'
+                  height='66'
+                  viewBox='0 0 66 66'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <circle
+                    cx='33'
+                    cy='33'
+                    r='19'
+                    stroke='black'
+                    strokeWidth='2'
+                    strokeDasharray='8 8'
+                  />
+                  <circle cx='33' cy='33' r='4' fill='#0B0C0C' />
+                  <path d='M33 0L36.4641 12H29.5359L33 0Z' fill='#0B0C0C' />
+                  <path d='M33 66L29.5359 54H36.4641L33 66Z' fill='#0B0C0C' />
+                  <path d='M0 33L12 29.5359V36.4641L0 33Z' fill='#0B0C0C' />
+                  <path d='M66 33L54 36.4641V29.5359L66 33Z' fill='#0B0C0C' />
+                </svg>
+              </div>
+            )}
             {tileLayerWithHeader}
             {showMapControls && (
-              <>
+              <div role='group' aria-label='Interactive Map Controls'>
                 <ZoomControl position='bottomright' />
                 <ResetMapButton />
-              </>
+              </div>
+            )}
+            {touchInput && (
+              <div className='drop-pin-container'>
+                <div className='leaflet-control'>
+                  <button type='button' className='govuk-button'>
+                    Drop a pin
+                  </button>
+                </div>
+              </div>
             )}
             {currentLocationDataType !== LocationDataType.BOUNDARY &&
               currentLocationDataType !== LocationDataType.SHAPE_POLYGON &&
@@ -523,6 +727,7 @@ export default function Map({
                   )}
                 </>
               )}
+
             {alertArea && (
               <GeoJSON
                 data={alertArea}
@@ -572,7 +777,7 @@ export default function Map({
               currentLocationDataType === LocationDataType.BOUNDARY && (
                 <>
                   <GeoJSON
-                    data={JSON.parse(locationGeometry.geoJson)}
+                    data={locationGeometry.geometry}
                     onEachFeature={onEachViewBoundaryFeature}
                     ref={(el) => {
                       shapefileRef.current = el
@@ -581,6 +786,7 @@ export default function Map({
                   <FitBounds />
                 </>
               )}
+            {showOsMapTerms && <OsMapTerms />}
           </>
         ) : (
           <div className='map-error-container'>

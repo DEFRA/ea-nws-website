@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -27,11 +28,18 @@ export default function AddContactAdditionalInformationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Do you want to add more information about {currentContact?.firstname}{' '}
+          {currentContact?.lastname}? - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Do you want to add more information about{' '}
               {currentContact?.firstname} {currentContact?.lastname}?
             </h1>
@@ -46,10 +54,9 @@ export default function AddContactAdditionalInformationPage() {
               <div className='govuk-!-margin-top-8'>
                 <Button
                   text='Yes, add now'
-                  className='govuk-button'
+                  className='govuk-button govuk-!-margin-right-2'
                   onClick={handleSubmit}
                 />
-                &nbsp; &nbsp;
                 <Link
                   className='govuk-link inline-link'
                   onClick={skipOptionalInformation}

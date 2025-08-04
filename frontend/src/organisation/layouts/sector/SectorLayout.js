@@ -6,19 +6,20 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrganizationEmergencySector } from '../../../common/redux/userSlice'
 
-export default function SectorLayout ({
+export default function SectorLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
+  const emergencySectorId = 'emergency-sector'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     if (emergencySector === null) {
       setError(
-        'Select whether your organisation is involved in responding to public emergencies or incidents'
+        'Select whether your organisation is a Category 1 or Category 2 responder'
       )
       return
     }
@@ -37,8 +38,12 @@ export default function SectorLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: emergencySectorId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
               Is your organisation a Category 1 or Category 2 responder?
             </h1>
             <div className='govuk-body'>
@@ -50,8 +55,8 @@ export default function SectorLayout ({
                 }
               >
                 <p className='govuk-hint'>
-                  For example, a  police, fire or ambulance service, local authority or member of <br />
-                  a local resilience forum.
+                  For example, a police, fire or ambulance service, local
+                  authority or member of <br />a local resilience forum.
                 </p>
                 {error && (
                   <p className='govuk-error-message'>
@@ -59,20 +64,27 @@ export default function SectorLayout ({
                     {error}
                   </p>
                 )}
-                <div className='govuk-radios'>
-                  <Radio
-                    key='radio_yes'
-                    name='emergencySectorRadio'
-                    label='Yes'
-                    onChange={() => setEmergencySector(true)}
-                  />
-                  <Radio
-                    key='radio_no'
-                    name='emergencySectorRadio'
-                    label='No'
-                    onChange={() => setEmergencySector(false)}
-                  />
-                  <br />
+                <div id={emergencySectorId} className='govuk-radios'>
+                  <fieldset
+                    className='govuk-form-group govuk-fieldset'
+                    aria-describedby={
+                      error ? 'emergency-sector-error' : undefined
+                    }
+                  >
+                    <Radio
+                      key='radio_yes'
+                      name='emergencySectorRadio'
+                      label='Yes'
+                      onChange={() => setEmergencySector(true)}
+                    />
+                    <Radio
+                      key='radio_no'
+                      name='emergencySectorRadio'
+                      label='No'
+                      onChange={() => setEmergencySector(false)}
+                    />
+                    <br />
+                  </fieldset>
                 </div>
               </div>
               <Button

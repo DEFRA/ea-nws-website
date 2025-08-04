@@ -54,6 +54,10 @@ module.exports = [
                 await setJsonData(redis, updateResponse.data.contact.id + ':profile', response.data.contact)
                 await addOrgActiveAdmins(redis, response.data.organization.id, response.data.contact.id, )
               }
+              await setJsonData(redis, response.data.authToken, {
+                orgId: response.data.organization.id
+              })
+              
               return h.response({
                 status: 200,
                 data: {

@@ -11,7 +11,7 @@ import {
   removeVerifiedContact
 } from '../../../common/services/ProfileServices'
 
-export default function ConfirmDeleteContactDetailsLayout ({
+export default function ConfirmDeleteContactDetailsLayout({
   NavigateToPreviousPage,
   navigateToNextPage
 }) {
@@ -63,16 +63,15 @@ export default function ConfirmDeleteContactDetailsLayout ({
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h2 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Are you sure you want to remove this {location.state.type}?
-            </h2>
+            </h1>
             <InsetText text={location.state.contact} />
             <Button
-              className='govuk-button govuk-button--warning'
+              className='govuk-button govuk-button--warning govuk-!-margin-right-2'
               text='Remove'
               onClick={removeContact}
             />
-            &nbsp; &nbsp;
             <Link
               onClick={handleCancelLink}
               className='govuk-body govuk-link inline-link'

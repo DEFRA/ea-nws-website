@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -26,7 +27,10 @@ export default function ChangeBusinessDetailsPage() {
     getAdditionals(profile, 'businessName')
   )
   const [jobTitle, setJobTitle] = useState(getAdditionals(profile, 'jobTitle'))
-
+  const businessNameId = 'business-name'
+  const jobTitleId = 'job-title'
+  const businessDetailsId = 'business-details-body'
+  
   const handleSubmit = async (event) => {
     event.preventDefault()
     const { validationErrorBusiness, validationErrorJob } =
@@ -62,21 +66,31 @@ export default function ChangeBusinessDetailsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Additional details for business registrations - Get flood warnings -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink to='/account' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(businessNameError || jobTitleError || error) && (
               <ErrorSummary
-                errorList={[businessNameError, jobTitleError, error]}
-              />
+              errorList={[
+                businessNameError && { text: businessNameError, componentId: businessNameId },
+                jobTitleError && { text: jobTitleError, componentId: jobTitleId },
+                error && { text: error, componentId: businessDetailsId }
+              ].filter(Boolean)}
+            />
             )}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Additional details for business registrations
             </h2>
-            <div className='govuk-body'>
+            <div className='govuk-body' id={businessDetailsId}>
               <Input
-                id='business-name'
+                id={businessNameId}
                 name='Business name (optional)'
                 inputType='text'
                 error={businessNameError}
@@ -85,7 +99,7 @@ export default function ChangeBusinessDetailsPage() {
                 defaultValue={getAdditionals(profile, 'businessName')}
               />
               <Input
-                id='job-title'
+                id={jobTitleId}
                 name='Job title (optional)'
                 inputType='text'
                 error={jobTitleError}

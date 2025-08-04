@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -9,7 +10,7 @@ import InsetText from '../../../../../common/components/gov-uk/InsetText'
 import { getLocationAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationNotInFloodAreaPage () {
+export default function LocationNotInFloodAreaPage() {
   const navigate = useNavigate()
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
@@ -73,8 +74,7 @@ export default function LocationNotInFloodAreaPage () {
         Possible
       </p>
       <p className=' govuk-!-margin-top-0'>
-        Flooding is possible in the local area when groundwater levels are
-        high.
+        Flooding is possible in the local area when groundwater levels are high.
       </p>
       <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
         Unlikely
@@ -87,16 +87,22 @@ export default function LocationNotInFloodAreaPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Flood messages are not available for this location - Manage locations
+          - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half govuk-body'>
-            <h1 class='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Flood messages are not available for {locationName}
             </h1>
             <InsetText text={insetTextInfo} />
             <Details title='What is flood risk' text={floodRiskInfo} />
-            <p class='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
+            <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
               Why are flood messages unavailable for some locations?
             </p>
             <p className='govuk-!-margin-top-0'>
@@ -108,7 +114,7 @@ export default function LocationNotInFloodAreaPage () {
               Locations may still be at risk of flooding even if you cannot get
               flood messages for them.
             </p>
-            <p class='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
+            <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
               How to get flood messages for this location
             </p>
             <p className='govuk-!-margin-top-0 govuk-!-margin-bottom-7'>
@@ -116,7 +122,7 @@ export default function LocationNotInFloodAreaPage () {
               can get flood messages.
             </p>
             <Button
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-right-2'
               text='Link to nearby flood areas'
               onClick={(event) => {
                 event.preventDefault()
@@ -126,9 +132,10 @@ export default function LocationNotInFloodAreaPage () {
                 )
               }}
             />
-            &nbsp; &nbsp;
             <Link
-              onClick={(e) => { onSkipLink(e) }}
+              onClick={(e) => {
+                onSkipLink(e)
+              }}
               className='govuk-link inline-link'
             >
               I'll do this later

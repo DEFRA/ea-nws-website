@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -21,6 +22,7 @@ export default function AddLandlineLayout({
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = useSelector((state) => state.session.authToken)
+  const landlineInputId = 'uk-landline-mobile'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -69,12 +71,18 @@ export default function AddLandlineLayout({
 
   return (
     <>
+      <Helmet>
+        <title>
+          Enter a telephone number to get flood messages by phone call - Get
+          flood warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            {error && <ErrorSummary errorList={[{ text: error, componentId: landlineInputId }]} />}
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter a telephone number to get flood messages by phone call
             </h2>
             <div className='govuk-body'>
@@ -83,7 +91,7 @@ export default function AddLandlineLayout({
                 called 24 hours a day.
               </p>
               <Input
-                id='uk-landline-mobile'
+                id={landlineInputId}
                 name='UK landline or mobile telephone number'
                 inputType='text'
                 error={error}

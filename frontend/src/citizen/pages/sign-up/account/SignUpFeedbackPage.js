@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
@@ -15,6 +16,8 @@ export default function FeedbackPage () {
   const [error, setError] = useState('')
   const [textError, setTextError] = useState('')
   const charLimit = 2000
+  const feedbackPrefId = 'feedback-pref-fieldset'
+  const moreDetailId = 'more-detail'
 
   const feedbackOptions = [
     { value: 'Very Satisfied', label: 'Very Satisfied' },
@@ -77,14 +80,27 @@ export default function FeedbackPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>Give feedback about signing up - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || textError) && (
-              <ErrorSummary errorList={[error, textError]} />
+              <ErrorSummary
+                errorList={[
+                  error && {
+                    text: error,
+                    componentId: feedbackPrefId
+                  },
+                  textError && {
+                    text: textError,
+                    componentId: moreDetailId
+                  }
+                ].filter(Boolean)}
+              />
             )}
-            <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
+            <h1 className='govuk-heading-l' id="main-content">Give feedback about signing up</h1>
             <div className='govuk-body'>
               This helps us to improve this service
               <br />
@@ -98,17 +114,24 @@ export default function FeedbackPage () {
               </p>
               <br />
               <div
+                id={feedbackPrefId}
                 className={
                   error
                     ? 'govuk-form-group govuk-form-group--error'
                     : 'govuk-form-group'
                 }
+                aria-describedby={error ? 'feedback-pref-error' : undefined}
               >
                 <fieldset className='govuk-fieldset'>
                   <h2 className='govuk-heading-m'>
                     Overall, how do you feel about this service?
                   </h2>
-                  {error && <p className='govuk-error-message'>{error}</p>}
+                  {error && (
+                    <p className='govuk-error-message'>
+                      <span className="govuk-visually-hidden">Error:</span>{' '}
+                      {error}
+                    </p>
+                  )}
                   <div className='govuk-radios' data-module='govuk-radios'>
                     {feedbackOptions.map((option) => (
                       <Radio
@@ -146,11 +169,14 @@ export default function FeedbackPage () {
                   Do not include your personal or financial details
                 </div>
                 {textError && (
-                  <p className='govuk-error-message'>{textError}</p>
+                  <p className='govuk-error-message'>
+                    <span className="govuk-visually-hidden">Error:</span>{' '}
+                    {textError}
+                  </p>
                 )}
                 <TextArea
                   className='govuk-textarea'
-                  id='more-detail'
+                  id={moreDetailId}
                   rows='5'
                   onChange={(val) => setFeedbackText(val)}
                 />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import UserType from '../../../common/enums/UserType'
 import { setOrgCurrentContact } from '../../../common/redux/userSlice'
@@ -27,6 +27,7 @@ export default function UsersTable({
   const [emailSort, setEmailSort] = useState('none')
   const [linkedLocationsSort, setLinkedLocationsSort] = useState('none')
   const [messagesReceivedSort, setMessagesReceivedSort] = useState('none')
+  const profileId = useSelector((state) => state.session.profileId)
 
   useEffect(() => {
     setUserTypeSort('none')
@@ -197,6 +198,7 @@ export default function UsersTable({
           <tr className='govuk-table__row'>
             <th scope='col' className='govuk-table__header'>
               <div
+                style={{ marginTop: '-10px' }}
                 className='govuk-checkboxes govuk-checkboxes--small'
                 data-module='govuk-checkboxes'
               >
@@ -204,6 +206,7 @@ export default function UsersTable({
                   <input
                     className='govuk-checkboxes__input'
                     type='checkbox'
+                    aria-label='Select all users'
                     checked={isTopCheckboxChecked}
                     onChange={handleHeaderCheckboxChange}
                   />
@@ -218,6 +221,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by user type, currently ${
+                  userTypeSort === 'none' ? 'unsorted' : userTypeSort
+                }`}
                 onClick={() =>
                   sortData(
                     userTypeSort,
@@ -236,6 +242,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by name, currently ${
+                  contactNameSort === 'none' ? 'unsorted' : contactNameSort
+                }`}
                 onClick={() =>
                   sortData(contactNameSort, setContactNameSort, (contact) => {
                     return contact.firstname + (contact.lastname || '')
@@ -252,6 +261,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by job title, currently ${
+                  jobTitleSort === 'none' ? 'unsorted' : jobTitleSort
+                }`}
                 onClick={() =>
                   sortData(jobTitleSort, setJobTitleSort, (contact) => {
                     return contact.additionals.jobTitle
@@ -268,6 +280,9 @@ export default function UsersTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by email, currently ${
+                  emailSort === 'none' ? 'unsorted' : emailSort
+                }`}
                 onClick={() =>
                   sortData(emailSort, setEmailSort, (contact) => {
                     return contact.emails[0]
@@ -285,7 +300,15 @@ export default function UsersTable({
                   className='govuk-table__header'
                   aria-sort={linkedLocationsSort}
                 >
-                  <button type='button' onClick={() => sortLinkedLocations()}>
+                  <button
+                    type='button'
+                    aria-label={`Sort by number of linked locations, currently ${
+                      linkedLocationsSort === 'none'
+                        ? 'unsorted'
+                        : linkedLocationsSort
+                    }`}
+                    onClick={() => sortLinkedLocations()}
+                  >
                     Linked locations
                   </button>
                 </th>
@@ -294,8 +317,16 @@ export default function UsersTable({
                   className='govuk-table__header'
                   aria-sort={messagesReceivedSort}
                 >
-                  <button type='button' onClick={() => sortMessagesReceived()}>
-                    Messages received
+                  <button
+                    type='button'
+                    aria-label={`Sort by number of messages received, currently ${
+                      messagesReceivedSort === 'none'
+                        ? 'unsorted'
+                        : messagesReceivedSort
+                    }`}
+                    onClick={() => sortMessagesReceived()}
+                  >
+                    Flood messages issued
                   </button>
                 </th>
                 <th scope='col' className='govuk-table__header' />
@@ -308,6 +339,7 @@ export default function UsersTable({
             <tr className='govuk-table__row' key={index}>
               <th scope='row' className='govuk-table__header'>
                 <div
+                  style={{ marginTop: '-10px' }}
                   className='govuk-checkboxes govuk-checkboxes--small'
                   data-module='govuk-checkboxes'
                 >
@@ -315,6 +347,11 @@ export default function UsersTable({
                     <input
                       className='govuk-checkboxes__input'
                       type='checkbox'
+                      aria-label={`Select ${contact.firstname}${
+                        contact?.lastname?.length > 0
+                          ? ' ' + contact?.lastname
+                          : ''
+                      }`}
                       checked={selectedContacts.includes(contact)}
                       onChange={() => handleContactSelected(contact)}
                     />
@@ -352,12 +389,12 @@ export default function UsersTable({
               {!filterVisible && (
                 <>
                   <td className='govuk-table__cell'>
-                    {contact.linked_locations?.length !== undefined ? (
+                    {contact.linked_locations !== undefined ? (
                       <Link
                         className='govuk-link'
                         onClick={(e) => viewLinkedLocations(e, contact)}
                       >
-                        {contact.linked_locations?.length}
+                        {contact.linked_locations}
                       </Link>
                     ) : (
                       LoadingDots
@@ -369,12 +406,22 @@ export default function UsersTable({
                       : LoadingDots}
                   </td>
                   <td className='govuk-table__cell'>
-                    <Link
-                      className='govuk-link'
-                      onClick={(e) => onAction(e, actionText, contact)}
-                    >
-                      {actionText}
-                    </Link>
+                    {!(
+                      contact.id === profileId &&
+                      contact.role === UserType.Admin
+                    ) && (
+                      <Link
+                        className='govuk-link'
+                        aria-label={`Delete ${contact.firstname}${
+                          contact?.lastname?.length > 0
+                            ? ' ' + contact?.lastname
+                            : ''
+                        }`}
+                        onClick={(e) => onAction(e, actionText, contact)}
+                      >
+                        {actionText}
+                      </Link>
+                    )}
                   </td>
                 </>
               )}

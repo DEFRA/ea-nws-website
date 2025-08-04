@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import NotesLayout from '../../../../layouts/optional-info/NotesLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -21,6 +22,9 @@ export default function AddNotesPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Notes for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'

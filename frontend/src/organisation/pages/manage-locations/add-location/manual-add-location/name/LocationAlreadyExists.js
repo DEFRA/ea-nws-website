@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -11,10 +12,10 @@ import {
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAlreadyExists () {
+export default function LocationAlreadyExists() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -22,7 +23,7 @@ export default function LocationAlreadyExists () {
 
   const handleEditLocation = async () => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -44,12 +45,15 @@ export default function LocationAlreadyExists () {
 
   return (
     <>
+      <Helmet>
+        <title>Location already exists in this account - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds' />
           {error && <ErrorSummary errorList={[error]} />}
-          <h1 className='govuk-heading-l'>
+          <h1 className='govuk-heading-l' id='main-content'>
             {locationName} already exists in this account
           </h1>
           <h2 className='govuk-heading-m'>What do you want to do next?</h2>

@@ -1,47 +1,51 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { setLocationToBeChanged } from '../../../../common/redux/userSlice'
+import { getAdditional } from '../../../../common/redux/userSlice'
 
-export default function LocationReviewTable({ locations }) {
+export default function LocationReviewTable() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const locationsSelected = useSelector((state) => state.session.profile.pois)
 
-  const selectLocationToBeChanged = (event, location) => {
+  const firstLocation = locationsSelected[0]
+
+  const locationName = getAdditional(firstLocation.additionals, 'locationName')
+
+  const location = locationName === '' ? firstLocation.address : locationName
+
+  const selectLocationToBeChanged = (event) => {
     event.preventDefault()
-    dispatch(setLocationToBeChanged(location))
     navigate('/signup/review/change-location-search')
   }
 
   return (
     <div className='govuk-!-padding-bottom-4'>
       <h2 className='govuk-heading-m'>Location you selected</h2>
-      {locations.map && (
-        <table className='govuk-table'>
-          <tbody className='govuk-table__body' />
-          {locations.map((location, index) => (
-            <tr key={index} className='govuk-table__row'>
-              <th className='govuk-table__header' scope='row'>
-                Address
+      {location && (
+        <table className='govuk-table check-your-answers-table'>
+          <tbody className='govuk-table__body'>
+            <tr className='govuk-table__row'>
+              <th
+                className='govuk-table__header govuk-!-width-one-third'
+                scope='row'
+              >
+                Location
               </th>
               <td className='govuk-table__cell govuk-!-width-full'>
-                {location.address}
+                {location}
               </td>
 
               <td className='govuk-table__cell'>
                 <Link
-                  onClick={(e) => selectLocationToBeChanged(e, location)}
+                  onClick={(e) => selectLocationToBeChanged(e)}
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
-                  aria-label={`Change address for location ${
-                    locations.length > 1 && index
-                  } - ${location.address}`}
+                  aria-label={`Change address for location - ${location}`}
                 >
                   Change
                 </Link>
               </td>
             </tr>
-          ))}
+          </tbody>
         </table>
       )}
     </div>

@@ -3,6 +3,7 @@ const {
   createGenericErrorResponse
 } = require('../../../services/GenericErrorResponse')
 const { sendEmailNotification } = require('../../../services/GovUkNotify')
+const { getJsonData } = require('../../../services/elasticache')
 
 module.exports = [
   {
@@ -17,7 +18,6 @@ module.exports = [
         const {
           email: eaEmail,
           adminEmail,
-          refNumber,
           orgName,
           address,
           companyHouseNumber,
@@ -27,13 +27,17 @@ module.exports = [
           alternativeContactEmail,
           alternativeContactTelephone,
           alternativeContactJob,
-          submissionDateTime
+          submissionDateTime,
+          authToken
         } = request.payload
+
+        const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
 
         if (
           eaEmail &&
-          adminEmail && 
-          refNumber &&
+          adminEmail &&
+          sessionData.orgId &&
           orgName &&
           address &&
           companyHouseNumber &&
@@ -48,7 +52,7 @@ module.exports = [
           const personalisation = {
             email_address: adminEmail,
             full_name: fullName,
-            reference_number: refNumber,
+            reference_number: sessionData.orgId,
             organisation_name: orgName,
             head_office_address: address,
             companies_house_number: companyHouseNumber,

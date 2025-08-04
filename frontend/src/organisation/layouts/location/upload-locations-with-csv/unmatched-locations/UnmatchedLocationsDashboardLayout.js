@@ -17,7 +17,7 @@ import {
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
 
-export default function UnmatchedLocationsDashboardLayout ({
+export default function UnmatchedLocationsDashboardLayout({
   navigateToNextPage,
   navigateToFindLocation,
   flow
@@ -26,7 +26,7 @@ export default function UnmatchedLocationsDashboardLayout ({
   const location = useLocation()
   const dispatch = useDispatch()
 
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const notFoundLocations = useSelector(
     (state) => state.session.notFoundLocations
   )
@@ -56,9 +56,8 @@ export default function UnmatchedLocationsDashboardLayout ({
 
   useEffect(() => {
     const getNotAddedLocations = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
@@ -238,7 +237,7 @@ export default function UnmatchedLocationsDashboardLayout ({
     // Remove all not added locations for the flow (not found or not in England)
     notAddedLocationsInfo.map((location) =>
       backendCall(
-        { orgId, locationId: location.id },
+        { authToken, locationId: location.id },
         'api/bulk_uploads/remove_invalid_location',
         navigate
       )
@@ -295,7 +294,7 @@ export default function UnmatchedLocationsDashboardLayout ({
       <main className='govuk-main-wrapper govuk-!-margin-top-3'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               {notAddedLocations || 0} location
               {notAddedLocations === 1 ? ' ' : 's '}
               {unmatchedLocationText}

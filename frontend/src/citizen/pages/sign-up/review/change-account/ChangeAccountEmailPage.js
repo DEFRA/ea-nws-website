@@ -13,9 +13,12 @@ export default function ChangeAccountEmailPage () {
   }
 
   return (
-    <ChangeEmailLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <ChangeEmailLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+        returnToReview
+      />
+    </>
   )
 }

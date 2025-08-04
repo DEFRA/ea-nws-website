@@ -13,7 +13,8 @@ export default function Header() {
 
   const isOrganisationPage =
     location.pathname.includes('organisation') &&
-    !location.pathname.includes('sign-up')
+    !location.pathname.includes('sign-up') &&
+    !location.pathname.includes('organisation/admin-controls')
 
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')

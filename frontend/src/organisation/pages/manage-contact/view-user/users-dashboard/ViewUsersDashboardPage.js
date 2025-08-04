@@ -1,5 +1,6 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -42,7 +43,6 @@ export default function ViewUsersDashboardPage() {
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const profileId = useSelector((state) => state.session.profileId)
   const [contactsPerPage, setContactsPerPage] = useState(defaultContactsPerPage)
   const [dialog, setDialog] = useState({
@@ -60,10 +60,21 @@ export default function ViewUsersDashboardPage() {
   const [errorMessage, setErrorMessage] = useState('')
   const historyData = useFetchAlerts()
   const [activeAdmins, setActiveAdmins] = useState([])
+  const toggleFilterButtonRef = useRef(null)
+  const adminIds = useMemo(
+    () => new Set(activeAdmins.map((a) => a.id)),
+    [activeAdmins]
+  )
+
+  useEffect(() => {
+    if (toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   async function getActiveAdmins() {
     const { data } = await backendCall(
-      { orgId: orgId },
+      { authToken },
       'api/elasticache/get_active_admins'
     )
     setActiveAdmins(data)
@@ -100,9 +111,8 @@ export default function ViewUsersDashboardPage() {
 
   useEffect(() => {
     const getContacts = async () => {
-      const dataToSend = { orgId }
       const contactsData = await backendCall(
-        dataToSend,
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -114,18 +124,17 @@ export default function ViewUsersDashboardPage() {
       }
 
       contactsUpdate.forEach(async (contact) => {
-        const contactsDataToSend = { authToken, orgId, contact }
+        const contactsDataToSend = { authToken, contactId: contact.id }
         const { data } = await backendCall(
           contactsDataToSend,
           'api/elasticache/list_linked_locations',
           navigate
         )
 
-        contact.linked_locations = []
+        contact.linked_locations = data.length || 0
         contact.message_count = 0
         if (data && data.length > 0) {
           data.forEach(async function (location) {
-            contact.linked_locations.push(location.id)
             const floodAreas = await getWithinAreas(
               geoSafeToWebLocation(location)
             )
@@ -184,7 +193,7 @@ export default function ViewUsersDashboardPage() {
       const filteredData = floodHistoryData.filter(
         (alert) =>
           alert.CODE === taCode &&
-          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+          moment(alert.effectiveDate * 1000) > twoYearsAgo
       )
       floodCount.push(filteredData.length)
     }
@@ -239,13 +248,14 @@ export default function ViewUsersDashboardPage() {
       text = defaultText
 
       if (activeAdminsNotRemoved.length > 0) {
-        const notDeleteTotal = activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+        const notDeleteTotal = activeAdminsNotRemoved.length
         text = (
           <>
             {defaultText}
             <div className='govuk-inset-text'>
               <strong>
-                You cannot delete {notDeleteTotal} user{notDeleteTotal > 1 ? 's' : ''}
+                You cannot delete {notDeleteTotal} user
+                {notDeleteTotal > 1 ? 's' : ''}
               </strong>
               <br />
               <br />
@@ -306,7 +316,7 @@ export default function ViewUsersDashboardPage() {
     activeAdminsNotRemoved,
     selfRemoved
   ) => {
-    const numNotDelete = activeAdminsNotRemoved.length + (selfRemoved ? 1 : 0)
+    const numNotDelete = activeAdminsNotRemoved.length
     let title = ''
     if (toDelete.length > 0) {
       if (numNotDelete > 0) {
@@ -326,7 +336,7 @@ export default function ViewUsersDashboardPage() {
       if (activeAdminsNotRemoved.length > 0) {
         title = (
           <>
-            you cannot delete {numNotDelete} user{numNotDelete > 1 ? 's' : ''}
+            You cannot delete {numNotDelete} user{numNotDelete > 1 ? 's' : ''}
           </>
         )
       } else if (selfRemoved) {
@@ -337,17 +347,11 @@ export default function ViewUsersDashboardPage() {
     return title
   }
   const deleteDialog = (contactsToBeDeleted) => {
-    const toDelete = contactsToBeDeleted.filter(
-      (el) => !activeAdmins.includes(el.id)
+    const toDelete = contactsToBeDeleted.filter((c) => !adminIds.has(c.id))
+    const activeAdminsNotRemoved = contactsToBeDeleted.filter(
+      (c) => adminIds.has(c.id) && c.id !== profileId
     )
-    const activeAdminsNotRemoved = activeAdmins
-      .filter((el) =>
-        contactsToBeDeleted.map((contact) => contact.id).includes(el)
-      )
-      .filter((el) => el !== profileId)
-    const selfRemoved = contactsToBeDeleted
-      .map((contact) => contact.id)
-      .includes(profileId)
+    const selfRemoved = activeAdminsNotRemoved.some((c) => c.id === profileId)
 
     if (contactsToBeDeleted && contactsToBeDeleted.length > 0) {
       setDialog({
@@ -452,7 +456,7 @@ export default function ViewUsersDashboardPage() {
       removeContactIDs.push(contact.id)
     })
 
-    const dataToSend = { authToken, orgId, removeContactIDs }
+    const dataToSend = { authToken, removeContactIDs }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/remove_contacts',
@@ -478,6 +482,11 @@ export default function ViewUsersDashboardPage() {
 
   const handleDelete = async () => {
     if (targetContact) {
+      if (adminIds.has(targetContact.id)) {
+        // Re-invoke deleteDialog to show the "you can't delete this admin" message
+        deleteDialog([targetContact])
+        return
+      }
       await removeContacts([targetContact])
       if (selectedContacts.length > 0) {
         const updatedSelectedContacts = selectedContacts.filter(
@@ -486,9 +495,7 @@ export default function ViewUsersDashboardPage() {
         setSelectedContacts(updatedSelectedContacts)
       }
     } else if (selectedContacts.length > 0) {
-      const toDelete = selectedContacts.filter(
-        (el) => !activeAdmins.includes(el.id)
-      )
+      const toDelete = selectedContacts.filter((el) => !adminIds.has(el.id))
       const contactsToRemove = [...toDelete]
       await removeContacts(contactsToRemove)
     }
@@ -507,8 +514,45 @@ export default function ViewUsersDashboardPage() {
     navigate(-1)
   }
 
+  const renderActionButtons = () => (
+    <div className='govuk-grid-row'>
+      <div className='govuk-grid-column-full'>
+        <Button
+          text={isFilterVisible ? 'Close filter' : 'Open filter'}
+          className='govuk-button govuk-button--secondary inline-block'
+          onClick={(event) => onOpenCloseFilter(event)}
+          ref={toggleFilterButtonRef}
+        />
+        &nbsp; &nbsp;
+        {(!location.state ||
+          !location.state.linkLocations ||
+          location.state.linkLocations.length === 0) && (
+          <>
+            <ButtonMenu
+              title='More actions'
+              options={moreActions}
+              onSelect={(index) => onMoreAction(index)}
+            />
+            &nbsp; &nbsp;
+            <Button
+              text='Print'
+              className='govuk-button govuk-button--secondary inline-block'
+              onClick={(event) => onPrint(event)}
+            />
+          </>
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <>
+      <Helmet>
+        <title>
+          Manage your organisation's users - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -546,29 +590,7 @@ export default function ViewUsersDashboardPage() {
               <div className='govuk-grid-column-full govuk-body'>
                 {!isFilterVisible ? (
                   <>
-                    <Button
-                      text='Open filter'
-                      className='govuk-button govuk-button--secondary inline-block'
-                      onClick={(event) => onOpenCloseFilter(event)}
-                    />
-                    {(!location.state ||
-                      !location.state.linkLocations ||
-                      location.state.linkLocations.length === 0) && (
-                      <>
-                        &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
-                        &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                      </>
-                    )}
+                    {renderActionButtons()}
                     <UsersTable
                       contacts={contacts}
                       displayedContacts={displayedContacts}
@@ -620,31 +642,7 @@ export default function ViewUsersDashboardPage() {
                     </div>
 
                     <div className='govuk-grid-column-three-quarters'>
-                      <div className='govuk-grid-row'>
-                        <Button
-                          text='Close Filter'
-                          className='govuk-button govuk-button--secondary'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                        &nbsp; &nbsp;
-                        {(!location.state ||
-                          !location.state.linkLocations ||
-                          location.state.linkLocations.length === 0) && (
-                          <>
-                            <ButtonMenu
-                              title='More actions'
-                              options={moreActions}
-                              onSelect={(index) => onMoreAction(index)}
-                            />
-                            &nbsp; &nbsp;
-                            <Button
-                              text='Print'
-                              className='govuk-button govuk-button--secondary inline-block'
-                              onClick={(event) => onPrint(event)}
-                            />
-                          </>
-                        )}
-                      </div>
+                      {renderActionButtons()}
                       <UsersTable
                         contacts={contacts}
                         displayedContacts={displayedContacts}

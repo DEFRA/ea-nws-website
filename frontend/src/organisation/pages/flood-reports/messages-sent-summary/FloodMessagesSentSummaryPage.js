@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import AlertState from '../../../../common/enums/AlertState'
 import AlertType from '../../../../common/enums/AlertType'
-import { getAdditional } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 
 export default function FloodMessagesSentSummaryPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const initialData = {
     all: {
       locations: 0,
@@ -37,7 +37,6 @@ export default function FloodMessagesSentSummaryPage() {
   }
   const [data, setData] = useState(initialData)
   const [locationsCount, setLocationsCount] = useState(0)
-
   useEffect(() => {
     const loadData = async () => {
       setData(initialData)
@@ -48,7 +47,7 @@ export default function FloodMessagesSentSummaryPage() {
       )
 
       const options = {
-        states: [AlertState.CURRENT, AlertState.PAST],
+        states: [AlertState.PAST],
         boundingBox: null,
         channels: [],
         partnerId
@@ -58,14 +57,14 @@ export default function FloodMessagesSentSummaryPage() {
       twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
       const { data: alertsData } = await backendCall(
-        { options, filterDate: twoYearsAgo },
+        { options, filterDate: twoYearsAgo, historic: true },
         'api/alert/list',
         navigate
       )
 
       // get orgs locations
       const { data: locationsData, errorMessage } = await backendCall(
-        { orgId },
+        { authToken },
         'api/elasticache/list_locations',
         navigate
       )
@@ -144,40 +143,12 @@ export default function FloodMessagesSentSummaryPage() {
 
     // process all target areas for this location
     targetAreas
-      ?.filter((targetArea) => {
-        if (category === 'all' || category === 'messagesTurnedOff') {
-          return (
-            targetArea.category.includes('Warning') ||
-            targetArea.category.includes('Alert')
-          )
-        } else if (category === 'severeWarningsOnly') {
-          return targetArea.category.includes('Warning')
-        } else if (category === 'alertsOnly') {
-          return targetArea.category.includes('Alert')
-        }
-      })
+      ?.filter((targetArea) => isTargetAreaMatch(targetArea, category))
       .forEach((targetArea) => {
         alerts
-          .filter((alert) => {
-            if (category === 'all' || category === 'messagesTurnedOff') {
-              return [
-                AlertType.SEVERE_FLOOD_WARNING,
-                AlertType.FLOOD_WARNING,
-                AlertType.FLOOD_ALERT
-              ].some((type) => alert.type === type)
-            } else if (category === 'severeWarningsOnly') {
-              return [
-                AlertType.SEVERE_FLOOD_WARNING,
-                AlertType.FLOOD_WARNING
-              ].some((type) => alert.type === type)
-            } else if (category === 'alertsOnly') {
-              return alert.type.includes(AlertType.FLOOD_ALERT)
-            }
-          })
+          .filter((alert) => isAlertMatch(alert, category))
           .forEach((alert) => {
-            const extraInfo = alert.mode.zoneDesc.placemarks[0].extraInfo
-            const taCode = getAdditional(extraInfo, 'TA_CODE')
-
+            const taCode = alert.TA_CODE
             if (taCode === targetArea.TA_CODE) {
               updateMessageCounts(category, alert.type)
             }
@@ -211,6 +182,42 @@ export default function FloodMessagesSentSummaryPage() {
 
       return newData
     })
+  }
+
+  function isTargetAreaMatch(targetArea, category) {
+    switch (category) {
+      case 'severeWarningsOnly':
+        return targetArea.category.toLowerCase().includes('warning')
+      case 'alertsOnly':
+        return targetArea.category.toLowerCase().includes('alert')
+      case 'all':
+      case 'messagesTurnedOff':
+      default:
+        return (
+          targetArea.category.toLowerCase().includes('warning') ||
+          targetArea.category.toLowerCase().includes('alert')
+        )
+    }
+  }
+
+  function isAlertMatch(alert, category) {
+    switch (category) {
+      case 'severeWarningsOnly':
+        return [
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING
+        ].includes(alert.type)
+      case 'alertsOnly':
+        return alert.type === AlertType.FLOOD_ALERT
+      case 'all':
+      case 'messagesTurnedOff':
+      default:
+        return [
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING,
+          AlertType.FLOOD_ALERT
+        ].includes(alert.type)
+    }
   }
 
   const locationTableMessagesBody = () => (
@@ -402,11 +409,19 @@ export default function FloodMessagesSentSummaryPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Summary of flood messages sent - Get flood warnings (professional) -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Summary of flood messages sent
+            </h1>
             <div className='govuk-body'>
               {locationTableHead(
                 'Locations that get flood messages',

@@ -44,6 +44,7 @@ const api = new OpenAPIBackend({
     //sign in routes
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
+    getSignInVerify: signInHandlers.getSigninVerify,
     //update profile routes
     getUpdateProfile: updateProfileHandler.getUpdateProfile,
     //partner routes

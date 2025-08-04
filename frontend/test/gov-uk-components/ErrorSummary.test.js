@@ -24,4 +24,18 @@ describe('ErrorSummary component', () => {
     const errorItems = screen.getAllByRole('listitem')
     expect(errorItems.length).toBe(errorList.length)
   })
+
+  test('renders linked error items when errorList contains objects with href', () => {
+    const errorList = [
+      { text: 'First error', href: '#first' },
+      { text: 'Second error', href: '#second' }
+    ]
+    render(<ErrorSummary errorList={errorList} />)
+  
+    const firstLink = screen.getByRole('link', { name: 'First error' })
+    const secondLink = screen.getByRole('link', { name: 'Second error' })
+  
+    expect(firstLink).toHaveAttribute('href', '#first')
+    expect(secondLink).toHaveAttribute('href', '#second')
+  })  
 })

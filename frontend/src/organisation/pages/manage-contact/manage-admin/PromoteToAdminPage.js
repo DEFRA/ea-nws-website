@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -16,7 +17,6 @@ export default function PromoteToAdminPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const contactEmails = currentContact?.emails
@@ -27,6 +27,7 @@ export default function PromoteToAdminPage() {
     emailCount === 1 ? contactEmails[0] : ''
   )
   const [errorMessage, setErrorMessage] = useState('')
+  const emailAddressId = 'email-address'
 
   let heading, emailRadios
   switch (true) {
@@ -78,7 +79,7 @@ export default function PromoteToAdminPage() {
         }
       }
 
-      const dataToSend = { authToken, orgId, contact: updatedContact }
+      const dataToSend = { authToken, contact: updatedContact }
       const { errorMessage: updateError } = await backendCall(
         dataToSend,
         'api/organization/update_contact',
@@ -89,8 +90,7 @@ export default function PromoteToAdminPage() {
         const promoteData = {
           authToken,
           contactId: updatedContact.id,
-          role: 'ADMIN',
-          orgId
+          role: 'ADMIN'
         }
         const { errorMessage: promoteError, data: contactData } =
           await backendCall(
@@ -120,12 +120,28 @@ export default function PromoteToAdminPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {heading} - Manage users - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>{heading}</h1>
+            {errorMessage && (
+              <ErrorSummary
+                errorList={[
+                  { text: errorMessage, componentId: emailAddressId }
+                ]}
+              />
+            )}
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
+              {heading}
+            </h1>
             <p className='govuk-body'>
               They'll also use this for sign in and flood messages.
             </p>
@@ -138,8 +154,9 @@ export default function PromoteToAdminPage() {
               emailRadios
             ) : (
               <Input
-                id='email-address'
+                id={emailAddressId}
                 inputType='text'
+                inputMode='email'
                 value={selectedEmail}
                 name='Email address'
                 onChange={(val) => setSelectedEmail(val)}

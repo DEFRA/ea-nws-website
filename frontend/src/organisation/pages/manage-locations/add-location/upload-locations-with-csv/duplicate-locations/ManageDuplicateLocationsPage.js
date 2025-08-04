@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -10,9 +11,9 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManageDuplicateLocationsPage () {
+export default function ManageDuplicateLocationsPage() {
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const [duplicateLocations, setDuplicateLocations] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const location = useLocation()
@@ -23,16 +24,15 @@ export default function ManageDuplicateLocationsPage () {
   )
   const displayedLocations = locationsPerPage
     ? duplicateLocations.slice(
-      (currentPage - 1) * locationsPerPage,
-      currentPage * locationsPerPage
-    )
+        (currentPage - 1) * locationsPerPage,
+        currentPage * locationsPerPage
+      )
     : duplicateLocations
 
   useEffect(() => {
     const getDupLocations = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
@@ -63,9 +63,9 @@ export default function ManageDuplicateLocationsPage () {
     setLocationsPerPage(null)
   }
 
-  const getLocation = async (orgId, locationName, type) => {
+  const getLocation = async (locationName, type) => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type
     }
@@ -87,12 +87,12 @@ export default function ManageDuplicateLocationsPage () {
 
     // Get the existing location (note type is 'valid')
     const existingLocation = geoSafeToWebLocation(
-      await getLocation(orgId, location.additionals.locationName, 'valid')
+      await getLocation(location.additionals.locationName, 'valid')
     )
 
     // Get the new, duplicate location (note type is 'invalid')
     const newLocation = geoSafeToWebLocation(
-      await getLocation(orgId, location.additionals.locationName, 'invalid')
+      await getLocation(location.additionals.locationName, 'invalid')
     )
 
     if (existingLocation && newLocation) {
@@ -125,6 +125,12 @@ export default function ManageDuplicateLocationsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Manage duplicate locations - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       {location.state && (
         <NotificationBanner
@@ -136,7 +142,7 @@ export default function ManageDuplicateLocationsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Manage {duplicateLocations.length} duplicate location
               {duplicateLocations.length !== 1 ? 's' : ''}
             </h1>
@@ -175,7 +181,8 @@ export default function ManageDuplicateLocationsPage () {
                             <Link
                               className='govuk-link'
                               onClick={(event) =>
-                                handleCompareDetails(event, location)}
+                                handleCompareDetails(event, location)
+                              }
                             >
                               Compare details
                             </Link>

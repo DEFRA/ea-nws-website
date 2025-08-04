@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
@@ -16,14 +17,14 @@ export default function ValidateNewAdminEmailPage() {
     navigate(orgAccountUrls.admin.changeDetails)
   }
 
-  const updateProfile = async (profile, authToken, signinType, orgId) => {
+  const updateProfile = async (profile, authToken, signinType) => {
     // The sign in email is always the first one in the array
     // Pop out the last email added and put it in first position
     const profileEmails = profile.emails
     profileEmails[0] = profileEmails.pop()
     profile.emails = profileEmails
 
-    const dataToSend = { profile, authToken, signinType, orgId }
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',
@@ -45,13 +46,20 @@ export default function ValidateNewAdminEmailPage() {
   }
 
   return (
-    <ValidateEmailLayout
-      DifferentEmail={DifferentEmail}
-      NavigateToPreviousPage={DifferentEmail}
-      buttonText='Continue'
-      changeSignIn
-      profileError={error}
-      updateProfile={updateProfile}
-    />
+    <>
+      <Helmet>
+        <title>
+          Check your email - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
+      <ValidateEmailLayout
+        DifferentEmail={DifferentEmail}
+        NavigateToPreviousPage={DifferentEmail}
+        buttonText='Continue'
+        changeSignIn
+        profileError={error}
+        updateProfile={updateProfile}
+      />
+    </>
   )
 }

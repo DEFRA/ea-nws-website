@@ -1,10 +1,11 @@
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Details from '../../../common/components/gov-uk/Details'
 import WarningText from '../../../common/components/gov-uk/WarningText'
 import { infoUrls } from '../../routes/info/InfoRoutes'
 
-export default function FloodAreasPage () {
+export default function FloodAreasPage() {
   const navigate = useNavigate()
 
   const navigateBack = (e) => {
@@ -15,7 +16,7 @@ export default function FloodAreasPage () {
   const detailsMessage = (
     <div>
       <p>
-        There may be no measurement guages in the area of the location. Or the
+        There may be no measurement gauges in the area of the location. Or the
         location is in an area where not many people live or work.
       </p>
       <p>
@@ -32,12 +33,19 @@ export default function FloodAreasPage () {
 
   return (
     <>
-
+      <Helmet>
+        <title>
+          What are flood areas? - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               What are flood areas?
             </h1>
             <p>
@@ -52,7 +60,7 @@ export default function FloodAreasPage () {
               </li>
               <li>flood alerts (flood alert area)</li>
               <li>
-                severes flood warnings, flood warnings and flood alerts (when
+                severe flood warnings, flood warnings and flood alerts (when
                 location is in both a flood warning and a flood alert area)
               </li>
               <li>no flood messages</li>

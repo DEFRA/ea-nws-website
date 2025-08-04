@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
@@ -18,15 +19,14 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const [locations, setLocations] = useState(null)
   const location = useLocation()
 
   useEffect(() => {
     const getInvLocations = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
@@ -85,6 +85,12 @@ export default function ManuallyFindLocationsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Manually find locations - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       {location.state && (
         <NotificationBanner
           className={`govuk-notification-banner ${

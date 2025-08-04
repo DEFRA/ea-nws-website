@@ -1,12 +1,11 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
-export default function ContactReviewTable ({ alternativeContact }) {
+export default function ContactReviewTable({ alternativeContact }) {
   const fullName = `${alternativeContact.firstName} ${alternativeContact.lastName}`
   return (
     <>
       <h3 className='govuk-heading-m govuk-!-margin-top-9'>
-        Alternative contact
+        Alternative person
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
@@ -15,7 +14,11 @@ export default function ContactReviewTable ({ alternativeContact }) {
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
+            <Link
+              to={orgSignUpUrls.change.altContact}
+              className='govuk-link'
+              aria-label={`Change ${fullName} as alternative person's name`}
+            >
               Change
             </Link>
           </td>
@@ -28,7 +31,11 @@ export default function ContactReviewTable ({ alternativeContact }) {
             {alternativeContact.email}
           </td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
+            <Link
+              to={orgSignUpUrls.change.altContact}
+              className='govuk-link'
+              aria-label={`Change ${alternativeContact.email} as alternative person's email address`}
+            >
               Change
             </Link>
           </td>
@@ -41,7 +48,11 @@ export default function ContactReviewTable ({ alternativeContact }) {
             {alternativeContact.telephone}
           </td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
+            <Link
+              to={orgSignUpUrls.change.altContact}
+              className='govuk-link'
+              aria-label={`Change ${alternativeContact.telephone} as alternative person's telephone number`}
+            >
               Change
             </Link>
           </td>
@@ -56,7 +67,11 @@ export default function ContactReviewTable ({ alternativeContact }) {
               : '-'}
           </td>
           <td className='govuk-table__cell'>
-            <Link to={orgSignUpUrls.change.altContact} className='govuk-link'>
+            <Link
+              to={orgSignUpUrls.change.altContact}
+              className='govuk-link'
+              aria-label={`Change ${alternativeContact.jobTitle} as alternative person's job title`}
+            >
               Change
             </Link>
           </td>

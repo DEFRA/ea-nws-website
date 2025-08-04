@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -16,7 +17,6 @@ import {
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getLocationOtherAdditional,
   getRegistrationParams,
   updateAdditionals
 } from '../../../../common/services/ProfileServices'
@@ -27,6 +27,9 @@ export default function SignUpValidationPage() {
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || []
+  )
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [codeResent, setCodeResent] = useState(false)
@@ -37,6 +40,7 @@ export default function SignUpValidationPage() {
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
   const [partnerId, setPartnerId] = useState(false)
+  const enterCodeId = 'enter-code'
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -103,10 +107,9 @@ export default function SignUpValidationPage() {
 
   const registerAllLocations = async (authToken, profile) => {
     profile.pois.map(async (poi) => {
-      const alertTypes = getLocationOtherAdditional(
-        poi.additionals,
-        'alertTypes'
-      )
+      const alertTypes =
+        locationRegistrations.find((loc) => loc.locationId === poi.id)
+          ?.registrations[0]?.params?.alertTypes || []
 
       const data = {
         authToken,
@@ -154,6 +157,9 @@ export default function SignUpValidationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {codeExpired ? (
         <ExpiredCodeLayout getNewCode={getNewCode} />
       ) : (
@@ -169,8 +175,14 @@ export default function SignUpValidationPage() {
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Check your email</h2>
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Check your email
+                </h2>
                 <div className='govuk-body'>
                   <p>You need to confirm your email address.</p>
                   <p className='govuk-!-margin-top-6'>
@@ -180,7 +192,7 @@ export default function SignUpValidationPage() {
                   Enter the code within 4 hours or it will expire.
                   <div className='govuk-!-margin-top-6'>
                     <Input
-                      id='enter-code'
+                      id={enterCodeId}
                       className='govuk-input govuk-input--width-10'
                       inputType='text'
                       value={code}
@@ -190,17 +202,16 @@ export default function SignUpValidationPage() {
                     />
                   </div>
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-4'
                     text='Confirm email address'
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     to='/signup'
                     className='govuk-link'
                     style={{
                       display: 'inline-block',
-                      padding: '8px 10px 7px',
+                      padding: '8px 0 7px',
                       cursor: 'pointer'
                     }}
                   >

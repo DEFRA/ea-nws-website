@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react'
 
-export default function Button ({
-  text,
-  className,
-  onClick,
-  imageSrc = null,
-  imageHgt = '20px',
-  disable = false
-}) {
+const Button = forwardRef(function Button(
+  {
+    text,
+    className,
+    onClick,
+    imageSrc = null,
+    imageHgt = '20px',
+    disable = false,
+    ariaLabel
+  },
+  ref
+) {
   const [cursor, setCursor] = useState('pointer')
   return (
     <>
@@ -18,6 +22,8 @@ export default function Button ({
         data-module='govuk-button'
         style={{ cursor }}
         disabled={cursor === 'wait' || disable}
+        ref={ref}
+        aria-label={ariaLabel}
       >
         {imageSrc && (
           <img
@@ -30,4 +36,6 @@ export default function Button ({
       </button>
     </>
   )
-}
+})
+
+export default Button

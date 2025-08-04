@@ -1,4 +1,5 @@
 import { React } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import ConfirmLocationLayout from '../../../../../layouts/location/add-or-edit-location/confirm-location/ConfirmLocationLayout'
@@ -20,6 +21,9 @@ export default function ConfirmLocationNotInEnglandPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <ConfirmLocationLayout
         navigateToNextPage={navigateToNextPage}
         navigateToPinDropFlow={navigateToPinDropFlow}

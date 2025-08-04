@@ -1,7 +1,9 @@
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { addContactPreference } from '../../../../../../common/redux/userSlice'
 import ValidateMobileLayout from '../../../../../layouts/mobile/ValidateMobileLayout'
+
 export default function ValidateMobileContactPage () {
   const dispatch = useDispatch()
 
@@ -25,11 +27,13 @@ export default function ValidateMobileContactPage () {
   }
 
   return (
-    <ValidateMobileLayout
-      navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={DifferentMobile}
-      SkipValidation={SkipValidation}
-      DifferentMobile={DifferentMobile}
-    />
+    <>
+      <ValidateMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentMobile}
+        SkipValidation={SkipValidation}
+        DifferentMobile={DifferentMobile}
+      />
+    </>
   )
 }

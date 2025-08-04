@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import store from '../../../../common/redux/store'
@@ -10,7 +11,6 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function AddContactNotesPage() {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
@@ -23,7 +23,7 @@ export default function AddContactNotesPage() {
     const contact = JSON.parse(
       JSON.stringify(store.getState().session.orgCurrentContact)
     )
-    const dataToSend = { authToken, orgId, contact }
+    const dataToSend = { authToken, contact }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/organization/update_contact',
@@ -41,9 +41,8 @@ export default function AddContactNotesPage() {
   }
 
   const onAddContact = async () => {
-    const listDataToSend = { orgId }
     const originalContacts = await backendCall(
-      listDataToSend,
+      { authToken },
       'api/elasticache/list_contacts',
       navigate
     )
@@ -51,7 +50,7 @@ export default function AddContactNotesPage() {
     const contactToAdd = JSON.parse(
       JSON.stringify(store.getState().session.orgCurrentContact)
     )
-    const dataToSend = { authToken, orgId, contacts: [contactToAdd] }
+    const dataToSend = { authToken, contacts: [contactToAdd] }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/create_contacts',
@@ -60,7 +59,7 @@ export default function AddContactNotesPage() {
 
     if (!errorMessage) {
       const newContacts = await backendCall(
-        listDataToSend,
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -91,6 +90,13 @@ export default function AddContactNotesPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Add notes for this {currentContact?.firstname}{' '}
+          {currentContact?.lastname} - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='contact'

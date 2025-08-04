@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 /* import locationPin from '../../../../../common/assets/images/location_pin.svg' */
@@ -9,6 +10,7 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 /* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
+import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact'
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
 
@@ -16,22 +18,12 @@ export default function UserInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const jobTitle = currentContact.additionals.jobTitle
-  const keywords = currentContact.additionals.keywords
+  const keywords = currentContact?.additionals?.keywords ?? []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const role = () => {
-    if (currentContact?.role) {
-      return UserType.Admin
-    }
-    if (currentContact?.pendingRole) {
-      return UserType.PendingAdmin
-    }
-    return UserType.Contact
-  }
-  const userType = role()
+  const userType = getRole(currentContact)
   const [locations, setLocations] = useState([])
   /* const [showMap, setShowMap] = useState(false) */
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -44,7 +36,7 @@ export default function UserInformationPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { authToken, orgId, contact: currentContact }
+      const dataToSend = { authToken, contactId: currentContact.id }
       const linkLocationsRes = await backendCall(
         dataToSend,
         'api/elasticache/list_linked_locations',
@@ -84,6 +76,12 @@ export default function UserInformationPage() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {contactName}'s user profile page - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         {userType === UserType.PendingAdmin && (
@@ -222,7 +220,7 @@ export default function UserInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{currentContact.comments}</p>
+                <p className='notes-body'>{currentContact.comments}</p>
               </div>
             )}
 

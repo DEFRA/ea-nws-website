@@ -1,8 +1,9 @@
 import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import KeywordsLayout from '../../../layouts/optional-info/KeywordsLayout'
 import UpdateContactAndNavigate from '../UpdateContactAndNavigate'
 
-export default function EditContactKeywordsPage () {
+export default function EditContactKeywordsPage() {
   const [error, setError] = useState(null)
 
   const navigateToNextPage = UpdateContactAndNavigate(
@@ -31,7 +32,7 @@ export default function EditContactKeywordsPage () {
         multiple words, for example ‘South’ or ‘Team 1’.
         <br />
         <br />
-        Once you use a keyword it will be saved so you can select it for any
+        Once you use a keyword, it will be saved so you can select it for any
         other contacts.
       </p>
     </>
@@ -39,6 +40,12 @@ export default function EditContactKeywordsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Edit user keywords - Manage users - Get flood warnings (professional)
+          - GOV.UK
+        </title>
+      </Helmet>
       <KeywordsLayout
         keywordType='contact'
         keywordText={KeywordText}

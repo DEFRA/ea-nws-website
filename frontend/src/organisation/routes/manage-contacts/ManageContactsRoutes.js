@@ -1,3 +1,5 @@
+import AdminInvitePage from '../../pages/manage-contact/add-admin/AdminInvitePage'
+import AdminJoinedPage from '../../pages/manage-contact/add-admin/AdminJoinedPage'
 import AddContactAdditionalInformationPage from '../../pages/manage-contact/add-contact/AddContactAdditionalInformationPage'
 import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'

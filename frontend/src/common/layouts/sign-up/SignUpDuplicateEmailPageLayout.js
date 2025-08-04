@@ -7,7 +7,7 @@ import ErrorSummary from '../../components/gov-uk/ErrorSummary'
 import InsetText from '../../components/gov-uk/InsetText'
 import { backendCall } from '../../services/BackendService'
 
-export default function SignUpDuplicateEmailPageLayout () {
+export default function SignUpDuplicateEmailPageLayout() {
   const navigate = useNavigate()
   const location = useLocation()
   const [error, setError] = useState('')
@@ -46,40 +46,43 @@ export default function SignUpDuplicateEmailPageLayout () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={error === '' ? [] : [error]} />}
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               The email address you entered is <br /> already being used
             </h1>
             <InsetText text={email} isTextBold />
             <div className='govuk-body'>
-              {organizationAdditionals.isAdminRegistering
-                ? (
-                  <>
-                    <p>
-                      If this is your account, you can sign in by getting a code
-                    </p>
-                    <br />
-                    <Button
-                      className='govuk-button'
-                      text='Get code to sign in'
-                      onClick={handleSubmit}
-                    />
+              {organizationAdditionals.isAdminRegistering ? (
+                <>
+                  <p>
+                    If this is your account, you can sign in by getting a code
+                  </p>
+                  <br />
+                  <p className='govuk-!-margin-bottom-5'>
+                    If you already have a standard flood warnings accounts and
+                    want a professional account, you'll need to use a different
+                    email address here.
+                  </p>
+                  <Button
+                    className='govuk-button'
+                    text='Get code to sign in'
+                    onClick={handleSubmit}
+                  />
                   &nbsp;
-                    <Link to={urlSignup} className='govuk-link inline-link'>
-                      Go back and enter a different email address
-                    </Link>
-                  </>
-                  )
-                : (
-                  <>
-                    If they already have an account, they can sign in and use the
-                    service.
-                    <br />
-                    <br />
-                    <Link to={urlSignup} className='govuk-link'>
-                      Go back and enter a different email address
-                    </Link>
-                  </>
-                  )}
+                  <Link to={urlSignup} className='govuk-link inline-link'>
+                    Go back and enter a different email address
+                  </Link>
+                </>
+              ) : (
+                <>
+                  If they already have an account, they can sign in and use the
+                  service.
+                  <br />
+                  <br />
+                  <Link to={urlSignup} className='govuk-link'>
+                    Go back and enter a different email address
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

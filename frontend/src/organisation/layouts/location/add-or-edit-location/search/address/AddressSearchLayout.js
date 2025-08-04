@@ -18,7 +18,7 @@ import {
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function AddressSearchLayout ({
+export default function AddressSearchLayout({
   navigateToNextPage,
   navigateToPreviousPage,
   navigateToFindPostcodePage,
@@ -74,65 +74,69 @@ export default function AddressSearchLayout ({
           navigateToPreviousPage()
         }}
       />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
-            {loading
-              ? (
-                <LoadingSpinner />
-                )
-              : (
-                <div className='govuk-grid-column-two-thirds'>
-                  <div className='govuk-body'>
-                    <h1 className='govuk-heading-l'>Select an address</h1>
-                    {flow?.includes('unmatched-locations') && (
-                      <UnmatchedLocationInfo />
-                    )}
-                    <p className='govuk-body'>
-                      Postcode: {postCode}
-                      {'   '}
-                      <Link
-                        onClick={(e) => {
-                          e.preventDefault()
-                          navigateToFindPostcodePage()
-                        }}
-                        className='govuk-link govuk-!-margin-left-5'
-                      >
-                        Change postcode
-                      </Link>
-                    </p>
-                    <table className='govuk-table'>
-                      <tbody className='govuk-table__body'>
-                        <tr className='govuk-table__row'>
-                          <td className='govuk-table__cell' />
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className='govuk-grid-column-two-thirds'>
+                <div className='govuk-body'>
+                  <h1 className='govuk-heading-l' id='main-content'>
+                    Select an address
+                  </h1>
+                  {flow?.includes('unmatched-locations') && (
+                    <UnmatchedLocationInfo />
+                  )}
+                  <p className='govuk-body'>
+                    Postcode: {postCode}
+                    {'   '}
+                    <Link
+                      onClick={(e) => {
+                        e.preventDefault()
+                        navigateToFindPostcodePage()
+                      }}
+                      className='govuk-link govuk-!-margin-left-5'
+                    >
+                      Change postcode
+                    </Link>
+                  </p>
+                  <table className='govuk-table'>
+                    <tbody className='govuk-table__body'>
+                      <tr className='govuk-table__row'>
+                        <td className='govuk-table__cell' />
+                      </tr>
+                      {displayedLocations.map((location, index) => (
+                        <tr key={index} className='govuk-table__row'>
+                          <td className='govuk-table__cell'>
+                            <Link
+                              className='govuk-link'
+                              onClick={(event) =>
+                                handleSelectedLocation(event, location)
+                              }
+                            >
+                              {location.address}
+                            </Link>
+                          </td>
                         </tr>
-                        {displayedLocations.map((location, index) => (
-                          <tr key={index} className='govuk-table__row'>
-                            <td className='govuk-table__cell'>
-                              <Link
-                                className='govuk-link'
-                                onClick={(event) =>
-                                  handleSelectedLocation(event, location)}
-                              >
-                                {location.address}
-                              </Link>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <Button
-                      text='I cannot find the address'
-                      className='govuk-button govuk-button--secondary'
-                      onClick={(event) => { event.preventDefault(); navigateToCannotFindAddressPage() }}
-                    />
-                    <Pagination
-                      totalPages={Math.ceil(locations.length / locationsPerPage)}
-                      onPageChange={(val) => setCurrentPage(val)}
-                    />
-                  </div>
+                      ))}
+                    </tbody>
+                  </table>
+                  <Button
+                    text='I cannot find the address'
+                    className='govuk-button govuk-button--secondary'
+                    onClick={(event) => {
+                      event.preventDefault()
+                      navigateToCannotFindAddressPage()
+                    }}
+                  />
+                  <Pagination
+                    totalPages={Math.ceil(locations.length / locationsPerPage)}
+                    onPageChange={(val) => setCurrentPage(val)}
+                  />
                 </div>
-                )}
+              </div>
+            )}
           </div>
         </div>
       </main>

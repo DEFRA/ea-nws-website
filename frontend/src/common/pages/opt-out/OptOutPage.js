@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import floodAlertIcon from '../../assets/images/flood_alert.svg'
 import floodWarningIcon from '../../assets/images/flood_warning.svg'
@@ -8,17 +9,20 @@ import ContactDetails, {
   TelephoneNumber
 } from '../../layouts/footer-link-layouts/ContactDetails'
 
-export default function OptOutPage () {
+export default function OptOutPage() {
   const navigate = useNavigate()
 
   return (
     <>
+      <Helmet>
+        <title>Opt out - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 This phone number has been automatically opted-in to receive
                 flood warnings
               </h1>
@@ -27,19 +31,19 @@ export default function OptOutPage () {
                 numbers registered in areas at risk of flooding from rivers or
                 the sea. The service is anonymous and free.
               </p>
-              <div class='govuk-inset-text'>
+              <div className='govuk-inset-text'>
                 <p>
                   You can provide{' '}
-                  <Link class='govuk-link' to='/signup/feedback'>
+                  <Link className='govuk-link' to='/signup/feedback'>
                     feedback on this service.
                   </Link>
                 </p>
               </div>
-              <h2 class='govuk-heading-m'>Why did we send you this message?</h2>
+              <h2 className='govuk-heading-m'>Why did we send you this message?</h2>
               <p>
                 We have a{' '}
                 <Link
-                  class='govuk-link'
+                  className='govuk-link'
                   to='https://www.gov.uk/guidance/preparation-and-planning-for-emergencies-responsibilities-of-responder-agencies-and-others'
                 >
                   legal duty
@@ -53,7 +57,7 @@ export default function OptOutPage () {
                 registered in an area that’s at risk of flooding in the future
                 and that may have flooded in the past.
               </p>
-              <h2 class='govuk-heading-m'>How did we get your number?</h2>
+              <h2 className='govuk-heading-m'>How did we get your number?</h2>
               <p>
                 We tell phone companies about areas at risk of flooding. They
                 send us a list of the phone numbers registered in those areas.
@@ -61,11 +65,11 @@ export default function OptOutPage () {
               <p>
                 They do not give us the names or addresses associated with those
                 numbers. We store the numbers securely, in line with our{' '}
-                <Link class='govuk-link' to='/privacy' target='_blank'>
+                <Link className='govuk-link' to='/privacy' target='_blank'>
                   privacy notice.
                 </Link>
               </p>
-              <h2 class='govuk-heading-m'>Do you need to do anything?</h2>
+              <h2 className='govuk-heading-m'>Do you need to do anything?</h2>
               <p>
                 You can choose to fully register your details or stop receiving
                 flood warnings. If you do nothing, your phone will continue to
@@ -80,12 +84,12 @@ export default function OptOutPage () {
                   we contact you.
                 </b>
               </p>
-              <h3 class='govuk-heading-s'>
+              <h3 className='govuk-heading-s'>
                 How to fully register your details
               </h3>
               <p>
                 You can{' '}
-                <Link class='govuk-link' to='/signup/service-selection'>
+                <Link className='govuk-link' to='/signup/service-selection'>
                   fully register your details
                 </Link>{' '}
                 to get the best experience of the flood warning service. The
@@ -95,20 +99,20 @@ export default function OptOutPage () {
                 You can register more than one phone number. You can also choose
                 to be sent:
               </p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>flood alerts, which indicate that flooding is possible</li>
                 <li>warnings and alerts by phone, email or text message</li>
                 <li>warnings and alerts for more than one location</li>
               </ul>
-              <h3 class='govuk-heading-s'>
+              <h3 className='govuk-heading-s'>
                 How to stop receiving flood warnings
               </h3>
               <p>To opt out of the service, you can do any of the following.</p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>
                   send an email, including your phone number, to{' '}
                   <Link
-                    class='govuk-link'
+                    className='govuk-link'
                     to='mailto:enquiries@environment-agency.gov.uk'
                   >
                     enquiries@environment-agency.gov.uk
@@ -120,7 +124,7 @@ export default function OptOutPage () {
                 </li>
                 <li>
                   call Floodline on <TelephoneNumber /> (
-                  <Link class='govuk-link' to='https://www.gov.uk/call-charges'>
+                  <Link className='govuk-link' to='https://www.gov.uk/call-charges'>
                     call charges
                   </Link>{' '}
                   may apply)
@@ -130,9 +134,9 @@ export default function OptOutPage () {
                 Your number will be removed from the service and you will no
                 longer receive warnings of potential floods.
               </p>
-              <h2 class='govuk-heading-m'>What the flood warnings mean</h2>
+              <h2 className='govuk-heading-m'>What the flood warnings mean</h2>
               <p>We issue 3 levels of flood warning:</p>
-              <h3 class='govuk-heading-s'>Flood alert</h3>
+              <h3 className='govuk-heading-s'>Flood alert</h3>
               <img
                 src={floodAlertIcon}
                 alt='Alert Icon'
@@ -142,16 +146,16 @@ export default function OptOutPage () {
                 A flood alert means you need to prepare as flooding is possible.
                 If you haven’t already done so, you should:
               </p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>
-                  <Link class='govuk-link' to='/signup/service-selection'>
+                  <Link className='govuk-link' to='/signup/service-selection'>
                     sign up for flood warnings
                   </Link>
                 </li>
                 <li>
                   keep up to date with the{' '}
                   <Link
-                    class='govuk-link'
+                    className='govuk-link'
                     to='https://check-for-flooding.service.gov.uk'
                   >
                     latest flood risk situation
@@ -167,7 +171,7 @@ export default function OptOutPage () {
                 </li>
                 <li>plan how you'll move family and pets to safety</li>
               </ul>
-              <h3 class='govuk-heading-s'>Flood warning</h3>
+              <h3 className='govuk-heading-s'>Flood warning</h3>
               <img
                 src={floodWarningIcon}
                 alt='Warning Icon'
@@ -177,7 +181,7 @@ export default function OptOutPage () {
                 A flood warning means you need to act as flooding is expected.
                 You should do all the actions for a flood alert, but also:
               </p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>move vehicles to higher ground if it’s safe to do so</li>
                 <li>move family and pets to safety</li>
                 <li>
@@ -195,7 +199,7 @@ export default function OptOutPage () {
                   barriers, or air brick covers, use them now
                 </li>
               </ul>
-              <h3 class='govuk-heading-s'>Severe flood warning</h3>
+              <h3 className='govuk-heading-s'>Severe flood warning</h3>
               <img
                 src={floodSevereWarningIcon}
                 alt='Severe Warning Icon'
@@ -205,7 +209,7 @@ export default function OptOutPage () {
                 A severe flood warning means there is danger to life and you
                 must act now.
               </p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>call 999 if you’re in immediate danger</li>
                 <li>
                   follow advice from the emergency services and evacuate if
@@ -238,18 +242,18 @@ export default function OptOutPage () {
                 emergency services and your local authority if you’re in a
                 flood.
               </p>
-              <h2 class='govuk-heading-m'>Learn about your local flood risk</h2>
+              <h2 className='govuk-heading-m'>Learn about your local flood risk</h2>
               <p>
                 Flooding puts lives at risk and causes millions of pounds worth
                 of damage every year. Even if you haven’t seen it at your home
                 or business premises, this doesn’t mean flooding won’t happen.
               </p>
               <p>Get more information about the flood risk in your area by:</p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>
                   finding out about{' '}
                   <Link
-                    class='govuk-link'
+                    className='govuk-link'
                     to='https://check-long-term-flood-risk.service.gov.uk'
                   >
                     the likelihood of a property flooding in the future
@@ -258,27 +262,27 @@ export default function OptOutPage () {
                 <li>
                   get advice on how to{' '}
                   <Link
-                    class='govuk-link'
+                    className='govuk-link'
                     to='https://www.gov.uk/prepare-for-flooding'
                   >
                     prepare for a flood
                   </Link>
                   ,{' '}
                   <Link
-                    class='govuk-link'
+                    className='govuk-link'
                     to='https://www.gov.uk/help-during-flood'
                   >
                     get help during a flood
                   </Link>{' '}
                   and on{' '}
-                  <Link class='govuk-link' to='https://www.gov.uk/after-flood'>
+                  <Link className='govuk-link' to='https://www.gov.uk/after-flood'>
                     what to do after a flood
                   </Link>
                 </li>
                 <li>
                   checking the latest{' '}
                   <Link
-                    class='govuk-link'
+                    className='govuk-link'
                     to='https://check-for-flooding.service.gov.uk/river-and-sea-levels'
                   >
                     river and sea levels
@@ -287,7 +291,7 @@ export default function OptOutPage () {
                 <li>
                   getting{' '}
                   <Link
-                    class='govuk-link'
+                    className='govuk-link'
                     to='https://www.gov.uk/prepare-for-flooding/get-insurance'
                   >
                     insurance
@@ -295,18 +299,18 @@ export default function OptOutPage () {
                   , even if you’ve been flooded before
                 </li>
               </ul>
-              <h2 class='govuk-heading-m'>Current flooding information</h2>
+              <h2 className='govuk-heading-m'>Current flooding information</h2>
               <p>
                 For the latest flood risk situation, visit the{' '}
                 <Link
-                  class='govuk-link'
+                  className='govuk-link'
                   to='https://check-for-flooding.service.gov.uk'
                 >
                   check for flooding service
                 </Link>{' '}
                 or call our 24 hour Floodline service.
               </p>
-              <div class='govuk-inset-text'>
+              <div className='govuk-inset-text'>
                 <p>
                   <b>Floodline</b>
                 </p>

@@ -1,5 +1,6 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -55,8 +56,8 @@ export default function ViewLocationsDashboardPage() {
   const [linkSource, setLinkSource] = useState(location.state?.linkSource || 0)
   const [loading, setLoading] = useState(true)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const [errorMessage, setErrorMessage] = useState('')
+  const toggleFilterButtonRef = useRef(null)
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -69,6 +70,12 @@ export default function ViewLocationsDashboardPage() {
     error: '',
     options: []
   })
+
+  useEffect(() => {
+    if (toggleFilterButtonRef.current) {
+      toggleFilterButtonRef.current.focus()
+    }
+  }, [isFilterVisible])
 
   useEffect(() => {
     if (!locationsPerPage) {
@@ -109,7 +116,7 @@ export default function ViewLocationsDashboardPage() {
 
   useEffect(() => {
     const getLocations = async () => {
-      const dataToSend = { orgId }
+      const dataToSend = { authToken }
       const { data } = await backendCall(
         dataToSend,
         'api/elasticache/list_locations',
@@ -117,9 +124,14 @@ export default function ViewLocationsDashboardPage() {
       )
 
       const locationsUpdate = []
+      const seenAddresses = new Set()
+
       if (data) {
         data.forEach((location) => {
-          locationsUpdate.push(geoSafeToWebLocation(location))
+          if (!seenAddresses.has(location.id)) {
+            seenAddresses.add(location.id)
+            locationsUpdate.push(geoSafeToWebLocation(location))
+          }
         })
       }
 
@@ -146,21 +158,15 @@ export default function ViewLocationsDashboardPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
+      const contactsDataToSend = { authToken }
+      const { data: contactCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
+
       locationsUpdate.forEach(async (location) => {
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
-
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contact) => {
-            location.linked_contacts.push(contact.id)
-          })
-        }
-
+        location.linked_contacts = contactCount[location.id] || 0
         location.message_count = 0
         const floodAreas = location?.additionals?.other?.targetAreas || []
         location.within = floodAreas?.length > 0
@@ -210,7 +216,7 @@ export default function ViewLocationsDashboardPage() {
       const filteredData = floodHistoryData.filter(
         (alert) =>
           alert.CODE === taCode &&
-          moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+          moment(alert.effectiveDate * 1000) > twoYearsAgo
       )
       floodCount.push(filteredData.length)
     }
@@ -563,7 +569,7 @@ export default function ViewLocationsDashboardPage() {
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
       updatedFilteredLocations = locations.filter(
-        (location) => location.linked_contacts?.length === 0
+        (location) => location.linked_contacts === 0
       )
       setSelectedLinkedFilters(['No'])
       setSelectedFilters(['No'])
@@ -601,7 +607,6 @@ export default function ViewLocationsDashboardPage() {
 
       const updateData = {
         authToken,
-        orgId,
         location: webToGeoSafeLocation(locationsToEdit[i])
       }
       await backendCall(updateData, 'api/location/update', navigate)
@@ -675,7 +680,7 @@ export default function ViewLocationsDashboardPage() {
       )
     }
 
-    const dataToSend = { authToken, orgId, locationIds }
+    const dataToSend = { authToken, locationIds }
 
     const { errorMessage } = await backendCall(
       dataToSend,
@@ -748,8 +753,45 @@ export default function ViewLocationsDashboardPage() {
     navigate(-1)
   }
 
+  const renderActionButtons = () => (
+    <div className='govuk-grid-row'>
+      <div className='govuk-grid-column-full'>
+        <Button
+          text={isFilterVisible ? 'Close filter' : 'Open filter'}
+          className='govuk-button govuk-button--secondary inline-block'
+          onClick={(event) => onOpenCloseFilter(event)}
+          ref={toggleFilterButtonRef}
+        />
+        &nbsp; &nbsp;
+        {(!location.state ||
+          !location.state.linkContacts ||
+          location.state.linkContacts.length === 0) && (
+          <>
+            <ButtonMenu
+              title='More actions'
+              options={moreActions}
+              onSelect={(index) => onMoreAction(index)}
+            />
+            &nbsp; &nbsp;
+            <Button
+              text='Print'
+              className='govuk-button govuk-button--secondary inline-block'
+              onClick={(event) => onPrint(event)}
+            />
+          </>
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <>
+      <Helmet>
+        <title>
+          Manage your organisation's locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -770,6 +812,7 @@ export default function ViewLocationsDashboardPage() {
               onOnlyShowSelected={onOnlyShowSelected}
               linkSource={linkSource}
               setErrorMessage={setErrorMessage}
+              loading={loading}
             />
           </div>
           <div className='govuk-grid-column-full govuk-body'>
@@ -779,29 +822,7 @@ export default function ViewLocationsDashboardPage() {
               <>
                 {!isFilterVisible ? (
                   <>
-                    <Button
-                      text='Open filter'
-                      className='govuk-button govuk-button--secondary inline-block'
-                      onClick={(event) => onOpenCloseFilter(event)}
-                    />
-                    {(!location.state ||
-                      !location.state.linkContacts ||
-                      location.state.linkContacts.length === 0) && (
-                      <>
-                        &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
-                        &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                          onClick={(event) => onPrint(event)}
-                        />
-                      </>
-                    )}
+                    {renderActionButtons()}
                     <LocationsTable
                       locations={locations}
                       displayedLocations={displayedLocations}
@@ -883,31 +904,7 @@ export default function ViewLocationsDashboardPage() {
                     </div>
 
                     <div className='govuk-grid-column-three-quarters'>
-                      <div className='govuk-grid-row'>
-                        <Button
-                          text='Close Filter'
-                          className='govuk-button govuk-button--secondary'
-                          onClick={(event) => onOpenCloseFilter(event)}
-                        />
-                        {(!location.state ||
-                          !location.state.linkContacts ||
-                          location.state.linkContacts.length === 0) && (
-                          <>
-                            &nbsp; &nbsp;
-                            <ButtonMenu
-                              title='More actions'
-                              options={moreActions}
-                              onSelect={(index) => onMoreAction(index)}
-                            />
-                            &nbsp; &nbsp;
-                            <Button
-                              text='Print'
-                              className='govuk-button govuk-button--secondary inline-block'
-                              onClick={(event) => onPrint(event)}
-                            />
-                          </>
-                        )}
-                      </div>
+                      {renderActionButtons()}
                       <LocationsTable
                         locations={locations}
                         displayedLocations={displayedLocations}

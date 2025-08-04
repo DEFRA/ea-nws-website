@@ -15,12 +15,14 @@ module.exports = [
         }
 
         const { postCode } = request.payload
+        // default to true
+        const { englandOnly = true } = request.payload || {}
 
-        const response = await osPostCodeApiCall(postCode)
+        const response = await osPostCodeApiCall(postCode, englandOnly)
         return h.response(response)
       } catch (error) {
         logger.error(error)
-        createGenericErrorResponse(h)
+        return createGenericErrorResponse(h)
       }
     }
   }

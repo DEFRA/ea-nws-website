@@ -1,12 +1,12 @@
 import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 
-import { Link } from 'react-router-dom'
 import UserType from '../../../common/enums/UserType'
 import {
   setOrgCurrentContactEmails,
@@ -49,7 +49,7 @@ export default function ContactChannelsLayout({
   const lastname = useSelector(
     (state) => state.session.orgCurrentContact.lastname
   )
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.sessioauthTokennKey)
   const originalEmails =
     useSelector((state) => state.session.orgCurrentContact.emails) || []
 
@@ -92,11 +92,10 @@ export default function ContactChannelsLayout({
   }, [mobileInput[1]])
 
   const fetchEmailsAlreadyAdded = async () => {
-    let emailsAlreadyAdded = []
+    const emailsAlreadyAdded = []
     try {
-      const dataToSend = { orgId }
       const contactsData = await backendCall(
-        dataToSend,
+        { authToken },
         'api/elasticache/list_contacts',
         navigate
       )
@@ -124,7 +123,9 @@ export default function ContactChannelsLayout({
               ])
             : setEmailError((errs) => [
                 errs[0],
-                'Enter email address 2 in the correct format, like name@example.com'
+                addingAdmin
+                  ? 'Enter an additional email address in the correct format, like name@example.com'
+                  : 'Enter email address 2 in the correct format, like name@example.com'
               ])
         }
         const emailsAlreadyAdded = await fetchEmailsAlreadyAdded()
@@ -195,7 +196,7 @@ export default function ContactChannelsLayout({
       !homeInput[1]
     ) {
       setError(
-        'Enter at least 1 email address, mobile number or telephone number'
+        'Enter at least one email address, mobile number or telephone number'
       )
       return false
     }
@@ -289,15 +290,17 @@ export default function ContactChannelsLayout({
     if (userType === UserType.Admin && profile.emails[0] === emailInput[0]) {
       return (
         <Input
-          id='additional-email'
-          name='Additionals email address (optional)'
+          id='main-email-address'
+          name='Main email address'
           inputType='text'
+          inputMode='email'
           onChange={(val) => setEmailInput((inputs) => [inputs[0], val])}
           value={emailInput[1]}
           error={emailError[1]}
           className='govuk-input govuk-input--width-20'
           isNameBold
           labelSize='s'
+          hint='For sign in and flood messages'
         />
       )
     }
@@ -322,15 +325,16 @@ export default function ContactChannelsLayout({
     // pending admin user
     return (
       <div className='govuk-inset-text'>
-        <strong>Main email address (pending admin)</strong>
-        <br />
+        <p className='govuk-!-margin-bottom-0'>
+          <strong>Main email address</strong> (pending admin)
+        </p>
         {emailInput[0]}
-        <br />
-        <br />
-        <div className='govuk-hint'>For sign in and flood messages.</div>
-        <br />
-        <br />
-        <div className='govuk-hint'>
+
+        <div className='govuk-hint govuk-!-padding-top-5'>
+          For sign in and flood messages.
+        </div>
+
+        <div className='govuk-hint govuk-!-padding-top-3'>
           To change this, you must{' '}
           <Link className='govuk-link'>withdraw their invitation</Link> to join
           as admin and re-invite them.
@@ -342,7 +346,7 @@ export default function ContactChannelsLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error ||
@@ -392,9 +396,10 @@ export default function ContactChannelsLayout({
                   <>
                     {renderFirstEmail()}
                     <Input
-                      id='additional-email'
+                      id='additional-email-2'
                       name='Additionals email address (optional)'
                       inputType='text'
+                      inputMode='email'
                       onChange={(val) =>
                         setEmailInput((inputs) => [inputs[0], val])
                       }
@@ -407,77 +412,133 @@ export default function ContactChannelsLayout({
                   </>
                 ) : (
                   <>
-                    <Input
-                      id='email-addresses'
-                      name='Email addresses (optional)'
-                      inputType='text'
-                      onChange={(val) =>
-                        setEmailInput((inputs) => [val, inputs[1]])
-                      }
-                      value={emailInput[0]}
-                      error={emailError[0]}
-                      className='govuk-input govuk-input--width-20'
-                      isNameBold
-                      labelSize='s'
-                    />
-                    <Input
-                      inputType='text'
-                      onChange={(val) =>
-                        setEmailInput((inputs) => [inputs[0], val])
-                      }
-                      value={emailInput[1]}
-                      error={emailError[1]}
-                      className='govuk-input govuk-input--width-20'
-                    />
+                    <p className='govuk-!-margin-top-6'>
+                      You need to add at least one way for contacts to get flood
+                      messages.
+                    </p>
+
+                    <fieldset
+                      className='govuk-fieldset govuk-!-margin-top-5'
+                      role='group'
+                      aria-describedby='email-address-hint'
+                    >
+                      <legend class='govuk-fieldset__legend'>
+                        <h2 className='govuk-fieldset__heading govuk-!-font-weight-bold'>
+                          Email addresses (optional)
+                        </h2>
+                      </legend>
+                      <Input
+                        id='email-address-1'
+                        name='Email address 1'
+                        inputType='text'
+                        inputMode='email'
+                        onChange={(val) =>
+                          setEmailInput((inputs) => [val, inputs[1]])
+                        }
+                        value={emailInput[0]}
+                        error={emailError[0]}
+                        className='govuk-input govuk-input--width-20'
+                        labelSize='s'
+                      />
+                      <Input
+                        id='email-address-2'
+                        name='Email address 2'
+                        inputType='text'
+                        inputMode='email'
+                        onChange={(val) =>
+                          setEmailInput((inputs) => [inputs[0], val])
+                        }
+                        value={emailInput[1]}
+                        error={emailError[1]}
+                        className='govuk-input govuk-input--width-20'
+                      />
+                    </fieldset>
                   </>
                 )}
+                <fieldset
+                  className='govuk-fieldset govuk-!-margin-top-5'
+                  role='group'
+                  aria-describedby='mobile-numbers-hint'
+                >
+                  <legend class='govuk-fieldset__legend'>
+                    <h2 className='govuk-fieldset__heading govuk-!-font-weight-bold'>
+                      UK mobile telephone numbers for text messages (optional)
+                    </h2>
+                  </legend>
+                  <Input
+                    id='uk-mobile-number-1'
+                    name='UK mobile telephone number 1'
+                    inputType='text'
+                    onChange={(val) =>
+                      setMobileInput((inputs) => [val, inputs[1]])
+                    }
+                    value={mobileInput[0]}
+                    className='govuk-input govuk-input--width-20'
+                    labelSize='s'
+                    error={mobilePhoneError[0]}
+                  />
+                  <Input
+                    id='uk-mobile-number-2'
+                    name='UK mobile telephone number 2'
+                    inputType='text'
+                    onChange={(val) =>
+                      setMobileInput((inputs) => [inputs[0], val])
+                    }
+                    value={mobileInput[1]}
+                    className='govuk-input govuk-input--width-20'
+                    error={mobilePhoneError[1]}
+                  />
+                </fieldset>
 
-                <Input
-                  id='uk-mobile-numbers'
-                  name='UK mobile numbers for text messages (optional)'
-                  inputType='text'
-                  onChange={(val) =>
-                    setMobileInput((inputs) => [val, inputs[1]])
-                  }
-                  value={mobileInput[0]}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                  labelSize='s'
-                  error={mobilePhoneError[0]}
-                />
-                <Input
-                  inputType='text'
-                  onChange={(val) =>
-                    setMobileInput((inputs) => [inputs[0], val])
-                  }
-                  value={mobileInput[1]}
-                  className='govuk-input govuk-input--width-20'
-                  error={mobilePhoneError[1]}
-                />
-                <Input
-                  id='uk-telephone-numbers'
-                  name='UK telephone numbers for voice messages (optional)'
-                  inputType='text'
-                  onChange={(val) => setHomeInput((inputs) => [val, inputs[1]])}
-                  className='govuk-input govuk-input--width-20'
-                  isNameBold
-                  labelSize='s'
-                  value={homeInput[0]}
-                  error={homePhoneError[0]}
-                />
-                <Input
-                  inputType='text'
-                  onChange={(val) => setHomeInput((inputs) => [inputs[0], val])}
-                  className='govuk-input govuk-input--width-20'
-                  value={homeInput[1]}
-                  error={homePhoneError[1]}
-                />
+                <fieldset
+                  className='govuk-fieldset govuk-!-margin-top-5'
+                  role='group'
+                  aria-describedby='telephone-numbers-hint'
+                >
+                  <legend class='govuk-fieldset__legend'>
+                    <h2 className='govuk-fieldset__heading govuk-!-font-weight-bold'>
+                      UK telephone numbers for voice messages (optional)
+                    </h2>
+                  </legend>
+
+                  <Input
+                    id='uk-telephone-number-1'
+                    name='UK telephone number 1'
+                    inputType='text'
+                    onChange={(val) =>
+                      setHomeInput((inputs) => [val, inputs[1]])
+                    }
+                    className='govuk-input govuk-input--width-20'
+                    labelSize='s'
+                    value={homeInput[0]}
+                    error={homePhoneError[0]}
+                  />
+                  <Input
+                    id='uk-telephone-number-2'
+                    name='UK telephone number 2'
+                    inputType='text'
+                    onChange={(val) =>
+                      setHomeInput((inputs) => [inputs[0], val])
+                    }
+                    className='govuk-input govuk-input--width-20'
+                    value={homeInput[1]}
+                    error={homePhoneError[1]}
+                  />
+                </fieldset>
               </div>
               <Button
                 text='Continue'
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              {addingAdmin && (
+                <Link
+                  to='/organisation/manage-contacts/add/keywords'
+                  className='govuk-link inline-link govuk-body'
+                >
+                  Skip
+                </Link>
+              )}
             </div>
           </div>
         </div>

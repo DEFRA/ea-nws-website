@@ -148,7 +148,7 @@ export default function LocationsTable({
       setLinkedContactsSort('ascending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          return a.linked_contacts?.length > b.linked_contacts?.length ? 1 : -1
+          return a.linked_contacts > b.linked_contacts ? 1 : -1
         })
       )
     }
@@ -156,7 +156,7 @@ export default function LocationsTable({
       setLinkedContactsSort('descending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          return a.linked_contacts?.length < b.linked_contacts?.length ? 1 : -1
+          return a.linked_contacts < b.linked_contacts ? 1 : -1
         })
       )
     }
@@ -273,6 +273,7 @@ export default function LocationsTable({
           <tr className='govuk-table__row'>
             <th scope='col' className='govuk-table__header'>
               <div
+                style={{ marginTop: '-10px' }}
                 className='govuk-checkboxes govuk-checkboxes--small'
                 data-module='govuk-checkboxes'
               >
@@ -280,6 +281,7 @@ export default function LocationsTable({
                   <input
                     className='govuk-checkboxes__input'
                     type='checkbox'
+                    aria-label='Select all locations'
                     checked={isTopCheckboxChecked && selectedLocations.length}
                     onChange={handleHeaderCheckboxChange}
                   />
@@ -294,6 +296,9 @@ export default function LocationsTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by location name, currently ${
+                  locationNameSort === 'none' ? 'unsorted' : locationNameSort
+                }`}
                 onClick={() =>
                   sortData(
                     locationNameSort,
@@ -312,6 +317,9 @@ export default function LocationsTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by location type, currently ${
+                  locationTypeSort === 'none' ? 'unsorted' : locationTypeSort
+                }`}
                 onClick={() =>
                   sortData(
                     locationTypeSort,
@@ -330,6 +338,11 @@ export default function LocationsTable({
             >
               <button
                 type='button'
+                aria-label={`Sort by business criticality, currently ${
+                  businessCriticalitySort === 'none'
+                    ? 'unsorted'
+                    : businessCriticalitySort
+                }`}
                 onClick={() =>
                   sortData(
                     businessCriticalitySort,
@@ -347,7 +360,15 @@ export default function LocationsTable({
               className='govuk-table__header'
               aria-sort={getsFloodMessagesSort}
             >
-              <button type='button' onClick={() => sortGetsFloodMessages()}>
+              <button
+                type='button'
+                aria-label={`Sort by whether location gets flood messages, currently ${
+                  getsFloodMessagesSort === 'none'
+                    ? 'unsorted'
+                    : getsFloodMessagesSort
+                }`}
+                onClick={() => sortGetsFloodMessages()}
+              >
                 Gets flood
                 <br /> messages
               </button>
@@ -357,7 +378,15 @@ export default function LocationsTable({
               className='govuk-table__header'
               aria-sort={linkedContactsSort}
             >
-              <button type='button' onClick={() => sortLinkedContacts()}>
+              <button
+                type='button'
+                aria-label={`Sort by number of linked contacts, currently ${
+                  linkedContactsSort === 'none'
+                    ? 'unsorted'
+                    : linkedContactsSort
+                }`}
+                onClick={() => sortLinkedContacts()}
+              >
                 Linked
                 <br /> contacts
               </button>
@@ -370,7 +399,15 @@ export default function LocationsTable({
                   className='govuk-table__header'
                   aria-sort={floodMessagesSort}
                 >
-                  <button type='button' onClick={() => sortFloodMessages()}>
+                  <button
+                    type='button'
+                    aria-label={`Sort by number of flood messsages received in the last two years, currently ${
+                      floodMessagesSort === 'none'
+                        ? 'unsorted'
+                        : floodMessagesSort
+                    }`}
+                    onClick={() => sortFloodMessages()}
+                  >
                     Flood messages <br />
                     received in last two years
                   </button>
@@ -385,6 +422,11 @@ export default function LocationsTable({
                 >
                   <button
                     type='button'
+                    aria-label={`Sort by rivers and sea flood risk, currently ${
+                      riverSeaRisksSort === 'none'
+                        ? 'unsorted'
+                        : riverSeaRisksSort
+                    }`}
                     onClick={() =>
                       sortByRisk(
                         riverSeaRisksSort,
@@ -405,6 +447,11 @@ export default function LocationsTable({
                 >
                   <button
                     type='button'
+                    aria-label={`Sort by groundwater flood risk, currently ${
+                      groundWaterRisksSort === 'none'
+                        ? 'unsorted'
+                        : groundWaterRisksSort
+                    }`}
                     onClick={() =>
                       sortByRisk(
                         groundWaterRisksSort,
@@ -428,6 +475,7 @@ export default function LocationsTable({
             <tr className='govuk-table__row' key={index}>
               <th scope='row' className='govuk-table__header'>
                 <div
+                  style={{ marginTop: '-10px' }}
                   className='govuk-checkboxes govuk-checkboxes--small'
                   data-module='govuk-checkboxes'
                 >
@@ -435,6 +483,7 @@ export default function LocationsTable({
                     <input
                       className='govuk-checkboxes__input'
                       type='checkbox'
+                      aria-label={`Select ${location.additionals.locationName}`}
                       checked={selectedLocations.includes(location)}
                       onChange={() => handleLocationSelected(location)}
                     />
@@ -470,12 +519,12 @@ export default function LocationsTable({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.linked_contacts?.length !== undefined ? (
+                {location.linked_contacts !== undefined ? (
                   <Link
                     className='govuk-link'
                     onClick={(e) => viewLinkedContacts(e, location)}
                   >
-                    {location.linked_contacts?.length}
+                    {location.linked_contacts}
                   </Link>
                 ) : (
                   LoadingDots
@@ -492,24 +541,43 @@ export default function LocationsTable({
                 <>
                   {' '}
                   <td className='govuk-table__cell'>
-                    <span
-                      className={`flood-risk-container ${location.riverSeaRisk?.className}`}
-                    >
-                      {location.riverSeaRisk?.title}
-                    </span>
+                    {location.riverSeaRisk?.title === 'Unavailable' ? (
+                      <span
+                        className={`flood-risk-container ${location.riverSeaRisk?.className}`}
+                        aria-label='Not available'
+                      >
+                        -
+                      </span>
+                    ) : (
+                      <span
+                        className={`flood-risk-container ${location.riverSeaRisk?.className}`}
+                      >
+                        {location.riverSeaRisk?.title}
+                      </span>
+                    )}
                   </td>
                   <td className='govuk-table__cell'>
-                    <span
-                      className={`flood-risk-container ${location.groundWaterRisk?.className}`}
-                    >
-                      {location.groundWaterRisk?.title}
-                    </span>
+                    {location.groundWaterRisk?.title === 'Unavailable' ? (
+                      <span
+                        className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                        aria-label='Not available'
+                      >
+                        -
+                      </span>
+                    ) : (
+                      <span
+                        className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                      >
+                        {location.groundWaterRisk?.title}
+                      </span>
+                    )}
                   </td>
                 </>
               )}
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
+                  aria-label={`Delete ${location.additionals.locationName}`}
                   onClick={(e) => onAction(e, actionText, location)}
                 >
                   {actionText}

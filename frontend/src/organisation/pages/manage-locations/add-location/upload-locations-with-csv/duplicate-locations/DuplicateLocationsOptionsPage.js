@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
@@ -15,7 +16,7 @@ import {
 } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DuplicateLocationsOptionsPage () {
+export default function DuplicateLocationsOptionsPage() {
   const navigate = useNavigate()
   const [option, setOption] = useState('')
   const [error, setError] = useState('')
@@ -24,9 +25,9 @@ export default function DuplicateLocationsOptionsPage () {
   const location = useLocation()
   const addedLocations = location?.state?.addedLocations || 0
   const duplicateLocations = location?.state?.numDuplicates
-  const orgId = useSelector((state) => state.session.orgId)
   const [dupLocations, setDupLocations] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
+  const duplicateLocationsOptionsId = 'duplicate-locations-options'
 
   const notFoundLocations = useSelector(
     (state) => state.session.notFoundLocations
@@ -37,16 +38,15 @@ export default function DuplicateLocationsOptionsPage () {
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
   useEffect(() => {
     const getDupLocations = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
@@ -66,9 +66,9 @@ export default function DuplicateLocationsOptionsPage () {
     getPartnerId()
   }, [])
 
-  const getLocation = async (orgId, locationName, type) => {
+  const getLocation = async (authToken, locationName, type) => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type
     }
@@ -123,8 +123,8 @@ export default function DuplicateLocationsOptionsPage () {
         notFoundLocations > 0
           ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
           : notInEnglandLocations > 0
-            ? orgManageLocationsUrls.unmatchedLocations.notInEngland.find
-            : orgManageLocationsUrls.add.contactLinkInfo
+          ? orgManageLocationsUrls.unmatchedLocations.notInEngland.find
+          : orgManageLocationsUrls.add.contactLinkInfo
 
       switch (option) {
         case options[0].value: {
@@ -132,7 +132,7 @@ export default function DuplicateLocationsOptionsPage () {
             dupLocations.map(async (location) => {
               const locationIdToRemove = location.id
               await backendCall(
-                { orgId, locationId: locationIdToRemove },
+                { authToken, locationId: locationIdToRemove },
                 'api/bulk_uploads/remove_invalid_location',
                 navigate
               )
@@ -149,24 +149,25 @@ export default function DuplicateLocationsOptionsPage () {
           const dupLength = dupLocations.length
           setReplacing(true)
           for (let i = 0; i < dupLength; i += 10) {
-            setStage(`Replacing locations (${Math.round((i / dupLength) * 100)}%)`)
+            setStage(
+              `Replacing locations (${Math.round((i / dupLength) * 100)}%)`
+            )
             const chunk = dupLocations.slice(i, i + 10)
             await Promise.all(
               chunk.map(async (location) => {
                 // get the exisitng location to use it's ID
                 const existingLocation = await getLocation(
-                  orgId,
+                  authToken,
                   location.additionals.locationName,
                   'valid'
                 )
-  
+
                 const locationToUpdate = webToGeoSafeLocation(location)
                 // change the location ID to the existing ID in geosafe
                 locationToUpdate.id = existingLocation.id
                 // Update exisiting location in geosafe with new location
                 const dataToSend = {
                   authToken,
-                  orgId,
                   location: locationToUpdate
                 }
                 await backendCall(dataToSend, 'api/location/update', navigate)
@@ -185,7 +186,7 @@ export default function DuplicateLocationsOptionsPage () {
                     alertTypes: location.additionals.other.alertTypes
                   }
                 }
-  
+
                 await backendCall(
                   registerData,
                   'api/location/update_registration',
@@ -194,7 +195,7 @@ export default function DuplicateLocationsOptionsPage () {
                 // remove location from invalid array
                 const locationIdToRemove = location.id
                 await backendCall(
-                  { orgId, locationId: locationIdToRemove },
+                  { authToken, locationId: locationIdToRemove },
                   'api/bulk_uploads/remove_invalid_location',
                   navigate
                 )
@@ -221,6 +222,12 @@ export default function DuplicateLocationsOptionsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Duplicate location options - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       {addedLocations > 0 && (
         <NotificationBanner
@@ -232,8 +239,14 @@ export default function DuplicateLocationsOptionsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  { text: error, componentId: duplicateLocationsOptionsId }
+                ]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
               {duplicateLocations} locations already exist with the same name in
               this account
             </h1>
@@ -244,11 +257,19 @@ export default function DuplicateLocationsOptionsPage () {
                   : 'govuk-form-group'
               }
             >
-              <fieldset className='govuk-fieldset'>
+              <fieldset
+                id={duplicateLocationsOptionsId}
+                className='govuk-fieldset'
+              >
                 <legend className='govuk-fieldset__legend govuk-!-font-weight-bold'>
                   What do you want to do with the duplicate locations?
                 </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {error}
+                  </p>
+                )}
                 {options.map((option) => (
                   <Radio
                     key={option.value}
@@ -278,14 +299,15 @@ export default function DuplicateLocationsOptionsPage () {
           </div>
         </div>
       </main>
-      {replacing &&
+      {replacing && (
         <div className='popup-dialog'>
           <div className='popup-dialog-container govuk-!-padding-bottom-6'>
             <LoadingSpinner
               loadingText={<p className='govuk-body-l'>{`${stage}`}</p>}
             />
           </div>
-        </div>}
+        </div>
+      )}
     </>
   )
 }

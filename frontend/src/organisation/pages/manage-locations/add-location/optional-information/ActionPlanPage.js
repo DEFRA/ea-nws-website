@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
@@ -15,7 +16,6 @@ export default function ActionPlanPage () {
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
   const [error, setError] = useState(null)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const locationType = useSelector((state) =>
     getLocationOther(state, 'location_data_type')
@@ -23,7 +23,7 @@ export default function ActionPlanPage () {
 
   const navigateToNextPage = async () => {
     const locationToAdd = store.getState().session.currentLocation
-    const dataToSend = { authToken, orgId, location: locationToAdd }
+    const dataToSend = { authToken, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/update',
@@ -48,6 +48,9 @@ export default function ActionPlanPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Action plan for this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <ActionPlanLayout
         navigateToNextPage={() => { navigateToNextPage() }}
         error={error}

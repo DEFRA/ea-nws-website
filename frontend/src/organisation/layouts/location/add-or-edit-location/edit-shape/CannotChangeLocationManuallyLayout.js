@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 
-export default function CannotChangeLocationManuallyLayout ({ LocationType }) {
+export default function CannotChangeLocationManuallyLayout({ LocationType }) {
   const navigate = useNavigate()
 
   return (
@@ -13,10 +13,10 @@ export default function CannotChangeLocationManuallyLayout ({ LocationType }) {
           navigate(-1)
         }}
       />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               You cannot change the location of a {LocationType} manually in
               this account
             </h1>

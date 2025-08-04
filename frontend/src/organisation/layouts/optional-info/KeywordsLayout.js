@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../common/components/gov-uk/Button'
@@ -14,7 +15,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { getAdditionals } from '../../../common/services/ProfileServices'
 
-export default function KeywordsLayout ({
+export default function KeywordsLayout({
   keywordType,
   navigateToNextPage,
   keywordText,
@@ -23,19 +24,17 @@ export default function KeywordsLayout ({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
 
+  // UPDATE HERE - need to update he actual endpoint
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
   useEffect(() => {
     const getOrgKeywordsOriginal = async () => {
-      const key =
-        orgId +
-        (keywordType === 'location'
+      const type =
+        keywordType === 'location'
           ? ':t_Keywords_location'
-          : ':t_Keywords_contact')
-      const dataToSend = { key }
+          : ':t_Keywords_contact'
       const { data } = await backendCall(
-        dataToSend,
+        { type },
         'api/elasticache/get_data',
         navigate
       )
@@ -54,8 +53,8 @@ export default function KeywordsLayout ({
         ? state.session.currentLocation
         : null
       : state.session.orgCurrentContact
-        ? state.session.orgCurrentContact
-        : null
+      ? state.session.orgCurrentContact
+      : null
   )
 
   let orgKeywords = [...orgKeywordsOriginal]
@@ -66,8 +65,8 @@ export default function KeywordsLayout ({
         ? state.session.currentLocation.id
         : ''
       : state.session.orgCurrentContact.id
-        ? state.session.orgCurrentContact.id
-        : ''
+      ? state.session.orgCurrentContact.id
+      : ''
   )
 
   let currentKeywords = useSelector((state) =>
@@ -76,13 +75,13 @@ export default function KeywordsLayout ({
         ? getLocationAdditional(state, 'keywords')
         : ''
       : getAdditionals(currentObject, 'keywords')
-        ? getAdditionals(currentObject, 'keywords')
-        : ''
+      ? getAdditionals(currentObject, 'keywords')
+      : ''
   )
 
   // if currentKeywords is not an array
   if (currentKeywords.length > 0 && !Array.isArray(currentKeywords)) {
-      currentKeywords = JSON.parse(currentKeywords)
+    currentKeywords = JSON.parse(currentKeywords)
   }
 
   const checkboxArray = Array(currentKeywords.length).fill(true)
@@ -253,14 +252,15 @@ export default function KeywordsLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(keywordError || error) && (
               <ErrorSummary errorList={[keywordError, error]} />
             )}
-            <h1 className='govuk-heading-l'>
-              {keywordTitle || `Add keywords for this ${keywordType} (optional)`}
+            <h1 className='govuk-heading-l' id='main-content'>
+              {keywordTitle ||
+                `Add keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
               {keywordText}
@@ -301,6 +301,7 @@ export default function KeywordsLayout ({
                   position='absolute'
                   showNotFound={false}
                   nameField='name'
+                  ariaLabel='Add keyword'
                 />
                 <Button
                   text='Add keyword'
@@ -314,6 +315,14 @@ export default function KeywordsLayout ({
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              {keywordType !== 'location' && (
+                <Link
+                  to='/organisation/manage-contacts/add/notes'
+                  className='govuk-link inline-link govuk-body'
+                >
+                  Skip
+                </Link>
+              )}
             </div>
           </div>
         </div>

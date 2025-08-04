@@ -204,25 +204,15 @@ const updateAdditionals = (profile, updatedAdditionals) => {
 const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
 
-  const exists = currentLocations.some(
-    (existingLocation) => existingLocation.address === newLocation.address
-  )
-
-  if (!exists) {
-    const updatedProfile = {
-      ...profile,
-      pois: [...currentLocations, newLocation]
-    }
-    return updatedProfile
-  } else {
-    return profile
+  const updatedProfile = {
+    ...profile,
+    pois: [...currentLocations, newLocation]
   }
+  return updatedProfile
 }
 
-const removeLocation = (profile, address) => {
-  const newLocationList = profile.pois.filter(
-    (location) => location.address !== address
-  )
+const removeLocation = (profile, id) => {
+  const newLocationList = profile.pois.filter((location) => location.id !== id)
 
   const updatedProfile = {
     ...profile,
@@ -230,24 +220,6 @@ const removeLocation = (profile, address) => {
   }
 
   return updatedProfile
-}
-
-const updateLocationsAlertTypes = (profile, location, updatedAlertTypes) => {
-  const parsedProfile = JSON.parse(JSON.stringify(profile))
-
-  const locationIndex = parsedProfile.pois.findIndex(
-    (poi) => poi.address === location.address
-  )
-
-  if (locationIndex !== -1) {
-    parsedProfile.pois[locationIndex].additionals = setLocationOtherAdditionals(
-      [],
-      'alertTypes',
-      updatedAlertTypes
-    )
-  }
-
-  return parsedProfile
 }
 
 const getRegistrationParams = (profile, alertTypes) => {
@@ -317,6 +289,5 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
-  removeLocation,
-  updateLocationsAlertTypes
+  removeLocation
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -13,7 +13,10 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function LocationSearchLayout({ continueToNextPage }) {
+export default function LocationSearchLayout({
+  continueToNextPage,
+  returnToReview
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
@@ -22,6 +25,9 @@ export default function LocationSearchLayout({ continueToNextPage }) {
   const [postCodeError, setPostCodeError] = useState('')
   const [placeNameError, setPlaceNameError] = useState('')
   const [error, setError] = useState('')
+  const searchOptionsId = 'search-options-radios'
+  const postcodeInputId = 'postcode-input'
+  const placenameInputId = 'placename-input'
 
   // remove any errors if user changes search option
   useEffect(() => {
@@ -70,16 +76,11 @@ export default function LocationSearchLayout({ continueToNextPage }) {
             const dataToSend = {
               name: placeName,
               filters: [
-                'Bay',
                 'City',
-                'Coastal_Headland',
-                'Estuary',
-                'Group_Of_Islands',
+                'Hamlet',
                 'Harbour',
-                'Island',
                 'Other_Settlement',
                 'Suburban_Area',
-                'Tidal_Water',
                 'Town',
                 'Urban_Greenspace',
                 'Village'
@@ -116,55 +117,78 @@ export default function LocationSearchLayout({ continueToNextPage }) {
     <>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row govuk-body'>
+        <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || postCodeError || placeNameError) && (
               <ErrorSummary
-                errorList={[error, postCodeError, placeNameError]}
+                errorList={[
+                  error && { text: error, componentId: searchOptionsId },
+                  postCodeError && {
+                    text: postCodeError,
+                    componentId: postcodeInputId
+                  },
+                  placeNameError && {
+                    text: placeNameError,
+                    componentId: placenameInputId
+                  }
+                ].filter(Boolean)}
               />
             )}
-            <h1 className='govuk-heading-l'>
-              Check if you can get flood messages for your location
-            </h1>
-            <div
-              className={
-                error
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
-            >
-              <fieldset className='govuk-fieldset'>
+            <div className='govuk-body'>
+              <fieldset
+                className='govuk-fieldset'
+                aria-describedby='group-hint'
+              >
                 <legend className='govuk-fieldset__legend'>
-                  Select how you want to search
+                  <h1 className='govuk-heading-l' id='main-content'>
+                    Check if you can get flood messages for your location
+                  </h1>
                 </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
-                <Radio
-                  label='Postcode'
-                  value='Postcode'
-                  name='searchOptionsRadios'
-                  onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'Postcode'}
-                  conditionalHint='Postcode in England'
-                  conditionalInput={(val) => setPostCode(val)}
-                  conditionalError={postCodeError}
-                />
-                <Radio
-                  label='Town or place name'
-                  value='TownOrPlaceName'
-                  name='searchOptionsRadios'
-                  onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'TownOrPlaceName'}
-                  conditionalHint='Be as specific as possible. For example, enter a town or village, rather than a large city'
-                  conditionalInput={(val) => setPlaceName(val)}
-                  conditionalError={placeNameError}
-                />
+                <div
+                  className={`govuk-form-group ${
+                    error ? 'govuk-form-group--error' : ''
+                  }`}
+                >
+                  <p id='group-hint' className='govuk-hint'>
+                    Select how you want to search
+                  </p>
+                  {error && <p className='govuk-error-message'>{error}</p>}
+                  <Radio
+                    id='searchOptionsRadios'
+                    label='Postcode'
+                    value='Postcode'
+                    name='searchOptionsRadios'
+                    onChange={(e) => setSearchOption(e.target.value)}
+                    conditional={searchOption === 'Postcode'}
+                    conditionalHint='Postcode in England'
+                    conditionalInput={(val) => setPostCode(val)}
+                    conditionalError={postCodeError}
+                    conditionalId='postcode-input'
+                  />
+                  <Radio
+                    label='Town or place name'
+                    value='TownOrPlaceName'
+                    name='searchOptionsRadios'
+                    onChange={(e) => setSearchOption(e.target.value)}
+                    conditional={searchOption === 'TownOrPlaceName'}
+                    conditionalHint='Be as specific as possible. For example, enter a town or village, rather than a large city'
+                    conditionalInput={(val) => setPlaceName(val)}
+                    conditionalError={placeNameError}
+                    conditionalId='placename-input'
+                  />
+                </div>
               </fieldset>
+              <Button
+                text='Continue'
+                className='govuk-button govuk-!-margin-right-2'
+                onClick={handleSubmit}
+              />
+              {returnToReview && (
+                <Link className='govuk-link inline-link' to={'/signup/review'}>
+                  Cancel
+                </Link>
+              )}
             </div>
-            <Button
-              text='Continue'
-              className='govuk-button'
-              onClick={handleSubmit}
-            />
           </div>
         </div>
       </main>

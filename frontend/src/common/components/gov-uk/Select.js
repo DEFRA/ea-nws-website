@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { formatSentenceCase } from '../../utils/FormatSentenceCase'
 
-export default function Select ({
+export default function Select({
+  id,
   label,
   options,
   name,
@@ -8,12 +10,12 @@ export default function Select ({
   hint,
   error = '',
   initialSelectOptionText,
-  disabledOptions = []
+  disabledOptions = [],
+  value,
+  snakeCaseText = false
 }) {
-  const [selectedOption, setSelectedOption] = useState('')
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value
-    setSelectedOption(selectedValue)
     onSelect(selectedValue)
   }
 
@@ -40,28 +42,39 @@ export default function Select ({
         className={
           error === '' ? 'govuk-select' : 'govuk-select govuk-input--error'
         }
-        id={'id' + name}
+        id={id || 'id' + name}
         name={name}
         aria-describedby={hint}
         onChange={handleSelectChange}
-        value={selectedOption}
+        value={value || ''}
       >
         <option value='' disabled>
           {initialSelectOptionText}
         </option>
-        {options.map((option, index) =>
-          disabledOptions.includes(option)
-            ? (
+        {!snakeCaseText &&
+          options.map((option, index) =>
+            disabledOptions.includes(option) ? (
               <option key={index} value={option} disabled>
                 {option}
               </option>
-              )
-            : (
+            ) : (
               <option key={index} value={option}>
                 {option}
               </option>
-              )
-        )}
+            )
+          )}
+        {snakeCaseText &&
+          options.map((option, index) =>
+            disabledOptions.includes(option) ? (
+              <option key={index} value={option} disabled>
+                {formatSentenceCase(option)}
+              </option>
+            ) : (
+              <option key={index} value={option}>
+                {formatSentenceCase(option)}
+              </option>
+            )
+          )}
       </select>
     </div>
   )

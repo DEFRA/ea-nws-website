@@ -40,10 +40,10 @@ export default function ConfirmLocationLayout({
   const location = useLocation()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
+  const locationConfirmationId = 'location-confirmation'
 
   const currentPostCode = useSelector((state) =>
     getLocationOther(state, 'postcode')
@@ -69,6 +69,7 @@ export default function ConfirmLocationLayout({
   )
 
   const shapeArea = location.state?.shapeArea
+  const areaUnit = location.state?.unit
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId() {
@@ -82,7 +83,7 @@ export default function ConfirmLocationLayout({
 
   const checkDuplicateLocation = async () => {
     const dataToSend = {
-      orgId,
+      authToken,
       locationName,
       type: 'valid'
     }
@@ -199,34 +200,40 @@ export default function ConfirmLocationLayout({
     const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
 
     // since we added to currentLocation we need to get that information to pass to the api
-    const dataToSend = { authToken, orgId, location: newGeosafeLocation }
+    const dataToSend = { authToken, location: newGeosafeLocation }
+    const isUpdate =
+      flow?.includes('change-coords') || Boolean(currentLocation?.id)
+    const apiEndpoint = isUpdate ? 'api/location/update' : 'api/location/create'
     const { data, errorMessage } = await backendCall(
       dataToSend,
-      'api/location/create',
+      apiEndpoint,
       navigate
     )
 
     if (data) {
-      const registerData = {
-        authToken,
-        locationId: data.id,
-        partnerId,
-        params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
-          channelMobileAppEnabled: true,
-          partnerCanView: true,
-          partnerCanEdit: true,
-          alertTypes: newWebLocation.additionals.other.alertTypes
+      if (!isUpdate) {
+        // Only register new locations
+        const registerData = {
+          authToken,
+          locationId: data.id,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: newWebLocation.additionals.other.alertTypes
+          }
         }
-      }
 
-      await backendCall(
-        registerData,
-        'api/location/register_to_partner',
-        navigate
-      )
+        await backendCall(
+          registerData,
+          'api/location/register_to_partner',
+          navigate
+        )
+      }
 
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
@@ -234,7 +241,7 @@ export default function ConfirmLocationLayout({
       // Remove invalid location from elasticache
       if (flow?.includes('unmatched-locations')) {
         backendCall(
-          { orgId, locationId: currentLocation.id },
+          { authToken, locationId: currentLocation.id },
           'api/bulk_uploads/remove_invalid_location',
           navigate
         )
@@ -284,11 +291,19 @@ export default function ConfirmLocationLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l '>Confirm location</h1>
+            {error && (
+              <ErrorSummary
+                errorList={[
+                  { text: error, componentId: locationConfirmationId }
+                ]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id={locationConfirmationId}>
+              Confirm location
+            </h1>
 
             <h2 className='govuk-heading-m govuk-!-margin-top-8'>
               {locationName}
@@ -360,7 +375,9 @@ export default function ConfirmLocationLayout({
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Polygon
                 </h3>
-                <p>{shapeArea} square metres</p>
+                <p>
+                  {shapeArea} {areaUnit}
+                </p>
 
                 <div className='govuk-!-margin-top-8'>
                   <Button

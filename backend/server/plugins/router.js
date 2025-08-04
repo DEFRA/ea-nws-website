@@ -1,6 +1,7 @@
 const routes = [].concat(
   require('../routes/sign_in/signin_start'),
   require('../routes/sign_in/signin_validate'),
+  require('../routes/sign_in/signin_verify'),
   require('../routes/sign_up/signup_start'),
   require('../routes/sign_up/org_start'),
   require('../routes/sign_up/org_validate'),
@@ -41,6 +42,8 @@ const routes = [].concat(
   require('../routes/elasticache/list_contacts'),
   require('../routes/elasticache/list_linked_contacts'),
   require('../routes/elasticache/list_linked_locations'),
+  require('../routes/elasticache/get_ta_data'),
+  require('../routes/elasticache/get_ob_data'),
   require('../routes/location/create'),
   require('../routes/location/remove'),
   require('../routes/location/update'),
@@ -68,7 +71,8 @@ const routes = [].concat(
   require('../routes/alert/list'),
   require('../routes/alert/get'),
   require('../routes/sign_in/org_signin'),
-  require('../routes/sign_in/org_signin_status')
+  require('../routes/sign_in/org_signin_status'),
+  require('../routes/info/download_guide')
 )
 
 module.exports = {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -17,7 +18,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
 
-export default function LinkedContactsPage () {
+export default function LinkedContactsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -33,7 +34,6 @@ export default function LinkedContactsPage () {
     useSelector((state) => state.session.currentLocation)
   )
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const contactsPerPage = 10
 
@@ -57,7 +57,7 @@ export default function LinkedContactsPage () {
 
   useEffect(() => {
     const getLinkedContacts = async () => {
-      const locationsDataToSend = { orgId, location: currentLocation }
+      const locationsDataToSend = { authToken, locationId: currentLocation.id }
       const { data } = await backendCall(
         locationsDataToSend,
         'api/elasticache/list_linked_contacts',
@@ -71,20 +71,15 @@ export default function LinkedContactsPage () {
         })
       }
 
-      for (const contact of contactsUpdate) {
-        const contactsDataToSend = { authToken, orgId, contact }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_locations',
-          navigate
-        )
+      const contactsDataToSend = { authToken }
+      const { data: locationCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_locations',
+        navigate
+      )
 
-        contact.linked_locations = []
-        if (data) {
-          data.forEach((locationID) => {
-            contact.linked_locations.push(locationID)
-          })
-        }
+      for (const contact of contactsUpdate) {
+        contact.linked_locations = locationCount[contact.id] || 0
       }
 
       setLinkedContacts(contactsUpdate)
@@ -137,7 +132,6 @@ export default function LinkedContactsPage () {
     })
     const dataToSend = {
       authToken,
-      orgId,
       locationId: currentLocation.id,
       contactIds: contactIDs
     }
@@ -151,7 +145,7 @@ export default function LinkedContactsPage () {
     if (errorMessage) {
       console.log(errorMessage)
     }
-    
+
     setUnlinkNotification(getUnlinkText(contactsToUnlink))
 
     const updatedContacts = linkedContacts.filter(
@@ -215,6 +209,12 @@ export default function LinkedContactsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Users linked to this location - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {unlinkNotification.length > 0 && (

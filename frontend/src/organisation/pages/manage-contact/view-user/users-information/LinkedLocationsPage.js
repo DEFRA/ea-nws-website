@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -9,11 +10,11 @@ import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../../common/enums/AlertState.js'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import {
-  getAdditional,
   setCurrentLocation
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact.js'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -38,7 +39,6 @@ export default function LinkedLocationsPage() {
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const authToken = useSelector((state) => state.session.authToken)
-  const orgId = useSelector((state) => state.session.orgId)
 
   const locationsPerPage = 10
 
@@ -68,7 +68,7 @@ export default function LinkedLocationsPage() {
       )
 
       const options = {
-        states: [AlertState.CURRENT, AlertState.PAST],
+        states: [AlertState.PAST],
         boundingBox: null,
         channels: [],
         partnerId
@@ -78,11 +78,12 @@ export default function LinkedLocationsPage() {
       twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
       const { data: alertsResponse } = await backendCall(
-        { options, filterDate: twoYearsAgo },
+        { options, filterDate: twoYearsAgo, historic: true },
         'api/alert/list',
         navigate
       )
-      const alertsList = alertsResponse.alerts || []
+
+      const alertsList = alertsResponse?.alerts || []
 
       // Loop through locations, attaching a count of how many alerts match their TA_CODE
       return locations.map((loc) => {
@@ -90,9 +91,7 @@ export default function LinkedLocationsPage() {
         const taCodes = targetAreas.map((ta) => ta.TA_CODE)
 
         const count = alertsList.filter((alert) => {
-          const placemark = alert.mode?.zoneDesc?.placemarks?.[0]
-          if (!placemark?.extraInfo) return false
-          const alertCode = getAdditional(placemark.extraInfo, 'TA_CODE')
+          const alertCode = alert.TA_CODE
           return alertCode && taCodes.includes(alertCode)
         }).length
 
@@ -104,9 +103,9 @@ export default function LinkedLocationsPage() {
     }
 
     const getLinkedLocations = async () => {
-      const contactsDataToSend = { orgId, contact: currentContact }
+      const LocationsDataToSend = { authToken, contactId: currentContact.id }
       const { data } = await backendCall(
-        contactsDataToSend,
+        LocationsDataToSend,
         'api/elasticache/list_linked_locations',
         navigate
       )
@@ -140,20 +139,17 @@ export default function LinkedLocationsPage() {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      for (const location of locationsUpdate) {
-        const contactsDataToSend = { authToken, orgId, location }
-        const { data } = await backendCall(
-          contactsDataToSend,
-          'api/elasticache/list_linked_contacts',
-          navigate
-        )
+      const contactsDataToSend = { authToken }
+      const { data: contactCount } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
 
-        location.linked_contacts = []
-        if (data) {
-          data.forEach((contactID) => {
-            location.linked_contacts.push(contactID)
-          })
-        }
+      for (const location of locationsUpdate) {
+        location.linked_contacts = contactCount[location.id] || 0
+        const floodAreas = location?.additionals?.other?.targetAreas || []
+        location.within = floodAreas?.length > 0
       }
 
       const fullLocationData = await attachMessageCounts(locationsUpdate)
@@ -222,7 +218,6 @@ export default function LinkedLocationsPage() {
       setStage(`unlinking (${Math.round(((index + 1) / numLocations) * 100)}%)`)
       const dataToSend = {
         authToken,
-        orgId,
         locationId: location.id,
         contactIds: [currentContact.id]
       }
@@ -299,8 +294,16 @@ export default function LinkedLocationsPage() {
     navigate(orgManageContactsUrls.view.dashboard)
   }
 
+  const userType = getRole(currentContact)
+
   return (
     <>
+      <Helmet>
+        <title>
+          {contactName}'s linked locations - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {unlinkNotification.length > 0 && (
@@ -313,6 +316,7 @@ export default function LinkedLocationsPage() {
         <UserHeader
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
+          userType={userType}
         />
         {loading ? (
           <LoadingSpinner />

@@ -289,11 +289,17 @@ export default function KeywordsLayout({
                   <p className='govuk-error-message'>{keywordError}</p>
                 )}
               </div>
-              <p>Type Keyword</p>
+              <label
+                htmlFor='keywordInput'
+                className='govuk-label govuk-!-padding-bottom-2'
+              >
+                Type keyword
+              </label>
               <div className='inline-button'>
                 <Autocomplete
                   inputType='text'
                   value={searchInput}
+                  id='keywordInput'
                   onChange={(val) => handleOnChange(val)}
                   onClick={(val) => handleOnClick(val)}
                   className='govuk-input govuk-input--width-20'

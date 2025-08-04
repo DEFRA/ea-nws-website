@@ -109,9 +109,9 @@ export default function SignUpSuccessPage() {
             <BackLink onClick={() => navigate(-1)} />
             <ConfirmationPanel title='Organisation details submitted for approval' />
             <div className='govuk-body govuk-!-margin-top-6'>
-              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+              <h2 className='govuk-heading-m govuk-!-margin-top-6'>
                 What happens next
-              </h1>
+              </h2>
               <p className='govuk-!-margin-top-6'>
                 We'll check the details you've submitted so we can verify your
                 organisation.

@@ -39,6 +39,21 @@ const createAlertObject = (startAlert, endAlert) => {
   }
 }
 
+const createAlertObjectUsingExpirationDate = (startAlert, endAlert) => {
+  return {
+    id: startAlert.id,
+    version: startAlert.version,
+    name: startAlert.name,
+    description: startAlert.description,
+    startDate: new Date(startAlert.effectiveDate * 1000),
+    endDate: new Date(endAlert.expirationDate * 1000),
+    TA_CODE: getTACode(startAlert),
+    TA_Name: getTAName(startAlert),
+    category: getTACategory(startAlert),
+    type: startAlert.type
+  }
+}
+
 const processGeosafeAlerts = (alerts) => {
   const historicAlerts = []
   const liveAlerts = []
@@ -59,7 +74,15 @@ const processGeosafeAlerts = (alerts) => {
         const nextTACode = getTACode(nextAlert)
 
         if (nextTACode === currentTACode) {
-          if (nextAlert.name.toLowerCase().includes('update')) {
+          if (nextAlert.name.toLowerCase().includes('issue')) {
+            const historicalAlert = createAlertObjectUsingExpirationDate(
+              currentAlert,
+              lastValidAlert
+            )
+            historicAlerts.push(historicalAlert)
+            alertEnded = true
+            break
+          } else if (nextAlert.name.toLowerCase().includes('update')) {
             if (nextAlert.type !== lastValidAlert.type) {
               const historicalAlert = createAlertObject(
                 lastValidAlert,
@@ -80,19 +103,28 @@ const processGeosafeAlerts = (alerts) => {
 
       // If no 'remove' message found, add to live alerts
       if (!alertEnded) {
-        const liveAlert = {
-          id: lastValidAlert.id,
-          version: lastValidAlert.version,
-          name: lastValidAlert.name,
-          description: lastValidAlert.description,
-          startDate: new Date(lastValidAlert.effectiveDate * 1000),
-          endDate: null,
-          TA_CODE: getTACode(lastValidAlert),
-          TA_Name: getTAName(lastValidAlert),
-          category: getTACategory(lastValidAlert),
-          type: lastValidAlert.type
+        const alertExpiryDate = new Date(lastValidAlert.expirationDate * 1000)
+        if (alertExpiryDate < new Date()) {
+          const historicalAlert = createAlertObjectUsingExpirationDate(
+            currentAlert,
+            lastValidAlert
+          )
+          historicAlerts.push(historicalAlert)
+        } else {
+          const liveAlert = {
+            id: lastValidAlert.id,
+            version: lastValidAlert.version,
+            name: lastValidAlert.name,
+            description: lastValidAlert.description,
+            startDate: new Date(lastValidAlert.effectiveDate * 1000),
+            endDate: null,
+            TA_CODE: getTACode(lastValidAlert),
+            TA_Name: getTAName(lastValidAlert),
+            category: getTACategory(lastValidAlert),
+            type: lastValidAlert.type
+          }
+          liveAlerts.push(liveAlert)
         }
-        liveAlerts.push(liveAlert)
       }
     }
   }

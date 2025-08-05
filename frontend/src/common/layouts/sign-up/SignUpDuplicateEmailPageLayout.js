@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { orgSignUpUrls } from '../../../organisation/routes/sign-up/SignUpRoutes'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
@@ -12,10 +14,13 @@ export default function SignUpDuplicateEmailPageLayout() {
   const [error, setError] = useState('')
   const email = location.state.email
 
-  const isOrganisationPage = location.pathname.includes('organisation')
+  const isOrganisationPage = location.pathname.includes(orgSignUpUrls.signUp)
   const urlSignup = isOrganisationPage
     ? '/organisation/sign-up/admin-details'
     : '/signup'
+
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -40,22 +45,51 @@ export default function SignUpDuplicateEmailPageLayout() {
       <BackLink to={urlSignup} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-two-thirds govuk-body'>
             {error && <ErrorSummary errorList={error === '' ? [] : [error]} />}
             <h1 className='govuk-heading-l' id='main-content'>
               The email address you entered is <br /> already being used
             </h1>
             <InsetText text={email} isTextBold />
-            <div className='govuk-body'>
+            {isOrganisationPage ? (
+              <>
+                {organizationAdditionals?.isAdminRegistering ? (
+                  <>
+                    <p>
+                      If this is your account, you can sign in by getting a code
+                    </p>
+                    <br />
+                    <p className='govuk-!-margin-bottom-5'>
+                      If you already have a standard flood warnings accounts and
+                      want a professional account, you'll need to use a
+                      different email address here.
+                    </p>
+                    <Button
+                      className='govuk-button'
+                      text='Get code to sign in'
+                      onClick={handleSubmit}
+                    />
+                    &nbsp;
+                    <Link to={urlSignup} className='govuk-link inline-link'>
+                      Go back and enter a different email address
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    If they already have an account, they can sign in and use
+                    the service.
+                    <br />
+                    <br />
+                    <Link to={urlSignup} className='govuk-link'>
+                      Go back and enter a different email address
+                    </Link>
+                  </>
+                )}
+              </>
+            ) : (
               <>
                 <p>
                   If this is your account, you can sign in by getting a code
-                </p>
-                <br />
-                <p className='govuk-!-margin-bottom-5'>
-                  If you already have a standard flood warnings accounts and
-                  want a professional account, you'll need to use a different
-                  email address here.
                 </p>
                 <Button
                   className='govuk-button'
@@ -67,7 +101,7 @@ export default function SignUpDuplicateEmailPageLayout() {
                   Go back and enter a different email address
                 </Link>
               </>
-            </div>
+            )}
           </div>
         </div>
       </main>

@@ -109,7 +109,7 @@ export default function SignUpPage() {
                   href='/privacy'
                   target='_blank'
                   style={{ cursor: 'pointer' }}
-                  class='govuk-link'
+                  className='govuk-link'
                 >
                   privacy notice
                 </a>{' '}

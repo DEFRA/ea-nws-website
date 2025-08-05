@@ -302,7 +302,11 @@ export default function DropPinOnMapLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: 'map-body' }]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               Find the location on a map
             </h1>
@@ -342,7 +346,7 @@ export default function DropPinOnMapLayout({
           </div>
 
           <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-three-quarters '>
+            <div id='map-body' className='govuk-grid-column-three-quarters'>
               <Map
                 setCoordinates={setPinCoords}
                 type='drop'

@@ -153,16 +153,37 @@ export default function PromoteToAdminPage() {
             {emailCount > 1 ? (
               emailRadios
             ) : (
-              <Input
-                id={emailAddressId}
-                inputType='text'
-                inputMode='email'
-                value={selectedEmail}
-                name='Email address'
-                onChange={(val) => setSelectedEmail(val)}
-                className='govuk-input govuk-input--width-20'
-                isNameBold
-              />
+              <div
+                className={`govuk-form-group${
+                  errorMessage ? ' govuk-form-group--error' : ''
+                }`}
+                aria-describedby={
+                  errorMessage ? `${emailAddressId}-error` : undefined
+                }
+              >
+                {errorMessage && (
+                  <p
+                    id={`${emailAddressId}-error`}
+                    className='govuk-error-message'
+                  >
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {errorMessage}
+                  </p>
+                )}
+                <Input
+                  id={emailAddressId}
+                  inputType='text'
+                  inputMode='email'
+                  value={selectedEmail}
+                  name='Email address'
+                  onChange={(val) => setSelectedEmail(val)}
+                  className='govuk-input govuk-input--width-20'
+                  aria-describedby={
+                    errorMessage ? `${emailAddressId}-error` : undefined
+                  }
+                  isNameBold
+                />
+              </div>
             )}
             <Button
               text='Invite as admin'

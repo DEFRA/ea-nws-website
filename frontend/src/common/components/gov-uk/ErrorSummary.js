@@ -26,7 +26,7 @@ export default function ErrorSummary({ errorList }) {
     ? document.title
     : `Error: ${document.title}`
 
-    const isOrganisationPage =
+  const isOrganisationPage =
     location.pathname.includes('organisation') &&
     !location.pathname.includes('sign-up')
 
@@ -57,7 +57,14 @@ export default function ErrorSummary({ errorList }) {
                 return (
                   <li key={index} className='govuk-error-summary__list-item'>
                     {genericError}. Please retry and if the problem persists{' '}
-                    <Link to={isOrganisationPage ? '/organisation/contact' : '/contact'} className='govuk-link'>
+                    <Link
+                      to={
+                        isOrganisationPage
+                          ? '/organisation/contact'
+                          : '/contact'
+                      }
+                      className='govuk-link'
+                    >
                       contact us
                     </Link>
                     .
@@ -72,7 +79,19 @@ export default function ErrorSummary({ errorList }) {
                     key={index}
                     style={{ color: '#d4351c', fontWeight: '700' }}
                   >
-                    <a href={`#${error.componentId}`}>{errorText}</a>
+                    <a
+                      href={`#${error.componentId}`}
+                      onClick={(e) => {
+                        // Ensure that no state is lost
+                        e.preventDefault()
+                        document
+                          .getElementById(error.componentId)
+                          ?.scrollIntoView({ behavior: 'smooth' })
+                        document.getElementById(error.componentId)?.focus()
+                      }}
+                    >
+                      {errorText}
+                    </a>
                   </li>
                 )
               }

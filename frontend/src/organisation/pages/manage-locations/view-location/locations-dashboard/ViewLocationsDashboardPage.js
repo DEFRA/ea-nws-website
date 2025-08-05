@@ -803,7 +803,13 @@ export default function ViewLocationsDashboardPage() {
                 text={notificationText}
               />
             )}
-            {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
+            {errorMessage && (
+              <ErrorSummary
+                errorList={[
+                  { text: errorMessage, componentId: 'locations-table' }
+                ]}
+              />
+            )}
             <DashboardHeader
               locations={locations}
               linkContacts={linkContacts}

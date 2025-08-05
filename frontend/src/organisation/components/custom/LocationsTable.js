@@ -236,7 +236,10 @@ export default function LocationsTable({
 
   return (
     <>
-      <p className='govuk-!-margin-bottom-6 locations-table-panel'>
+      <p
+        id='locations-table'
+        className='govuk-!-margin-bottom-6 locations-table-panel'
+      >
         {filteredLocations.length !== locations.length ? 'Showing ' : ''}
         {filteredLocations.length !== locations.length
           ? filteredLocations.length

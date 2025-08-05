@@ -156,7 +156,8 @@ export default function DeclarationOfAgreementPage() {
               >
                 {error && (
                   <p className='govuk-error-message'>
-                    <span className='govuk-visually-hidden'>{error}</span>
+                    <span className='govuk-visually-hidden'>Error:</span>
+                    {error}
                   </p>
                 )}
                 <Checkbox

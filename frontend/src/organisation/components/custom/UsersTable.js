@@ -178,7 +178,10 @@ export default function UsersTable({
 
   return (
     <>
-      <p className='govuk-!-margin-bottom-6 contacts-table-panel'>
+      <p
+        id='users-table'
+        className='govuk-!-margin-bottom-6 contacts-table-panel'
+      >
         {filteredContacts.length !== contacts.length ? 'Showing ' : ''}
         {filteredContacts.length !== contacts.length
           ? filteredContacts.length

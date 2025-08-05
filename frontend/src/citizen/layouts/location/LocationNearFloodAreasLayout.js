@@ -54,6 +54,7 @@ export default function LocationNearFloodAreasLayout({
   const [showFullMap, setShowFullMap] = useState(false)
   const [selectedArea, setSelectedArea] = useState(null)
   const inSignUpFlow = location.pathname.includes('signup')
+  const checkboxContainerId = 'flood-areas-input'
 
   // used when user has selected search via placename and radius of TAs found is extended
   const locationSearchType = useSelector(
@@ -496,7 +497,13 @@ export default function LocationNearFloodAreasLayout({
           <BackLink onClick={() => handleUserNavigatingBack()} />
           <main className='govuk-main-wrapper govuk-!-padding-top-4'>
             <div className='govuk-grid-row govuk-body'>
-              {error && <ErrorSummary errorList={[error]} />}
+              {error && (
+                <ErrorSummary
+                  errorList={[
+                    { text: error, componentId: checkboxContainerId }
+                  ]}
+                />
+              )}
               <div className='govuk-grid-column-full'>
                 <h1 className='govuk-heading-l'>
                   Select nearby areas where you can get flood messages
@@ -513,11 +520,17 @@ export default function LocationNearFloodAreasLayout({
                   />
                 )}
                 <div
+                  id={checkboxContainerId}
                   className={`govuk-form-group ${
                     error && 'govuk-form-group--error'
                   }`}
                 >
-                  {error && <p className='govuk-error-message'>{error}</p>}
+                  {error && (
+                    <p className='govuk-error-message'>
+                      <span className='govuk-visually-hidden'>Error:</span>{' '}
+                      {error}
+                    </p>
+                  )}
                   {floodAreas.map((area) => {
                     return (
                       <>

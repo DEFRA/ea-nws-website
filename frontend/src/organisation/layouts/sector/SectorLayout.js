@@ -61,6 +61,7 @@ export default function SectorLayout({
                 {error && (
                   <p className='govuk-error-message'>
                     <br />
+                    <span className='govuk-visually-hidden'>Error:</span>
                     {error}
                   </p>
                 )}

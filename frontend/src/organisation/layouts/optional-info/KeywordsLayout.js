@@ -94,6 +94,7 @@ export default function KeywordsLayout({
   const [keywords, setKeywords] = useState([])
   const [searchInput, setSearchInput] = useState(null)
 
+  const keywordInputId = 'keywordInput'
   const maxKeywords = 50
   const maxKeywordChar = 20
   const maxKeywordError =
@@ -256,7 +257,12 @@ export default function KeywordsLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {(keywordError || error) && (
-              <ErrorSummary errorList={[keywordError, error]} />
+              <ErrorSummary
+                errorList={[
+                  { text: keywordError, componentId: keywordInputId },
+                  error
+                ]}
+              />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
               {keywordTitle ||
@@ -286,7 +292,10 @@ export default function KeywordsLayout({
                 }
               >
                 {keywordError && (
-                  <p className='govuk-error-message'>{keywordError}</p>
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>
+                    {keywordError}
+                  </p>
                 )}
               </div>
               <label
@@ -299,7 +308,7 @@ export default function KeywordsLayout({
                 <Autocomplete
                   inputType='text'
                   value={searchInput}
-                  id='keywordInput'
+                  id={keywordInputId}
                   onChange={(val) => handleOnChange(val)}
                   onClick={(val) => handleOnClick(val)}
                   className='govuk-input govuk-input--width-20'

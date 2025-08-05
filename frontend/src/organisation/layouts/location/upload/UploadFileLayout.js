@@ -105,6 +105,10 @@ export default function UploadFileLayout({
   const [csvErrors, setCsvErrors] = useState([])
   const [templateUrl, setTemplateUrl] = useState(null)
 
+  const fileUploadInputId = 'file-upload'
+  const fileTypeErrorId = 'error-file-type'
+  const fileSizeErrorId = 'error-file-size'
+
   async function getTemplateUrl() {
     const { data } = await backendCall(
       'data',
@@ -276,13 +280,15 @@ export default function UploadFileLayout({
                 errorShapefile.length > 0) && (
                 <ErrorSummary
                   errorList={[
-                    errorFileType,
-                    errorFileSize,
+                    { text: errorFileType, componentId: fileTypeErrorId },
+                    { text: errorFileSize, componentId: fileSizeErrorId },
                     ...Array.from(
                       errorShapefile,
                       (error) => error.errorMessage
-                    ),
-                    ...Array.from(csvErrors, (error) => error.errorMessage)
+                    ).map((e) => ({ text: e, componentId: fileUploadInputId })),
+                    ...Array.from(csvErrors, (error) => error.errorMessage).map(
+                      (e) => ({ text: e, componentId: fileUploadInputId })
+                    )
                   ].filter(Boolean)}
                 />
               )}
@@ -302,12 +308,12 @@ export default function UploadFileLayout({
                 >
                   <p className='govuk-hint'>{fileTypeHint}</p>
                   {errorFileType && (
-                    <p id='file-upload-1-error' className='govuk-error-message'>
+                    <p id={fileTypeErrorId} className='govuk-error-message'>
                       {errorFileType}
                     </p>
                   )}
                   {errorFileSize && (
-                    <p id='file-upload-2-error' className='govuk-error-message'>
+                    <p id={fileSizeErrorId} className='govuk-error-message'>
                       {errorFileSize}
                     </p>
                   )}
@@ -328,7 +334,7 @@ export default function UploadFileLayout({
                         ? 'govuk-file-upload govuk-file-upload--error'
                         : 'govuk-file-upload'
                     }
-                    id='file-upload'
+                    id={fileUploadInputId}
                     onChange={setValidSelectedFile}
                   />
                 </div>

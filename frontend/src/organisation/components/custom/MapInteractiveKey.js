@@ -1,7 +1,7 @@
 import React from 'react'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
-export default function MapInteractiveKey ({
+export default function MapInteractiveKey({
   showFloodWarningAreas,
   setShowFloodWarningAreas,
   showFloodAlertAreas,

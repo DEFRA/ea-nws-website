@@ -71,11 +71,27 @@ export default function ViewLocationsDashboardPage() {
     options: []
   })
 
+  const moreActionsButtonRef = useRef(null)
+  const [isActionsOpen, setIsActionsOpen] = useState(false)
+
+  // When filter opens, move focus to it. When it closes, move focus back to button
   useEffect(() => {
-    if (toggleFilterButtonRef.current) {
+    if (isFilterVisible) {
+      const heading = document.getElementById('filter-heading')
+      if (heading) heading.focus()
+    } else if (toggleFilterButtonRef.current) {
       toggleFilterButtonRef.current.focus()
     }
   }, [isFilterVisible])
+
+  // When actions button is clicked, move focus to first option
+  useEffect(() => {
+    if (isActionsOpen) {
+      document.getElementById('actions-region')?.focus()
+    } else {
+      moreActionsButtonRef.current?.focus()
+    }
+  }, [isActionsOpen])
 
   useEffect(() => {
     if (!locationsPerPage) {
@@ -770,7 +786,13 @@ export default function ViewLocationsDashboardPage() {
             <ButtonMenu
               title='More actions'
               options={moreActions}
-              onSelect={(index) => onMoreAction(index)}
+              onSelect={(index) => {
+                setIsActionsOpen(false)
+                onMoreAction(index)
+              }}
+              ref={moreActionsButtonRef}
+              onOpen={() => setIsActionsOpen(true)}
+              onClose={() => setIsActionsOpen(false)}
             />
             &nbsp; &nbsp;
             <Button

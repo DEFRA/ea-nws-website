@@ -62,7 +62,6 @@ export default function LiveFloodWarningsDashboardPage() {
 
   useEffect(() => {
     ;(async () => {
-      console.log('loading live warnings')
       await loadLiveWarnings()
       setLoading(false)
     })()

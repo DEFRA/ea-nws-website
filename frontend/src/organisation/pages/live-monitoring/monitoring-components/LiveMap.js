@@ -181,7 +181,6 @@ export default function LiveMap({
       )
 
       if (!errorMessage) {
-        console.log('alerts', alerts)
         for (const liveAlert of alerts?.liveAlerts) {
           const liveLocationPromises = locations.map((location) =>
             processLocation(location, liveAlert)

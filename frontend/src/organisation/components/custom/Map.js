@@ -17,6 +17,7 @@ import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import OsMapTerms from '../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../common/enums/LocationDataType'
 import {
@@ -26,6 +27,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import {
   getBoundaries,
+  getOperationalBoundaryByTaCode,
   getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
 } from '../../../common/services/WfsFloodDataService'
@@ -47,7 +49,8 @@ export default function Map({
   boundaryList,
   boundariesAlreadyAdded = [],
   manualCoords,
-  accessibleMap = false
+  accessibleMap = false,
+  showOsMapTerms = true
 }) {
   const dispatch = useDispatch()
   const { latitude: currentLatitude, longitude: currentLongitude } =
@@ -59,12 +62,31 @@ export default function Map({
     latitude: currentLatitude,
     longitude: currentLongitude
   }
-  const locationGeometry = useSelector(
-    (state) => state?.session?.currentLocation?.geometry
-  )
+  const [locationGeometry, setLocationGeometry] = useState(null)
   const currentLocationDataType = useSelector((state) =>
     getLocationOther(state, 'location_data_type')
   )
+  const currentLocationGeometry = useSelector(
+    (state) => state?.session?.currentLocation?.geometry
+  )
+  const currentLocationGeocode = useSelector(
+    (state) => state?.session?.currentLocation?.geocode
+  )
+
+  useEffect(() => {
+    const fetchLocationGeometry = async () => {
+      if (currentLocationDataType === LocationDataType.BOUNDARY) {
+        const boundary = await getOperationalBoundaryByTaCode(
+          currentLocationGeocode
+        )
+        setLocationGeometry(boundary)
+      } else {
+        setLocationGeometry(currentLocationGeometry)
+      }
+    }
+
+    fetchLocationGeometry()
+  }, [currentLocationDataType])
 
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
@@ -79,13 +101,18 @@ export default function Map({
     async function fetchFloodAreaData() {
       let floodAreas
       if (
-        currentLocationDataType === LocationDataType.BOUNDARY ||
-        currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
-        currentLocationDataType === LocationDataType.SHAPE_LINE
+        (currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
+          currentLocationDataType === LocationDataType.SHAPE_LINE) &&
+        locationGeometry
       ) {
         floodAreas = await getSurroundingFloodAreasFromShape(
           JSON.parse(locationGeometry.geoJson)
         )
+      } else if (
+        currentLocationDataType === LocationDataType.BOUNDARY &&
+        locationGeometry
+      ) {
+        floodAreas = await getSurroundingFloodAreasFromShape(locationGeometry)
       } else {
         floodAreas = await getSurroundingFloodAreas(latitude, longitude)
       }
@@ -675,10 +702,10 @@ export default function Map({
             )}
             {tileLayerWithHeader}
             {showMapControls && (
-              <>
+              <div role='group' aria-label='Interactive Map Controls'>
                 <ZoomControl position='bottomright' />
                 <ResetMapButton />
-              </>
+              </div>
             )}
             {touchInput && (
               <div className='drop-pin-container'>
@@ -750,7 +777,7 @@ export default function Map({
               currentLocationDataType === LocationDataType.BOUNDARY && (
                 <>
                   <GeoJSON
-                    data={JSON.parse(locationGeometry.geoJson)}
+                    data={locationGeometry.geometry}
                     onEachFeature={onEachViewBoundaryFeature}
                     ref={(el) => {
                       shapefileRef.current = el
@@ -759,6 +786,7 @@ export default function Map({
                   <FitBounds />
                 </>
               )}
+            {showOsMapTerms && <OsMapTerms />}
           </>
         ) : (
           <div className='map-error-container'>

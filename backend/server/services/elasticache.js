@@ -99,6 +99,7 @@ const setLocations = async (client, orgId, locations, statusKey) => {
   const numLocations = Object.keys(formattedLocations).length
   await setJsonData(client, key, formattedLocations)
   let i = 1
+  let percent = 0
   Object.keys(formattedLocations).forEach(async (key) => {
     const location = formattedLocations[key]
     let keywords = []
@@ -569,6 +570,7 @@ const orgSignIn = async (
     )
     const numLocations = locations.length
     let locIndex = 1
+    let locPercent = 0
     for (const location of locations) {
       if (!Object.keys(existingLocations).includes(location.id)) {
         await addLocation(client, organization.id, location)
@@ -586,6 +588,7 @@ const orgSignIn = async (
     )
     const numContacts = contacts.length
     let contactIndex = 1
+    let contactPercent = 0
     for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {
         await addContact(client, orgId, contact)
@@ -602,6 +605,7 @@ const orgSignIn = async (
     await setLocations(client, organization.id, locations, statusKey)
     const numContacts = contacts.length
     let i = 1
+    let percent = 0
     for (const contact of contacts) {
       await addContact(client, orgId, contact)
       await setJsonData(client, statusKey, {

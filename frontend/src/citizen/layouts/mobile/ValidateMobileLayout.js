@@ -194,7 +194,11 @@ export default function ValidateMobileLayout({
                     text={'New code sent at ' + codeResentTime}
                   />
                 )}
-                {error && <ErrorSummary errorList={[{text: error, componentId: enterCodeInputId}]} />}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeInputId }]}
+                  />
+                )}
                 <h2 className='govuk-heading-l' id='main-content'>
                   Check your mobile phone
                 </h2>
@@ -212,7 +216,7 @@ export default function ValidateMobileLayout({
                     onChange={(val) => setCode(val)}
                   />
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     text='Continue'
                     onClick={handleSubmit}
                   />
@@ -221,7 +225,7 @@ export default function ValidateMobileLayout({
                     className='govuk-link'
                     style={{
                       display: 'inline-block',
-                      padding: '8px 10px 7px',
+                      padding: '8px 0 7px',
                       cursor: 'pointer'
                     }}
                   >

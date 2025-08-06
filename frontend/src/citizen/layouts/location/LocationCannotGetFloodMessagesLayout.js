@@ -25,17 +25,16 @@ export default function LocationCannotGetFloodMessagesLayout({
             </h1>
             <InsetText text={selectedLocation.address} />
             <p>Possible reasons are:</p>
-            <ul class='govuk-list govuk-list--bullet'>
+            <ul className='govuk-list govuk-list--bullet'>
               <li>the risk of flooding is very low</li>
             </ul>
             <p>You may still be at risk of flooding.</p>
             <div className='govuk-!-margin-top-7'>
               <Button
                 text='View nearby areas you can monitor'
-                className='govuk-button'
+                className='govuk-button govuk-!-margin-right-2'
                 onClick={() => navigate(navigateToNearbyFloodAreas)}
               />
-              &nbsp; &nbsp;
               <Button
                 text='Enter different location'
                 className='govuk-button  govuk-button--secondary'

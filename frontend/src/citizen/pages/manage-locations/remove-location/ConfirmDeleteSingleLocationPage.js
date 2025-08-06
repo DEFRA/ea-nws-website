@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -6,7 +6,10 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
-import { setProfile } from '../../../../common/redux/userSlice'
+import {
+  setLocationRegistrations,
+  setProfile
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { removeLocation } from '../../../../common/services/ProfileServices'
 
@@ -15,6 +18,9 @@ export default function ConfirmDeleteSingleLocationPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations
+  )
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -54,6 +60,13 @@ export default function ConfirmDeleteSingleLocationPage() {
 
       if (!errorMessage) {
         dispatch(setProfile(data.profile))
+
+        // Remove the location based on Id
+        const filtered = locationRegistrations?.filter(
+          (loc) => loc.locationId != location.state.locationId
+        )
+        filtered && dispatch(setLocationRegistrations(filtered))
+
         navigate('/home', {
           state: {
             removedLocation: location.state.name
@@ -96,11 +109,10 @@ export default function ConfirmDeleteSingleLocationPage() {
               You'll no longer get any flood messages for this location.
             </p>
             <Button
-              className='govuk-button govuk-button--warning'
+              className='govuk-button govuk-button--warning govuk-!-margin-right-2'
               text='Remove this location'
               onClick={handleSubmit}
             />
-            &nbsp; &nbsp;
             <Link
               onClick={() => navigate(-1)}
               className='govuk-body govuk-link'

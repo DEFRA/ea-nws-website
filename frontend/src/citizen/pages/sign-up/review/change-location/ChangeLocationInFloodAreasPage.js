@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -16,7 +15,7 @@ export default function ChangeLocationInFloodAreasPage() {
   )
   const authToken = useSelector((state) => state.session.authToken)
 
-  const continueToNextPage = async (profile) => {
+  const continueToNextPage = async ({ profile }) => {
     // remove all previous locations
     const updatedPois = profile.pois.filter(
       (loc) =>

@@ -52,7 +52,6 @@ const citizenPOIs = [
         id: 'other',
         value: {
           s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1'],
             targetAreas: [
               {
                 TA_CODE: '063FWT23WestminA',
@@ -95,14 +94,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: 'Marlow, SL7, Buckinghamshire' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -122,14 +113,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: 'Marlow, SL7, Buckinghamshire' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -149,14 +132,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
-          })
-        }
       }
     ]
   },
@@ -176,14 +151,6 @@ const citizenPOIs = [
       {
         id: 'locationName',
         value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
-      },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            alertTypes: ['ALERT_LVL_3']
-          })
-        }
       }
     ]
   }
@@ -198,7 +165,7 @@ const orgPOI = [
       latitude: '52612444.5',
       longitude: '1724640.5'
     },
-    id: '1',
+    id: '1435',
     enabled: true,
     geometry: { geoJson: '' },
     geocode: '',
@@ -241,6 +208,8 @@ const citizenContact2 = {
   homePhones: ['01475721535'],
   language: 'EN',
   additionals: [
+    //uncomment below to test intial admin page
+    //{ id: 'firstLogin', value: { s: 'true' } },
     { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
     { id: 'signupComplete', value: { s: 'true' } }
   ],
@@ -284,8 +253,76 @@ const registrations = {
   }
 }
 
+const locationRegistrations = [
+  {
+    locationId: '1',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741990',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '2',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741995',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '3',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '4',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '5',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_3']
+        }
+      }
+    ]
+  }
+]
+
 const organization = {
-  id: '13',
+  id: '13435',
   name: 'Flood Inc.',
   description: JSON.stringify({
     name: 'Flood Inc.',
@@ -337,5 +374,6 @@ module.exports = {
   citizenProfile: citizenContact,
   citizenProfile2: citizenContact2,
   registrations: registrations,
+  locationRegistrations: locationRegistrations,
   organization: organization
 }

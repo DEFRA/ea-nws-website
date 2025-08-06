@@ -46,7 +46,9 @@ export default function CheckYourAnswersPage() {
   return (
     <>
       <Helmet>
-        <title>Check your answers - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Check your answers - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink to='/organisation/sign-up/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

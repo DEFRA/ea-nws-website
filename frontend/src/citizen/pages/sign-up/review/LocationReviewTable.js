@@ -39,7 +39,7 @@ export default function LocationReviewTable() {
                   onClick={(e) => selectLocationToBeChanged(e)}
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
-                  aria-label={`Change address for location ${location}`}
+                  aria-label={`Change address for location - ${location}`}
                 >
                   Change
                 </Link>

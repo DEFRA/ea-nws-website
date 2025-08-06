@@ -1,0 +1,46 @@
+const { logger } = require('../../plugins/logging')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
+
+const { getTAData, setTAData } = require('../../services/elasticache')
+const {
+  getOperationalBoundaryByTaCode
+} = require('../../services/qgis/qgisFunctions')
+
+module.exports = [
+  {
+    method: ['POST'],
+    path: '/api/elasticache/get_ob_data',
+    handler: async (request, h) => {
+      try {
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
+        }
+        const { TA_CODE } = request.payload
+        const { redis } = request.server.app
+
+        if (TA_CODE) {
+          let result
+          result = await getTAData(redis, TA_CODE)
+          if (result === null) {
+            result = await getOperationalBoundaryByTaCode(TA_CODE)
+            if (result) {
+              await setTAData(redis, TA_CODE, result)
+            }
+          }
+          if (result) {
+            return h.response({ status: 200, data: result })
+          } else {
+            return h.response({ status: 200 })
+          }
+        } else {
+          return createGenericErrorResponse(h)
+        }
+      } catch (error) {
+        logger.error(error)
+        return createGenericErrorResponse(h)
+      }
+    }
+  }
+]

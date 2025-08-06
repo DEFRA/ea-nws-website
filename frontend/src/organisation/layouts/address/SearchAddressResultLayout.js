@@ -96,7 +96,7 @@ export default function SearchAddressResultsLayout({
                       </tbody>
                     </table>
                     <br />
-                    <h2 class='govuk-heading-m'>
+                    <h2 className='govuk-heading-m'>
                       If you cannot see your organisation's address
                     </h2>
                     <p>

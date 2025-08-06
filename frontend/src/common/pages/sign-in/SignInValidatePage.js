@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
@@ -16,6 +16,7 @@ import ExpiredCodeLayout from '../../layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
   setContactPreferences,
+  setLocationRegistrations,
   setOrganization,
   setProfile,
   setProfileId,
@@ -71,7 +72,15 @@ export default function SignInValidatePage() {
             setPercent(null)
           }
           if (data?.status === 'complete') {
-            navigate(orgManageLocationsUrls.monitoring.view)
+            const isAdminUsersFirstLogin = getAdditionals(
+              orgData.profile,
+              'firstLogin'
+            )
+            if (isAdminUsersFirstLogin === 'true') {
+              navigate('/sign-in/organisation/admin-controls')
+            } else {
+              navigate(orgManageLocationsUrls.monitoring.view)
+            }
           }
         }
         if (errorMessage) {
@@ -141,6 +150,20 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
+            const { errorMessage, data: verifyData } = await backendCall(
+              { authToken: data.authToken },
+              'api/sign_in_verify'
+            )
+
+            if (errorMessage) {
+              setError(errorMessage)
+            } else {
+              dispatch(
+                setLocationRegistrations(verifyData.locationRegistrations)
+              )
+              dispatch(setProfile(verifyData.profile))
+            }
+
             navigate('/home')
           }
         }
@@ -216,11 +239,10 @@ export default function SignInValidatePage() {
                     onChange={(val) => setCode(val)}
                   />
                   <Button
-                    className='govuk-button'
+                    className='govuk-button govuk-!-margin-right-2'
                     text='Continue'
                     onClick={handleSubmit}
                   />
-                  &nbsp; &nbsp;
                   <Link
                     onClick={navigateBack}
                     className='govuk-link inline-link'

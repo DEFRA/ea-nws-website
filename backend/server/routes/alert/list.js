@@ -35,7 +35,6 @@ module.exports = [
         }
 
         if (filterDate) {
-          console.log('filtering by date ', filterDate)
           historicAlerts = historicAlerts.filter((alert) => {
             let date = alert.endDate
             return isAfter(date, filterDate)

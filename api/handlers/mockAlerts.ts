@@ -15,6 +15,23 @@ function getRandomPastUnixBeforeXdays(
   return Math.floor(randomPastMs / 1000)
 }
 
+function getRandomFutureUnixInXDays(
+  minDaysFromNow: number,
+  maxDaysFromNow: number
+): number {
+  const now = Date.now()
+
+  const minFutureMs = minDaysFromNow * 24 * 60 * 60 * 1000
+  const maxFutureMs = maxDaysFromNow * 24 * 60 * 60 * 1000
+
+  const min = now + minFutureMs
+  const max = now + maxFutureMs
+
+  const randomFutureMs = Math.floor(Math.random() * (max - min) + min)
+
+  return Math.floor(randomFutureMs / 1000) // Unix time in seconds
+}
+
 const alerts = [
   {
     //  issue warning alert - issue warning alert for TA Code 051FWFEF4B
@@ -23,7 +40,7 @@ const alerts = [
     name: 'issueFloodWarning',
     description: { en: 'Flood', additionalLabels: [] },
     effectiveDate: getRandomPastUnixBeforeXdays(2, 4), // unix time
-    expirationDate: 1734004381,
+    expirationDate: getRandomFutureUnixInXDays(1, 5),
     duration: {},
     urgency: 'SEVERE',
     severity: 'MINOR',
@@ -85,7 +102,7 @@ const alerts = [
     workspaceName: 'National Workspace'
   },
   {
-    // remove alert - remove alert for TA Code 122WAF946
+    // remove alert - remove alert for TA Code 122WAF946 - removed alert in the last 24 hours
     id: '3',
     version: 123456,
     name: 'removeFloodAlert',
@@ -221,7 +238,7 @@ const alerts = [
     workspaceName: 'National Workspace'
   },
   {
-    // remove warning alert - remove warning for TA Code 113WACT1D
+    // remove warning alert - remove warning for TA Code 113WACT1D - removed alert in the last 24 hours
     id: '6',
     version: 123456,
     name: 'removeFloodWarning', // name must have remove

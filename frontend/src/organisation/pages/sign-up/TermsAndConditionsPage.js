@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -145,6 +145,24 @@ export default function TermsAndConditionsPage() {
                 needs
               </li>
             </ul>
+
+            <h2 className='govuk-heading-m'>
+              Granting us access to your account
+            </h2>
+            <p>
+              If you have problems with your account that you cannot fix on your
+              own or with our support, you can ask us in writing to become a
+              temporary administrator on your account.
+            </p>
+            <p>
+              While we have temporary administrator rights, we’ll have access to
+              your data. We’ll take all reasonable steps to make sure your
+              organisation’s confidentiality is safe.
+            </p>
+            <p>
+              After we’ve fixed any problems, we’ll delete our administrator
+              rights as soon as possible, within reasonable limits.
+            </p>
 
             <h2 className='govuk-heading-m'>How we use personal information</h2>
             <p>

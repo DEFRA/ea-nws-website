@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function ErrorSummary({ errorList }) {
+  const location = useLocation()
   //Remove null and flatten the errorList
   const errors = errorList.filter((item) => item !== null).flat()
 
@@ -24,6 +25,10 @@ export default function ErrorSummary({ errorList }) {
   const newTitle = document.title.startsWith('Error: ')
     ? document.title
     : `Error: ${document.title}`
+
+    const isOrganisationPage =
+    location.pathname.includes('organisation') &&
+    !location.pathname.includes('sign-up')
 
   return (
     <>
@@ -52,7 +57,7 @@ export default function ErrorSummary({ errorList }) {
                 return (
                   <li key={index} className='govuk-error-summary__list-item'>
                     {genericError}. Please retry and if the problem persists{' '}
-                    <Link to='/contact' className='govuk-link'>
+                    <Link to={isOrganisationPage ? '/organisation/contact' : '/contact'} className='govuk-link'>
                       contact us
                     </Link>
                     .

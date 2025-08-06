@@ -1,7 +1,7 @@
 import SubNavigation from '../../../../../../common/components/custom/SubNavigation'
 import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function ViewUserSubNavigation ({ currentPage }) {
+export default function ViewUserSubNavigation({ currentPage }) {
   const pages = [
     {
       title: 'User details',

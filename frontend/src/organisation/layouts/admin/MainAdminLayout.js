@@ -58,7 +58,7 @@ export default function MainAdminLayout({
                   {error && (
                     <p className='govuk-error-message'>
                       <br />
-                      <span class="govuk-visually-hidden">Error:</span>{' '}
+                      <span className="govuk-visually-hidden">Error:</span>{' '}
                       {error}
                     </p>
                   )}

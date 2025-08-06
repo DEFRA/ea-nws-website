@@ -1,7 +1,7 @@
 import React from 'react'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
-export default function MapInteractiveKey ({
+export default function MapInteractiveKey({
   showFloodWarningAreas,
   setShowFloodWarningAreas,
   showFloodAlertAreas,
@@ -27,6 +27,7 @@ export default function MapInteractiveKey ({
             name='FloodWarningAndSevereArea'
             onChange={() => setShowFloodWarningAreas(!showFloodWarningAreas)}
             checked={showFloodWarningAreas}
+            id='flood_warning_and_severe_area'
           />
           <div className='org-flood-warning-item'>
             <span
@@ -48,6 +49,7 @@ export default function MapInteractiveKey ({
             name='FloodAlertArea'
             onChange={() => setShowFloodAlertAreas(!showFloodAlertAreas)}
             checked={showFloodAlertAreas}
+            id='flood_alert_area'
           />
           <div className='org-flood-alert-item'>
             <div
@@ -65,6 +67,7 @@ export default function MapInteractiveKey ({
             name='FloodExtent'
             onChange={() => setShowFloodExtents(!showFloodExtents)}
             checked={showFloodExtents}
+            id='flood_extent'
           />
           <div className='org-flood-alert-item'>
             <div

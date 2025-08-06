@@ -68,11 +68,10 @@ export default function ConfirmDeleteContactDetailsLayout({
             </h1>
             <InsetText text={location.state.contact} />
             <Button
-              className='govuk-button govuk-button--warning'
+              className='govuk-button govuk-button--warning govuk-!-margin-right-2'
               text='Remove'
               onClick={removeContact}
             />
-            &nbsp; &nbsp;
             <Link
               onClick={handleCancelLink}
               className='govuk-body govuk-link inline-link'

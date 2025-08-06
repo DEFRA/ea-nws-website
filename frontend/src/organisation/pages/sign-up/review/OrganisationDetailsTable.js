@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
@@ -33,7 +32,11 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to={orgSignUpUrls.change.address} className='govuk-link'>
+              <Link
+                to={orgSignUpUrls.change.address}
+                className='govuk-link'
+                aria-label={`Change ${organisation.address} as your organisation address`}
+              >
                 Change
               </Link>
             </td>
@@ -49,6 +52,9 @@ export default function OrganisationDetailsTable ({ organisation }) {
               <Link
                 to={orgSignUpUrls.change.compHouseNum}
                 className='govuk-link'
+                aria-label={`Change ${
+                  organisation.compHouseNum ? 'Yes' : 'No'
+                } if your organisation has Companies House number`}
               >
                 Change
               </Link>
@@ -66,6 +72,9 @@ export default function OrganisationDetailsTable ({ organisation }) {
               <Link
                 to={orgSignUpUrls.change.compHouseNum}
                 className='govuk-link'
+                aria-label={`Change ${
+                  organisation.compHouseNum ? organisation.compHouseNum : '-'
+                } as your organisation's Companies House number`}
               >
                 Change
               </Link>
@@ -80,7 +89,13 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to={orgSignUpUrls.change.sector} className='govuk-link'>
+              <Link
+                to={orgSignUpUrls.change.sector}
+                className='govuk-link'
+                aria-label={`Change ${
+                  organisation.emergencySector ? 'Yes' : 'No'
+                } if your organisation is involved in responding to public emergencies or incidents`}
+              >
                 Change
               </Link>
             </td>

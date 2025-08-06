@@ -102,7 +102,10 @@ const userSlice = createSlice({
       mobilePhones: [],
       homePhones: [],
       language: 'EN',
-      additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+      additionals: [
+        { id: 'signupComplete', value: { s: 'false' } },
+        { id: 'firstLogin', value: { s: 'true' } }
+      ],
       unverified: {
         emails: [],
         mobilePhones: [],
@@ -112,6 +115,8 @@ const userSlice = createSlice({
     },
     contactPreferences: null,
     registrations: null,
+    locationRegistrations: null,
+    floodAreasInfo: null,
     currentContact: null,
     signinType: null,
     // location data
@@ -191,6 +196,7 @@ const userSlice = createSlice({
       ]
     },
     currentTA: null,
+    currentLocationAlerts: null,
     // org data
     organization: {
       id: null,
@@ -269,6 +275,12 @@ const userSlice = createSlice({
     },
     setRegistrations: (state, action) => {
       state.registrations = action.payload
+    },
+    setLocationRegistrations: (state, action) => {
+      state.locationRegistrations = action.payload
+    },
+    setFloodAreasInfo: (state, action) => {
+      state.floodAreasInfo = action.payload
     },
     setCurrentContact: (state, action) => {
       state.currentContact = action.payload
@@ -362,6 +374,9 @@ const userSlice = createSlice({
     // org location data
     setCurrentTA: (state, action) => {
       state.currentTA = action.payload
+    },
+    setCurrentLocationAlerts: (state, action) => {
+      state.currentLocationAlerts = action.payload
     },
     setCurrentLocation: (state, action) => {
       state.currentLocation.id = action.payload.id
@@ -810,7 +825,10 @@ const userSlice = createSlice({
         mobilePhones: [],
         homePhones: [],
         language: 'EN',
-        additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+        additionals: [
+          { id: 'signupComplete', value: { s: 'false' } },
+          { id: 'firstLogin', value: { s: 'true' } }
+        ],
         unverified: {
           emails: [],
           mobilePhones: [],
@@ -820,6 +838,8 @@ const userSlice = createSlice({
       }
       state.contactPreferences = null
       state.registrations = null
+      state.locationRegistrations = null
+      state.floodAreasInfo = null
       state.currentContact = null
       state.signinType = null
       // location data
@@ -854,6 +874,7 @@ const userSlice = createSlice({
       state.previousOrgAddress = null
       // org location data
       state.currentTA = null
+      state.currentLocationAlerts = null
       state.currentLocation = {
         id: null,
         enabled: true,
@@ -1039,6 +1060,8 @@ export const {
   setNotInEnglandLocations,
   setProfile,
   setRegistrations,
+  setLocationRegistrations,
+  setFloodAreasInfo,
   setContactPreferences,
   setCurrentContact,
   addContactPreference,
@@ -1078,6 +1101,7 @@ export const {
   setPreviousOrgAddress,
   // org location data
   setCurrentTA,
+  setCurrentLocationAlerts,
   setCurrentLocation,
   setCurrentLocationId,
   setCurrentLocationEnabled,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
@@ -21,6 +21,9 @@ export default function SubscribedLocationTable({ setError }) {
   const dispatch = useDispatch()
 
   const locations = useSelector((state) => state.session.profile.pois)
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations
+  )
   const maxLocations = 15
   const [partnerId, setPartnerId] = useState(false)
 
@@ -135,7 +138,7 @@ export default function SubscribedLocationTable({ setError }) {
             style={{ fontSize: '1rem' }}
             className='govuk-hint govuk-!-margin-bottom-0'
           >
-            {getFloodWarningAndAlerts(location)}
+            {getFloodWarningAndAlerts(location, locationRegistrations)}
           </p>
         </td>
       )
@@ -192,7 +195,10 @@ export default function SubscribedLocationTable({ setError }) {
                           {location.address}
                         </p>
                         <p className='govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                          {getFloodWarningAndAlerts(location)}
+                          {getFloodWarningAndAlerts(
+                            location,
+                            locationRegistrations
+                          )}
                         </p>
                       </td>
 

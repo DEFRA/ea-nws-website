@@ -19,7 +19,7 @@ export default function ErrorPage () {
               <b>Contact us, if you need help</b>
               <br />
               <>
-                <ul class='govuk-list'>
+                <ul className='govuk-list'>
                   <li>Telephone: 0345 988 188</li>
                   <li>Textphone: 0345 602 6340</li>
                   <li>Open 24 hours a day, 7 days a week</li>
@@ -29,7 +29,7 @@ export default function ErrorPage () {
             <p>
               Email:{' '}
               <a
-                class='govuk-link'
+                className='govuk-link'
                 href='mailto:getfloodwarnings@environment-agency.gov.uk'
               >
                 getfloodwarnings@environment-agency.gov.uk

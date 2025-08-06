@@ -27,6 +27,9 @@ export default function AccountDetailsTable({ profile }) {
                   to='/signup/review/change-account-name'
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
+                  aria-label={`Change ${
+                    profile.firstname + ' ' + profile.lastname
+                  } as your full name`}
                 >
                   Change
                 </Link>

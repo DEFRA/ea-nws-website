@@ -24,6 +24,7 @@ import { isMobile } from 'react-device-detect'
 import locationPin from '../../assets/images/location_pin.svg'
 import AlertType from '../../enums/AlertType'
 import { backendCall } from '../../services/BackendService'
+import OsMapTerms from './OsMapTerms'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
 export default function Map({
@@ -37,7 +38,8 @@ export default function Map({
   showOnlySelectedFloodArea = false,
   highlightSelectedFloodArea = false,
   fullScreen,
-  exitMap
+  exitMap,
+  showOsMapTerms = true
 }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
@@ -325,8 +327,12 @@ export default function Map({
         >
           {apiKey && tileLayerWithHeader}
           {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
-          {interactive && !isMobile && <ZoomControl position='bottomright' />}
-          {resetMapButton && !isMobile && <ResetMapButton />}
+          {!isMobile && (interactive || resetMapButton) && (
+            <div role='group' aria-label='Interactive Map Controls'>
+              {interactive && <ZoomControl position='bottomright' />}
+              {resetMapButton && <ResetMapButton />}
+            </div>
+          )}
           {fullScreen && <FullScreenMapButton />}
           {exitMap && <ExitMapButton />}
           {showMarker && (
@@ -358,6 +364,7 @@ export default function Map({
               }}
             />
           )}
+          {showOsMapTerms && <OsMapTerms />}
         </MapContainer>
       </div>
     </>

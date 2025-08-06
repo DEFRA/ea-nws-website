@@ -3,7 +3,7 @@ import LocationDataType from '../../../../../../../common/enums/LocationDataType
 import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../../components/custom/Map'
 
-export default function LocationInformation ({ location, comparedLocation }) {
+export default function LocationInformation({ location, comparedLocation }) {
   const additionalData = location?.additionals?.other
   const formattedAddress = (
     additionalData?.full_address +
@@ -97,7 +97,8 @@ export default function LocationInformation ({ location, comparedLocation }) {
           <div
             style={
               comparedLocation &&
-              area(comparedLocation?.geometry?.geoJson) !== area(location?.geometry?.geoJson)
+              area(comparedLocation?.geometry?.geoJson) !==
+                area(location?.geometry?.geoJson)
                 ? compareStyle
                 : {}
             }
@@ -120,7 +121,8 @@ export default function LocationInformation ({ location, comparedLocation }) {
         comparedLocation &&
         ((!isShapeFile && comparedAdditionalData?.full_address === null) ||
           (isShapeFile &&
-            comparedLocation?.geometry?.geoJson?.properties?.Shape_Area === null))
+            comparedLocation?.geometry?.geoJson?.properties?.Shape_Area ===
+              null))
           ? compareStyle
           : {}
       }

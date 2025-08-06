@@ -11,6 +11,14 @@ export const getFloodAreaByTaCode = async (code) => {
   return result.data || []
 }
 
+export const getOperationalBoundaryByTaCode = async (code) => {
+  const result = await backendCall(
+    { TA_CODE: code },
+    'api/elasticache/get_ob_data'
+  )
+  return result.data || []
+}
+
 const wfsCall = async (bbox, map, type) => {
   const WFSParams = {
     service: 'WFS',

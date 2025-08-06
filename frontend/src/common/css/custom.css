@@ -1086,6 +1086,12 @@
   gap: 0.5rem;
   cursor: pointer;
   position: relative; /* Add this to ensure the pseudo-elements are positioned correctly */
+  a {
+    color: #fff;
+    display: flex;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
 }
 
 /* Styles for the active state */
@@ -2316,6 +2322,18 @@ govuk-menu-toggle.button-menu > button {
   font-size: 0.825rem;
   padding: 5px;
   margin: 0 5px;
+}
+
+/* OS Map Terms */
+.os-map-terms-container {
+  z-index: 500;
+  position: absolute;
+  bottom: 0;
+  left: 40px;
+}
+
+.os-map-terms-container a {
+  color: #0b0c0c;
 }
 
 .keyboard-list {

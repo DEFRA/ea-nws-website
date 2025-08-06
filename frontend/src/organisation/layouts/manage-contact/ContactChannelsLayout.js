@@ -417,85 +417,114 @@ export default function ContactChannelsLayout({
                       messages.
                     </p>
 
-                    <p className='govuk-!-font-weight-bold govuk-!-margin-top-6'>
-                      Email addresses (optional)
-                    </p>
-                    <Input
-                      id='email-address-1'
-                      name='Email address 1'
-                      inputType='text'
-                      inputMode='email'
-                      onChange={(val) =>
-                        setEmailInput((inputs) => [val, inputs[1]])
-                      }
-                      value={emailInput[0]}
-                      error={emailError[0]}
-                      className='govuk-input govuk-input--width-20'
-                      labelSize='s'
-                    />
-                    <Input
-                      id='email-address-2'
-                      name='Email address 2'
-                      inputType='text'
-                      inputMode='email'
-                      onChange={(val) =>
-                        setEmailInput((inputs) => [inputs[0], val])
-                      }
-                      value={emailInput[1]}
-                      error={emailError[1]}
-                      className='govuk-input govuk-input--width-20'
-                    />
+                    <fieldset
+                      className='govuk-fieldset govuk-!-margin-top-5'
+                      role='group'
+                      aria-describedby='email-address-hint'
+                    >
+                      <legend class='govuk-fieldset__legend'>
+                        <h2 className='govuk-fieldset__heading govuk-!-font-weight-bold'>
+                          Email addresses (optional)
+                        </h2>
+                      </legend>
+                      <Input
+                        id='email-address-1'
+                        name='Email address 1'
+                        inputType='text'
+                        inputMode='email'
+                        onChange={(val) =>
+                          setEmailInput((inputs) => [val, inputs[1]])
+                        }
+                        value={emailInput[0]}
+                        error={emailError[0]}
+                        className='govuk-input govuk-input--width-20'
+                        labelSize='s'
+                      />
+                      <Input
+                        id='email-address-2'
+                        name='Email address 2'
+                        inputType='text'
+                        inputMode='email'
+                        onChange={(val) =>
+                          setEmailInput((inputs) => [inputs[0], val])
+                        }
+                        value={emailInput[1]}
+                        error={emailError[1]}
+                        className='govuk-input govuk-input--width-20'
+                      />
+                    </fieldset>
                   </>
                 )}
-                <p className='govuk-!-font-weight-bold govuk-!-margin-top-8'>
-                  UK mobile telephone numbers for text messages (optional)
-                </p>
-                <Input
-                  id='uk-mobile-number-1'
-                  name='UK mobile telephone number 1'
-                  inputType='text'
-                  onChange={(val) =>
-                    setMobileInput((inputs) => [val, inputs[1]])
-                  }
-                  value={mobileInput[0]}
-                  className='govuk-input govuk-input--width-20'
-                  labelSize='s'
-                  error={mobilePhoneError[0]}
-                />
-                <Input
-                  id='uk-mobile-number-2'
-                  name='UK mobile telephone number 2'
-                  inputType='text'
-                  onChange={(val) =>
-                    setMobileInput((inputs) => [inputs[0], val])
-                  }
-                  value={mobileInput[1]}
-                  className='govuk-input govuk-input--width-20'
-                  error={mobilePhoneError[1]}
-                />
+                <fieldset
+                  className='govuk-fieldset govuk-!-margin-top-5'
+                  role='group'
+                  aria-describedby='mobile-numbers-hint'
+                >
+                  <legend class='govuk-fieldset__legend'>
+                    <h2 className='govuk-fieldset__heading govuk-!-font-weight-bold'>
+                      UK mobile telephone numbers for text messages (optional)
+                    </h2>
+                  </legend>
+                  <Input
+                    id='uk-mobile-number-1'
+                    name='UK mobile telephone number 1'
+                    inputType='text'
+                    onChange={(val) =>
+                      setMobileInput((inputs) => [val, inputs[1]])
+                    }
+                    value={mobileInput[0]}
+                    className='govuk-input govuk-input--width-20'
+                    labelSize='s'
+                    error={mobilePhoneError[0]}
+                  />
+                  <Input
+                    id='uk-mobile-number-2'
+                    name='UK mobile telephone number 2'
+                    inputType='text'
+                    onChange={(val) =>
+                      setMobileInput((inputs) => [inputs[0], val])
+                    }
+                    value={mobileInput[1]}
+                    className='govuk-input govuk-input--width-20'
+                    error={mobilePhoneError[1]}
+                  />
+                </fieldset>
 
-                <p className='govuk-!-font-weight-bold govuk-!-margin-top-8'>
-                  UK telephone numbers for voice messages (optional)
-                </p>
-                <Input
-                  id='uk-telephone-number-1'
-                  name='UK telephone number 1'
-                  inputType='text'
-                  onChange={(val) => setHomeInput((inputs) => [val, inputs[1]])}
-                  className='govuk-input govuk-input--width-20'
-                  labelSize='s'
-                  value={homeInput[0]}
-                  error={homePhoneError[0]}
-                />
-                <Input
-                  id='uk-telephone-number-2'
-                  name='UK telephone number 2'
-                  inputType='text'
-                  onChange={(val) => setHomeInput((inputs) => [inputs[0], val])}
-                  className='govuk-input govuk-input--width-20'
-                  value={homeInput[1]}
-                  error={homePhoneError[1]}
-                />
+                <fieldset
+                  className='govuk-fieldset govuk-!-margin-top-5'
+                  role='group'
+                  aria-describedby='telephone-numbers-hint'
+                >
+                  <legend class='govuk-fieldset__legend'>
+                    <h2 className='govuk-fieldset__heading govuk-!-font-weight-bold'>
+                      UK telephone numbers for voice messages (optional)
+                    </h2>
+                  </legend>
+
+                  <Input
+                    id='uk-telephone-number-1'
+                    name='UK telephone number 1'
+                    inputType='text'
+                    onChange={(val) =>
+                      setHomeInput((inputs) => [val, inputs[1]])
+                    }
+                    className='govuk-input govuk-input--width-20'
+                    labelSize='s'
+                    value={homeInput[0]}
+                    error={homePhoneError[0]}
+                  />
+                  <Input
+                    id='uk-telephone-number-2'
+                    name='UK telephone number 2'
+                    inputType='text'
+                    onChange={(val) =>
+                      setHomeInput((inputs) => [inputs[0], val])
+                    }
+                    className='govuk-input govuk-input--width-20'
+                    value={homeInput[1]}
+                    error={homePhoneError[1]}
+                  />
+                </fieldset>
               </div>
               <Button
                 text='Continue'

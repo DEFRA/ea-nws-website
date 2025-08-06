@@ -11,34 +11,34 @@ export default function ServiceNavigation ({
     <>
       <section
         aria-label='Service information'
-        class='govuk-service-navigation'
+        className='govuk-service-navigation'
         data-module='govuk-service-navigation'
         style={removeGreyBackground ? { backgroundColor: 'transparent' } : {}}
       >
-        <div class='govuk-width-container'>
-          <div class='govuk-service-navigation__container'>
+        <div className='govuk-width-container'>
+          <div className='govuk-service-navigation__container'>
             {serviceLink && (
-              <span class='govuk-service-navigation__service-name'>
+              <span className='govuk-service-navigation__service-name'>
                 <Link
                   to={serviceLink.url}
-                  class='govuk-service-navigation__link'
+                  className='govuk-service-navigation__link'
                 >
                   {serviceLink.name}
                 </Link>
               </span>
             )}
-            <nav aria-label='Menu' class='govuk-service-navigation__wrapper'>
-              <ul class='govuk-service-navigation__list' id='navigation'>
+            <nav aria-label='Menu' className='govuk-service-navigation__wrapper'>
+              <ul className='govuk-service-navigation__list' id='navigation'>
                 {navLinks.map((link, index) => (
                   <li
                     key={index}
-                    class={`govuk-service-navigation__item ${
+                    className={`govuk-service-navigation__item ${
                       currentPage === link.url &&
                       'govuk-service-navigation__item--active'
                     }`}
                   >
                     <Link
-                      class='govuk-service-navigation__link'
+                      className='govuk-service-navigation__link'
                       onClick={() => updatePage(link.url)}
                       aria-current='true'
                     >

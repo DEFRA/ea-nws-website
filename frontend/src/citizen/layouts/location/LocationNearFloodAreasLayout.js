@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -14,6 +14,8 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import AlertType from '../../../common/enums/AlertType'
 import {
   getAdditional,
+  setFloodAreasInfo,
+  setLocationRegistrations,
   setNearbyTargetAreasAdded,
   setProfile
 } from '../../../common/redux/userSlice'
@@ -41,6 +43,9 @@ export default function LocationNearFloodAreasLayout({
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
+  )
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || null
   )
   const { latitude, longitude } = selectedLocation.coordinates
   const [floodAreas, setFloodAreas] = useState([])
@@ -138,9 +143,24 @@ export default function LocationNearFloodAreasLayout({
           await registerLocationsToPartner(updatedProfile)
           dispatch(setProfile(updatedProfile))
         }
-      }
+      } else {
+        let floodAreasInfo = new Array()
+        floodAreas?.forEach((area, index) => {
+          const floodAlerts = getFloodAlertDetails(area?.properties?.category)
 
-      continueToNextPage(updatedProfile)
+          if (area.addLocation) {
+            floodAreasInfo.push({
+              address: area?.properties?.TA_Name,
+              alertTypes: floodAlerts
+            })
+          }
+        })
+        dispatch(setFloodAreasInfo(floodAreasInfo))
+      }
+      continueToNextPage({
+        locationName: selectedLocation.address,
+        profile: updatedProfile
+      })
     } else {
       setError('Select at least one area')
     }
@@ -164,17 +184,7 @@ export default function LocationNearFloodAreasLayout({
     const floodAreasAdded = toAdd.map((area) => area.properties.TA_Name)
 
     for (const area of toAdd) {
-      const additionals = [
-        { id: 'locationName', value: { s: locationName } },
-        {
-          id: 'other',
-          value: {
-            s: JSON.stringify({
-              alertTypes: getAreasAlertMessageTypes(area.properties.category)
-            })
-          }
-        }
-      ]
+      const additionals = [{ id: 'locationName', value: { s: locationName } }]
 
       const targetArea = {
         name: '',
@@ -207,7 +217,9 @@ export default function LocationNearFloodAreasLayout({
   }
 
   const registerLocationsToPartner = async (profile) => {
-    floodAreas.forEach(async (area) => {
+    let updatedLocationRegistrations = [...(locationRegistrations || [])]
+
+    for (const area of floodAreas) {
       if (area.addLocation) {
         const location = findPOIByAddress(profile, area?.properties.TA_Name)
         const locationAlertTypes = getAreasAlertMessageTypes(
@@ -226,8 +238,25 @@ export default function LocationNearFloodAreasLayout({
           'api/partner/register_location_to_partner',
           navigate
         )
+
+        updatedLocationRegistrations = [
+          ...updatedLocationRegistrations,
+          {
+            locationId: location.id,
+            registrations: [
+              {
+                params: {
+                  ...data.params,
+                  alertTypes: locationAlertTypes
+                }
+              }
+            ]
+          }
+        ]
       }
-    })
+    }
+
+    dispatch(setLocationRegistrations(updatedLocationRegistrations))
   }
 
   const handleUserNavigatingBack = async () => {
@@ -300,7 +329,7 @@ export default function LocationNearFloodAreasLayout({
         icon: 'warning',
         areaCategory: 'Severe flood warnings and flood warnings area',
         messages: (
-          <ul class='govuk-list govuk-list--bullet'>
+          <ul className='govuk-list govuk-list--bullet'>
             <li>severe flood warnings</li>
             <li>flood warnings</li>
           </ul>
@@ -312,11 +341,21 @@ export default function LocationNearFloodAreasLayout({
         icon: 'alert',
         areaCategory: 'flood alerts area',
         messages: (
-          <ul class='govuk-list govuk-list--bullet'>
+          <ul className='govuk-list govuk-list--bullet'>
             <li>flood alerts</li>
           </ul>
         )
       }
+    }
+  }
+
+  const getFloodAlertDetails = (category) => {
+    if (category.toLowerCase().includes('warning')) {
+      return [AlertType.FLOOD_WARNING]
+    } else if (category.toLowerCase().includes('alert')) {
+      return [AlertType.FLOOD_ALERT]
+    } else {
+      return []
     }
   }
 
@@ -373,7 +412,7 @@ export default function LocationNearFloodAreasLayout({
             getFloodAreaDetails(area?.properties?.category).icon
           }-square left`}
         />
-        <h3 class='govuk-heading-s'>{area.properties.TA_Name}</h3>
+        <h3 className='govuk-heading-s'>{area.properties.TA_Name}</h3>
       </div>
       <p>Messages you'll get:</p>
       {getFloodAreaDetails(area?.properties?.category).messages}
@@ -478,12 +517,12 @@ export default function LocationNearFloodAreasLayout({
                     error && 'govuk-form-group--error'
                   }`}
                 >
-                  {error && <p class='govuk-error-message'>{error}</p>}
+                  {error && <p className='govuk-error-message'>{error}</p>}
                   {floodAreas.map((area) => {
                     return (
                       <>
-                        <div class='govuk-summary-card' key={area.id}>
-                          <div class='govuk-summary-card__title-wrapper'>
+                        <div className='govuk-summary-card' key={area.id}>
+                          <div className='govuk-summary-card__title-wrapper'>
                             <Checkbox
                               label='Select'
                               screenReaderAdditional={getAccessibleLabel(area)}
@@ -501,11 +540,11 @@ export default function LocationNearFloodAreasLayout({
                               }}
                             />
                           </div>
-                          <div class='govuk-summary-card__content govuk-grid-row'>
-                            <div class='govuk-grid-column-one-half'>
+                          <div className='govuk-summary-card__content govuk-grid-row'>
+                            <div className='govuk-grid-column-one-half'>
                               {isMobile ? map(area) : areaInfo(area)}
                             </div>
-                            <div class='govuk-grid-column-one-half'>
+                            <div className='govuk-grid-column-one-half'>
                               {isMobile ? (
                                 <div className='govuk-!-padding-top-4'>
                                   {areaInfo(area)}
@@ -525,7 +564,7 @@ export default function LocationNearFloodAreasLayout({
                     title={
                       'Read more on the difference between warnings and alerts'
                     }
-                    text={'Shakir to add details here'}
+                    text={<FloodMessageDetails />}
                   />
                 )}
                 <div className='govuk-!-margin-top-7'>

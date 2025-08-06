@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
@@ -23,6 +23,7 @@ import floodWarningRemovedIcon from '../../../../common/assets/images/flood_warn
 import floodSevereWarningIcon from '../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../common/components/custom/FloodDataInformationPopup'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
+import OsMapTerms from '../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
 import AlertType from '../../../../common/enums/AlertType'
 import LocationDataType from '../../../../common/enums/LocationDataType'
@@ -65,6 +66,8 @@ export default function LiveMap({
   // Recently removed locations
   const [removedPoints, setRemovedPoints] = useState([])
   const [removedFloodAreas, setRemovedFloodAreas] = useState([])
+
+  const [visibleFeatures, setVisibleFeatures] = useState([])
 
   // flood information popup
   const [showFloodInformationData, setShowFloodInformationData] =
@@ -178,6 +181,7 @@ export default function LiveMap({
       )
 
       if (!errorMessage) {
+        console.log('alerts', alerts)
         for (const liveAlert of alerts?.liveAlerts) {
           const liveLocationPromises = locations.map((location) =>
             processLocation(location, liveAlert)
@@ -195,6 +199,12 @@ export default function LiveMap({
     } else {
       setAccountHasLocations(false)
     }
+    setVisibleFeatures([
+      ...severeFloodAreas,
+      ...warningFloodAreas,
+      ...alertFloodAreas,
+      ...shapes
+    ])
   }
 
   const processLocation = async (location, liveAlert, recentlyRemoved) => {
@@ -212,6 +222,8 @@ export default function LiveMap({
     const severity = liveAlert.type
     const lastUpdatedTime = new Date(liveAlert.startDate)
     const floodArea = await getFloodAreaByTaCode(TA_CODE)
+
+    setLocationsAffected((prevLoc) => [...prevLoc, location.id])
 
     // create point with required data
     // use exact location for x and y coord locations
@@ -265,21 +277,18 @@ export default function LiveMap({
     }
   }
 
-  const processLiveFloodArea = (severity, point, floodArea) => {
+  const processLiveFloodArea = (severity, point) => {
     switch (severity) {
       case AlertType.SEVERE_FLOOD_WARNING:
         setSeverePoints((prevPoints) => [...prevPoints, point])
-        setSevereFloodAreas((prevAreas) => [...prevAreas, floodArea])
         break
 
       case AlertType.FLOOD_WARNING:
         setWarningPoints((prevPoints) => [...prevPoints, point])
-        setWarningFloodAreas((prevAreas) => [...prevAreas, floodArea])
         break
 
       case AlertType.FLOOD_ALERT:
         setAlertPoints((prevPoints) => [...prevPoints, point])
-        setAlertFloodAreas((prevAreas) => [...prevAreas, floodArea])
         break
     }
   }
@@ -416,7 +425,6 @@ export default function LiveMap({
   }
 
   // map key
-  const [visibleFeatures, setVisibleFeatures] = useState([])
 
   const FeatureTracker = () => {
     const features = [
@@ -427,11 +435,6 @@ export default function LiveMap({
       ...shapes
     ]
     const map = useMap()
-
-    useEffect(() => {
-      // Run on initial load when the map is ready
-      checkVisibleFeatures()
-    }, [])
 
     useMapEvents({
       moveend: () => checkVisibleFeatures(),
@@ -586,7 +589,11 @@ export default function LiveMap({
             )}
             {osmTileLayer}
             {apiKey && tileLayerWithHeader}
-            {!isDisabled && <ZoomControl position='bottomright' />}
+            {!isDisabled && (
+              <div role='group' aria-label='Interactive Map Controls'>
+                <ZoomControl position='bottomright' />
+              </div>
+            )}
             <ZoomTracker />
             {/* locations affected by live flood alert areas */}
             {showAlertLocations && (
@@ -759,6 +766,7 @@ export default function LiveMap({
                 onEachFeature={onEachShapeFeature}
               />
             ))}
+            <OsMapTerms />
           </MapContainer>
 
           {totalAlerts.length > 0 && (
@@ -769,7 +777,7 @@ export default function LiveMap({
 
           {totalAlerts.length > 0 && totalAlerts.length <= 20 && (
             <>
-              <h3 class='govuk-heading-s'>Locations affected</h3>
+              <h3 className='govuk-heading-s'>Locations affected</h3>
               {totalAlerts
                 .reduce((rows, location, index) => {
                   if (index % 2 === 0) {

@@ -103,7 +103,7 @@ const FloodBanner = React.memo(function FloodBanner({
         padding: '0.5rem 0.5rem'
       }}
     >
-      <h2 className='govuk-body govuk-!-font-weight-bold'>{heading}</h2>
+      <h2 className='govuk-body-m govuk-!-font-weight-bold'>{heading}</h2>
       {loading ? (
         <div
           style={{
@@ -131,7 +131,9 @@ const FloodBanner = React.memo(function FloodBanner({
                   padding: '0rem 1rem 0rem 0rem'
                 }}
               >
-                <p className='body-text-strong'>{count[0]}</p>
+                <p role='status' className='body-text-strong'>
+                  {count[0]}
+                </p>
                 <Link
                   className='govuk-link'
                   onClick={() => onClickLinked('messages')}
@@ -152,7 +154,9 @@ const FloodBanner = React.memo(function FloodBanner({
                     borderLeft: '2px solid lightGrey'
                   }}
                 >
-                  <p className='body-text-strong'>{count[1]}</p>
+                  <p role='status' className='body-text-strong'>
+                    {count[1]}
+                  </p>
                   <Link
                     className='govuk-link'
                     onClick={() => onClickLinked('linked-locations')}
@@ -211,7 +215,9 @@ const FloodBanner = React.memo(function FloodBanner({
                   item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%' }}>
-                  <p className='body-text-strong'>{count[1]}</p>
+                  <p role='status' className='body-text-strong'>
+                    {count[1]}
+                  </p>
                   <Link
                     className='govuk-link'
                     onClick={() => onClickLinked('low-risk')}
@@ -278,7 +284,7 @@ export default function DashboardHeader({
       it is that flooding will happen and the effect that flooding will have on
       people, buildings and services. Flood risk can fall into the following
       categories:
-      <h4 className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</h4>
+      <h3 className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</h3>
       <p className='govuk-!-margin-top-4'>
         <span className='govuk-!-font-weight-bold'>High risk</span>
         <br />

@@ -34,12 +34,19 @@ export default function OptOutPage() {
               <div className='govuk-inset-text'>
                 <p>
                   You can provide{' '}
-                  <Link className='govuk-link' to='/signup/feedback'>
+                  <a
+                    href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                    className='govuk-link'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
                     feedback on this service.
-                  </Link>
+                  </a>{' '}
                 </p>
               </div>
-              <h2 className='govuk-heading-m'>Why did we send you this message?</h2>
+              <h2 className='govuk-heading-m'>
+                Why did we send you this message?
+              </h2>
               <p>
                 We have a{' '}
                 <Link
@@ -124,7 +131,10 @@ export default function OptOutPage() {
                 </li>
                 <li>
                   call Floodline on <TelephoneNumber /> (
-                  <Link className='govuk-link' to='https://www.gov.uk/call-charges'>
+                  <Link
+                    className='govuk-link'
+                    to='https://www.gov.uk/call-charges'
+                  >
                     call charges
                   </Link>{' '}
                   may apply)
@@ -242,7 +252,9 @@ export default function OptOutPage() {
                 emergency services and your local authority if you’re in a
                 flood.
               </p>
-              <h2 className='govuk-heading-m'>Learn about your local flood risk</h2>
+              <h2 className='govuk-heading-m'>
+                Learn about your local flood risk
+              </h2>
               <p>
                 Flooding puts lives at risk and causes millions of pounds worth
                 of damage every year. Even if you haven’t seen it at your home
@@ -275,7 +287,10 @@ export default function OptOutPage() {
                     get help during a flood
                   </Link>{' '}
                   and on{' '}
-                  <Link className='govuk-link' to='https://www.gov.uk/after-flood'>
+                  <Link
+                    className='govuk-link'
+                    to='https://www.gov.uk/after-flood'
+                  >
                     what to do after a flood
                   </Link>
                 </li>

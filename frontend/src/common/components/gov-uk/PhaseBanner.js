@@ -1,17 +1,17 @@
 export default function Header({ type, phase }) {
-  const getFeedbackLink = () => {
-    let feedbackLink = '/signup/feedback'
+  // const getFeedbackLink = () => {
+  //   let feedbackLink = '/signup/feedback'
 
-    if (phase === 'beta') {
-      if (type === 'org') {
-        feedbackLink = 'https://forms.office.com/e/XWwCaDWu6A'
-      } else {
-        feedbackLink = 'https://forms.office.com/e/YpBL2ecL2a'
-      }
-    }
+  //   if (phase === 'beta') {
+  //     if (type === 'org') {
+  //       feedbackLink = 'https://forms.office.com/e/XWwCaDWu6A'
+  //     } else {
+  //       feedbackLink = 'https://forms.office.com/e/YpBL2ecL2a'
+  //     }
+  //   }
 
-    return feedbackLink
-  }
+  //   return feedbackLink
+  // }
 
   return (
     <>

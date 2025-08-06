@@ -28,10 +28,9 @@ export default function Header ({
         }`}
         >
           <p className='govuk-!-margin-bottom-0 ' style={{ display: 'flex', alignItems: 'center' }}>
-            {phase === 'beta' && (
-              <strong className='govuk-tag govuk-phase-banner__content__tag'>
-                Beta
-              </strong>)}
+            <strong className='govuk-tag govuk-phase-banner__content__tag'>
+              Beta
+            </strong>
             <span className='govuk-phase-banner__text'>
               This is a new service. Help us improve it and {' '}
               <Link

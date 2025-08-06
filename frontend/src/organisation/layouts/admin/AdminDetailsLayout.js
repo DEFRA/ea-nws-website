@@ -188,6 +188,18 @@ export default function AdminDetailsLayout({
                 defaultValue={email}
                 isNameBold
               />
+              <p>
+                Read our{' '}
+                <a
+                  href='/privacy'
+                  target='_blank'
+                  style={{ cursor: 'pointer' }}
+                  className='govuk-link'
+                >
+                  privacy notice
+                </a>{' '}
+                to find out how we use your personal data.
+              </p>
               <Button
                 text='Continue'
                 className='govuk-button'

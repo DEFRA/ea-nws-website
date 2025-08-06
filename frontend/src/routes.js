@@ -9,7 +9,6 @@ import Index from './common/pages/Index'
 import osTermsRoutes from './common/routes/os-terms/OsTermsRoutes'
 import signinRoutes from './common/routes/sign-in/SignInRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
-import commonStartRoutes from './common/routes/start/StartRoutes'
 import { orgManageAccountRoutes } from './organisation/routes/account/AccountRoutes'
 import { orgFloodReportsRoutes } from './organisation/routes/flood-reports/FloodReportsRoutes'
 import orgFooterRoutes from './organisation/routes/footer/FooterRoutes'
@@ -30,7 +29,6 @@ const errorRoutes = [{ path: '/error', component: <ErrorPage /> }]
 export const routes = [
   ...indexRoutes,
   ...errorRoutes,
-  ...commonStartRoutes,
   ...signinRoutes,
   ...citizenSignupRoutes,
   ...footerRoutes,

@@ -1086,6 +1086,12 @@
   gap: 0.5rem;
   cursor: pointer;
   position: relative; /* Add this to ensure the pseudo-elements are positioned correctly */
+  a {
+    color: #fff;
+    display: flex;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
 }
 
 /* Styles for the active state */

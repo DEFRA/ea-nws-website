@@ -73,17 +73,6 @@ export default function AccountDeleteConfirmPage() {
         {servicePhase !== 'beta' && (
           <div>
             <p className='govuk-body govuk-!-margin-bottom-6'>
-              <Link
-                to='/survey'
-                className='govuk-link'
-                style={{ cursor: 'pointer' }}
-              >
-                What do you think of this service?
-              </Link>{' '}
-              Takes 30 seconds
-            </p>
-            <h2 className='govuk-heading-m'>More about flooding</h2>
-            <p className='govuk-body govuk-!-margin-bottom-6'>
               Find out how to{' '}
               <Link
                 to='https://gov.uk/flood'
@@ -93,6 +82,15 @@ export default function AccountDeleteConfirmPage() {
                 protect yourself and your property online from flooding
               </Link>
               .
+            </p>
+            <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+              Help us improve this service
+            </h2>
+            <p className='govuk-body govuk-!-margin-bottom-6'>
+              <a href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y' target='_blank'>
+                What did you think of this service?
+              </a>{' '}
+              Takes 30 seconds
             </p>
           </div>
         )}

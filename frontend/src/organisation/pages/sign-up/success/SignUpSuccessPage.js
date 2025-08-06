@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
@@ -126,7 +126,7 @@ export default function SignUpSuccessPage() {
                   organisation.
                 </p>
                 <p className='govuk-!-margin-top-6'>
-                  This usually takes 3-5 days.
+                  This usually takes 3 to 5 working days.
                 </p>
                 <p className='govuk-!-margin-top-6'>
                   Once approved, we will email you and explain how the service
@@ -138,9 +138,9 @@ export default function SignUpSuccessPage() {
                       Help us improve this service
                     </h2>
                     <p className='govuk-!-margin-top-6'>
-                      <Link to='/signup/feedback' className='govuk-link'>
+                      <a href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y' target='_blank'>
                         What do you think of the service?
-                      </Link>
+                      </a>
                       &nbsp; (takes 30 seconds)
                     </p>
                   </div>

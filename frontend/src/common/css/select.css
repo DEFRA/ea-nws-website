@@ -24,12 +24,12 @@
 
 /* Control (the box) */
 .select__control {
-  border: 1px solid #b1b4b6;
-  box-shadow: none;
+  border: 2px solid #0b0c0c !important;
+  border-radius: 0 !important;
 }
 
 .select__control:hover {
-  border-color: #fd0;
+  border-color: #fd0 !important;
 }
 
 /* Single selected value */
@@ -39,5 +39,5 @@
 
 /* Placeholder text */
 .select__placeholder {
-  color: black;
+  color: black !important;
 }

@@ -560,6 +560,7 @@ export default function LinkLocationsLayout({
             <tr key={area.id} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 <Link
+                  id={`flood-area-label-${area.areaCode}`}
                   onClick={(e) => onClick(e, area.areaCode)}
                   className='govuk-link'
                 >
@@ -585,6 +586,8 @@ export default function LinkLocationsLayout({
                   }}
                 >
                   <Checkbox
+                    id={`flood-area-checkbox-${area.areaCode}`}
+                    ariaLabelledBy={`flood-area-label-${area.areaCode}`}
                     value={area.areaCode}
                     onChange={() => handleCheckboxChange(area.areaCode)}
                     checked={selectedTAs.includes(area.areaCode)}

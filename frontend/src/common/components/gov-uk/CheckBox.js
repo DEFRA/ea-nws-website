@@ -7,7 +7,8 @@ export default function Checkbox({
   checked,
   onChange,
   style,
-  screenReaderAdditional = ''
+  screenReaderAdditional = '',
+  ariaLabelledBy = ''
 }) {
   const formattedId = id || 'id_' + label?.split(' ').join('_') // replaces spaces with underscores in ids
   return (
@@ -19,6 +20,7 @@ export default function Checkbox({
         checked={checked}
         onChange={onChange}
         id={formattedId}
+        aria-labelledby={ariaLabelledBy}
       />
       <label
         className='govuk-label govuk-checkboxes__label'

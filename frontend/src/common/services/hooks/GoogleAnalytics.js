@@ -48,7 +48,7 @@ export default function GoogleAnalytics({useAnalytics}) {
       const cookieNames = cookieArr.map((cookie) => cookie.split('=')[0])
       cookieNames.forEach((cookie) => {
         if (cookie.includes('_ga')) {
-            document.cookie = cookie+'=; Max-Age=-99999999; domain=.'+location.hostname
+            document.cookie = cookie+'=; Max-Age=-99999999; domain=.'+window.location.hostname
         }
       })
     }

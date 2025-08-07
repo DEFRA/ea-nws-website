@@ -163,6 +163,10 @@ export default function OrganisationHeader() {
                       }
                     }}
                     tabIndex='0'
+                    aria-expanded={
+                      activeHeader === 'orgDetails' ? 'true' : 'false'
+                    }
+                    aria-controls='organisation-service-header'
                   >
                     <FontAwesomeIcon
                       icon={

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
@@ -138,9 +138,14 @@ export default function SignUpSuccessPage() {
                       Help us improve this service
                     </h2>
                     <p className='govuk-!-margin-top-6'>
-                      <Link to='/signup/feedback' className='govuk-link'>
-                        What do you think of the service?
-                      </Link>
+                      <a
+                        href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                        className='govuk-link'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        What do you think of this service?
+                      </a>
                       &nbsp; (takes 30 seconds)
                     </p>
                   </div>
@@ -153,11 +158,18 @@ export default function SignUpSuccessPage() {
                     <Button
                       text='Continue'
                       className='govuk-button'
-                      onClick={() => navigate('/signup/feedback')}
+                      onClick={() =>
+                        window.open(
+                          'https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y',
+                          '_blank',
+                          'noopener, noreferrer'
+                        )
+                      }
                     />
                   </div>
                 )}
               </div>
+              ,
             </div>
           </div>
         </div>

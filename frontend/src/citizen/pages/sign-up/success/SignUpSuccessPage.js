@@ -39,7 +39,9 @@ export default function SignUpSuccessPage() {
   return (
     <>
       <Helmet>
-        <title>Your flood messages are set up - Get flood warnings - GOV.UK</title>
+        <title>
+          Your flood messages are set up - Get flood warnings - GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -101,13 +103,14 @@ export default function SignUpSuccessPage() {
               {servicePhase !== 'beta' && (
                 <p className='govuk-!-margin-top-6'>
                   {' '}
-                  <Link
-                    to='/signup/feedback'
+                  <a
+                    href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
                     className='govuk-link'
-                    style={{ cursor: 'pointer' }}
+                    target='_blank'
+                    rel='noopener noreferrer'
                   >
                     What do you think of the service?
-                  </Link>
+                  </a>
                   &nbsp; (takes 30 seconds)
                 </p>
               )}

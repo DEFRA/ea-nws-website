@@ -49,10 +49,14 @@ export default function ActionPlanLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
+      <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: actionPlanId}]} />}
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: actionPlanId }]}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               Action plan (optional)
             </h1>
@@ -64,6 +68,7 @@ export default function ActionPlanLayout({
               </p>
               <TextArea
                 id={actionPlanId}
+                name='action-plan'
                 error={error}
                 inputType='text'
                 rows='5'
@@ -71,6 +76,7 @@ export default function ActionPlanLayout({
                 value={actionPlan}
                 className='govuk-textarea'
                 additionalInfo={`You can enter up to ${charLimit} characters`}
+                visuallyHidden={true}
               />
               <Button
                 text='Continue'

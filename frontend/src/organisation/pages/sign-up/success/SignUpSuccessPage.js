@@ -126,7 +126,7 @@ export default function SignUpSuccessPage() {
                   organisation.
                 </p>
                 <p className='govuk-!-margin-top-6'>
-                  This usually takes 3-5 days.
+                  This usually takes 3 to 5 working days.
                 </p>
                 <p className='govuk-!-margin-top-6'>
                   Once approved, we will email you and explain how the service

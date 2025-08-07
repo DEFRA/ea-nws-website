@@ -78,6 +78,9 @@ export default function SignUpSuccessPage() {
                 </div>
               )}
               <p className='govuk-body govuk-!-margin-top-6'>
+                You'll now receive flood messages, from Floodline at the Environment Agency.
+              </p>
+              <p className='govuk-body govuk-!-margin-top-6'>
                 You can now use your account to add more:
               </p>
               <ul>
@@ -101,18 +104,22 @@ export default function SignUpSuccessPage() {
                 </li>
               </ul>
               {servicePhase !== 'beta' && (
-                <p className='govuk-!-margin-top-6'>
-                  {' '}
-                  <a
-                    href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
-                    className='govuk-link'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    What do you think of the service?
-                  </a>
-                  &nbsp; (takes 30 seconds)
-                </p>
+                <div>
+                  <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Help us improve this service
+                  </h2>
+                  <p className='govuk-!-margin-top-6'>
+                    <a
+                      href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                      className='govuk-link'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      What do you think of the service?
+                    </a>
+                    &nbsp; (takes 30 seconds)
+                  </p>
+                </div>
               )}
               {servicePhase === 'beta' && (
                 <div>

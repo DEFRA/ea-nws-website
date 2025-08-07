@@ -7,9 +7,12 @@ export default function ContactReviewTable ({ profile }) {
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
-          <td className='govuk-table__header  govuk-!-width-one-quarter'>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
             Name
-          </td>
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
             {/* TODO: ability to change name (compatibility with geosafe), add aria-label
@@ -19,9 +22,12 @@ export default function ContactReviewTable ({ profile }) {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td className='govuk-table__header  govuk-!-width-one-quarter'>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
             Email address
-          </td>
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>
             {profile.emails[0]}
           </td>

@@ -138,8 +138,13 @@ export default function SignUpSuccessPage() {
                       Help us improve this service
                     </h2>
                     <p className='govuk-!-margin-top-6'>
-                      <a href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y' target='_blank'>
-                        What do you think of the service?
+                      <a
+                        href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                        className='govuk-link'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        What do you think of this service?
                       </a>
                       &nbsp; (takes 30 seconds)
                     </p>
@@ -153,11 +158,18 @@ export default function SignUpSuccessPage() {
                     <Button
                       text='Continue'
                       className='govuk-button'
-                      onClick={() => navigate('/signup/feedback')}
+                      onClick={() =>
+                        window.open(
+                          'https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y',
+                          '_blank',
+                          'noopener, noreferrer'
+                        )
+                      }
                     />
                   </div>
                 )}
               </div>
+              ,
             </div>
           </div>
         </div>

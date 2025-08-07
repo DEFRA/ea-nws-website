@@ -60,7 +60,12 @@ export default function SignOutLayout({ text, signUpNotComplete = false }) {
 
             {!signUpNotComplete && (
               <p className='govuk-body'>
-                <a href='/signup/feedback' className='govuk-link'>
+                <a
+                  href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                  className='govuk-link'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
                   What do you think of this service?
                 </a>{' '}
                 Takes 30 seconds

@@ -142,120 +142,142 @@ export default function OrganisationHeader() {
                 )}
             </nav>
 
-            <nav className='one-login-header__nav'>
+            <nav className='one-login-header__nav' aria-label='Main navigation'>
               <ul className='one-login-header__nav__list'>
                 <li
-                  role='link'
-                  tabIndex='0'
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'orgDetails' && 'active'
                   }`}
-                  onClick={() => handleActiveHeader('orgDetails')}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
+                >
+                  <a
+                    href='#'
+                    role='button'
+                    onClick={(e) => {
                       e.preventDefault()
                       handleActiveHeader('orgDetails')
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleActiveHeader('orgDetails')
+                      }
+                    }}
+                    tabIndex='0'
+                    aria-expanded={
+                      activeHeader === 'orgDetails' ? 'true' : 'false'
                     }
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={
-                      activeHeader === 'orgDetails' ? faAngleUp : faAngleDown
-                    }
-                    className={`${
-                      activeHeader === 'orgDetails' && 'active'
-                    } highlighted`}
-                  />
-                  <svg
-                    width='25'
-                    height='25'
-                    viewBox='0 0 21 21'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
+                    aria-controls='organisation-service-header'
                   >
-                    <g clipPath='url(#clip0_2324_180503)'>
-                      <path d='M6.41797 4.58337V6.25004' strokeWidth='2' />
-                      <path d='M6.41797 7.91669V9.58335' strokeWidth='2' />
-                      <path d='M6.41797 11.25V12.9167' strokeWidth='2' />
-                      <path d='M10.5859 7.91669V9.58335' strokeWidth='2' />
-                      <path d='M10.5859 4.58337V6.25004' strokeWidth='2' />
-                      <path d='M10.5859 11.25V12.9167' strokeWidth='2' />
-                      <path
-                        d='M14.3359 8.33337H19.3359V18.3334H14.3359V8.33337Z'
-                        strokeWidth='2'
-                      />
-                      <path
-                        d='M14.3346 18.3334V1.66669H2.66797V18.3334H14.3346Z'
-                        strokeWidth='2'
-                      />
-                      <path d='M8.5 15V18.3333' strokeWidth='2' />
-                    </g>
-                    <defs>
-                      <clipPath id='clip0_2324_180503'>
-                        <rect
-                          width='20'
-                          height='20'
-                          fill={
-                            activeHeader === 'orgDetails' ? '#1D70B8' : 'white'
-                          }
-                          transform='translate(1)'
+                    <FontAwesomeIcon
+                      icon={
+                        activeHeader === 'orgDetails' ? faAngleUp : faAngleDown
+                      }
+                      className={`${
+                        activeHeader === 'orgDetails' && 'active'
+                      } highlighted`}
+                    />
+                    <svg
+                      width='25'
+                      height='25'
+                      viewBox='0 0 21 21'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <g clipPath='url(#clip0_2324_180503)'>
+                        <path d='M6.41797 4.58337V6.25004' strokeWidth='2' />
+                        <path d='M6.41797 7.91669V9.58335' strokeWidth='2' />
+                        <path d='M6.41797 11.25V12.9167' strokeWidth='2' />
+                        <path d='M10.5859 7.91669V9.58335' strokeWidth='2' />
+                        <path d='M10.5859 4.58337V6.25004' strokeWidth='2' />
+                        <path d='M10.5859 11.25V12.9167' strokeWidth='2' />
+                        <path
+                          d='M14.3359 8.33337H19.3359V18.3334H14.3359V8.33337Z'
+                          strokeWidth='2'
                         />
-                      </clipPath>
-                    </defs>
-                  </svg>
+                        <path
+                          d='M14.3346 18.3334V1.66669H2.66797V18.3334H14.3346Z'
+                          strokeWidth='2'
+                        />
+                        <path d='M8.5 15V18.3333' strokeWidth='2' />
+                      </g>
+                      <defs>
+                        <clipPath id='clip0_2324_180503'>
+                          <rect
+                            width='20'
+                            height='20'
+                            fill={
+                              activeHeader === 'orgDetails'
+                                ? '#1D70B8'
+                                : 'white'
+                            }
+                            transform='translate(1)'
+                          />
+                        </clipPath>
+                      </defs>
+                    </svg>
 
-                  <span className='govuk-!-font-weight-bold'>{orgName}</span>
+                    <span className='govuk-!-font-weight-bold'>{orgName}</span>
+                  </a>
                 </li>
+                {/* Divider */}
                 <li className='one-login-header__nav__list-item org-header-divider-line-container no-highlight'>
-                  <div className='org-header-divider-line' />
+                  <div className='org-header-divider-line' aria-hidden='true' />
                 </li>
                 <li
-                  role='link'
-                  tabIndex='0'
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'accountDetails' && 'active'
                   }`}
-                  onClick={(event) => handleAdmin(event)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleAdmin(e)
-                    }
-                  }}
                 >
-                  <svg
-                    width='25'
-                    height='25'
-                    viewBox='0 0 23 23'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
+                  <a
+                    href='#'
+                    role='button'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleAdmin(e)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleAdmin(e)
+                      }
+                    }}
+                    tabIndex='0'
                   >
-                    <path
-                      d='M11.3475 12.9411C13.5458 12.9411 15.3279 11.159 15.3279 8.9607C15.3279 6.76242 13.5458 4.98035 11.3475 4.98035C9.14926 4.98035 7.36719 6.76242 7.36719 8.9607C7.36719 11.159 9.14926 12.9411 11.3475 12.9411Z'
-                      strokeWidth='1.71'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                    <path
-                      d='M4.55078 19.1504C5.26126 17.9842 6.2598 17.0203 7.45041 16.3516C8.64101 15.6827 9.98363 15.3314 11.3492 15.3314C12.7148 15.3314 14.0575 15.6827 15.2481 16.3516C16.4387 17.0203 17.4371 17.9842 18.1477 19.1504'
-                      strokeWidth='1.71'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                    <path
-                      d='M11.3489 21.6979C17.0646 21.6979 21.6979 17.0646 21.6979 11.3489C21.6979 5.63338 17.0646 1 11.3489 1C5.63338 1 1 5.63338 1 11.3489C1 17.0646 5.63338 21.6979 11.3489 21.6979Z'
-                      strokeWidth='1.71'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
+                    <svg
+                      width='25'
+                      height='25'
+                      viewBox='0 0 23 23'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        d='M11.3475 12.9411C13.5458 12.9411 15.3279 11.159 15.3279 8.9607C15.3279 6.76242 13.5458 4.98035 11.3475 4.98035C9.14926 4.98035 7.36719 6.76242 7.36719 8.9607C7.36719 11.159 9.14926 12.9411 11.3475 12.9411Z'
+                        strokeWidth='1.71'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                      <path
+                        d='M4.55078 19.1504C5.26126 17.9842 6.2598 17.0203 7.45041 16.3516C8.64101 15.6827 9.98363 15.3314 11.3492 15.3314C12.7148 15.3314 14.0575 15.6827 15.2481 16.3516C16.4387 17.0203 17.4371 17.9842 18.1477 19.1504'
+                        strokeWidth='1.71'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                      <path
+                        d='M11.3489 21.6979C17.0646 21.6979 21.6979 17.0646 21.6979 11.3489C21.6979 5.63338 17.0646 1 11.3489 1C5.63338 1 1 5.63338 1 11.3489C1 17.0646 5.63338 21.6979 11.3489 21.6979Z'
+                        strokeWidth='1.71'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                    </svg>
 
-                  <span className='govuk-!-font-weight-bold'>
-                    {formattedName}
-                  </span>
+                    <span className='govuk-!-font-weight-bold'>
+                      {formattedName}
+                    </span>
+                  </a>
                 </li>
-
+                {/* Divider */}
                 <li className='one-login-header__nav__list-item org-header-divider-line-container no-highlight'>
-                  <div className='org-header-divider-line' />
+                  <div className='org-header-divider-line' aria-hidden='true' />
                 </li>
                 <li className='one-login-header__nav__list-item no-highlight'>
                   <Link

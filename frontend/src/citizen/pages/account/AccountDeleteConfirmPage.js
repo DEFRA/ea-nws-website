@@ -87,7 +87,12 @@ export default function AccountDeleteConfirmPage() {
               Help us improve this service
             </h2>
             <p className='govuk-body govuk-!-margin-bottom-6'>
-              <a href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y' target='_blank'>
+              <a
+                href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                className='govuk-link'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
                 What did you think of this service?
               </a>{' '}
               Takes 30 seconds

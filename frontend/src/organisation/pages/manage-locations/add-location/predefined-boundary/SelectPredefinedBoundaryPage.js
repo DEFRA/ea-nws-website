@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -257,7 +257,9 @@ export default function SelectPredefinedBoundaryPage() {
                         ? formatSentenceCase(selectedBoundaryType)
                         : 'Select type'
                     }
+                    disabledOptions={selectedBoundaryType}
                     snakeCaseText={true}
+                    value={selectedBoundaryType}
                   />
                   <Select
                     id={boundaryId}

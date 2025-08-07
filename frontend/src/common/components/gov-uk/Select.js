@@ -1,4 +1,5 @@
-import React from 'react'
+import ReactSelect from 'react-select'
+import '../../css/select.css'
 import { formatSentenceCase } from '../../utils/FormatSentenceCase'
 
 export default function Select({
@@ -14,9 +15,21 @@ export default function Select({
   value,
   snakeCaseText = false
 }) {
-  const handleSelectChange = (event) => {
-    const selectedValue = event.target.value
-    onSelect(selectedValue)
+  const formattedOptions = options.map((option) => {
+    const label = snakeCaseText ? formatSentenceCase(option) : option
+    return {
+      value: option,
+      label,
+      isDisabled:
+        disabledOptions?.includes(option) || option === initialSelectOptionText
+    }
+  })
+
+  const selectedOption =
+    formattedOptions.find((opt) => opt.value === value) || null
+
+  const handleSelectChange = (selected) => {
+    onSelect(selected?.value || '')
   }
 
   return (
@@ -27,55 +40,29 @@ export default function Select({
           : 'govuk-form-group govuk-form-group--error'
       }
     >
-      <label className='govuk-label' htmlFor={'id' + name}>
+      <label className='govuk-label' htmlFor={id || 'id' + name}>
         {label}
       </label>
-      <div htmlFor={'id' + hint} className='govuk-hint'>
-        {hint}
-      </div>
-      {error !== '' && (
+      {hint && (
+        <div id={'id' + hint} className='govuk-hint'>
+          {hint}
+        </div>
+      )}
+      {error && (
         <p id='govuk-text-input-error' className='govuk-error-message'>
           {error}
         </p>
       )}
-      <select
-        className={
-          error === '' ? 'govuk-select' : 'govuk-select govuk-input--error'
-        }
+      <ReactSelect
         id={id || 'id' + name}
         name={name}
-        aria-describedby={hint}
+        options={formattedOptions}
+        value={selectedOption}
         onChange={handleSelectChange}
-        value={value || ''}
-      >
-        <option value='' disabled>
-          {initialSelectOptionText}
-        </option>
-        {!snakeCaseText &&
-          options.map((option, index) =>
-            disabledOptions.includes(option) ? (
-              <option key={index} value={option} disabled>
-                {option}
-              </option>
-            ) : (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            )
-          )}
-        {snakeCaseText &&
-          options.map((option, index) =>
-            disabledOptions.includes(option) ? (
-              <option key={index} value={option} disabled>
-                {formatSentenceCase(option)}
-              </option>
-            ) : (
-              <option key={index} value={option}>
-                {formatSentenceCase(option)}
-              </option>
-            )
-          )}
-      </select>
+        isOptionDisabled={(option) => option.isDisabled}
+        placeholder={initialSelectOptionText}
+        classNamePrefix='select'
+      />
     </div>
   )
 }

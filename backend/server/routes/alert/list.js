@@ -6,6 +6,10 @@ const {
 const { isAfter } = require('date-fns')
 const { processGeosafeAlerts } = require('./alertProcessing/mergeGeosafeAlerts')
 const { getAllPastAlerts } = require('./alertProcessing/getHistoricAlerts')
+const {
+  setFloodHistory,
+  getFloodHistory
+} = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -28,10 +32,22 @@ module.exports = [
         )
 
         if (historic) {
-          // add alerts from historic file
-          historicAlerts = historicAlerts.concat(
-            await getAllPastAlerts(request)
-          )
+          const { redis } = request.server.app
+          let cachedHistoricAlerts = null //await getFloodHistory(redis)
+          if (cachedHistoricAlerts === null) {
+            // add alerts from file
+            const fileHistoricAlerts = historicAlerts.concat(
+              await getAllPastAlerts(request)
+            )
+            historicAlerts = historicAlerts.concat(fileHistoricAlerts)
+
+            await setFloodHistory(
+              redis,
+              historicAlerts.concat(fileHistoricAlerts)
+            )
+          } else {
+            historicAlerts = cachedHistoricAlerts
+          }
         }
 
         if (filterDate) {

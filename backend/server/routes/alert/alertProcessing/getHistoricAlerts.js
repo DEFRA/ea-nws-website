@@ -45,40 +45,35 @@ const allowedMessageTypes = [
 
 const getAllPastAlerts = async (request) => {
   const { redis } = request.server.app
-  let historicAlerts = await getFloodHistory(redis)
-  if (historicAlerts === null) {
-    let floodHistoryFileData
-    // we need to load the historical data from file now
-    const historicFloodDataUrl = await getSecretKeyValue(
-      'nws/website',
-      'organisationFloodHistoryUrl'
-    )
+  let floodHistoryFileData
+  // we need to load the historical data from file now
+  const historicFloodDataUrl = await getSecretKeyValue(
+    'nws/website',
+    'organisationFloodHistoryUrl'
+  )
 
-    // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
-    if (historicFloodDataUrl) {
-      await fetch(historicFloodDataUrl)
-        .then((response) => response.text())
-        .then((data) => {
-          floodHistoryFileData = csvToJson(data)
-        })
-        .catch((e) =>
-          console.error('Could not fetch Historic Flood Warning file', e)
-        )
-    }
-
-    // filter out any updates - we only want to know when a flood alert was added and removed
-    floodHistoryFileData = floodHistoryFileData.filter((item) =>
-      allowedMessageTypes.includes(item['Message Type'])
-    )
-
-    const { historicAlerts } = mergeHistoricFloodEntries(floodHistoryFileData)
-
-    await setFloodHistory(redis, historicAlerts)
-
-    return historicAlerts
-  } else {
-    return historicAlerts
+  // if nothing is returned then we can assume the file has been deleted and only need to load the geosafe alerts
+  if (historicFloodDataUrl) {
+    await fetch(historicFloodDataUrl)
+      .then((response) => response.text())
+      .then((data) => {
+        floodHistoryFileData = csvToJson(data)
+      })
+      .catch((e) =>
+        console.error('Could not fetch Historic Flood Warning file', e)
+      )
   }
+
+  // filter out any updates - we only want to know when a flood alert was added and removed
+  floodHistoryFileData = floodHistoryFileData.filter((item) =>
+    allowedMessageTypes.includes(item['Message Type'])
+  )
+
+  const { historicAlerts } = mergeHistoricFloodEntries(floodHistoryFileData)
+
+  await setFloodHistory(redis, historicAlerts)
+
+  return historicAlerts
 }
 
 module.exports = { getAllPastAlerts }

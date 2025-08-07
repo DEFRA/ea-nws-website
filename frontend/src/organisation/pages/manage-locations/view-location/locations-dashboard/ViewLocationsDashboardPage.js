@@ -215,8 +215,7 @@ export default function ViewLocationsDashboardPage() {
     if (taCode && floodHistoryData) {
       const filteredData = floodHistoryData.filter(
         (alert) =>
-          alert.CODE === taCode &&
-          moment(alert.effectiveDate * 1000) > twoYearsAgo
+          alert.TA_CODE === taCode && new Date(alert.startDate) > twoYearsAgo
       )
       floodCount.push(filteredData.length)
     }

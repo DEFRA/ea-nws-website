@@ -62,11 +62,20 @@ export default function LinkLocationsLayout({
 
   const categoryToMessageType = (type) => {
     const typeMap = {
-      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Alert': ['Flood Alert'],
-      'Flood Alert Groundwater': ['Flood Alert']
+      'Flood Warning': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Warning Groundwater': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Warning Rapid Response': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Alert': [AlertType.FLOOD_ALERT],
+      'Flood Alert Groundwater': [AlertType.FLOOD_ALERT]
     }
     return typeMap[type] || []
   }
@@ -79,9 +88,9 @@ export default function LinkLocationsLayout({
       for (const messageType of messageTypes) {
         const filteredData = floodHistoryData.filter(
           (alert) =>
-            alert.CODE === taCode &&
-            alert.TYPE === messageType &&
-            moment(alert.effectiveDate * 1000) > twoYearsAgo
+            alert.TA_CODE === taCode &&
+            alert.type === messageType &&
+            new Date(alert.startDate) > twoYearsAgo
         )
         newCount.counts.push({ type: messageType, count: filteredData.length })
       }
@@ -108,7 +117,7 @@ export default function LinkLocationsLayout({
     for (const messageType of messageTypes) {
       let count
       switch (messageType) {
-        case 'Severe Flood Warning':
+        case AlertType.SEVERE_FLOOD_WARNING:
           count = floodCount.counts.find(
             (count) => count.type === messageType
           )?.count
@@ -116,13 +125,13 @@ export default function LinkLocationsLayout({
             `${count} severe flood warning${count === 1 ? '' : 's'}`
           )
           break
-        case 'Flood Warning':
+        case AlertType.FLOOD_WARNING:
           count = floodCount.counts.find(
             (count) => count.type === messageType
           )?.count
           messageSent.push(`${count} flood warning${count === 1 ? '' : 's'}`)
           break
-        case 'Flood Alert':
+        case AlertType.FLOOD_ALERT:
           count = floodCount.counts.find(
             (count) => count.type === messageType
           )?.count
@@ -151,7 +160,9 @@ export default function LinkLocationsLayout({
           areaName: area.properties.TA_Name,
           areaDistance: area.properties.distance,
           areaType: `${
-            type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'
+            type.includes(AlertType.FLOOD_WARNING)
+              ? 'Flood warning'
+              : 'Flood alert'
           } area`,
           messagesSent: messageSent
         })

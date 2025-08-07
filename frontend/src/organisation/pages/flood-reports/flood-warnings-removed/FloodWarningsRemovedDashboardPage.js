@@ -67,7 +67,7 @@ export default function FloodWarningsRemovedDashboardPage() {
 
     // load alerts
     const { data: alerts } = await backendCall(
-      { options, filterDate: yesterday, historic: true },
+      { options, filterDate: yesterday },
       'api/alert/list',
       navigate
     )

@@ -142,7 +142,7 @@ export default function LocationMessagesPage() {
       const twoYearsAgo = new Date()
       twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
 
-      const { data: alertsData } = await backendCall(
+      const { data: alerts } = await backendCall(
         { options, filterDate: twoYearsAgo, historic: true },
         'api/alert/list',
         navigate
@@ -151,11 +151,17 @@ export default function LocationMessagesPage() {
       let floodAreas = []
       getFloodMessagesSent(
         currentLocationTAs,
-        alertsData.alerts,
+        alerts?.historicAlerts,
         floodAreas,
         false
       )
-      getFloodMessagesSent(childrenIDs, alertsData.alerts, floodAreas, true)
+      getFloodMessagesSent(
+        childrenIDs,
+        alerts?.historicAlerts,
+        floodAreas,
+        true
+      )
+      console.log('alerts', alerts?.historicAlerts)
       setFloodAreas(floodAreas)
 
       // get available alerts for location
@@ -178,6 +184,7 @@ export default function LocationMessagesPage() {
     linkedChild
   ) => {
     targetAreas.forEach((targetArea) => {
+      console.log('targetArea.TA_CODE', targetArea.TA_CODE)
       let severeWarningsCount = 0,
         warningsCount = 0,
         alertsCount = 0
@@ -185,14 +192,18 @@ export default function LocationMessagesPage() {
         const alertTaCode = alert.TA_CODE
         const alertType = alert.type
         if (alertTaCode === targetArea.TA_CODE) {
+          console.log('hit')
           switch (alertType) {
             case AlertType.SEVERE_FLOOD_WARNING:
+              console.log('adding to severe')
               severeWarningsCount++
               break
             case AlertType.FLOOD_WARNING:
+              console.log('adding to warning')
               warningsCount++
               break
             case AlertType.FLOOD_ALERT:
+              console.log('adding to alert')
               alertsCount++
               break
           }
@@ -296,101 +307,104 @@ export default function LocationMessagesPage() {
         <LoadingSpinner />
       ) : (
         <>
-        <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-        {availableAlerts.size > 0 ? (
+          <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+          {availableAlerts.size > 0 ? (
+            <p>
+              You can choose which flood messages to get for each location if
+              they're available.
+              <br />
+            </p>
+          ) : (
+            <>
+              <p>
+                Flood messages are currently unavailable for this location. This
+                may be because there are no measurement gauges in the area of
+                the location. Or the location is in an area where not many
+                people live or work.
+              </p>
+              <p>
+                But you may be able to link this location to any nearby flood
+                areas that can get flood messages in the Flood areas section.
+              </p>
+              <p>
+                And if any flood messages become available for this location in
+                the future we'll automatically send them to you. You can then
+                customise by choosing which flood messages to get.
+              </p>
+            </>
+          )}
           <p>
-            You can choose which flood messages to get for each location if
-            they're available.
-            <br />
+            <Link to={infoUrls.floodTypes} className='govuk-link'>
+              What are the different types of flood messages?
+            </Link>
           </p>
-        ) : (
-          <>
-            <p>
-              Flood messages are currently unavailable for this location. This may
-              be because there are no measurement gauges in the area of the
-              location. Or the location is in an area where not many people live
-              or work.
-            </p>
-            <p>
-              But you may be able to link this location to any nearby flood areas
-              that can get flood messages in the Flood areas section.
-            </p>
-            <p>
-              And if any flood messages become available for this location in the
-              future we'll automatically send them to you. You can then customise
-              by choosing which flood messages to get.
-            </p>
-          </>
-        )}
-        <p>
-          <Link to={infoUrls.floodTypes} className='govuk-link'>
-            What are the different types of flood messages?
-          </Link>
-        </p>
-        <br />
-        <table className='govuk-table govuk-table--small-text-until-tablet'>
-          <tbody className='govuk-table__body'>
-            {messageSettings.map((message, index) => (
-              <tr className='govuk-table__row' key={index}>
-                <td
-                  className='govuk-table__cell'
-                  style={{ verticalAlign: 'middle' }}
-                >
-                  <strong>{message}</strong>
-                </td>
-                {availableAlerts.has(message) ? (
-                  <>
-                    <td className='govuk-table__cell'>
-                      <Radio
-                        label='On'
-                        small
-                        value={'Radio_On_' + index}
-                        name={'Radio_' + index}
-                        checked={alertTypesEnabled[index]}
-                        onChange={() => handleChangeRadio(index, true)}
-                      />
-                    </td>
-                    <td className='govuk-table__cell'>
-                      <Radio
-                        label='Off'
-                        small
-                        value={'Radio_Off_' + index}
-                        name={'Radio_' + index}
-                        checked={!alertTypesEnabled[index]}
-                        onChange={() => handleChangeRadio(index, false)}
-                      />
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className='govuk-table__cell' />
-                    <td
-                      className='govuk-table__cell'
-                      style={{ lineHeight: '50px' }}
-                    >
-                      Unavailable
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {availableAlerts.size > 0 && (
-          <Button
-            text='Save message settings'
-            className='govuk-button'
-            onClick={updateMessageSettings}
-          />
-        )}
-      </>
+          <br />
+          <table className='govuk-table govuk-table--small-text-until-tablet'>
+            <tbody className='govuk-table__body'>
+              {messageSettings.map((message, index) => (
+                <tr className='govuk-table__row' key={index}>
+                  <td
+                    className='govuk-table__cell'
+                    style={{ verticalAlign: 'middle' }}
+                  >
+                    <strong>{message}</strong>
+                  </td>
+                  {availableAlerts.has(message) ? (
+                    <>
+                      <td className='govuk-table__cell'>
+                        <Radio
+                          label='On'
+                          small
+                          value={'Radio_On_' + index}
+                          name={'Radio_' + index}
+                          checked={alertTypesEnabled[index]}
+                          onChange={() => handleChangeRadio(index, true)}
+                        />
+                      </td>
+                      <td className='govuk-table__cell'>
+                        <Radio
+                          label='Off'
+                          small
+                          value={'Radio_Off_' + index}
+                          name={'Radio_' + index}
+                          checked={!alertTypesEnabled[index]}
+                          onChange={() => handleChangeRadio(index, false)}
+                        />
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className='govuk-table__cell' />
+                      <td
+                        className='govuk-table__cell'
+                        style={{ lineHeight: '50px' }}
+                      >
+                        Unavailable
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {availableAlerts.size > 0 && (
+            <Button
+              text='Save message settings'
+              className='govuk-button'
+              onClick={updateMessageSettings}
+            />
+          )}
+        </>
       )}
     </>
   )
 
   const floodAreasSection = (
     <>
-      <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block' id='main-content'>
+      <h2
+        className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'
+        id='main-content'
+      >
         Flood areas
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
@@ -489,20 +503,20 @@ export default function LocationMessagesPage() {
                           padding: '1.5rem 0rem'
                         }}
                       >
-                        {area.severeWarningMessagesCount > 0 && (
+                        {area.type.toLowerCase().includes('warning') > 0 && (
                           <span>
                             {area.severeWarningMessagesCount} severe flood
                             warnings
                             <br />
                           </span>
                         )}
-                        {area.warningMessagesCount > 0 && (
+                        {area.type.toLowerCase().includes('warning') > 0 && (
                           <span>
                             {area.warningMessagesCount} flood warnings
                             <br />
                           </span>
                         )}
-                        {area.alertMessagesCount > 0 && (
+                        {area.type.toLowerCase().includes('alert') > 0 && (
                           <span>
                             {area.alertMessagesCount} flood alerts
                             <br />
@@ -536,15 +550,15 @@ export default function LocationMessagesPage() {
 
       {/* Only render button if location is not a predefined boundary */}
       {!isPredefinedBoundary && (
-      <Button
-        imageSrc={linkIcon}
-        text='Link to nearby flood areas'
-        className='govuk-button govuk-button--secondary'
-        onClick={(event) => {
-          event.preventDefault()
-          navigate(orgManageLocationsUrls.add.linkToTargetArea)
-        }}
-      />
+        <Button
+          imageSrc={linkIcon}
+          text='Link to nearby flood areas'
+          className='govuk-button govuk-button--secondary'
+          onClick={(event) => {
+            event.preventDefault()
+            navigate(orgManageLocationsUrls.add.linkToTargetArea)
+          }}
+        />
       )}
     </>
   )
@@ -557,7 +571,13 @@ export default function LocationMessagesPage() {
   return (
     <>
       <Helmet>
-        <title>{additionalData.locationName ? additionalData.locationName : 'This location'}'s messages - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          {additionalData.locationName
+            ? additionalData.locationName
+            : 'This location'}
+          's messages - Manage locations - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
@@ -588,13 +608,11 @@ export default function LocationMessagesPage() {
           </div>
         </div>
 
-        
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-full govuk-!-margin-top-9'>
-              {floodAreasSection}
-            </div>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-full govuk-!-margin-top-9'>
+            {floodAreasSection}
           </div>
-        
+        </div>
 
         {unlinkID && (
           <Popup

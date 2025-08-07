@@ -43,6 +43,16 @@ export default function GoogleAnalytics({useAnalytics}) {
       setInitialised(true)
     }
 
+    const deleteCookies = () => {
+      const cookieArr = document.cookie.split(';')
+      const cookieNames = cookieArr.map((cookie) => cookie.split('=')[0])
+      cookieNames.forEach((cookie) => {
+        if (cookie.includes('_ga')) {
+            document.cookie = cookie+'=; Max-Age=-99999999; domain=.'+location.hostname
+        }
+      })
+    }
+
     const changeConsent = () => {
         if (useAnalytics) {
             gtag('consent', 'update', {
@@ -52,6 +62,7 @@ export default function GoogleAnalytics({useAnalytics}) {
             gtag('consent', 'update', {
                 'analytics_storage': 'denied'
               })
+            deleteCookies()
         }
     }
 

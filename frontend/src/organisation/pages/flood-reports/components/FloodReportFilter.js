@@ -556,9 +556,20 @@ export default function FloodReportFilter ({
   }
 
   return (
-    <div className='warnings-filter-panel'>
+    <div
+      id='filter-region'
+      role='region'
+      className='warnings-filter-panel'
+      aria-labelledby='filter-heading'
+    >
       <div className='warnings-filter-header'>
-        <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
+        <h1
+          id='filter-heading'
+          className='govuk-heading-m govuk-!-margin-bottom-2'
+          tabIndex={-1}
+        >
+          Filter
+        </h1>
       </div>
 
       {/* Selected filters */}

@@ -265,9 +265,20 @@ export default function SearchFilter({
 
   return (
     <>
-      <div className='contacts-filter-panel'>
+      <div
+        id='filter-region'
+        role='region'
+        className='contacts-filter-panel'
+        aria-labelledby='filter-heading'
+      >
         <div className='contacts-filter-header'>
-          <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
+          <h1
+            id='filter-heading'
+            className='govuk-heading-m govuk-!-margin-bottom-2'
+            tabIndex={-1}
+          >
+            Filter
+          </h1>
         </div>
 
         {/* Selected filters */}

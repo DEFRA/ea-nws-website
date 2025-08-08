@@ -265,10 +265,7 @@ export default function DuplicateLocationComparisonPage() {
                 Select if you want to keep the existing location or use the new
                 location uploaded.
               </div>
-              <div
-                id={existingOrNewRadiosId}
-                className='org-location-comparison'
-              >
+              <div className='org-location-comparison'>
                 <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
                   <div className='outline-1px org-location-comparison-box'>
                     <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
@@ -282,6 +279,7 @@ export default function DuplicateLocationComparisonPage() {
                     >
                       <p className='govuk-!-margin-0'>Keep existing location</p>
                       <Radio
+                        id={existingOrNewRadiosId}
                         label=''
                         name='ExistingOrNewRadio'
                         small='true'

@@ -50,7 +50,7 @@ export default function Select({
       )}
       {error && (
         <p id='govuk-text-input-error' className='govuk-error-message'>
-          {error}
+          <span className='govuk-visually-hidden'>Error:</span> {error}
         </p>
       )}
       <ReactSelect

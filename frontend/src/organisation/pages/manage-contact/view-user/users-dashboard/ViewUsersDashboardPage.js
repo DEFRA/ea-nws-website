@@ -575,7 +575,13 @@ export default function ViewUsersDashboardPage() {
                     }
                   />
                 )}
-                {errorMessage && <ErrorSummary errorList={[errorMessage]} />}
+                {errorMessage && (
+                  <ErrorSummary
+                    errorList={[
+                      { text: errorMessage, componentId: 'users-table' }
+                    ]}
+                  />
+                )}
                 <DashboardHeader
                   contacts={contacts}
                   onClickLinked={onClickLinked}

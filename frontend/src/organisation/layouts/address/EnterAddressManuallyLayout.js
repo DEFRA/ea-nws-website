@@ -128,7 +128,24 @@ export default function EnterAddressManuallyLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {!noErrors && <ErrorSummary errorList={Object.values(errors)} />}
+            {!noErrors && (
+              <ErrorSummary
+                errorList={[
+                  errors.addressLine1Error && {
+                    text: errors.addressLine1Error,
+                    componentId: 'address-line-1'
+                  },
+                  errors.townOrCityError && {
+                    text: errors.townOrCityError,
+                    componentId: 'town-or-city'
+                  },
+                  errors.postcodeError && {
+                    text: errors.postcodeError,
+                    componentId: 'postcode'
+                  }
+                ].filter(Boolean)}
+              />
+            )}
             <h1 className='govuk-heading-l' id='main-content'>
               What's your organisation's UK head office address?
             </h1>

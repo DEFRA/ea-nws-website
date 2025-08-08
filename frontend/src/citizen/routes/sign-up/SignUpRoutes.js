@@ -3,8 +3,8 @@ import OrganisationServiceSelectionPage from '../../../common/pages/sign-up/Orga
 import ServiceSelectionPage from '../../../common/pages/sign-up/ServiceSelectionPage' // TODO: Move to common sign-up routes
 import AddFullNamePage from '../../pages/sign-up/account-name/AddFullNamePage'
 import SignUpDuplicateEmailPage from '../../pages/sign-up/account/SignUpDuplicateEmailPage'
-import SignUpFeedbackConfirmationPage from '../../pages/sign-up/account/SignUpFeedbackConfirmationPage'
-import SignUpFeedbackPage from '../../pages/sign-up/account/SignUpFeedbackPage'
+// import SignUpFeedbackConfirmationPage from '../../pages/sign-up/account/SignUpFeedbackConfirmationPage'
+// import SignUpFeedbackPage from '../../pages/sign-up/account/SignUpFeedbackPage'
 import SignUpPage from '../../pages/sign-up/account/SignUpPage'
 import SignUpValidationPage from '../../pages/sign-up/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../../pages/sign-up/channel-preferences/WarningContactsPreferencePage'
@@ -104,14 +104,14 @@ const signupRoutes = [
     component: <SkipConfirmLandlinePhonePage />
   },
   { path: '/signup/accountname/add', component: <AddFullNamePage /> },
-  {
-    path: '/signup/feedback',
-    component: <SignUpFeedbackPage />
-  },
-  {
-    path: '/signup/feedback/confirmation',
-    component: <SignUpFeedbackConfirmationPage />
-  },
+  // {
+  //   path: '/signup/feedback',
+  //   component: <SignUpFeedbackPage />
+  // },
+  // {
+  //   path: '/signup/feedback/confirmation',
+  //   component: <SignUpFeedbackConfirmationPage />
+  // },
   {
     path: '/declaration',
     component: <DeclarationOfAgreementPage />

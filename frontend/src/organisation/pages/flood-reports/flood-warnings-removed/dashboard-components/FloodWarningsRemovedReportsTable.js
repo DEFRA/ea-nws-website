@@ -1,13 +1,10 @@
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
-import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
-import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
+import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
 import FloodDataInformationPopup from '../../../../../common/components/custom/FloodDataInformationPopup'
-import AlertType from '../../../../../common/enums/AlertType'
 
-export default function FloodReportsTable({
+export default function HistoricalFloodReportsTable({
   locationsAffected,
   displayedLocationsAffected,
   setDisplayedLocationsAffected,
@@ -19,7 +16,6 @@ export default function FloodReportsTable({
   const [warningTypeSort, setWarningTypeSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
   const [businessCriticalitySort, setBusinessCriticalitySort] = useState('none')
-  const [linkedContactsSort, setLinkedContactsSort] = useState('none')
   const [lastUpdatedSort, setLastUpdatedSort] = useState('none')
 
   useEffect(() => {
@@ -27,7 +23,6 @@ export default function FloodReportsTable({
     setWarningTypeSort('none')
     setBusinessCriticalitySort('none')
     setLocationTypeSort('none')
-    setLinkedContactsSort('none')
     setLastUpdatedSort('none')
   }, [])
 
@@ -39,12 +34,15 @@ export default function FloodReportsTable({
         obj.locationData.additionals.other.location_type || '-'
       const objBusinessCriticality =
         obj.locationData.additionals.other.business_criticality || '-'
+      const objStartDate = obj.floodData.startDate
       const objLastUpdatedTime = obj.floodData.lastUpdatedTime
       const objFloodWarningType = obj.floodData.type
 
       if (path === 'locationName') {
         return objLocationName
-      } else if (path === 'lastUpdated') {
+      } else if (path === 'startDate') {
+        return objStartDate
+      } else if (path === 'lastUpdatedTime') {
         return objLastUpdatedTime
       } else if (path === 'floodWarningType') {
         return objFloodWarningType
@@ -109,44 +107,6 @@ export default function FloodReportsTable({
       )
     }
     setResetPaging(!resetPaging)
-  }
-
-  const sortLinkedContacts = () => {
-    if (linkedContactsSort === 'none' || linkedContactsSort === 'descending') {
-      setLinkedContactsSort('ascending')
-      setDisplayedLocationsAffected(
-        [...locationsAffected].sort((a, b) => {
-          return a.locationData.linked_contacts > b.locationData.linked_contacts
-            ? 1
-            : -1
-        })
-      )
-    }
-    if (linkedContactsSort === 'ascending') {
-      setLinkedContactsSort('descending')
-      setDisplayedLocationsAffected(
-        [...locationsAffected].sort((a, b) => {
-          return a.locationData.linked_contacts < b.locationData.linked_contacts
-            ? 1
-            : -1
-        })
-      )
-    }
-  }
-
-  const warningTypeDisplay = {
-    [AlertType.SEVERE_FLOOD_WARNING]: {
-      icon: floodSevereWarningIcon,
-      text: 'Severe flood warning'
-    },
-    [AlertType.FLOOD_WARNING]: {
-      icon: floodWarningIcon,
-      text: 'Flood warning'
-    },
-    [AlertType.FLOOD_ALERT]: {
-      icon: floodAlertIcon,
-      text: 'Flood alert'
-    }
   }
 
   // flood information popup
@@ -268,16 +228,6 @@ export default function FloodReportsTable({
             <th
               scope='col'
               className='govuk-table__header'
-              aria-sort={linkedContactsSort}
-            >
-              <button type='button' onClick={() => sortLinkedContacts()}>
-                Linked
-                <br /> contacts
-              </button>
-            </th>
-            <th
-              scope='col'
-              className='govuk-table__header'
               aria-sort={lastUpdatedSort}
             >
               <button
@@ -286,12 +236,12 @@ export default function FloodReportsTable({
                   sortTableData(
                     lastUpdatedSort,
                     setLastUpdatedSort,
-                    'lastUpdated'
+                    'lastUpdatedTime'
                   )
                 }
               >
-                Last
-                <br /> updated
+                End
+                <br /> date
               </button>
             </th>
             <th scope='col' className='govuk-table__header' />
@@ -319,13 +269,11 @@ export default function FloodReportsTable({
                   <div className='reports-table-icon-position'>
                     <div key={index} className='warnings-table-item'>
                       <img
-                        src={warningTypeDisplay[location.floodData.type].icon}
+                        src={floodWarningRemovedIcon}
                         alt='Flood warning icon'
                         className='warnings-table-icon'
                       />
-                      <span className='warnings-table-text'>
-                        {warningTypeDisplay[location.floodData.type].text}
-                      </span>
+                      <span className='warnings-table-text'>Flood warning</span>
                     </div>
                   </div>
                 </td>{' '}
@@ -335,9 +283,6 @@ export default function FloodReportsTable({
                 <td className='govuk-table__cell'>
                   {location.locationData.additionals.other
                     .business_criticality || '-'}
-                </td>
-                <td className='govuk-table__cell'>
-                  {location.locationData.linked_contacts}
                 </td>
                 <td className='govuk-table__cell'>
                   {dayjs(location.floodData.lastUpdatedTime).format(

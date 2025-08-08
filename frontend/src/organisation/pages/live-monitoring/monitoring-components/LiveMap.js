@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import boundaryKeyIcon from '../../../../common/assets/images/boundary_already_added_icon.png'
 import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
+import floodWarningRemovedIcon from '../../../../common/assets/images/flood_warning_removed.svg'
 import floodSevereWarningIcon from '../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../common/components/custom/FloodDataInformationPopup'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
@@ -37,6 +38,7 @@ export default function LiveMap({
   showSevereLocations,
   showWarningLocations,
   showAlertLocations,
+  showRemovedLocations,
   onFloodAreasUpdate,
   isDisabled,
   setAccountHasLocations
@@ -61,6 +63,9 @@ export default function LiveMap({
   // Alert locations
   const [alertPoints, setAlertPoints] = useState([])
   const [alertFloodAreas, setAlertFloodAreas] = useState([])
+  // Recently removed locations
+  const [removedPoints, setRemovedPoints] = useState([])
+  const [removedFloodAreas, setRemovedFloodAreas] = useState([])
 
   const [visibleFeatures, setVisibleFeatures] = useState([])
 
@@ -78,7 +83,8 @@ export default function LiveMap({
       locationsAffected: [...new Set(locationsAffected)].length,
       severeFloodAreasAmount: severePoints.length,
       warningFloodAreasAmount: warningPoints.length,
-      alertFloodAreasAmount: alertPoints.length
+      alertFloodAreasAmount: alertPoints.length,
+      removedFloodAreasAmount: removedPoints.length
     })
   }, [loading])
 
@@ -98,6 +104,8 @@ export default function LiveMap({
     setWarningFloodAreas([])
     setAlertPoints([])
     setAlertFloodAreas([])
+    setRemovedPoints([])
+    setRemovedFloodAreas([])
     setShapes([])
     setLocationsAffected([])
 
@@ -147,7 +155,7 @@ export default function LiveMap({
       )
 
       const options = {
-        states: ['CURRENT'],
+        states: [],
         boundingBox: {
           southWest: {
             latitude: parseInt(bbox[1] * 10 ** 6),
@@ -162,36 +170,29 @@ export default function LiveMap({
         partnerId
       }
 
-      // load live alerts
-      const { data: liveAlertsData, errorMessage } = await backendCall(
-        { options },
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+
+      // load live alerts and alerts removed in last 24 hours
+      const { data: alerts, errorMessage } = await backendCall(
+        { options, filterDate: yesterday },
         'api/alert/list',
         navigate
       )
 
       if (!errorMessage) {
-        for (const liveAlert of liveAlertsData?.alerts) {
-          const floodArea = await getFloodAreaByTaCode(liveAlert.TA_CODE)
-          switch (liveAlert.type) {
-            case AlertType.SEVERE_FLOOD_WARNING:
-              const addSevere = !severeFloodAreas.find((area) => area.properties.TA_CODE === floodArea.properties.TA_CODE)
-              addSevere && setSevereFloodAreas((prevAreas) => [...prevAreas, floodArea])
-              break
-      
-            case AlertType.FLOOD_WARNING:
-              const addWarning = !warningFloodAreas.find((area) => area.properties.TA_CODE === floodArea.properties.TA_CODE)
-              addWarning && setWarningFloodAreas((prevAreas) => [...prevAreas, floodArea])
-              break
-      
-            case AlertType.FLOOD_ALERT:
-              const addAlert = !alertFloodAreas.find((area) => area.properties.TA_CODE === floodArea.properties.TA_CODE)
-              addAlert && setAlertFloodAreas((prevAreas) => [...prevAreas, floodArea])
-              break
-          }
-          const locationPromises = locations.map((location) =>
-            processLocation(location, liveAlert, floodArea)
+        for (const liveAlert of alerts?.liveAlerts) {
+          const liveLocationPromises = locations.map((location) =>
+            processLocation(location, liveAlert)
           )
-          await Promise.all(locationPromises)
+          await Promise.all(liveLocationPromises)
+        }
+
+        for (const historicAlert of alerts?.historicAlerts) {
+          const historicLocationPromises = locations.map((location) =>
+            processLocation(location, historicAlert, true)
+          )
+          await Promise.all(historicLocationPromises)
         }
       }
     } else {
@@ -205,7 +206,7 @@ export default function LiveMap({
     ])
   }
 
-  const processLocation = async (location, liveAlert, floodArea) => {
+  const processLocation = async (location, liveAlert, recentlyRemoved) => {
     const TA_CODE = liveAlert.TA_CODE
 
     const { coordinates, geometry, additionals } = location
@@ -218,7 +219,8 @@ export default function LiveMap({
     if (!locationIntersectsWithFloodArea) return
 
     const severity = liveAlert.type
-    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
+    const lastUpdatedTime = new Date(liveAlert.startDate)
+    const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
     setLocationsAffected((prevLoc) => [...prevLoc, location.id])
 
@@ -258,10 +260,23 @@ export default function LiveMap({
       setShapes((prevShape) => [...prevShape, geometry.geoJson])
     }
 
-    processFloodArea(severity, point)
+    if (recentlyRemoved) {
+      const updatedFloodArea = {
+        ...floodArea,
+        properties: {
+          ...floodArea.properties,
+          type: severity
+        }
+      }
+      setRemovedPoints((prevPoints) => [...prevPoints, point])
+      setRemovedFloodAreas((prevAreas) => [...prevAreas, updatedFloodArea])
+    } else {
+      setLocationsAffected((prevLoc) => [...prevLoc, location.id])
+      processLiveFloodArea(severity, point, floodArea)
+    }
   }
 
-  const processFloodArea = (severity, point) => {
+  const processLiveFloodArea = (severity, point) => {
     switch (severity) {
       case AlertType.SEVERE_FLOOD_WARNING:
         setSeverePoints((prevPoints) => [...prevPoints, point])
@@ -316,11 +331,11 @@ export default function LiveMap({
     iconAnchor: [12, 41]
   })
 
-  /* const floodWarningRemovedMarker = L.icon({
+  const floodWarningRemovedMarker = L.icon({
     iconUrl: floodWarningRemovedIcon,
-    iconSize: [45, 45],
+    iconSize: [57, 45],
     iconAnchor: [12, 41]
-  }) */
+  })
 
   async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
@@ -415,6 +430,7 @@ export default function LiveMap({
       ...severeFloodAreas,
       ...warningFloodAreas,
       ...alertFloodAreas,
+      ...removedFloodAreas,
       ...shapes
     ]
     const map = useMap()
@@ -694,7 +710,53 @@ export default function LiveMap({
                     />
                   ))}
               </>
-            )}{' '}
+            )}
+
+            {/* locations affected by live flood severe warning areas */}
+            {showRemovedLocations && (
+              <>
+                {removedPoints.length > 0 &&
+                  removedPoints.map((removedPoint, index) => (
+                    <Marker
+                      key={index}
+                      position={[
+                        removedPoint.geometry.coordinates[0][0][1],
+                        removedPoint.geometry.coordinates[0][0][0]
+                      ]}
+                      icon={floodWarningRemovedMarker}
+                    >
+                      <Popup offset={[17, -20]}>
+                        <Link
+                          onClick={() =>
+                            viewFloodInformationData(removedPoint.properties)
+                          }
+                        >
+                          {
+                            removedPoint.properties.locationData.additionals
+                              .locationName
+                          }
+                        </Link>
+                      </Popup>
+                    </Marker>
+                  ))}
+
+                {removedFloodAreas.length > 0 &&
+                  zoomLevel >= 12 &&
+                  removedFloodAreas.map((floodArea, index) => (
+                    <GeoJSON
+                      key={index}
+                      data={floodArea}
+                      style={{
+                        color: `${
+                          floodArea.properties.type === AlertType.FLOOD_ALERT
+                            ? '#ffa200'
+                            : '#f70202'
+                        }`
+                      }}
+                    />
+                  ))}
+              </>
+            )}
             {/* boundary's or shape files uploaded that are affected by live flood areas */}
             {shapes.map((shape, index) => (
               <GeoJSON

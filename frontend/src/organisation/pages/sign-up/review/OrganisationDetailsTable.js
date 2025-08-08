@@ -9,9 +9,12 @@ export default function OrganisationDetailsTable ({ organisation }) {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header govuk-!-width-one-quarter'>
+            <th
+              scope='row'
+              className='govuk-table__header govuk-!-width-one-quarter'
+            >
               Name
-            </td>
+            </th>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {organisation.name}
             </td>
@@ -24,9 +27,12 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header  govuk-!-width-one-quarter'>
+            <th
+              scope='row'
+              className='govuk-table__header  govuk-!-width-one-quarter'
+            >
               UK head office address
-            </td>
+            </th>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {organisation.address ? `${organisation.address}` : '-'}
             </td>
@@ -42,9 +48,12 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header  govuk-!-width-one-quarter'>
+            <th
+              scope='row'
+              className='govuk-table__header  govuk-!-width-one-quarter'
+            >
               Has Companies House number?
-            </td>
+            </th>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {organisation.compHouseNum ? 'Yes' : 'No'}
             </td>
@@ -61,9 +70,12 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header  govuk-!-width-one-quarter'>
+            <th
+              scope='row'
+              className='govuk-table__header  govuk-!-width-one-quarter'
+            >
               Companies House number
-            </td>
+            </th>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {organisation.compHouseNum ? organisation.compHouseNum : '-'}
             </td>
@@ -81,9 +93,12 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td className='govuk-table__header  govuk-!-width-one-quarter'>
+            <th
+              scope='row'
+              className='govuk-table__header  govuk-!-width-one-quarter'
+            >
               Involved in responding to public emergencies or incidents?
-            </td>
+            </th>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {organisation.emergencySector ? 'Yes' : 'No'}
             </td>

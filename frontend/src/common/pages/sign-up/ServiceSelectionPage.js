@@ -52,51 +52,69 @@ export default function ServiceSelectionPage() {
             {/* Error summary */}
             {reasonError && (
               <ErrorSummary
-                errorList={[{ text: reasonError, componentId: serviceSelectionId }]}
+                errorList={[
+                  { text: reasonError, componentId: serviceSelectionId }
+                ]}
               />
             )}
-            <fieldset className='govuk-fieldset'>
-              <legend className='govuk-fieldset__legend'>
-                <h1 className='govuk-heading-l' id='main-content'>
-                  Who are the flood warnings for?
-                </h1>
-              </legend>
-              <div className='govuk-body'>
-                <div>
-                  <div
-                    id={serviceSelectionId}
-                    className='govuk-radios'
-                    data-module='govuk-radios'
-                  >
-                    {reasonError && (
-                      <p className='govuk-error-message'>
-                        <span className='govuk-visually-hidden'>Error:</span>{' '}
-                        {reasonError}
-                      </p>
-                    )}
-                    <Radio
-                      key='citizen'
-                      name='serviceSelectionRadios'
-                      label='Myself, friends and family'
-                      value='citizen'
-                      onChange={(e) => setServiceOption(e.target.value)}
-                    />
-                    <Radio
-                      key='organisation'
-                      name='serviceSelectionRadios'
-                      label='An organisation or business'
-                      value='organisation'
-                      onChange={(e) => setServiceOption(e.target.value)}
-                    />
+            <fieldset
+              className='govuk-fieldset'
+              aria-describedby={
+                reasonError ? `${serviceSelectionId}-error` : undefined
+              }
+            >
+              {' '}
+              <div
+                className={`govuk-form-group${
+                  reasonError ? ' govuk-form-group--error' : ''
+                }`}
+              >
+                <legend className='govuk-fieldset__legend'>
+                  <h1 className='govuk-heading-l' id='main-content'>
+                    Who are the flood warnings for?
+                  </h1>
+                </legend>
+                <div className='govuk-body'>
+                  <div>
+                    <div
+                      id={serviceSelectionId}
+                      className={`govuk-radios${
+                        reasonError ? ' govuk-radios--error' : ''
+                      }`}
+                    >
+                      {reasonError && (
+                        <span
+                          id={`${serviceSelectionId}-error`}
+                          className='govuk-error-message'
+                        >
+                          <span className='govuk-visually-hidden'>Error:</span>{' '}
+                          {reasonError}
+                        </span>
+                      )}
+                      <Radio
+                        key='citizen'
+                        name='serviceSelectionRadios'
+                        label='Myself, friends and family'
+                        value='citizen'
+                        onChange={(e) => setServiceOption(e.target.value)}
+                      />
+                      <Radio
+                        key='organisation'
+                        name='serviceSelectionRadios'
+                        label='An organisation or business'
+                        value='organisation'
+                        onChange={(e) => setServiceOption(e.target.value)}
+                      />
+                    </div>
                   </div>
                 </div>
-                <br />
-                <Button
-                  text='Continue'
-                  className='govuk-button'
-                  onClick={handleButton}
-                />
               </div>
+              <br />
+              <Button
+                text='Continue'
+                className='govuk-button'
+                onClick={handleButton}
+              />
             </fieldset>
           </div>
         </div>

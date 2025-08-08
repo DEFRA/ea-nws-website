@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
@@ -40,11 +41,20 @@ export default function FloodAreaPage() {
 
   const categoryToMessageType = (type) => {
     const typeMap = {
-      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Alert': ['Flood Alert'],
-      'Flood Alert Groundwater': ['Flood Alert']
+      'Flood Warning': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Warning Groundwater': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Warning Rapid Response': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Alert': [AlertType.FLOOD_ALERT],
+      'Flood Alert Groundwater': [AlertType.FLOOD_ALERT]
     }
     return typeMap[type] || []
   }
@@ -66,7 +76,7 @@ export default function FloodAreaPage() {
     for (const messageType of messageTypes) {
       let count
       switch (messageType) {
-        case 'Severe Flood Warning':
+        case AlertType.SEVERE_FLOOD_WARNING:
           count = floodCount.find((count) => count.type === messageType)?.count
           messageSent.push(
             `${count} severe flood warning${
@@ -74,7 +84,7 @@ export default function FloodAreaPage() {
             } were sent for this area in the last 2 years.`
           )
           break
-        case 'Flood Warning':
+        case AlertType.FLOOD_WARNING:
           count = floodCount.find((count) => count.type === messageType)?.count
           messageSent.push(
             `${count} flood warning${
@@ -82,7 +92,7 @@ export default function FloodAreaPage() {
             } were sent for this area in the last 2 years.`
           )
           break
-        case 'Flood Alert':
+        case AlertType.FLOOD_ALERT:
           count = floodCount.find((count) => count.type === messageType)?.count
           messageSent.push(
             `${count} flood alert${
@@ -112,9 +122,9 @@ export default function FloodAreaPage() {
       for (const messageType of messageTypes) {
         const filteredData = floodHistoryData.filter(
           (alert) =>
-            alert.CODE === taCode &&
-            alert.TYPE === messageType &&
-            moment(alert.effectiveDate * 1000) > twoYearsAgo
+            alert.TA_CODE === taCode &&
+            alert.type === messageType &&
+            new Date(alert.startDate) > twoYearsAgo
         )
         newCount.push({ type: messageType, count: filteredData.length })
         setFloodCount(newCount)

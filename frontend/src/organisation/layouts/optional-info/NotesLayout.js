@@ -84,13 +84,14 @@ export default function NotesLayout({
               <p className='govuk-hint'>{instructionText}</p>
               <TextArea
                 id={locationNotesId}
-                name={title || 'Notes (optional)'}
+                name={title || 'location-notes'}
                 error={error}
                 inputType='text'
                 rows={5}
                 onChange={(val) => setNotes(val)}
                 value={notes}
                 className='govuk-textarea'
+                visuallyHidden={true}
                 additionalInfo={`You can enter up to ${
                   charLimit - notes.length
                 } characters`}

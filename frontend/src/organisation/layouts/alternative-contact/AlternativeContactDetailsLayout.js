@@ -98,11 +98,11 @@ export default function AlternativeContactDetailsLayout({
                 errorList={[
                   errorFullName && {
                     text: errorFullName,
-                    component: fullNameId
+                    componentId: fullNameId
                   },
                   errorEmail && {
                     text: errorEmail,
-                    component: emailAddressId
+                    componentId: emailAddressId
                   },
                   errorTelephone && {
                     text: errorTelephone,

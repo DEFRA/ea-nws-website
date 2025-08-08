@@ -340,6 +340,7 @@ export default function SearchFilter({
               .map((option) => (
                 <CheckBox
                   key={option}
+                  id={`locations-filter-${String(filterTitle).toLowerCase()}-${String(option).toLowerCase()}`}
                   label={option}
                   value={option}
                   checked={selectedFilterType.includes(option)}

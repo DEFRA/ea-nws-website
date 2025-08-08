@@ -23,12 +23,14 @@ export default function FullMapInteractiveKey ({
       data-module='govuk-checkboxes'
     >
       <CheckBox
+        id='locations-within-flood-areas'
+        ariaLabelledBy='locations-within-flood-areas-label'
         name='WithinFloodAreas'
         onChange={() =>
           setShowLocationsWithinFloodAreas(!showLocationsWithinFloodAreas)}
         checked={showLocationsWithinFloodAreas}
       />
-      <p style={{ fontSize: '14px', margin: '0px 0px 0px -15px' }}>
+      <p id='locations-within-flood-areas-label' style={{ fontSize: '14px', margin: '0px 0px 0px -15px' }}>
         Within flood areas (
         {
           locations.filter((obj) => obj.withinFloodArea === true)
@@ -46,12 +48,15 @@ export default function FullMapInteractiveKey ({
       data-module='govuk-checkboxes'
     >
       <CheckBox
+        id='locations-outside-flood-areas'
+        ariaLabelledBy='locations-outside-flood-areas-label'
         name='OutsideFloodAreas'
         onChange={() =>
           setShowLocationsOutsideFloodAreas(!showLocationsOutsideFloodAreas)}
         checked={showLocationsOutsideFloodAreas}
       />
       <p
+        id='locations-outside-flood-areas-label'
         style={{
           fontSize: '14px',
           margin: '0px 0px 0px -15px'

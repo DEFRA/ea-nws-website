@@ -28,13 +28,17 @@ export default function MapInteractiveKey({
             onChange={() => setShowFloodWarningAreas(!showFloodWarningAreas)}
             checked={showFloodWarningAreas}
             id='flood_warning_and_severe_area'
+            ariaLabelledBy='label-flood_warning_and_severe_area'
           />
           <div className='org-flood-warning-item'>
             <span
               className='org-flood-warning-square warning-square'
               style={{ marginLeft: '-1rem' }}
             />
-            <span className='org-flood-warning-text'>
+            <span
+              id='label-flood_warning_and_severe_area'
+              className='org-flood-warning-text'
+            >
               Flood warning and <br />
               severe area
             </span>
@@ -50,13 +54,19 @@ export default function MapInteractiveKey({
             onChange={() => setShowFloodAlertAreas(!showFloodAlertAreas)}
             checked={showFloodAlertAreas}
             id='flood_alert_area'
+            ariaLabelledBy='label-flood_alert_area'
           />
           <div className='org-flood-alert-item'>
             <div
               className='org-flood-warning-square alert-square'
               style={{ marginLeft: '-1rem' }}
             />
-            <span className='org-flood-warning-text'>Flood alert area</span>
+            <span
+              id='label-flood_alert_area'
+              className='org-flood-warning-text'
+            >
+              Flood alert area
+            </span>
           </div>
         </div>
         <div
@@ -68,13 +78,16 @@ export default function MapInteractiveKey({
             onChange={() => setShowFloodExtents(!showFloodExtents)}
             checked={showFloodExtents}
             id='flood_extent'
+            ariaLabelledBy='label-flood_extent'
           />
           <div className='org-flood-alert-item'>
             <div
               className='org-flood-warning-square alert-square'
               style={{ marginLeft: '-1rem' }}
             />
-            <span className='org-flood-warning-text'>Flood extent</span>
+            <span id='label-flood_extent' className='org-flood-warning-text'>
+              Flood extent
+            </span>
           </div>
         </div>
       </div>

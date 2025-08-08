@@ -269,6 +269,9 @@ export default function KeywordsLayout({
                 keywordsArray.map((keyword, index) => (
                   <div className='govuk-checkboxes--small' key={index}>
                     <Checkbox
+                      key={index}
+                      id={`keyword-${index}`}
+                      ariaLabelledBy={`keyword-${index}-label`}
                       label={keyword}
                       checked={isCheckboxCheckedArray[index]}
                       onChange={(e) => {

@@ -34,9 +34,12 @@ export default function FloodWarningHistoryDashboardPage() {
   )
   const toggleFilterButtonRef = useRef(null)
 
+  // When filter opens, move focus to it. When it closes, move focus back to button
   useEffect(() => {
-    if (toggleFilterButtonRef.current) {
-      toggleFilterButtonRef.current.focus()
+    if (isFilterVisible) {
+      document.getElementById('filter-heading')?.focus()
+    } else {
+      toggleFilterButtonRef.current?.focus()
     }
   }, [isFilterVisible])
 

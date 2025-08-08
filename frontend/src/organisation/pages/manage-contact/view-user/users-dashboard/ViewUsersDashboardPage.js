@@ -61,16 +61,30 @@ export default function ViewUsersDashboardPage() {
   const historyData = useFetchAlerts()
   const [activeAdmins, setActiveAdmins] = useState([])
   const toggleFilterButtonRef = useRef(null)
+  const moreActionsButtonRef = useRef(null)
+  const [isActionsOpen, setIsActionsOpen] = useState(false)
   const adminIds = useMemo(
     () => new Set(activeAdmins.map((a) => a.id)),
     [activeAdmins]
   )
 
+  // When filter opens, move focus to is. When it closes, move focus back to button
   useEffect(() => {
-    if (toggleFilterButtonRef.current) {
-      toggleFilterButtonRef.current.focus()
+    if (isFilterVisible) {
+      document.getElementById('filter-heading')?.focus()
+    } else {
+      toggleFilterButtonRef.current?.focus()
     }
   }, [isFilterVisible])
+
+  // When actions button is clicked, move focus to first button
+  useEffect(() => {
+    if (isActionsOpen) {
+      document.getElementById('actions-region')?.focus()
+    } else {
+      moreActionsButtonRef.current?.focus()
+    }
+  }, [isActionsOpen])
 
   async function getActiveAdmins() {
     const { data } = await backendCall(
@@ -529,9 +543,15 @@ export default function ViewUsersDashboardPage() {
           location.state.linkLocations.length === 0) && (
           <>
             <ButtonMenu
+              ref={moreActionsButtonRef}
               title='More actions'
               options={moreActions}
-              onSelect={(index) => onMoreAction(index)}
+              onOpen={() => setIsActionsOpen(true)}
+              onClose={() => setIsActionsOpen(false)}
+              onSelect={(index) => {
+                setIsActionsOpen(false)
+                onMoreAction(index)
+              }}
             />
             &nbsp; &nbsp;
             <Button

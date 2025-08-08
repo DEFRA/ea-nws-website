@@ -245,7 +245,8 @@ export default function FloodReportFilter ({
                 type='text'
                 value={filters.dateFrom}
                 onChange={(event) =>
-                  updateFilter('dateFrom', event.target.value)}
+                  updateFilter('dateFrom', event.target.value)
+                }
               />
               <FontAwesomeIcon
                 icon={faCalendar}
@@ -314,7 +315,8 @@ export default function FloodReportFilter ({
               type='text'
               value={filters.locationName}
               onChange={(event) =>
-                updateFilter('locationName', event.target.value)}
+                updateFilter('locationName', event.target.value)
+              }
             />
           </div>
         </div>
@@ -531,25 +533,34 @@ export default function FloodReportFilter ({
       )
     }
 
-    return selectedFilters.length > 0
-      ? (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '5px'
-          }}
-        >
-          {selectedFilters}
-        </div>
-        )
-      : null
+    return selectedFilters.length > 0 ? (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '5px'
+        }}
+      >
+        {selectedFilters}
+      </div>
+    ) : null
   }
 
   return (
-    <div className='warnings-filter-panel'>
+    <div
+      id='filter-region'
+      role='region'
+      className='warnings-filter-panel'
+      aria-labelledby='filter-heading'
+    >
       <div className='warnings-filter-header'>
-        <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
+        <h1
+          id='filter-heading'
+          className='govuk-heading-m govuk-!-margin-bottom-2'
+          tabIndex={-1}
+        >
+          Filter
+        </h1>
       </div>
 
       {/* Selected filters */}

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
@@ -50,6 +51,7 @@ export default function LinkLocationsLayout({
   const [floodCounts, setFloodCounts] = useState([])
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
   const [partnerId, setPartnerId] = useState(false)
+  const [processedFloodData, setProcessedFloodData] = useState(false)
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -62,11 +64,20 @@ export default function LinkLocationsLayout({
 
   const categoryToMessageType = (type) => {
     const typeMap = {
-      'Flood Warning': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Groundwater': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Warning Rapid Response': ['Flood Warning', 'Severe Flood Warning'],
-      'Flood Alert': ['Flood Alert'],
-      'Flood Alert Groundwater': ['Flood Alert']
+      'Flood Warning': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Warning Groundwater': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Warning Rapid Response': [
+        AlertType.FLOOD_WARNING,
+        AlertType.SEVERE_FLOOD_WARNING
+      ],
+      'Flood Alert': [AlertType.FLOOD_ALERT],
+      'Flood Alert Groundwater': [AlertType.FLOOD_ALERT]
     }
     return typeMap[type] || []
   }
@@ -79,9 +90,9 @@ export default function LinkLocationsLayout({
       for (const messageType of messageTypes) {
         const filteredData = floodHistoryData.filter(
           (alert) =>
-            alert.CODE === taCode &&
-            alert.TYPE === messageType &&
-            moment(alert.effectiveDate * 1000) > twoYearsAgo
+            alert.TA_CODE === taCode &&
+            alert.type === messageType &&
+            new Date(alert.startDate) > twoYearsAgo
         )
         newCount.counts.push({ type: messageType, count: filteredData.length })
       }
@@ -91,11 +102,12 @@ export default function LinkLocationsLayout({
 
   useEffect(() => {
     const processFloodData = () => {
-      if (floodHistoryData && floodAreas) {
+      if (floodHistoryData.length !== 0 && floodAreas) {
         if (floodAreas.length > 0) {
           floodAreas.forEach((area) =>
             setHistoricalData(area.properties.TA_CODE, area.properties.category)
           )
+          setProcessedFloodData(true)
         }
       }
     }
@@ -108,7 +120,7 @@ export default function LinkLocationsLayout({
     for (const messageType of messageTypes) {
       let count
       switch (messageType) {
-        case 'Severe Flood Warning':
+        case AlertType.SEVERE_FLOOD_WARNING:
           count = floodCount.counts.find(
             (count) => count.type === messageType
           )?.count
@@ -116,13 +128,13 @@ export default function LinkLocationsLayout({
             `${count} severe flood warning${count === 1 ? '' : 's'}`
           )
           break
-        case 'Flood Warning':
+        case AlertType.FLOOD_WARNING:
           count = floodCount.counts.find(
             (count) => count.type === messageType
           )?.count
           messageSent.push(`${count} flood warning${count === 1 ? '' : 's'}`)
           break
-        case 'Flood Alert':
+        case AlertType.FLOOD_ALERT:
           count = floodCount.counts.find(
             (count) => count.type === messageType
           )?.count
@@ -151,7 +163,9 @@ export default function LinkLocationsLayout({
           areaName: area.properties.TA_Name,
           areaDistance: area.properties.distance,
           areaType: `${
-            type.includes('Flood Warning') ? 'Flood warning' : 'Flood alert'
+            type.includes(AlertType.FLOOD_WARNING)
+              ? 'Flood warning'
+              : 'Flood alert'
           } area`,
           messagesSent: messageSent
         })
@@ -159,10 +173,10 @@ export default function LinkLocationsLayout({
       setFloodAreasInputs(updatedFloodAreas)
     }
 
-    if (floodAreas.length > 0 && floodCounts.length > 0) {
+    if (floodAreas.length > 0 && floodCounts.length > 0 && processedFloodData) {
       populateInputs(floodAreas, floodCounts)
     }
-  }, [floodAreas, floodCounts])
+  }, [floodAreas, processedFloodData])
 
   const handleCheckboxChange = (areaId) => {
     setSelectedTAs((prev) =>
@@ -640,7 +654,7 @@ export default function LinkLocationsLayout({
             </p>
           </div>
           <div className='govuk-grid-column-full govuk-!-margin-top-4'>
-            {table}
+            {processedFloodData ? table : <LoadingSpinner />}
             <Button
               text='Link to areas'
               className='govuk-button'

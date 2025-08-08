@@ -192,7 +192,7 @@ const locations = [
                 TA_CODE: '122WAF946',
                 TA_Name:
                   'River Ouse, Burdyke, Holgate Beck, Blue Beck, River Foss, The Fleet',
-                category: 'Flood Warning Rapid Response'
+                category: 'Flood alert'
               },
               {
                 TA_CODE: '122FWF776',

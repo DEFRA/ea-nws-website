@@ -9,7 +9,8 @@ export default function TextArea({
   onChange,
   error = '',
   additionalInfo,
-  labelledByID = ''
+  labelledByID = '',
+  visuallyHidden = false
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -21,7 +22,12 @@ export default function TextArea({
         className={`govuk-form-group ${error ? 'govuk-form-group--error' : ''}`}
       >
         {name && (
-          <label className='govuk-label' htmlFor={id}>
+          <label
+            className={`govuk-label ${
+              visuallyHidden && 'govuk-visually-hidden'
+            }`}
+            htmlFor={id}
+          >
             {name}
           </label>
         )}

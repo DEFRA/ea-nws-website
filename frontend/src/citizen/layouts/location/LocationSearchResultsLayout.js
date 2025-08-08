@@ -40,26 +40,26 @@ export default function LocationSearchResultsLayout({
   )
   const floodHistoryData = useFetchAlerts()
 
-  const setHistoricalAlertNumber = (AlertArea) => {
+  const setHistoricalAlertNumber = (alertAreaTaCode) => {
     const oneYearAgo = moment().subtract(1, 'years')
 
-    const areaAlert = floodHistoryData.filter(
+    const alertAreaHistory = floodHistoryData.filter(
       (alert) =>
-        alert.CODE === AlertArea &&
-        moment(alert.effectiveDate * 1000) > oneYearAgo
+        alert.TA_CODE === alertAreaTaCode &&
+        new Date(alert.startDate) > oneYearAgo
     )
-    dispatch(setFloodAlertCount(areaAlert.length))
+    dispatch(setFloodAlertCount(alertAreaHistory.length))
   }
 
-  const setHistoricalWarningNumber = (WarningArea) => {
+  const setHistoricalWarningNumber = (warningAreaTaCode) => {
     const oneYearAgo = moment().subtract(1, 'years')
 
-    const areaWarning = floodHistoryData.filter(
+    const warningAreaHistory = floodHistoryData.filter(
       (alert) =>
-        alert.CODE === WarningArea &&
-        moment(alert.effectiveDate * 1000) > oneYearAgo
+        alert.TA_CODE === warningAreaTaCode &&
+        new Date(alert.startDate) > oneYearAgo
     )
-    dispatch(setSevereFloodWarningCount(areaWarning.length))
+    dispatch(setSevereFloodWarningCount(warningAreaHistory.length))
   }
 
   const handleSelectedLocation = async (event, selectedLocation) => {

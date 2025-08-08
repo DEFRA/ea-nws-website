@@ -3,19 +3,21 @@ import { useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 
-export default function SignUpDuplicateEmailPageLayout () {
+export default function DuplicateNamePage() {
   const location = useLocation()
 
   return (
     <>
       <Helmet>
-        <title>Account already exists - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Account already exists - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink to='/organisation/sign-up' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               An account already exists for this organisation
             </h1>
             <InsetText text={location.state.name} />

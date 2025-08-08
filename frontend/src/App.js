@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
+import StartPage from './common/pages/start/StartPage'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
 import { removeHoverIosSafari } from './common/services/formatters/iosDoubleTapRemoval'
 import GoogleAnalytics from './common/services/hooks/GoogleAnalytics'
@@ -124,6 +125,7 @@ function App() {
     <GoogleAnalytics useAnalytics={cookies?.CookieControl?.analytics} />
       <ScrollToTop />
       <Routes>
+        <Route path='/' element={<StartPage />} />
         <Route path='/' element={<Layout />}>
           {authenticatedRoutes.map((route) => (
             <Route

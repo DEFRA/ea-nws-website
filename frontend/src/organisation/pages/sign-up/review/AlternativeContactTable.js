@@ -9,9 +9,12 @@ export default function ContactReviewTable({ alternativeContact }) {
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
-          <td className='govuk-table__header  govuk-!-width-one-quarter'>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
             Name
-          </td>
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
             <Link
@@ -24,9 +27,12 @@ export default function ContactReviewTable({ alternativeContact }) {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td className='govuk-table__header  govuk-!-width-one-quarter'>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
             Email address
-          </td>
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>
             {alternativeContact.email}
           </td>
@@ -41,9 +47,12 @@ export default function ContactReviewTable({ alternativeContact }) {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td className='govuk-table__header  govuk-!-width-one-quarter'>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
             Telephone number
-          </td>
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>
             {alternativeContact.telephone}
           </td>
@@ -58,9 +67,12 @@ export default function ContactReviewTable({ alternativeContact }) {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td className='govuk-table__header  govuk-!-width-one-quarter'>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
             Job title (optional)
-          </td>
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>
             {alternativeContact.jobTitle
               ? `${alternativeContact.jobTitle}`

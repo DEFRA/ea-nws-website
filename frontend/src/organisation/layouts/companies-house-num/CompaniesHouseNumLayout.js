@@ -70,7 +70,6 @@ export default function CompaniesHouseNumLayout({
               Does your organisation have a Companies House number?
             </h1>
             <div className='govuk-body'>
-              {error && <p className='govuk-error-message'>{error}</p>}
               <div
                 className={
                   error
@@ -78,6 +77,12 @@ export default function CompaniesHouseNumLayout({
                     : 'govuk-form-group'
                 }
               >
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {error}
+                  </p>
+                )}
                 <fieldset id={compHouseRadiosId} className='govuk-fieldset'>
                   <legend className='govuk-visually-hidden'>
                     Does your organisation have a Companies House number?

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
@@ -50,6 +51,7 @@ export default function LinkLocationsLayout({
   const [floodCounts, setFloodCounts] = useState([])
   const [floodAreaInputs, setFloodAreasInputs] = useState([])
   const [partnerId, setPartnerId] = useState(false)
+  const [processedFloodData, setProcessedFloodData] = useState(false)
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -100,11 +102,12 @@ export default function LinkLocationsLayout({
 
   useEffect(() => {
     const processFloodData = () => {
-      if (floodHistoryData && floodAreas) {
+      if (floodHistoryData.length !== 0 && floodAreas) {
         if (floodAreas.length > 0) {
           floodAreas.forEach((area) =>
             setHistoricalData(area.properties.TA_CODE, area.properties.category)
           )
+          setProcessedFloodData(true)
         }
       }
     }
@@ -170,10 +173,10 @@ export default function LinkLocationsLayout({
       setFloodAreasInputs(updatedFloodAreas)
     }
 
-    if (floodAreas.length > 0 && floodCounts.length > 0) {
+    if (floodAreas.length > 0 && floodCounts.length > 0 && processedFloodData) {
       populateInputs(floodAreas, floodCounts)
     }
-  }, [floodAreas, floodCounts])
+  }, [floodAreas, processedFloodData])
 
   const handleCheckboxChange = (areaId) => {
     setSelectedTAs((prev) =>
@@ -636,7 +639,7 @@ export default function LinkLocationsLayout({
             </p>
           </div>
           <div className='govuk-grid-column-full govuk-!-margin-top-4'>
-            {table}
+            {processedFloodData ? table : <LoadingSpinner />}
             <Button
               text='Link to areas'
               className='govuk-button'

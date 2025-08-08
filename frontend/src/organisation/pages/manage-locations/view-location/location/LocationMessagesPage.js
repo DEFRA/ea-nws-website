@@ -161,7 +161,6 @@ export default function LocationMessagesPage() {
         floodAreas,
         true
       )
-      console.log('alerts', alerts?.historicAlerts)
       setFloodAreas(floodAreas)
 
       // get available alerts for location
@@ -184,7 +183,6 @@ export default function LocationMessagesPage() {
     linkedChild
   ) => {
     targetAreas.forEach((targetArea) => {
-      console.log('targetArea.TA_CODE', targetArea.TA_CODE)
       let severeWarningsCount = 0,
         warningsCount = 0,
         alertsCount = 0
@@ -192,18 +190,14 @@ export default function LocationMessagesPage() {
         const alertTaCode = alert.TA_CODE
         const alertType = alert.type
         if (alertTaCode === targetArea.TA_CODE) {
-          console.log('hit')
           switch (alertType) {
             case AlertType.SEVERE_FLOOD_WARNING:
-              console.log('adding to severe')
               severeWarningsCount++
               break
             case AlertType.FLOOD_WARNING:
-              console.log('adding to warning')
               warningsCount++
               break
             case AlertType.FLOOD_ALERT:
-              console.log('adding to alert')
               alertsCount++
               break
           }

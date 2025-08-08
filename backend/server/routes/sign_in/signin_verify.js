@@ -4,8 +4,6 @@ const {
 } = require('../../services/GenericErrorResponse')
 const { logger } = require('../../plugins/logging')
 
-console.log('sign_in_verify route loaded')
-
 module.exports = [
   {
     method: ['POST'],

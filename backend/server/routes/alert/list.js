@@ -25,16 +25,17 @@ module.exports = [
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         options.states = ['CURRENT', 'PAST']
         let response
-
-        response = await apiCall({ options: options }, 'alert/list')
-        let { liveAlerts, historicAlerts } = processGeosafeAlerts(
-          response.data.alerts
-        )
+        let { liveAlerts, historicAlerts } = {liveAlerts:[], historicAlerts:[]}
 
         if (historic) {
           const { redis } = request.server.app
-          let cachedHistoricAlerts = null //await getFloodHistory(redis)
+          let cachedHistoricAlerts = await getFloodHistory(redis)
           if (cachedHistoricAlerts === null) {
+            // get alerts from geosafe
+            response = await apiCall({ options: options }, 'alert/list')
+            ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
+              response.data.alerts
+            ))
             // add alerts from file
             const fileHistoricAlerts = historicAlerts.concat(
               await getAllPastAlerts(request)
@@ -48,6 +49,11 @@ module.exports = [
           } else {
             historicAlerts = cachedHistoricAlerts
           }
+        } else {
+          response = await apiCall({ options: options }, 'alert/list')
+          ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
+            response.data.alerts
+          ))
         }
 
         if (filterDate) {

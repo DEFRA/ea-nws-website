@@ -16,13 +16,11 @@ export function useFetchAlerts() {
         { options, historic: true },
         'api/alert/list'
       )
-      console.log('historical alerrts', alerts?.historicAlerts)
       if (alerts?.historicAlerts) {
         setHistoricalAlerts(alerts?.historicAlerts)
       }
     }
 
-    console.log('loading historical alerts')
     loadHistoricalAlerts()
   }, [setHistoricalAlerts])
 

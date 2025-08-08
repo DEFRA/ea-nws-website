@@ -90,7 +90,7 @@ export default function LiveFloodWarningsDashboardPage() {
       navigate
     )
 
-    if (alerts) {
+    if (alerts?.liveAlerts) {
       const { data: locationsData } = await backendCall(
         { authToken },
         'api/elasticache/list_locations',
@@ -111,7 +111,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
       if (locations) {
         // loop through live alerts - loop through all locations to find affected locations
-        for (const liveAlert of alerts?.alerts) {
+        for (const liveAlert of alerts?.liveAlerts) {
           for (const location of locations) {
             await processLocation(location, liveAlert, contactCount)
           }
@@ -120,12 +120,7 @@ export default function LiveFloodWarningsDashboardPage() {
     }
   }
 
-  const processLocation = async (
-    location,
-    liveAlert,
-    contactCount
-  ) => {
-
+  const processLocation = async (location, liveAlert, contactCount) => {
     const TA_CODE = liveAlert.TA_CODE
 
     const { additionals } = location
@@ -137,9 +132,8 @@ export default function LiveFloodWarningsDashboardPage() {
     if (!locationIntersectsWithFloodArea) return
 
     const TA_NAME = liveAlert.TA_Name
-
     const severity = liveAlert.type
-    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
+    const lastUpdatedTime = new Date(liveAlert.startDate)
 
     location.linked_contacts = contactCount[location.id] || 0
 

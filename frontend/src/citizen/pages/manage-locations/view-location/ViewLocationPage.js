@@ -177,11 +177,13 @@ export default function ViewLocationPage() {
           return el.properties.TA_CODE
         })
 
-        const filteredAlert = floodHistoryData
-          .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.effectiveDate * 1000) > oneYearAgo)
+        const alertAreasHistory = floodHistoryData.filter(
+          (alert) =>
+            taCodes.includes(alert.TA_CODE) &&
+            new Date(alert.startDate) > oneYearAgo
+        )
 
-        setFloodAlertCount(filteredAlert.length)
+        setFloodAlertCount(alertAreasHistory.length)
       }
     }
 
@@ -193,11 +195,13 @@ export default function ViewLocationPage() {
           return el.properties.TA_CODE
         })
 
-        const filteredWarning = floodHistoryData
-          .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.effectiveDate * 1000) > oneYearAgo)
+        const warningAreasHistory = floodHistoryData.filter(
+          (alert) =>
+            taCodes.includes(alert.TA_CODE) &&
+            new Date(alert.startDate) > oneYearAgo
+        )
 
-        setSevereFloodWarningCount(filteredWarning.length)
+        setSevereFloodWarningCount(warningAreasHistory.length)
       }
     }
 

@@ -19,16 +19,19 @@ export default function LiveFloodMonitoringPage() {
   const [showSevereLocations, setShowSevereLocations] = useState(true)
   const [showWarningLocations, setShowWarningLocations] = useState(true)
   const [showAlertLocations, setShowAlertLocations] = useState(true)
+  const [showRemovedLocations, setShowRemovedLocations] = useState(true)
   const [filters, setFilters] = useState({
     severeAreas: true,
     warningAreas: true,
-    alertAreas: true
+    alertAreas: true,
+    removedAreas: true
   })
   const [floodData, setFloodData] = useState({
     locationsAffected: 0,
     severeFloodAreasAmount: 0,
     warningFloodAreasAmount: 0,
-    alertFloodAreasAmount: 0
+    alertFloodAreasAmount: 0,
+    removedFloodAreasAmount: 0
   })
   const [accountHasLocations, setAccountHasLocations] = useState(true)
 
@@ -40,7 +43,8 @@ export default function LiveFloodMonitoringPage() {
     setFilters({
       severeAreas: showSevereLocations,
       warningAreas: showWarningLocations,
-      alertAreas: showAlertLocations
+      alertAreas: showAlertLocations,
+      removedAreas: showRemovedLocations
     })
   }
 
@@ -108,6 +112,7 @@ export default function LiveFloodMonitoringPage() {
                     warningDescription='Severe flooding - danger to life'
                     showFloodType={showSevereLocations}
                     updateFloodTypeVisibility={setShowSevereLocations}
+                    urlLink={orgFloodReportsUrls.live}
                   />
                   <br />
                   <FloodTypeFilter
@@ -118,6 +123,7 @@ export default function LiveFloodMonitoringPage() {
                     warningDescription='Flooding expected - act now'
                     showFloodType={showWarningLocations}
                     updateFloodTypeVisibility={setShowWarningLocations}
+                    urlLink={orgFloodReportsUrls.live}
                   />
                   <br />
                   <FloodTypeFilter
@@ -128,6 +134,7 @@ export default function LiveFloodMonitoringPage() {
                     warningDescription='Early alert of possible flooding - be prepared'
                     showFloodType={showAlertLocations}
                     updateFloodTypeVisibility={setShowAlertLocations}
+                    urlLink={orgFloodReportsUrls.live}
                   />
                   <br />
                   <p className='govuk-body govuk-!-font-weight-bold'>
@@ -135,10 +142,13 @@ export default function LiveFloodMonitoringPage() {
                   </p>
                   <FloodTypeFilter
                     iconSrc={floodWarningRemovedIcon}
-                    locationsCount={0}
+                    locationsCount={floodData.removedFloodAreasAmount}
                     warningType='Removed'
                     warningText='Warnings removed'
                     warningDescription=''
+                    showFloodType={showRemovedLocations}
+                    updateFloodTypeVisibility={setShowRemovedLocations}
+                    urlLink={orgFloodReportsUrls.removed}
                   />
                   <Button
                     text='Apply filter'
@@ -188,6 +198,7 @@ export default function LiveFloodMonitoringPage() {
               showSevereLocations={filters.severeAreas}
               showWarningLocations={filters.warningAreas}
               showAlertLocations={filters.alertAreas}
+              showRemovedLocations={filters.removedAreas}
               onFloodAreasUpdate={handleFloodAreasUpdate}
               isDisabled={!accountHasLocations}
               setAccountHasLocations={(val) => setAccountHasLocations(val)}

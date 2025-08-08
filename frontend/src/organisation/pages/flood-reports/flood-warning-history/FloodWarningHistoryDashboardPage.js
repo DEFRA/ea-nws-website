@@ -7,7 +7,6 @@ import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary.js'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
-import AlertState from '../../../../common/enums/AlertState.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter'
@@ -57,7 +56,7 @@ export default function FloodWarningHistoryDashboardPage() {
     )
 
     const options = {
-      states: [AlertState.PAST],
+      states: [],
       boundingBox: null,
       channels: [],
       partnerId
@@ -70,7 +69,7 @@ export default function FloodWarningHistoryDashboardPage() {
       navigate
     )
 
-    if (alerts) {
+    if (alerts?.historicAlerts) {
       // get orgs locations
       const { data: locationsData } = await backendCall(
         { authToken },
@@ -86,22 +85,18 @@ export default function FloodWarningHistoryDashboardPage() {
       }
 
       if (locations) {
-        for (const liveAlert of alerts?.alerts) {
+        for (const historicAlert of alerts?.historicAlerts) {
           for (const location of locations) {
-            processLocation(location, liveAlert)
+            processLocation(location, historicAlert)
           }
         }
       }
     }
   }
 
-  const processLocation = (
-    location,
-    liveAlert
-  ) => {
+  const processLocation = (location, historicAlert) => {
+    const TA_CODE = historicAlert.TA_CODE
 
-    const TA_CODE = liveAlert.TA_CODE
-    
     const { additionals } = location
     const locationIntersectsWithFloodArea =
       additionals.other?.targetAreas?.some(
@@ -110,12 +105,10 @@ export default function FloodWarningHistoryDashboardPage() {
 
     if (!locationIntersectsWithFloodArea) return
 
-    const TA_NAME = liveAlert.TA_Name
-
-    const severity = liveAlert.type
-
-    const startDate = new Date(liveAlert.effectiveDate * 1000)
-    const lastUpdatedTime = new Date(liveAlert.effectiveDate * 1000)
+    const TA_NAME = historicAlert.TA_Name
+    const severity = historicAlert.type
+    const startDate = new Date(historicAlert.startDate)
+    const lastUpdatedTime = new Date(historicAlert.endDate)
 
     // add required data to location row object
     const createLocationWithFloodData = () => {

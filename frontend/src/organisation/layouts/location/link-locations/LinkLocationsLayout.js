@@ -570,43 +570,58 @@ export default function LinkLocationsLayout({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {floodAreaInputs.map((area) => (
-            <tr key={area.id} className='govuk-table__row'>
-              <td className='govuk-table__cell'>
-                <Link
-                  onClick={(e) => onClick(e, area.areaCode)}
-                  className='govuk-link'
-                >
-                  {area.areaName}
-                </Link>
-              </td>
-              <td className='govuk-table__cell'>{area.areaDistance ?? 'Xm'}</td>
-              <td className='govuk-table__cell'>{area.areaType}</td>
-              <td className='govuk-table__cell'>
-                {area.messagesSent.map((messageSent, index) => (
-                  <span key={index}>
-                    {messageSent}
-                    <br />
-                  </span>
-                ))}
-              </td>
-              <td className='govuk-table__cell'>
-                <div
-                  className='govuk-checkboxes--small'
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Checkbox
-                    value={area.areaCode}
-                    onChange={() => handleCheckboxChange(area.areaCode)}
-                    checked={selectedTAs.includes(area.areaCode)}
-                  />
-                </div>
-              </td>
-            </tr>
-          ))}
+          {floodAreaInputs.map((area, index) => {
+            const slug = (s) =>
+              String(s).toLowerCase().trim().replace(/\s+/g, '-') // spaces -> hyphens
+
+            const suffix =
+              area.areaCode || slug(area.areaName) || `row-${index}`
+            const labelId = `flood-area-label-${suffix}`
+            const checkboxId = `flood-area-checkbox-${suffix}`
+
+            return (
+              <tr key={area.id} className='govuk-table__row'>
+                <td className='govuk-table__cell'>
+                  <Link
+                    id={labelId}
+                    onClick={(e) => onClick(e, area.areaCode)}
+                    className='govuk-link'
+                  >
+                    {area.areaName}
+                  </Link>
+                </td>
+                <td className='govuk-table__cell'>
+                  {area.areaDistance ?? 'Xm'}
+                </td>
+                <td className='govuk-table__cell'>{area.areaType}</td>
+                <td className='govuk-table__cell'>
+                  {area.messagesSent.map((messageSent, index) => (
+                    <span key={index}>
+                      {messageSent}
+                      <br />
+                    </span>
+                  ))}
+                </td>
+                <td className='govuk-table__cell'>
+                  <div
+                    className='govuk-checkboxes--small'
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Checkbox
+                      id={checkboxId}
+                      ariaLabelledBy={labelId}
+                      value={area.areaCode}
+                      onChange={() => handleCheckboxChange(area.areaCode)}
+                      checked={selectedTAs.includes(area.areaCode)}
+                    />
+                  </div>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </>

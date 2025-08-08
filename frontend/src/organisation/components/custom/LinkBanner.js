@@ -295,6 +295,8 @@ export default function LinkBanner({
                 style={{ display: 'flex', alignItems: 'center' }}
               >
                 <Checkbox
+                  id='only-show-selected'
+                  ariaLabelledBy='only-show-selected-label'
                   label='Only show selected'
                   style={{ maxWidth: '100%' }}
                   checked={onlyShowSelectedOption}

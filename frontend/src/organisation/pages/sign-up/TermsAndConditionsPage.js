@@ -200,6 +200,7 @@ export default function TermsAndConditionsPage() {
               )}
               <Checkbox
                 id={termsAndConditionsId}
+                ariaLabelledBy={`${termsAndConditionsId}-label`}
                 onChange={() => setIsChecked(!isChecked)}
                 checked={isChecked}
                 label={`I warrant that I’m authorised to agree to these terms and conditions on behalf of ${organisationName}.`}

@@ -143,7 +143,8 @@ export default function FloodReportFilter ({
 
     if (filters.selectedBusinessCriticalities.length > 0) {
       filtered = filtered.filter((location) => {
-        const temp = location.locationData.additionals?.other?.business_criticality || ''
+        const temp =
+          location.locationData.additionals?.other?.business_criticality || ''
         const isEmpty = temp.trim() === ''
         return filters.selectedBusinessCriticalities.some((f) =>
           f === EMPTY_LABEL ? isEmpty : f === temp
@@ -245,7 +246,8 @@ export default function FloodReportFilter ({
                 type='text'
                 value={filters.dateFrom}
                 onChange={(event) =>
-                  updateFilter('dateFrom', event.target.value)}
+                  updateFilter('dateFrom', event.target.value)
+                }
               />
               <FontAwesomeIcon
                 icon={faCalendar}
@@ -314,7 +316,8 @@ export default function FloodReportFilter ({
               type='text'
               value={filters.locationName}
               onChange={(event) =>
-                updateFilter('locationName', event.target.value)}
+                updateFilter('locationName', event.target.value)
+              }
             />
           </div>
         </div>
@@ -340,15 +343,23 @@ export default function FloodReportFilter ({
       </div>
       {visibility[filterKey] && (
         <div className='govuk-checkboxes govuk-checkboxes--small warnings-select-filter'>
-          {options.map((option) => (
-            <CheckBox
-              key={option}
-              label={option}
-              value={option}
-              checked={filters[filterKey].includes(option)}
-              onChange={(e) => handleFilterChange(e, filterKey)}
-            />
-          ))}
+          {options.map((option) => {
+            const slug = String(option)
+              .toLowerCase()
+              .trim()
+              .replace(/\s+/g, '-') // spaces -> hyphens
+            const optionId = `filter-${filterKey}-${slug}`
+            return (
+              <CheckBox
+                key={option}
+                id={optionId}
+                label={option}
+                value={option}
+                checked={filters[filterKey].includes(option)}
+                onChange={(e) => handleFilterChange(e, filterKey)}
+              />
+            )
+          })}
         </div>
       )}
     </>
@@ -531,19 +542,17 @@ export default function FloodReportFilter ({
       )
     }
 
-    return selectedFilters.length > 0
-      ? (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '5px'
-          }}
-        >
-          {selectedFilters}
-        </div>
-        )
-      : null
+    return selectedFilters.length > 0 ? (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '5px'
+        }}
+      >
+        {selectedFilters}
+      </div>
+    ) : null
   }
 
   return (

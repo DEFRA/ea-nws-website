@@ -1,3 +1,4 @@
+const { EMAIL_IN_USE_ERROR_MSG } = require('../../constants/errorMessages')
 const { logger } = require('../../plugins/logging')
 const { apiCall } = require('../../services/ApiService')
 const {
@@ -34,7 +35,14 @@ module.exports = [
             { authToken: authToken, contact: contact },
             'organization/updateContact'
           )
-          if (response.data.contact) {
+
+          // Email already in use in another account
+          if (response?.data?.code === 107) {
+            return h.response({
+              status: 409,
+              errorMessage: EMAIL_IN_USE_ERROR_MSG
+            })
+          } else if (response?.data?.contact) {
             await updateContact(redis, sessionData.orgId, response.data.contact)
             return h.response({ status: 200, data: response.data.contact })
           } else {

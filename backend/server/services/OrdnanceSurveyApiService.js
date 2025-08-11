@@ -37,7 +37,7 @@ const osPostCodeApiCall = async (postCode, englandOnly) => {
     if (!response.data.results || response.data.results.length === 0) {
       return {
         status: 400,
-        errorMessage: 'Enter a real postcode'
+        errorMessage: 'Enter a real postcode in England'
       }
     }
 

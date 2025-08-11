@@ -136,6 +136,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
     const TA_NAME = liveAlert.TA_Name
     const severity = liveAlert.type
+    const startDate = new Date(liveAlert.startDate)
     const lastUpdatedTime = new Date(liveAlert.startDate)
 
     location.linked_contacts = contactCount[location.id] || 0
@@ -148,6 +149,7 @@ export default function LiveFloodWarningsDashboardPage() {
           type: severity,
           name: TA_NAME,
           code: TA_CODE,
+          startDate,
           lastUpdatedTime
         }
       }

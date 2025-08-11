@@ -219,6 +219,7 @@ export default function LiveMap({
     if (!locationIntersectsWithFloodArea) return
 
     const severity = liveAlert.type
+    const startDate = new Date(liveAlert.startDate)
     const lastUpdatedTime = new Date(liveAlert.startDate)
     const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
@@ -241,6 +242,7 @@ export default function LiveMap({
           type: severity,
           name: floodArea.properties.TA_Name,
           code: floodArea.properties.TA_CODE,
+          startDate,
           lastUpdatedTime
         },
         locationData: location

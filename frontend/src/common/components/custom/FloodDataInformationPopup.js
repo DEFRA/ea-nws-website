@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -200,25 +201,6 @@ export default function FloodDataInformationPopup({
     return `${time} on ${day} ${month} ${year}`
   }
 
-  const formatHistoricDate = (timestamp) => {
-    if (timestamp) {
-      const date = new Date(timestamp)
-      return date
-        .toLocaleString('en-GB', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
-        })
-        .replace(/(\d{1,2}:\d{2})/, (match) => match.replace(':', '.'))
-        .replace(',', ' at ')
-    } else {
-      return "-"
-    }
-  }
-
   const viewLocation = (e, location) => {
     e.preventDefault()
     dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
@@ -343,10 +325,17 @@ export default function FloodDataInformationPopup({
                               </div>
                             </td>
                             <td className='govuk-table__cell'>
-                              {formatHistoricDate(alert.startDate)}
+                              {dayjs(alert.startDate).format(
+                                'D MMM YYYY [at] HH:mm'
+                              )}
                             </td>
                             <td className='govuk-table__cell'>
-                              {formatHistoricDate(alert.endDate)}
+                              {alert.endDate
+                              ? 
+                                dayjs(alert.endDate).format(
+                                  'D MMM YYYY [at] HH:mm'
+                                )
+                              : '-'}
                             </td>
                           </tr>
                         )

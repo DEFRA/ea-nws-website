@@ -48,7 +48,15 @@ export default function ManageContactsPage() {
           >
             confirm the number
           </Link>{' '}
-          first
+          first. You can{' '}
+          <Link
+            to='/contact'
+            className='govuk-link'
+            style={{ cursor: 'pointer' }}
+          >
+            contact us
+          </Link>{' '}
+          if there is a problem receiving texts.
         </>
       )
     }
@@ -62,7 +70,15 @@ export default function ManageContactsPage() {
         >
           confirm the number
         </Link>{' '}
-        first
+        first. You can{' '}
+        <Link
+          to='/contact'
+          className='govuk-link'
+          style={{ cursor: 'pointer' }}
+        >
+          contact us
+        </Link>{' '}
+        if there is a problem receiving calls.
       </>
     )
   }

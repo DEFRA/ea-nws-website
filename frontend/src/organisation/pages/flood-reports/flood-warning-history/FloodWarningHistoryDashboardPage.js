@@ -98,6 +98,20 @@ export default function FloodWarningHistoryDashboardPage() {
   }
 
   const processLocation = (location, historicAlert) => {
+    // Safely parse date
+    const parseDate = (val) => {
+      if (
+        val === null ||
+        val === undefined ||
+        val === '' ||
+        val === 0 ||
+        val === '0'
+      )
+        return null
+      const d = new Date(val)
+      return isNaN(d.getTime()) ? null : d
+    }
+
     const TA_CODE = historicAlert.TA_CODE
 
     const { additionals } = location
@@ -110,8 +124,8 @@ export default function FloodWarningHistoryDashboardPage() {
 
     const TA_NAME = historicAlert.TA_Name
     const severity = historicAlert.type
-    const startDate = new Date(historicAlert.startDate)
-    const lastUpdatedTime = new Date(historicAlert.endDate)
+    const startDate = parseDate(historicAlert.startDate)
+    const lastUpdatedTime = parseDate(historicAlert.endDate)
 
     // add required data to location row object
     const createLocationWithFloodData = () => {
@@ -224,6 +238,7 @@ export default function FloodWarningHistoryDashboardPage() {
         displayedLocationsAffected={displayedLocationsAffected}
         setDisplayedLocationsAffected={setDisplayedLocationsAffected}
         filteredLocationsAffected={filteredLocationsAffected}
+        setFilteredLocationsAffected={setFilteredLocationsAffected}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
       />

@@ -17,12 +17,24 @@ export default function Pagination({
   }, [currentPage, onPageChange])
 
   useEffect(() => {
+    if (!reset) return
     if (!holdPage) {
       setCurrentPage(1)
+      setPageNumbers([1, 2, 3])
     } else {
       setHoldPage(0)
     }
   }, [reset])
+
+  // Used to stay on correct page if totalPages shrinks
+  // e.g. by applying filters
+  useEffect(() => {
+    if (totalPages && currentPage > totalPages) {
+      setCurrentPage(totalPages)
+      const start = Math.max(1, totalPages - 2)
+      setPageNumbers([start, start + 1, start + 2])
+    }
+  }, [totalPages])
 
   const onClickPrevious = (e) => {
     e.preventDefault()
@@ -30,7 +42,10 @@ export default function Pagination({
     if (currentPage > 1) {
       if (currentPage === pageNumbers[0]) {
         // Move the page numbers backwards
-        setPageNumbers([--pageNumbers[0], --pageNumbers[1], --pageNumbers[2]])
+        setPageNumbers(([a, b, c]) => {
+          const start = Math.max(1, a - 1)
+          return [start, start + 1, start + 2]
+        })
       }
       setCurrentPage(currentPage - 1)
     }
@@ -42,7 +57,10 @@ export default function Pagination({
     if (currentPage < totalPages) {
       if (currentPage === pageNumbers[2]) {
         // Move the page numbers forwards
-        setPageNumbers([++pageNumbers[0], ++pageNumbers[1], ++pageNumbers[2]])
+        setPageNumbers(([a, b, c]) => {
+          const start = a + 1
+          return [start, start + 1, start + 2]
+        })
       }
       setCurrentPage(currentPage + 1)
     }
@@ -52,6 +70,7 @@ export default function Pagination({
     if (index > totalPages) return null
 
     const pageNumber = pageNumbers[index - 1]
+    if (pageNumber > totalPages) return null
 
     return (
       <>

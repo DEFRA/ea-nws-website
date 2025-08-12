@@ -1,10 +1,7 @@
 import { Helmet } from 'react-helmet'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
-import { setProfile } from '../../../../common/redux/userSlice'
-import { backendCall } from '../../../../common/services/BackendService'
-import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import AccountDetailsTable from './AccountDetailsTable'
 import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
@@ -23,31 +20,15 @@ export default function CheckYourAnswersPage() {
   }
   const registration = useSelector((state) => state.session.registrations)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const handleButton = async (event) => {
     event.preventDefault()
     if (signUpAccountValidation()) {
-      const updatedProfile = updateAdditionals(profile, [
-        { id: 'signupComplete', value: { s: 'true' } },
-        { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
-      ])
-      dispatch(setProfile(updatedProfile))
-      const dataToSend = {
-        profile: updatedProfile,
-        authToken: session.authToken
-      }
-      await backendCall(dataToSend, 'api/profile/update', navigate)
-
       navigate('/signup/success')
     }
   }
 
   const signUpAccountValidation = () => {
-    return (
-      profile.emails[0] &&
-      profile.firstname &&
-      profile.pois.length !== 0
-    )
+    return profile.emails[0] && profile.firstname && profile.pois.length !== 0
   }
 
   return (

@@ -22,6 +22,7 @@ export default function HomePage() {
   // Set signin type
   const dispatch = useDispatch()
   useEffect(() => {
+    console.log('updating sign in type')
     dispatch(setSigninType('citizen'))
     // reset the location search type after sign up flow is done
     dispatch(setLocationSearchType(null))

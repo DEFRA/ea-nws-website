@@ -966,6 +966,9 @@ const userSlice = createSlice({
         ]
       }
       state.contacts = null
+    },
+    replaceState: (state, action) => {
+      return action.payload
     }
   },
   selectors: {
@@ -1173,7 +1176,8 @@ export const {
   // clear state
   clearAuth,
   clearCurrentLocation,
-  clearOrgCurrentContact
+  clearOrgCurrentContact,
+  replaceState
 } = userSlice.actions
 
 export const {

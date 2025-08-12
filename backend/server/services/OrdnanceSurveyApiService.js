@@ -10,18 +10,25 @@ const {
 const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
 
 const formatResults = (results) => {
-  return results.map((result) => {
-    const formattedAddress = addressFormatter(result.DPA.ADDRESS)
-    return {
-      name: result.DPA.UPRN,
-      address: formattedAddress,
-      coordinates: {
-        latitude: result.DPA.LAT,
-        longitude: result.DPA.LNG
-      },
-      postcode: result.DPA.POSTCODE
-    }
-  })
+  return results
+    .map((result) => {
+      const formattedAddress = addressFormatter(result.DPA.ADDRESS)
+      return {
+        name: result.DPA.UPRN,
+        address: formattedAddress,
+        coordinates: {
+          latitude: result.DPA.LAT,
+          longitude: result.DPA.LNG
+        },
+        postcode: result.DPA.POSTCODE
+      }
+    })
+    .sort((a, b) =>
+      a.address.localeCompare(b.address, undefined, {
+        numeric: true,
+        sensitivity: 'base'
+      })
+    )
 }
 
 const osPostCodeApiCall = async (postCode, englandOnly) => {

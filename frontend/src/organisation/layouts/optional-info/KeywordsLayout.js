@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -24,6 +24,7 @@ export default function KeywordsLayout({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const authToken = useSelector((state) => state.session.authToken)
 
   // UPDATE HERE - need to update he actual endpoint
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
@@ -34,7 +35,7 @@ export default function KeywordsLayout({
           ? ':t_Keywords_location'
           : ':t_Keywords_contact'
       const { data } = await backendCall(
-        { type },
+        { type, authToken },
         'api/elasticache/get_data',
         navigate
       )

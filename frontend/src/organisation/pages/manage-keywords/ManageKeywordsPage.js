@@ -1,6 +1,6 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -330,7 +330,25 @@ export default function ManageKeywordsPage() {
             navigate
           )
 
-          if (!data) {
+          if (data) {
+            // Update local locations or contacts
+            const updatedLocationOrContact =
+              keywordType === 'location'
+                ? geoSafeToWebLocation(data)
+                : geoSafeToWebContact(data)
+
+              keywordType === 'location'
+                ? setLocations((prev) =>
+                    prev.map((loc) =>
+                      loc.id === updatedLocationOrContact.id ? updatedLocationOrContact : loc
+                    )
+                  )
+                : setContacts((prev) =>
+                    prev.map((contact) =>
+                      contact.id === updatedLocationOrContact.id ? updatedLocationOrContact : contact
+                    )
+                  )
+          } else {
             errorMessage
               ? setError(errorMessage)
               : setError('Oops, something went wrong')
@@ -574,7 +592,7 @@ export default function ManageKeywordsPage() {
                 <Link onClick={(event) => {
                   event.preventDefault()
                   clearSearch()
-                }} 
+                }}
                 className='govuk-link'>
                   Clear search results
                 </Link>

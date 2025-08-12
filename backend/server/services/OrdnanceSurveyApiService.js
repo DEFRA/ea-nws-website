@@ -10,25 +10,18 @@ const {
 const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
 
 const formatResults = (results) => {
-  return results
-    .map((result) => {
-      const formattedAddress = addressFormatter(result.DPA.ADDRESS)
-      return {
-        name: result.DPA.UPRN,
-        address: formattedAddress,
-        coordinates: {
-          latitude: result.DPA.LAT,
-          longitude: result.DPA.LNG
-        },
-        postcode: result.DPA.POSTCODE
-      }
-    })
-    .sort((a, b) =>
-      a.address.localeCompare(b.address, undefined, {
-        numeric: true,
-        sensitivity: 'base'
-      })
-    )
+  return results.map((result) => {
+    const formattedAddress = addressFormatter(result.DPA.ADDRESS)
+    return {
+      name: result.DPA.UPRN,
+      address: formattedAddress,
+      coordinates: {
+        latitude: result.DPA.LAT,
+        longitude: result.DPA.LNG
+      },
+      postcode: result.DPA.POSTCODE
+    }
+  })
 }
 
 const osPostCodeApiCall = async (postCode, englandOnly) => {
@@ -50,12 +43,22 @@ const osPostCodeApiCall = async (postCode, englandOnly) => {
 
     // Check that postcode is in England
     if (englandOnly && response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
-      responseData = formatResults(response.data.results)
+      responseData = formatResults(response.data.results).sort((a, b) =>
+        a.address.localeCompare(b.address, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        })
+      )
 
       return { status: response.status, data: responseData }
     } else if (!englandOnly) {
       // return all results in UK
-      responseData = formatResults(response.data.results)
+      responseData = formatResults(response.data.results).sort((a, b) =>
+        a.address.localeCompare(b.address, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        })
+      )
 
       return { status: response.status, data: responseData }
     } else {

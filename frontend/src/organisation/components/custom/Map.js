@@ -141,6 +141,8 @@ export default function Map({
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
     iconUrl: gdsPinSVG,
+    iconRetinaUrl,
+    shadowUrl,
     iconSize: [54.5, 64],
     iconAnchor: [27.5, 38.2]
   })

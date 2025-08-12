@@ -163,7 +163,10 @@ export default function LocationInformation({ location, comparedLocation }) {
     <>
       <main className='govuk-body'>
         {/* map */}
-        <div>
+        <div
+          role='group'
+          aria-label='map showing fixed areas that we provide flood warnings and alerts for'
+        >
           <Map
             showMapControls={false}
             zoomLevel={14}

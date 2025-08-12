@@ -537,6 +537,8 @@ export default function LocationNearFloodAreasLayout({
                         <div className='govuk-summary-card' key={area.id}>
                           <div className='govuk-summary-card__title-wrapper'>
                             <Checkbox
+                              id={`nearby-flood-area-${area.id}`}
+                              ariaLabelledBy={`nearby-flood-area-${area.id}-label`}
                               label='Select'
                               screenReaderAdditional={getAccessibleLabel(area)}
                               style={{ fontWeight: 'bold' }}

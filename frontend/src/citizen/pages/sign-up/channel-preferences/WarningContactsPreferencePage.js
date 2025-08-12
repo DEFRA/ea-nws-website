@@ -86,6 +86,7 @@ export default function WarningContactsPreferencePage() {
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((preference) => (
                     <Checkbox
+                      id={`contact-pref-${preference.value}`}
                       key={preference.value}
                       label={preference.label}
                       value={preference.value}

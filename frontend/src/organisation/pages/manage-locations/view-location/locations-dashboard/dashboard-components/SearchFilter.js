@@ -340,6 +340,7 @@ export default function SearchFilter({
               .map((option) => (
                 <CheckBox
                   key={option}
+                  id={`locations-filter-${String(filterTitle).toLowerCase()}-${String(option).toLowerCase()}`}
                   label={option}
                   value={option}
                   checked={selectedFilterType.includes(option)}
@@ -387,9 +388,20 @@ export default function SearchFilter({
 
   return (
     <>
-      <div className='locations-filter-panel'>
+      <div
+        id='filter-region'
+        role='region'
+        className='locations-filter-panel'
+        aria-labelledby='filter-heading'
+      >
         <div className='locations-filter-header'>
-          <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
+          <h1
+            id='filter-heading'
+            className='govuk-heading-m govuk-!-margin-bottom-2'
+            tabIndex={-1}
+          >
+            Filter
+          </h1>
         </div>
 
         {/* Selected filters */}

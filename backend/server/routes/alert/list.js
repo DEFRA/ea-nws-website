@@ -21,7 +21,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { options, filterDate, historic } = request.payload
+        const { options, filterDate, historic, taCodes } = request.payload
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         options.states = ['CURRENT', 'PAST']
         let response
@@ -49,6 +49,23 @@ module.exports = [
           } else {
             historicAlerts = cachedHistoricAlerts
           }
+        } else if (taCodes && taCodes.length > 0) {
+          // get alerts from geosafe
+          response = await apiCall({ options: options }, 'alert/list')
+          ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
+            response.data.alerts
+          ))
+          // add alerts from file
+          const fileHistoricAlerts = historicAlerts.concat(
+            await getAllPastAlerts(request)
+          )
+          historicAlerts = historicAlerts.concat(fileHistoricAlerts)
+          historicAlerts = historicAlerts.filter((alert) => 
+            taCodes.includes(alert.TA_CODE)
+          )
+          liveAlerts = liveAlerts.filter((alert) => 
+            taCodes.includes(alert.TA_CODE)
+          )
         } else {
           response = await apiCall({ options: options }, 'alert/list')
           ;({liveAlerts, historicAlerts} = processGeosafeAlerts(

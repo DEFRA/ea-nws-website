@@ -14,12 +14,14 @@ export default function FloodAreaMapKey ({
       data-module='govuk-checkboxes'
     >
       <CheckBox
+        id='locations-within-flood-areas'
+        ariaLabelledBy='locations-within-flood-areas-label'
         name='WithinFloodAreas'
         onChange={() =>
           setShowLocationsWithinFloodAreas(!showLocationsWithinFloodAreas)}
         checked={showLocationsWithinFloodAreas}
       />
-      <p style={{ margin: '0px 0px 0px -15px' }}>
+      <p id='locations-within-flood-areas-label' style={{ margin: '0px 0px 0px -15px' }}>
         Within flood areas (
         {
           locations.filter(
@@ -38,12 +40,15 @@ export default function FloodAreaMapKey ({
       data-module='govuk-checkboxes'
     >
       <CheckBox
+        id='locations-outside-flood-areas'
+        ariaLabelledBy='locations-outside-flood-areas-label'
         name='OutsideFloodAreas'
         onChange={() =>
           setShowLocationsOutsideFloodAreas(!showLocationsOutsideFloodAreas)}
         checked={showLocationsOutsideFloodAreas}
       />
       <p
+        id='locations-outside-flood-areas-label'
         style={{
           margin: '0px 0px 0px -15px'
         }}

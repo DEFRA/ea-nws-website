@@ -1,4 +1,3 @@
-import React from 'react'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
 export default function MapInteractiveKey({
@@ -32,13 +31,17 @@ export default function MapInteractiveKey({
               name='FloodWarningAndSevereArea'
               onChange={() => setShowFloodWarningAreas(!showFloodWarningAreas)}
               checked={showFloodWarningAreas}
+              ariaLabelledBy='map-key-flood-warning-text'
             />
             <div className='org-flood-warning-item'>
               <span
                 className='org-flood-warning-square warning-square'
                 style={{ marginLeft: '-1rem' }}
               />
-              <span className='org-flood-warning-text'>
+              <span
+                id='map-key-flood-warning-text'
+                className='org-flood-warning-text'
+              >
                 Flood warning and <br />
                 severe area
               </span>
@@ -54,13 +57,16 @@ export default function MapInteractiveKey({
               name='FloodAlertArea'
               onChange={() => setShowFloodAlertAreas(!showFloodAlertAreas)}
               checked={showFloodAlertAreas}
+              ariaLabelledBy='map-key-flood-alert'
             />
             <div className='org-flood-alert-item'>
               <div
                 className='org-flood-warning-square alert-square'
                 style={{ marginLeft: '-1rem' }}
               />
-              <span className='org-flood-warning-text'>Flood alert area</span>
+              <span id='map-key-flood-alert' className='org-flood-warning-text'>
+                Flood alert area
+              </span>
             </div>
           </div>
           <div
@@ -72,13 +78,19 @@ export default function MapInteractiveKey({
               name='FloodExtent'
               onChange={() => setShowFloodExtents(!showFloodExtents)}
               checked={showFloodExtents}
+              ariaLabelledBy='map-key-flood-extent'
             />
             <div className='org-flood-alert-item'>
               <div
                 className='org-flood-warning-square alert-square'
                 style={{ marginLeft: '-1rem' }}
               />
-              <span className='org-flood-warning-text'>Flood extent</span>
+              <span
+                id='map-key-flood-extent'
+                className='org-flood-warning-text'
+              >
+                Flood extent
+              </span>
             </div>
           </div>
         </div>

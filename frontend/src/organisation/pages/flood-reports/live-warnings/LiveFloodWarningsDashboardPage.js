@@ -54,9 +54,12 @@ export default function LiveFloodWarningsDashboardPage() {
     }
   }, [locationsAffected, location.state])
 
+  // When filter opens, move focus to it. When it closes, move focus back to button
   useEffect(() => {
-    if (toggleFilterButtonRef.current) {
-      toggleFilterButtonRef.current.focus()
+    if (isFilterVisible) {
+      document.getElementById('filter-heading')?.focus()
+    } else {
+      toggleFilterButtonRef.current?.focus()
     }
   }, [isFilterVisible])
 
@@ -133,6 +136,7 @@ export default function LiveFloodWarningsDashboardPage() {
 
     const TA_NAME = liveAlert.TA_Name
     const severity = liveAlert.type
+    const startDate = new Date(liveAlert.startDate)
     const lastUpdatedTime = new Date(liveAlert.startDate)
 
     location.linked_contacts = contactCount[location.id] || 0
@@ -145,6 +149,7 @@ export default function LiveFloodWarningsDashboardPage() {
           type: severity,
           name: TA_NAME,
           code: TA_CODE,
+          startDate,
           lastUpdatedTime
         }
       }

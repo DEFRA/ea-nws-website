@@ -253,7 +253,7 @@ export default function HistoricalFloodReportsTable({
               <tr key={index} className='govuk-table__row'>
                 <td className='govuk-table__cell'>
                   <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
-                    {location.locationData.additionals.locationName}
+                    {location.floodData.name}
                   </p>
                   <Link
                     className='govuk-link'
@@ -262,7 +262,7 @@ export default function HistoricalFloodReportsTable({
                       viewFloodInformationData(location)
                     }}
                   >
-                    {location.floodData.name}
+                    {location.locationData.additionals.locationName}
                   </Link>
                 </td>
                 <td className='govuk-table__cell'>

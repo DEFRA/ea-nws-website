@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,6 +12,7 @@ import { backendCall } from '../../services/BackendService'
 import { webToGeoSafeLocation } from '../../services/formatters/LocationFormatter'
 import Button from '../gov-uk/Button'
 import ServiceNavigation from '../gov-uk/ServiceNavigation'
+import LoadingSpinner from './LoadingSpinner'
 
 export default function FloodDataInformationPopup({
   locationsFloodInformation,
@@ -20,14 +22,47 @@ export default function FloodDataInformationPopup({
   const navigate = useNavigate()
 
   const [servicePhase, setServicePhase] = useState(false)
+  const [alerts, setAlerts] = useState()
+  const [loading, setLoading] = useState(true)
+
+  const targetAreas = Array.from(
+    new Set(
+      locationsFloodInformation[0].locationData.additionals.other.targetAreas
+        .map((targetAreas) => targetAreas.TA_CODE)
+        .filter((code) => code !== undefined)
+    )
+  )
+
+  const hasLiveAlerts = locationsFloodInformation.filter((floodInformation) => floodInformation.floodData.lastUpdatedTime.getTime() === floodInformation.floodData.startDate.getTime()).length > 0 ? true : false
 
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
   }
 
+  async function getAlerts() {
+    const options = {
+      states: [],
+      boundingBox: null,
+      channels: []
+    }
+
+    // load alerts
+    const { data: alerts } = await backendCall(
+      { options, taCodes: targetAreas },
+      'api/alert/list',
+      navigate
+    )
+
+    let allAlerts = [...alerts?.historicAlerts, ...alerts?.liveAlerts]
+    allAlerts.sort((a,b) => {return new Date(b.startDate) - new Date(a.startDate)})
+    setAlerts(allAlerts)
+    setLoading(false)
+  }
+
   useEffect(() => {
     getServicePhase()
+    getAlerts()
   }, [])
 
   const FLOOD_WARNING_CONFIG = {
@@ -51,6 +86,21 @@ export default function FloodDataInformationPopup({
       borderColor: '#EB7C25',
       icon: floodAlertIcon,
       linkText: 'View flood alert'
+    }
+  }
+
+  const warningTypeDisplay = {
+    [AlertType.SEVERE_FLOOD_WARNING]: {
+      icon: floodSevereWarningIcon,
+      text: 'Severe flood warning'
+    },
+    [AlertType.FLOOD_WARNING]: {
+      icon: floodWarningIcon,
+      text: 'Flood warning'
+    },
+    [AlertType.FLOOD_ALERT]: {
+      icon: floodAlertIcon,
+      text: 'Flood alert'
     }
   }
 
@@ -178,7 +228,7 @@ export default function FloodDataInformationPopup({
     <div className='popup-dialog govuk-body'>
       <div className='popup-dialog-container'>
         <div className='popup-dialog-header'>
-          <p className='popup-close-txt'>Close</p>
+          <p className='popup-close-txt' onClick={onClose}>Close</p>
           <span className='popup-close-btn' onClick={onClose}>
             &times;
           </span>
@@ -190,7 +240,7 @@ export default function FloodDataInformationPopup({
                 viewLocation(e, locationsFloodInformation[0].locationData)
               }
             >
-              {locationsFloodInformation[0].locationData.address}
+              {locationsFloodInformation[0].locationData.additionals.locationName}
             </Link>
           </h1>
           <ServiceNavigation
@@ -199,35 +249,103 @@ export default function FloodDataInformationPopup({
             updatePage={updateNavBar}
             removeGreyBackground
           />
-          <div
-            className={`govuk-!-margin-top-6 live-map-popup-scroll-container ${
-              locationsFloodInformation.length > 2
-                ? 'live-map-popup-scrollable'
-                : ''
-            }`}
-          >
-            {locationsFloodInformation.map((floodInformation, index) => (
-              <div key={`${floodInformation.floodData.code}-${index}`}>
-                <FloodWarningInfo floodInformation={floodInformation} />
+          {currentPage === '/live' ? (
+            <div
+              className={`govuk-!-margin-top-6 live-map-popup-scroll-container ${
+                locationsFloodInformation.length > 2
+                  ? 'live-map-popup-scrollable'
+                  : ''
+              }`}
+            >
+              {!hasLiveAlerts && <p>There are no live flood warnings or alerts.</p>}
+              {locationsFloodInformation.map((floodInformation, index) => (
+                (floodInformation.floodData.lastUpdatedTime.getTime() === floodInformation.floodData.startDate.getTime()) && 
+                  <div key={`${floodInformation.floodData.code}-${index}`}>
+                    <FloodWarningInfo floodInformation={floodInformation} />
 
-                <p className='govuk-!-margin-top-5 govuk-body govuk-!-font-size-19'>
-                  Updated{' '}
-                  {formatDate(floodInformation.floodData.lastUpdatedTime)}
-                </p>
+                    <p className='govuk-!-margin-top-5 govuk-body govuk-!-font-size-19'>
+                      Updated{' '}
+                      {formatDate(floodInformation.floodData.lastUpdatedTime)}
+                    </p>
 
-                <FloodAreaLink
-                  code={floodInformation.floodData.code}
-                  linkText={
-                    FLOOD_WARNING_CONFIG[floodInformation.floodData.type]
-                      .linkText
-                  }
-                  type={floodInformation.floodData.type}
-                />
-                <br />
-                <br />
-              </div>
-            ))}
-          </div>
+                    <FloodAreaLink
+                      code={floodInformation.floodData.code}
+                      linkText={
+                        FLOOD_WARNING_CONFIG[floodInformation.floodData.type]
+                          .linkText
+                      }
+                      type={floodInformation.floodData.type}
+                    />
+                    <br />
+                    <br />
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <>
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <div
+                  className={`govuk-!-margin-top-6 live-map-popup-scroll-container historic-alerts-popup ${
+                    alerts.length > 2 ? 'live-map-popup-scrollable' : ''
+                  }`}
+                >
+                  <table className='govuk-table govuk-table--small-text-until-tablet'>
+                    <thead className='govuk-table__head'>
+                      <tr className='govuk-table__row'>
+                        <th scope='col' className='govuk-table__header'></th>
+                        <th scope='col' className='govuk-table__header'>
+                          Start date
+                        </th>
+                        <th scope='col' className='govuk-table__header'>
+                          End date
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='govuk-table__body'>
+                      {alerts.map((alert, index) => {
+                        return (
+                          <tr key={index} className='govuk-table__row'>
+                            <td className='govuk-table__cell'>
+                              <div className='reports-table-icon-position'>
+                                <div
+                                  key={index}
+                                  className='warnings-table-item'
+                                >
+                                  <img
+                                    src={warningTypeDisplay[alert.type].icon}
+                                    alt='Flood warning icon'
+                                    className='warnings-table-icon'
+                                  />
+                                  <span className='warnings-table-text'>
+                                    {warningTypeDisplay[alert.type].text}
+                                  </span>
+                                </div>
+                              </div>
+                            </td>
+                            <td className='govuk-table__cell'>
+                              {dayjs(alert.startDate).format(
+                                'D MMM YYYY [at] HH:mm'
+                              )}
+                            </td>
+                            <td className='govuk-table__cell'>
+                              {alert.endDate
+                              ? 
+                                dayjs(alert.endDate).format(
+                                  'D MMM YYYY [at] HH:mm'
+                                )
+                              : '-'}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
+          )}
           <Button
             text='Close'
             className='govuk-!-margin-top-5 govuk-button'

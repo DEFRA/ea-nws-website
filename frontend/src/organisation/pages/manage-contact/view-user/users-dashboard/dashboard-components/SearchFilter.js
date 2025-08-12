@@ -207,15 +207,23 @@ export default function SearchFilter({
         </div>
         {visible && (
           <div className='govuk-checkboxes govuk-checkboxes--small contacts-select-filter'>
-            {filterType.map((option) => (
-              <CheckBox
-                key={option}
-                label={option}
-                value={option}
-                checked={selectedFilterType.includes(option)}
-                onChange={(e) => handleFilterChange(e, setSelectedFilterType)}
-              />
-            ))}
+            {filterType.map((option) => {
+              const slug = (s) =>
+                String(s).toLowerCase().trim().replace(/\s+/g, '-') // spaces -> hyphens
+              const optionId = `contacts-filter-${slug(filterTitle)}-${slug(
+                option
+              )}`
+              return (
+                <CheckBox
+                  key={option}
+                  id={optionId}
+                  label={option}
+                  value={option}
+                  checked={selectedFilterType.includes(option)}
+                  onChange={(e) => handleFilterChange(e, setSelectedFilterType)}
+                />
+              )
+            })}
           </div>
         )}
       </>
@@ -257,9 +265,20 @@ export default function SearchFilter({
 
   return (
     <>
-      <div className='contacts-filter-panel'>
+      <div
+        id='filter-region'
+        role='region'
+        className='contacts-filter-panel'
+        aria-labelledby='filter-heading'
+      >
         <div className='contacts-filter-header'>
-          <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
+          <h1
+            id='filter-heading'
+            className='govuk-heading-m govuk-!-margin-bottom-2'
+            tabIndex={-1}
+          >
+            Filter
+          </h1>
         </div>
 
         {/* Selected filters */}

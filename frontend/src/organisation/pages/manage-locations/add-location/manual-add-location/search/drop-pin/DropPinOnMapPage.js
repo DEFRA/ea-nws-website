@@ -12,7 +12,7 @@ export default function DropPinOnMapPage () {
   }
 
   const navigateToDropPinLocationSearchPage = () => {
-    navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
+    navigate(orgManageLocationsUrls.add.search.dropPinSearch)
   }
 
   const navigateToNotInEnglandPage = () => {

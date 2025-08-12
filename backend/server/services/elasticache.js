@@ -98,7 +98,6 @@ const setLocations = async (client, orgId, locations, statusKey) => {
   })
   const numLocations = Object.keys(formattedLocations).length
   await setJsonData(client, key, formattedLocations)
-  console.log('set location data')
   let i = 1
   let percent = 0
   Object.keys(formattedLocations).forEach(async (key) => {

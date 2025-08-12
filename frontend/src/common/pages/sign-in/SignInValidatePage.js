@@ -138,7 +138,6 @@ export default function SignInValidatePage() {
         setLastAccessedUrl(lastAccessedUrl)
 
         if (data.organization) {
-          console.log('org signing in')
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))

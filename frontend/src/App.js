@@ -29,8 +29,6 @@ function App() {
   const dispatch = useDispatch()
   const lastActivity = useSelector((state) => state.session.lastActivity)
 
-  console.log('signinType', signinType)
-
   useEffect(() => {
     removeHoverIosSafari()
     !cookies.CookieControl &&

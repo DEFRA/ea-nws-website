@@ -1,4 +1,4 @@
-import { faRotateLeft, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -37,6 +37,7 @@ import {
   createWarningPattern
 } from './FloodAreaPatterns'
 import { createExistingBoundaryPattern } from './PredefinedBoundaryPattern'
+import ResetMapButton from './ResetMapButton'
 
 export default function Map({
   type,
@@ -122,21 +123,6 @@ export default function Map({
     }
     type !== 'boundary' && fetchFloodAreaData()
   }, [])
-
-  // reset the map to selected location
-  const ResetMapButton = () => {
-    const map = useMap()
-
-    const handleClick = () => {
-      map.setView(centre, 12)
-    }
-
-    return (
-      <div className='reset-map-button' onClick={handleClick}>
-        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
-      </div>
-    )
-  }
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
@@ -702,9 +688,13 @@ export default function Map({
             )}
             {tileLayerWithHeader}
             {showMapControls && (
-              <div role='group' aria-label='Interactive Map Controls'>
+              <div
+                role='group'
+                aria-label='Interactive Map Controls'
+                id='map-controls'
+              >
                 <ZoomControl position='bottomright' />
-                <ResetMapButton />
+                <ResetMapButton center={centre} />
               </div>
             )}
             {touchInput && (

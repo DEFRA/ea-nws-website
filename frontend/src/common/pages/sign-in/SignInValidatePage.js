@@ -87,7 +87,7 @@ export default function SignInValidatePage() {
           setError(errorMessage)
         }
         getStatus.isRunning = false
-      }, 1000)
+      }, 2000)
       return () => {
         clearInterval(interval)
       }

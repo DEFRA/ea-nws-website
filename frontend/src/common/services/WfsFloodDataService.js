@@ -16,6 +16,7 @@ export const getOperationalBoundaryByTaCode = async (code) => {
     { TA_CODE: code },
     'api/elasticache/get_ob_data'
   )
+
   return result.data || []
 }
 

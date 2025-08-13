@@ -12,7 +12,6 @@ import {
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -141,7 +140,6 @@ export default function Map({
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
     iconUrl: gdsPinSVG,
-    iconRetinaUrl,
     shadowUrl,
     iconSize: [54.5, 64],
     iconAnchor: [27.5, 38.2]

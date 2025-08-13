@@ -37,7 +37,7 @@ export default function FloodTypesPage() {
               flood warnings.
             </p>
             <p className='govuk-!-margin-top-6'>
-              Your organisations's location may be in a place where you can get:
+              Your organisation's location may be in a place where you can get:
             </p>
             <ul className='govuk-list govuk-list--bullet govuk-!-margin-top-6'>
               <li>flood alerts (flood alert area)</li>

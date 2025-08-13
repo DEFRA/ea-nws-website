@@ -132,7 +132,11 @@ export default function LocationSearchResultsLayout({
       }
 
       // this needs reset when on the view location page
-      if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+      if (
+        isWithinWarningAreaProximity ||
+        isWithinAlertAreaProximity ||
+        locationSearchType === 'placename'
+      ) {
         dispatch(setNearbyTargetAreasFlow(true))
         dispatch(setNearbyTargetAreasAdded([]))
       } else {

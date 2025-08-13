@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
@@ -12,8 +14,18 @@ export default function SignInPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const signinType = useSelector((state) => state.session.signinType)
   const location = useLocation()
   const emailAddressId = 'email-address'
+
+  useEffect(() => {
+    // if user is already logged in
+    if (signinType === 'org') {
+      navigate(orgManageLocationsUrls.monitoring.view)
+    } else {
+      navigate('/home')
+    }
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -53,8 +65,12 @@ export default function SignInPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[{text: error, componentId: emailAddressId}]} />}
-            <h1 className='govuk-heading-l'  id='main-content'>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: emailAddressId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
               Sign in to your flood warnings account
             </h1>
             <div className='govuk-body'>

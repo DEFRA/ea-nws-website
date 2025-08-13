@@ -16,12 +16,13 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
+import OsMapTerms from '../../../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 
-export default function UserMap ({ locations }) {
+export default function UserMap({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
@@ -98,7 +99,7 @@ export default function UserMap ({ locations }) {
     }, [bounds])
   }
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -223,6 +224,7 @@ export default function UserMap ({ locations }) {
               </Link>
             </div>
           )}
+          <OsMapTerms />
         </MapContainer>
       )}
     </>

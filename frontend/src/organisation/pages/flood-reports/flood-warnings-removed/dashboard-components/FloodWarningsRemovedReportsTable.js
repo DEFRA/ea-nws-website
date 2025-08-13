@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
 import FloodDataInformationPopup from '../../../../../common/components/custom/FloodDataInformationPopup'
+import AlertType from '../../../../../common/enums/AlertType'
 
 export default function HistoricalFloodReportsTable({
   locationsAffected,
@@ -25,6 +26,19 @@ export default function HistoricalFloodReportsTable({
     setLocationTypeSort('none')
     setLastUpdatedSort('none')
   }, [])
+
+  const warningLabel = (t) => {
+    switch (t) {
+      case AlertType.SEVERE_FLOOD_WARNING:
+        return 'Severe flood warning'
+      case AlertType.FLOOD_WARNING:
+        return 'Flood warning'
+      case AlertType.FLOOD_ALERT:
+        return 'Flood alert'
+      default:
+        return ''
+    }
+  }
 
   // Sort standard data
   const sortTableData = (sortType, setSort, path) => {
@@ -273,7 +287,9 @@ export default function HistoricalFloodReportsTable({
                         alt='Flood warning icon'
                         className='warnings-table-icon'
                       />
-                      <span className='warnings-table-text'>Flood warning</span>
+                      <span className='warnings-table-text'>
+                        {warningLabel(location.floodData.type)}
+                      </span>
                     </div>
                   </div>
                 </td>{' '}

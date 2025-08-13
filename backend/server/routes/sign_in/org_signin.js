@@ -169,6 +169,7 @@ module.exports = [
               contact.id,
               locationIDs
             )
+            contactIndex++
           }
           await setJsonData(redis, elasticacheKey, {
             stage: 'Populating account',

@@ -185,7 +185,9 @@ export default function LocationNearFloodAreasLayout({
     const floodAreasAdded = toAdd.map((area) => area.properties.TA_Name)
 
     for (const area of toAdd) {
-      const additionals = [{ id: 'locationName', value: { s: locationName } }]
+      const additionals = [
+        { id: 'locationName', value: { s: area.properties.TA_Name } }
+      ]
 
       const targetArea = {
         name: '',

@@ -83,6 +83,7 @@ export default function LocationSearchResultsLayout({
       const isError = !warningArea && !alertArea
 
       const isInAlertArea =
+        locationSearchType !== 'placename' &&
         alertArea &&
         isLocationInFloodArea(
           selectedLocation.coordinates.latitude,
@@ -91,6 +92,7 @@ export default function LocationSearchResultsLayout({
         )
 
       const isInWarningArea =
+        locationSearchType !== 'placename' &&
         warningArea &&
         isLocationInFloodArea(
           selectedLocation.coordinates.latitude,
@@ -144,26 +146,28 @@ export default function LocationSearchResultsLayout({
         dispatch(setNearbyTargetAreasAdded([]))
       }
 
-      const floodAreas = alertArea?.features.concat(warningArea?.features)
       let floodAreasAlreadyAdded = []
-      floodAreas?.forEach((area) => {
-        profileLocations?.forEach((loc) => {
-          const locationsTargetAreas = getLocationOtherAdditional(
-            loc?.additionals,
-            'targetAreas'
-          )
+      if (locationSearchType !== 'placename') {
+        const floodAreas = alertArea?.features.concat(warningArea?.features)
+        floodAreas?.forEach((area) => {
+          profileLocations?.forEach((loc) => {
+            const locationsTargetAreas = getLocationOtherAdditional(
+              loc?.additionals,
+              'targetAreas'
+            )
 
-          if (
-            loc.address === area.properties.TA_Name ||
-            (locationsTargetAreas &&
-              locationsTargetAreas?.some((targetArea) => {
-                return targetArea.TA_Name === area.properties.TA_Name
-              }))
-          ) {
-            floodAreasAlreadyAdded.push(area.properties.TA_Name)
-          }
+            if (
+              loc.address === area.properties.TA_Name ||
+              (locationsTargetAreas &&
+                locationsTargetAreas?.some((targetArea) => {
+                  return targetArea.TA_Name === area.properties.TA_Name
+                }))
+            ) {
+              floodAreasAlreadyAdded.push(area.properties.TA_Name)
+            }
+          })
         })
-      })
+      }
 
       dispatch(setFloodAreasAlreadyAdded(floodAreasAlreadyAdded))
 

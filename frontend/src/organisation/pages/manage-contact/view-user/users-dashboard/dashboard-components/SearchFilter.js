@@ -30,12 +30,15 @@ export default function SearchFilter({
   selectedLinkedFilters,
   setSelectedLinkedFilters
 }) {
+  const EMPTY_LABEL = '(empty)'
   const userTypes = Object.values(UserType)
   const jobTitles = [
     ...new Set(
-      contacts
-        .map((contact) => contact.additionals.jobTitle)
-        .filter((jobTitle) => jobTitle) // filters out undefined entries
+      contacts.map((contact) => {
+        const raw = contact?.additionals?.jobTitle ?? ''
+        const trimmed = typeof raw === 'string' ? raw.trim() : '' // Guard against null or undefined values
+        return trimmed !== '' ? trimmed : EMPTY_LABEL
+      })
     )
   ]
 
@@ -106,9 +109,11 @@ export default function SearchFilter({
     }
     // Apply job title filter
     if (selectedJobTitleFilters.length > 0) {
-      filteredContacts = filteredContacts.filter((contact) =>
-        selectedJobTitleFilters.includes(contact.additionals.jobTitle)
-      )
+      filteredContacts = filteredContacts.filter((contact) => {
+        const raw = (contact.additionals?.jobTitle ?? '').trim()
+        const label = raw === '' ? EMPTY_LABEL : raw
+        return selectedJobTitleFilters.includes(label)
+      })
     }
 
     // Apply keyword filter
@@ -207,23 +212,32 @@ export default function SearchFilter({
         </div>
         {visible && (
           <div className='govuk-checkboxes govuk-checkboxes--small contacts-select-filter'>
-            {filterType.map((option) => {
-              const slug = (s) =>
-                String(s).toLowerCase().trim().replace(/\s+/g, '-') // spaces -> hyphens
-              const optionId = `contacts-filter-${slug(filterTitle)}-${slug(
-                option
-              )}`
-              return (
-                <CheckBox
-                  key={option}
-                  id={optionId}
-                  label={option}
-                  value={option}
-                  checked={selectedFilterType.includes(option)}
-                  onChange={(e) => handleFilterChange(e, setSelectedFilterType)}
-                />
-              )
-            })}
+            {filterType
+              .sort((a, b) => {
+                // Ensure that '(empty)' appears at bottom of options
+                if (a === EMPTY_LABEL) return 1
+                if (b === EMPTY_LABEL) return -1
+                return a.toLowerCase().localeCompare(b.toLowerCase())
+              })
+              .map((option) => {
+                const slug = (s) =>
+                  String(s).toLowerCase().trim().replace(/\s+/g, '-') // spaces -> hyphens
+                const optionId = `contacts-filter-${slug(filterTitle)}-${slug(
+                  option
+                )}`
+                return (
+                  <CheckBox
+                    key={option}
+                    id={optionId}
+                    label={option}
+                    value={option}
+                    checked={selectedFilterType.includes(option)}
+                    onChange={(e) =>
+                      handleFilterChange(e, setSelectedFilterType)
+                    }
+                  />
+                )
+              })}
           </div>
         )}
       </>

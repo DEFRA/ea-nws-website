@@ -134,11 +134,7 @@ export default function LocationSearchResultsLayout({
       }
 
       // this needs reset when on the view location page
-      if (
-        isWithinWarningAreaProximity ||
-        isWithinAlertAreaProximity ||
-        locationSearchType === 'placename'
-      ) {
+      if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
         dispatch(setNearbyTargetAreasFlow(true))
         dispatch(setNearbyTargetAreasAdded([]))
       } else {
@@ -146,28 +142,26 @@ export default function LocationSearchResultsLayout({
         dispatch(setNearbyTargetAreasAdded([]))
       }
 
+      const floodAreas = alertArea?.features.concat(warningArea?.features)
       let floodAreasAlreadyAdded = []
-      if (locationSearchType !== 'placename') {
-        const floodAreas = alertArea?.features.concat(warningArea?.features)
-        floodAreas?.forEach((area) => {
-          profileLocations?.forEach((loc) => {
-            const locationsTargetAreas = getLocationOtherAdditional(
-              loc?.additionals,
-              'targetAreas'
-            )
+      floodAreas?.forEach((area) => {
+        profileLocations?.forEach((loc) => {
+          const locationsTargetAreas = getLocationOtherAdditional(
+            loc?.additionals,
+            'targetAreas'
+          )
 
-            if (
-              loc.address === area.properties.TA_Name ||
-              (locationsTargetAreas &&
-                locationsTargetAreas?.some((targetArea) => {
-                  return targetArea.TA_Name === area.properties.TA_Name
-                }))
-            ) {
-              floodAreasAlreadyAdded.push(area.properties.TA_Name)
-            }
-          })
+          if (
+            loc.address === area.properties.TA_Name ||
+            (locationsTargetAreas &&
+              locationsTargetAreas?.some((targetArea) => {
+                return targetArea.TA_Name === area.properties.TA_Name
+              }))
+          ) {
+            floodAreasAlreadyAdded.push(area.properties.TA_Name)
+          }
         })
-      }
+      })
 
       dispatch(setFloodAreasAlreadyAdded(floodAreasAlreadyAdded))
 

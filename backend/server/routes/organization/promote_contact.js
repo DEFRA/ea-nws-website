@@ -35,7 +35,7 @@ module.exports = [
             response?.data?.desc.includes('already existing account')
           ) {
             return h.response({
-              status: 409,
+              status: 400,
               errorMessage: EMAIL_IN_USE_ERROR_MSG
             })
           } else {

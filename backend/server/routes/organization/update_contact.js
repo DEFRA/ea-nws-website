@@ -39,7 +39,7 @@ module.exports = [
           // Email already in use in another account
           if (response?.data?.code === 107) {
             return h.response({
-              status: 409,
+              status: 400,
               errorMessage: EMAIL_IN_USE_ERROR_MSG
             })
           } else if (response?.data?.contact) {

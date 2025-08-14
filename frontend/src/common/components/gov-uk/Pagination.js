@@ -27,7 +27,6 @@ export default function Pagination({
   }, [reset])
 
   // Used to stay on correct page if totalPages shrinks
-  // e.g. by applying filters
   useEffect(() => {
     if (totalPages && currentPage > totalPages) {
       setCurrentPage(totalPages)
@@ -70,7 +69,6 @@ export default function Pagination({
     if (index > totalPages) return null
 
     const pageNumber = pageNumbers[index - 1]
-    if (pageNumber > totalPages) return null
 
     return (
       <>

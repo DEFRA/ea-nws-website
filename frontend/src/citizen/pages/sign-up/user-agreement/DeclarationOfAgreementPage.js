@@ -54,7 +54,6 @@ export default function DeclarationOfAgreementPage() {
       }
       dispatch(setRegistrations(registrations))
       const updatedProfile = updateAdditionals(profile, [
-        { id: 'signupComplete', value: { s: 'true' } },
         { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
       ])
       dispatch(setProfile(updatedProfile))

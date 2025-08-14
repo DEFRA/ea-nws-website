@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
+import { setProfile } from '../../../../common/redux/userSlice'
 import AccountDetailsTable from './AccountDetailsTable'
 import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
@@ -20,9 +21,22 @@ export default function CheckYourAnswersPage() {
   }
   const registration = useSelector((state) => state.session.registrations)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const handleButton = async (event) => {
     event.preventDefault()
     if (signUpAccountValidation()) {
+      const updatedProfile = updateAdditionals(profile, [
+        { id: 'signupComplete', value: { s: 'true' } },
+        { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
+      ])
+      dispatch(setProfile(updatedProfile))
+      const dataToSend = {
+        profile: updatedProfile,
+        authToken: session.authToken
+      }
+      await backendCall(dataToSend, 'api/profile/update', navigate)
+
       navigate('/signup/success')
     }
   }

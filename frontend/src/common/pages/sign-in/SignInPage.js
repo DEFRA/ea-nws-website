@@ -14,19 +14,29 @@ export default function SignInPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
-  const signinType = useSelector((state) => state.session.signinType)
-  const profileId = useSelector((state) => state.session.profileId)
+  const authToken = useSelector((state) => state.session?.authToken)
   const location = useLocation()
   const emailAddressId = 'email-address'
 
   useEffect(() => {
-    // if user is already logged in then redirect to
-    if (profileId && signinType === 'org') {
-      navigate(orgManageLocationsUrls.monitoring.view)
-    } else if (profileId && signinType === 'citizen') {
-      navigate('/home')
+    const verifyAuth = async () => {
+      if (!authToken) return
+      try {
+        const { errorMessage, data } = await backendCall(
+          { authToken },
+          'api/sign_in_verify'
+        )
+        if (data?.organization) {
+          navigate(orgManageLocationsUrls.monitoring.view)
+        } else if (!errorMessage) {
+          navigate('/home')
+        }
+      } catch (error) {
+        navigate('/sign-in')
+      }
     }
-  }, [])
+    verifyAuth()
+  }, [authToken])
 
   const handleSubmit = async (event) => {
     event.preventDefault()

@@ -251,7 +251,11 @@ export default function LocationInFloodAreasLayout({
   return (
     <>
       {showFullMap ? (
-        <div className='location-in-flood-area--full-screen-map'>
+        <div
+          className='location-in-flood-area--full-screen-map'
+          role='group'
+          aria-label='map showing which flood messages for your location'
+        >
           <Map
             types={mapAreas}
             interactive={true}
@@ -273,6 +277,8 @@ export default function LocationInFloodAreasLayout({
                       ? 'location-in-flood-area-map mobile'
                       : 'location-in-flood-area-map desktop'
                   }
+                  role='group'
+                  aria-label='map showing which flood messages for your location'
                 >
                   <Map
                     types={mapAreas}

@@ -346,7 +346,16 @@ export default function DropPinOnMapLayout({
           </div>
 
           <div className='govuk-grid-row'>
-            <div id='map-body' className='govuk-grid-column-three-quarters'>
+            <div
+              id='map-body'
+              className='govuk-grid-column-three-quarters'
+              role='group'
+              aria-label={
+                location.state
+                  ? `map showing ${location.state?.mapArea}`
+                  : 'map showing drop a pin to select your area'
+              }
+            >
               <Map
                 setCoordinates={setPinCoords}
                 type='drop'

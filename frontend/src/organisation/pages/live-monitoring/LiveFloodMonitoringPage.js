@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -193,7 +193,11 @@ export default function LiveFloodMonitoringPage() {
               </>
             )}
           </div>
-          <div className='govuk-grid-column-two-thirds'>
+          <div
+            className='govuk-grid-column-two-thirds'
+            role='group'
+            aria-label='map showing live flood warnings'
+          >
             <LiveMap
               showSevereLocations={filters.severeAreas}
               showWarningLocations={filters.warningAreas}

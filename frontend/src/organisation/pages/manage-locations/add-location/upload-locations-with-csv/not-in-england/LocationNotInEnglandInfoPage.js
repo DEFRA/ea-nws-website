@@ -1,4 +1,3 @@
-import { React } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -110,6 +109,8 @@ export default function LocationNotInEnglandInfoPage() {
           <div
             className='govuk-grid-column-one-half'
             style={{ marginTop: '95px' }}
+            role='group'
+            aria-label='map showing fixed areas that we provide flood warnings and alerts for'
           >
             <Map showMapControls={false} zoomLevel={14} />
             <FloodWarningKey />

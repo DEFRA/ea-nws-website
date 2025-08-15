@@ -21,6 +21,7 @@ import TileLayerWithHeader from '../../../../../../common/components/custom/Tile
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
+import { getOperationalBoundaryByTaCode } from '../../../../../../common/services/WfsFloodDataService'
 
 export default function UserMap({ locations }) {
   const [loading, setLoading] = useState(true)
@@ -31,11 +32,17 @@ export default function UserMap({ locations }) {
   const [centre, setCentre] = useState([])
 
   useEffect(() => {
-    loadLocationsOnMap()
-    setLoading(false)
+    const fetchLocations = async () => {
+      await loadLocationsOnMap()
+      setLoading(false)
+    }
+
+    if (locations && locations.length > 0) {
+      fetchLocations()
+    }
   }, [locations])
 
-  const loadLocationsOnMap = () => {
+  const loadLocationsOnMap = async () => {
     // load all locations user is connected to onto map
     const locationsCollection = []
     const points = []
@@ -43,7 +50,7 @@ export default function UserMap({ locations }) {
     if (locations && locations.length > 0) {
       // centre must be set to 0, 0 as map will be fit accordingly to locations loaded
       setCentre([0, 0])
-      locations.forEach((location) => {
+      locations.forEach(async (location) => {
         let feature
         const locationType = location.additionals.other.location_data_type
 
@@ -57,6 +64,12 @@ export default function UserMap({ locations }) {
               location.coordinates.latitude
             ])
             points.push(location.coordinates)
+          } else if (locationType === LocationDataType.BOUNDARY) {
+            const boundary = await getOperationalBoundaryByTaCode(
+              location.geocode
+            )
+            feature = boundary
+            shapes.push(feature)
           } else {
             feature = location.geometry.geoJson
 

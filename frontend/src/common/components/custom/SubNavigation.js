@@ -11,21 +11,6 @@ export default function SubNavigation({ pages, currentPage, type }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
 
-  /* This function will apply active class to Live Flood warnings navigation link as the
-   * Reports navigation contains links that should make Live flood warnings navigation active*/
-  const activateLiveFloodWarningsLink = (title) => {
-    const links = [
-      '/organisation/reports/live-warnings',
-      '/organisation/reports/removed-warnings',
-      '/organisation/reports/historic-warnings',
-      'organisation/reports/view-summary'
-    ]
-    if (title === 'Live flood warnings') {
-      return links.some((link) => currentPage.includes(link))
-    }
-    return false
-  }
-
   const getActiveNavLink = (title) => {
     const { pathname, state } = location
 
@@ -46,6 +31,11 @@ export default function SubNavigation({ pages, currentPage, type }) {
         condition:
           pathname.includes('/organisation/manage-contacts') &&
           title === 'Users',
+        result: 'page'
+      },
+      {
+        condition:
+          pathname.includes('/organisation/reports') && title === 'Reports',
         result: 'page'
       },
       {
@@ -125,8 +115,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
                   to={page.link}
                   className='sub-navigation__link'
                   aria-current={
-                    currentPage === page.link ||
-                    activateLiveFloodWarningsLink(page.title)
+                    currentPage === page.link
                       ? 'page'
                       : getActiveNavLink(page.title)
                   }

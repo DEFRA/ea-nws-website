@@ -287,9 +287,7 @@ export default function HistoricalFloodReportsTable({
                         alt='Flood warning icon'
                         className='warnings-table-icon'
                       />
-                      <span className='warnings-table-text'>
-                        {warningLabel(location.floodData.type)}
-                      </span>
+                      <span className='warnings-table-text'>Flood warning</span>
                     </div>
                   </div>
                 </td>{' '}

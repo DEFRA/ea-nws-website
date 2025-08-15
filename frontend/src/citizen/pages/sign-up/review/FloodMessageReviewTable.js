@@ -83,6 +83,14 @@ export default function FloodMessageReviewTable() {
               className='govuk-!-width-one-third govuk-table__cell'
               scope='row'
             >
+              {/* Screen reader only combined label to clarify that the adjacent cell applies to both headings */}
+              <span
+                id='warning-combined-label'
+                className='govuk-visually-hidden'
+              >
+                Severe flood warnings and Flood warnings
+              </span>
+
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                 Severe flood warnings
               </h3>
@@ -96,7 +104,10 @@ export default function FloodMessageReviewTable() {
                 Flooding expected - act now
               </span>
             </th>
-            <td className='govuk-table__cell govuk-!-width-full'>
+            <td
+              className='govuk-table__cell govuk-!-width-full'
+              aria-labelledby='warning-combined-label'
+            >
               {floodWarningAreas.length > 0 ? (
                 <ul className='govuk-list govuk-list--bullet'>
                   {floodWarningAreas.map((item, key) => (

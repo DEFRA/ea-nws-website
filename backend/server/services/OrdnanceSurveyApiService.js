@@ -41,15 +41,15 @@ const osPostCodeApiCall = async (postCode, englandOnly) => {
       }
     }
 
-      if (!englandOnly || response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
-        const responseData = formatResults(response.data.results).sort((a, b) =>
-          a.address.localeCompare(b.address, undefined, {
-            numeric: true,
-            sensitivity: 'base'
-          })
-        )
-        return { status: response.status, data: responseData };
-      } else {
+    if (!englandOnly || response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
+      const responseData = formatResults(response.data.results).sort((a, b) =>
+        a.address.localeCompare(b.address, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        })
+      )
+      return { status: response.status, data: responseData }
+    } else {
       // NOT_IN_ENGLAND case
       return {
         status: 500,

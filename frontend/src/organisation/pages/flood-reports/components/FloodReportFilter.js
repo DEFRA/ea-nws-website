@@ -11,7 +11,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
-import AlertType from '../../../../common/enums/AlertType'
 
 export default function FloodReportFilter ({
   locationsAffected,
@@ -28,7 +27,6 @@ export default function FloodReportFilter ({
   const [visibility, setVisibility] = useState({
     dateRange: false,
     locationName: false,
-    warningType: false,
     locationType: false,
     businessCriticality: false
   })
@@ -36,10 +34,6 @@ export default function FloodReportFilter ({
   const toggleVisibility = (key) => {
     setVisibility((prev) => ({ ...prev, [key]: !prev[key] }))
   }
-
-  const warningTypes = [
-    ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
-  ]
 
   const businessCriticalityTypes = [
     ...new Set(
@@ -113,19 +107,6 @@ export default function FloodReportFilter ({
         location.locationData.additionals.locationName
           .toLowerCase()
           .includes(filters.locationName.toLowerCase())
-      )
-    }
-
-    if (filters.selectedWarningTypes.length > 0) {
-      const filterMap = {
-        'Severe flood warnings': AlertType.SEVERE_FLOOD_WARNING,
-        'Flood warnings': AlertType.FLOOD_WARNING,
-        'Flood alerts': AlertType.FLOOD_ALERT
-      }
-      filtered = filtered.filter((location) =>
-        filters.selectedWarningTypes.some((filter) =>
-          location.floodData.type.includes(filterMap[filter])
-        )
       )
     }
 
@@ -435,41 +416,6 @@ export default function FloodReportFilter ({
       )
     }
 
-    if (filters.selectedWarningTypes.length > 0) {
-      selectedFilters.push(
-        <div
-          key='warningType'
-          className='selected-filter warnings-selected-filter-panel'
-        >
-          <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
-            Warning Types:
-          </h3>
-          <div className='warnings-selected-filter-row'>
-            {filters.selectedWarningTypes.map((warningType, index) => (
-              <div className='filter warnings-selected-filter' key={index}>
-                <label className='govuk-label warnings-selected-filter-label'>
-                  {warningType}
-                </label>
-                <FontAwesomeIcon
-                  icon={faXmark}
-                  className='warnings-selected-filter-icon'
-                  onClick={() => {
-                    updateFilter(
-                      'selectedWarningTypes',
-                      filters.selectedWarningTypes.filter(
-                        (type) => type !== warningType
-                      )
-                    )
-                    filterLocationsAffected({ preventDefault: () => {} })
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    }
-
     if (filters.selectedLocationTypes.length > 0) {
       selectedFilters.push(
         <div
@@ -606,11 +552,6 @@ export default function FloodReportFilter ({
       {'dateFrom' in filters && 'dateTo' in filters && dateRangeFilter}
       {locationNameSearchFilter}
 
-      <FilterSection
-        title='Warning type'
-        options={warningTypes}
-        filterKey='selectedWarningTypes'
-      />
       <FilterSection
         title='Location type'
         options={locationTypes}

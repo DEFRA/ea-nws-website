@@ -3,18 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
+import AlertType from '../../../common/enums/AlertType'
 import {
+  getAdditional,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  getFloodWarningAndAlerts,
-  getGroupFloodLocation,
-  getNonGroupFloodLocation
-} from '../../../common/utils/FloodLocationGroupingAndWarningMessages'
 
 export default function SubscribedLocationTable({ setError }) {
   const navigate = useNavigate()
@@ -27,8 +24,48 @@ export default function SubscribedLocationTable({ setError }) {
   const maxLocations = 15
   const [partnerId, setPartnerId] = useState(false)
 
-  const groupFloodLocation = getGroupFloodLocation(locations)
-  const nonGroupFloodLocation = getNonGroupFloodLocation(locations)
+  const nearbyFloodAreaLocations = {}
+  const xyCoordLocations = []
+
+  locations.forEach((loc, index) => {
+    const key = getAdditional(loc.additionals, 'locationName')
+    if (key) {
+      if (!nearbyFloodAreaLocations[key]) {
+        nearbyFloodAreaLocations[key] = []
+      }
+      nearbyFloodAreaLocations[key].push({ ...loc, index })
+    } else {
+      xyCoordLocations.push({ ...loc, index })
+    }
+  })
+
+  const getFloodWarningAndAlerts = (location) => {
+    const alertTypes =
+      locationRegistrations?.find((loc) => loc.locationId == location.id)
+        ?.registrations[0]?.params?.alertTypes || []
+
+    let serverFloodWarnings = null
+    let floodWarnings = null
+    let floodAlerts = null
+
+    if (!alertTypes.length) return ''
+
+    serverFloodWarnings = alertTypes.includes(AlertType.SEVERE_FLOOD_WARNING)
+    floodWarnings = alertTypes.includes(AlertType.FLOOD_WARNING)
+    floodAlerts = alertTypes.includes(AlertType.FLOOD_ALERT)
+
+    if (serverFloodWarnings && floodWarnings && floodAlerts) {
+      return 'Severe flood warnings, flood warnings and flood alerts'
+    }
+
+    if (serverFloodWarnings && floodWarnings) {
+      return 'Severe flood warnings and flood warnings'
+    }
+
+    if (floodAlerts) {
+      return 'Flood alerts'
+    }
+  }
 
   async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
@@ -108,7 +145,7 @@ export default function SubscribedLocationTable({ setError }) {
       )
     }
 
-    const removeColumn = (location, arrayLength, index) => {
+    const removeColumn = (location, index) => {
       return (
         <td className='govuk-table__cell'>
           <Link
@@ -120,9 +157,9 @@ export default function SubscribedLocationTable({ setError }) {
             }}
             className='govuk-link'
             style={{ cursor: 'pointer' }}
-            aria-label={`Remove location ${
-              arrayLength > 1 ? `${index + 1}` : ''
-            } - ${location.address}`}
+            aria-label={`Remove location ${index > 0 ? `${index + 1}` : ''} - ${
+              location.address
+            }`}
           >
             Remove
           </Link>
@@ -138,7 +175,7 @@ export default function SubscribedLocationTable({ setError }) {
             style={{ fontSize: '1rem' }}
             className='govuk-hint govuk-!-margin-bottom-0'
           >
-            {getFloodWarningAndAlerts(location, locationRegistrations)}
+            {getFloodWarningAndAlerts(location)}
           </p>
         </td>
       )
@@ -159,20 +196,19 @@ export default function SubscribedLocationTable({ setError }) {
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {nonGroupFloodLocation.map((location, index) => (
+          {xyCoordLocations.map((location, index) => (
             <tr key={index} className='govuk-table__row non-grouped'>
               {addressColumn(location)}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {viewColumn(location)}
-              {locations.length > 1 &&
-                removeColumn(location, locations.length, index)}
+              {locations.length > 1 && removeColumn(location, location.index)}
             </tr>
           ))}
 
-          {groupFloodLocation &&
-            Object.entries(groupFloodLocation).map(
-              ([key, locations], index) => (
+          {nearbyFloodAreaLocations &&
+            Object.entries(nearbyFloodAreaLocations).map(
+              ([locationName, groupLocations], index) => (
                 <>
                   <tr key={index} className='govuk-table__row grouped'>
                     <td
@@ -180,7 +216,7 @@ export default function SubscribedLocationTable({ setError }) {
                       style={{ borderBottom: '2px solid #fff' }}
                     >
                       <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
-                        {key}
+                        {locationName}
                       </p>
                       <p>
                         {'You will get flood messages for these nearby areas'}
@@ -188,7 +224,7 @@ export default function SubscribedLocationTable({ setError }) {
                     </td>
                   </tr>
 
-                  {locations.map((location, index) => (
+                  {groupLocations.map((location, index) => (
                     <tr key={index} className='govuk-table__row'>
                       <td className='govuk-table__cell'>
                         <p className='govuk-!-margin-bottom-0'>
@@ -205,7 +241,7 @@ export default function SubscribedLocationTable({ setError }) {
                       {viewColumn(location)}
 
                       {locations.length > 1 &&
-                        removeColumn(location, locations.length, index)}
+                        removeColumn(location, location.index)}
                     </tr>
                   ))}
                 </>

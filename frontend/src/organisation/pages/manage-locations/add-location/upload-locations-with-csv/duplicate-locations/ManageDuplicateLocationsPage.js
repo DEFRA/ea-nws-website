@@ -87,12 +87,12 @@ export default function ManageDuplicateLocationsPage() {
 
     // Get the existing location (note type is 'valid')
     const existingLocation = geoSafeToWebLocation(
-      await getLocation(location.additionals.locationName, 'valid')
+      await getLocation(location.name, 'valid')
     )
 
     // Get the new, duplicate location (note type is 'invalid')
     const newLocation = geoSafeToWebLocation(
-      await getLocation(location.additionals.locationName, 'invalid')
+      await getLocation(location.name, 'invalid')
     )
 
     if (existingLocation && newLocation) {
@@ -175,7 +175,7 @@ export default function ManageDuplicateLocationsPage() {
                       return (
                         <tr className='govuk-table__row' key={index}>
                           <td className='govuk-table__cell'>
-                            {location.additionals.locationName}
+                            {location.name || location.additionals.locationName}
                           </td>
                           <td className='govuk-table__cell govuk-!-text-align-right'>
                             <Link

@@ -200,7 +200,7 @@ export default function UnmatchedLocationsDashboardLayout({
             return (
               <tr className='govuk-table__row' key={index}>
                 <td className='govuk-table__cell'>
-                  {location.additionals.locationName}
+                  {location.name || location.additionals.locationName}
                 </td>
                 <td className='govuk-table__cell'>
                   {location.additionals.other.full_address}

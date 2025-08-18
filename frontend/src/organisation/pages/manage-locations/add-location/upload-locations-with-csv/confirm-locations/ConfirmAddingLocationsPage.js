@@ -63,10 +63,7 @@ export default function ConfirmAddingLocationsPage() {
 
                   // Get the existing location (note type is 'valid')
                   const existingLocation = geoSafeToWebLocation(
-                    await getLocation(
-                      location.additionals.locationName,
-                      'valid'
-                    )
+                    await getLocation(location.name, 'valid')
                   )
 
                   // Set the new, duplicate location

@@ -146,7 +146,7 @@ export default function ManuallyFindLocationsPage() {
                       return (
                         <tr className='govuk-table__row' key={index}>
                           <th scope='row' className='govuk-table__header'>
-                            {location.additionals.locationName}
+                            {location.name || location.additionals.locationName}
                           </th>
                           <td className='govuk-table__cell'>
                             {location.additionals.other.full_address}

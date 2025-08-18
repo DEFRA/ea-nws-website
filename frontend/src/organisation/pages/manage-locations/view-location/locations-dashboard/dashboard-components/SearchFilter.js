@@ -138,9 +138,7 @@ export default function SearchFilter({
     // Apply Location name filter
     if (locationNameFilter.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        location.additionals.locationName
-          .toLowerCase()
-          .includes(locationNameFilter.toLowerCase())
+        location.name.toLowerCase().includes(locationNameFilter.toLowerCase())
       )
     }
 
@@ -340,7 +338,9 @@ export default function SearchFilter({
               .map((option) => (
                 <CheckBox
                   key={option}
-                  id={`locations-filter-${String(filterTitle).toLowerCase()}-${String(option).toLowerCase()}`}
+                  id={`locations-filter-${String(
+                    filterTitle
+                  ).toLowerCase()}-${String(option).toLowerCase()}`}
                   label={option}
                   value={option}
                   checked={selectedFilterType.includes(option)}

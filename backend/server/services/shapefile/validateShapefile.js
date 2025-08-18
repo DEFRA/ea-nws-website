@@ -18,7 +18,7 @@ const streamToBuffer = async (stream) => {
 }
 
 const validateShapefile = async (zipFileName) => {
-// Variables that may need accessed in the catch cleanup
+  // Variables that may need accessed in the catch cleanup
   let s3Client
   let Contents = []
   let s3BucketName = ''
@@ -42,7 +42,10 @@ const validateShapefile = async (zipFileName) => {
 
     // ***  Check 1: empty zip file *** //
     if (!Contents || Contents.length === 0) {
-      errorsArray.push({ errorType: 'empty file', errorMessage: 'The file is empty' })
+      errorsArray.push({
+        errorType: 'empty file',
+        errorMessage: 'The file is empty'
+      })
     }
 
     // ***  Check 2: all prefixes match *** //
@@ -55,9 +58,8 @@ const validateShapefile = async (zipFileName) => {
       errorsArray.push({
         errorType: 'different elements',
         errorMessage:
-            'Each file in the ZIP must have the same prefix, for example, locations.shp, locations.shx or locations.dbf'
-      }
-      )
+          'Each file in the ZIP must have the same prefix, for example, locations.shp, locations.shx or locations.dbf'
+      })
     }
 
     // ***  Check 3: required files *** //
@@ -71,9 +73,8 @@ const validateShapefile = async (zipFileName) => {
         errorsArray.push({
           errorType: 'missing elements',
           errorMessage:
-              'The ZIP file must contain .shp (main file), .shx (index file) and .dbf (database file)'
-        }
-        )
+            'The ZIP file must contain .shp (main file), .shx (index file) and .dbf (database file)'
+        })
       }
     }
 
@@ -95,7 +96,7 @@ const validateShapefile = async (zipFileName) => {
         )
         // Retrieve the location name value and ensure it is not null
         const locationName =
-              dbfTable.rows[0][dbfTable.columns[locationIndex].name]
+          dbfTable.rows[0][dbfTable.columns[locationIndex].name]
         if (!locationName) {
           throw new Error()
         }
@@ -105,9 +106,8 @@ const validateShapefile = async (zipFileName) => {
       errorsArray.push({
         errorType: 'location name missing',
         errorMessage:
-            'The selected file could not be uploaded because the location name is missing'
-      }
-      )
+          'The selected file could not be uploaded because the location name is missing'
+      })
     }
     // No errors thrown means a valid shapefile
     return {}

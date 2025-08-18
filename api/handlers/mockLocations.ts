@@ -2,7 +2,7 @@ const locations = [
   {
     id: '1',
     enabled: true,
-    name: 'UPRN',
+    name: 'Big Ben',
     address: 'Big Ben, London, SW1A 0AA',
     coordinates: {
       latitude: 51.49907586 * 10 ** 6,
@@ -49,7 +49,7 @@ const locations = [
   {
     id: '2',
     enabled: true,
-    name: 'UPRN',
+    name: 'Devon',
     address: 'South Devon Estuaries',
     coordinates: {
       latitude: 50.67978054 * 10 ** 6,
@@ -101,7 +101,7 @@ const locations = [
   {
     id: '3',
     enabled: true,
-    name: 'UPRN',
+    name: 'Ulverston',
     address: '31 Sun street, Ulverston, LA12 7BX',
     coordinates: {
       latitude: 54.189244 * 10 ** 6,
@@ -146,7 +146,7 @@ const locations = [
   {
     id: '4',
     enabled: true,
-    name: 'UPRN',
+    name: 'York',
     address: 'York',
     coordinates: null,
     geometry: {
@@ -211,7 +211,7 @@ const locations = [
   {
     id: '5',
     enabled: true,
-    name: 'UPRN',
+    name: 'London eye',
     address: 'River Thames and London Eye, London',
     coordinates: null,
     geometry: {
@@ -271,7 +271,7 @@ const locations = [
   {
     id: '6',
     enabled: true,
-    name: 'UPRN',
+    name: 'Halstead High st.',
     address: 'High Street, Halstead, Essex, England',
     coordinates: null,
     geometry: {
@@ -328,7 +328,7 @@ const locations = [
   {
     id: '7',
     enabled: true,
-    name: 'UPRN',
+    name: 'Peterborough',
     address: 'Peterborough',
     coordinates: null,
     geometry: {
@@ -386,7 +386,7 @@ const locations = [
   {
     id: '8',
     enabled: true,
-    name: 'UPRN',
+    name: 'Gloucester',
     address: 'Gloucester',
     coordinates: null,
     geometry: {
@@ -443,7 +443,7 @@ const locations = [
   {
     id: '9',
     enabled: true,
-    name: 'UPRN',
+    name: 'Mersey and Surrounding',
     address: 'Mersey and Surrounding',
     coordinates: null,
     geometry: {
@@ -519,7 +519,7 @@ const locations = [
   {
     id: '10',
     enabled: true,
-    name: 'UPRN',
+    name: 'Nottingham',
     address: 'Nottingham',
     coordinates: null,
     geometry: {
@@ -592,7 +592,7 @@ const locations = [
   {
     id: '11',
     enabled: true,
-    name: 'UPRN',
+    name: 'Hereford',
     address: 'Hereford',
     coordinates: {
       latitude: 52.045556502054296 * 10 ** 6,
@@ -641,8 +641,8 @@ const locations = [
   {
     id: '12',
     enabled: true,
-    name: 'UPRN',
-    address: 'Hampshire',
+    name: 'Southampton',
+    address: 'Southampton',
     coordinates: null,
     geocode: '999AXNCOUHAMPSHI',
     additionals: [
@@ -676,7 +676,7 @@ const locations = [
   {
     id: '13',
     enabled: true,
-    name: 'UPRN',
+    name: 'Little Chester',
     address: 'Little Chester',
     coordinates: {
       latitude: 52.92944454871733 * 10 ** 6,
@@ -722,7 +722,7 @@ const locations = [
   {
     id: '14',
     enabled: true,
-    name: 'UPRN',
+    name: 'Derbyshire',
     address: 'Derbyshire',
     coordinates: {
       latitude: 52.92944454871733 * 10 ** 6,
@@ -769,7 +769,7 @@ const additionalLocations = [
   {
     id: '15',
     enabled: true,
-    name: 'UPRN',
+    name: 'Oakham centre',
     address: 'Oakham centre',
     coordinates: {
       latitude: 52.66745486614397 * 10 ** 6,

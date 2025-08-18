@@ -134,17 +134,14 @@ export default function LocationNearFloodAreasLayout({
     if (minimumAreasAdded) {
       updatedProfile = await addFloodAreas()
 
-      // need a function which checks the un-ticked options and removes them from the profile
-
       if (updateGeoSafeProfile) {
         updatedProfile = await updateGeosafeProfile(updatedProfile)
+      }
 
-        // if user is in sign up flow, then profile returned will be undefined
-        if (updatedProfile) {
-          await registerLocationsToPartner(updatedProfile)
-          dispatch(setProfile(updatedProfile))
-        }
-      } else {
+      await registerLocationsToPartner(updatedProfile)
+      dispatch(setProfile(updatedProfile))
+
+      if (!updateGeoSafeProfile) {
         let floodAreasInfo = new Array()
         floodAreas?.forEach((area, index) => {
           const floodAlerts = getFloodAlertDetails(area?.properties?.category)
@@ -227,31 +224,26 @@ export default function LocationNearFloodAreasLayout({
           area?.properties.category
         )
 
-        const data = {
-          authToken,
-          locationId: location.id,
-          partnerId,
-          params: getRegistrationParams(profile, locationAlertTypes)
-        }
+        if (updateGeoSafeProfile) {
+          const data = {
+            authToken,
+            locationId: location.id,
+            partnerId,
+            params: getRegistrationParams(profile, locationAlertTypes)
+          }
 
-        await backendCall(
-          data,
-          'api/partner/register_location_to_partner',
-          navigate
-        )
+          await backendCall(
+            data,
+            'api/partner/register_location_to_partner',
+            navigate
+          )
+        }
 
         updatedLocationRegistrations = [
           ...updatedLocationRegistrations,
           {
-            locationId: location.id,
-            registrations: [
-              {
-                params: {
-                  ...data.params,
-                  alertTypes: locationAlertTypes
-                }
-              }
-            ]
+            location: location.address,
+            alertTypes: locationAlertTypes
           }
         ]
       }

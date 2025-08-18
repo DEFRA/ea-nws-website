@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -12,6 +13,10 @@ export default function AccountDeleteConfirmPage() {
   const dispatch = useDispatch()
   const profile = useSelector((state) => state.session.profile)
   const [servicePhase, setServicePhase] = useState(false)
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'authToken',
+    'CookieControl'
+  ])
 
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
@@ -33,6 +38,7 @@ export default function AccountDeleteConfirmPage() {
       notifyAccountDeletionSuccess()
     }
     dispatch(clearAuth())
+    removeCookie('authToken', { path: '/' })
   }, [])
 
   return (

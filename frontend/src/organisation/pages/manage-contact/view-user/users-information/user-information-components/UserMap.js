@@ -16,12 +16,14 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
+import OsMapTerms from '../../../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
+import { getOperationalBoundaryByTaCode } from '../../../../../../common/services/WfsFloodDataService'
 
-export default function UserMap ({ locations }) {
+export default function UserMap({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
@@ -30,11 +32,17 @@ export default function UserMap ({ locations }) {
   const [centre, setCentre] = useState([])
 
   useEffect(() => {
-    loadLocationsOnMap()
-    setLoading(false)
+    const fetchLocations = async () => {
+      await loadLocationsOnMap()
+      setLoading(false)
+    }
+
+    if (locations && locations.length > 0) {
+      fetchLocations()
+    }
   }, [locations])
 
-  const loadLocationsOnMap = () => {
+  const loadLocationsOnMap = async () => {
     // load all locations user is connected to onto map
     const locationsCollection = []
     const points = []
@@ -42,7 +50,7 @@ export default function UserMap ({ locations }) {
     if (locations && locations.length > 0) {
       // centre must be set to 0, 0 as map will be fit accordingly to locations loaded
       setCentre([0, 0])
-      locations.forEach((location) => {
+      locations.forEach(async (location) => {
         let feature
         const locationType = location.additionals.other.location_data_type
 
@@ -56,6 +64,12 @@ export default function UserMap ({ locations }) {
               location.coordinates.latitude
             ])
             points.push(location.coordinates)
+          } else if (locationType === LocationDataType.BOUNDARY) {
+            const boundary = await getOperationalBoundaryByTaCode(
+              location.geocode
+            )
+            feature = boundary
+            shapes.push(feature)
           } else {
             feature = location.geometry.geoJson
 
@@ -98,7 +112,7 @@ export default function UserMap ({ locations }) {
     }, [bounds])
   }
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -223,6 +237,7 @@ export default function UserMap ({ locations }) {
               </Link>
             </div>
           )}
+          <OsMapTerms />
         </MapContainer>
       )}
     </>

@@ -76,6 +76,7 @@ export default function SignInValidatePage() {
               orgData.profile,
               'firstLogin'
             )
+            setupAuthentication(orgData)
             if (isAdminUsersFirstLogin === 'true') {
               navigate('/sign-in/organisation/admin-controls')
             } else {
@@ -123,14 +124,6 @@ export default function SignInValidatePage() {
           setError(errorMessage)
         }
       } else {
-        setCookie('authToken', data.authToken)
-        dispatch(setAuthToken(data.authToken))
-        dispatch(setProfile(data.profile))
-        if (data.organization) {
-          dispatch(setProfileId(data.profile.id))
-          dispatch(setOrganization(data.organization))
-          dispatch(setSigninType('org'))
-        }
         dispatch(setRegistrations(data.registrations))
         dispatch(
           setContactPreferences([
@@ -143,6 +136,12 @@ export default function SignInValidatePage() {
         const isSignUpComplete = getAdditionals(data.profile, 'signupComplete')
         const lastAccessedUrl = getAdditionals(data.profile, 'lastAccessedUrl')
         setLastAccessedUrl(lastAccessedUrl)
+
+        if (data.organization) {
+          dispatch(setProfileId(data.profile.id))
+          dispatch(setOrganization(data.organization))
+          dispatch(setSigninType('org'))
+        }
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
@@ -163,12 +162,18 @@ export default function SignInValidatePage() {
               )
               dispatch(setProfile(verifyData.profile))
             }
-
+            setupAuthentication(data)
             navigate('/home')
           }
         }
       }
     }
+  }
+
+  const setupAuthentication = (data) => {
+    setCookie('authToken', data.authToken)
+    dispatch(setAuthToken(data.authToken))
+    dispatch(setProfile(data.profile))
   }
 
   const getNewCode = async (event) => {

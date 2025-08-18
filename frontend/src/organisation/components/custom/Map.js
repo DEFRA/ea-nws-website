@@ -78,6 +78,7 @@ export default function Map({
         const boundary = await getOperationalBoundaryByTaCode(
           currentLocationGeocode
         )
+
         setLocationGeometry(boundary)
       } else {
         setLocationGeometry(currentLocationGeometry)

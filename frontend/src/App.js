@@ -21,14 +21,22 @@ function App() {
   const redirectTimer = useRef(null)
   const currentRoute = window.location.pathname
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie, removeCookie] = useCookies(['authToken', 'CookieControl'])
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'authToken',
+    'CookieControl'
+  ])
   const hasAuthCookie = cookies.authToken
   const dispatch = useDispatch()
   const lastActivity = useSelector((state) => state.session.lastActivity)
 
   useEffect(() => {
     removeHoverIosSafari()
-    !cookies.CookieControl && setCookie('CookieControl', {analytics: false, preferencesSet: false, popup: true}, {maxAge: 60*60*24*365})
+    !cookies.CookieControl &&
+      setCookie(
+        'CookieControl',
+        { analytics: false, preferencesSet: false, popup: true },
+        { maxAge: 60 * 60 * 24 * 365 }
+      )
   }, [])
 
   /* Clear local storage if no cookies,
@@ -122,7 +130,7 @@ function App() {
 
   return (
     <BrowserRouter>
-    <GoogleAnalytics useAnalytics={cookies?.CookieControl?.analytics} />
+      <GoogleAnalytics useAnalytics={cookies?.CookieControl?.analytics} />
       <ScrollToTop />
       <Routes>
         <Route path='/' element={<StartPage />} />

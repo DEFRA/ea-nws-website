@@ -83,6 +83,7 @@ export default function LocationSearchResultsLayout({
       const isError = !warningArea && !alertArea
 
       const isInAlertArea =
+        locationSearchType !== 'placename' &&
         alertArea &&
         isLocationInFloodArea(
           selectedLocation.coordinates.latitude,
@@ -91,6 +92,7 @@ export default function LocationSearchResultsLayout({
         )
 
       const isInWarningArea =
+        locationSearchType !== 'placename' &&
         warningArea &&
         isLocationInFloodArea(
           selectedLocation.coordinates.latitude,

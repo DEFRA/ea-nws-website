@@ -224,6 +224,7 @@ export default function FloodWarningHistoryDashboardPage() {
         displayedLocationsAffected={displayedLocationsAffected}
         setDisplayedLocationsAffected={setDisplayedLocationsAffected}
         filteredLocationsAffected={filteredLocationsAffected}
+        setFilteredLocationsAffected={setFilteredLocationsAffected}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
       />

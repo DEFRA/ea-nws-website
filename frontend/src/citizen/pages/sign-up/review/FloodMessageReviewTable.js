@@ -68,7 +68,7 @@ export default function FloodMessageReviewTable() {
                 to='/signup/review/change-location-search'
                 className='govuk-link'
                 style={{ cursor: 'pointer' }}
-                aria-label={`Change flood messages you'll get`}
+                aria-label={`Change flood messages`}
               >
                 Change
               </Link>

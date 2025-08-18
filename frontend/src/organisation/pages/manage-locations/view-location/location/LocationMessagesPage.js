@@ -33,7 +33,7 @@ export default function LocationMessagesPage() {
   const [loading, setLoading] = useState(true)
   const currentLocationTAs =
     useSelector((state) => getLocationOther(state, 'targetAreas')) || []
-  const additionalData = useSelector((state) => getLocationAdditionals(state))
+  const additionalData = useSelector((state) => (state))
   const authToken = useSelector((state) => state.session.authToken)
   const [partnerId, setPartnerId] = useState(false)
   const [unlinkID, setUnlinkID] = useState(null)

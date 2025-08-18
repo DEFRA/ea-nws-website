@@ -453,11 +453,8 @@ const userSlice = createSlice({
       state.currentLocation.geocode = action.payload
     },
     setCurrentLocationName: (state, action) => {
-      setAdditional(
-        state.currentLocation.additionals,
-        'locationName',
-        action.payload
-      )
+      console.log('ACTION PAYLOAD', action.payload)
+      state.currentLocation.name = action.payload
     },
     setCurrentLocationParentID: (state, action) => {
       setAdditional(
@@ -1050,6 +1047,9 @@ const userSlice = createSlice({
     },
     getContactAdditional: (state, key) => {
       return getAdditional(state.orgCurrentContact.additionals, key)
+    },
+    getLocationName: (state) => {
+      return state.currentLocation.name
     }
   }
 })
@@ -1183,6 +1183,7 @@ export const {
 export const {
   getLocationAdditionals,
   getLocationAdditional,
+  getLocationName,
   getLocationOther,
   getContactAdditional
 } = userSlice.selectors

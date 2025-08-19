@@ -198,8 +198,8 @@ export default function ViewLocationsDashboardPage() {
 
       // Sort objects by location name alphabetically
       locationsUpdate.sort((a, b) => {
-        const nameA = (a.name || '').toLowerCase()
-        const nameB = (b.name || '').toLowerCase()
+        const nameA = (a.name || a.additionals.locationName).toLowerCase()
+        const nameB = (b.name || b.additionals.locationName).toLowerCase()
         if (nameA < nameB) return -1
         if (nameA > nameB) return 1
         return 0

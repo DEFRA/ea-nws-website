@@ -203,13 +203,9 @@ const findLocationByName = async (client, orgId, locationName) => {
   const matchingLocations = []
   Object.keys(locations).forEach((key) => {
     const location = locations[key]
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'locationName') {
-        if (additional.value.s === locationName) {
-          matchingLocations.push(location)
-        }
-      }
-    })
+    if (location.name === locationName) {
+      matchingLocations.push(location)
+    }
   })
 
   return matchingLocations
@@ -221,11 +217,7 @@ const listLocationNames = async (client, orgId) => {
 
   Object.keys(locations).forEach((key) => {
     const location = locations[key]
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'locationName') {
-        locationNames.push(additional.value.s)
-      }
-    })
+    locationNames.push(location.name)
   })
 
   return locationNames
@@ -237,13 +229,9 @@ const findInvLocationByName = async (client, orgId, locationName) => {
   await Promise.all(
     locationKeys.map(async (key) => {
       const location = await getJsonData(client, key)
-      location.additionals.forEach((additional) => {
-        if (additional.id === 'locationName') {
-          if (additional.value.s === locationName) {
-            matchingLocations.push(location)
-          }
-        }
-      })
+      if (location.name === locationName) {
+        matchingLocations.push(location)
+      }
     })
   )
   return matchingLocations

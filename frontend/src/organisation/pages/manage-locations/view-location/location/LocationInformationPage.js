@@ -1,5 +1,5 @@
-import { area } from '@turf/turf'
 /* import { useState } from 'react' */
+import * as turf from '@turf/turf'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,10 +15,12 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 /* import FullscreenMap from '../FullscreenMap' */
 import LocationHeader from './location-information-components/LocationHeader'
 
-export default function LocationInformationPage () {
+export default function LocationInformationPage() {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const webLocation = geoSafeToWebLocation(JSON.parse(JSON.stringify(currentLocation)))
+  const webLocation = geoSafeToWebLocation(
+    JSON.parse(JSON.stringify(currentLocation))
+  )
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   /* const [showMap, setShowMap] = useState(false) */
   const keywords = additionalData.keywords
@@ -41,19 +43,26 @@ export default function LocationInformationPage () {
   }
 
   const getShapePolygonArea = () => {
-    if (
-      !currentLocation.geometry ||
-      currentLocation.geometry.type !== 'Feature' ||
-      !currentLocation.geometry.geometry
-    ) {
+    if (!currentLocation.geometry) {
       return 0
     }
 
     const formatShapeArea = (area) => {
-      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     }
 
-    return formatShapeArea(Math.round(area(webLocation.geometry.geoJson) / 1000))
+    const areaInSqKm = turf.area(webLocation.geometry.geoJson) / 1000000
+    return formatShapeArea(Math.round(areaInSqKm))
+  }
+
+  const getLineLength = () => {
+    if (!currentLocation.geometry) {
+      return 0
+    }
+
+    return turf
+      .length(webLocation.geometry.geoJson, { units: 'kilometers' })
+      .toFixed(1)
   }
 
   const LocationData = () => {
@@ -67,10 +76,9 @@ export default function LocationInformationPage () {
           </>
         )
       case LocationDataType.SHAPE_POLYGON:
-        return <>{getShapePolygonArea()} square metres</>
+        return <>{getShapePolygonArea()} square km</>
       case LocationDataType.SHAPE_LINE:
-        // code to return length of line
-        return <>0.5km (dummy data)</>
+        return <>{getLineLength()}km </>
       case LocationDataType.BOUNDARY:
         return <>{additionalData.location_type}</>
     }
@@ -157,7 +165,7 @@ export default function LocationInformationPage () {
     </>
   )
 
- /*  const openMap = () => {
+  /*  const openMap = () => {
     setShowMap(true)
   } */
 
@@ -169,7 +177,13 @@ export default function LocationInformationPage () {
   return (
     <>
       <Helmet>
-        <title>{additionalData.locationName ? additionalData.locationName : 'This location'}'s information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          {additionalData.locationName
+            ? additionalData.locationName
+            : 'This location'}
+          's information - Manage locations - Get flood warnings (professional)
+          - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
@@ -212,49 +226,49 @@ export default function LocationInformationPage () {
             {/* Key Information details */}
             {additionalData.location_data_type !==
               LocationDataType.BOUNDARY && (
-                <div className='govuk-!-margin-top-7'>
-                  <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
-                    Key Information
-                  </h2>
-                  <Link
-                    className='govuk-link right'
-                    to={
+              <div className='govuk-!-margin-top-7'>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+                  Key Information
+                </h2>
+                <Link
+                  className='govuk-link right'
+                  to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.keyInformation
                   }
-                  >
-                    Change
-                  </Link>
-                  <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    Location name
-                  </h3>
-                  <p>{additionalData.locationName}</p>
-                  {additionalData.internal_reference && (
-                    <>
-                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Internal reference
-                      </h3>
-                      <p>{additionalData.internal_reference}</p>
-                    </>
-                  )}
-                  {additionalData.business_criticality && (
-                    <>
-                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Business criticality
-                      </h3>
-                      <p>{additionalData.business_criticality}</p>
-                    </>
-                  )}
-                  {additionalData.location_type && (
-                    <>
-                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Location type
-                      </h3>
-                      <p>{additionalData.location_type}</p>
-                    </>
-                  )}
-                </div>
+                >
+                  Change
+                </Link>
+                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                  Location name
+                </h3>
+                <p>{additionalData.locationName}</p>
+                {additionalData.internal_reference && (
+                  <>
+                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                      Internal reference
+                    </h3>
+                    <p>{additionalData.internal_reference}</p>
+                  </>
+                )}
+                {additionalData.business_criticality && (
+                  <>
+                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                      Business criticality
+                    </h3>
+                    <p>{additionalData.business_criticality}</p>
+                  </>
+                )}
+                {additionalData.location_type && (
+                  <>
+                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                      Location type
+                    </h3>
+                    <p>{additionalData.location_type}</p>
+                  </>
+                )}
+              </div>
             )}
 
             {/* Keywords details */}
@@ -323,61 +337,61 @@ export default function LocationInformationPage () {
                 {!currentLocation.address &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
-                      <Link
-                        className='govuk-link'
-                        to={
+                    <Link
+                      className='govuk-link'
+                      to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.address
                       }
-                      >
-                        Add address
-                      </Link>
-                )}
+                    >
+                      Add address
+                    </Link>
+                  )}
               </div>
               <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.internal_reference &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
-                      <Link
-                        className='govuk-link'
-                        to={
+                    <Link
+                      className='govuk-link'
+                      to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.keyInformation
                       }
-                      >
-                        Add internal reference
-                      </Link>
-                )}
+                    >
+                      Add internal reference
+                    </Link>
+                  )}
               </div>
               <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.business_criticality &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
-                      <Link
-                        className='govuk-link'
-                        to={
+                    <Link
+                      className='govuk-link'
+                      to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.keyInformation
                       }
-                      >
-                        Add business criticality
-                      </Link>
-                )}
+                    >
+                      Add business criticality
+                    </Link>
+                  )}
               </div>
               <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.location_type &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
-                      <Link
-                        className='govuk-link'
-                        to={
+                    <Link
+                      className='govuk-link'
+                      to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.keyInformation
                       }
-                      >
-                        Add location type
-                      </Link>
-                )}
+                    >
+                      Add location type
+                    </Link>
+                  )}
               </div>
               <div className='govuk-!-margin-bottom-1'>
                 {(!keywords || keywords.length === 0) && (
@@ -422,25 +436,27 @@ export default function LocationInformationPage () {
             {/* flood risk details */}
             {additionalData.location_data_type ===
               LocationDataType.X_AND_Y_COORDS && (
-                <div className='govuk-!-margin-top-7'>
-                  <Details
-                    title='What is a flood risk?'
-                    text={floodRiskDetails}
-                  />
-                </div>
+              <div className='govuk-!-margin-top-7'>
+                <Details
+                  title='What is a flood risk?'
+                  text={floodRiskDetails}
+                />
+              </div>
             )}
           </div>
           {/* other half - map */}
-          <div className='govuk-grid-column-one-half' role='group'
-            aria-label='map showing fixed areas that we provide flood warnings and alerts for'>
+          <div
+            className='govuk-grid-column-one-half'
+            role='group'
+            aria-label='map showing fixed areas that we provide flood warnings and alerts for'
+          >
             <Map showMapControls={false} zoomLevel={14} />
             <FloodWarningKey />
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
               This is not a live flood map
             </span>
             <span className='govuk-caption-m govuk-!-font-size-16'>
-              it shows fixed areas that we provide flood warnings and alerts
-              for
+              it shows fixed areas that we provide flood warnings and alerts for
             </span>
             {/* <div
               className=' govuk-!-margin-top-4'

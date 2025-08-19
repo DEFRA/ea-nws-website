@@ -70,6 +70,8 @@ export default function SignUpPage() {
     }
   }
 
+  console.log('email', email)
+
   return (
     <>
       <Helmet>
@@ -101,7 +103,10 @@ export default function SignUpPage() {
                 inputMode='email'
                 name='Email address'
                 error={error}
-                onChange={(val) => setEmail(val.replaceAll(' ', ''))}
+                value={email}
+                onChange={(val) =>
+                  setEmail(val.replaceAll(' ', '').toLowerCase())
+                }
               />
               <p>
                 Read our{' '}

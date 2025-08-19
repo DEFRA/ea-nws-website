@@ -92,7 +92,10 @@ export default function SignInPage() {
                 inputType='text'
                 inputMode='email'
                 error={error}
-                onChange={(val) => setEmail(val.replaceAll(' ', ''))}
+                value={email}
+                onChange={(val) =>
+                  setEmail(val.replaceAll(' ', '').toLowerCase())
+                }
               />
               <Button
                 className='govuk-button'

@@ -12,6 +12,7 @@ export default function HistoricalFloodReportsTable({
   displayedLocationsAffected,
   setDisplayedLocationsAffected,
   filteredLocationsAffected,
+  setFilteredLocationsAffected,
   resetPaging,
   setResetPaging
 }) {
@@ -62,54 +63,41 @@ export default function HistoricalFloodReportsTable({
       }
     }
 
+    const isDate = (v) => {
+      const d = v instanceof Date ? v : new Date(v)
+      return !isNaN(d.getTime())
+    }
+    const toTime = (v) => (isDate(v) ? v.getTime() : new Date(v).getTime())
+    const isEmpty = (v) => v === null || v === '' || v === '-'
+
     if (sortType === 'none' || sortType === 'descending') {
       setSort('ascending')
-      setDisplayedLocationsAffected(
-        [...displayedLocationsAffected].sort((a, b) => {
-          const valueA = getValue(a)
-          const valueB = getValue(b)
-
-          // Place empty strings at the end
-          if (
-            (valueA === '' || valueA == null) &&
-            (valueB === '' || valueB == null)
-          ) {
-            return 0
-          }
-          if (valueA === '' || valueA == null) return 1
-          if (valueB === '' || valueB == null) return -1
-
-          // if values are valid dates, compare them as date objects
-          const dateA = new Date(valueA)
-          const dateB = new Date(valueB)
-
-          if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime())) {
-            return dateA.getTime() - dateB.getTime()
-          }
-
-          return (valueA || '').localeCompare(valueB || '')
-        })
-      )
+      const sorted = [...filteredLocationsAffected].sort((a, b) => {
+        const A = getValue(a)
+        const B = getValue(b)
+        // Ascending sort - empty values last
+        if (isEmpty(A) && isEmpty(B)) return 0
+        if (isEmpty(A)) return 1
+        if (isEmpty(B)) return -1
+        if (isDate(A) && isDate(B)) return toTime(A) - toTime(B)
+        return String(A).localeCompare(String(B))
+      })
+      setFilteredLocationsAffected(sorted)
     }
 
     if (sortType === 'ascending') {
       setSort('descending')
-      setDisplayedLocationsAffected(
-        [...displayedLocationsAffected].sort((a, b) => {
-          const valueA = getValue(a)
-          const valueB = getValue(b)
-
-          // if values are valid dates, compare them as date objects
-          const dateA = new Date(valueA)
-          const dateB = new Date(valueB)
-
-          if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime())) {
-            return dateB.getTime() - dateA.getTime()
-          }
-
-          return (valueB || '').localeCompare(valueA || '')
-        })
-      )
+      const sorted = [...filteredLocationsAffected].sort((a, b) => {
+        const A = getValue(a)
+        const B = getValue(b)
+        // Descending sort - empty values first
+        if (isEmpty(A) && isEmpty(B)) return 0
+        if (isEmpty(A)) return -1
+        if (isEmpty(B)) return 1
+        if (isDate(A) && isDate(B)) return toTime(B) - toTime(A)
+        return String(B).localeCompare(String(A))
+      })
+      setFilteredLocationsAffected(sorted)
     }
     setResetPaging(!resetPaging)
   }
@@ -322,14 +310,18 @@ export default function HistoricalFloodReportsTable({
                     .business_criticality || '-'}
                 </td>
                 <td className='govuk-table__cell'>
-                  {dayjs(location.floodData.startDate).format(
-                    'D MMM YYYY [at] HH:mm'
-                  )}
+                  {location.floodData.startDate
+                    ? dayjs(location.floodData.startDate).format(
+                        'D MMM YYYY [at] HH:mm'
+                      )
+                    : '-'}
                 </td>
                 <td className='govuk-table__cell'>
-                  {dayjs(location.floodData.lastUpdatedTime).format(
-                    'D MMM YYYY [at] HH:mm'
-                  )}
+                  {location.floodData.lastUpdatedTime
+                    ? dayjs(location.floodData.lastUpdatedTime).format(
+                        'D MMM YYYY [at] HH:mm'
+                      )
+                    : '-'}
                 </td>
               </tr>
             )

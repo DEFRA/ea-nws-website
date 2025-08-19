@@ -1,6 +1,5 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import { infoUrls } from '../../../organisation/routes/info/InfoRoutes'
@@ -13,7 +12,7 @@ export default function OrganisationServiceSelectionPage () {
   const panelItem = (itemText) => {
     return (
       <li>
-        <FontAwesomeIcon icon={faCheck} /> {itemText}
+        <FontAwesomeIcon icon={faCheck} aria-hidden='true' /> {itemText}
         <hr className='org-service-selection-hr govuk-!-margin-top-2 govuk-!-margin-bottom-2' />
       </li>
     )
@@ -37,40 +36,41 @@ export default function OrganisationServiceSelectionPage () {
             </h1>
             <div className='govuk-body'>
               <div className='org-service-selection-comparison'>
-                <div className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
-                  <div className='outline-1px'>
-                    <div className='org-service-selection-header govuk-heading-m govuk-!-margin-bottom-0'>
+                <section
+                  className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'
+                  aria-labelledby='standard-service-heading'
+                >
+                  <div
+                    className='outline-1px'
+                    role='group'
+                    aria-label='Standard service option'
+                  >
+                    <h2
+                      className='org-service-selection-header govuk-heading-m'
+                      id='standard-service-heading'
+                    >
                       Standard
-                    </div>
+                    </h2>
                     <div>
-                      <h2 className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
+                      <p className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4'>
                         Recommended for
-                      </h2>
-                      <h3 className='govuk-heading-m govuk-!-padding-left-4 govuk-!-padding-bottom-6'>
+                      </p>
+                      <h3 className='govuk-heading-m govuk-!-padding-left-4 govuk-!-padding-bottom-5'>
                         Homes or small businesses
                       </h3>
-                      <div
-                        className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4'
-                        style={{ color: '#0b0c0c', paddingBottom: '28px' }}
-                      >
+                      <div className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4'>
                         <ul className='govuk-list'>
                           {panelItem('Instant sign up')}
                           {panelItem('Best for up to 10 locations')}
-                          <FontAwesomeIcon icon={faCheck} /> Up to:
-                          <br />
-                          <br />
-                          <ul className='govuk-list'>
-                            <span className='govuk-!-margin-left-4'>
-                              5 email addresses for email warnings
-                              <br />
-                            </span>
-                            <span className='govuk-!-margin-left-4'>
-                              5 numbers for text warnings
-                              <br />
-                            </span>
-                            <span className='govuk-!-margin-left-4'>
-                              5 numbers for phone call warnings
-                            </span>
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            aria-hidden='true'
+                          />{' '}
+                          Up to:
+                          <ul className='govuk-list govuk-!-margin-left-4'>
+                            <li>5 email addresses for email warnings</li>
+                            <li>5 numbers for text warnings</li>
+                            <li>5 numbers for phone call warnings</li>
                           </ul>
                           <hr className='org-service-selection-hr govuk-!-margin-top-2 govuk-!-margin-bottom-2' />
                           {panelItem('1 account holder')}
@@ -89,16 +89,27 @@ export default function OrganisationServiceSelectionPage () {
                       />
                     </div>
                   </div>
-                </div>
-                <div className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
-                  <div className='outline-1px'>
-                    <div className='org-service-selection-header govuk-heading-m govuk-!-margin-bottom-0'>
+                </section>
+
+                <section
+                  className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'
+                  aria-labelledby='professional-service-heading'
+                >
+                  <div
+                    className='outline-1px'
+                    role='group'
+                    aria-label='Professional service option'
+                  >
+                    <h2
+                      className='org-service-selection-header govuk-heading-m '
+                      id='professional-service-heading'
+                    >
                       Professional
-                    </div>
+                    </h2>
                     <div>
-                      <h2 className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
+                      <p className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4'>
                         Recommended for
-                      </h2>
+                      </p>
                       <h3 className='govuk-heading-m govuk-!-padding-left-4'>
                         Organisations, local authorities and
                         <br />
@@ -123,6 +134,7 @@ export default function OrganisationServiceSelectionPage () {
                               className='govuk-link'
                               to={infoUrls.preview}
                               target='_blank'
+                              aria-label='Preview what the professional service offers'
                             >
                               Preview what the professional service offers
                             </Link>
@@ -143,7 +155,7 @@ export default function OrganisationServiceSelectionPage () {
                       />
                     </div>
                   </div>
-                </div>
+                </section>
               </div>
             </div>
           </div>

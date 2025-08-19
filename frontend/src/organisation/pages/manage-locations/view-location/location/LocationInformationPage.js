@@ -431,7 +431,8 @@ export default function LocationInformationPage () {
             )}
           </div>
           {/* other half - map */}
-          <div className='govuk-grid-column-one-half'>
+          <div className='govuk-grid-column-one-half' role='group'
+            aria-label='map showing fixed areas that we provide flood warnings and alerts for'>
             <Map showMapControls={false} zoomLevel={14} />
             <FloodWarningKey />
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>

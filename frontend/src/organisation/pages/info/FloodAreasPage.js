@@ -52,7 +52,7 @@ export default function FloodAreasPage() {
               A flood area is a zone in England that's monitored for flooding.
             </p>
             <p className='govuk-!-margin-top-6'>
-              Your organisations's location may be in an area that can get:
+              Your organisation's location may be in an area that can get:
             </p>
             <ul className='govuk-list govuk-list--bullet govuk-!-margin-top-6'>
               <li>

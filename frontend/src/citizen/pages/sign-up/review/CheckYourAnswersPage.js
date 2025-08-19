@@ -24,6 +24,7 @@ export default function CheckYourAnswersPage() {
   const registration = useSelector((state) => state.session.registrations)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const handleButton = async (event) => {
     event.preventDefault()
     if (signUpAccountValidation()) {
@@ -43,11 +44,7 @@ export default function CheckYourAnswersPage() {
   }
 
   const signUpAccountValidation = () => {
-    return (
-      profile.emails[0] &&
-      profile.firstname &&
-      profile.pois.length !== 0
-    )
+    return profile.emails[0] && profile.firstname && profile.pois.length !== 0
   }
 
   return (

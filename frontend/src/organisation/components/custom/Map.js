@@ -12,11 +12,10 @@ import {
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
-import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import gdsPinSVG from '../../../common/assets/images/location_pin.svg'
 import OsMapTerms from '../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../common/enums/LocationDataType'
@@ -79,6 +78,7 @@ export default function Map({
         const boundary = await getOperationalBoundaryByTaCode(
           currentLocationGeocode
         )
+
         setLocationGeometry(boundary)
       } else {
         setLocationGeometry(currentLocationGeometry)
@@ -140,11 +140,10 @@ export default function Map({
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
-    iconUrl,
-    iconRetinaUrl,
+    iconUrl: gdsPinSVG,
     shadowUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    iconSize: [54.5, 64],
+    iconAnchor: [27.5, 38.2]
   })
 
   L.Marker.prototype.options.icon = DefaultIcon

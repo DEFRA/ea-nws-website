@@ -12,6 +12,7 @@ import NotificationBanner from '../../../../common/components/gov-uk/Notificatio
 import ExpiredCodeLayout from '../../../../common/layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
+  setLocationRegistrations,
   setProfile,
   setRegisterToken
 } from '../../../../common/redux/userSlice'
@@ -96,6 +97,8 @@ export default function SignUpValidationPage() {
         )
 
         await registerAllLocations(data.authToken, updatedProfile)
+
+        setLocationRegistrations(data.locationRegistrations)
 
         dispatch(setProfile(updatedProfile))
         navigate('/signup/contactpreferences', {

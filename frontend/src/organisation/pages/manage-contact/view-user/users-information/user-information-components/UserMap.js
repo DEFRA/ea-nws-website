@@ -239,6 +239,7 @@ export default function UserMap({ locations }) {
                       marker.coordinates.longitude
                     ]}
                   >
+<<<<<<< HEAD
                     <Popup>
                       <a
                         className='govuk-link'
@@ -247,6 +248,9 @@ export default function UserMap({ locations }) {
                         {marker?.additionals?.locationName || 'Name not found'}
                       </a>
                     </Popup>
+=======
+                    <Popup>{locations[index]?.name || 'Name not found'}</Popup>
+>>>>>>> 7fd4a5f31 (EAN-1770: Address PR comments)
                   </Marker>
                 ))}
               {geoJsonShapes &&

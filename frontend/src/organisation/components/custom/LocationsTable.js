@@ -486,7 +486,9 @@ export default function LocationsTable({
                     <input
                       className='govuk-checkboxes__input'
                       type='checkbox'
-                      aria-label={`Select ${location.name}`}
+                      aria-label={`Select ${
+                        location.name || location.additionals.locationName
+                      }`}
                       checked={selectedLocations.includes(location)}
                       onChange={() => handleLocationSelected(location)}
                     />

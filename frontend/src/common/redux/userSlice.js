@@ -437,7 +437,7 @@ const userSlice = createSlice({
     setCurrentLocationEnabled: (state, action) => {
       state.currentLocation.enabled = action.payload
     },
-    setCurrentLocationUPRN: (state, action) => {
+    setCurrentLocationName: (state, action) => {
       state.currentLocation.name = action.payload
     },
     setCurrentLocationAddress: (state, action) => {
@@ -451,9 +451,6 @@ const userSlice = createSlice({
     },
     setCurrentLocationGeocode: (state, action) => {
       state.currentLocation.geocode = action.payload
-    },
-    setCurrentLocationName: (state, action) => {
-      state.currentLocation.name = action.payload
     },
     setCurrentLocationParentID: (state, action) => {
       setAdditional(
@@ -1107,7 +1104,6 @@ export const {
   setCurrentLocation,
   setCurrentLocationId,
   setCurrentLocationEnabled,
-  setCurrentLocationUPRN,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationGeometry,

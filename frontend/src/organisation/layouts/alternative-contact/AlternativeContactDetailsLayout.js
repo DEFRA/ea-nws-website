@@ -147,7 +147,7 @@ export default function AlternativeContactDetailsLayout({
                 inputMode='email'
                 value={email}
                 name='Email address'
-                onChange={(val) => setEmail(val)}
+                onChange={(val) => setEmail(val.replaceAll(' ', ''))}
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'
                 isNameBold

@@ -102,7 +102,7 @@ export default function AddEmailLayout({ navigateToNextPage }) {
                 inputType='text'
                 inputMode='email'
                 error={error}
-                onChange={(val) => setEmail(val)}
+                onChange={(val) => setEmail(val.replaceAll(' ', ''))}
                 className='govuk-input govuk-input--width-20'
               />
               <Button

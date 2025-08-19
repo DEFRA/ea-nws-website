@@ -453,7 +453,6 @@ const userSlice = createSlice({
       state.currentLocation.geocode = action.payload
     },
     setCurrentLocationName: (state, action) => {
-      console.log('ACTION PAYLOAD', action.payload)
       state.currentLocation.name = action.payload
     },
     setCurrentLocationParentID: (state, action) => {

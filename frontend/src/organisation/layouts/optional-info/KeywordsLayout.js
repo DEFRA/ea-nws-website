@@ -270,6 +270,15 @@ export default function KeywordsLayout({
             </h1>
             <div className='govuk-body'>
               {keywordText}
+              {
+                // The container must exist on the page in order for the change to announce
+                <div
+                  id='keyword-status'
+                  role='status'
+                  aria-live='polite'
+                  className='govuk-visually-hidden'
+                ></div>
+              }
 
               {keywordsArray.length !== 0 &&
                 keywordsArray.map((keyword, index) => (

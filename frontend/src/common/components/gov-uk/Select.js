@@ -62,6 +62,11 @@ export default function Select({
         isOptionDisabled={(option) => option.isDisabled}
         placeholder={initialSelectOptionText}
         classNamePrefix='select'
+        onKeyDown={(e) => {
+          if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+            e.stopPropagation()
+          }
+        }}
       />
     </div>
   )

@@ -480,6 +480,12 @@ export default function LocationNearFloodAreasLayout({
     return `${locationName} to get flood ${floodType} for this location.`
   }
 
+  useEffect(() => {
+    if (error) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [error])
+
   return (
     <>
       {showFullMap ? (

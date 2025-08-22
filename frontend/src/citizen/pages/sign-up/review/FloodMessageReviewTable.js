@@ -63,16 +63,21 @@ export default function FloodMessageReviewTable() {
                 Flood messages
               </h2>
             </th>
-            <td className='govuk-table__cell' style={{ borderBottom: 'none' }}>
-              <Link
-                to='/signup/review/change-location-search'
-                className='govuk-link'
-                style={{ cursor: 'pointer' }}
-                aria-label={`Change flood messages`}
+            {(!floodWarningAreas.length || !floodAlertAreas.length) && (
+              <td
+                className='govuk-table__cell'
+                style={{ borderBottom: 'none' }}
               >
-                Change
-              </Link>
-            </td>
+                <Link
+                  to='/signup/review/change-location-search'
+                  className='govuk-link'
+                  style={{ cursor: 'pointer' }}
+                  aria-label={`Change flood messages you'll get`}
+                >
+                  Change
+                </Link>
+              </td>
+            )}
           </tr>
         </tbody>
       </table>
@@ -98,7 +103,11 @@ export default function FloodMessageReviewTable() {
             </th>
             <td className='govuk-table__cell govuk-!-width-full'>
               {floodWarningAreas.length > 0 ? (
-                <ul className='govuk-list govuk-list--bullet'>
+                <ul
+                  className={`govuk-list ${
+                    floodWarningAreas.length > 1 && 'govuk-list--bullet'
+                  }`}
+                >
                   {floodWarningAreas.map((item, key) => (
                     <li key={key}>{item}</li>
                   ))}
@@ -122,7 +131,11 @@ export default function FloodMessageReviewTable() {
             </th>
             <td className='govuk-table__cell govuk-!-width-full'>
               {floodAlertAreas.length > 0 ? (
-                <ul className='govuk-list govuk-list--bullet'>
+                <ul
+                  className={`govuk-list ${
+                    floodAlertAreas.length > 1 && 'govuk-list--bullet'
+                  }`}
+                >
                   {floodAlertAreas.map((item, key) => (
                     <li key={key}>{item}</li>
                   ))}

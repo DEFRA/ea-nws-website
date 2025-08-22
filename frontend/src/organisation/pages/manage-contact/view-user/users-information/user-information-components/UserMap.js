@@ -8,22 +8,28 @@ import {
   TileLayer,
   useMap
 } from 'react-leaflet'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // Leaflet Marker Icon fix
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { useDispatch } from 'react-redux'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import OsMapTerms from '../../../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 import { getOperationalBoundaryByTaCode } from '../../../../../../common/services/WfsFloodDataService'
+import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function UserMap({ locations }) {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
@@ -63,15 +69,24 @@ export default function UserMap({ locations }) {
               location.coordinates.longitude,
               location.coordinates.latitude
             ])
-            points.push(location.coordinates)
+            points.push(location)
           } else if (locationType === LocationDataType.BOUNDARY) {
             const boundary = await getOperationalBoundaryByTaCode(
               location.geocode
             )
             feature = boundary
+            feature = {
+              ...feature,
+              properties: { ...feature.properties, locationData: location }
+            }
+
             shapes.push(feature)
           } else {
             feature = location.geometry.geoJson
+            feature = {
+              ...feature,
+              properties: { ...feature.properties, locationData: location }
+            }
 
             shapes.push(feature)
           }
@@ -189,6 +204,11 @@ export default function UserMap({ locations }) {
     ),
     []
   )
+  const viewLocation = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    navigate(orgManageLocationsUrls.view.viewLocation)
+  }
 
   return (
     <>
@@ -214,17 +234,49 @@ export default function UserMap({ locations }) {
                 markers.map((marker, index) => (
                   <Marker
                     key={index}
-                    position={[marker.latitude, marker.longitude]}
+                    position={[
+                      marker.coordinates.latitude,
+                      marker.coordinates.longitude
+                    ]}
                   >
                     <Popup>
-                      {locations[index]?.additionals?.locationName ||
-                        'Name not found'}
+                      <a
+                        className='govuk-link'
+                        onClick={(e) => viewLocation(e, marker)}
+                      >
+                        {marker?.additionals?.locationName || 'Name not found'}
+                      </a>
                     </Popup>
                   </Marker>
                 ))}
               {geoJsonShapes &&
                 geoJsonShapes.map((shape, index) => (
-                  <GeoJSON key={index} data={shape} />
+                  <GeoJSON
+                    key={index}
+                    data={shape}
+                    onEachFeature={(feature, layer) => {
+                      layer.bindPopup(
+                        `<a href="#" class="govuk-link">${
+                          feature.properties?.locationData?.additionals
+                            ?.locationName ||
+                          feature.properties?.locationData?.name ||
+                          'Name not found'
+                        }</a>`
+                      )
+
+                      layer.on('popupopen', () => {
+                        const link = document.querySelector(
+                          '.leaflet-popup a.govuk-link'
+                        )
+                        if (link) {
+                          link.addEventListener('click', (e) => {
+                            e.preventDefault()
+                            viewLocation(e, feature.properties?.locationData)
+                          })
+                        }
+                      })
+                    }}
+                  />
                 ))}
               {/* Only zoom to markers when present */}
               {markers.length > 0 && <FitBounds />}

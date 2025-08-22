@@ -7,6 +7,7 @@ import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
 import StartPage from './common/pages/start/StartPage'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
+import { backendCall } from './common/services/BackendService'
 import { removeHoverIosSafari } from './common/services/formatters/iosDoubleTapRemoval'
 import { loadGA, removeGA } from './common/services/hooks/GoogleAnalytics'
 import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
@@ -39,16 +40,15 @@ function App() {
         { maxAge: 60 * 60 * 24 * 365 }
       )
       const getGtmId = async () => {
-        setGtmId('G-0W1RWM2S8X')
-        // const { data } = await backendCall(
-        //   'data',
-        //   'api/values/gtm'
-        // )
-        // if (data) {
-        //   setGtmId(data)
-        // } else {
-        //   setGtmId(null)
-        // }
+        const { data } = await backendCall(
+          'data',
+          'api/values/gtm'
+        )
+        if (data) {
+          setGtmId(data)
+        } else {
+          setGtmId(null)
+        }
       }
       !gtmId && getGtmId()
   }, [])

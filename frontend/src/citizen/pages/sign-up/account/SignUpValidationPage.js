@@ -98,9 +98,18 @@ export default function SignUpValidationPage() {
 
         await registerAllLocations(data.authToken, updatedProfile)
 
-        setLocationRegistrations(data.locationRegistrations)
+        const { errorMessage, data: verifyData } = await backendCall(
+          { authToken: data.authToken },
+          'api/sign_in_verify'
+        )
 
-        dispatch(setProfile(updatedProfile))
+        if (errorMessage) {
+          setError(errorMessage)
+        } else {
+          dispatch(setLocationRegistrations(verifyData.locationRegistrations))
+          dispatch(setProfile(verifyData.profile))
+        }
+
         navigate('/signup/contactpreferences', {
           state: { loginEmail: loginEmail }
         })

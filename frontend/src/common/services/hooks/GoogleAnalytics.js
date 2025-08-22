@@ -1,76 +1,46 @@
-import { useEffect, useState } from "react"
-import { backendCall } from "../BackendService"
+export function loadGA(gtmId) {
+  if (window.__gaScript) return
+  // Create the script element
+  const script = document.createElement('script')
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${gtmId}&v=${Date.now()}`
+  script.async = true
+  // Append the script to the document
+  document.head.appendChild(script)
 
-export default function GoogleAnalytics({useAnalytics}) {
-    const [initialised, setInitialised] = useState(false)
-    const [gtmId, setGtmId] = useState(null)
-    const getGtmId = async () => {
-      const { data } = await backendCall(
-        'data',
-        'api/values/gtm'
-      )
-      if (data) {
-        setGtmId(data)
-      } else {
-        setGtmId(null)
-      }
-    }
+  window.__gaScript = script
 
-    // Create the dataLayer with defaults
-    window.dataLayer = window.dataLayer || []
-    function gtag() {
-        window.dataLayer.push(arguments)
-    }
-
-    gtag('consent', 'default', {
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied',
-        'analytics_storage': 'denied'
-    });
-
-    const loadScript = () => {
-      // Create the script element
-      const script = document.createElement('script')
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${gtmId}`
-      script.async = true
-      // Append the script to the document
-      document.head.appendChild(script)
-      script.onload = () => {
-        gtag('js', new Date())
-        gtag('config', gtmId)
-      }
-      setInitialised(true)
-    }
-
-    const deleteCookies = () => {
-      const cookieArr = document.cookie.split(';')
-      const cookieNames = cookieArr.map((cookie) => cookie.split('=')[0])
-      cookieNames.forEach((cookie) => {
-        if (cookie.includes('_ga')) {
-            document.cookie = cookie+'=; Max-Age=-99999999; domain=.'+window.location.hostname
-        }
-      })
-    }
-
-    const changeConsent = () => {
-        if (useAnalytics) {
-            gtag('consent', 'update', {
-                'analytics_storage': 'granted'
-              })
-        } else {
-            gtag('consent', 'update', {
-                'analytics_storage': 'denied'
-              })
-            deleteCookies()
-        }
-    }
-
-    useEffect(() => {
-      !gtmId && getGtmId()
-      gtmId && !initialised && loadScript()
-      initialised && changeConsent()
-    }, [gtmId, initialised, useAnalytics])
-
-    return null
+  window.dataLayer = []
+  function gtag() {
+      window.dataLayer.push(arguments)
   }
+
+  window.gtag = gtag
+  gtag('js', new Date())
+  gtag('config', gtmId, {
+    cookie_domain: 'auto',
+    cookie_flags: 'SameSite=None;Secure',
+    storage: 'cookie',
+    client_id: undefined
+  })
+}
+
+export function removeGA() {
+  const deleteCookies = () => {
+    const cookieArr = document.cookie.split(';')
+    const cookieNames = cookieArr.map((cookie) => cookie.split('=')[0])
+    cookieNames.forEach((cookie) => {
+      if (cookie.includes('_ga')) {
+          document.cookie = cookie+'=; Max-Age=-99999999; domain=.'+window.location.hostname
+      }
+    })
+  }
+
+  if (window.__gaScript) {
+    window.__gaScript.remove()
+    window.__gaScript = null
+  }
+  delete window.gtag
+  delete window.dataLayer
+  deleteCookies()
+}
+

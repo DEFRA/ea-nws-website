@@ -7,8 +7,9 @@ import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
 import StartPage from './common/pages/start/StartPage'
 import { clearAuth, setLastActivity } from './common/redux/userSlice'
+import { backendCall } from './common/services/BackendService'
 import { removeHoverIosSafari } from './common/services/formatters/iosDoubleTapRemoval'
-import GoogleAnalytics from './common/services/hooks/GoogleAnalytics'
+import { loadGA, removeGA } from './common/services/hooks/GoogleAnalytics'
 import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { authenticatedRoutes, routes } from './routes'
 
@@ -28,6 +29,7 @@ function App() {
   const hasAuthCookie = cookies.authToken
   const dispatch = useDispatch()
   const lastActivity = useSelector((state) => state.session.lastActivity)
+  const [gtmId, setGtmId] = useState(null)
 
   useEffect(() => {
     removeHoverIosSafari()
@@ -37,7 +39,29 @@ function App() {
         { analytics: false, preferencesSet: false, popup: true },
         { maxAge: 60 * 60 * 24 * 365 }
       )
+      const getGtmId = async () => {
+        const { data } = await backendCall(
+          'data',
+          'api/values/gtm'
+        )
+        if (data) {
+          setGtmId(data)
+        } else {
+          setGtmId(null)
+        }
+      }
+      !gtmId && getGtmId()
   }, [])
+
+  useEffect(() => {
+    if (gtmId) {
+      if (cookies?.CookieControl?.analytics) {
+      loadGA(gtmId)
+      } else {
+        removeGA()
+      }
+    }
+  }, [cookies, gtmId])
 
   /* Clear local storage if no cookies,
   cookies are only for the browser session. */
@@ -130,7 +154,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <GoogleAnalytics useAnalytics={cookies?.CookieControl?.analytics} />
       <ScrollToTop />
       <Routes>
         <Route path='/' element={<StartPage />} />

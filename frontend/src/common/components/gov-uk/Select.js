@@ -1,4 +1,5 @@
-import ReactSelect from 'react-select'
+import { useEffect, useState } from 'react'
+import ReactSelect, { components } from 'react-select'
 import '../../css/select.css'
 import { formatSentenceCase } from '../../utils/FormatSentenceCase'
 
@@ -15,6 +16,25 @@ export default function Select({
   value,
   snakeCaseText = false
 }) {
+  const [lastInput, setLastInput] = useState('mouse')
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (['ArrowUp', 'ArrowDown', 'Tab'].includes(e.key)) {
+        setLastInput('keyboard')
+      }
+    }
+    const handleMouse = () => setLastInput('mouse')
+
+    window.addEventListener('keydown', handleKey)
+    window.addEventListener('mousemove', handleMouse)
+
+    return () => {
+      window.removeEventListener('keydown', handleKey)
+      window.removeEventListener('mousemove', handleMouse)
+    }
+  }, [])
+
   const formattedOptions = options.map((option) => {
     const label = snakeCaseText ? formatSentenceCase(option) : option
     return {
@@ -62,8 +82,19 @@ export default function Select({
         isOptionDisabled={(option) => option.isDisabled}
         placeholder={initialSelectOptionText}
         classNamePrefix='select'
+        components={{ Menu: components.Menu }}
+        classNames={{
+          option: (state) =>
+            state.isFocused &&
+            !state.isSelected &&
+            !state.isDisabled &&
+            lastInput === 'keyboard'
+              ? 'keyboard-focused'
+              : ''
+        }}
         onKeyDown={(e) => {
           if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+            setLastInput('keyboard')
             e.stopPropagation()
           }
         }}

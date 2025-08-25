@@ -14,22 +14,20 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   const navigate = useNavigate()
 
   const [showNotFound, setShowNotFound] = useState(null)
-  const [placeNameTownOrPostcode, setPlaceNameTownOrPostcode] = useState('')
-  const placeNameTownOrPostcodeText = 'Enter a place name, town or postcode'
-  const [placeNameTownOrPostcodeCoords, setPlaceNameTownOrPostcodeCoords] =
-    useState(null)
-  const [placeNameTownOrPostcodeError, setPlaceNameTownOrPostcodeError] =
-    useState('')
+  const [placeNameOrTown, setPlaceNameOrTown] = useState('')
+  const placeNameTownOrPostcodeText = 'Enter a place name or town in England'
+  const [placeNameOrTownCoords, setPlaceNameOrTownCoords] = useState(null)
+  const [placeNameOrTownError, setPlaceNameOrTownError] = useState('')
   const [results, setResults] = useState(null)
   const locationSearchId = 'location-search'
   const debounceRef = useRef(null)
 
   // remove error if user changes place name, town or postcode
   useEffect(() => {
-    if (placeNameTownOrPostcodeError) {
-      setPlaceNameTownOrPostcodeError('')
+    if (placeNameOrTownError) {
+      setPlaceNameOrTownError('')
     }
-  }, [placeNameTownOrPostcode])
+  }, [placeNameOrTown])
 
   const fetchLocationResults = async (value) => {
     const dataToSend = {
@@ -53,47 +51,52 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
     )
     if (!errorMessage) {
       setResults(data)
-      setPlaceNameTownOrPostcodeError('')
+      setPlaceNameOrTownError('')
       setShowNotFound(false)
     } else {
       // show error message from OS Api postcode search
-      setPlaceNameTownOrPostcodeError(errorMessage)
+      setPlaceNameOrTownError(errorMessage)
       setShowNotFound(true)
     }
   }
 
   const handleInputChange = async (value) => {
-    setPlaceNameTownOrPostcode(value)
+    setPlaceNameOrTown(value)
     setResults([])
   }
 
   const handleOnClick = (value) => {
-    setPlaceNameTownOrPostcode(value.address)
-    setPlaceNameTownOrPostcodeCoords(value.coordinates)
+    setPlaceNameOrTown(value.address)
+    setPlaceNameOrTownCoords(value.coordinates)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const trimmedPlaceNameTownOrPostcode = placeNameTownOrPostcode.trim()
-    if (trimmedPlaceNameTownOrPostcode === '') {
-      setPlaceNameTownOrPostcodeError(placeNameTownOrPostcodeText)
+    const trimmedPlaceNameOrTown = placeNameOrTown.trim()
+    if (trimmedPlaceNameOrTown === '') {
+      setPlaceNameOrTownError(placeNameTownOrPostcodeText)
     } else if (results && results.length === 0) {
-      setPlaceNameTownOrPostcodeError(
-        'Place name, town or postcode is not recognised'
-      )
+      setPlaceNameOrTownError('Place name or town is not recognised')
     }
 
-    if (!placeNameTownOrPostcodeError && placeNameTownOrPostcodeCoords) {
-      dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
-      navigateToNextPage(placeNameTownOrPostcode)
+    if (!placeNameOrTownError && placeNameOrTownCoords) {
+      dispatch(setCurrentLocationCoordinates(placeNameOrTownCoords))
+      navigateToNextPage(placeNameOrTown)
     }
   }
 
   // 1 second debounce on the OS API call
   useEffect(() => {
-    if (placeNameTownOrPostcode.length < 3) {
+    if (placeNameOrTown.length < 3) {
       setResults([])
       return
+    }
+
+    if (placeNameOrTown) {
+      if (isPostCode(placeNameOrTown)) {
+        setPlaceNameOrTownError('Please do not enter a postcode')
+        return
+      }
     }
 
     // Clear timer
@@ -101,12 +104,25 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
 
     // Schedule fetch
     debounceRef.current = setTimeout(() => {
-      fetchLocationResults(placeNameTownOrPostcode)
+      fetchLocationResults(placeNameOrTown)
     }, 1000)
 
     // Cleanup on exit
     return () => clearTimeout(debounceRef.current)
-  }, [placeNameTownOrPostcode])
+  }, [placeNameOrTown])
+
+  const isPostCode = (input) => {
+    // UK postcode regex pattern
+    const postcodePattern = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i
+    const partialPostcodePattern =
+      /^[a-z](\d\d?|[a-z]\d[a-z\d]?|[a-z]?\d?\d \d[a-z]{2}|[a-z]\d [a-z] \d[a-z]{2})$/i
+
+    if (postcodePattern.test(input) || partialPostcodePattern.test(input)) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -119,11 +135,11 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {placeNameTownOrPostcodeError && (
+            {placeNameOrTownError && (
               <ErrorSummary
                 errorList={[
                   {
-                    text: placeNameTownOrPostcodeError,
+                    text: placeNameOrTownError,
                     componentId: locationSearchId
                   }
                 ]}
@@ -143,7 +159,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
             <div
               id={locationSearchId}
               className={
-                placeNameTownOrPostcodeError
+                placeNameOrTownError
                   ? 'govuk-form-group govuk-form-group--error'
                   : 'govuk-form-group'
               }
@@ -152,11 +168,11 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
                 className='govuk-input govuk-!-width-full'
                 name={placeNameTownOrPostcodeText}
                 inputType='text'
-                error={placeNameTownOrPostcodeError}
+                error={placeNameOrTownError}
                 onChange={(val) => handleInputChange(val)}
                 results={results}
                 menuOpen
-                value={placeNameTownOrPostcode}
+                value={placeNameOrTown}
                 onClick={(val) => handleOnClick(val)}
                 showNotFound={showNotFound}
                 nameField='address'

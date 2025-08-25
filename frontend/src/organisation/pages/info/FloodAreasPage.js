@@ -1,9 +1,8 @@
 import { Helmet } from 'react-helmet'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Details from '../../../common/components/gov-uk/Details'
 import WarningText from '../../../common/components/gov-uk/WarningText'
-import { infoUrls } from '../../routes/info/InfoRoutes'
 
 export default function FloodAreasPage() {
   const navigate = useNavigate()
@@ -113,10 +112,14 @@ export default function FloodAreasPage() {
             </p>
 
             <p>
-              <Link to={infoUrls.levels} className='govuk-link'>
+              <a
+                href='https://check-for-flooding.service.gov.uk/how-we-measure-river-sea-groundwater-levels'
+                target='_blank'
+                className='govuk-link'
+              >
                 Find out more about how we measure river, sea and groundwater
                 levels.
-              </Link>
+              </a>
             </p>
           </div>
         </div>

@@ -70,8 +70,6 @@ export default function SignUpPage() {
     }
   }
 
-  console.log('email', email)
-
   return (
     <>
       <Helmet>

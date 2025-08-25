@@ -52,7 +52,10 @@ export default function CompaniesHouseNumLayout({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main
+        id='main-content'
+        className='govuk-main-wrapper govuk-!-padding-top-4'
+      >
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || numberError) && (
@@ -66,9 +69,6 @@ export default function CompaniesHouseNumLayout({
                 ].filter(Boolean)}
               />
             )}
-            <h1 className='govuk-heading-l' id='main-content'>
-              Does your organisation have a Companies House number?
-            </h1>
             <div className='govuk-body'>
               <div
                 className={
@@ -83,11 +83,17 @@ export default function CompaniesHouseNumLayout({
                     {error}
                   </p>
                 )}
-                <fieldset id={compHouseRadiosId} className='govuk-fieldset'>
-                  <legend className='govuk-visually-hidden'>
-                    Does your organisation have a Companies House number?
+                <fieldset
+                  id={compHouseRadiosId}
+                  className='govuk-fieldset'
+                  aria-describedby='comp-house-hint'
+                >
+                  <legend className='govuk-fieldset__legend govuk-fieldset__legend--l'>
+                    <h1 className='govuk-fieldset__heading'>
+                      Does your organisation have a Companies House number?
+                    </h1>
                   </legend>
-                  <div className='govuk-hint'>
+                  <div id='comp-house-hint' className='govuk-hint'>
                     Limited companies and limited liability partnerships have
                     these numbers.
                   </div>

@@ -9,7 +9,7 @@ import {
 } from '../../../../common/services/ProfileServices'
 import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLayout'
 
-export default function AddFullNamePage () {
+export default function AddFullNamePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState()
@@ -18,7 +18,7 @@ export default function AddFullNamePage () {
     (state) => state.session.locationRegistrations || null
   )
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -58,8 +58,8 @@ export default function AddFullNamePage () {
   const updateAllLocationsRegistrations = async (authToken, profile) => {
     profile.pois.map(async (poi) => {
       const alertTypes =
-        locationRegistrations?.find((loc) => loc.locationId === poi.id)
-          ?.registrations[0]?.params?.alertTypes || []
+        locationRegistrations.find((loc) => loc.location === poi.address)
+          ?.alertTypes || []
 
       const data = {
         authToken,

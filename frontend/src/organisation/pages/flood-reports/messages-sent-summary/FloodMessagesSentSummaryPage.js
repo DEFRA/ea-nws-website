@@ -71,7 +71,7 @@ export default function FloodMessagesSentSummaryPage() {
       setLocationsCount(locationsData?.length || 0)
 
       const locations = locationsData?.map(geoSafeToWebLocation) || []
-      processLocations(locations, alertsData?.alerts || [])
+      processLocations(locations, alertsData?.historicAlerts || [])
     }
 
     loadData()

@@ -130,6 +130,7 @@ export default function ViewUsersDashboardPage() {
         'api/elasticache/list_contacts',
         navigate
       )
+
       const contactsUpdate = []
       if (contactsData.data) {
         contactsData.data.forEach((contact) => {

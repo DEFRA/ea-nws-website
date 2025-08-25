@@ -397,6 +397,8 @@ export default function ConfirmLocationLayout({
           <div
             className='govuk-grid-column-one-half'
             style={{ marginTop: '95px' }}
+            role='group'
+            aria-label='map showing fixed areas that we provide flood warnings and alerts for'
           >
             <Map showMapControls={false} zoomLevel={14} />
             <div className='govuk-!-column-one-third'>

@@ -326,6 +326,8 @@ export default function ViewLocationPage() {
                       ? 'view-location-map mobile'
                       : 'view-location-map desktop'
                   }
+                  role='group'
+                  aria-label={`map showing ${selectedLocation.address}`}
                 >
                   <Map
                     types={mapType()}

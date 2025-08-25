@@ -19,7 +19,9 @@ export default function LinkContactToLocationPage() {
   const dispatch = useDispatch()
   const currentContact = store.getState().session.orgCurrentContact
   const addingAdminFlow = store.getState().session.addingAdminFlow
-  const userType = currentContact.role
+
+  const userType = currentContact?.role || null
+  const pendingRole = currentContact?.pendingRole || null
 
   if (addingAdminFlow) {
     dispatch(setAddingAdminFlow(false))
@@ -43,29 +45,23 @@ export default function LinkContactToLocationPage() {
   }
 
   const successMessage = () => {
-    const messageArray = []
-    if (userType === UserType.Admin) {
-      messageArray.push(`Email invitation sent to ${currentContact.emails[0]}`)
-      messageArray.push(
-        `${
-          currentContact.firstname +
-          (currentContact.lastname.length > 0
-            ? ' ' + currentContact.lastname
-            : '')
-        } will be a pending admin until they accept the invitation and confirm their email address. Invitation valid for 72 hours.`
-      )
-    } else {
-      messageArray.push(
-        `${
-          currentContact.firstname +
-          (currentContact.lastname.length > 0
-            ? ' ' + currentContact.lastname
-            : '')
-        } added as a ${currentContact.role === 'ADMIN' ? 'admin' : 'contact'}`
-      )
+    const fullName =
+      currentContact?.firstname +
+      (currentContact?.lastname && currentContact?.lastname.length > 0
+        ? ' ' + currentContact.lastname
+        : '')
+
+    // User invited as admin will be pending admin
+    if (pendingRole === UserType.PendingAdmin) {
+      return [
+        `Email invitation sent to ${currentContact.emails[0]}`,
+        `${fullName} will be a pending admin until they accept the invitation and confirm their email address. Invitation valid for 72 hours.`
+      ]
     }
 
-    return messageArray
+    // Otherwise, just show what they are now
+    const isAdmin = userType === UserType.Admin
+    return [`${fullName} added as ${isAdmin ? 'an admin' : 'a contact'}`]
   }
 
   return (

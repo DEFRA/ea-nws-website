@@ -66,19 +66,9 @@ export default function SignUpSuccessPage() {
                 We've sent you an email confirmation. If you have not received
                 this within 2 hours, check your spam.
               </p>
-              {servicePhase !== 'beta' && (
-                <div>
-                  <p className='govuk-!-margin-top-6'>
-                    You'll now receive flood messages for your location. If any
-                    are issued.
-                  </p>
-                  <p className='govuk-!-margin-top-6'>
-                    These will be sent from Floodline at the Environment Agency.
-                  </p>
-                </div>
-              )}
               <p className='govuk-body govuk-!-margin-top-6'>
-                You'll now receive flood messages, from Floodline at the Environment Agency.
+                You'll now receive flood messages, from Floodline at the
+                Environment Agency.
               </p>
               <p className='govuk-body govuk-!-margin-top-6'>
                 You can now use your account to add more:

@@ -28,7 +28,7 @@ export default function TermsAndConditionsPage() {
     event.preventDefault()
     if (!isChecked) {
       setError(
-        "Tick to warrant that you're authorised to agree to the terms and conditions"
+        `Tick to warrant that you're authorised to agree to these terms and conditions on behalf of ${organisationName}`
       )
     } else {
       // Save lastAccessedUrl so users are taken to next page if logging in after abandoning at this point

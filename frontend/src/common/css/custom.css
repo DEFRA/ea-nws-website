@@ -508,7 +508,7 @@
 
 .nearby-flood-areas-full-screen-map-container .map-mobile {
   width: 100vw;
-  height: 85vh;
+  height: 80dvh;
 }
 
 .nearby-flood-areas-full-screen-map-container .area-info-desktop {
@@ -521,10 +521,9 @@
 
 .nearby-flood-areas-full-screen-map-container .area-info-mobile {
   width: 100vw;
-  height: 15vh;
+  height: 20dvh;
   background-color: #f3f2f1;
   padding: 1rem;
-  overflow-y: auto;
 }
 
 .flood-warning-key {

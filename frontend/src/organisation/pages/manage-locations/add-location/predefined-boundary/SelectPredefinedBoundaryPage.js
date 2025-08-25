@@ -291,7 +291,11 @@ export default function SelectPredefinedBoundaryPage() {
                     onClick={(event) => handleSubmit(event)}
                   />
                 </div>
-                <div className='govuk-grid-column-two-thirds'>
+                <div
+                  className='govuk-grid-column-two-thirds'
+                  role='group'
+                  aria-label='map showing predefined boundary to add to this account'
+                >
                   <Map
                     type='boundary'
                     showFloodWarningAreas={false}

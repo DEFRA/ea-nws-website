@@ -124,6 +124,15 @@ module.exports = [
           let percent = 0
 
           for (const contact of contactRes.data.contacts) {
+            let newPercent = Math.round((contactIndex/numContacts)*100)
+            if (percent !== newPercent) {
+              percent = newPercent
+              await setJsonData(redis, elasticacheKey, {
+                stage: 'Processing Contacts',
+                status: 'working',
+                percent: percent
+              })
+            }
             let contactsLocations = []
             const options = {
               contactId: contact.id,
@@ -160,16 +169,7 @@ module.exports = [
               contact.id,
               locationIDs
             )
-
-            let newPercent = Math.round((contactIndex/numContacts)*100)
-            if (percent !== newPercent) {
-              percent = newPercent
-              await setJsonData(redis, elasticacheKey, {
-                stage: 'Processing Contacts',
-                status: 'working',
-                percent: percent
-              })
-            }
+            contactIndex++
           }
           await setJsonData(redis, elasticacheKey, {
             stage: 'Populating account',

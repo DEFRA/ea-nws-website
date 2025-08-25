@@ -29,7 +29,7 @@ import AlertType from '../../../../common/enums/AlertType'
 import LocationDataType from '../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
-import { getFloodAreaByTaCode } from '../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaCode, getOperationalBoundaryByTaCode } from '../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
 import { createLiveMapShapePattern } from '../../../components/custom/FloodAreaPatterns'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
@@ -127,7 +127,7 @@ export default function LiveMap({
     // if a location is a shape or boundary, save the geojson
     const locationsCollection = []
     if (locations.length > 0) {
-      locations.forEach((location) => {
+      locations.forEach(async (location) => {
         let feature
         const locationType = location.additionals.other.location_data_type
 
@@ -137,6 +137,11 @@ export default function LiveMap({
             location.coordinates.longitude,
             location.coordinates.latitude
           ])
+        } else if (locationType === LocationDataType.BOUNDARY) {
+          const boundary = await getOperationalBoundaryByTaCode(
+            location.geocode
+          )
+          feature = boundary
         } else {
           feature = location.geometry.geoJson
         }
@@ -209,7 +214,7 @@ export default function LiveMap({
   const processLocation = async (location, liveAlert, recentlyRemoved) => {
     const TA_CODE = liveAlert.TA_CODE
 
-    const { coordinates, geometry, additionals } = location
+    const { coordinates, geometry, geocode, additionals } = location
     const locationType = additionals.other.location_data_type
     const locationIntersectsWithFloodArea =
       additionals.other?.targetAreas?.some(
@@ -254,6 +259,11 @@ export default function LiveMap({
         severity,
         point.geometry.coordinates[0][0][0]
       )
+    } else if (locationType === LocationDataType.BOUNDARY) {
+      const boundary = await getOperationalBoundaryByTaCode(
+        geocode
+      )
+      setShapes((prevShape) => [...prevShape, boundary])
     } else {
       geometry.geoJson.properties = {
         ...geometry.geoJson.properties,

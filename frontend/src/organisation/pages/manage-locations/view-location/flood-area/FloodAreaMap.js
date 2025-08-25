@@ -462,7 +462,11 @@ export default function FloodAreaMap({
       <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
         <Modal.Body className='p-0'>
           <div style={{ display: 'flex', height: '100vh' }}>
-            <div style={{ height: '100vh', width: '85%' }}>
+            <div
+              style={{ height: '100vh', width: '85%' }}
+              role='group'
+              aria-label='map showing flood area'
+            >
               <MapContainer
                 center={mapCenter}
                 zoom={zoomLevel}

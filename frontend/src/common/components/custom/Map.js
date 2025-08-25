@@ -18,7 +18,6 @@ import { useSelector } from 'react-redux'
 import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { isMobile } from 'react-device-detect'
 import locationPin from '../../assets/images/location_pin.svg'
@@ -199,7 +198,6 @@ export default function Map({
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
     iconUrl: locationPin,
-    iconRetinaUrl,
     shadowUrl,
     iconSize: [54.5, 64],
     iconAnchor: [27.5, 38.2]

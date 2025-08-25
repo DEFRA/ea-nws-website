@@ -5,11 +5,8 @@ import { getAdditional } from '../../../../common/redux/userSlice'
 export default function LocationReviewTable() {
   const navigate = useNavigate()
   const locationsSelected = useSelector((state) => state.session.profile.pois)
-
   const firstLocation = locationsSelected[0]
-
   const locationName = getAdditional(firstLocation.additionals, 'locationName')
-
   const location = locationName === '' ? firstLocation.address : locationName
 
   const selectLocationToBeChanged = (event) => {

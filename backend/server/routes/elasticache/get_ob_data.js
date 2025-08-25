@@ -23,7 +23,7 @@ module.exports = [
         if (TA_CODE) {
           let result
           result = await getTAData(redis, TA_CODE)
-          if (result === null) {
+          if (result === null || result?.length === 0) {
             result = await getOperationalBoundaryByTaCode(TA_CODE)
             if (result) {
               await setTAData(redis, TA_CODE, result)

@@ -6,6 +6,7 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import {
   getLocationAdditional,
+  getLocationName,
   getLocationOther
 } from '../../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../../components/custom/FloodWarningKey'
@@ -14,6 +15,8 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 
 export default function LocationNotInEnglandInfoPage() {
   const navigate = useNavigate()
+
+  const name = useSelector((state) => getLocationName(state))
 
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
@@ -52,7 +55,7 @@ export default function LocationNotInEnglandInfoPage() {
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l '>Location not in England</h1>
             <h2 className='govuk-heading-m govuk-!-margin-top-8'>
-              {locationName}
+              {name || locationName}
             </h2>
             <hr />
 

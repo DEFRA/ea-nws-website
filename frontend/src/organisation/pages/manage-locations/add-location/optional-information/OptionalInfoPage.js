@@ -9,14 +9,17 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
   getLocationAdditional,
+  getLocationName,
   getLocationOther
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { useVerifyLocationInFloodArea } from '../not-flood-area/verfiyLocationInFloodAreaAndNavigate'
 
-export default function OptionalLocationInformationPage () {
+export default function OptionalLocationInformationPage() {
   const navigate = useNavigate()
   const verifyLocationInFloodAreaAndNavigate = useVerifyLocationInFloodArea()
+  const name = useSelector((state) => getLocationName(state))
+
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -52,7 +55,10 @@ export default function OptionalLocationInformationPage () {
   return (
     <>
       <Helmet>
-        <title>Useful information you can include to help identify this location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Useful information you can include to help identify this location -
+          Manage locations - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -61,7 +67,7 @@ export default function OptionalLocationInformationPage () {
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Success'
-              text={`${locationName} added`}
+              text={`${name || locationName} added`}
             />
             &nbsp; &nbsp;
             <h1 className='govuk-heading-l'>
@@ -72,26 +78,19 @@ export default function OptionalLocationInformationPage () {
               Providing these details will allow you to filter your
               organisation’s locations, making it quicker to find them.
             </p>
-
-            <h3 className='govuk-heading-s govuk-!-margin-bottom-2'>
-              Address
-            </h3>
-
+            <h3 className='govuk-heading-s govuk-!-margin-bottom-2'>Address</h3>
             <p className='govuk-body'>
-              If you add a location as X and Y coordinates you can add an address. This address will then be associated with the location.
+              If you add a location as X and Y coordinates you can add an
+              address. This address will then be associated with the location.
             </p>
-
-            <h3 className='govuk-heading-s'>
-              Key information
-            </h3>
+            <h3 className='govuk-heading-s'>Key information</h3>
             <ul className='govuk-list govuk-list--bullet'>
               <li>
                 <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                   Internal reference
                 </h3>
                 <p>
-                  Your internal reference, for example:
-                  PS01, unit 57, Brid_04.
+                  Your internal reference, for example: PS01, unit 57, Brid_04.
                   This can help you identify the location more easily.
                 </p>
               </li>
@@ -101,8 +100,8 @@ export default function OptionalLocationInformationPage () {
                   Business criticality
                 </h3>
                 <p>
-                  How important the location is to your business.
-                  For example, low or medium, business critical.
+                  How important the location is to your business. For example,
+                  low or medium, business critical.
                 </p>
               </li>
 
@@ -111,12 +110,11 @@ export default function OptionalLocationInformationPage () {
                   Location type
                 </h3>
                 <p>
-                  For example, pumping station, ground floor flat, office, retail unit.
+                  For example, pumping station, ground floor flat, office,
+                  retail unit.
                 </p>
               </li>
-
             </ul>
-
             <h3 className='govuk-heading-s govuk-!-margin-bottom-2'>
               Keywords for locations
             </h3>

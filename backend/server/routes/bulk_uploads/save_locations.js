@@ -46,6 +46,16 @@ module.exports = [
           })
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
           const result = await getJsonData(redis, elasticacheKey)
+
+          // Remove nulls from all Keywords arrays (for bulk uploads)
+          if (result?.data?.valid) {
+            result.data.valid.forEach((item) => {
+              if (Array.isArray(item.Keywords)) {
+                item.Keywords = item.Keywords.filter((kw) => kw != null)
+              }
+            })
+          }
+
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
           const { data: partnerId } = await getPartnerId()

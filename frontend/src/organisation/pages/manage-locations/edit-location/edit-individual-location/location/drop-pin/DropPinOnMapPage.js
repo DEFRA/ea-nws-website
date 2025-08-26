@@ -2,19 +2,23 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationName
+} from '../../../../../../../common/redux/userSlice'
 import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DropPinOnMapPage () {
+export default function DropPinOnMapPage() {
   const navigate = useNavigate()
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
+  const name = useSelector((state) => getLocationName(state))
 
   const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} location changed` }
+      state: { successMessage: `${name || locationName} location changed` }
     })
   }
 
@@ -33,12 +37,17 @@ export default function DropPinOnMapPage () {
   return (
     <>
       <Helmet>
-        <title>Drop pin on map - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Drop pin on map - Manage locations - Get flood warnings (professional)
+          - GOV.UK
+        </title>
       </Helmet>
       <DropPinOnMapLayout
         navigateToNextPage={navigateToNextPage}
         navigateToNotInEnglandPage={navigateToNotInEnglandPage}
-        navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
+        navigateToDropPinLocationSearchPage={
+          navigateToDropPinLocationSearchPage
+        }
         flow='change-coords'
       />
     </>

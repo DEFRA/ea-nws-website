@@ -7,11 +7,16 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import InsetText from '../../../../../common/components/gov-uk/InsetText'
-import { getLocationAdditional } from '../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationName
+} from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationNotInFloodAreaPage() {
   const navigate = useNavigate()
+  const name = useSelector((state) => getLocationName(state))
+
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -28,7 +33,9 @@ export default function LocationNotInFloodAreaPage() {
 
   const insetTextInfo = (
     <>
-      <strong>{locationName} is at medium or high risk of flooding.</strong>
+      <strong>
+        {name || locationName} is at medium or high risk of flooding.
+      </strong>
       <p>
         You may be able to link it to nearby flood areas to get flood messages
       </p>
@@ -98,7 +105,7 @@ export default function LocationNotInFloodAreaPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half govuk-body'>
             <h1 className='govuk-heading-l' id='main-content'>
-              Flood messages are not available for {locationName}
+              Flood messages are not available for {name || locationName}
             </h1>
             <InsetText text={insetTextInfo} />
             <Details title='What is flood risk' text={floodRiskInfo} />

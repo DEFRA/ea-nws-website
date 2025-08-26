@@ -5,14 +5,15 @@ import { useNavigate } from 'react-router'
 import ConfirmLocationLayout from '../../../../../layouts/location/add-or-edit-location/confirm-location/ConfirmLocationLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationNotInEnglandPage () {
+export default function ConfirmLocationNotInEnglandPage() {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
 
   const navigateToNextPage = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard, {
       state: {
-        addedLocation: currentLocation.additionals[0].value.s
+        addedLocation:
+          currentLocation.name || currentLocation.additionals[0].value.s
       }
     })
 
@@ -22,7 +23,10 @@ export default function ConfirmLocationNotInEnglandPage () {
   return (
     <>
       <Helmet>
-        <title>Confirm location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Confirm location - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <ConfirmLocationLayout
         navigateToNextPage={navigateToNextPage}

@@ -14,6 +14,7 @@ export default function LocationHeader({ currentPage }) {
   const location = useLocation()
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const locationName = currentLocation.name || additionalData.locationName
 
   return (
     <>
@@ -27,7 +28,7 @@ export default function LocationHeader({ currentPage }) {
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
           <h1 className='govuk-heading-l' id='main-content'>
-            {additionalData.locationName}
+            {locationName}
           </h1>
         </div>
         <div

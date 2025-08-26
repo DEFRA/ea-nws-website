@@ -26,6 +26,7 @@ import {
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import { formatGovUKTime } from '../../services/formatters/TimeFormatter'
 
 export default function SignInValidatePage() {
   const location = useLocation()
@@ -191,7 +192,7 @@ export default function SignInValidatePage() {
 
     setSignInToken(data.signinToken)
     setCodeResent(true)
-    setCodeResentTime(new Date().toLocaleTimeString())
+    setCodeResentTime(new Date())
     setCodeExpired(false)
   }
 
@@ -220,7 +221,7 @@ export default function SignInValidatePage() {
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
-                    text={'New code sent at ' + codeResentTime}
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
                   />
                 )}
                 {error && (

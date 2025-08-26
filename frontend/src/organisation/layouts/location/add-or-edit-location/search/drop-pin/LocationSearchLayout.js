@@ -94,7 +94,9 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
 
     if (placeNameOrTown) {
       if (isPostCode(placeNameOrTown)) {
-        setPlaceNameOrTownError('Please do not enter a postcode')
+        setPlaceNameOrTownError(
+          'You cannot enter a postcode - enter a town or place name'
+        )
         return
       }
     }

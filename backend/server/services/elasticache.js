@@ -101,6 +101,15 @@ const setLocations = async (client, orgId, locations, statusKey) => {
   let i = 1
   let percent = 0
   Object.keys(formattedLocations).forEach(async (key) => {
+    let newPercent = Math.round((i/numLocations)*100)
+    if (percent !== newPercent) {
+      percent = newPercent
+      await setJsonData(client, statusKey, {
+        stage: 'Processing locations',
+        status: 'working',
+        percent: percent
+      })
+    }
     const location = formattedLocations[key]
     let keywords = []
     location.additionals.forEach((additional) => {
@@ -114,11 +123,6 @@ const setLocations = async (client, orgId, locations, statusKey) => {
         linked_ids: [key]
       })
     }
-    await setJsonData(client, statusKey, {
-      stage: 'Processing locations',
-      status: 'working',
-      percent: (i / numLocations) * 100
-    })
     i++
   })
 }
@@ -572,14 +576,18 @@ const orgSignIn = async (
     let locIndex = 1
     let locPercent = 0
     for (const location of locations) {
+      let newLocPercent = Math.round((locIndex/numLocations)*100)
+      if (locPercent !== newLocPercent) {
+        locPercent = newLocPercent
+        await setJsonData(client, statusKey, {
+          stage: 'Processing locations',
+          status: 'working',
+          percent: locPercent
+        })
+      }
       if (!Object.keys(existingLocations).includes(location.id)) {
         await addLocation(client, organization.id, location)
       }
-      await setJsonData(client, statusKey, {
-        stage: 'Processing locations',
-        status: 'working',
-        percent: (locIndex / numLocations) * 100
-      })
       locIndex++
     }
     const existingContacts = await getContactKeys(client, orgId)
@@ -590,14 +598,18 @@ const orgSignIn = async (
     let contactIndex = 1
     let contactPercent = 0
     for (const contact of contacts) {
+      let newContactPercent = Math.round((contactIndex/numContacts)*100)
+      if (contactPercent !== newContactPercent) {
+        contactPercent = newContactPercent
+        await setJsonData(client, statusKey, {
+          stage: 'Retrieving Contacts',
+          status: 'working',
+          percent: contactPercent
+        })
+      }
       if (!existingContactIds.includes(contact.id)) {
         await addContact(client, orgId, contact)
       }
-      await setJsonData(client, statusKey, {
-        stage: 'Retrieving Contacts',
-        status: 'working',
-        percent: (contactIndex / numContacts) * 100
-      })
       contactIndex++
     }
   } else {
@@ -607,12 +619,16 @@ const orgSignIn = async (
     let i = 1
     let percent = 0
     for (const contact of contacts) {
+      let newPercent = Math.round((i/numContacts)*100)
+      if (percent !== newPercent) {
+        percent = newPercent
+        await setJsonData(client, statusKey, {
+          stage: 'Retrieving Contacts',
+          status: 'working',
+          percent: percent
+        })
+      }
       await addContact(client, orgId, contact)
-      await setJsonData(client, statusKey, {
-        stage: 'Retrieving Contacts',
-        status: 'working',
-        percent: (i / numContacts) * 100
-      })
       i++
     }
   }

@@ -130,7 +130,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
               />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
-              Find the location on a map
+              <label for='govuk-text-input'>Find the location on a map</label>
             </h1>
             {flow?.includes('unmatched-locations') && (
               <p>
@@ -160,7 +160,7 @@ export default function LocationSearchLayout({ navigateToNextPage, flow }) {
                 onClick={(val) => handleOnClick(val)}
                 showNotFound={showNotFound}
                 nameField='address'
-                ariaLabel='Enter a place name, town or postcode'
+                ariaDescribedBy='find-location-hint'
               />
             </div>
             <Button

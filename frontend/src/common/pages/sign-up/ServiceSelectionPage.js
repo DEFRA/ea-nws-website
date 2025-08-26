@@ -94,14 +94,14 @@ export default function ServiceSelectionPage() {
                       <Radio
                         key='citizen'
                         name='serviceSelectionRadios'
-                        label='Myself, friends and family'
+                        label='Myself, family or friends'
                         value='citizen'
                         onChange={(e) => setServiceOption(e.target.value)}
                       />
                       <Radio
                         key='organisation'
                         name='serviceSelectionRadios'
-                        label='An organisation or business'
+                        label='An organisation, business or flood warden'
                         value='organisation'
                         onChange={(e) => setServiceOption(e.target.value)}
                       />

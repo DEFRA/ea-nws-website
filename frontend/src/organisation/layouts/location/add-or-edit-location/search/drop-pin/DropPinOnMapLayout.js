@@ -58,7 +58,7 @@ export default function DropPinOnMapLayout({
 
   const authToken = useSelector((state) => state.session.authToken)
   const [displayCoords, setDisplayCoords] = useState('')
-  const [pinCoords, setPinCoords] = useState(null)
+  const [pinCoords, setPinCoords] = useState({ latitude, longitude } || null)
   const [error, setError] = useState('')
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
@@ -141,6 +141,14 @@ export default function DropPinOnMapLayout({
 
       if (inEngland && !duplicateLocation) {
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
+
+        const { easting, northing } = convertCoordinatesToEspg27700(
+          pinCoords.latitude,
+          pinCoords.longitude
+        )
+        newWebLocation.additionals.other.x_coordinate = easting
+        newWebLocation.additionals.other.y_coordinate = northing
+
         // get target areas
         const TAs = await getFloodAreas(
           newWebLocation.coordinates.latitude,
@@ -346,7 +354,16 @@ export default function DropPinOnMapLayout({
           </div>
 
           <div className='govuk-grid-row'>
-            <div id='map-body' className='govuk-grid-column-three-quarters'>
+            <div
+              id='map-body'
+              className='govuk-grid-column-three-quarters'
+              role='group'
+              aria-label={
+                location.state
+                  ? `map showing ${location.state?.mapArea}`
+                  : 'map showing drop a pin to select your area'
+              }
+            >
               <Map
                 setCoordinates={setPinCoords}
                 type='drop'

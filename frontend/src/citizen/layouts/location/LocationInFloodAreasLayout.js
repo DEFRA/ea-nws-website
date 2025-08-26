@@ -73,13 +73,11 @@ export default function LocationInFloodAreasLayout({
 
     if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(updatedProfile)
-
-      // if user is in sign up flow, then profile returned will be undefined
-      if (updatedProfile) {
-        await registerLocationToPartner(updatedProfile)
-        dispatch(setProfile(updatedProfile))
-      }
     }
+
+    await registerLocationToPartner(updatedProfile)
+    dispatch(setProfile(updatedProfile))
+
     continueToNextPage({
       locationName: selectedLocation.address,
       profile: updatedProfile
@@ -118,31 +116,26 @@ export default function LocationInFloodAreasLayout({
   const registerLocationToPartner = async (profile) => {
     const location = findPOIByAddress(profile, selectedLocation.address)
 
-    const data = {
-      authToken,
-      locationId: location.id,
-      partnerId,
-      params: getRegistrationParams(profile, locationAlertTypes)
-    }
+    if (updateGeoSafeProfile) {
+      const data = {
+        authToken,
+        locationId: location.id,
+        partnerId,
+        params: getRegistrationParams(profile, locationAlertTypes)
+      }
 
-    await backendCall(
-      data,
-      'api/partner/register_location_to_partner',
-      navigate
-    )
+      await backendCall(
+        data,
+        'api/partner/register_location_to_partner',
+        navigate
+      )
+    }
 
     const updatedLocationRegistrations = [
       ...(locationRegistrations || []),
       {
-        locationId: location.id,
-        registrations: [
-          {
-            params: {
-              ...data.params,
-              alertTypes: locationAlertTypes
-            }
-          }
-        ]
+        location: location.address,
+        alertTypes: locationAlertTypes
       }
     ]
     dispatch(setLocationRegistrations(updatedLocationRegistrations))
@@ -251,7 +244,11 @@ export default function LocationInFloodAreasLayout({
   return (
     <>
       {showFullMap ? (
-        <div className='location-in-flood-area--full-screen-map'>
+        <div
+          className='location-in-flood-area--full-screen-map'
+          role='group'
+          aria-label='map showing which flood messages for your location'
+        >
           <Map
             types={mapAreas}
             interactive={true}
@@ -273,6 +270,8 @@ export default function LocationInFloodAreasLayout({
                       ? 'location-in-flood-area-map mobile'
                       : 'location-in-flood-area-map desktop'
                   }
+                  role='group'
+                  aria-label='map showing which flood messages for your location'
                 >
                   <Map
                     types={mapAreas}

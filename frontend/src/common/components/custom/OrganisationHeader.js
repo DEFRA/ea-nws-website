@@ -1,6 +1,6 @@
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { orgAccountUrls } from '../../../organisation/routes/account/AccountRoutes'
@@ -23,6 +23,12 @@ export default function OrganisationHeader() {
   const location = useLocation()
   const currentPage = location.pathname
 
+  useEffect(() => {
+    if (currentPage !== '/organisation/manage-admin/admin-details') {
+      setActiveHeader(null)
+    }
+  }, [currentPage])
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen)
   }
@@ -39,7 +45,6 @@ export default function OrganisationHeader() {
     event.preventDefault()
     if (activeHeader === 'accountDetails') {
       setActiveHeader(null)
-      navigate(-1)
     } else {
       setActiveHeader('accountDetails')
       navigate(orgAccountUrls.admin.details)

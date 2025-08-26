@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -250,7 +250,11 @@ export default function UserInformationPage() {
           </div>
 
           {/* other half - map */}
-          <div className='govuk-grid-column-one-half'>
+          <div
+            className='govuk-grid-column-one-half'
+            role='group'
+            aria-label='map showing user map locations'
+          >
             <UserMap locations={locations} />
 
             {/* <div

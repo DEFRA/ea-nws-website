@@ -198,6 +198,11 @@ export default function FloodReportFilter ({
 
     // Create date object
     const date = new Date(year, month, day)
+    if (type === 'from') {
+      date.setHours(0, 0, 0, 0)
+    } else if (type === 'to') {
+      date.setHours(23, 59, 59, 999)
+    }
     const minDate = new Date(2012, 0, 1)
     if (date < minDate) {
       return {
@@ -273,7 +278,7 @@ export default function FloodReportFilter ({
                 className={`govuk-input ${
                   dateToError && 'govuk-input--error'
                 } govuk-input-calendar-icon`}
-                id='date-range-from'
+                id='date-range-to'
                 type='text'
                 value={filters.dateTo}
                 onChange={(event) => updateFilter('dateTo', event.target.value)}

@@ -1,4 +1,3 @@
-import { React } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -23,7 +22,10 @@ export default function NotInEnglandShapeFilePage() {
   return (
     <>
       <Helmet>
-        <title>This location is not in england - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          This location is not in england - Manage locations - Get flood
+          warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-8'>
@@ -83,6 +85,8 @@ export default function NotInEnglandShapeFilePage() {
           <div
             className='govuk-grid-column-one-half'
             style={{ marginTop: '95px' }}
+            role='group'
+            aria-label='map showing fixed areas that we provide flood warnings and alerts for'
           >
             <Map showMapControls={false} zoomLevel={14} />
             <div className='govuk-!-column-one-third'>

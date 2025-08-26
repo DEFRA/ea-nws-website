@@ -1,3 +1,4 @@
+const { EMAIL_IN_USE_ERROR_MSG } = require('../../constants/errorMessages')
 const { logger } = require('../../plugins/logging')
 const { apiCall } = require('../../services/ApiService')
 const {
@@ -34,9 +35,8 @@ module.exports = [
             response?.data?.desc.includes('already existing account')
           ) {
             return h.response({
-              status: 409,
-              errorMessage:
-                "You cannot enter this email address as it's already in use - try a different email address"
+              status: 400,
+              errorMessage: EMAIL_IN_USE_ERROR_MSG
             })
           } else {
             return createGenericErrorResponse(h)

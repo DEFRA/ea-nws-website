@@ -9,8 +9,8 @@ const {
 } = require('../services/GenericErrorResponse')
 const { GENERIC_ERROR_MSG } = require('../constants/errorMessages')
 
-const formatResults = (results) => {
-  return results.map((result) => {
+const formatAndSortResults = (results) => {
+  const formatted = results.map((result) => {
     const formattedAddress = addressFormatter(result.DPA.ADDRESS)
     return {
       name: result.DPA.UPRN,
@@ -22,8 +22,14 @@ const formatResults = (results) => {
       postcode: result.DPA.POSTCODE
     }
   })
-}
 
+  return formatted.sort((a, b) =>
+    a.address.localeCompare(b.address, undefined, {
+      numeric: true,
+      sensitivity: 'base'
+    })
+  )
+}
 const osPostCodeApiCall = async (postCode, englandOnly) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
@@ -37,22 +43,20 @@ const osPostCodeApiCall = async (postCode, englandOnly) => {
     if (!response.data.results || response.data.results.length === 0) {
       return {
         status: 400,
-        errorMessage: 'Enter a real postcode'
+        errorMessage: 'Enter a real postcode in England'
       }
     }
 
-    // Check that postcode is in England
-    if (englandOnly && response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
-      responseData = formatResults(response.data.results)
-
+    if (!englandOnly) {
+      const responseData = formatAndSortResults(response.data.results)
       return { status: response.status, data: responseData }
-    } else if (!englandOnly) {
-      // return all results in UK
-      responseData = formatResults(response.data.results)
+    }
 
+    const isInEngland = response.data.results?.[0]?.DPA?.COUNTRY_CODE === 'E'
+    if (isInEngland) {
+      const responseData = formatAndSortResults(response.data.results)
       return { status: response.status, data: responseData }
     } else {
-      // NOT_IN_ENGLAND case
       return {
         status: 500,
         errorMessage: 'Enter a full postcode in England'

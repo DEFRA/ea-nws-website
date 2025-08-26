@@ -16,7 +16,7 @@ export default function Autocomplete({
   position,
   showNotFound = true,
   nameField,
-  ariaLabel
+  ariaDescribedBy
 }) {
   const [options, setOptions] = useState(null)
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
@@ -201,14 +201,14 @@ export default function Autocomplete({
         }
       >
         {name && (
-          <label
+          <div
             className={
               isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
             }
-            htmlFor={id || 'govuk-text-input'}
+            id={ariaDescribedBy}
           >
             {name}
-          </label>
+          </div>
         )}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>
@@ -237,7 +237,7 @@ export default function Autocomplete({
             }}
             defaultValue={defaultValue}
             autoComplete='off'
-            aria-label={ariaLabel}
+            aria-describedby={ariaDescribedBy}
           />
           <ul
             id={`${name}-listbox`}

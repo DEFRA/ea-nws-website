@@ -259,9 +259,9 @@ export default function UserMap({ locations }) {
                     onEachFeature={(feature, layer) => {
                       layer.bindPopup(
                         `<a href="#" class="govuk-link">${
+                          feature.properties?.locationData?.name ||
                           feature.properties?.locationData?.additionals
                             ?.locationName ||
-                          feature.properties?.locationData?.name ||
                           'Name not found'
                         }</a>`
                       )

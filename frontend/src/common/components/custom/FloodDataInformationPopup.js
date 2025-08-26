@@ -33,7 +33,14 @@ export default function FloodDataInformationPopup({
     )
   )
 
-  const hasLiveAlerts = locationsFloodInformation.filter((floodInformation) => floodInformation.floodData.lastUpdatedTime.getTime() === floodInformation.floodData.startDate.getTime()).length > 0 ? true : false
+  const hasLiveAlerts =
+    locationsFloodInformation.filter(
+      (floodInformation) =>
+        floodInformation.floodData.lastUpdatedTime.getTime() ===
+        floodInformation.floodData.startDate.getTime()
+    ).length > 0
+      ? true
+      : false
 
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
@@ -55,7 +62,9 @@ export default function FloodDataInformationPopup({
     )
 
     let allAlerts = [...alerts?.historicAlerts, ...alerts?.liveAlerts]
-    allAlerts.sort((a,b) => {return new Date(b.startDate) - new Date(a.startDate)})
+    allAlerts.sort((a, b) => {
+      return new Date(b.startDate) - new Date(a.startDate)
+    })
     setAlerts(allAlerts)
     setLoading(false)
   }
@@ -228,7 +237,9 @@ export default function FloodDataInformationPopup({
     <div className='popup-dialog govuk-body'>
       <div className='popup-dialog-container'>
         <div className='popup-dialog-header'>
-          <p className='popup-close-txt' onClick={onClose}>Close</p>
+          <p className='popup-close-txt' onClick={onClose}>
+            Close
+          </p>
           <span className='popup-close-btn' onClick={onClose}>
             &times;
           </span>
@@ -240,7 +251,9 @@ export default function FloodDataInformationPopup({
                 viewLocation(e, locationsFloodInformation[0].locationData)
               }
             >
-              {locationsFloodInformation[0].locationData.additionals.locationName}
+              {locationsFloodInformation[0].locationData.name ||
+                locationsFloodInformation[0].locationData.additionals
+                  .locationName}
             </Link>
           </h1>
           <ServiceNavigation
@@ -257,29 +270,34 @@ export default function FloodDataInformationPopup({
                   : ''
               }`}
             >
-              {!hasLiveAlerts && <p>There are no live flood warnings or alerts.</p>}
-              {locationsFloodInformation.map((floodInformation, index) => (
-                (floodInformation.floodData.lastUpdatedTime.getTime() === floodInformation.floodData.startDate.getTime()) && 
-                  <div key={`${floodInformation.floodData.code}-${index}`}>
-                    <FloodWarningInfo floodInformation={floodInformation} />
+              {!hasLiveAlerts && (
+                <p>There are no live flood warnings or alerts.</p>
+              )}
+              {locationsFloodInformation.map(
+                (floodInformation, index) =>
+                  floodInformation.floodData.lastUpdatedTime.getTime() ===
+                    floodInformation.floodData.startDate.getTime() && (
+                    <div key={`${floodInformation.floodData.code}-${index}`}>
+                      <FloodWarningInfo floodInformation={floodInformation} />
 
-                    <p className='govuk-!-margin-top-5 govuk-body govuk-!-font-size-19'>
-                      Updated{' '}
-                      {formatDate(floodInformation.floodData.lastUpdatedTime)}
-                    </p>
+                      <p className='govuk-!-margin-top-5 govuk-body govuk-!-font-size-19'>
+                        Updated{' '}
+                        {formatDate(floodInformation.floodData.lastUpdatedTime)}
+                      </p>
 
-                    <FloodAreaLink
-                      code={floodInformation.floodData.code}
-                      linkText={
-                        FLOOD_WARNING_CONFIG[floodInformation.floodData.type]
-                          .linkText
-                      }
-                      type={floodInformation.floodData.type}
-                    />
-                    <br />
-                    <br />
-                  </div>
-                ))}
+                      <FloodAreaLink
+                        code={floodInformation.floodData.code}
+                        linkText={
+                          FLOOD_WARNING_CONFIG[floodInformation.floodData.type]
+                            .linkText
+                        }
+                        type={floodInformation.floodData.type}
+                      />
+                      <br />
+                      <br />
+                    </div>
+                  )
+              )}
             </div>
           ) : (
             <>
@@ -331,11 +349,10 @@ export default function FloodDataInformationPopup({
                             </td>
                             <td className='govuk-table__cell'>
                               {alert.endDate
-                              ? 
-                                dayjs(alert.endDate).format(
-                                  'D MMM YYYY [at] HH:mm'
-                                )
-                              : '-'}
+                                ? dayjs(alert.endDate).format(
+                                    'D MMM YYYY [at] HH:mm'
+                                  )
+                                : '-'}
                             </td>
                           </tr>
                         )

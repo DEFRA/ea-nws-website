@@ -2,15 +2,18 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { getLocationAdditional } from '../../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationName
+} from '../../../../../../common/redux/userSlice'
 import LocationOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionsPage () {
+export default function LocationSearchOptionsPage() {
   const navigate = useNavigate()
-
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
+  const name = useSelector((state) => getLocationName(state))
+  const locationName = useSelector((state) =>
+    getLocationAdditional(state, 'locationName')
   )
   const searchOptions = [
     { label: 'Use a postcode', value: 'UseAPostcode' },
@@ -48,10 +51,13 @@ export default function LocationSearchOptionsPage () {
   return (
     <>
       <Helmet>
-        <title>How do you want to find this location? - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          How do you want to find this location? - Manage locations - Get flood
+          warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <LocationOptionsLayout
-        heading={`How do you want to find ${locationName}?`}
+        heading={`How do you want to find ${name || locationName}?`}
         info={info}
         searchOptions={searchOptions}
         navigateToNextPage={navigateToNextPage}

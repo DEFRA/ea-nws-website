@@ -8,6 +8,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import {
   getLocationAdditionals,
+  getLocationName,
   setCurrentLocationCriticality,
   setCurrentLocationName,
   setCurrentLocationReference,
@@ -23,9 +24,11 @@ export default function KeyInformationLayout({
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
+  const name = useSelector((state) => getLocationName(state))
+
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const [locationName, setLocationName] = useState(
-    additionalData.locationName ? additionalData.locationName : ''
+    name || additionalData.locationName || ''
   )
   const [locationNameError, setLocationNameError] = useState('')
   const [internalReference, setInternalReference] = useState(

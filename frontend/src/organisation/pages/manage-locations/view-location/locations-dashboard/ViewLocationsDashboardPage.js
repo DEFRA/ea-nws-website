@@ -275,7 +275,9 @@ export default function ViewLocationsDashboardPage() {
         ' ' +
         (selectedLocations.length > 1 ? 'locations' : 'location')
     } else {
-      text = locationsToBeDeleted[0].additionals.locationName
+      text =
+        locationsToBeDeleted[0].name ||
+        locationsToBeDeleted[0].additionals.locationName
     }
 
     return text

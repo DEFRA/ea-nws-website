@@ -58,7 +58,7 @@ export default function UserMap({ locations }) {
       setCentre([0, 0])
       locations.forEach(async (location) => {
         let feature
-        const locationType = location.additionals.other.location_data_type
+        const locationType = location?.additionals?.other?.location_data_type
 
         if (locationType) {
           // add all points to markers which can be represented on the map

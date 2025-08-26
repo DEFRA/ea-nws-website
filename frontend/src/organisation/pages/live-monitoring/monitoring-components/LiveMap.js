@@ -702,10 +702,9 @@ export default function LiveMap({
                             viewFloodInformationData(severePoint.properties)
                           }
                         >
-                          {
+                          {severePoint.properties.locationData.name ||
                             severePoint.properties.locationData.additionals
-                              .locationName
-                          }
+                              .locationName}
                         </Link>
                       </Popup>
                     </Marker>

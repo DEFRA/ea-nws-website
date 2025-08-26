@@ -29,7 +29,10 @@ import AlertType from '../../../../common/enums/AlertType'
 import LocationDataType from '../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler'
-import { getFloodAreaByTaCode, getOperationalBoundaryByTaCode } from '../../../../common/services/WfsFloodDataService'
+import {
+  getFloodAreaByTaCode,
+  getOperationalBoundaryByTaCode
+} from '../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
 import { createLiveMapShapePattern } from '../../../components/custom/FloodAreaPatterns'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
@@ -260,9 +263,7 @@ export default function LiveMap({
         point.geometry.coordinates[0][0][0]
       )
     } else if (locationType === LocationDataType.BOUNDARY) {
-      const boundary = await getOperationalBoundaryByTaCode(
-        geocode
-      )
+      const boundary = await getOperationalBoundaryByTaCode(geocode)
       setShapes((prevShape) => [...prevShape, boundary])
     } else {
       geometry.geoJson.properties = {
@@ -625,10 +626,9 @@ export default function LiveMap({
                             viewFloodInformationData(alertPoint.properties)
                           }
                         >
-                          {
+                          {alertPoint.properties.locationData.name ||
                             alertPoint.properties.locationData.additionals
-                              .locationName
-                          }
+                              .locationName}
                         </Link>
                       </Popup>
                     </Marker>
@@ -664,10 +664,9 @@ export default function LiveMap({
                             viewFloodInformationData(warningPoint.properties)
                           }
                         >
-                          {
+                          {warningPoint.properties.locationData.name ||
                             warningPoint.properties.locationData.additionals
-                              .locationName
-                          }
+                              .locationName}
                         </Link>
                       </Popup>
                     </Marker>
@@ -743,10 +742,9 @@ export default function LiveMap({
                             viewFloodInformationData(removedPoint.properties)
                           }
                         >
-                          {
+                          {removedPoint.properties.locationData.name ||
                             removedPoint.properties.locationData.additionals
-                              .locationName
-                          }
+                              .locationName}
                         </Link>
                       </Popup>
                     </Marker>
@@ -830,10 +828,9 @@ export default function LiveMap({
                           }
                           style={{ flex: 1 }}
                         >
-                          {
+                          {location.properties.locationData.name ||
                             location.properties.locationData.additionals
-                              .locationName
-                          }
+                              .locationName}
                         </Link>
                       </div>
                     ))}

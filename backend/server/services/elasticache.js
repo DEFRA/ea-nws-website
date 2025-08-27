@@ -206,9 +206,6 @@ const findLocationByName = async (client, orgId, locationName) => {
     if (location.name === locationName) {
       matchingLocations.push(location)
     }
-    if (location.name === locationName) {
-      matchingLocations.push(location)
-    }
   })
 
   return matchingLocations
@@ -221,7 +218,6 @@ const listLocationNames = async (client, orgId) => {
   Object.keys(locations).forEach((key) => {
     const location = locations[key]
     locationNames.push(location.name)
-    locationNames.push(location.name)
   })
 
   return locationNames
@@ -233,9 +229,6 @@ const findInvLocationByName = async (client, orgId, locationName) => {
   await Promise.all(
     locationKeys.map(async (key) => {
       const location = await getJsonData(client, key)
-      if (location.name === locationName) {
-        matchingLocations.push(location)
-      }
       if (location.name === locationName) {
         matchingLocations.push(location)
       }
@@ -575,7 +568,6 @@ const orgSignIn = async (
     let locPercent = 0
     for (const location of locations) {
       let newLocPercent = Math.round((locIndex / numLocations) * 100)
-      let newLocPercent = Math.round((locIndex / numLocations) * 100)
       if (locPercent !== newLocPercent) {
         locPercent = newLocPercent
         await setJsonData(client, statusKey, {
@@ -598,7 +590,6 @@ const orgSignIn = async (
     let contactPercent = 0
     for (const contact of contacts) {
       let newContactPercent = Math.round((contactIndex / numContacts) * 100)
-      let newContactPercent = Math.round((contactIndex / numContacts) * 100)
       if (contactPercent !== newContactPercent) {
         contactPercent = newContactPercent
         await setJsonData(client, statusKey, {
@@ -619,7 +610,6 @@ const orgSignIn = async (
     let i = 1
     let percent = 0
     for (const contact of contacts) {
-      let newPercent = Math.round((i / numContacts) * 100)
       let newPercent = Math.round((i / numContacts) * 100)
       if (percent !== newPercent) {
         percent = newPercent

@@ -982,7 +982,10 @@ export default function ViewLocationsDashboardPage() {
                   }
                   validateInput={() => validateInput()}
                   defaultValue={
-                    dialog.input ? targetLocation.additionals.locationName : ''
+                    dialog.input
+                      ? targetLocation.name ||
+                        targetLocation.additionals.locationName
+                      : ''
                   }
                   onRadioChange={handleRadioChange}
                 />

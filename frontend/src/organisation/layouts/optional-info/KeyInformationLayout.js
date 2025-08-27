@@ -53,7 +53,10 @@ export default function KeyInformationLayout({
     // location name can be amended when a user is editing a locations key information
     if (flow === 'edit') {
       // only execute if location name has been changed
-      if (locationName !== additionalData.locationName) {
+      if (
+        locationName !== name ||
+        locationName !== additionalData.locationName
+      ) {
         if (locationName) {
           const dataToSend = { authToken, locationName }
           const { errorMessage } = await backendCall(

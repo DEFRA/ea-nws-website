@@ -46,6 +46,7 @@ module.exports = [
           })
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
           const result = await getJsonData(redis, elasticacheKey)
+
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
           const { data: partnerId } = await getPartnerId()

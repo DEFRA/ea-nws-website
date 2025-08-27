@@ -1,27 +1,23 @@
 export function loadGA(gtmId) {
   if (window.__gaScript) return
-  // Create the script element
-  const script = document.createElement('script')
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${gtmId}&v=${Date.now()}`
-  script.async = true
-  // Append the script to the document
-  document.head.appendChild(script)
-
-  window.__gaScript = script
-
   window.dataLayer = []
   function gtag() {
       window.dataLayer.push(arguments)
   }
 
   window.gtag = gtag
-  gtag('js', new Date())
-  gtag('config', gtmId, {
-    cookie_domain: 'auto',
-    cookie_flags: 'SameSite=None;Secure',
-    storage: 'cookie',
-    client_id: undefined
+  gtag({
+    'gtm.start': new Date().getTime(),
+    event: 'gtm.js'
   })
+  // Create the script element
+  const script = document.createElement('script')
+  script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
+  script.async = true
+  // Append the script to the document
+  document.head.appendChild(script)
+
+  window.__gaScript = script
 }
 
 export function removeGA() {

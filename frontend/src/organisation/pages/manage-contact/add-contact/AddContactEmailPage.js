@@ -171,7 +171,7 @@ export default function AddContactEmailPage() {
                   onChange={(val) => {
                     setErrors([])
                     setEmailError('')
-                    setEmailInput(val)
+                    setEmailInput(val.replaceAll(' ', '').toLowerCase())
                   }}
                   value={emailInput}
                   error={emailError}

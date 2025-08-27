@@ -131,7 +131,7 @@ export default function ChangeAdminDetailsPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
           {(error || errorEmail || errorName) && (
-              <ErrorSummary
+            <ErrorSummary
               errorList={[
                 error,
                 errorName && { text: errorName, componentId: fullNameId },
@@ -139,7 +139,9 @@ export default function ChangeAdminDetailsPage() {
               ].filter(Boolean)}
             />
           )}
-          <h1 className='govuk-heading-l' id="main-content">Change administrator details</h1>
+          <h1 className='govuk-heading-l' id='main-content'>
+            Change administrator details
+          </h1>
 
           <Input
             id={fullNameId}
@@ -157,9 +159,9 @@ export default function ChangeAdminDetailsPage() {
             id={emailAddressId}
             inputType='text'
             inputMode='email'
-            value={email}
             name='Email address'
-            onChange={(val) => setEmail(val)}
+            value={email}
+            onChange={(val) => setEmail(val.replaceAll(' ', '').toLowerCase())}
             error={errorEmail}
             className='govuk-input govuk-input--width-20'
             defaultValue={currentEmail}

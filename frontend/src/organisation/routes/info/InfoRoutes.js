@@ -9,7 +9,6 @@ const urlOrgInfo = '/organisation/info'
 const infoUrls = {
   floodTypes: urlOrgInfo + '/flood-types',
   floodAreas: urlOrgInfo + '/flood-areas',
-  levels: urlOrgInfo + '/levels',
   help: urlOrgInfo + '/help',
   preview: urlOrgInfo + '/preview'
 }
@@ -23,10 +22,6 @@ const infoRoutes = [
   {
     path: infoUrls.floodAreas,
     component: <FloodAreasPage />
-  },
-  {
-    path: infoUrls.floodLevels
-    // component: <FloodLevelsPage />
   },
   {
     path: infoUrls.help,

@@ -24,6 +24,7 @@ export default function LocationInformationPage () {
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []
+  const locationName = currentLocation.name || additionalData.locationName
 
   const formattedAddress = currentLocation.address?.split(',')
 
@@ -169,7 +170,7 @@ export default function LocationInformationPage () {
   return (
     <>
       <Helmet>
-        <title>{additionalData.locationName ? additionalData.locationName : 'This location'}'s information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>{locationName ? locationName : 'This location'}'s information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
@@ -229,7 +230,7 @@ export default function LocationInformationPage () {
                   <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                     Location name
                   </h3>
-                  <p>{additionalData.locationName}</p>
+                  <p>{locationName}</p>
                   {additionalData.internal_reference && (
                     <>
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>

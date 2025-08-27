@@ -233,7 +233,7 @@ export default function FloodAreaMap({
       : ''
     const title = clickedLocation ? (
       <Link onClick={(e) => viewLocation(e, clickedLocation)}>
-        {clickedLocation.additionals.locationName}
+        {clickedLocation.name || clickedLocation.additionals.locationName}
       </Link>
     ) : (
       `${locations.length} location${

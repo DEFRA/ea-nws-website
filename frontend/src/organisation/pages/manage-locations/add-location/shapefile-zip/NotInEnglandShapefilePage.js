@@ -2,13 +2,18 @@ import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import { getLocationAdditional } from '../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationName
+} from '../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 
 export default function NotInEnglandShapeFilePage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const name = useSelector((state) => getLocationName(state))
+
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -35,7 +40,7 @@ export default function NotInEnglandShapeFilePage() {
               Location not in England
             </h1>
             <h2 className='govuk-heading-m govuk-!-margin-top-8 govuk-!-margin-bottom-0'>
-              {locationName}
+              {name || locationName}
             </h2>
             <hr />
             <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>

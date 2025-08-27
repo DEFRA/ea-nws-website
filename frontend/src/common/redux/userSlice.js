@@ -1046,9 +1046,6 @@ const userSlice = createSlice({
     },
     getLocationName: (state) => {
       return state.currentLocation.name
-    },
-    getLocationName: (state) => {
-      return state.currentLocation.name
     }
   }
 })
@@ -1181,7 +1178,6 @@ export const {
 export const {
   getLocationAdditionals,
   getLocationAdditional,
-  getLocationName,
   getLocationName,
   getLocationOther,
   getContactAdditional

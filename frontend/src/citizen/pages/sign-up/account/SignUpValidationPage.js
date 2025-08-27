@@ -17,6 +17,7 @@ import {
   setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { formatGovUKTime } from '../../../../common/services/formatters/TimeFormatter'
 import {
   getRegistrationParams,
   updateAdditionals
@@ -162,7 +163,7 @@ export default function SignUpValidationPage() {
     } else {
       dispatch(setRegisterToken(data.registerToken))
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
@@ -184,7 +185,7 @@ export default function SignUpValidationPage() {
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
-                    text={'New code sent at ' + codeResentTime}
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
                   />
                 )}
                 {error && (

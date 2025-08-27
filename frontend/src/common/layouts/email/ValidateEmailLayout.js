@@ -11,6 +11,7 @@ import NotificationBanner from '../../components/gov-uk/NotificationBanner'
 import UserContactType from '../../enums/UserContactType'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
+import { formatGovUKTime } from '../../services/formatters/TimeFormatter'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -95,7 +96,7 @@ export default function ValidateEmailLayout({
       setError(errorMessage)
     } else {
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
@@ -192,7 +193,9 @@ export default function ValidateEmailLayout({
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
-                      text={'New code sent at ' + codeResentTime}
+                      text={
+                        'New code sent at ' + formatGovUKTime(codeResentTime)
+                      }
                     />
                   )}
                   {error && (

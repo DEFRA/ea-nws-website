@@ -96,10 +96,10 @@ export default function CookiesPage () {
                     <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>Storage on your browser</p>
                     <p>When you enter data into our service, we may store some data locally on your browser. (known as ‘local storage’)</p>
                     <p>We do this to make sure the service works properly and carries your answers and data forward from one screen to another.</p>
-                    <p>For example, the email address you use to sign in to the test service, or any locations you enter, will be stored locally on your browser. This data is stored until you sign out or are automatically signed out.</p>
+                    <p>For example, the email address you use to sign in to the service, or any locations you enter, will be stored locally on your browser. This data is stored until you sign out or are automatically signed out.</p>
                     <p>You could also clear your history and cache if you wanted to remove this information from your browser. </p>
                     <h2 className='govuk-heading-m govuk-!-margin-top-6 govuk-!-margin-bottom-6'>Analytics cookies (optional)</h2>
-                    <p>With your permission, we use Google Analytics to collect data about how you use this test service. This data helps us improve our service.</p>
+                    <p>With your permission, we use Google Analytics to collect data about how you use this service. This data helps us improve our service.</p>
                     <p>Google is not allowed to use or share our analytics data with anyone. It stores anonymised information about:</p>
                     <ul className='govuk-list govuk-list--bullet govuk-!-margin-left-2'>
                       <li>how you got to this service</li>

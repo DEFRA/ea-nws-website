@@ -4,6 +4,9 @@ import AlertType from '../../../../common/enums/AlertType'
 import { getLocationOtherAdditional } from '../../../../common/redux/userSlice'
 
 export default function FloodMessageReviewTable() {
+  const nearByAreas = useSelector(
+    (state) => state.session.nearbyTargetAreasAdded
+  )
   const locationsSelected = useSelector((state) => state.session.profile.pois)
   const floodAreasInfo = useSelector(
     (state) => state.session.floodAreasInfo || null
@@ -63,13 +66,15 @@ export default function FloodMessageReviewTable() {
                 Flood messages
               </h2>
             </th>
-            {(!floodWarningAreas.length || !floodAlertAreas.length) && (
+
+            {/* Only show change links if locations were added by nearby search */}
+            {nearByAreas.length > 0 && (
               <td
                 className='govuk-table__cell'
                 style={{ borderBottom: 'none' }}
               >
                 <Link
-                  to='/signup/review/change-location-search'
+                  to='/signup/register-location/location-near-flood-areas'
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
                   aria-label={`Change flood messages you'll get`}

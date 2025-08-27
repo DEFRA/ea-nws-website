@@ -242,8 +242,9 @@ export default function LocationInformation({ location, comparedLocation }) {
                   style={
                     !locationNameAdded &&
                     comparedLocation &&
-                    comparedLocation?.additionals?.locationName !==
-                      location?.additionals?.locationName
+                    (comparedLocation?.additionals?.locationName !==
+                      location?.additionals?.locationName ||
+                      comparedLocation?.name !== location?.name)
                       ? compareStyle
                       : {}
                   }

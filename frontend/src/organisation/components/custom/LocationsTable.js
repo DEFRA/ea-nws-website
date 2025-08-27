@@ -306,7 +306,7 @@ export default function LocationsTable({
                   sortData(
                     locationNameSort,
                     setLocationNameSort,
-                    'additionals.locationName'
+                    'location.name'
                   )
                 }
               >

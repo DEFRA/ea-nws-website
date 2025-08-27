@@ -7,7 +7,6 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import UserType from '../../../../../common/enums/UserType'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 /* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
 import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact'
@@ -44,13 +43,14 @@ export default function UserInformationPage() {
         'api/elasticache/list_linked_locations',
         navigate
       )
+      setLocations([])
 
-      if (linkLocationsRes.data) {
-        const convertedLocations = linkLocationsRes.data.map((loc) =>
-          geoSafeToWebLocation(loc)
-        )
-        setLocations(convertedLocations)
-      }
+      // if (linkLocationsRes.data) {
+      //   const convertedLocations = linkLocationsRes.data.map((loc) =>
+      //     geoSafeToWebLocation(loc)
+      //   )
+      //   setLocations(convertedLocations)
+      // }
     }
 
     getLocations()

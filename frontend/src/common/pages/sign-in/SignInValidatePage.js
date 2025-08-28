@@ -25,8 +25,8 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
-import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import { formatGovUKTime } from '../../services/formatters/TimeFormatter'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
 export default function SignInValidatePage() {
   const location = useLocation()
@@ -146,6 +146,8 @@ export default function SignInValidatePage() {
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
+          // set up authToken and profile so the signup flow can be continued
+          setupAuthentication(data)
         } else {
           if (data.organization) {
             setOrgData(data)

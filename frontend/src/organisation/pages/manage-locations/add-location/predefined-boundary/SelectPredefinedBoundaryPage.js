@@ -97,6 +97,12 @@ export default function SelectPredefinedBoundaryPage() {
     setBoundaryError('')
   }, [selectedBoundary])
 
+  // Clear any previous boundary selection
+  useEffect(() => {
+    dispatch(setSelectedBoundary(null))
+    dispatch(setSelectedBoundaryType(null))
+  }, [])
+
   const onBoundaryTypeSelected = (boundaryType) => {
     dispatch(setSelectedBoundaryType(boundaryType))
   }

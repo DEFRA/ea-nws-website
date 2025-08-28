@@ -197,7 +197,7 @@ export default function Map({
   const [mapLegendOpen, setMapLegendOpen] = useState(false)
   const [touchInput, setTouchInput] = useState(false)
 
-  function AddMarker() {
+  function MapEvents() {
     useMapEvents({
       click: (e) => {
         if (e.originalEvent.target.matches('.govuk-button') && accessibleMap) {
@@ -231,10 +231,7 @@ export default function Map({
         }
       }
     })
-    if (showMarker && !marker) {
-      setMarker([latitude, longitude])
-    }
-    return marker && <Marker position={marker} interactive={false} />
+    return null
   }
 
   useEffect(() => {
@@ -642,7 +639,7 @@ export default function Map({
                           <kbd>&darr;</kbd>
                         </dd>
                       </div>
-                      <div className='keyboard-list__item'>
+                      <div className='keyboard-list_AddMarker_item'>
                         <dt>Adjust zoom level</dt>
                         <dd>
                           <kbd>+</kbd> or <kbd>=</kbd> and <kbd>-</kbd> or{' '}
@@ -710,7 +707,15 @@ export default function Map({
               currentLocationDataType !== LocationDataType.SHAPE_LINE && (
                 <>
                   {type === 'drop' ? (
-                    <AddMarker />
+                    <>
+                      <MapEvents />
+                      {showMarker && (
+                        <Marker
+                          position={marker ? marker : centre}
+                          interactive={false}
+                        />
+                      )}
+                    </>
                   ) : (
                     <Marker position={centre} interactive={false} />
                   )}

@@ -69,7 +69,7 @@ export default function MapInteractiveKey({
               </span>
             </div>
           </div>
-          <div
+          {/* <div
             className='govuk-checkboxes govuk-checkboxes--small locations-map-key'
             data-module='govuk-checkboxes'
           >
@@ -92,7 +92,7 @@ export default function MapInteractiveKey({
                 Flood extent
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </fieldset>
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />

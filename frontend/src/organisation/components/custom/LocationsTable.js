@@ -580,13 +580,15 @@ export default function LocationsTable({
                 </>
               )}
               <td className='govuk-table__cell'>
-                <Link
-                  className='govuk-link'
-                  aria-label={`Delete ${location.name}`}
-                  onClick={(e) => onAction(e, actionText, location)}
-                >
-                  {actionText}
-                </Link>
+                {!linkContacts && (
+                  <Link
+                    className='govuk-link'
+                    aria-label={`Delete ${location.name}`}
+                    onClick={(e) => onAction(e, actionText, location)}
+                  >
+                    {actionText}
+                  </Link>
+                )}
               </td>
             </tr>
           ))}

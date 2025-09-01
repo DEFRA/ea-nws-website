@@ -639,7 +639,7 @@ export default function Map({
                           <kbd>&darr;</kbd>
                         </dd>
                       </div>
-                      <div className='keyboard-list_AddMarker_item'>
+                      <div className='keyboard-list__item'>
                         <dt>Adjust zoom level</dt>
                         <dd>
                           <kbd>+</kbd> or <kbd>=</kbd> and <kbd>-</kbd> or{' '}

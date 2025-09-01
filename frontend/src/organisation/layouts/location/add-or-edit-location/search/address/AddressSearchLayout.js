@@ -11,9 +11,9 @@ import {
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationFullAddress,
+  setCurrentLocationName,
   setCurrentLocationNorthing,
-  setCurrentLocationPostcode,
-  setCurrentLocationUPRN
+  setCurrentLocationPostcode
 } from '../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
@@ -42,7 +42,7 @@ export default function AddressSearchLayout({
 
     setLoading(true)
     try {
-      dispatch(setCurrentLocationUPRN(selectedLocation.name))
+      dispatch(setCurrentLocationName(selectedLocation.name))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
       dispatch(setCurrentLocationAddress(selectedLocation.address))
 

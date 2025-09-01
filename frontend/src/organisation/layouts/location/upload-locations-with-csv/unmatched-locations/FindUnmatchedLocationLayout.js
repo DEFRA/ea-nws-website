@@ -7,6 +7,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import {
   getLocationAdditional,
+  getLocationName,
   getLocationOther,
   setCurrentLocationPostcode,
   setLocationSearchResults
@@ -26,6 +27,8 @@ export default function FindUnmatchedLocationLayout({
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')
   const findLocationOptionsId = 'find-location-options'
+
+  const name = useSelector((state) => getLocationName(state))
 
   const currentLocName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
@@ -153,7 +156,7 @@ export default function FindUnmatchedLocationLayout({
               {flow === 'unmatched-locations-not-found'
                 ? 'find'
                 : 'to change the position of'}{' '}
-              {currentLocName}?
+              {name || currentLocName}?
             </h1>
 
             {/* Body */}

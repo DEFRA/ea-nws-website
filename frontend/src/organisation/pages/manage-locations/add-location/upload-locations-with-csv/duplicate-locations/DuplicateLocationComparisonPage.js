@@ -68,8 +68,13 @@ export default function DuplicateLocationComparisonPage() {
       state: {
         text:
           existingOrNew === 'Existing'
-            ? `Existing ${existingLocation.additionals.locationName} kept`
-            : `${newLocation.additionals.locationName} replaced`
+            ? `Existing ${
+                existingLocation.name ||
+                existingLocation.additionals.locationName
+              } kept`
+            : `${
+                newLocation.name || newLocation.additionals.locationName
+              } replaced`
       }
     })
   }
@@ -257,8 +262,8 @@ export default function DuplicateLocationComparisonPage() {
               />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
-              {newLocation.additionals.locationName} already exists in this
-              account
+              {newLocation.name || newLocation.additionals.locationName} already
+              exists in this account
             </h1>
             <div className='govuk-body'>
               <div className='govuk-!-margin-bottom-6'>

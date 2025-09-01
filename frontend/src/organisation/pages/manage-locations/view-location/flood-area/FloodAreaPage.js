@@ -336,7 +336,7 @@ export default function FloodAreaPage() {
                         className='govuk-link'
                         onClick={(e) => viewLocation(e, location)}
                       >
-                        {location.additionals.locationName}
+                        {location.name || location.additionals.locationName}
                       </Link>
                     </td>
                     <td className='govuk-table__cell'>

@@ -14,6 +14,7 @@ import AlertType from '../../../../../common/enums/AlertType'
 import store from '../../../../../common/redux/store'
 import {
   getLocationAdditionals,
+  getLocationName,
   getLocationOther,
   setCurrentLocationAlertTypes,
   setCurrentLocationChildrenIDs,
@@ -34,6 +35,8 @@ export default function LocationMessagesPage() {
   const currentLocationTAs =
     useSelector((state) => getLocationOther(state, 'targetAreas')) || []
   const additionalData = useSelector((state) => getLocationAdditionals(state))
+  const name = useSelector((state) => getLocationName(state))
+
   const authToken = useSelector((state) => state.session.authToken)
   const [partnerId, setPartnerId] = useState(false)
   const [unlinkID, setUnlinkID] = useState(null)
@@ -41,7 +44,8 @@ export default function LocationMessagesPage() {
     getLocationOther(state, 'childrenIDs')
   )
   const isPredefinedBoundary = additionalData.location_data_type === 'boundary'
-
+  const locationName = name || additionalData.locationName;
+  
   const handleClose = () => {
     setUnlinkID(null)
   }
@@ -409,8 +413,8 @@ export default function LocationMessagesPage() {
         <>
           {floodAreas.length > 0 ? (
             <p className='govuk-!-width-one-half'>
-              {additionalData.locationName} can get flood messages for these
-              areas. You may be also able to link {additionalData.locationName}{' '}
+              {locationName} can get flood messages for these
+              areas. You may be also able to link {locationName}{' '}
               to nearby flood areas that get flood messages.
             </p>
           ) : (
@@ -566,8 +570,8 @@ export default function LocationMessagesPage() {
     <>
       <Helmet>
         <title>
-          {additionalData.locationName
-            ? additionalData.locationName
+          {locationName
+            ? locationName
             : 'This location'}
           's messages - Manage locations - Get flood warnings (professional) -
           GOV.UK
@@ -580,7 +584,7 @@ export default function LocationMessagesPage() {
             className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-8'
             title='Success'
             text={
-              'Message settings for ' + additionalData.locationName + ' updated'
+              'Message settings for ' + locationName + ' updated'
             }
           />
         )}

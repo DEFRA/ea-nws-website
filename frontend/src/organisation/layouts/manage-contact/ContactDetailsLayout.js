@@ -108,7 +108,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
     // Ensure name given is not a duplicate with existing user
     // When editing only check if name is changed
     if (originalFirstName !== firstname && originalLastName !== lastname) {
-      const isDuplicate = contacts.some(
+      const isDuplicate = contacts?.some(
         (c) =>
           c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
           c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()

@@ -185,7 +185,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
       if (responseData.length === 0) {
         return {
           status: 500,
-          errorMessage: 'Enter a town or place name'
+          errorMessage: 'Enter a town or place name in England'
         }
       }
 

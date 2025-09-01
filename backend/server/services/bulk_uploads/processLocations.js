@@ -33,13 +33,12 @@ const convertToPois = (locations) => {
     ) && alertTypes.push('ALERT_LVL_3')
 
     const poi = {
-      name: null,
+      name: location.Location_name,
       address: location.address,
       coordinates: location.coordinates,
       geometry: null,
       geocode: null,
       additionals: [
-        { id: 'locationName', value: { s: location.Location_name } },
         { id: 'parentID', value: { s: '' } },
         { id: 'keywords', value: { s: JSON.stringify(location.Keywords) } },
         {

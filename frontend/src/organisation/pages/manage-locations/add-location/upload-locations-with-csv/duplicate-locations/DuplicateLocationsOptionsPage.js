@@ -158,7 +158,7 @@ export default function DuplicateLocationsOptionsPage() {
                 // get the exisitng location to use it's ID
                 const existingLocation = await getLocation(
                   authToken,
-                  location.additionals.locationName,
+                  location.name,
                   'valid'
                 )
 

@@ -9,6 +9,7 @@ import AlertType from '../../../../../../common/enums/AlertType'
 import store from '../../../../../../common/redux/store'
 import {
   getLocationAdditional,
+  getLocationName,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
@@ -46,6 +47,8 @@ export default function DropPinOnMapLayout({
   let { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+  const name = useSelector((state) => getLocationName(state))
+
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -105,7 +108,7 @@ export default function DropPinOnMapLayout({
   const checkDuplicateLocation = async () => {
     const dataToSend = {
       authToken,
-      locationName,
+      locationName: name || locationName,
       type: 'valid'
     }
     const { data } = await backendCall(

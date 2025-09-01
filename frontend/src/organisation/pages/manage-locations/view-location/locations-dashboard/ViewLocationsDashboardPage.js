@@ -198,8 +198,8 @@ export default function ViewLocationsDashboardPage() {
 
       // Sort objects by location name alphabetically
       locationsUpdate.sort((a, b) => {
-        const nameA = (a.additionals.locationName || '').toLowerCase()
-        const nameB = (b.additionals.locationName || '').toLowerCase()
+        const nameA = (a.name || a.additionals.locationName).toLowerCase()
+        const nameB = (b.name || b.additionals.locationName).toLowerCase()
         if (nameA < nameB) return -1
         if (nameA > nameB) return 1
         return 0
@@ -275,7 +275,9 @@ export default function ViewLocationsDashboardPage() {
         ' ' +
         (selectedLocations.length > 1 ? 'locations' : 'location')
     } else {
-      text = locationsToBeDeleted[0].additionals.locationName
+      text =
+        locationsToBeDeleted[0].name ||
+        locationsToBeDeleted[0].additionals.locationName
     }
 
     return text
@@ -980,7 +982,10 @@ export default function ViewLocationsDashboardPage() {
                   }
                   validateInput={() => validateInput()}
                   defaultValue={
-                    dialog.input ? targetLocation.additionals.locationName : ''
+                    dialog.input
+                      ? targetLocation.name ||
+                        targetLocation.additionals.locationName
+                      : ''
                   }
                   onRadioChange={handleRadioChange}
                 />

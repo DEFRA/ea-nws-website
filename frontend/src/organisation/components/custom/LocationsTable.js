@@ -306,7 +306,7 @@ export default function LocationsTable({
                   sortData(
                     locationNameSort,
                     setLocationNameSort,
-                    'additionals.locationName'
+                    'location.name'
                   )
                 }
               >
@@ -486,7 +486,9 @@ export default function LocationsTable({
                     <input
                       className='govuk-checkboxes__input'
                       type='checkbox'
-                      aria-label={`Select ${location.additionals.locationName}`}
+                      aria-label={`Select ${
+                        location.name || location.additionals.locationName
+                      }`}
                       checked={selectedLocations.includes(location)}
                       onChange={() => handleLocationSelected(location)}
                     />
@@ -499,7 +501,7 @@ export default function LocationsTable({
                   className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}
                 >
-                  {location.additionals.locationName}
+                  {location.name}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
@@ -580,7 +582,7 @@ export default function LocationsTable({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  aria-label={`Delete ${location.additionals.locationName}`}
+                  aria-label={`Delete ${location.name}`}
                   onClick={(e) => onAction(e, actionText, location)}
                 >
                   {actionText}

@@ -14,7 +14,7 @@ export const backendCall = async (data, path, navigate) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data),
-      cache: "no-store"
+      cache: 'no-store'
     })
     responseData = await response.json()
   } catch (error) {

@@ -182,7 +182,9 @@ export default function AdminDetailsLayout({
                 inputType='text'
                 inputMode='email'
                 value={email}
-                onChange={(val) => setEmail(val)}
+                onChange={(val) =>
+                  setEmail(val.replaceAll(' ', '').toLowerCase())
+                }
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={email}

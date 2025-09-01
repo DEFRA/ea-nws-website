@@ -12,6 +12,7 @@ import UserContactType from '../../../common/enums/UserContactType'
 import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { formatGovUKTime } from '../../../common/services/formatters/TimeFormatter'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -101,7 +102,7 @@ export default function ValidateMobileLayout({
       setError(errorMessage)
     } else {
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
@@ -191,7 +192,7 @@ export default function ValidateMobileLayout({
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
-                    text={'New code sent at ' + codeResentTime}
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
                   />
                 )}
                 {error && (

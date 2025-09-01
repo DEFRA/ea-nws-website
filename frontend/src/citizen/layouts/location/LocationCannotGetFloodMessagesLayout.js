@@ -27,6 +27,11 @@ export default function LocationCannotGetFloodMessagesLayout({
             <p>Possible reasons are:</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>the risk of flooding is very low</li>
+              <li>
+                it may flood due to flash flooding but we cannot send flood
+                messages for this type of flooding yet
+              </li>
+              <li>our forecasting does not cover this location</li>
             </ul>
             <p>You may still be at risk of flooding.</p>
             <div className='govuk-!-margin-top-7'>

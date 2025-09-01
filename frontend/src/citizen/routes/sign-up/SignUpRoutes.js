@@ -113,7 +113,7 @@ const signupRoutes = [
   //   component: <SignUpFeedbackConfirmationPage />
   // },
   {
-    path: '/declaration',
+    path: 'signup/declaration',
     component: <DeclarationOfAgreementPage />
   },
   {

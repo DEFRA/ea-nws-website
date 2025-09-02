@@ -1,8 +1,12 @@
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
-import { setProfile } from '../../../../common/redux/userSlice'
+import {
+  setLocationRegistrations,
+  setProfile
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import AccountDetailsTable from './AccountDetailsTable'
@@ -46,6 +50,27 @@ export default function CheckYourAnswersPage() {
   const signUpAccountValidation = () => {
     return profile.emails[0] && profile.firstname && profile.pois.length !== 0
   }
+
+  useEffect(() => {
+    async function ensureProfileLoaded() {
+      // If we have an auth token but no locations in Redux, fetch them from backend
+      if (session?.authToken && (!profile?.pois || profile.pois.length === 0)) {
+        const { data, errorMessage } = await backendCall(
+          { authToken: session.authToken },
+          'api/sign_in_verify',
+          navigate
+        )
+        if (!errorMessage && data?.profile) {
+          // Keep registrations in sync too
+          if (data.locationRegistrations) {
+            dispatch(setLocationRegistrations(data.locationRegistrations))
+          }
+          dispatch(setProfile(data.profile))
+        }
+      }
+    }
+    ensureProfileLoaded()
+  }, [session?.authToken])
 
   return (
     <>

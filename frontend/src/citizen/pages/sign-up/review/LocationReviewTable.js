@@ -5,6 +5,11 @@ import { getAdditional } from '../../../../common/redux/userSlice'
 export default function LocationReviewTable() {
   const navigate = useNavigate()
   const locationsSelected = useSelector((state) => state.session.profile.pois)
+  if (!locationsSelected || locationsSelected.length === 0) {
+    // locationsSelected may be empty due to the async fetch in CheckYourAnswersPage - exit early to prevent errors
+    // This component will be retriggered by the useEffect in the parent component once locationsSelected is actually available
+    return null
+  }
   const firstLocation = locationsSelected[0]
   const locationName = getAdditional(firstLocation.additionals, 'locationName')
   const location = locationName === '' ? firstLocation.address : locationName

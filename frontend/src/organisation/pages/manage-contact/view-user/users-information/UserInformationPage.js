@@ -43,14 +43,13 @@ export default function UserInformationPage() {
         'api/elasticache/list_linked_locations',
         navigate
       )
-      setLocations([])
 
-      // if (linkLocationsRes.data) {
-      //   const convertedLocations = linkLocationsRes.data.map((loc) =>
-      //     geoSafeToWebLocation(loc)
-      //   )
-      //   setLocations(convertedLocations)
-      // }
+      if (linkLocationsRes.data) {
+        const convertedLocations = linkLocationsRes.data.map((loc) =>
+          geoSafeToWebLocation(loc)
+        )
+        setLocations(convertedLocations)
+      }
     }
 
     getLocations()

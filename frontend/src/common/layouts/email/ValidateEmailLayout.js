@@ -75,7 +75,6 @@ export default function ValidateEmailLayout({
       } else {
         if (changeSignIn) {
           updateProfile(data.profile, authToken, signinType)
-          setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
           navigateToNextPage(email)
@@ -198,9 +197,14 @@ export default function ValidateEmailLayout({
                       }
                     />
                   )}
-                  {error && (
+                  {(error || profileError) && (
                     <ErrorSummary
-                      errorList={[{ text: error, componentId: enterCodeId }]}
+                      errorList={[
+                        {
+                          text: error || profileError,
+                          componentId: enterCodeId
+                        }
+                      ]}
                     />
                   )}
                   <h2 className='govuk-heading-l' id='main-content'>

@@ -11,15 +11,17 @@ export default function Header() {
   const signinType = useSelector((state) => state.session.signinType) // Assuming signinType is a different state property
   const [servicePhase, setServicePhase] = useState(false)
 
+  const path = location.pathname
   const isOrganisationPage =
-    location.pathname.includes('organisation') &&
-    !location.pathname.includes('sign-up') &&
-    !location.pathname.includes('organisation/admin-controls')
+    path.includes('organisation') &&
+    !path.includes('sign-up') &&
+    !path.includes('organisation/admin-controls')
 
-  const isSignUpPage =
-    (location.pathname.includes('sign-up') ||
-      location.pathname.includes('signup')) &&
-    !location.pathname.includes('success')
+  // Hide "Sign out" link on all signup pages until user reaches end
+  const inCitizenSignUpFlow =
+    path.includes('signup') || path.includes('sign-up')
+  const atOrPastConfirmation = path.includes('success')
+  const isPreConfirmation = inCitizenSignUpFlow && !atOrPastConfirmation
 
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
@@ -78,7 +80,7 @@ export default function Header() {
                 className='govuk-header__content govuk-grid-row'
                 style={{ display: 'inline-block' }}
               >
-                {authToken && !isSignUpPage ? (
+                {authToken && !isPreConfirmation ? (
                   <Link
                     className='govuk-header__link custom-header-link'
                     to={

@@ -9,6 +9,7 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
+  setCurrentLocation,
   setNotFoundLocations,
   setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
@@ -189,6 +190,13 @@ export default function DuplicateLocationComparisonPage() {
           'api/location/update_registration',
           navigate
         )
+
+        // Keep redux in sync by replacing location with new one
+        const updatedCurrent = webToGeoSafeLocation({
+          ...newLocation,
+          id: existingLocation.id
+        })
+        dispatch(setCurrentLocation(updatedCurrent))
       }
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id

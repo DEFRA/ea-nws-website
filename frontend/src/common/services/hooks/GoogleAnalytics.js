@@ -5,11 +5,11 @@ export function loadGA(gtmId) {
     'gtm.start': new Date().getTime(),
     event: 'gtm.js'
   })
-  var f=d.getElementsByTagName('script')[0], script = document.createElement('script')
+  var f=document.getElementsByTagName('script')[0], script = document.createElement('script')
   script.async = true
   script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
   // insert the gtm script before the first script
-  f.parentNode.insertBefore(j,script)
+  f.parentNode.insertBefore(script,f)
 
   window.__gaScript = script
 }

@@ -478,7 +478,7 @@ export default function FloodAreaMap({
               >
                 {osmTileLayer}
                 {apiKey && tileLayerWithHeader}
-                <div role='group' aria-label='Interactive Map Controls'>
+                <div>
                   <ZoomControl position='bottomright' />
                   <ZoomTracker />
                   <ResetMapButton />

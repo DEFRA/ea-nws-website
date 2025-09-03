@@ -601,11 +601,7 @@ export default function LiveMap({
             )}
             {osmTileLayer}
             {apiKey && tileLayerWithHeader}
-            {!isDisabled && (
-              <div role='group' aria-label='Interactive Map Controls'>
-                <ZoomControl position='bottomright' />
-              </div>
-            )}
+            {!isDisabled && <ZoomControl position='bottomright' />}
             <ZoomTracker />
             {/* locations affected by live flood alert areas */}
             {showAlertLocations && (

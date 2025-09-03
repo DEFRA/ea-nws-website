@@ -1,21 +1,15 @@
 export function loadGA(gtmId) {
   if (window.__gaScript) return
   window.dataLayer = []
-  function gtag() {
-      window.dataLayer.push(arguments)
-  }
-
-  window.gtag = gtag
-  gtag({
+  window.dataLayer.push({
     'gtm.start': new Date().getTime(),
     event: 'gtm.js'
   })
-  // Create the script element
-  const script = document.createElement('script')
-  script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
+  var f=d.getElementsByTagName('script')[0], script = document.createElement('script')
   script.async = true
-  // Append the script to the document
-  document.head.appendChild(script)
+  script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
+  // insert the gtm script before the first script
+  f.parentNode.insertBefore(j,script)
 
   window.__gaScript = script
 }
@@ -35,7 +29,6 @@ export function removeGA() {
     window.__gaScript.remove()
     window.__gaScript = null
   }
-  delete window.gtag
   delete window.dataLayer
   deleteCookies()
 }

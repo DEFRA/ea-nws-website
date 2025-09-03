@@ -1,5 +1,5 @@
 
 export default function StartPage() {
-  window.location.href = 'https://www.gov.uk/sign-up-for-flood-warnings'
+  window.location.href = 'https://www.gov.uk/get-flood-warnings'
   return null
 }

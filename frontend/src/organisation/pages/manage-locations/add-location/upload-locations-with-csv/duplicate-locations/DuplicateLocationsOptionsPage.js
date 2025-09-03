@@ -123,7 +123,7 @@ export default function DuplicateLocationsOptionsPage() {
         notFoundLocations > 0
           ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
           : notInEnglandLocations > 0
-          ? orgManageLocationsUrls.unmatchedLocations.notInEngland.find
+          ? orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
           : orgManageLocationsUrls.add.contactLinkInfo
 
       switch (option) {

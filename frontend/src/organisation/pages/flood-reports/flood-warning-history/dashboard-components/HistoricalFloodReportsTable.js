@@ -35,7 +35,8 @@ export default function HistoricalFloodReportsTable({
   // Sort standard data
   const sortTableData = (sortType, setSort, path) => {
     const getValue = (obj) => {
-      const objLocationName = obj.locationData.additionals.locationName
+      const objLocationName =
+        obj.locationData.name || obj.locationData.additionals.locationName
       const objLocationType =
         obj.locationData.additionals.other.location_type || '-'
       const objBusinessCriticality =
@@ -285,7 +286,8 @@ export default function HistoricalFloodReportsTable({
                       viewFloodInformationData(location)
                     }}
                   >
-                    {location.locationData.additionals.locationName}
+                    {location.locationData.name ||
+                      location.locationData.additionals.locationName}
                   </Link>
                 </td>
                 <td className='govuk-table__cell'>

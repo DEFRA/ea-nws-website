@@ -9,6 +9,7 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import {
+  setCurrentLocation,
   setNotFoundLocations,
   setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
@@ -68,8 +69,13 @@ export default function DuplicateLocationComparisonPage() {
       state: {
         text:
           existingOrNew === 'Existing'
-            ? `Existing ${existingLocation.additionals.locationName} kept`
-            : `${newLocation.additionals.locationName} replaced`
+            ? `Existing ${
+                existingLocation.name ||
+                existingLocation.additionals.locationName
+              } kept`
+            : `${
+                newLocation.name || newLocation.additionals.locationName
+              } replaced`
       }
     })
   }
@@ -184,6 +190,13 @@ export default function DuplicateLocationComparisonPage() {
           'api/location/update_registration',
           navigate
         )
+
+        // Keep redux in sync by replacing location with new one
+        const updatedCurrent = webToGeoSafeLocation({
+          ...newLocation,
+          id: existingLocation.id
+        })
+        dispatch(setCurrentLocation(updatedCurrent))
       }
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id
@@ -257,8 +270,8 @@ export default function DuplicateLocationComparisonPage() {
               />
             )}
             <h1 className='govuk-heading-l' id='main-content'>
-              {newLocation.additionals.locationName} already exists in this
-              account
+              {newLocation.name || newLocation.additionals.locationName} already
+              exists in this account
             </h1>
             <div className='govuk-body'>
               <div className='govuk-!-margin-bottom-6'>

@@ -100,8 +100,9 @@ const setLocations = async (client, orgId, locations, statusKey) => {
   await setJsonData(client, key, formattedLocations)
   let i = 1
   let percent = 0
-  Object.keys(formattedLocations).forEach(async (key) => {
-    let newPercent = Math.round((i/numLocations)*100)
+
+  for (const key of Object.keys(formattedLocations)) {
+    let newPercent = Math.round((i / numLocations) * 100)
     if (percent !== newPercent) {
       percent = newPercent
       await setJsonData(client, statusKey, {
@@ -110,6 +111,7 @@ const setLocations = async (client, orgId, locations, statusKey) => {
         percent: percent
       })
     }
+
     const location = formattedLocations[key]
     let keywords = []
     location.additionals.forEach((additional) => {
@@ -117,6 +119,7 @@ const setLocations = async (client, orgId, locations, statusKey) => {
         keywords = JSON.parse(additional.value?.s)
       }
     })
+
     for (const keyword of keywords) {
       await addToKeywordArr(client, orgId + ':t_Keywords_location', {
         name: keyword,
@@ -124,7 +127,7 @@ const setLocations = async (client, orgId, locations, statusKey) => {
       })
     }
     i++
-  })
+  }
 }
 
 const addLocation = async (client, orgId, location) => {
@@ -200,13 +203,9 @@ const findLocationByName = async (client, orgId, locationName) => {
   const matchingLocations = []
   Object.keys(locations).forEach((key) => {
     const location = locations[key]
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'locationName') {
-        if (additional.value.s === locationName) {
-          matchingLocations.push(location)
-        }
-      }
-    })
+    if (location.name === locationName) {
+      matchingLocations.push(location)
+    }
   })
 
   return matchingLocations
@@ -218,11 +217,7 @@ const listLocationNames = async (client, orgId) => {
 
   Object.keys(locations).forEach((key) => {
     const location = locations[key]
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'locationName') {
-        locationNames.push(additional.value.s)
-      }
-    })
+    locationNames.push(location.name)
   })
 
   return locationNames
@@ -234,13 +229,9 @@ const findInvLocationByName = async (client, orgId, locationName) => {
   await Promise.all(
     locationKeys.map(async (key) => {
       const location = await getJsonData(client, key)
-      location.additionals.forEach((additional) => {
-        if (additional.id === 'locationName') {
-          if (additional.value.s === locationName) {
-            matchingLocations.push(location)
-          }
-        }
-      })
+      if (location.name === locationName) {
+        matchingLocations.push(location)
+      }
     })
   )
   return matchingLocations
@@ -576,7 +567,7 @@ const orgSignIn = async (
     let locIndex = 1
     let locPercent = 0
     for (const location of locations) {
-      let newLocPercent = Math.round((locIndex/numLocations)*100)
+      let newLocPercent = Math.round((locIndex / numLocations) * 100)
       if (locPercent !== newLocPercent) {
         locPercent = newLocPercent
         await setJsonData(client, statusKey, {
@@ -598,7 +589,7 @@ const orgSignIn = async (
     let contactIndex = 1
     let contactPercent = 0
     for (const contact of contacts) {
-      let newContactPercent = Math.round((contactIndex/numContacts)*100)
+      let newContactPercent = Math.round((contactIndex / numContacts) * 100)
       if (contactPercent !== newContactPercent) {
         contactPercent = newContactPercent
         await setJsonData(client, statusKey, {
@@ -619,7 +610,7 @@ const orgSignIn = async (
     let i = 1
     let percent = 0
     for (const contact of contacts) {
-      let newPercent = Math.round((i/numContacts)*100)
+      let newPercent = Math.round((i / numContacts) * 100)
       if (percent !== newPercent) {
         percent = newPercent
         await setJsonData(client, statusKey, {

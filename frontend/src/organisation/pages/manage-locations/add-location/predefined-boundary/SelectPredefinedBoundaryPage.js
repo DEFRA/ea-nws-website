@@ -97,6 +97,12 @@ export default function SelectPredefinedBoundaryPage() {
     setBoundaryError('')
   }, [selectedBoundary])
 
+  // Clear any previous boundary selection
+  useEffect(() => {
+    dispatch(setSelectedBoundary(null))
+    dispatch(setSelectedBoundaryType(null))
+  }, [])
+
   const onBoundaryTypeSelected = (boundaryType) => {
     dispatch(setSelectedBoundaryType(boundaryType))
   }
@@ -281,7 +287,7 @@ export default function SelectPredefinedBoundaryPage() {
                         : 'Select boundary'
                     }
                     disabledOptions={boundariesAlreadyAdded.map((boundary) => {
-                      return boundary.additionals.locationName
+                      return boundary.name || boundary.additionals.locationName
                     })}
                     value={selectedBoundary?.properties?.TA_Name}
                   />
@@ -304,7 +310,9 @@ export default function SelectPredefinedBoundaryPage() {
                     boundaryList={(val) => setBoundaries(val)}
                     boundariesAlreadyAdded={boundariesAlreadyAdded.map(
                       (boundary) => {
-                        return boundary.additionals.locationName
+                        return (
+                          boundary.name || boundary.additionals.locationName
+                        )
                       }
                     )}
                   />

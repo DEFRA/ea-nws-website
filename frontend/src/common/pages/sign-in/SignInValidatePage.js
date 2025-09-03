@@ -25,6 +25,7 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
+import { formatGovUKTime } from '../../services/formatters/TimeFormatter'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
 export default function SignInValidatePage() {
@@ -145,6 +146,8 @@ export default function SignInValidatePage() {
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
+          // set up authToken and profile so the signup flow can be continued
+          setupAuthentication(data)
         } else {
           if (data.organization) {
             setOrgData(data)
@@ -191,7 +194,7 @@ export default function SignInValidatePage() {
 
     setSignInToken(data.signinToken)
     setCodeResent(true)
-    setCodeResentTime(new Date().toLocaleTimeString())
+    setCodeResentTime(new Date())
     setCodeExpired(false)
   }
 
@@ -220,7 +223,7 @@ export default function SignInValidatePage() {
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
-                    text={'New code sent at ' + codeResentTime}
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
                   />
                 )}
                 {error && (

@@ -101,7 +101,10 @@ export default function SignUpPage() {
                 inputMode='email'
                 name='Email address'
                 error={error}
-                onChange={(val) => setEmail(val)}
+                value={email}
+                onChange={(val) =>
+                  setEmail(val.replaceAll(' ', '').toLowerCase())
+                }
               />
               <p>
                 Read our{' '}

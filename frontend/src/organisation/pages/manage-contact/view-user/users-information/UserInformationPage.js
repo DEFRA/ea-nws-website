@@ -7,9 +7,9 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import UserType from '../../../../../common/enums/UserType'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 /* import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap' */
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact'
 import UserHeader from './user-information-components/UserHeader'
 import UserMap from './user-information-components/UserMap'
@@ -17,9 +17,11 @@ import UserMap from './user-information-components/UserMap'
 export default function UserInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const jobTitle = currentContact.additionals.jobTitle
+  const jobTitle = currentContact?.additionals?.jobTitle
   const keywords = currentContact?.additionals?.keywords ?? []
-  const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
+  const contactName = [currentContact?.firstname, currentContact?.lastname]
+    .filter(Boolean)
+    .join(' ')
   const userType = getRole(currentContact)
   const [locations, setLocations] = useState([])
   /* const [showMap, setShowMap] = useState(false) */
@@ -93,7 +95,7 @@ export default function UserInformationPage() {
           />
         )}
         <UserHeader
-          contactId={currentContact.id}
+          contactId={currentContact?.id}
           contactName={contactName}
           userType={userType}
           currentPage={orgManageContactsUrls.view.viewContact}
@@ -136,13 +138,13 @@ export default function UserInformationPage() {
                 Change
               </Link>
               <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              {currentContact.emails?.length > 0 && (
+              {currentContact?.emails?.length > 0 && (
                 <>
                   <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                     Email addresses
                   </h3>
                   <p>
-                    {currentContact.emails.map((email, index) => {
+                    {currentContact?.emails.map((email, index) => {
                       return (
                         <span key={index}>
                           {email}
@@ -153,13 +155,13 @@ export default function UserInformationPage() {
                   </p>
                 </>
               )}
-              {currentContact.mobilePhones?.length > 0 && (
+              {currentContact?.mobilePhones?.length > 0 && (
                 <>
                   <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                     UK mobile numbers for texts
                   </h3>
                   <p>
-                    {currentContact.mobilePhones.map((number, index) => {
+                    {currentContact?.mobilePhones.map((number, index) => {
                       return (
                         <span key={index}>
                           {number}
@@ -170,13 +172,13 @@ export default function UserInformationPage() {
                   </p>
                 </>
               )}
-              {currentContact.homePhones?.length > 0 && (
+              {currentContact?.homePhones?.length > 0 && (
                 <>
                   <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                     UK telephone numbers for voice messages
                   </h3>
                   <p>
-                    {currentContact.homePhones.map((number, index) => {
+                    {currentContact?.homePhones.map((number, index) => {
                       return (
                         <span key={index}>
                           {number}
@@ -207,7 +209,7 @@ export default function UserInformationPage() {
             )}
 
             {/* Notes details */}
-            {currentContact.comments && (
+            {currentContact?.comments && (
               <div className='govuk-!-margin-top-7'>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Notes
@@ -220,7 +222,7 @@ export default function UserInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p className='notes-body'>{currentContact.comments}</p>
+                <p className='notes-body'>{currentContact?.comments}</p>
               </div>
             )}
 
@@ -236,7 +238,7 @@ export default function UserInformationPage() {
                   </Link>
                 </div>
               )}
-              {!currentContact.comments && (
+              {!currentContact?.comments && (
                 <div>
                   <Link
                     className='govuk-link'

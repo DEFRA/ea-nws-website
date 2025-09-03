@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import {
-  getLocationAdditional,
+  getLocationName,
   getLocationOther,
   setCurrentLocation,
   setNotFoundLocations,
@@ -40,9 +40,7 @@ export default function ConfirmLocationLayout({
   const location = useLocation()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
-  const locationName = useSelector((state) =>
-    getLocationAdditional(state, 'locationName')
-  )
+  const locationName = useSelector((state) => getLocationName(state))
   const locationConfirmationId = 'location-confirmation'
 
   const currentPostCode = useSelector((state) =>

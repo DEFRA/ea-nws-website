@@ -167,7 +167,6 @@ export default function FloodWarningsRemovedDashboardPage() {
   // filters
   const [filters, setFilters] = useState({
     locationName: '',
-    selectedWarningTypes: [],
     selectedLocationTypes: [],
     selectedBusinessCriticalities: []
   })
@@ -182,7 +181,6 @@ export default function FloodWarningsRemovedDashboardPage() {
   const clearFilters = () => {
     setFilters({
       locationName: '',
-      selectedWarningTypes: [],
       selectedLocationTypes: [],
       selectedBusinessCriticalities: []
     })

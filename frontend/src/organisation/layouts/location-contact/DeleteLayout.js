@@ -22,7 +22,7 @@ export default function DeleteLayout() {
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const nameToDelete = useSelector((state) =>
     isLocation
-      ? getLocationAdditionals(state).locationName
+      ? currentLocation?.name || additionalData.locationName
       : state.session.orgCurrentContact.firstname +
         ' ' +
         state.session.orgCurrentContact.lastname

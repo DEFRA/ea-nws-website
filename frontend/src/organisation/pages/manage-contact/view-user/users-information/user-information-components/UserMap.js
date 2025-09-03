@@ -43,9 +43,7 @@ export default function UserMap({ locations }) {
       setLoading(false)
     }
 
-    if (locations && locations.length > 0) {
-      fetchLocations()
-    }
+    fetchLocations()
   }, [locations])
 
   const loadLocationsOnMap = async () => {
@@ -58,7 +56,7 @@ export default function UserMap({ locations }) {
       setCentre([0, 0])
       locations.forEach(async (location) => {
         let feature
-        const locationType = location.additionals.other.location_data_type
+        const locationType = location?.additionals?.other?.location_data_type
 
         if (locationType) {
           // add all points to markers which can be represented on the map
@@ -114,6 +112,7 @@ export default function UserMap({ locations }) {
     }
     // no linked locations, setting to centre of England
     setCentre([52.7152, -1.17349])
+    setLoading(false)
   }
 
   // Auto fit the map to loaded locations (with a bit of padding)
@@ -244,7 +243,9 @@ export default function UserMap({ locations }) {
                         className='govuk-link'
                         onClick={(e) => viewLocation(e, marker)}
                       >
-                        {marker?.additionals?.locationName || 'Name not found'}
+                        {marker.name ||
+                          marker?.additionals?.locationName ||
+                          'Name not found'}
                       </a>
                     </Popup>
                   </Marker>
@@ -257,9 +258,9 @@ export default function UserMap({ locations }) {
                     onEachFeature={(feature, layer) => {
                       layer.bindPopup(
                         `<a href="#" class="govuk-link">${
+                          feature.properties?.locationData?.name ||
                           feature.properties?.locationData?.additionals
                             ?.locationName ||
-                          feature.properties?.locationData?.name ||
                           'Name not found'
                         }</a>`
                       )

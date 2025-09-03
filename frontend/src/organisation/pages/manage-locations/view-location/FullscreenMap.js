@@ -416,7 +416,8 @@ export default function FullscreenMap({
                                       className='govuk-link'
                                       // onClick={(e) => viewLocation(e, location)}
                                     >
-                                      {location.additionals.locationName}
+                                      {location.name ||
+                                        location.additionals.locationName}
                                     </Link>
                                     <br />
                                     {location.address}

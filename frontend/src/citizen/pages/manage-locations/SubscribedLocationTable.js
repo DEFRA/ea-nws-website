@@ -170,7 +170,9 @@ export default function SubscribedLocationTable({ setError }) {
     const addressColumn = (location) => {
       return (
         <td className='govuk-table__cell govuk-!-width-full'>
-          <p className='govuk-!-margin-bottom-0'>{location.address}</p>
+          <p className='govuk-!-font-weight-bold govuk-!-margin-bottom-0'>
+            {location.address}
+          </p>
           <p
             style={{ fontSize: '1rem' }}
             className='govuk-hint govuk-!-margin-bottom-0'

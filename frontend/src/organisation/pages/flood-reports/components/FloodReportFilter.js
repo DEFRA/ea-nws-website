@@ -13,7 +13,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
 
-export default function FloodReportFilter ({
+export default function FloodReportFilter({
   locationsAffected,
   setFilteredLocationsAffected,
   resetPaging,
@@ -43,23 +43,21 @@ export default function FloodReportFilter ({
 
   const businessCriticalityTypes = [
     ...new Set(
-      locationsAffected
-        .map(
-          (location) => {
-            const temp = location.locationData.additionals.other?.business_criticality || ''
-            return temp?.trim() !== '' ? temp : EMPTY_LABEL
-          }
-        )
+      locationsAffected.map((location) => {
+        const temp =
+          location.locationData.additionals.other?.business_criticality || ''
+        return temp?.trim() !== '' ? temp : EMPTY_LABEL
+      })
     )
   ]
 
   const locationTypes = [
     ...new Set(
-      locationsAffected
-        .map((location) => {
-          const temp = location.locationData.additionals.other?.location_type || ''
-          return temp?.trim() !== '' ? temp : EMPTY_LABEL
-        })
+      locationsAffected.map((location) => {
+        const temp =
+          location.locationData.additionals.other?.location_type || ''
+        return temp?.trim() !== '' ? temp : EMPTY_LABEL
+      })
     )
   ]
 
@@ -109,14 +107,15 @@ export default function FloodReportFilter ({
     }
 
     if (filters.locationName) {
-      filtered = filtered.filter((location) =>
-        location.locationData.additionals.locationName
-          .toLowerCase()
-          .includes(filters.locationName.toLowerCase())
-      )
+      filtered = filtered.filter((location) => {
+        const loc =
+          location.locationData?.name ||
+          location.locationData?.additionals?.locationName
+        return loc.toLowerCase().includes(filters.locationName.toLowerCase())
+      })
     }
 
-    if (filters.selectedWarningTypes.length > 0) {
+    if (filters?.selectedWarningTypes?.length > 0) {
       const filterMap = {
         'Severe flood warnings': AlertType.SEVERE_FLOOD_WARNING,
         'Flood warnings': AlertType.FLOOD_WARNING,
@@ -130,15 +129,14 @@ export default function FloodReportFilter ({
     }
 
     if (filters.selectedLocationTypes.length > 0) {
-      filtered = filtered.filter((location) =>
-        {
-          const temp = location.locationData.additionals?.other?.location_type || ''
-          const isEmpty = temp.trim() === ''
-          return filters.selectedLocationTypes.some((f) =>
-            f === EMPTY_LABEL ? isEmpty : f === temp
-          )
-        }
-      )
+      filtered = filtered.filter((location) => {
+        const temp =
+          location.locationData.additionals?.other?.location_type || ''
+        const isEmpty = temp.trim() === ''
+        return filters.selectedLocationTypes.some((f) =>
+          f === EMPTY_LABEL ? isEmpty : f === temp
+        )
+      })
     }
 
     if (filters.selectedBusinessCriticalities.length > 0) {
@@ -440,7 +438,7 @@ export default function FloodReportFilter ({
       )
     }
 
-    if (filters.selectedWarningTypes.length > 0) {
+    if (filters?.selectedWarningTypes?.length > 0) {
       selectedFilters.push(
         <div
           key='warningType'
@@ -611,11 +609,13 @@ export default function FloodReportFilter ({
       {'dateFrom' in filters && 'dateTo' in filters && dateRangeFilter}
       {locationNameSearchFilter}
 
-      <FilterSection
-        title='Warning type'
-        options={warningTypes}
-        filterKey='selectedWarningTypes'
-      />
+      {filters?.selectedWarningTypes?.length > 0 && (
+        <FilterSection
+          title='Warning type'
+          options={warningTypes}
+          filterKey='selectedWarningTypes'
+        />
+      )}
       <FilterSection
         title='Location type'
         options={locationTypes}

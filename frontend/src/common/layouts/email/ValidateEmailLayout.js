@@ -11,6 +11,7 @@ import NotificationBanner from '../../components/gov-uk/NotificationBanner'
 import UserContactType from '../../enums/UserContactType'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
+import { formatGovUKTime } from '../../services/formatters/TimeFormatter'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -74,7 +75,6 @@ export default function ValidateEmailLayout({
       } else {
         if (changeSignIn) {
           updateProfile(data.profile, authToken, signinType)
-          setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
           navigateToNextPage(email)
@@ -95,7 +95,7 @@ export default function ValidateEmailLayout({
       setError(errorMessage)
     } else {
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
@@ -192,12 +192,19 @@ export default function ValidateEmailLayout({
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
-                      text={'New code sent at ' + codeResentTime}
+                      text={
+                        'New code sent at ' + formatGovUKTime(codeResentTime)
+                      }
                     />
                   )}
-                  {error && (
+                  {(error || profileError) && (
                     <ErrorSummary
-                      errorList={[{ text: error, componentId: enterCodeId }]}
+                      errorList={[
+                        {
+                          text: error || profileError,
+                          componentId: enterCodeId
+                        }
+                      ]}
                     />
                   )}
                   <h2 className='govuk-heading-l' id='main-content'>

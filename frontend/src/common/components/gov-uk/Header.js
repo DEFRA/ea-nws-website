@@ -16,6 +16,11 @@ export default function Header() {
     !location.pathname.includes('sign-up') &&
     !location.pathname.includes('organisation/admin-controls')
 
+  const isSignUpPage =
+    (location.pathname.includes('sign-up') ||
+      location.pathname.includes('signup')) &&
+    !location.pathname.includes('success')
+
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
@@ -73,7 +78,7 @@ export default function Header() {
                 className='govuk-header__content govuk-grid-row'
                 style={{ display: 'inline-block' }}
               >
-                {authToken ? (
+                {authToken && !isSignUpPage ? (
                   <Link
                     className='govuk-header__link custom-header-link'
                     to={

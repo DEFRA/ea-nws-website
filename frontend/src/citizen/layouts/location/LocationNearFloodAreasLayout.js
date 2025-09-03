@@ -242,7 +242,7 @@ export default function LocationNearFloodAreasLayout({
         updatedLocationRegistrations = [
           ...updatedLocationRegistrations,
           {
-            location: location.address,
+            location: location?.address,
             alertTypes: locationAlertTypes
           }
         ]

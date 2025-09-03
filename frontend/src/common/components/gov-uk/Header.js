@@ -18,8 +18,9 @@ export default function Header() {
     !path.includes('organisation/admin-controls')
 
   // Hide "Sign out" link on all signup pages until user reaches end
-  const inCitizenSignUpFlow = path.includes('/signup')
-  const atOrPastConfirmation = path.includes('/success')
+  const inCitizenSignUpFlow =
+    path.includes('signup') || path.includes('sign-up')
+  const atOrPastConfirmation = path.includes('success')
   const isPreConfirmation = inCitizenSignUpFlow && !atOrPastConfirmation
 
   async function getServicePhase() {

@@ -71,6 +71,10 @@ export default function FloodMessageReviewTable() {
                 aria-label={`Change flood messages`}
               >
                 Change
+                <span className='govuk-visually-hidden'>
+                  {' '}
+                  flood messages you'll get
+                </span>
               </Link>
             </td>
           </tr>

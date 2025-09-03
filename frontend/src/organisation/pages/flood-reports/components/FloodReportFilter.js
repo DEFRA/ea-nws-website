@@ -115,7 +115,7 @@ export default function FloodReportFilter({
       })
     }
 
-    if (filters.selectedWarningTypes.length > 0) {
+    if (filters?.selectedWarningTypes?.length > 0) {
       const filterMap = {
         'Severe flood warnings': AlertType.SEVERE_FLOOD_WARNING,
         'Flood warnings': AlertType.FLOOD_WARNING,
@@ -438,7 +438,7 @@ export default function FloodReportFilter({
       )
     }
 
-    if (filters.selectedWarningTypes.length > 0) {
+    if (filters?.selectedWarningTypes?.length > 0) {
       selectedFilters.push(
         <div
           key='warningType'
@@ -609,11 +609,13 @@ export default function FloodReportFilter({
       {'dateFrom' in filters && 'dateTo' in filters && dateRangeFilter}
       {locationNameSearchFilter}
 
-      <FilterSection
-        title='Warning type'
-        options={warningTypes}
-        filterKey='selectedWarningTypes'
-      />
+      {filters?.selectedWarningTypes?.length > 0 && (
+        <FilterSection
+          title='Warning type'
+          options={warningTypes}
+          filterKey='selectedWarningTypes'
+        />
+      )}
       <FilterSection
         title='Location type'
         options={locationTypes}

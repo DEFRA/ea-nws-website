@@ -48,7 +48,14 @@ export default function ManageContactsPage() {
           >
             confirm the number
           </Link>{' '}
-          first
+          first. Check the number and if you still did not get a code,{' '}
+          <Link
+            to='/contact'
+            className='govuk-link'
+            style={{ cursor: 'pointer' }}
+          >
+            contact us
+          </Link>
         </>
       )
     }
@@ -62,7 +69,14 @@ export default function ManageContactsPage() {
         >
           confirm the number
         </Link>{' '}
-        first
+        first. Check the number and if you still did not get a code,{' '}
+        <Link
+          to='/contact'
+          className='govuk-link'
+          style={{ cursor: 'pointer' }}
+        >
+          contact us
+        </Link>
       </>
     )
   }

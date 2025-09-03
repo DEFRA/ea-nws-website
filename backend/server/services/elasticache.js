@@ -176,7 +176,7 @@ const updateLocation = async (client, orgId, location) => {
   const locationID = location.id
   const key = orgId + ':t_POIS'
   const exists = await getJsonData(client, key, locationID)
-  if (exists.length < 1) {
+  if (exists) {
     await removeLocation(client, orgId, locationID)
   }
   await addLocation(client, orgId, location)

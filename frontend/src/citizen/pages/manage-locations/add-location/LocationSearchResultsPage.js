@@ -1,9 +1,13 @@
 import { Helmet } from 'react-helmet'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
 export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
+  const locationSearchType = useSelector(
+    (state) => state.session.locationSearchType
+  )
 
   const continueToNextPage = (
     floodAreasAlreadyAdded,
@@ -18,7 +22,12 @@ export default function LocationSearchResultsPage() {
     } else if (isInWarningArea || isInAlertArea) {
       navigate('/manage-locations/add/location-in-flood-areas')
     } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
-      navigate('/manage-locations/add/location-near-flood-areas')
+      if (locationSearchType === 'placename') {
+        navigate('/manage-locations/add/location-near-flood-areas')
+      }
+      navigate(
+        '/manage-locations/add/location-cannot-get-direct-flood-messages'
+      )
     } else if (isError) {
       navigate('/error')
     } else {

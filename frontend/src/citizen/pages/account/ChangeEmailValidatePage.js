@@ -6,7 +6,7 @@ import ValidateEmailLayout from '../../../common/layouts/email/ValidateEmailLayo
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function ChangeEmailValidationPage () {
+export default function ChangeEmailValidationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState('')
@@ -19,6 +19,7 @@ export default function ChangeEmailValidationPage () {
     // The sign in email is always the first one in the array
     // Pop out the last email added and put it in first position
     const profileEmails = profile.emails
+    const signinEmail = profileEmails[0]
     profileEmails[0] = profileEmails.pop()
     profile.emails = profileEmails
 
@@ -30,6 +31,11 @@ export default function ChangeEmailValidationPage () {
     )
 
     if (errorMessage !== null) {
+      if (errorMessage.includes('already registered')) {
+        profileEmails[0] = signinEmail
+        profile.emails = profileEmails
+        dispatch(setProfile(profile))
+      }
       setError(errorMessage)
     } else {
       dispatch(setProfile(profile))

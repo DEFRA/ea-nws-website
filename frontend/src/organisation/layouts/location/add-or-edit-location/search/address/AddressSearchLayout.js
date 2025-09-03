@@ -39,8 +39,6 @@ export default function AddressSearchLayout({
   )
   const existingName = useSelector((state) => getLocationName(state))
 
-  console.log(existingName)
-
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
 

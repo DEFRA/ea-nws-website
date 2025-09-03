@@ -18,9 +18,7 @@ export default function LocationSearchResultsPage() {
     } else if (isInWarningArea || isInAlertArea) {
       navigate('/manage-locations/add/location-in-flood-areas')
     } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
-      navigate(
-        '/manage-locations/add/location-cannot-get-direct-flood-messages'
-      )
+      navigate('/manage-locations/add/location-near-flood-areas')
     } else if (isError) {
       navigate('/error')
     } else {

@@ -134,8 +134,9 @@ export default function LocationInFloodAreasLayout({
     const updatedLocationRegistrations = [
       ...(locationRegistrations || []),
       {
+        locationId: location.id,
         location: location.address,
-        alertTypes: locationAlertTypes
+        registrations: [{ params: { alertTypes: locationAlertTypes } }]
       }
     ]
     dispatch(setLocationRegistrations(updatedLocationRegistrations))

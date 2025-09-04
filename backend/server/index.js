@@ -13,7 +13,9 @@ async function createServer(workerId) {
   const server = hapi.server({
     port: conf.port,
     routes: {
-      cors: true,
+      cors: {
+        additionalHeaders: ['cache-control']
+      },
       validate: {
         options: {
           abortEarly: false

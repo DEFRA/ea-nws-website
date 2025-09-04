@@ -6,6 +6,7 @@ import LoadingSpinner from '../../../../../../common/components/custom/LoadingSp
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../../common/components/gov-uk/Pagination'
 import {
+  getLocationName,
   getLocationOther,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
@@ -36,13 +37,14 @@ export default function AddressSearchLayout({
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
+  const existingName = useSelector((state) => getLocationName(state))
 
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
 
     setLoading(true)
     try {
-      dispatch(setCurrentLocationName(selectedLocation.name))
+      !existingName && dispatch(setCurrentLocationName(selectedLocation.name))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
       dispatch(setCurrentLocationAddress(selectedLocation.address))
 

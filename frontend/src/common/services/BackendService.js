@@ -11,10 +11,10 @@ export const backendCall = async (data, path, navigate) => {
       mode: 'cors',
       credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'cache-control': 'no-cache, no-store'
       },
-      body: JSON.stringify(data),
-      cache: 'no-store'
+      body: JSON.stringify(data)
     })
     responseData = await response.json()
   } catch (error) {

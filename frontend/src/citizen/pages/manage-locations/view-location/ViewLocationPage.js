@@ -268,7 +268,7 @@ export default function ViewLocationPage() {
 
     if (!errorMessage) {
       // Update alerts in locationRegistrations
-      const updatedLocationRegistrations = locationRegistrations.map((loc) =>
+      const updatedLocationRegistrations = locationRegistrations?.map((loc) =>
         loc.locationId == selectedLocation.id
           ? {
               ...loc,

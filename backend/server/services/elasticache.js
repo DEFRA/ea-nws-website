@@ -176,7 +176,7 @@ const updateLocation = async (client, orgId, location) => {
   const locationID = location.id
   const key = orgId + ':t_POIS'
   const exists = await getJsonData(client, key, locationID)
-  if (exists.length < 1) {
+  if (exists) {
     await removeLocation(client, orgId, locationID)
   }
   await addLocation(client, orgId, location)
@@ -558,52 +558,7 @@ const orgSignIn = async (
   await setJsonData(client, profile.id + ':profile', profile)
   await addOrgActiveAdmins(client, orgId, profile.id)
   const orgExists = await checkKeyExists(client, orgId + ':org_data')
-  if (orgExists) {
-    const existingLocations = await getJsonData(
-      client,
-      organization.id + ':t_POIS'
-    )
-    const numLocations = locations.length
-    let locIndex = 1
-    let locPercent = 0
-    for (const location of locations) {
-      let newLocPercent = Math.round((locIndex / numLocations) * 100)
-      if (locPercent !== newLocPercent) {
-        locPercent = newLocPercent
-        await setJsonData(client, statusKey, {
-          stage: 'Processing locations',
-          status: 'working',
-          percent: locPercent
-        })
-      }
-      if (!Object.keys(existingLocations).includes(location.id)) {
-        await addLocation(client, organization.id, location)
-      }
-      locIndex++
-    }
-    const existingContacts = await getContactKeys(client, orgId)
-    const existingContactIds = existingContacts.map((contact) =>
-      contact.split(':').slice(2).join(':')
-    )
-    const numContacts = contacts.length
-    let contactIndex = 1
-    let contactPercent = 0
-    for (const contact of contacts) {
-      let newContactPercent = Math.round((contactIndex / numContacts) * 100)
-      if (contactPercent !== newContactPercent) {
-        contactPercent = newContactPercent
-        await setJsonData(client, statusKey, {
-          stage: 'Retrieving Contacts',
-          status: 'working',
-          percent: contactPercent
-        })
-      }
-      if (!existingContactIds.includes(contact.id)) {
-        await addContact(client, orgId, contact)
-      }
-      contactIndex++
-    }
-  } else {
+  if (!orgExists) {
     await setJsonData(client, organization.id + ':org_data', organization)
     await setLocations(client, organization.id, locations, statusKey)
     const numContacts = contacts.length

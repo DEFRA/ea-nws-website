@@ -6,7 +6,8 @@ const {
   orgSignIn,
   addLinkedLocations,
   setJsonData,
-  getJsonData
+  getJsonData,
+  setLinkLocations
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
@@ -122,6 +123,7 @@ module.exports = [
           const numContacts = contactRes.data.contacts.length
           let contactIndex = 1
           let percent = 0
+          const linkedContactsArr = []
 
           for (const contact of contactRes.data.contacts) {
             let newPercent = Math.round((contactIndex/numContacts)*100)
@@ -163,14 +165,25 @@ module.exports = [
               locationIDs.push(location.id)
             })
 
-            await addLinkedLocations(
-              redis,
-              orgData.organization.id,
-              contact.id,
-              locationIDs
-            )
+            linkedContactsArr.push({id: contact.id, linkIDs: locationIDs})
             contactIndex++
           }
+          
+          const linkedLocationsMap = linkedContactsArr.reduce((acc, {id, linkIDs}) => {
+            linkIDs.forEach((locationID) => {
+              if (!acc[locationID]) acc[locationID] = []
+              acc[locationID].push(id)
+            })
+            return acc
+          }, {})
+
+          const linkedLocationsArr = Object.entries(linkedLocationsMap).map(([linkIDs, id]) => ({
+            id: linkIDs,
+            linkIDs: id
+          }))
+
+          await setLinkLocations(redis, orgData.organization.id, linkedLocationsArr, linkedContactsArr)
+
           await setJsonData(redis, elasticacheKey, {
             stage: 'Populating account',
             status: 'complete'

@@ -483,6 +483,11 @@ const removeFromLinkedArr = async (client, key, value) => {
   }
 }
 
+const setLinkLocations = async (client, orgId, linkedLocations, linkedContacts) => {
+  await setJsonData(client, orgId + ':t_Linked_contacts', linkedContacts)
+  await setJsonData(client, orgId + ':t_Linked_locations', linkedLocations)
+}
+
 const addLinkedLocations = async (client, orgId, contactID, locationIDs) => {
   if (locationIDs) {
     for (const locationID of locationIDs) {
@@ -691,5 +696,6 @@ module.exports = {
   setFloodHistory,
   getFloodHistory,
   getLinkedContactsCount,
-  getLinkedLocationsCount
+  getLinkedLocationsCount,
+  setLinkLocations
 }

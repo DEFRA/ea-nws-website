@@ -100,7 +100,7 @@ export default function ChangeEmailLayout({
                 inputMode='email'
                 name='New email address'
                 error={error}
-                onChange={(val) => setEmail(val)}
+                onChange={(val) => setEmail(val.replaceAll(' ', ''))}
               />
               <Button
                 className='govuk-button'

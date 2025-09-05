@@ -12,10 +12,12 @@ import NotificationBanner from '../../../../common/components/gov-uk/Notificatio
 import ExpiredCodeLayout from '../../../../common/layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
+  setLocationRegistrations,
   setProfile,
   setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { formatGovUKTime } from '../../../../common/services/formatters/TimeFormatter'
 import {
   getRegistrationParams,
   updateAdditionals
@@ -97,7 +99,18 @@ export default function SignUpValidationPage() {
 
         await registerAllLocations(data.authToken, updatedProfile)
 
-        dispatch(setProfile(updatedProfile))
+        const { errorMessage, data: verifyData } = await backendCall(
+          { authToken: data.authToken },
+          'api/sign_in_verify'
+        )
+
+        if (errorMessage) {
+          setError(errorMessage)
+        } else {
+          dispatch(setLocationRegistrations(verifyData.locationRegistrations))
+          dispatch(setProfile(verifyData.profile))
+        }
+
         navigate('/signup/contactpreferences', {
           state: { loginEmail: loginEmail }
         })
@@ -108,8 +121,8 @@ export default function SignUpValidationPage() {
   const registerAllLocations = async (authToken, profile) => {
     profile.pois.map(async (poi) => {
       const alertTypes =
-        locationRegistrations.find((loc) => loc.locationId === poi.id)
-          ?.registrations[0]?.params?.alertTypes || []
+        locationRegistrations.find((loc) => loc.location === poi.address)
+          ?.alertTypes || []
 
       const data = {
         authToken,
@@ -150,7 +163,7 @@ export default function SignUpValidationPage() {
     } else {
       dispatch(setRegisterToken(data.registerToken))
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
@@ -172,7 +185,7 @@ export default function SignUpValidationPage() {
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
-                    text={'New code sent at ' + codeResentTime}
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
                   />
                 )}
                 {error && (

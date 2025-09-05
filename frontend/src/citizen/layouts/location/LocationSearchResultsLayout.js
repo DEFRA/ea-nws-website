@@ -264,7 +264,7 @@ export default function LocationSearchResultsLayout({
                       <tr className='govuk-table__row'>
                         <td className='govuk-table__cell' />
                       </tr>
-                      {locations.map((location, index) => (
+                      {locations?.map((location, index) => (
                         <tr key={index} className='govuk-table__row'>
                           <td className='govuk-table__cell'>
                             <Link

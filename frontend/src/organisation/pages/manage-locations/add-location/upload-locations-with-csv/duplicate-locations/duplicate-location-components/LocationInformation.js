@@ -28,7 +28,9 @@ export default function LocationInformation({ location, comparedLocation }) {
   const addressAdded =
     comparedLocation && comparedAdditionalData?.full_address === ''
   const locationNameAdded =
-    comparedLocation && comparedLocation?.additionals?.locationName === null
+    comparedLocation &&
+    comparedLocation?.additionals?.locationName === null &&
+    comparedLocation?.name === null
   const internalReferenceAdded =
     comparedLocation && comparedAdditionalData?.internal_reference === ''
   const businessCriticalityAdded =
@@ -249,13 +251,14 @@ export default function LocationInformation({ location, comparedLocation }) {
                   style={
                     !locationNameAdded &&
                     comparedLocation &&
-                    comparedLocation?.additionals?.locationName !==
-                      location?.additionals?.locationName
+                    (comparedLocation?.additionals?.locationName !==
+                      location?.additionals?.locationName ||
+                      comparedLocation?.name !== location?.name)
                       ? compareStyle
                       : {}
                   }
                 >
-                  {location?.additionals?.locationName}
+                  {location?.name || location?.additionals?.locationName}
                 </p>
               </div>
               {additionalData?.internal_reference && (

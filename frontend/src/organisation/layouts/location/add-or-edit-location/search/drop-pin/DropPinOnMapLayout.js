@@ -9,6 +9,7 @@ import AlertType from '../../../../../../common/enums/AlertType'
 import store from '../../../../../../common/redux/store'
 import {
   getLocationAdditional,
+  getLocationName,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
@@ -46,6 +47,8 @@ export default function DropPinOnMapLayout({
   let { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+  const name = useSelector((state) => getLocationName(state))
+
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -58,7 +61,7 @@ export default function DropPinOnMapLayout({
 
   const authToken = useSelector((state) => state.session.authToken)
   const [displayCoords, setDisplayCoords] = useState('')
-  const [pinCoords, setPinCoords] = useState(null)
+  const [pinCoords, setPinCoords] = useState({ latitude, longitude } || null)
   const [error, setError] = useState('')
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
@@ -105,7 +108,7 @@ export default function DropPinOnMapLayout({
   const checkDuplicateLocation = async () => {
     const dataToSend = {
       authToken,
-      locationName,
+      locationName: name || locationName,
       type: 'valid'
     }
     const { data } = await backendCall(
@@ -141,6 +144,14 @@ export default function DropPinOnMapLayout({
 
       if (inEngland && !duplicateLocation) {
         const newWebLocation = geoSafeToWebLocation(locationToAdd)
+
+        const { easting, northing } = convertCoordinatesToEspg27700(
+          pinCoords.latitude,
+          pinCoords.longitude
+        )
+        newWebLocation.additionals.other.x_coordinate = easting
+        newWebLocation.additionals.other.y_coordinate = northing
+
         // get target areas
         const TAs = await getFloodAreas(
           newWebLocation.coordinates.latitude,

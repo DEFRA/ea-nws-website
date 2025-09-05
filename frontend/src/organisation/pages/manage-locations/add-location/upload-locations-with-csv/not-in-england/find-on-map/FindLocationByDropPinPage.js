@@ -5,14 +5,15 @@ import { useNavigate } from 'react-router-dom'
 import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function FindLocationByDropPinPage () {
+export default function FindLocationByDropPinPage() {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
 
   const navigateToNextPage = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard, {
       state: {
-        addedLocation: currentLocation.additionals[0].value.s
+        addedLocation:
+          currentLocation.name || currentLocation.additionals[0].value.s
       }
     })
 
@@ -28,12 +29,17 @@ export default function FindLocationByDropPinPage () {
   return (
     <>
       <Helmet>
-        <title>Find location by dropping pin - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Find location by dropping pin - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <DropPinOnMapLayout
         navigateToNextPage={navigateToNextPage}
         navigateToNotInEnglandPage={navigateToNotInEnglandPage}
-        navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
+        navigateToDropPinLocationSearchPage={
+          navigateToDropPinLocationSearchPage
+        }
         flow='unmatched-locations-not-in-england'
       />
     </>

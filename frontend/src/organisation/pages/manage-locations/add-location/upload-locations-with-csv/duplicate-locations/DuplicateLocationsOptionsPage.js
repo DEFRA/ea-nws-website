@@ -123,7 +123,7 @@ export default function DuplicateLocationsOptionsPage() {
         notFoundLocations > 0
           ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
           : notInEnglandLocations > 0
-          ? orgManageLocationsUrls.unmatchedLocations.notInEngland.find
+          ? orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
           : orgManageLocationsUrls.add.contactLinkInfo
 
       switch (option) {
@@ -158,7 +158,7 @@ export default function DuplicateLocationsOptionsPage() {
                 // get the exisitng location to use it's ID
                 const existingLocation = await getLocation(
                   authToken,
-                  location.additionals.locationName,
+                  location.name,
                   'valid'
                 )
 

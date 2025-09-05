@@ -40,7 +40,8 @@ export default function LinkBanner({
         afterText = linkLocations.length + ' locations'
       } else if (currentLocation) {
         if (predefinedBoundaryFlow || linkSource === 'dashboard') {
-          afterText = currentLocation.additionals.locationName
+          afterText =
+            currentLocation.name || currentLocation.additionals.locationName
         } else {
           afterText = 'this location'
         }
@@ -73,7 +74,9 @@ export default function LinkBanner({
         if (selectedLocations.length > 1) {
           afterText = selectedLocations.length + ' locations'
         } else {
-          afterText = selectedLocations[0].additionals.locationName
+          afterText =
+            selectedLocations[0].name ||
+            selectedLocations[0].additionals.locationName
         }
       }
     }
@@ -184,7 +187,7 @@ export default function LinkBanner({
       if (linkLocations.length > 1) {
         text = linkLocations.length + ' locations'
       } else if (currentLocation) {
-        text = currentLocation.additionals.locationName
+        text = currentLocation.name || currentLocation.additionals.locationName
       }
     } else if (linkContacts) {
       if (linkContacts.length > 1) {
@@ -214,7 +217,9 @@ export default function LinkBanner({
       if (selectedLocations.length > 1) {
         text = selectedLocations.length + ' locations'
       } else {
-        text = selectedLocations[0].additionals.locationName
+        text =
+          selectedLocations[0].name ||
+          selectedLocations[0].additionals.locationName
       }
     } else if (selectedContacts && selectedContacts.length > 0) {
       if (selectedContacts.length > 1) {

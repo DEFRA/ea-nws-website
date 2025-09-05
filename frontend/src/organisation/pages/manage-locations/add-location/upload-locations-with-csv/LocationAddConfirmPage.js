@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -86,7 +86,8 @@ export default function LocationAddConfirmPage() {
             className='govuk-heading-l govuk-!-margin-bottom-7'
             id='main-content'
           >
-            {locationsValid} locations can be added
+            {locationsValid} location{locationsValid.length > 1 && 's'} can be
+            added
           </h1>{' '}
           <Button
             text='Add and continue'

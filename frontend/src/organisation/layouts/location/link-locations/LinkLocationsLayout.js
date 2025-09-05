@@ -221,13 +221,16 @@ export default function LinkLocationsLayout({
       navigate
     )
 
-    const contactIds = []
-    if (data) {
-      data.forEach((contact) => {
-        contactIds.push(contact.id)
-      })
+    if (!data) return []
+
+    // Handle the data returned, whether it is an array of objects or dictionary
+    if (Array.isArray(data)) {
+      return data.map((c) => (typeof c === 'object' ? c.id : c)).filter(Boolean)
+    } else if (typeof data === 'object') {
+      return Object.keys(data).map((id) => Number(id))
     }
-    return contactIds
+
+    return []
   }
 
   const handleSubmit = async (event) => {
@@ -398,12 +401,12 @@ export default function LinkLocationsLayout({
         'api/location/update_registration',
         navigate
       )
-      dispatch(setCurrentLocation(data))
+      dispatch(setCurrentLocation(locationToAdd))
       dispatch(setCurrentLocationAlertTypes(alertTypes))
       navigateToNextPage(
-        `${additionalData.locationName} linked to ${toWords(
-          childrenIDs.length
-        )} nearby flood areas`
+        `${
+          currentLocation.name || additionalData.locationName
+        } linked to ${toWords(childrenIDs.length)} nearby flood areas`
       )
     } else {
       // TODO set an error
@@ -638,9 +641,9 @@ export default function LinkLocationsLayout({
               Select nearby flood areas
             </h1>
             <p className='govuk-body'>
-              {additionalData.locationName} is near to these flood areas. You
-              can select 1 or more nearby flood areas you want to link this
-              location to.
+              {currentLocation.name || additionalData.locationName} is near to
+              these flood areas. You can select 1 or more nearby flood areas you
+              want to link this location to.
             </p>
             <p className='govuk-body'>
               <Link to={infoUrls.floodAreas} className='govuk-link'>

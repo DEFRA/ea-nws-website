@@ -26,6 +26,7 @@ export default function LocationInformationPage() {
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []
+  const locationName = currentLocation.name || additionalData.locationName
 
   const formattedAddress = currentLocation.address?.split(',')
 
@@ -177,13 +178,7 @@ export default function LocationInformationPage() {
   return (
     <>
       <Helmet>
-        <title>
-          {additionalData.locationName
-            ? additionalData.locationName
-            : 'This location'}
-          's information - Manage locations - Get flood warnings (professional)
-          - GOV.UK
-        </title>
+        <title>{locationName ? locationName : 'This location'}'s information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
       </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
@@ -236,39 +231,39 @@ export default function LocationInformationPage() {
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.keyInformation
                   }
-                >
-                  Change
-                </Link>
-                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                  Location name
-                </h3>
-                <p>{additionalData.locationName}</p>
-                {additionalData.internal_reference && (
-                  <>
-                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                      Internal reference
-                    </h3>
-                    <p>{additionalData.internal_reference}</p>
-                  </>
-                )}
-                {additionalData.business_criticality && (
-                  <>
-                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                      Business criticality
-                    </h3>
-                    <p>{additionalData.business_criticality}</p>
-                  </>
-                )}
-                {additionalData.location_type && (
-                  <>
-                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                      Location type
-                    </h3>
-                    <p>{additionalData.location_type}</p>
-                  </>
-                )}
-              </div>
+                  >
+                    Change
+                  </Link>
+                  <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                    Location name
+                  </h3>
+                  <p>{locationName}</p>
+                  {additionalData.internal_reference && (
+                    <>
+                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        Internal reference
+                      </h3>
+                      <p>{additionalData.internal_reference}</p>
+                    </>
+                  )}
+                  {additionalData.business_criticality && (
+                    <>
+                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        Business criticality
+                      </h3>
+                      <p>{additionalData.business_criticality}</p>
+                    </>
+                  )}
+                  {additionalData.location_type && (
+                    <>
+                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        Location type
+                      </h3>
+                      <p>{additionalData.location_type}</p>
+                    </>
+                  )}
+                </div>
             )}
 
             {/* Keywords details */}

@@ -2,7 +2,7 @@ const locations = [
   {
     id: '1',
     enabled: true,
-    name: 'UPRN',
+    name: 'Big Ben',
     address: 'Big Ben, London, SW1A 0AA',
     coordinates: {
       latitude: 51.49907586 * 10 ** 6,
@@ -49,7 +49,7 @@ const locations = [
   {
     id: '2',
     enabled: true,
-    name: 'UPRN',
+    name: 'Devon',
     address: 'South Devon Estuaries',
     coordinates: {
       latitude: 50.67978054 * 10 ** 6,
@@ -101,7 +101,7 @@ const locations = [
   {
     id: '3',
     enabled: true,
-    name: 'UPRN',
+    name: 'Ulverston',
     address: '31 Sun street, Ulverston, LA12 7BX',
     coordinates: {
       latitude: 54.189244 * 10 ** 6,
@@ -146,7 +146,7 @@ const locations = [
   {
     id: '4',
     enabled: true,
-    name: 'UPRN',
+    name: 'York',
     address: 'York',
     coordinates: null,
     geometry: {
@@ -211,7 +211,7 @@ const locations = [
   {
     id: '5',
     enabled: true,
-    name: 'UPRN',
+    name: 'London eye',
     address: 'River Thames and London Eye, London',
     coordinates: null,
     geometry: {
@@ -271,7 +271,7 @@ const locations = [
   {
     id: '6',
     enabled: true,
-    name: 'UPRN',
+    name: 'Halstead High st.',
     address: 'High Street, Halstead, Essex, England',
     coordinates: null,
     geometry: {
@@ -328,7 +328,7 @@ const locations = [
   {
     id: '7',
     enabled: true,
-    name: 'UPRN',
+    name: 'Peterborough',
     address: 'Peterborough',
     coordinates: null,
     geometry: {
@@ -386,7 +386,7 @@ const locations = [
   {
     id: '8',
     enabled: true,
-    name: 'UPRN',
+    name: 'Gloucester',
     address: 'Gloucester',
     coordinates: null,
     geometry: {
@@ -443,7 +443,7 @@ const locations = [
   {
     id: '9',
     enabled: true,
-    name: 'UPRN',
+    name: 'Mersey and Surrounding',
     address: 'Mersey and Surrounding',
     coordinates: null,
     geometry: {
@@ -519,7 +519,7 @@ const locations = [
   {
     id: '10',
     enabled: true,
-    name: 'UPRN',
+    name: 'Nottingham',
     address: 'Nottingham',
     coordinates: null,
     geometry: {
@@ -592,7 +592,7 @@ const locations = [
   {
     id: '11',
     enabled: true,
-    name: 'UPRN',
+    name: 'Hereford',
     address: 'Hereford',
     coordinates: {
       latitude: 52.045556502054296 * 10 ** 6,
@@ -641,40 +641,12 @@ const locations = [
   {
     id: '12',
     enabled: true,
-    name: 'UPRN',
+    name: 'Southampton',
     address: 'Southampton',
     coordinates: null,
-    geometry: {
-      geoJson: JSON.stringify({
-        type: 'Polygon',
-        coordinates: [
-          [
-            [-2.1341905304781505, 50.837897465696614],
-            [-2.254975323142787, 50.79869959348824],
-            [-2.2060998289651934, 50.74702455739592],
-            [-2.085240518913224, 50.68288837090617],
-            [-1.934970900493994, 50.637307812012324],
-            [-1.8826801203153707, 50.709790441601314],
-            [-1.5657596231154685, 50.664220887167204],
-            [-1.5134799553414382, 50.67457857097227],
-            [-1.392583513093939, 50.633148379220785],
-            [-1.2521182631624015, 50.57511677191059],
-            [-1.173741620136127, 50.61661972630833],
-            [-0.7945967205407669, 50.730447666284505],
-            [-0.7684648311203262, 50.765597433929514],
-            [-0.8044359024997902, 50.83788004880685],
-            [-1.0757420137692861, 50.89562572926238],
-            [-1.3338211062933851, 50.99237032261078],
-            [-1.5821014030443905, 50.992377300820266],
-            [-1.9054976342091834, 50.92652245400137],
-            [-2.1341905304781505, 50.837897465696614]
-          ]
-        ]
-      })
-    },
-    geocode: null,
+    geocode: '999AXNCOUHAMPSHI',
     additionals: [
-      { id: 'locationName', value: { s: 'Southampton' } },
+      { id: 'locationName', value: { s: 'Hampshire' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '[]' } },
@@ -692,21 +664,10 @@ const locations = [
             action_plan: '',
             notes: '',
             location_data_type: 'boundary',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2'],
-            targetAreas: [
-              {
-                TA_CODE: '065FWC0501',
-                TA_Name: 'Itchen estuary',
-                category: 'Flood Warning'
-              },
-              {
-                TA_CODE: '065WAC151',
-                TA_Name: 'Southampton Water and Hamble',
-                category: 'Flood Alert'
-              }
-            ],
-            riverSeaRisk: 'medium',
-            groundWaterRisk: 'unlikely'
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2', 'ALERT_LVL_3'],
+            targetAreas: [],
+            riverSeaRisk: 'unavailable',
+            groundWaterRisk: 'unavailable'
           })
         }
       }
@@ -715,7 +676,7 @@ const locations = [
   {
     id: '13',
     enabled: true,
-    name: 'UPRN',
+    name: 'Little Chester',
     address: 'Little Chester',
     coordinates: {
       latitude: 52.92944454871733 * 10 ** 6,
@@ -761,7 +722,7 @@ const locations = [
   {
     id: '14',
     enabled: true,
-    name: 'UPRN',
+    name: 'Derbyshire',
     address: 'Derbyshire',
     coordinates: {
       latitude: 52.92944454871733 * 10 ** 6,
@@ -808,7 +769,7 @@ const additionalLocations = [
   {
     id: '15',
     enabled: true,
-    name: 'UPRN',
+    name: 'Oakham centre',
     address: 'Oakham centre',
     coordinates: {
       latitude: 52.66745486614397 * 10 ** 6,

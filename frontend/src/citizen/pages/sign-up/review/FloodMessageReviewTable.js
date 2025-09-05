@@ -4,6 +4,9 @@ import AlertType from '../../../../common/enums/AlertType'
 import { getLocationOtherAdditional } from '../../../../common/redux/userSlice'
 
 export default function FloodMessageReviewTable() {
+  const nearByAreas = useSelector(
+    (state) => state.session.nearbyTargetAreasAdded
+  )
   const locationsSelected = useSelector((state) => state.session.profile.pois)
   const floodAreasInfo = useSelector(
     (state) => state.session.floodAreasInfo || null
@@ -63,16 +66,23 @@ export default function FloodMessageReviewTable() {
                 Flood messages
               </h2>
             </th>
-            <td className='govuk-table__cell' style={{ borderBottom: 'none' }}>
-              <Link
-                to='/signup/review/change-location-search'
-                className='govuk-link'
-                style={{ cursor: 'pointer' }}
-                aria-label={`Change flood messages you'll get`}
+
+            {/* Only show change links if locations were added by nearby search */}
+            {nearByAreas.length > 0 && (
+              <td
+                className='govuk-table__cell'
+                style={{ borderBottom: 'none' }}
               >
-                Change
-              </Link>
-            </td>
+                <Link
+                  to='/signup/register-location/location-near-flood-areas'
+                  className='govuk-link'
+                  style={{ cursor: 'pointer' }}
+                  aria-label={`Change flood messages you'll get`}
+                >
+                  Change
+                </Link>
+              </td>
+            )}
           </tr>
         </tbody>
       </table>
@@ -83,6 +93,14 @@ export default function FloodMessageReviewTable() {
               className='govuk-!-width-one-third govuk-table__cell'
               scope='row'
             >
+              {/* Screen reader only combined label to clarify that the adjacent cell applies to both headings */}
+              <span
+                id='warning-combined-label'
+                className='govuk-visually-hidden'
+              >
+                Severe flood warnings and Flood warnings
+              </span>
+
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                 Severe flood warnings
               </h3>
@@ -96,9 +114,16 @@ export default function FloodMessageReviewTable() {
                 Flooding expected - act now
               </span>
             </th>
-            <td className='govuk-table__cell govuk-!-width-full'>
+            <td
+              className='govuk-table__cell govuk-!-width-full'
+              aria-labelledby='warning-combined-label'
+            >
               {floodWarningAreas.length > 0 ? (
-                <ul className='govuk-list govuk-list--bullet'>
+                <ul
+                  className={`govuk-list ${
+                    floodWarningAreas.length > 1 && 'govuk-list--bullet'
+                  }`}
+                >
                   {floodWarningAreas.map((item, key) => (
                     <li key={key}>{item}</li>
                   ))}
@@ -122,7 +147,11 @@ export default function FloodMessageReviewTable() {
             </th>
             <td className='govuk-table__cell govuk-!-width-full'>
               {floodAlertAreas.length > 0 ? (
-                <ul className='govuk-list govuk-list--bullet'>
+                <ul
+                  className={`govuk-list ${
+                    floodAlertAreas.length > 1 && 'govuk-list--bullet'
+                  }`}
+                >
                   {floodAlertAreas.map((item, key) => (
                     <li key={key}>{item}</li>
                   ))}

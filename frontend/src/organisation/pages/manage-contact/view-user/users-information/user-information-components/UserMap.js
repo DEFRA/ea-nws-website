@@ -8,28 +8,36 @@ import {
   TileLayer,
   useMap
 } from 'react-leaflet'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // Leaflet Marker Icon fix
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { useDispatch } from 'react-redux'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import OsMapTerms from '../../../../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 import { getOperationalBoundaryByTaCode } from '../../../../../../common/services/WfsFloodDataService'
+import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function UserMap({ locations }) {
+  const DEFAULT_CENTER = [52.7152, -1.17349] // Centre of England (used if user has no linked locations)
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
   const [markers, setMarkers] = useState([])
   const [geoJsonShapes, setGeoJsonShapes] = useState([])
-  const [centre, setCentre] = useState([])
+  const [centre, setCentre] = useState(DEFAULT_CENTER)
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -37,9 +45,7 @@ export default function UserMap({ locations }) {
       setLoading(false)
     }
 
-    if (locations && locations.length > 0) {
-      fetchLocations()
-    }
+    fetchLocations()
   }, [locations])
 
   const loadLocationsOnMap = async () => {
@@ -52,7 +58,7 @@ export default function UserMap({ locations }) {
       setCentre([0, 0])
       locations.forEach(async (location) => {
         let feature
-        const locationType = location.additionals.other.location_data_type
+        const locationType = location?.additionals?.other?.location_data_type
 
         if (locationType) {
           // add all points to markers which can be represented on the map
@@ -63,15 +69,24 @@ export default function UserMap({ locations }) {
               location.coordinates.longitude,
               location.coordinates.latitude
             ])
-            points.push(location.coordinates)
+            points.push(location)
           } else if (locationType === LocationDataType.BOUNDARY) {
             const boundary = await getOperationalBoundaryByTaCode(
               location.geocode
             )
             feature = boundary
+            feature = {
+              ...feature,
+              properties: { ...feature.properties, locationData: location }
+            }
+
             shapes.push(feature)
           } else {
             feature = location.geometry.geoJson
+            feature = {
+              ...feature,
+              properties: { ...feature.properties, locationData: location }
+            }
 
             shapes.push(feature)
           }
@@ -80,7 +95,7 @@ export default function UserMap({ locations }) {
         }
       })
 
-      if (locationsCollection) {
+      if (locationsCollection.length > 0) {
         setMarkers(points)
         setGeoJsonShapes(shapes)
 
@@ -95,10 +110,12 @@ export default function UserMap({ locations }) {
           [bbox[3], bbox[2]]
         ]
         setBounds(newBounds)
+      } else {
+        // no linked locations, setting to centre of England
+        setCentre(DEFAULT_CENTER)
       }
     }
-    // no linked locations, setting to centre of England
-    setCentre([52.7152, -1.17349])
+    setLoading(false)
   }
 
   // Auto fit the map to loaded locations (with a bit of padding)
@@ -189,6 +206,11 @@ export default function UserMap({ locations }) {
     ),
     []
   )
+  const viewLocation = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    navigate(orgManageLocationsUrls.view.viewLocation)
+  }
 
   return (
     <>
@@ -214,17 +236,51 @@ export default function UserMap({ locations }) {
                 markers.map((marker, index) => (
                   <Marker
                     key={index}
-                    position={[marker.latitude, marker.longitude]}
+                    position={[
+                      marker.coordinates.latitude,
+                      marker.coordinates.longitude
+                    ]}
                   >
                     <Popup>
-                      {locations[index]?.additionals?.locationName ||
-                        'Name not found'}
+                      <a
+                        className='govuk-link'
+                        onClick={(e) => viewLocation(e, marker)}
+                      >
+                        {marker.name ||
+                          marker?.additionals?.locationName ||
+                          'Name not found'}
+                      </a>
                     </Popup>
                   </Marker>
                 ))}
               {geoJsonShapes &&
                 geoJsonShapes.map((shape, index) => (
-                  <GeoJSON key={index} data={shape} />
+                  <GeoJSON
+                    key={index}
+                    data={shape}
+                    onEachFeature={(feature, layer) => {
+                      layer.bindPopup(
+                        `<a href="#" class="govuk-link">${
+                          feature.properties?.locationData?.name ||
+                          feature.properties?.locationData?.additionals
+                            ?.locationName ||
+                          'Name not found'
+                        }</a>`
+                      )
+
+                      layer.on('popupopen', () => {
+                        const link = document.querySelector(
+                          '.leaflet-popup a.govuk-link'
+                        )
+                        if (link) {
+                          link.addEventListener('click', (e) => {
+                            e.preventDefault()
+                            viewLocation(e, feature.properties?.locationData)
+                          })
+                        }
+                      })
+                    }}
+                  />
                 ))}
               {/* Only zoom to markers when present */}
               {markers.length > 0 && <FitBounds />}

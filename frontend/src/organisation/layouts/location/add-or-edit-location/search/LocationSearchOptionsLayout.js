@@ -61,12 +61,16 @@ export default function LocationSearchOptionsLayout({
               }
             >
               {error && (
-                <p className='govuk-error-message'>
+                <p id='search-options-error' className='govuk-error-message'>
                   <span className='govuk-visually-hidden'>Error:</span> {error}
                 </p>
               )}
-              <fieldset className='govuk-fieldset'>
-                <legend className='govuk-visually-hidden'>{heading}</legend>
+              <fieldset
+                id='search-options-fieldset'
+                className='govuk-fieldset'
+                aria-labelledby='main-content'
+                aria-describedby={error ? 'search-options-error' : undefined}
+              >
                 <div
                   id={searchOptionsId}
                   className='govuk-radios'

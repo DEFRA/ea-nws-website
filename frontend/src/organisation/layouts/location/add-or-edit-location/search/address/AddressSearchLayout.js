@@ -6,14 +6,15 @@ import LoadingSpinner from '../../../../../../common/components/custom/LoadingSp
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../../common/components/gov-uk/Pagination'
 import {
+  getLocationName,
   getLocationOther,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationFullAddress,
+  setCurrentLocationName,
   setCurrentLocationNorthing,
-  setCurrentLocationPostcode,
-  setCurrentLocationUPRN
+  setCurrentLocationPostcode
 } from '../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
@@ -36,13 +37,14 @@ export default function AddressSearchLayout({
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
+  const existingName = useSelector((state) => getLocationName(state))
 
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
 
     setLoading(true)
     try {
-      dispatch(setCurrentLocationUPRN(selectedLocation.name))
+      !existingName && dispatch(setCurrentLocationName(selectedLocation.name))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
       dispatch(setCurrentLocationAddress(selectedLocation.address))
 

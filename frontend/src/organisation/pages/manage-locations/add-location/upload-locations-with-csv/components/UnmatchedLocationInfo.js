@@ -2,10 +2,13 @@ import { React } from 'react'
 import { useSelector } from 'react-redux'
 import {
   getLocationAdditional,
+  getLocationName,
   getLocationOther
 } from '../../../../../../common/redux/userSlice'
 
-export default function UnmatchedLocationInfo () {
+export default function UnmatchedLocationInfo() {
+  const name = useSelector((state) => getLocationName(state))
+
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
@@ -26,7 +29,7 @@ export default function UnmatchedLocationInfo () {
 
   return (
     <div className='govuk-inset-text'>
-      <strong>{locationName}</strong>
+      <strong>{name || locationName}</strong>
       {locationFullAddress && (
         <>
           <br />

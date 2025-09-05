@@ -294,9 +294,14 @@ export default function ContactChannelsLayout({
           name='Main email address'
           inputType='text'
           inputMode='email'
-          onChange={(val) => setEmailInput((inputs) => [inputs[0], val])}
-          value={emailInput[1]}
-          error={emailError[1]}
+          onChange={(val) =>
+            setEmailInput((inputs) => [
+              val.replaceAll(' ', '').toLowerCase(),
+              inputs[1]
+            ])
+          }
+          value={emailInput[0]}
+          error={emailError[0]}
           className='govuk-input govuk-input--width-20'
           isNameBold
           labelSize='s'
@@ -402,7 +407,10 @@ export default function ContactChannelsLayout({
                       inputType='text'
                       inputMode='email'
                       onChange={(val) =>
-                        setEmailInput((inputs) => [inputs[0], val])
+                        setEmailInput((inputs) => [
+                          inputs[0],
+                          val.replaceAll(' ', '').toLowerCase()
+                        ])
                       }
                       value={emailInput[1]}
                       error={emailError[1]}
@@ -434,7 +442,10 @@ export default function ContactChannelsLayout({
                         inputType='text'
                         inputMode='email'
                         onChange={(val) =>
-                          setEmailInput((inputs) => [val, inputs[1]])
+                          setEmailInput((inputs) => [
+                            val.replaceAll(' ', '').toLowerCase(),
+                            inputs[1]
+                          ])
                         }
                         value={emailInput[0]}
                         error={emailError[0]}
@@ -447,7 +458,10 @@ export default function ContactChannelsLayout({
                         inputType='text'
                         inputMode='email'
                         onChange={(val) =>
-                          setEmailInput((inputs) => [inputs[0], val])
+                          setEmailInput((inputs) => [
+                            inputs[0],
+                            val.replaceAll(' ', '').toLowerCase()
+                          ])
                         }
                         value={emailInput[1]}
                         error={emailError[1]}

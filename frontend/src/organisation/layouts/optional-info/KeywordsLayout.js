@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -24,6 +24,7 @@ export default function KeywordsLayout({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const authToken = useSelector((state) => state.session.authToken)
 
   // UPDATE HERE - need to update he actual endpoint
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
@@ -34,7 +35,7 @@ export default function KeywordsLayout({
           ? ':t_Keywords_location'
           : ':t_Keywords_contact'
       const { data } = await backendCall(
-        { type },
+        { type, authToken },
         'api/elasticache/get_data',
         navigate
       )
@@ -270,23 +271,24 @@ export default function KeywordsLayout({
             </h1>
             <div className='govuk-body'>
               {keywordText}
-
-              {keywordsArray.length !== 0 &&
-                keywordsArray.map((keyword, index) => (
-                  <div className='govuk-checkboxes--small' key={index}>
-                    <Checkbox
-                      key={index}
-                      id={`keyword-${index}`}
-                      ariaLabelledBy={`keyword-${index}-label`}
-                      label={keyword}
-                      checked={isCheckboxCheckedArray[index]}
-                      onChange={(e) => {
-                        handleCheckboxChange(e.target.checked, index)
-                      }}
-                    />
-                  </div>
-                ))}
-
+              {/* Div with role='status' in order for the change to announce for screen readers */}
+              <div role='status' aria-live='polite'>
+                {keywordsArray.length !== 0 &&
+                  keywordsArray.map((keyword, index) => (
+                    <div className='govuk-checkboxes--small' key={index}>
+                      <Checkbox
+                        key={index}
+                        id={`keyword-${index}`}
+                        ariaLabelledBy={`keyword-${index}-label`}
+                        label={keyword}
+                        checked={isCheckboxCheckedArray[index]}
+                        onChange={(e) => {
+                          handleCheckboxChange(e.target.checked, index)
+                        }}
+                      />
+                    </div>
+                  ))}
+              </div>
               <div
                 className={
                   keywordError
@@ -327,7 +329,6 @@ export default function KeywordsLayout({
                   className='govuk-button govuk-button--secondary govuk-!-margin-top-0'
                 />
               </div>
-
               <Button
                 text='Continue'
                 className='govuk-button'

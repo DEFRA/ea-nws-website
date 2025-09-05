@@ -391,7 +391,7 @@ export default function FullscreenMap({
                       {osmTileLayer}
                       {apiKey && tileLayerWithHeader}
                       {fitBounds}
-                      <div role='group' aria-label='Interactive Map Controls'>
+                      <div>
                         <ZoomControl position='bottomright' />
                         <ZoomTracker />
                         <ResetMapButton />

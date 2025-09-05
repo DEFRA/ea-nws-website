@@ -52,7 +52,7 @@ export default function LinkContactToLocationPage() {
         : '')
 
     // User invited as admin will be pending admin
-    if (pendingRole === UserType.PendingAdmin) {
+    if (pendingRole === UserType.Admin.toUpperCase()) {
       return [
         `Email invitation sent to ${currentContact.emails[0]}`,
         `${fullName} will be a pending admin until they accept the invitation and confirm their email address. Invitation valid for 72 hours.`
@@ -60,9 +60,7 @@ export default function LinkContactToLocationPage() {
     }
 
     // Otherwise, just show what they are now
-    const isAdmin =
-      userType === UserType.Admin.toUpperCase() ||
-      pendingRole === UserType.Admin.toUpperCase()
+    const isAdmin = userType === UserType.Admin.toUpperCase()
     return [`${fullName} added as ${isAdmin ? 'an admin' : 'a contact'}`]
   }
 

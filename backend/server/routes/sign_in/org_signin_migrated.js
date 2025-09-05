@@ -1,0 +1,241 @@
+const { apiCall } = require('../../services/ApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
+const {
+  orgSignIn,
+  setJsonData,
+  getJsonData,
+  setLinkLocations
+} = require('../../services/elasticache')
+const { logger } = require('../../plugins/logging')
+const { migrateLocation } = require('../../services/migrated_data/migrateLocations')
+
+// geosafe api restricted to 1024 locations per response
+// recall to api required to collect all locations
+const getAdditionalLocations = async (
+  firstLocationApiCall,
+  authToken,
+  contactId = null
+) => {
+  let additionalLocations = []
+
+  if (firstLocationApiCall.data.total > 1000) {
+    const fetchLocationsPromises = []
+    const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1000)
+    let i = 1
+    while (i <= totalRecalls) {
+      let options = {
+        offset: 1000 * i,
+        limit: 1000,
+        sort: [{
+          fieldName: 'id',
+          order: 'ASCENDING'
+        }]
+      }
+      if (contactId) options.contactId = contactId
+      fetchLocationsPromises.push(
+        apiCall(
+          {
+            authToken: authToken,
+            options: options
+          },
+          'location/list'
+        )
+      )
+      i++
+    }
+
+    const results = await Promise.all(fetchLocationsPromises)
+    results.forEach((response) => {
+      additionalLocations.push(...response.data.locations)
+    })
+  }
+
+  return additionalLocations
+}
+
+module.exports = [
+  {
+    method: ['POST'],
+    path: '/api/org_signin_migrated',
+    handler: async (request, h) => {
+      try {
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
+        }
+
+        const { orgData } = request.payload
+        const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, orgData?.authToken)
+
+        if (orgData && sessionData) {
+          const elasticacheKey = 'migrated_signin_status:' + sessionData.orgId
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Retrieving locations',
+            status: 'working'
+          })
+
+          let migratedlocations = []
+          let options = {
+            limit: 1000,
+            sort: [{
+              fieldName: 'id',
+              order: 'ASCENDING'
+            }]
+          }
+          const locationRes = await apiCall(
+            { authToken: orgData.authToken, options: options },
+            'location/list'
+          )
+          migratedlocations.push(...locationRes.data.locations)
+
+          const additionalLocations = await getAdditionalLocations(
+            locationRes,
+            orgData.authToken
+          )
+          migratedlocations.push(...additionalLocations)
+
+          const locations = []
+
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Migrating locations',
+            status: 'working'
+          })
+
+          const numLocations = locations.length
+          let locationIndex = 1
+          let locationPercent = 0
+
+          for (const migratedLocation of migratedlocations) {
+            let newPercent = Math.round((locationIndex/numLocations)*100)
+            if (locationPercent !== newPercent) {
+              locationPercent = newPercent
+              await setJsonData(redis, elasticacheKey, {
+                stage: 'Migrating locations',
+                status: 'working',
+                percent: locationPercent
+              })
+            }
+            const location = await migrateLocation(migratedLocation)
+            if (location) {
+              locations.push(location)
+              // update location in geosafe
+              const response = await apiCall(
+                { authToken: orgData.authToken, location: location },
+                'location/update'
+              )
+            } else {
+              // remove location because it can't be migrated, should never happen though
+              const response = await apiCall(
+                { authToken: orgData.authToken, locationIds: [migratedLocation.id] },
+                'location/remove'
+              )
+            }
+            locationIndex++
+          }
+
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Retrieving contacts',
+            status: 'working'
+          })
+          const contactRes = await apiCall(
+            { authToken: orgData.authToken },
+            'organization/listContacts'
+          )
+
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Populating account',
+            status: 'working'
+          })
+          // Send the profile to elasticache
+          await orgSignIn(
+            redis,
+            orgData.profile,
+            orgData.organization,
+            locations,
+            contactRes.data.contacts,
+            sessionData.orgId,
+            orgData.authToken
+          )
+
+          const numContacts = contactRes.data.contacts.length
+          let contactIndex = 1
+          let percent = 0
+          const linkedContactsArr = []
+
+          for (const contact of contactRes.data.contacts) {
+            let newPercent = Math.round((contactIndex/numContacts)*100)
+            if (percent !== newPercent) {
+              percent = newPercent
+              await setJsonData(redis, elasticacheKey, {
+                stage: 'Processing Contacts',
+                status: 'working',
+                percent: percent
+              })
+            }
+            let contactsLocations = []
+            const options = {
+              contactId: contact.id,
+              limit: 1000,
+              sort: [{
+                fieldName: 'id',
+                order: 'ASCENDING'
+              }]
+            }
+            const linkLocationsRes = await apiCall(
+              {
+                authToken: orgData.authToken,
+                options: options
+              },
+              'location/list'
+            )
+            contactsLocations.push(...linkLocationsRes.data.locations)
+
+            const additionalLocations = await getAdditionalLocations(
+              locationRes,
+              orgData.authToken,
+              contact.id
+            )
+            contactsLocations.push(...additionalLocations)
+
+            const locationIDs = []
+            contactsLocations.forEach(function (location) {
+              locationIDs.push(location.id)
+            })
+
+            linkedContactsArr.push({id: contact.id, linkIDs: locationIDs})
+            contactIndex++
+          }
+          
+          const linkedLocationsMap = linkedContactsArr.reduce((acc, {id, linkIDs}) => {
+            linkIDs.forEach((locationID) => {
+              if (!acc[locationID]) acc[locationID] = []
+              acc[locationID].push(id)
+            })
+            return acc
+          }, {})
+
+          const linkedLocationsArr = Object.entries(linkedLocationsMap).map(([linkIDs, id]) => ({
+            id: linkIDs,
+            linkIDs: id
+          }))
+
+          await setLinkLocations(redis, orgData.organization.id, linkedLocationsArr, linkedContactsArr)
+
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Populating account',
+            status: 'complete'
+          })
+
+          return h.response({ status: 200 })
+        } else {
+          return createGenericErrorResponse(h)
+        }
+      } catch (error) {
+        logger.error(error)
+        return createGenericErrorResponse(h)
+      }
+    }
+  }
+]

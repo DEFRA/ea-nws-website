@@ -60,7 +60,9 @@ export default function LinkContactToLocationPage() {
     }
 
     // Otherwise, just show what they are now
-    const isAdmin = userType === UserType.Admin.toUpperCase()
+    const isAdmin =
+      userType === UserType.Admin.toUpperCase() ||
+      pendingRole === UserType.Admin.toUpperCase()
     return [`${fullName} added as ${isAdmin ? 'an admin' : 'a contact'}`]
   }
 

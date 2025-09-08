@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import { useCookies } from "react-cookie"
 import { Helmet } from "react-helmet"
 import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import LoadingSpinner from "../../../common/components/custom/LoadingSpinner"
 import ErrorSummary from "../../../common/components/gov-uk/ErrorSummary"
 import { backendCall } from "../../../common/services/BackendService"
 import { getAdditionals } from "../../../common/services/ProfileServices"
+import { infoUrls } from "../../routes/info/InfoRoutes"
 import { orgManageLocationsUrls } from "../../routes/manage-locations/ManageLocationsRoutes"
 
 export default function AccountMigrationPage () {
@@ -22,7 +23,15 @@ export default function AccountMigrationPage () {
 
     const navigate = useNavigate()
 
+    const [templateUrl, setTemplateUrl] = useState(null)
+
+    async function getGuideUrl() {
+      const { data } = await backendCall('data', 'api/info/download_guide')
+      setTemplateUrl(data)
+    }
+
     useEffect(() => {
+      getGuideUrl()
         if (organization && authToken) {
           const interval = setInterval(async function getStatus() {
             if (getStatus.isRunning) return
@@ -81,7 +90,7 @@ export default function AccountMigrationPage () {
                       />
                     )}
                     <h1 className='govuk-heading-l' id='main-content'>
-                      Your Account is being Migrated
+                      Your account is being migrated
                     </h1>
                     <LoadingSpinner
                       loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
@@ -89,7 +98,35 @@ export default function AccountMigrationPage () {
                       wide={true}
                     />
                     <div className='govuk-body'>
-                      <p>Your account is currently being migrated. do not leave this page. You will be redirected to the service once migration is complete</p>
+                      <p>
+                        This is the first time your organisation is being signed into the new professional get flood warnings service.
+                        Your account is currently being migrated.
+                      </p>
+                      <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                          <span class="govuk-visually-hidden">Warning</span>
+                          Do not refresh the page. You will be automatically redirected once complete.
+                        </strong>
+                        </div>
+                        <h2 className='govuk-heading-m'>
+                          Learn more about the service
+                        </h2>
+                        <p>
+                        <Link
+                              className='govuk-link'
+                              to={infoUrls.preview}
+                              target='_blank'
+                              aria-label='Preview what the professional service offers'
+                            >
+                              Preview what the professional service offers
+                            </Link> {' '}(opens in new tab)
+                        </p>
+                        <p>
+                          <a className='govuk-link ' href={templateUrl} target='_blank' rel='noopener noreferrer'>
+                            Get flood warnings - quick start guide
+                          </a>
+                        </p>
                     </div>
                   </div>
                 </div>

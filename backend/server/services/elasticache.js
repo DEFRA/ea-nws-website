@@ -619,6 +619,7 @@ const orgSignOut = async (client, profileId, orgId, authToken) => {
     await deleteJsonData(client, orgId + ':t_Keywords_contact')
     await deleteJsonData(client, orgId + ':t_Linked_locations')
     await deleteJsonData(client, orgId + ':t_Linked_contacts')
+    await deleteJsonData(client, 'migrated_signin_status:' + orgId)
 
     // delete session data
     await deleteJsonData(client, authToken)

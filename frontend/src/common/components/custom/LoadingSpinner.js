@@ -3,7 +3,8 @@ import { ProgressBar, Spinner } from 'react-bootstrap'
 export default function LoadingSpinner({
   text,
   loadingText = 'loading...',
-  percent = null
+  percent = null,
+  wide = false
 }) {
   return (
     <>
@@ -14,7 +15,7 @@ export default function LoadingSpinner({
             <ProgressBar
               now={parseInt(percent)}
               label={`${parseInt(percent)}%`}
-              style={{ width: '15rem', height: '2rem' }}
+              style={{ width: wide? '45rem' : '15rem', height: '2rem' }}
             />
           ) : (
             <Spinner

@@ -84,7 +84,7 @@ async function getTAAndNaFra (migratedLocation, dataType) {
           )
     } else if (dataType === LocationDataType.SHAPE_POLYGON) {
         const TAs = await getFloodAreasFromShape(
-          JSON.parse(newWebLocation?.geometry?.geoJson)
+          JSON.parse(migratedLocation?.geometry?.geoJson)
         )
         TAs.forEach((area) => {
           targetAreas.push({
@@ -142,10 +142,10 @@ async function migrateLocation (migratedLocation) {
         geometry: migratedLocation.geometry || null,
         geocode: migratedLocation.geocode || null,
         additionals: [
-          { id: 'locationName', value: { s: getAdditional(migratedLocation.additionals) || migratedLocation.name } },
-          { id: 'parentID', value: { s: getAdditional(migratedLocation.additionals) || '' } },
-          { id: 'targetAreas', value: { s: getAdditional(migratedLocation.additionals) || '' } },
-          { id: 'keywords', value: { s: getAdditional(migratedLocation.additionals) || '[]' } },
+          { id: 'locationName', value: { s: getAdditional(migratedLocation.additionals, 'locationName') || migratedLocation.name } },
+          { id: 'parentID', value: { s: getAdditional(migratedLocation.additionals, 'parentID') || '' } },
+          { id: 'targetAreas', value: { s: getAdditional(migratedLocation.additionals, 'targetAreas') || '' } },
+          { id: 'keywords', value: { s: getAdditional(migratedLocation.additionals, 'keywords') || '[]' } },
           {
             id: 'other',
             value: {

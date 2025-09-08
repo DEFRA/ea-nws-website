@@ -68,9 +68,11 @@ module.exports = [
         const { orgData } = request.payload
         const { redis } = request.server.app
         const sessionData = await getJsonData(redis, orgData?.authToken)
+        const elasticacheKey = 'migrated_signin_status:' + sessionData.orgId
+        // check if an org is already being migrated
+        const result = await getJsonData(redis, elasticacheKey)
 
-        if (orgData && sessionData) {
-          const elasticacheKey = 'migrated_signin_status:' + sessionData.orgId
+        if (orgData && sessionData && !result) {
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving locations',
             status: 'working'
@@ -103,7 +105,7 @@ module.exports = [
             status: 'working'
           })
 
-          const numLocations = locations.length
+          const numLocations = migratedlocations.length
           let locationIndex = 1
           let locationPercent = 0
 
@@ -134,6 +136,41 @@ module.exports = [
             }
             locationIndex++
           }
+
+          // locations have been migrated now update the organisation with a description to show it's been migrated
+          const newOrgData = {
+            name:  orgData.organization.name || null,
+            description:
+               orgData.organization.description ||
+              JSON.stringify({
+                name:  orgData.organization.name || null,
+                address: null,
+                compHouseNum: null,
+                emergencySector: null,
+                isAdminRegistering: null,
+                alternativeContact: {
+                  firstName: null,
+                  lastName: null,
+                  email: null,
+                  telephone: null,
+                  jobTitle: null
+                }
+              }),
+            postalCode:  orgData.organization.postalCode || null,
+            longName:  orgData.organization.longName || null,
+            logoUrl:  orgData.organization.logoUrl || null,
+            backgroundUrl:  orgData.organization.backgroundUrl || null,
+            alertDiffusionZone:
+               orgData.organization.alertDiffusionZone || null,
+            alertDiffusionZoneBoundingBox:
+               orgData.organization.alertDiffusionZoneBoundingBox || null,
+            urlSlug:  orgData.organization.urlSlug || null
+          }
+
+          const response = await apiCall(
+            { authToken: orgData.authToken, organization: newOrgData },
+            'organization/update'
+          )
 
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving contacts',

@@ -142,6 +142,15 @@ export default function SignInValidatePage() {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
+          if (!data.organization.description) {
+            // migrated data has no org description
+            dispatch(setAuthToken(data.authToken))
+            dispatch(setProfile(data.profile))
+            // don't wait for the result, just kick it off for the backend
+            backendCall({orgData: data}, 'api/org_signin_migrated')
+            // navigate to migration status page
+            navigate('/sign-in/organisation/migration')
+          }
         }
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {

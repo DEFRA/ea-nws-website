@@ -124,7 +124,7 @@ module.exports = [
               locations.push(location)
               // update location in geosafe
               const response = await apiCall(
-                { authToken: orgData.authToken, location: location },
+                { authToken: orgData.authToken, location: JSON.parse(JSON.stringify(location)) },
                 'location/update'
               )
               if (response.errorMessage) {

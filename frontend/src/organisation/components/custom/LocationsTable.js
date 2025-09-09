@@ -10,6 +10,7 @@ import {
   RIVER_SEA_RISK_ORDER
 } from '../../../common/enums/RiskType'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
+import EmptyLocationsTableSpan from './EmptyLocationsTableSpan'
 
 export default function LocationsTable({
   locations,
@@ -547,12 +548,9 @@ export default function LocationsTable({
                   {' '}
                   <td className='govuk-table__cell'>
                     {location.riverSeaRisk?.title === 'Unavailable' ? (
-                      <span
-                        className={`flood-risk-container ${location.riverSeaRisk?.className}`}
-                        aria-label='Not available'
-                      >
-                        -
-                      </span>
+                      <EmptyLocationsTableSpan
+                        additionalClasses={location.riverSeaRisk?.className}
+                      />
                     ) : (
                       <span
                         className={`flood-risk-container ${location.riverSeaRisk?.className}`}
@@ -563,12 +561,9 @@ export default function LocationsTable({
                   </td>
                   <td className='govuk-table__cell'>
                     {location.groundWaterRisk?.title === 'Unavailable' ? (
-                      <span
-                        className={`flood-risk-container ${location.groundWaterRisk?.className}`}
-                        aria-label='Not available'
-                      >
-                        -
-                      </span>
+                      <EmptyLocationsTableSpan
+                        additionalClasses={location.groundWaterRisk?.className}
+                      />
                     ) : (
                       <span
                         className={`flood-risk-container ${location.groundWaterRisk?.className}`}

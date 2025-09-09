@@ -32,7 +32,7 @@ export default function AccountMigrationPage () {
 
     useEffect(() => {
       getGuideUrl()
-        if (organization && authToken) {
+        if (organization && authToken && !error) {
           const interval = setInterval(async function getStatus() {
             if (getStatus.isRunning) return
             getStatus.isRunning = true
@@ -64,6 +64,9 @@ export default function AccountMigrationPage () {
                   navigate(orgManageLocationsUrls.monitoring.view)
                 }
               }
+              if (data?.status === 'error') {
+                setError('migration error')
+              }
             }
             if (errorMessage) {
               setError(errorMessage)
@@ -93,7 +96,7 @@ export default function AccountMigrationPage () {
                       Your account is being migrated
                     </h1>
                     <LoadingSpinner
-                      loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                      loadingText={<p className='govuk-body'>{!error ? `${stage}...` : `Error`}</p>}
                       percent={percent}
                       wide={true}
                     />

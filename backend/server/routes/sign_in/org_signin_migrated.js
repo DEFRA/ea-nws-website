@@ -127,9 +127,17 @@ module.exports = [
                 { authToken: orgData.authToken, location: location },
                 'location/update'
               )
+              if (response.errorMessage) {
+                await setJsonData(redis, elasticacheKey, {
+                  stage: 'Migrating locations',
+                  status: 'error',
+                  percent: locationPercent
+                })
+                throw new Error(response.errorMessage)
+              }
             } else {
               // remove location because it can't be migrated, should never happen though
-              const response = await apiCall(
+              await apiCall(
                 { authToken: orgData.authToken, locationIds: [migratedLocation.id] },
                 'location/remove'
               )
@@ -139,6 +147,7 @@ module.exports = [
 
           // locations have been migrated now update the organisation with a description to show it's been migrated
           const newOrgData = {
+            id: orgData.organization.id || null,
             name:  orgData.organization.name || null,
             description:
                orgData.organization.description ||
@@ -171,6 +180,15 @@ module.exports = [
             { authToken: orgData.authToken, organization: newOrgData },
             'organization/update'
           )
+
+          if (response.errorMessage) {
+            await setJsonData(redis, elasticacheKey, {
+              stage: 'Migrating locations',
+              status: 'error',
+              percent: locationPercent
+            })
+            throw new Error(response.errorMessage)
+          }
 
           await setJsonData(redis, elasticacheKey, {
             stage: 'Retrieving contacts',

@@ -14,6 +14,30 @@ const getErrorMessage = (path, errorMessage) => {
   return apiToFrontendError[apiPathCode] || errorMessage.desc
 }
 
+const setLastModified = (additionals) => {
+  if (!additionals) {
+      additionals = []
+  }
+  let idFound = false
+  let otherAdditionals = {}
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      idFound = true
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      otherAdditionals['lastModified'] = Date.now()
+      additionals[i].value = { s: JSON.stringify(otherAdditionals) }
+    }
+  }
+  if (!idFound) {
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ ['lastModified']: Date.now() }) }
+    })
+  }
+
+  return additionals
+}
+
 const apiCall = async (data, path) => {
   const apiUrl = await getSecretKeyValue('nws/geosafe', 'apiUrl')
   const url = apiUrl + '/' + path
@@ -24,17 +48,24 @@ const apiCall = async (data, path) => {
     data.profile = convertWebProfile(data.profile)
   }
 
-  if (
-    data.location?.coordinates?.latitude &&
-    data.location?.coordinates?.longitude
-  ) {
-    data.location.coordinates.latitude = parseInt(
-      data.location.coordinates.latitude * 10 ** 6
-    )
-    data.location.coordinates.longitude = parseInt(
-      data.location.coordinates.longitude * 10 ** 6
-    )
+  if (data.location) {
+    // data.location is only present in update and create location requests
+    // set the last modified date for the location
+    data.location.additionals = setLastModified(data.location?.additionals)
+
+    if (
+      data.location?.coordinates?.latitude &&
+      data.location?.coordinates?.longitude
+    ) {
+      data.location.coordinates.latitude = parseInt(
+        data.location.coordinates.latitude * 10 ** 6
+      )
+      data.location.coordinates.longitude = parseInt(
+        data.location.coordinates.longitude * 10 ** 6
+      )
+    }
   }
+
 
   try {
     const response = await axios.post(url, data, {

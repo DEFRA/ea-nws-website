@@ -142,7 +142,12 @@ export default function SignInValidatePage() {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
-          if (!data.organization.description) {
+          const migrated = (() => {
+            // check the JSON structure doesn't include name to identify migrated data
+            try { return !('name' in JSON.parse(data.organization?.description)) }
+            catch { return true }
+          })()
+          if (migrated) {
             // migrated data has no org description
             dispatch(setAuthToken(data.authToken))
             dispatch(setProfile(data.profile))

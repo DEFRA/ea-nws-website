@@ -130,6 +130,8 @@ function getAlertTypes (targetAreas) {
 async function migrateLocation (migratedLocation) {
     const location_data_type = calculateLocationDataType(migratedLocation)
     if (!location_data_type) return null
+    //if there is a modified date, the location has already been migrated, so return
+    if (getLocationOtherAdditional(migratedLocation.additionals, 'lastModified')) return migratedLocation
     const {northing, easting} = location_data_type === LocationDataType.X_AND_Y_COORDS ? convertCoordinatesToEspg27700(migratedLocation.coordinates.longitude, migratedLocation.coordinates.latitude) : {northing: '', easting: ''}
     const {targetAreas, riverSeaRisk, groundWaterRisk} = await getTAAndNaFra(migratedLocation, location_data_type)
     const alertTypes = getAlertTypes(targetAreas)
@@ -163,7 +165,8 @@ async function migrateLocation (migratedLocation) {
                 alertTypes: alertTypes,
                 targetAreas: targetAreas,
                 riverSeaRisk: riverSeaRisk,
-                groundWaterRisk: groundWaterRisk
+                groundWaterRisk: groundWaterRisk,
+                lastModified: getLocationOtherAdditional(migratedLocation.additionals, 'lastModified') || Date.now(),
               })
             }
           }

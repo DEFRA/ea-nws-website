@@ -17,11 +17,11 @@ import {
   setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { formatGovUKTime } from '../../../../common/services/formatters/TimeFormatter'
 import {
   getRegistrationParams,
   updateAdditionals
 } from '../../../../common/services/ProfileServices'
+import { formatGovUKTime } from '../../../../common/services/formatters/TimeFormatter'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
 
 export default function SignUpValidationPage() {

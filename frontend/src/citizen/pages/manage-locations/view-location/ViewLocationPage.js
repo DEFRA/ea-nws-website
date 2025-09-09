@@ -87,8 +87,9 @@ export default function ViewLocationPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   let locationsAlertTypes =
-    locationRegistrations?.find((loc) => loc.locationId == selectedLocation.id)
-      ?.registrations[0]?.params?.alertTypes || []
+    locationRegistrations?.find(
+      (loc) => loc.location == selectedLocation.address
+    )?.alertTypes || []
 
   const initialAlerts = locationsAlertTypes
     ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
@@ -268,21 +269,14 @@ export default function ViewLocationPage() {
 
     if (!errorMessage) {
       // Update alerts in locationRegistrations
-      const updatedLocationRegistrations = locationRegistrations?.map((loc) =>
-        loc.locationId == selectedLocation.id
+      const updatedLocationRegistrations = locationRegistrations?.map((loc) => {
+        return loc.location == selectedLocation.address
           ? {
               ...loc,
-              registrations: [
-                {
-                  params: {
-                    ...loc?.registrations[0]?.params,
-                    alertTypes: locationsAlertTypes
-                  }
-                }
-              ]
+              alertTypes: locationsAlertTypes
             }
           : loc
-      )
+      })
       dispatch(setLocationRegistrations(updatedLocationRegistrations))
 
       const message = `You've turned ${

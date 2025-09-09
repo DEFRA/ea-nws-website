@@ -41,8 +41,8 @@ export default function SubscribedLocationTable({ setError }) {
 
   const getFloodWarningAndAlerts = (location) => {
     const alertTypes =
-      locationRegistrations?.find((loc) => loc.locationId == location.id)
-        ?.registrations[0]?.params?.alertTypes || []
+      locationRegistrations?.find((loc) => loc.location == location.address)
+        ?.alertTypes || []
 
     let serverFloodWarnings = null
     let floodWarnings = null

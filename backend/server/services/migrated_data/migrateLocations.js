@@ -1,5 +1,6 @@
 const proj4 = require('proj4')
-const { getGroundwaterFloodRiskRatingOfLocation, findTAs, getFloodAreasFromShape, getRiversAndSeaFloodRiskRatingOfLocation } = require('../qgis/qgisFunctions')
+const { getGroundwaterFloodRiskRatingOfLocation, findTAs, getFloodAreasFromShape, getRiversAndSeaFloodRiskRatingOfLocation, getOperationalBoundaryByTaCode } = require('../qgis/qgisFunctions')
+const { getTAData, setTAData } = require('../elasticache')
 
 proj4.defs(
     'EPSG:27700',
@@ -56,7 +57,7 @@ const getAdditional = (additionals, id) => {
     return null
   }
 
-async function getTAAndNaFra (migratedLocation, dataType) {
+async function getTAAndNaFra (redis, migratedLocation, dataType) {
     const targetAreas = []
     let riverSeaRisk = ''
     let groundWaterRisk = ''
@@ -86,6 +87,24 @@ async function getTAAndNaFra (migratedLocation, dataType) {
         const TAs = await getFloodAreasFromShape(
           JSON.parse(migratedLocation?.geometry?.geoJson)
         )
+        TAs.forEach((area) => {
+          targetAreas.push({
+            TA_CODE: area.properties?.TA_CODE,
+            TA_Name: area.properties?.TA_Name,
+            category: area.properties?.category
+          })
+        })
+        riverSeaRisk = 'unavailable'
+        groundWaterRisk = 'unavailable'
+    } else if (dataType === LocationDataType.BOUNDARY) {
+        let feature = await getTAData(redis, migratedLocation.geocode)
+        if (feature === null || feature?.length === 0) {
+          feature = await getOperationalBoundaryByTaCode(TA_CODE)
+          if (feature) {
+            await setTAData(redis, TA_CODE, feature)
+          }
+        }
+        const TAs = await getFloodAreasFromShape(feature)
         TAs.forEach((area) => {
           targetAreas.push({
             TA_CODE: area.properties?.TA_CODE,
@@ -127,13 +146,13 @@ function getAlertTypes (targetAreas) {
     return alertTypes
 }
 
-async function migrateLocation (migratedLocation) {
+async function migrateLocation (redis, migratedLocation) {
     const location_data_type = calculateLocationDataType(migratedLocation)
     if (!location_data_type) return null
     //if there is a modified date, the location has already been migrated, so return
     if (getLocationOtherAdditional(migratedLocation.additionals, 'lastModified')) return migratedLocation
     const {northing, easting} = location_data_type === LocationDataType.X_AND_Y_COORDS ? convertCoordinatesToEspg27700(migratedLocation.coordinates.longitude, migratedLocation.coordinates.latitude) : {northing: '', easting: ''}
-    const {targetAreas, riverSeaRisk, groundWaterRisk} = await getTAAndNaFra(migratedLocation, location_data_type)
+    const {targetAreas, riverSeaRisk, groundWaterRisk} = await getTAAndNaFra(redis, migratedLocation, location_data_type)
     const alertTypes = getAlertTypes(targetAreas)
     const location = {
         id: migratedLocation.id,

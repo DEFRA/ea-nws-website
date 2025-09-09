@@ -119,7 +119,7 @@ module.exports = [
                 percent: locationPercent
               })
             }
-            const location = await migrateLocation(migratedLocation)
+            const location = await migrateLocation(redis, migratedLocation)
             if (location) {
               locations.push(location)
               // update location in geosafe

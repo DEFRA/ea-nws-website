@@ -19,6 +19,8 @@ export default function LocationReviewTable() {
     navigate('/signup/review/change-location-search')
   }
 
+  const context = ` address for location - ${location}`
+
   return (
     <div className='govuk-!-padding-bottom-4'>
       <h2 className='govuk-heading-m'>Location you selected</h2>
@@ -41,9 +43,8 @@ export default function LocationReviewTable() {
                   onClick={(e) => selectLocationToBeChanged(e)}
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
-                  aria-label={`Change address for location - ${location}`}
                 >
-                  Change
+                  Change<span className='govuk-visually-hidden'>{context}</span>
                 </Link>
               </td>
             </tr>

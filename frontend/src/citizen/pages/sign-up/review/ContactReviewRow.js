@@ -37,17 +37,20 @@ export default function ContactReviewRow({
       [UserContactType.Telephone]: {
         titleRow: 'By phone call',
         confirmLabel: `Confirm telephone number ${contactLabel}, for phone call warnings`,
-        removeLabel: `Remove telephone number ${contactLabel}, for phone call warnings`
+        removeLabel: `Remove telephone number ${contactLabel}, for phone call warnings`,
+        context: ` telephone number ${contactLabel}`
       },
       [UserContactType.Mobile]: {
         titleRow: 'By text',
         confirmLabel: `Confirm mobile number ${contactLabel}, for text warnings`,
-        removeLabel: `Remove mobile number ${contactLabel}, for text warnings`
+        removeLabel: `Remove mobile number ${contactLabel}, for text warnings`,
+        context: ` mobile number ${contactLabel}`
       },
       [UserContactType.Email]: {
         titleRow: 'By email',
         confirmLabel: `Confirm email ${contactLabel}, for email warnings`,
-        removeLabel: `Remove email ${contactLabel}, for email warnings`
+        removeLabel: `Remove email ${contactLabel}, for email warnings`,
+        context: ` email address ${contactLabel}`
       }
     }
 
@@ -58,6 +61,7 @@ export default function ContactReviewRow({
       confirmLink: confirmedLink,
       confirmLinkLabel: details.confirmLabel || '',
       removeLinkLabel: details.removeLabel || '',
+      context: details.context || '',
       showDelete:
         contactType === UserContactType.Email ? emailIndex !== 0 : true
     }
@@ -101,10 +105,10 @@ export default function ContactReviewRow({
             className='govuk-link right'
             style={{ cursor: 'pointer' }}
             id={`remove-${contactType}-${emailIndex ?? contact}`}
-            aria-label={rowDetails().removeLinkLabel}
             tabIndex='0'
           >
             Remove
+            <span className='govuk-visually-hidden'>{details.context}</span>
           </Link>
         )}
         {!isConfirmed && (
@@ -117,10 +121,10 @@ export default function ContactReviewRow({
               style={{ cursor: 'pointer' }}
               id={`confirm-${contactType}-${emailIndex ?? contact}`}
               tabIndex='0'
-              aria-label={rowDetails().confirmLinkLabel}
               onClick={navigateToConfirm}
             >
               Confirm
+              <span className='govuk-visually-hidden'>{details.context}</span>
             </Link>
           </>
         )}

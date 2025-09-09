@@ -1,4 +1,4 @@
-import { area } from '@turf/turf'
+import * as turf from '@turf/turf'
 import LocationDataType from '../../../../../../../common/enums/LocationDataType'
 import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../../components/custom/Map'
@@ -67,10 +67,21 @@ export default function LocationInformation({ location, comparedLocation }) {
     }
 
     const formatShapeArea = (area) => {
-      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     }
 
-    return formatShapeArea(Math.round(area(location.geometry.geoJson) / 1000))
+    const areaInSqKm = turf.area(location.geometry.geoJson) / 1000000
+    return formatShapeArea(Math.round(areaInSqKm))
+  }
+
+  const getLineLength = () => {
+    if (!location.geometry) {
+      return 0
+    }
+
+    return turf
+      .length(location.geometry.geoJson, { units: 'kilometers' })
+      .toFixed(1)
   }
 
   const LocationData = () => {
@@ -99,21 +110,19 @@ export default function LocationInformation({ location, comparedLocation }) {
           <div
             style={
               comparedLocation &&
-              area(comparedLocation?.geometry?.geoJson) !==
-                area(location?.geometry?.geoJson)
+              turf.area(comparedLocation?.geometry?.geoJson) !==
+                turf.area(location?.geometry?.geoJson)
                 ? compareStyle
                 : {}
             }
           >
-            {calculateShapeArea()} square metres
+            {calculateShapeArea()} square km
           </div>
         )
       case LocationDataType.SHAPE_LINE:
-        // code to return length of line
-        return <>0.5km (dummy data)</>
+        return <>{getLineLength()}km </>
       case LocationDataType.BOUNDARY:
-        // code to return boundary name
-        return <>Unitary Authority (dummy data)</>
+        return <>{additionalData.location_type}</>
     }
   }
 

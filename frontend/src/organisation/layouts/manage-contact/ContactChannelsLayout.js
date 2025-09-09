@@ -296,12 +296,12 @@ export default function ContactChannelsLayout({
           inputMode='email'
           onChange={(val) =>
             setEmailInput((inputs) => [
-              inputs[0],
-              val.replaceAll(' ', '').toLowerCase()
+              val.replaceAll(' ', '').toLowerCase(),
+              inputs[1]
             ])
           }
-          value={emailInput[1]}
-          error={emailError[1]}
+          value={emailInput[0]}
+          error={emailError[0]}
           className='govuk-input govuk-input--width-20'
           isNameBold
           labelSize='s'
@@ -443,8 +443,8 @@ export default function ContactChannelsLayout({
                         inputMode='email'
                         onChange={(val) =>
                           setEmailInput((inputs) => [
-                            inputs[0],
-                            val.replaceAll(' ', '').toLowerCase()
+                            val.replaceAll(' ', '').toLowerCase(),
+                            inputs[1]
                           ])
                         }
                         value={emailInput[0]}
@@ -459,7 +459,7 @@ export default function ContactChannelsLayout({
                         inputMode='email'
                         onChange={(val) =>
                           setEmailInput((inputs) => [
-                            inputs[1],
+                            inputs[0],
                             val.replaceAll(' ', '').toLowerCase()
                           ])
                         }

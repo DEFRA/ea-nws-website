@@ -23,9 +23,9 @@ module.exports = [
           const elasticacheKey = 'signin_status:' + authToken
           const result = await getJsonData(redis, elasticacheKey)
           if (result) {
-            return h.response({ status: 200, data: result })
+            return h.response({ status: 200, data: result }).header('Cache-Control', 'no-cache, no-store, must-revalidate')
           } else {
-            return h.response({ status: 200 })
+            return h.response({ status: 200 }).header('Cache-Control', 'no-cache, no-store, must-revalidate')
           }
         } else {
           return createGenericErrorResponse(h)

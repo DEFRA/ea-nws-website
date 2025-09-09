@@ -28,6 +28,8 @@ import { webToGeoSafeLocation } from '../../../../../../common/services/formatte
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function UserMap({ locations }) {
+  const DEFAULT_CENTER = [52.7152, -1.17349] // Centre of England (used if user has no linked locations)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -35,7 +37,7 @@ export default function UserMap({ locations }) {
   const [bounds, setBounds] = useState(null)
   const [markers, setMarkers] = useState([])
   const [geoJsonShapes, setGeoJsonShapes] = useState([])
-  const [centre, setCentre] = useState([])
+  const [centre, setCentre] = useState(DEFAULT_CENTER)
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -43,9 +45,7 @@ export default function UserMap({ locations }) {
       setLoading(false)
     }
 
-    if (locations && locations.length > 0) {
-      fetchLocations()
-    }
+    fetchLocations()
   }, [locations])
 
   const loadLocationsOnMap = async () => {
@@ -95,7 +95,7 @@ export default function UserMap({ locations }) {
         }
       })
 
-      if (locationsCollection) {
+      if (locationsCollection.length > 0) {
         setMarkers(points)
         setGeoJsonShapes(shapes)
 
@@ -110,10 +110,12 @@ export default function UserMap({ locations }) {
           [bbox[3], bbox[2]]
         ]
         setBounds(newBounds)
+      } else {
+        // no linked locations, setting to centre of England
+        setCentre(DEFAULT_CENTER)
       }
     }
-    // no linked locations, setting to centre of England
-    setCentre([52.7152, -1.17349])
+    setLoading(false)
   }
 
   // Auto fit the map to loaded locations (with a bit of padding)

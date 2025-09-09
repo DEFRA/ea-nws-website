@@ -2,6 +2,11 @@ import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
 export default function AccountDetailsTable({ profile }) {
+  const nameContext = ` ${
+    profile.firstname + ' ' + profile.lastname
+  } as your full name`
+
+  const emailContext = ` ${profile.emails[0]} which is your current sign-in email`
   return (
     <>
       <Helmet>
@@ -27,11 +32,9 @@ export default function AccountDetailsTable({ profile }) {
                   to='/signup/review/change-account-name'
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
-                  aria-label={`Change ${
-                    profile.firstname + ' ' + profile.lastname
-                  } as your full name`}
                 >
                   Change
+                  <span className='govuk-visually-hidden'>{nameContext}</span>
                 </Link>
               </td>
             </tr>
@@ -52,9 +55,9 @@ export default function AccountDetailsTable({ profile }) {
                   to='/signup/review/change-account-email'
                   className='govuk-link'
                   style={{ cursor: 'pointer' }}
-                  aria-label={`Change ${profile.emails[0]} which is your current sign-in email`}
                 >
                   Change
+                  <span className='govuk-visually-hidden'>{emailContext}</span>
                 </Link>
               </td>
             </tr>

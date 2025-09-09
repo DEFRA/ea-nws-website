@@ -45,6 +45,13 @@ export default function FloodMessagesTable({
           {types.includes(AlertType.REMOVE_FLOOD_SEVERE_WARNING) && (
             <tr className='govuk-table__row'>
               <td className='govuk-table__cell'>
+                {/* SR-only combined label to make it explicit that the right-hand cell applies to both headings */}
+                <span
+                  id='warning-combined-label'
+                  className='govuk-visually-hidden'
+                >
+                  Severe flood warnings and Flood warnings
+                </span>
                 <div
                   className='org-flood-warning-item'
                   style={{ display: 'flex', alignItems: 'flex-start' }}
@@ -77,6 +84,7 @@ export default function FloodMessagesTable({
               </td>
               <td
                 className={`govuk-table__cell govuk-!-font-size-${fontSizes.heading}`}
+                aria-labelledby='warning-combined-label'
               >
                 {severeAreasArray?.length > 1 ? (
                   <>

@@ -28,7 +28,7 @@ export default function AddFullNamePage() {
   }, [])
 
   const navigateToNextPage = () => {
-    navigate('/declaration')
+    navigate('/signup/declaration')
   }
 
   const NavigateToPreviousPage = () => {
@@ -51,7 +51,7 @@ export default function AddFullNamePage() {
       // update all locations since channel preferences will now be set
       await updateAllLocationsRegistrations(authToken, data.profile)
       dispatch(setProfile(data.profile))
-      navigate('/declaration')
+      navigate('/signup/declaration')
     }
   }
 

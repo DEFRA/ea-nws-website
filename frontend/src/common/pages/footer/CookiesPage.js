@@ -36,6 +36,7 @@ export default function CookiesPage () {
       top: 0,
       behavior: 'smooth'
     })
+    window.location.reload()
   }
 
   return (

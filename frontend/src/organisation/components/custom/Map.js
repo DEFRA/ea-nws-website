@@ -684,14 +684,10 @@ export default function Map({
             )}
             {tileLayerWithHeader}
             {showMapControls && (
-              <div
-                role='group'
-                aria-label='Interactive Map Controls'
-                id='map-controls'
-              >
+              <>
                 <ZoomControl position='bottomright' />
                 <ResetMapButton center={centre} />
-              </div>
+              </>
             )}
             {touchInput && (
               <div className='drop-pin-container'>

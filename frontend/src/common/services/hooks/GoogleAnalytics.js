@@ -14,7 +14,7 @@ export function loadGA(gtmId) {
   window.__gaScript = script
 }
 
-export function removeGA() {
+export function removeGA(cookies = true) {
   const deleteCookies = () => {
     const cookieArr = document.cookie.split(';')
     const cookieNames = cookieArr.map((cookie) => cookie.split('=')[0])
@@ -30,6 +30,6 @@ export function removeGA() {
     window.__gaScript = null
   }
   delete window.dataLayer
-  deleteCookies()
+  cookies && deleteCookies()
 }
 

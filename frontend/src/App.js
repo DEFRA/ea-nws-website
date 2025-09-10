@@ -58,10 +58,22 @@ function App() {
       if (cookies?.CookieControl?.analytics) {
       loadGA(gtmId)
       } else {
-        removeGA()
+        removeGA(true)
       }
     }
   }, [cookies, gtmId])
+
+  // remove GA if cookies are manually deleted
+  if ('cookieStore' in window) {
+    cookieStore.addEventListener('change', (event) => {
+      for (const cookie of event.deleted) {
+        if (cookie.name.includes('_ga')) {
+          // don't remove cookies as they have already been removed
+          removeGA(false)
+        }
+      }
+    })
+  }
 
   /* Clear local storage if no cookies,
   cookies are only for the browser session. */

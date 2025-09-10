@@ -20,7 +20,7 @@ export function removeGA() {
     const cookieNames = cookieArr.map((cookie) => cookie.split('=')[0])
     cookieNames.forEach((cookie) => {
       if (cookie.includes('_ga')) {
-          document.cookie = cookie+'=; Max-Age=-99999999; domain=.'+window.location.hostname
+          document.cookie = cookie+'=; Max-Age=-99999999; path=/; domain=.'+window.location.hostname
       }
     })
   }

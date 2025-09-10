@@ -14,9 +14,9 @@ export default function LoadingSpinner({
           {percent ? (
             <ProgressBar
               now={parseInt(percent)}
-              label={loadingText !== 'error' ? `${parseInt(percent)}%`: ``}
+              label={loadingText !== 'Error' ? `${parseInt(percent)}%`: ``}
               style={{ width: wide? '45rem' : '15rem', height: '2rem' }}
-              variant={loadingText !== 'error' ?` info` : `danger`}
+              variant={loadingText !== 'Error' ?` info` : `danger`}
             />
           ) : (
             <Spinner

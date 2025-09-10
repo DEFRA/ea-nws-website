@@ -63,7 +63,7 @@ export default function ConfirmDeleteSingleLocationPage() {
 
         // Remove the location based on Id
         const filtered = locationRegistrations?.filter(
-          (loc) => loc.location != location.state.name
+          (loc) => loc.locationId != location.state.locationId
         )
         filtered && dispatch(setLocationRegistrations(filtered))
 

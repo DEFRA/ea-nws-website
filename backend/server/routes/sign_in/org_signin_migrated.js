@@ -71,6 +71,10 @@ module.exports = [
         const elasticacheKey = 'migrated_signin_status:' + sessionData.orgId
         // check if an org is already being migrated
         const result = await getJsonData(redis, elasticacheKey)
+        if (result) {
+          // return success without triggering migration code
+          return h.response({ status: 200 })
+        }
 
         if (orgData && sessionData && !result) {
           await setJsonData(redis, elasticacheKey, {

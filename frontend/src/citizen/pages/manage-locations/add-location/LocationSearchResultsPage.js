@@ -23,7 +23,7 @@ export default function LocationSearchResultsPage() {
       navigate('/manage-locations/add/location-in-flood-areas')
     } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
       if (locationSearchType === 'placename') {
-        navigate('/manage-locations/add/location-near-flood-areas')
+        return navigate('/manage-locations/add/location-near-flood-areas')
       }
       navigate(
         '/manage-locations/add/location-cannot-get-direct-flood-messages'

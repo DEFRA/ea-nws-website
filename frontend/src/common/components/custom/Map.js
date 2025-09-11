@@ -1,6 +1,5 @@
 import {
   faArrowLeft,
-  faRotateLeft,
   faUpRightAndDownLeftFromCenter
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -20,6 +19,7 @@ import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 import L from 'leaflet'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { isMobile } from 'react-device-detect'
+import ResetMapButton from '../../../organisation/components/custom/ResetMapButton'
 import locationPin from '../../assets/images/location_pin.svg'
 import AlertType from '../../enums/AlertType'
 import { backendCall } from '../../services/BackendService'
@@ -255,24 +255,6 @@ export default function Map({
     [apiKey]
   )
 
-  const ResetMapButton = () => {
-    const map = useMap()
-
-    const handleClick = () => {
-      map.setView([latitude, longitude], 14)
-    }
-
-    return (
-      <button
-        className='reset-map-button'
-        aria-label='Reset map zoom and centre on point selected'
-        onClick={handleClick}
-      >
-        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
-      </button>
-    )
-  }
-
   const FullScreenMapButton = () => {
     return (
       <button
@@ -328,7 +310,12 @@ export default function Map({
           {!isMobile && (interactive || resetMapButton) && (
             <>
               {interactive && <ZoomControl position='bottomright' />}
-              {resetMapButton && <ResetMapButton />}
+              {resetMapButton && (
+                <ResetMapButton
+                  center={[latitude, longitude]}
+                  zoom={zoomLevel}
+                />
+              )}
             </>
           )}
           {fullScreen && <FullScreenMapButton />}

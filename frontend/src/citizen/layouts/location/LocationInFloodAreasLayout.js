@@ -138,7 +138,6 @@ export default function LocationInFloodAreasLayout({
         ...(locationRegistrations || []),
         {
           locationId: location.id,
-          location: location.address,
           registrations: [{ params: { alertTypes: locationAlertTypes } }]
         }
       ]

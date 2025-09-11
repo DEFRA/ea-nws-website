@@ -12,6 +12,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
+import { removeDuplicates } from '../../../common/utils/removeDuplicates'
 
 export default function LocationSearchLayout({
   continueToNextPage,
@@ -94,7 +95,9 @@ export default function LocationSearchLayout({
             )
             if (!errorMessage) {
               dispatch(setLocationPostCode(''))
-              dispatch(setLocationSearchResults(data))
+              dispatch(
+                setLocationSearchResults(removeDuplicates(data, 'address'))
+              )
               dispatch(setLocationSearchType('placename'))
               continueToNextPage()
             } else {

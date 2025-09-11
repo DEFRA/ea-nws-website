@@ -582,7 +582,6 @@ export default function LiveMap({
             attributionControl={false}
             minZoom={7}
             maxBounds={maxBounds}
-            maxBoundsViscosity={1.0}
             scrollWheelZoom={!isDisabled}
             className='live-map-container'
             style={{

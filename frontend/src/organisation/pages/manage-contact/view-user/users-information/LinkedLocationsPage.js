@@ -9,9 +9,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import AlertState from '../../../../../common/enums/AlertState.js'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import {
-  setCurrentLocation
-} from '../../../../../common/redux/userSlice'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService.js'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { getRole } from '../../../../../common/utils/getRoleFromCurrentContact.js'
@@ -37,8 +35,12 @@ export default function LinkedLocationsPage() {
   const [stage, setStage] = useState('')
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
+  const contactName = [currentContact?.firstname, currentContact?.lastname]
+    .filter(Boolean)
+    .join(' ')
   const authToken = useSelector((state) => state.session.authToken)
+
+  console.log('contact name', contactName)
 
   const locationsPerPage = 10
 

@@ -45,11 +45,9 @@ export default function LinkContactToLocationPage() {
   }
 
   const successMessage = () => {
-    const fullName =
-      currentContact?.firstname +
-      (currentContact?.lastname && currentContact?.lastname.length > 0
-        ? ' ' + currentContact.lastname
-        : '')
+    const fullName = [currentContact?.firstname, currentContact?.lastname]
+      .filter(Boolean)
+      .join(' ')
 
     // User invited as admin will be pending admin
     if (pendingRole === UserType.Admin.toUpperCase()) {

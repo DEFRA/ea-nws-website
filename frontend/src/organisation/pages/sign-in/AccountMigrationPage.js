@@ -15,7 +15,7 @@ export default function AccountMigrationPage () {
     const authToken = useSelector((state) => state.session.authToken)
     const profile = useSelector((state) => state.session.profile)
 
-    const [stage, setStage] = useState('Retrieving locations')
+    const [stage, setStage] = useState('Step 1 of 7 - finding your locations')
     const [percent, setPercent] = useState(null)
     const [error, setError] = useState('')
     // eslint-disable-next-line no-unused-vars
@@ -93,27 +93,23 @@ export default function AccountMigrationPage () {
                       />
                     )}
                     <h1 className='govuk-heading-l' id='main-content'>
-                      Your account is being migrated
+                      Bringing information across from your old account
                     </h1>
-                    <LoadingSpinner
-                      loadingText={<p className='govuk-body'>{!error ? `${stage}...` : `Error`}</p>}
-                      percent={percent}
-                      wide={true}
-                    />
                     <div className='govuk-body'>
+                      <div className="govuk-inset-text">
+                          Do not refresh this page. You'll be automatically redirected when this is completed.
+                      </div>
                       <p>
-                        This is the first time your organisation is being signed into the new professional get flood warnings service.
-                        Your account is currently being migrated.
+                        This may take between a few minutes up to 2 hours, depending on the amount of data in your old account.
+                        You'll only need to do this once.
                       </p>
-                      <div class="govuk-warning-text">
-                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                        <strong class="govuk-warning-text__text">
-                          <span class="govuk-visually-hidden">Warning</span>
-                          Do not refresh the page. You will be automatically redirected once complete.
-                        </strong>
-                        </div>
+                      <LoadingSpinner
+                        loadingText={<p className='govuk-body'>{!error ? `${stage}` : `Error`}</p>}
+                        percent={percent}
+                        wide={true}
+                      />
                         <h2 className='govuk-heading-m'>
-                          Learn more about the service
+                          While you wait
                         </h2>
                         <p>
                         <Link
@@ -122,12 +118,11 @@ export default function AccountMigrationPage () {
                               target='_blank'
                               aria-label='Preview what the professional service offers'
                             >
-                              Preview what the professional service offers
+                              Preview this new service
                             </Link> {' '}(opens in new tab)
-                        </p>
-                        <p>
+                        <br />
                           <a className='govuk-link ' href={templateUrl} target='_blank' rel='noopener noreferrer'>
-                            Get flood warnings - quick start guide
+                            Download a quick-start PDF guide
                           </a>
                         </p>
                     </div>

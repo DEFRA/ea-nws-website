@@ -106,7 +106,7 @@ const setLocations = async (client, orgId, locations, statusKey) => {
     if (percent !== newPercent) {
       percent = newPercent
       await setJsonData(client, statusKey, {
-        stage: 'Processing locations',
+        stage: 'Step 5 of 7 - saving your updated location information',
         status: 'working',
         percent: percent
       })
@@ -574,7 +574,7 @@ const orgSignIn = async (
       if (percent !== newPercent) {
         percent = newPercent
         await setJsonData(client, statusKey, {
-          stage: 'Retrieving Contacts',
+          stage: 'Step 6 of 7 - saving your updated contact information',
           status: 'working',
           percent: percent
         })

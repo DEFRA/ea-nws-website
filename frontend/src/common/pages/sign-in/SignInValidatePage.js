@@ -43,7 +43,7 @@ export default function SignInValidatePage() {
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
   const [orgData, setOrgData] = useState(null)
-  const [stage, setStage] = useState('Retrieving locations')
+  const [stage, setStage] = useState('Step 1 of 7 - finding your locations')
   const [percent, setPercent] = useState(null)
   const enterCodeId = 'enter-code'
 
@@ -283,7 +283,7 @@ export default function SignInValidatePage() {
             <div className='popup-dialog'>
               <div className='popup-dialog-container govuk-!-padding-bottom-6'>
                 <LoadingSpinner
-                  loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                  loadingText={<p className='govuk-body-l'>{`${stage}`}</p>}
                   percent={percent}
                 />
               </div>

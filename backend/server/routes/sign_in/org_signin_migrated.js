@@ -83,7 +83,7 @@ module.exports = [
 
         if (orgData && sessionData && !result) {
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Retrieving locations',
+            stage: 'Step 1 of 7 - finding your locations',
             status: 'working'
           })
 
@@ -110,7 +110,7 @@ module.exports = [
           const locations = []
 
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Migrating locations',
+            stage: 'Step 2 of 7 - linking your locations to flood areas',
             status: 'working'
           })
 
@@ -123,7 +123,7 @@ module.exports = [
             if (locationPercent !== newPercent) {
               locationPercent = newPercent
               await setJsonData(redis, elasticacheKey, {
-                stage: 'Migrating locations',
+                stage: 'Step 2 of 7 - linking your locations to flood areas',
                 status: 'working',
                 percent: locationPercent
               })
@@ -138,7 +138,7 @@ module.exports = [
               )
               if (response.errorMessage) {
                 await setJsonData(redis, elasticacheKey, {
-                  stage: 'Migrating locations',
+                  stage: 'Step 2 of 7 - linking your locations to flood areas',
                   status: 'error',
                   percent: locationPercent
                 })
@@ -156,7 +156,7 @@ module.exports = [
 
           // locations are in the correct formatt, now we need to complete setting up linked locations
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Migrating nearby areas',
+            stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
             status: 'working'
           })
           const linkedLocations = {}
@@ -178,16 +178,11 @@ module.exports = [
             if (nearbyPercent !== newPercent) {
               nearbyPercent = newPercent
               await setJsonData(redis, elasticacheKey, {
-                stage: 'Migrating locations',
+                stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
                 status: 'working',
                 percent: nearbyPercent
               })
             }
-              await setJsonData(redis, elasticacheKey, {
-                stage: 'Migrating nearby areas',
-                status: 'working',
-                percent: nearbyPercent
-              })
               if (linkedLocations[location.id]) {
                   const alertTypes = [...new Set(linkedLocations[location.id].AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
                   setLocationOtherAdditionals(location.additionals, 'childrenIDs', linkedLocations[location.id].linkedIDs)
@@ -200,7 +195,7 @@ module.exports = [
                   )
                   if (updateResponse.errorMessage) {
                     await setJsonData(redis, elasticacheKey, {
-                      stage: 'Migrating nearby areas',
+                      stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
                       status: 'error',
                       percent: locationPercent
                     })
@@ -228,7 +223,7 @@ module.exports = [
                   )
                   if (response.errorMessage) {
                     await setJsonData(redis, elasticacheKey, {
-                      stage: 'Migrating nearby areas',
+                      stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
                       status: 'error',
                       percent: locationPercent
                     })
@@ -277,7 +272,7 @@ module.exports = [
 
           if (response.errorMessage) {
             await setJsonData(redis, elasticacheKey, {
-              stage: 'Migrating nearby areas',
+              stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
               status: 'error',
               percent: locationPercent
             })
@@ -285,7 +280,7 @@ module.exports = [
           }
 
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Retrieving contacts',
+            stage: 'Step 4 of 7 - finding your contacts',
             status: 'working'
           })
           const contactRes = await apiCall(
@@ -293,10 +288,6 @@ module.exports = [
             'organization/listContacts'
           )
 
-          await setJsonData(redis, elasticacheKey, {
-            stage: 'Populating account',
-            status: 'working'
-          })
           // Send the profile to elasticache
           await orgSignIn(
             redis,
@@ -318,7 +309,7 @@ module.exports = [
             if (percent !== newPercent) {
               percent = newPercent
               await setJsonData(redis, elasticacheKey, {
-                stage: 'Processing Contacts',
+                stage: 'Step 7 of 7 - linking your contacts to locations',
                 status: 'working',
                 percent: percent
               })
@@ -373,7 +364,7 @@ module.exports = [
           await setLinkLocations(redis, orgData.organization.id, linkedLocationsArr, linkedContactsArr)
 
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Populating account',
+            stage: 'Step 7 of 7 - linking your contacts to locations',
             status: 'complete'
           })
 

@@ -72,7 +72,7 @@ module.exports = [
         if (orgData && sessionData) {
           const elasticacheKey = 'signin_status:' + orgData.authToken
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Retrieving locations',
+            stage: 'Step 1 of 7 - finding your locations',
             status: 'working'
           })
 
@@ -97,7 +97,7 @@ module.exports = [
           locations.push(...additionalLocations)
 
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Retrieving contacts',
+            stage: 'Step 4 of 7 - finding your contacts',
             status: 'working'
           })
           const contactRes = await apiCall(
@@ -105,10 +105,6 @@ module.exports = [
             'organization/listContacts'
           )
 
-          await setJsonData(redis, elasticacheKey, {
-            stage: 'Populating account',
-            status: 'working'
-          })
           // Send the profile to elasticache
           await orgSignIn(
             redis,
@@ -130,7 +126,7 @@ module.exports = [
             if (percent !== newPercent) {
               percent = newPercent
               await setJsonData(redis, elasticacheKey, {
-                stage: 'Processing Contacts',
+                stage: 'Step 7 of 7 - linking your contacts to locations',
                 status: 'working',
                 percent: percent
               })
@@ -185,7 +181,7 @@ module.exports = [
           await setLinkLocations(redis, orgData.organization.id, linkedLocationsArr, linkedContactsArr)
 
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Populating account',
+            stage: 'Step 7 of 7 - linking your contacts to locations',
             status: 'complete'
           })
 

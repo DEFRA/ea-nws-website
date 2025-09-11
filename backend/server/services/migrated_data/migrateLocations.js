@@ -31,6 +31,25 @@ function calculateLocationDataType (migratedLocation) {
     else return null
 }
 
+const setLocationOtherAdditionals = (additionals, id, value) => {
+  let idFound = false
+  let otherAdditionals = {}
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      idFound = true
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      otherAdditionals[id] = value
+      additionals[i].value = { s: JSON.stringify(otherAdditionals) }
+    }
+  }
+  if (!idFound) {
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ [id]: value }) }
+    })
+  }
+}
+
 const getLocationOtherAdditional = (additionals, id) => {
     for (let i = 0; i < additionals.length; i++) {
       if (additionals[i].id === 'other') {
@@ -99,9 +118,9 @@ async function getTAAndNaFra (redis, migratedLocation, dataType) {
     } else if (dataType === LocationDataType.BOUNDARY) {
         let feature = await getTAData(redis, migratedLocation.geocode)
         if (feature === null || feature?.length === 0) {
-          feature = await getOperationalBoundaryByTaCode(TA_CODE)
+          feature = await getOperationalBoundaryByTaCode(migratedLocation.geocode)
           if (feature) {
-            await setTAData(redis, TA_CODE, feature)
+            await setTAData(redis, migratedLocation.geocode, feature)
           }
         }
         const TAs = await getFloodAreasFromShape(feature)
@@ -196,4 +215,5 @@ async function migrateLocation (redis, migratedLocation) {
 
 }
 
-module.exports = {migrateLocation}
+
+module.exports = {migrateLocation, setLocationOtherAdditionals, getAdditional, getLocationOtherAdditional}

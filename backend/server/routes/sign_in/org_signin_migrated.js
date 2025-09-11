@@ -9,7 +9,8 @@ const {
   setLinkLocations
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
-const { migrateLocation } = require('../../services/migrated_data/migrateLocations')
+const { migrateLocation, getAdditional, getLocationOtherAdditional, setLocationOtherAdditionals } = require('../../services/migrated_data/migrateLocations')
+const getSecretKeyValue = require('../../services/SecretsManager')
 
 // geosafe api restricted to 1024 locations per response
 // recall to api required to collect all locations
@@ -75,6 +76,10 @@ module.exports = [
           // return success without triggering migration code
           return h.response({ status: 200 })
         }
+        const partnerID = await getSecretKeyValue(
+          'nws/website',
+          'partnerId'
+        )
 
         if (orgData && sessionData && !result) {
           await setJsonData(redis, elasticacheKey, {
@@ -149,6 +154,91 @@ module.exports = [
             locationIndex++
           }
 
+          // locations are in the correct formatt, now we need to complete setting up linked locations
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Migrating nearby areas',
+            status: 'working'
+          })
+          const linkedLocations = {}
+          for (const location of locations) {
+              let parentID = getAdditional(location.additionals, 'parentID')
+              if (parentID) {
+                  const linkedIDs = linkedLocations[parentID]?.linkedIDs || []
+                  const AlertTypes = linkedLocations[parentID]?.AlertTypes || []
+                  linkedLocations[parentID] = {
+                    linkedIDs: [...new Set(linkedIDs.concat([location.id]))],
+                    AlertTypes: [...new Set(AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
+                  }
+              }
+          }
+          let nearbyIndex = 1
+          let nearbyPercent = 0
+          for (const location of locations) {
+            let newPercent = Math.round((nearbyIndex/numLocations)*100)
+            if (nearbyPercent !== newPercent) {
+              nearbyPercent = newPercent
+              await setJsonData(redis, elasticacheKey, {
+                stage: 'Migrating locations',
+                status: 'working',
+                percent: nearbyPercent
+              })
+            }
+              await setJsonData(redis, elasticacheKey, {
+                stage: 'Migrating nearby areas',
+                status: 'working',
+                percent: nearbyPercent
+              })
+              if (linkedLocations[location.id]) {
+                  const alertTypes = [...new Set(linkedLocations[location.id].AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
+                  setLocationOtherAdditionals(location.additionals, 'childrenIDs', linkedLocations[location.id].linkedIDs)
+                  setLocationOtherAdditionals(location.additionals, 'alertTypes', alertTypes)
+
+                  // update the location and set registrations
+                  const updateResponse = await apiCall(
+                    { authToken: orgData.authToken, location: JSON.parse(JSON.stringify(location)) },
+                    'location/update'
+                  )
+                  if (updateResponse.errorMessage) {
+                    await setJsonData(redis, elasticacheKey, {
+                      stage: 'Migrating nearby areas',
+                      status: 'error',
+                      percent: locationPercent
+                    })
+                    throw new Error(response.errorMessage)
+                  }
+
+
+                  const registerData = {
+                    authToken: orgData.authToken,
+                    locationId: location.id,
+                    partnerId: partnerID,
+                    params: {
+                      channelVoiceEnabled: true,
+                      channelSmsEnabled: true,
+                      channelEmailEnabled: true,
+                      channelMobileAppEnabled: true,
+                      partnerCanView: true,
+                      partnerCanEdit: true,
+                      alertTypes: alertTypes
+                    }
+                  }
+                  const response = await apiCall(
+                    registerData,
+                    'location/updateRegistration'
+                  )
+                  if (response.errorMessage) {
+                    await setJsonData(redis, elasticacheKey, {
+                      stage: 'Migrating nearby areas',
+                      status: 'error',
+                      percent: locationPercent
+                    })
+                    throw new Error(response.errorMessage)
+                  }
+              }
+
+              nearbyIndex++
+          }
+
           // locations have been migrated now update the organisation with a description to show it's been migrated
           const newOrgData = {
             id: orgData.organization.id || null,
@@ -187,7 +277,7 @@ module.exports = [
 
           if (response.errorMessage) {
             await setJsonData(redis, elasticacheKey, {
-              stage: 'Migrating locations',
+              stage: 'Migrating nearby areas',
               status: 'error',
               percent: locationPercent
             })
@@ -211,7 +301,7 @@ module.exports = [
           await orgSignIn(
             redis,
             orgData.profile,
-            orgData.organization,
+            newOrgData,
             locations,
             contactRes.data.contacts,
             sessionData.orgId,

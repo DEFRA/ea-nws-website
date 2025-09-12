@@ -67,7 +67,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
 
     const urls =
       journey === 'org'
-        ? [orgSignUpUrls.signUp, 'organisation/admin-controls', ...baseUrls]
+        ? [orgSignUpUrls.signUp, 'organisation/admin-controls', 'organisation/migration',...baseUrls]
         : ['/signup', ...baseUrls]
 
     return (

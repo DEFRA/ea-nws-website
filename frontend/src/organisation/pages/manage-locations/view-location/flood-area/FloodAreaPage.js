@@ -10,11 +10,11 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { getOperationalBoundaryByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
-import { getOperationalBoundaryByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'

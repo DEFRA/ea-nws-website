@@ -72,6 +72,20 @@ export default function ErrorSummary({ errorList }) {
                 )
               }
 
+              if (errorText === 'migration error') {
+                return (
+                  <li key={index} className='govuk-error-summary__list-item'>
+                    An error has occurred while migrating your locations. Please{' '}
+                    <Link
+                      to='/organisation/signout'
+                      className='govuk-link'
+                    >
+                      sign out
+                    </Link>
+                    {' '}and sign in again.
+                  </li>
+                )
+              }
               // If an object, render a link to jump to that section
               if (typeof error === 'object' && error.componentId) {
                 return (

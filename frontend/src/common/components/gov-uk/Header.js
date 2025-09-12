@@ -15,7 +15,8 @@ export default function Header() {
   const isOrganisationPage =
     path.includes('organisation') &&
     !path.includes('sign-up') &&
-    !path.includes('organisation/admin-controls')
+    !path.includes('organisation/admin-controls') &&
+    !path.includes('organisation/migration')
 
   // Hide "Sign out" link on all signup pages until user reaches end
   const inCitizenSignUpFlow =

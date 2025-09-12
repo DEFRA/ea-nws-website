@@ -14,8 +14,9 @@ export default function ResendInvitePage() {
   const authToken = useSelector((state) => state.session.authToken)
   const pendingAdmin = location.state?.pendingAdmin
   const pendingAdminEmail = pendingAdmin?.emails[0]
-  const pendingAdminName =
-    pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
+  const pendingAdminName = [pendingAdmin?.firstname, pendingAdmin?.lastname]
+    .filter(Boolean)
+    .join(' ')
 
   const handleSubmit = async (event) => {
     event.preventDefault()

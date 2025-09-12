@@ -71,7 +71,7 @@ export default function LocationInformation({ location, comparedLocation }) {
     }
 
     const areaInSqKm = turf.area(location.geometry.geoJson) / 1000000
-    return formatShapeArea(Math.round(areaInSqKm))
+    return formatShapeArea(areaInSqKm.toFixed(4))
   }
 
   const getLineLength = () => {

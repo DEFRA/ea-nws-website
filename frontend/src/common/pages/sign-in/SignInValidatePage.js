@@ -43,7 +43,7 @@ export default function SignInValidatePage() {
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
   const [orgData, setOrgData] = useState(null)
-  const [stage, setStage] = useState('Retrieving locations')
+  const [stage, setStage] = useState('Step 1 of 7 - finding your locations')
   const [percent, setPercent] = useState(null)
   const enterCodeId = 'enter-code'
 
@@ -142,6 +142,34 @@ export default function SignInValidatePage() {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
+          const migrated = (() => {
+            // check the JSON structure doesn't include name to identify migrated data
+            try { return !('name' in JSON.parse(data.organization?.description)) }
+            catch { return true }
+          })()
+          if (migrated) {
+            // migrated data has no org description
+            dispatch(setAuthToken(data.authToken))
+            dispatch(setProfile(data.profile))
+            // don't wait for the result, just kick it off for the backend
+            backendCall({orgData: data}, 'api/org_signin_migrated')
+            // navigate to migration status page
+            return navigate('/sign-in/organisation/migration')
+          }
+        } else {
+          const { errorMessage, data: verifyData } = await backendCall(
+            { authToken: data.authToken },
+            'api/sign_in_verify'
+          )
+
+          if (errorMessage) {
+            setError(errorMessage)
+          } else {
+            dispatch(
+              setLocationRegistrations(verifyData.locationRegistrations)
+            )
+            dispatch(setProfile(verifyData.profile))
+          }
         }
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
@@ -152,19 +180,6 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
-            const { errorMessage, data: verifyData } = await backendCall(
-              { authToken: data.authToken },
-              'api/sign_in_verify'
-            )
-
-            if (errorMessage) {
-              setError(errorMessage)
-            } else {
-              dispatch(
-                setLocationRegistrations(verifyData.locationRegistrations)
-              )
-              dispatch(setProfile(verifyData.profile))
-            }
             setupAuthentication(data)
             navigate('/home')
           }
@@ -269,7 +284,7 @@ export default function SignInValidatePage() {
             <div className='popup-dialog'>
               <div className='popup-dialog-container govuk-!-padding-bottom-6'>
                 <LoadingSpinner
-                  loadingText={<p className='govuk-body-l'>{`${stage}...`}</p>}
+                  loadingText={<p className='govuk-body-l'>{`${stage}`}</p>}
                   percent={percent}
                 />
               </div>

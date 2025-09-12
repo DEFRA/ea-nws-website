@@ -206,10 +206,65 @@ const findTAs = async (lng, lat) => {
   return allAreas
 }
 
+const getIntersections = (areas, bufferedShape) => {
+  const bufferedShapeValid = turf.booleanValid(bufferedShape)
+  if (!bufferedShapeValid) return
+  const bufferedShapeGeometry = bufferedShape
+  const filteredTargetData = areas.features.filter((area) => {
+    try {
+      let res = false
+      if (bufferedShapeGeometry.type === 'MultiPolygon') {
+        bufferedShapeGeometry.coordinates.forEach((poly) => {
+          res =
+            res ||
+            turf.booleanContains(area.geometry, {
+              type: 'Polygon',
+              coordinates: poly
+            })
+        })
+      }
+      res = res || turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
+      return res
+    } catch (e) {
+      console.error('Error during intersection', e)
+      return false
+    }
+  })
+  return filteredTargetData
+}
+
+const getFloodAreasFromShape = async (geoJsonShape) => {
+  const bbox = turf.bbox(geoJsonShape)
+  const bboxInput =
+    bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
+  // warning areas
+  const { data: wfsWarningData } = await wfsCall(
+    bboxInput,
+    'uk-nfws.qgz',
+    'flood_warnings'
+  )
+  const { data: wfsAlertData } = await wfsCall(
+    bboxInput,
+    'uk-nfws.qgz',
+    'flood_alerts'
+  )
+  // We only want intersections from the current shape to get areas within
+  const filteredWarningData = getIntersections(wfsWarningData, geoJsonShape)
+  const filteredAlertData = getIntersections(wfsAlertData, geoJsonShape)
+  const filteredWarningDataFeatures = filteredWarningData || []
+  const filteredAlertDataFeatures = filteredAlertData || []
+  const withinAreas = filteredWarningDataFeatures.concat(
+    filteredAlertDataFeatures
+  )
+
+  return withinAreas
+}
+
 module.exports = {
   findTAs,
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation,
   getFloodAreaByTaCode,
-  getOperationalBoundaryByTaCode
+  getOperationalBoundaryByTaCode,
+  getFloodAreasFromShape
 }

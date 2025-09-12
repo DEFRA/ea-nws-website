@@ -239,13 +239,23 @@ export default function LocationNearFloodAreasLayout({
           )
         }
 
-        updatedLocationRegistrations = [
-          ...updatedLocationRegistrations,
-          {
-            location: location?.address,
-            alertTypes: locationAlertTypes
-          }
-        ]
+        if (updateGeoSafeProfile) {
+          updatedLocationRegistrations = [
+            ...updatedLocationRegistrations,
+            {
+              locationId: location.id,
+              registrations: [{ params: { alertTypes: locationAlertTypes } }]
+            }
+          ]
+        } else {
+          updatedLocationRegistrations = [
+            ...updatedLocationRegistrations,
+            {
+              location: location?.address,
+              alertTypes: locationAlertTypes
+            }
+          ]
+        }
       }
     }
 

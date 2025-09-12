@@ -8,15 +8,15 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function WithdrawInvitePage () {
+export default function WithdrawInvitePage() {
   const navigate = useNavigate()
   const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
 
   const pendingAdmin = location.state?.pendingAdmin
-  const pendingAdminName =
-    pendingAdmin?.firstname + ' ' + pendingAdmin?.lastname
-
+  const pendingAdminName = [pendingAdmin?.firstname, pendingAdmin?.lastname]
+    .filter(Boolean)
+    .join(' ')
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
@@ -47,13 +47,19 @@ export default function WithdrawInvitePage () {
   return (
     <>
       <Helmet>
-        <title>Do you want to withdraw the admin invitation for {pendingAdminName}? - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Do you want to withdraw the admin invitation for {pendingAdminName}? -
+          Manage users - Get flood warnings (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3' id='main-content'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               Do you want to withdraw the admin invitation for{' '}
               {pendingAdminName}?
             </h1>

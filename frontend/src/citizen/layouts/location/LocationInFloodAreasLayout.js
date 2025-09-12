@@ -131,14 +131,25 @@ export default function LocationInFloodAreasLayout({
       )
     }
 
-    const updatedLocationRegistrations = [
-      ...(locationRegistrations || []),
-      {
-        locationId: location.id,
-        location: location.address,
-        registrations: [{ params: { alertTypes: locationAlertTypes } }]
-      }
-    ]
+    let updatedLocationRegistrations
+
+    if (updateGeoSafeProfile) {
+      updatedLocationRegistrations = [
+        ...(locationRegistrations || []),
+        {
+          locationId: location.id,
+          registrations: [{ params: { alertTypes: locationAlertTypes } }]
+        }
+      ]
+    } else {
+      updatedLocationRegistrations = [
+        ...(locationRegistrations || []),
+        {
+          location: location.address,
+          alertTypes: locationAlertTypes
+        }
+      ]
+    }
     dispatch(setLocationRegistrations(updatedLocationRegistrations))
   }
 

@@ -13,7 +13,9 @@ export default function RemoveAdminPage() {
   const authToken = useSelector((state) => state.session.authToken)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
+  const contactName = [currentContact?.firstname, currentContact?.lastname]
+    .filter(Boolean)
+    .join(' ')
   const contactEmail = currentContact?.emails[0]
 
   const adminName =
@@ -59,7 +61,10 @@ export default function RemoveAdminPage() {
   return (
     <>
       <Helmet>
-        <title>Remove {contactName} as admin - Manage users - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Remove {contactName} as admin - Manage users - Get flood warnings
+          (professional) - GOV.UK
+        </title>
       </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-body'>

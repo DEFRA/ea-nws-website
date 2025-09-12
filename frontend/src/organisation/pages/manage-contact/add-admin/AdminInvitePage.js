@@ -24,7 +24,7 @@ export default function AdminInvitePage() {
   const [cookies, setCookie] = useCookies(['authToken'])
   const dispatch = useDispatch()
   const [orgData, setOrgData] = useState(null)
-  const [stage, setStage] = useState('Retrieving locations')
+  const [stage, setStage] = useState('Step 1 of 7 - finding your locations')
   const [percent, setPercent] = useState(null)
   const [error, setError] = useState('')
 

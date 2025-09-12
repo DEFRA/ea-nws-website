@@ -4,9 +4,9 @@ const {
 } = require('../../services/GenericErrorResponse')
 const {
   orgSignIn,
-  addLinkedLocations,
   setJsonData,
-  getJsonData
+  getJsonData,
+  setLinkLocations
 } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
@@ -17,14 +17,14 @@ const getAdditionalLocations = async (
   authToken,
   contactId = null
 ) => {
-  let additionalLocations = []
+  const additionalLocations = []
 
   if (firstLocationApiCall.data.total > 1000) {
     const fetchLocationsPromises = []
     const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1000)
     let i = 1
     while (i <= totalRecalls) {
-      let options = {
+      const options = {
         offset: 1000 * i,
         limit: 1000,
         sort: [{
@@ -71,12 +71,12 @@ module.exports = [
         if (orgData && sessionData) {
           const elasticacheKey = 'signin_status:' + orgData.authToken
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Retrieving locations',
+            stage: 'Step 1 of 7 - finding your locations',
             status: 'working'
           })
 
-          let locations = []
-          let options = {
+          const locations = []
+          const options = {
             limit: 1000,
             sort: [{
               fieldName: 'id',
@@ -96,7 +96,7 @@ module.exports = [
           locations.push(...additionalLocations)
 
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Retrieving contacts',
+            stage: 'Step 4 of 7 - finding your contacts',
             status: 'working'
           })
           const contactRes = await apiCall(
@@ -104,10 +104,6 @@ module.exports = [
             'organization/listContacts'
           )
 
-          await setJsonData(redis, elasticacheKey, {
-            stage: 'Populating account',
-            status: 'working'
-          })
           // Send the profile to elasticache
           await orgSignIn(
             redis,
@@ -122,18 +118,19 @@ module.exports = [
           const numContacts = contactRes.data.contacts.length
           let contactIndex = 1
           let percent = 0
+          const linkedContactsArr = []
 
           for (const contact of contactRes.data.contacts) {
-            let newPercent = Math.round((contactIndex/numContacts)*100)
+            const newPercent = Math.round((contactIndex / numContacts) * 100)
             if (percent !== newPercent) {
               percent = newPercent
               await setJsonData(redis, elasticacheKey, {
-                stage: 'Processing Contacts',
+                stage: 'Step 7 of 7 - linking your contacts to locations',
                 status: 'working',
                 percent: percent
               })
             }
-            let contactsLocations = []
+            const contactsLocations = []
             const options = {
               contactId: contact.id,
               limit: 1000,
@@ -163,16 +160,27 @@ module.exports = [
               locationIDs.push(location.id)
             })
 
-            await addLinkedLocations(
-              redis,
-              orgData.organization.id,
-              contact.id,
-              locationIDs
-            )
+            linkedContactsArr.push({ id: contact.id, linkIDs: locationIDs })
             contactIndex++
           }
+
+          const linkedLocationsMap = linkedContactsArr.reduce((acc, { id, linkIDs }) => {
+            linkIDs.forEach((locationID) => {
+              if (!acc[locationID]) acc[locationID] = []
+              acc[locationID].push(id)
+            })
+            return acc
+          }, {})
+
+          const linkedLocationsArr = Object.entries(linkedLocationsMap).map(([linkIDs, id]) => ({
+            id: linkIDs,
+            linkIDs: id
+          }))
+
+          await setLinkLocations(redis, orgData.organization.id, linkedLocationsArr, linkedContactsArr)
+
           await setJsonData(redis, elasticacheKey, {
-            stage: 'Populating account',
+            stage: 'Step 7 of 7 - linking your contacts to locations',
             status: 'complete'
           })
 

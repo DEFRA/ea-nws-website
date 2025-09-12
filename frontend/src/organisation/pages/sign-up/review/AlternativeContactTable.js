@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { returnEmptyTableContents } from '../../../../common/utils/returnEmptyTableContents'
 import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 export default function ContactReviewTable({ alternativeContact }) {
   const fullName = `${alternativeContact.firstName} ${alternativeContact.lastName}`
@@ -76,7 +77,7 @@ export default function ContactReviewTable({ alternativeContact }) {
           <td className='govuk-table__cell  govuk-!-width-full'>
             {alternativeContact.jobTitle
               ? `${alternativeContact.jobTitle}`
-              : '-'}
+              : returnEmptyTableContents()}
           </td>
           <td className='govuk-table__cell'>
             <Link

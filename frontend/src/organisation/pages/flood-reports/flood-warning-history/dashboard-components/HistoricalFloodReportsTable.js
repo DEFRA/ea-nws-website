@@ -6,6 +6,7 @@ import floodWarningIcon from '../../../../../common/assets/images/flood_warning.
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../../common/enums/AlertType'
+import { returnEmptyTableContents } from '../../../../../common/utils/returnEmptyTableContents'
 
 export default function HistoricalFloodReportsTable({
   locationsAffected,
@@ -38,9 +39,11 @@ export default function HistoricalFloodReportsTable({
       const objLocationName =
         obj.locationData.name || obj.locationData.additionals.locationName
       const objLocationType =
-        obj.locationData.additionals.other.location_type || '-'
+        obj.locationData.additionals.other.location_type ||
+        returnEmptyTableContents()
       const objBusinessCriticality =
-        obj.locationData.additionals.other.business_criticality || '-'
+        obj.locationData.additionals.other.business_criticality ||
+        returnEmptyTableContents()
       const objStartDate = obj.floodData.startDate
       const objLastUpdatedTime = obj.floodData.lastUpdatedTime
       const objFloodWarningType = obj.floodData.type
@@ -305,25 +308,26 @@ export default function HistoricalFloodReportsTable({
                   </div>
                 </td>{' '}
                 <td className='govuk-table__cell'>
-                  {location.locationData.additionals.other.location_type || '-'}
+                  {location.locationData.additionals.other.location_type ||
+                    returnEmptyTableContents()}
                 </td>
                 <td className='govuk-table__cell'>
                   {location.locationData.additionals.other
-                    .business_criticality || '-'}
+                    .business_criticality || returnEmptyTableContents()}
                 </td>
                 <td className='govuk-table__cell'>
                   {location.floodData.startDate
                     ? dayjs(location.floodData.startDate).format(
                         'D MMM YYYY [at] HH:mm'
                       )
-                    : '-'}
+                    : returnEmptyTableContents()}
                 </td>
                 <td className='govuk-table__cell'>
                   {location.floodData.lastUpdatedTime
                     ? dayjs(location.floodData.lastUpdatedTime).format(
                         'D MMM YYYY [at] HH:mm'
                       )
-                    : '-'}
+                    : returnEmptyTableContents()}
                 </td>
               </tr>
             )

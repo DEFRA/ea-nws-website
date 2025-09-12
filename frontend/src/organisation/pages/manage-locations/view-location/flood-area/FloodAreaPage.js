@@ -14,6 +14,7 @@ import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
 } from '../../../../../common/services/formatters/LocationFormatter'
+import { getOperationalBoundaryByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { useFetchAlerts } from '../../../../../common/services/hooks/GetHistoricalAlerts'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -170,7 +171,7 @@ export default function FloodAreaPage() {
 
       const locationsUpdate = []
       if (webLocations.length > 0) {
-        webLocations.forEach((location) => {
+        webLocations.forEach(async (location) => {
           location.within = true
           if (
             location.additionals.other.location_data_type ===
@@ -180,6 +181,15 @@ export default function FloodAreaPage() {
               [location.coordinates.longitude, location.coordinates.latitude],
               area.geometry
             ) && locationsUpdate.push(location)
+          } else if (
+            location.additionals.other.location_data_type ===
+            LocationDataType.BOUNDARY
+          ) {
+            const boundary = await getOperationalBoundaryByTaCode(
+              location.geocode
+            )
+            booleanIntersects(boundary, area.geometry) &&
+              locationsUpdate.push(location)
           } else {
             booleanIntersects(location.geometry.geoJson, area.geometry) &&
               locationsUpdate.push(location)

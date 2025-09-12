@@ -6,6 +6,7 @@ import floodWarningIcon from '../../../../../common/assets/images/flood_warning.
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
 import FloodDataInformationPopup from '../../../../../common/components/custom/FloodDataInformationPopup'
 import AlertType from '../../../../../common/enums/AlertType'
+import { returnEmptyTableContents } from '../../../../../common/utils/returnEmptyTableContents'
 
 export default function FloodReportsTable({
   locationsAffected,
@@ -332,11 +333,12 @@ export default function FloodReportsTable({
                   </div>
                 </td>{' '}
                 <td className='govuk-table__cell'>
-                  {location.locationData.additionals.other.location_type || '-'}
+                  {location.locationData.additionals.other.location_type ||
+                    returnEmptyTableContents()}
                 </td>
                 <td className='govuk-table__cell'>
                   {location.locationData.additionals.other
-                    .business_criticality || '-'}
+                    .business_criticality || returnEmptyTableContents()}
                 </td>
                 <td className='govuk-table__cell'>
                   {location.locationData.linked_contacts}

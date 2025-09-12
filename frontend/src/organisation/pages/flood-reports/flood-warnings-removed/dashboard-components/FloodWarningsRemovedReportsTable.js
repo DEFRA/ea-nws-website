@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
 import FloodDataInformationPopup from '../../../../../common/components/custom/FloodDataInformationPopup'
+import { returnEmptyTableContents } from '../../../../../common/utils/returnEmptyTableContents'
 
 export default function HistoricalFloodReportsTable({
   locationsAffected,
@@ -280,11 +281,12 @@ export default function HistoricalFloodReportsTable({
                   </div>
                 </td>{' '}
                 <td className='govuk-table__cell'>
-                  {location.locationData.additionals.other.location_type || '-'}
+                  {location.locationData.additionals.other.location_type ||
+                    returnEmptyTableContents()}
                 </td>
                 <td className='govuk-table__cell'>
                   {location.locationData.additionals.other
-                    .business_criticality || '-'}
+                    .business_criticality || returnEmptyTableContents()}
                 </td>
                 <td className='govuk-table__cell'>
                   {dayjs(location.floodData.lastUpdatedTime).format(

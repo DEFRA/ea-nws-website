@@ -97,8 +97,10 @@ const osFindNameApiCall = async (name, filters, loop) => {
   }
 
   let responseData = []
-  // remove special characters from name
-  const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9 ]/g, '')
+  // 1: replace & with %26
+  // 2: remove all characters except letters, digits, spaces and hypens
+  const formattedName = name.replace('&', '%26').replace(/[^a-zA-Z0-9- ]/g, '')
+
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   let url = `https://api.os.co.uk/search/names/v1/find?query=${formattedName}&key=${osApiKey}`
   if (filters !== null) {
@@ -159,7 +161,7 @@ const osFindNameApiCall = async (name, filters, loop) => {
             // filter out any non english locations
             return (
               result.GAZETTEER_ENTRY.COUNTRY === 'England' &&
-              result.GAZETTEER_ENTRY.NAME1.replace(/[^a-zA-Z0-9 ]/g, '')
+              result.GAZETTEER_ENTRY.NAME1.replace(/[^a-zA-Z0-9- ]/g, '')
                 .toLowerCase()
                 .includes(formattedName.toLowerCase())
             )

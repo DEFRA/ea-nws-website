@@ -156,6 +156,20 @@ export default function SignInValidatePage() {
             // navigate to migration status page
             return navigate('/sign-in/organisation/migration')
           }
+        } else {
+          const { errorMessage, data: verifyData } = await backendCall(
+            { authToken: data.authToken },
+            'api/sign_in_verify'
+          )
+
+          if (errorMessage) {
+            setError(errorMessage)
+          } else {
+            dispatch(
+              setLocationRegistrations(verifyData.locationRegistrations)
+            )
+            dispatch(setProfile(verifyData.profile))
+          }
         }
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
@@ -166,19 +180,6 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
-            const { errorMessage, data: verifyData } = await backendCall(
-              { authToken: data.authToken },
-              'api/sign_in_verify'
-            )
-
-            if (errorMessage) {
-              setError(errorMessage)
-            } else {
-              dispatch(
-                setLocationRegistrations(verifyData.locationRegistrations)
-              )
-              dispatch(setProfile(verifyData.profile))
-            }
             setupAuthentication(data)
             navigate('/home')
           }

@@ -4,9 +4,8 @@ import AlertType from '../../../../common/enums/AlertType'
 import { getLocationOtherAdditional } from '../../../../common/redux/userSlice'
 
 export default function FloodMessageReviewTable() {
-  const nearByAreas = useSelector(
-    (state) => state.session.nearbyTargetAreasAdded
-  )
+  const nearByAreas =
+    useSelector((state) => state.session.nearbyTargetAreasAdded) || []
   const locationsSelected = useSelector((state) => state.session.profile.pois)
   const floodAreasInfo = useSelector(
     (state) => state.session.floodAreasInfo || null
@@ -19,7 +18,7 @@ export default function FloodMessageReviewTable() {
       'targetAreas'
     )
     if (locationTargetAreas) {
-      locationTargetAreas.map((targetArea) => {
+      locationTargetAreas.forEach((targetArea) => {
         if (targetArea.category.toLowerCase().includes('warning')) {
           floodWarningAreasSet.add(targetArea.TA_Name)
         }
@@ -38,7 +37,7 @@ export default function FloodMessageReviewTable() {
       ]
       const alertLevels = [AlertType.FLOOD_ALERT]
 
-      locationLevels.map((level) => {
+      locationLevels.forEach((level) => {
         if (warningLevels.includes(level)) {
           floodWarningAreasSet.add(location.address)
         }

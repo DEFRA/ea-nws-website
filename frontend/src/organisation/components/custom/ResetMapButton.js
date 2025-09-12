@@ -5,11 +5,11 @@ import 'leaflet/dist/leaflet.css'
 import { useEffect } from 'react'
 import { useMap } from 'react-leaflet'
 
-export default function ResetMapButton({ center }) {
+export default function ResetMapButton({ center, zoom = 12 }) {
   const map = useMap()
 
   const resetMap = () => {
-    map.setView(center, 12)
+    map.setView(center, zoom)
   }
 
   const handleKeyDown = (e) => {

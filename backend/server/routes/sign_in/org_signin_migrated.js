@@ -238,7 +238,6 @@ module.exports = [
             id: orgData.organization.id || null,
             name: orgData.organization.name || null,
             description:
-               orgData.organization.description ||
               JSON.stringify({
                 name: orgData.organization.name || null,
                 address: null,

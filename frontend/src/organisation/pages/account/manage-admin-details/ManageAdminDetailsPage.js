@@ -8,6 +8,9 @@ import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 export default function ManageAdminDetailsPage() {
   const profile = useSelector((state) => state.session.profile)
   const location = useLocation()
+  const fullName = [profile?.firstname, profile?.lastname]
+    .filter(Boolean)
+    .join(' ')
 
   const successText = (
     <>
@@ -20,7 +23,10 @@ export default function ManageAdminDetailsPage() {
   return (
     <>
       <Helmet>
-        <title>Manage administrator details - Get flood warnings (professional) - GOV.UK</title>
+        <title>
+          Manage administrator details - Get flood warnings (professional) -
+          GOV.UK
+        </title>
       </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
         <div className='govuk-grid-row'>
@@ -55,7 +61,7 @@ export default function ManageAdminDetailsPage() {
                     Name
                   </td>
                   <td className='govuk-table__cell  govuk-!-width-full'>
-                    {profile.firstname} {profile.lastname}
+                    {fullName}
                   </td>
                 </tr>
 

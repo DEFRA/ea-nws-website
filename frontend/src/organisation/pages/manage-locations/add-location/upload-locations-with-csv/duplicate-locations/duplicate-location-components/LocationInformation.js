@@ -66,9 +66,12 @@ export default function LocationInformation({ location, comparedLocation }) {
       return 0
     }
 
+    const formatShapeArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+
     const areaInSqKm = turf.area(location.geometry.geoJson) / 1000000
-    // round the value to 4 decimals
-    return areaInSqKm.toFixed(4)
+    return formatShapeArea(areaInSqKm.toFixed(4))
   }
 
   const getLineLength = () => {

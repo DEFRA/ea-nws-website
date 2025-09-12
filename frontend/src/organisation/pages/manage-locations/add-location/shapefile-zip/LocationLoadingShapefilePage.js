@@ -81,7 +81,7 @@ export default function LocationLoadingShapefilePage() {
       return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
     }
 
-    return formatShapeArea(Math.round(area(geojson) / 1000))
+    return formatShapeArea(Math.round(area(geojson)))
   }
 
   const checkDuplicateLocation = async (locationName) => {

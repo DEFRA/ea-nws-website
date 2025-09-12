@@ -84,7 +84,7 @@ const contacts = [
   {
     id: '3',
     enabled: true,
-    firstname: 'Amanda',
+    firstname: null,
     lastname: 'Jordan',
     emails: ['amanda.jordan@gmail.com'],
     mobilePhones: ['07343454590', '07889668367'],
@@ -113,7 +113,7 @@ const contacts = [
     id: '4',
     enabled: true,
     firstname: 'Steve',
-    lastname: 'Binns',
+    lastname: null,
     emails: ['steve.binns@gmail.com', 'steven.binns@gmail.com'],
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],

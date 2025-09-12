@@ -18,7 +18,9 @@ export default function PromoteToAdminPage() {
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
+  const contactName = [currentContact?.firstname, currentContact?.lastname]
+    .filter(Boolean)
+    .join(' ')
   const contactEmails = currentContact?.emails
 
   const emailCount = contactEmails?.length || 0

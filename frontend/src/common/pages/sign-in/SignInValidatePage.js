@@ -142,6 +142,20 @@ export default function SignInValidatePage() {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrganization(data.organization))
           dispatch(setSigninType('org'))
+        } else {
+          const { errorMessage, data: verifyData } = await backendCall(
+            { authToken: data.authToken },
+            'api/sign_in_verify'
+          )
+
+          if (errorMessage) {
+            setError(errorMessage)
+          } else {
+            dispatch(
+              setLocationRegistrations(verifyData.locationRegistrations)
+            )
+            dispatch(setProfile(verifyData.profile))
+          }
         }
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
@@ -152,19 +166,6 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
-            const { errorMessage, data: verifyData } = await backendCall(
-              { authToken: data.authToken },
-              'api/sign_in_verify'
-            )
-
-            if (errorMessage) {
-              setError(errorMessage)
-            } else {
-              dispatch(
-                setLocationRegistrations(verifyData.locationRegistrations)
-              )
-              dispatch(setProfile(verifyData.profile))
-            }
             setupAuthentication(data)
             navigate('/home')
           }

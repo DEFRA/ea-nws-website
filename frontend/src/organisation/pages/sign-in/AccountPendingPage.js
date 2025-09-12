@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 
-export default function AccountPendingPage() {
+export default function AccountPendingPage () {
   const navigate = useNavigate()
   return (
     <>

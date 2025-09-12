@@ -72,6 +72,8 @@ const routes = [].concat(
   require('../routes/alert/get'),
   require('../routes/sign_in/org_signin'),
   require('../routes/sign_in/org_signin_status'),
+  require('../routes/sign_in/org_signin_migrated'),
+  require('../routes/sign_in/org_signin_migrated_status'),
   require('../routes/info/download_guide')
 )
 

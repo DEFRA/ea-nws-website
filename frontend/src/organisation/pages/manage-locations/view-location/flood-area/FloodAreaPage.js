@@ -10,6 +10,7 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { getOperationalBoundaryByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import {
   geoSafeToWebLocation,
   webToGeoSafeLocation
@@ -170,7 +171,7 @@ export default function FloodAreaPage() {
 
       const locationsUpdate = []
       if (webLocations.length > 0) {
-        webLocations.forEach((location) => {
+        webLocations.forEach(async (location) => {
           location.within = true
           if (
             location.additionals.other.location_data_type ===
@@ -180,6 +181,12 @@ export default function FloodAreaPage() {
               [location.coordinates.longitude, location.coordinates.latitude],
               area.geometry
             ) && locationsUpdate.push(location)
+          } else if (location.additionals.other.location_data_type === LocationDataType.BOUNDARY) {
+            const boundary = await getOperationalBoundaryByTaCode(
+              location.geocode
+            )
+            booleanIntersects(boundary, area.geometry) &&
+              locationsUpdate.push(location)
           } else {
             booleanIntersects(location.geometry.geoJson, area.geometry) &&
               locationsUpdate.push(location)

@@ -106,7 +106,7 @@ const setLocations = async (client, orgId, locations, statusKey) => {
     if (percent !== newPercent) {
       percent = newPercent
       await setJsonData(client, statusKey, {
-        stage: 'Processing locations',
+        stage: 'Step 5 of 7 - saving your updated location information',
         status: 'working',
         percent: percent
       })
@@ -483,6 +483,11 @@ const removeFromLinkedArr = async (client, key, value) => {
   }
 }
 
+const setLinkLocations = async (client, orgId, linkedLocations, linkedContacts) => {
+  await setJsonData(client, orgId + ':t_Linked_contacts', linkedContacts)
+  await setJsonData(client, orgId + ':t_Linked_locations', linkedLocations)
+}
+
 const addLinkedLocations = async (client, orgId, contactID, locationIDs) => {
   if (locationIDs) {
     for (const locationID of locationIDs) {
@@ -569,7 +574,7 @@ const orgSignIn = async (
       if (percent !== newPercent) {
         percent = newPercent
         await setJsonData(client, statusKey, {
-          stage: 'Retrieving Contacts',
+          stage: 'Step 6 of 7 - saving your updated contact information',
           status: 'working',
           percent: percent
         })
@@ -614,6 +619,7 @@ const orgSignOut = async (client, profileId, orgId, authToken) => {
     await deleteJsonData(client, orgId + ':t_Keywords_contact')
     await deleteJsonData(client, orgId + ':t_Linked_locations')
     await deleteJsonData(client, orgId + ':t_Linked_contacts')
+    await deleteJsonData(client, 'migrated_signin_status:' + orgId)
 
     // delete session data
     await deleteJsonData(client, authToken)
@@ -691,5 +697,6 @@ module.exports = {
   setFloodHistory,
   getFloodHistory,
   getLinkedContactsCount,
-  getLinkedLocationsCount
+  getLinkedLocationsCount,
+  setLinkLocations
 }

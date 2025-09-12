@@ -577,7 +577,7 @@ const userSlice = createSlice({
       state.organization.description =
         action.payload?.description ||
         JSON.stringify({
-          name: null,
+          name: action.payload?.name || null,
           address: null,
           compHouseNum: null,
           emergencySector: null,

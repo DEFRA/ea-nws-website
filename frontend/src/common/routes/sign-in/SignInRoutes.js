@@ -1,6 +1,7 @@
 import SignBackInPage from '../../../common/pages/sign-in/SignBackInPage'
 import SignInPage from '../../../common/pages/sign-in/SignInPage'
 import SignInValidatePage from '../../../common/pages/sign-in/SignInValidatePage'
+import AccountMigrationPage from '../../../organisation/pages/sign-in/AccountMigrationPage'
 import AccountPendingPage from '../../../organisation/pages/sign-in/AccountPendingPage'
 import InitialLoginAdminPage from '../../../organisation/pages/sign-in/InitialLoginAdminPage'
 
@@ -16,6 +17,10 @@ const signInRoutes = [
   {
     path: '/sign-in/organisation/admin-controls',
     component: <InitialLoginAdminPage />
+  },
+  {
+    path: '/sign-in/organisation/migration',
+    component: <AccountMigrationPage />
   }
 ]
 

@@ -15,7 +15,7 @@ import { infoUrls } from '../../routes/info/InfoRoutes'
 import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function InitialLoginAdminPage() {
+export default function InitialLoginAdminPage () {
   const navigate = useNavigate()
   const [nextPage, setNextPage] = useState(null)
   const [errorText, setErrorText] = useState('')
@@ -48,9 +48,7 @@ export default function InitialLoginAdminPage() {
             <li>choose which flood messages to get for each location</li>
           </ul>
           <InsetText
-            text={
-              'You must link yourself to locations if you need flood messages personally.'
-            }
+            text='You must link yourself to locations if you need flood messages personally.'
           />
         </>
       )
@@ -92,7 +90,7 @@ export default function InitialLoginAdminPage() {
       const updatedProfile = updateAdditionals(profile, [
         { id: 'firstLogin', value: { s: 'false' } }
       ])
-      const dataToSend = { profile: updatedProfile, authToken: authToken }
+      const dataToSend = { profile: updatedProfile, authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/profile/update',
@@ -161,8 +159,7 @@ export default function InitialLoginAdminPage() {
                     label='Start using the service'
                     hint='Add locations and users to set up your account'
                     onChange={() =>
-                      setNextPage(orgManageLocationsUrls.monitoring.view)
-                    }
+                      setNextPage(orgManageLocationsUrls.monitoring.view)}
                   />
                   <Radio
                     key='guide'

@@ -30,10 +30,7 @@ frontend:
         httpGet:
           path: /
           port: 3000
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 2Gi
+      resources: {}
       volumeMounts: []
   service:
     type: ClusterIP
@@ -104,10 +101,7 @@ backend:
         httpGet:
           path: /readiness
           port: 5000
-      resources:
-        limits:
-          cpu: 7000m
-          memory: 30Gi
+      resources: {}
       volumeMounts: []
   service:
     type: ClusterIP

@@ -4,7 +4,6 @@ const {
 } = require('../../services/GenericErrorResponse')
 const {
   orgSignIn,
-  addLinkedLocations,
   setJsonData,
   getJsonData,
   setLinkLocations
@@ -18,14 +17,14 @@ const getAdditionalLocations = async (
   authToken,
   contactId = null
 ) => {
-  let additionalLocations = []
+  const additionalLocations = []
 
   if (firstLocationApiCall.data.total > 1000) {
     const fetchLocationsPromises = []
     const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1000)
     let i = 1
     while (i <= totalRecalls) {
-      let options = {
+      const options = {
         offset: 1000 * i,
         limit: 1000,
         sort: [{
@@ -76,8 +75,8 @@ module.exports = [
             status: 'working'
           })
 
-          let locations = []
-          let options = {
+          const locations = []
+          const options = {
             limit: 1000,
             sort: [{
               fieldName: 'id',
@@ -122,7 +121,7 @@ module.exports = [
           const linkedContactsArr = []
 
           for (const contact of contactRes.data.contacts) {
-            let newPercent = Math.round((contactIndex/numContacts)*100)
+            const newPercent = Math.round((contactIndex / numContacts) * 100)
             if (percent !== newPercent) {
               percent = newPercent
               await setJsonData(redis, elasticacheKey, {
@@ -131,7 +130,7 @@ module.exports = [
                 percent: percent
               })
             }
-            let contactsLocations = []
+            const contactsLocations = []
             const options = {
               contactId: contact.id,
               limit: 1000,
@@ -161,11 +160,11 @@ module.exports = [
               locationIDs.push(location.id)
             })
 
-            linkedContactsArr.push({id: contact.id, linkIDs: locationIDs})
+            linkedContactsArr.push({ id: contact.id, linkIDs: locationIDs })
             contactIndex++
           }
-          
-          const linkedLocationsMap = linkedContactsArr.reduce((acc, {id, linkIDs}) => {
+
+          const linkedLocationsMap = linkedContactsArr.reduce((acc, { id, linkIDs }) => {
             linkIDs.forEach((locationID) => {
               if (!acc[locationID]) acc[locationID] = []
               acc[locationID].push(id)

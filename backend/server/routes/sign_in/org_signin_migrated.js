@@ -19,14 +19,14 @@ const getAdditionalLocations = async (
   authToken,
   contactId = null
 ) => {
-  let additionalLocations = []
+  const additionalLocations = []
 
   if (firstLocationApiCall.data.total > 1000) {
     const fetchLocationsPromises = []
     const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1000)
     let i = 1
     while (i <= totalRecalls) {
-      let options = {
+      const options = {
         offset: 1000 * i,
         limit: 1000,
         sort: [{
@@ -87,8 +87,8 @@ module.exports = [
             status: 'working'
           })
 
-          let migratedlocations = []
-          let options = {
+          const migratedlocations = []
+          const options = {
             limit: 1000,
             sort: [{
               fieldName: 'id',
@@ -119,7 +119,7 @@ module.exports = [
           let locationPercent = 0
 
           for (const migratedLocation of migratedlocations) {
-            let newPercent = Math.round((locationIndex/numLocations)*100)
+            const newPercent = Math.round((locationIndex / numLocations) * 100)
             if (locationPercent !== newPercent) {
               locationPercent = newPercent
               await setJsonData(redis, elasticacheKey, {
@@ -161,20 +161,20 @@ module.exports = [
           })
           const linkedLocations = {}
           for (const location of locations) {
-              let parentID = getAdditional(location.additionals, 'parentID')
-              if (parentID) {
-                  const linkedIDs = linkedLocations[parentID]?.linkedIDs || []
-                  const AlertTypes = linkedLocations[parentID]?.AlertTypes || []
-                  linkedLocations[parentID] = {
-                    linkedIDs: [...new Set(linkedIDs.concat([location.id]))],
-                    AlertTypes: [...new Set(AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
-                  }
+            const parentID = getAdditional(location.additionals, 'parentID')
+            if (parentID) {
+              const linkedIDs = linkedLocations[parentID]?.linkedIDs || []
+              const AlertTypes = linkedLocations[parentID]?.AlertTypes || []
+              linkedLocations[parentID] = {
+                linkedIDs: [...new Set(linkedIDs.concat([location.id]))],
+                AlertTypes: [...new Set(AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
               }
+            }
           }
           let nearbyIndex = 1
           let nearbyPercent = 0
           for (const location of locations) {
-            let newPercent = Math.round((nearbyIndex/numLocations)*100)
+            const newPercent = Math.round((nearbyIndex / numLocations) * 100)
             if (nearbyPercent !== newPercent) {
               nearbyPercent = newPercent
               await setJsonData(redis, elasticacheKey, {
@@ -183,65 +183,64 @@ module.exports = [
                 percent: nearbyPercent
               })
             }
-              if (linkedLocations[location.id]) {
-                  const alertTypes = [...new Set(linkedLocations[location.id].AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
-                  setLocationOtherAdditionals(location.additionals, 'childrenIDs', linkedLocations[location.id].linkedIDs)
-                  setLocationOtherAdditionals(location.additionals, 'alertTypes', alertTypes)
+            if (linkedLocations[location.id]) {
+              const alertTypes = [...new Set(linkedLocations[location.id].AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
+              setLocationOtherAdditionals(location.additionals, 'childrenIDs', linkedLocations[location.id].linkedIDs)
+              setLocationOtherAdditionals(location.additionals, 'alertTypes', alertTypes)
 
-                  // update the location and set registrations
-                  const updateResponse = await apiCall(
-                    { authToken: orgData.authToken, location: JSON.parse(JSON.stringify(location)) },
-                    'location/update'
-                  )
-                  if (updateResponse.errorMessage) {
-                    await setJsonData(redis, elasticacheKey, {
-                      stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
-                      status: 'error',
-                      percent: locationPercent
-                    })
-                    throw new Error(response.errorMessage)
-                  }
-
-
-                  const registerData = {
-                    authToken: orgData.authToken,
-                    locationId: location.id,
-                    partnerId: partnerID,
-                    params: {
-                      channelVoiceEnabled: true,
-                      channelSmsEnabled: true,
-                      channelEmailEnabled: true,
-                      channelMobileAppEnabled: true,
-                      partnerCanView: true,
-                      partnerCanEdit: true,
-                      alertTypes: alertTypes
-                    }
-                  }
-                  const response = await apiCall(
-                    registerData,
-                    'location/updateRegistration'
-                  )
-                  if (response.errorMessage) {
-                    await setJsonData(redis, elasticacheKey, {
-                      stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
-                      status: 'error',
-                      percent: locationPercent
-                    })
-                    throw new Error(response.errorMessage)
-                  }
+              // update the location and set registrations
+              const updateResponse = await apiCall(
+                { authToken: orgData.authToken, location: JSON.parse(JSON.stringify(location)) },
+                'location/update'
+              )
+              if (updateResponse.errorMessage) {
+                await setJsonData(redis, elasticacheKey, {
+                  stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
+                  status: 'error',
+                  percent: locationPercent
+                })
+                throw new Error(updateResponse.errorMessage)
               }
 
-              nearbyIndex++
+              const registerData = {
+                authToken: orgData.authToken,
+                locationId: location.id,
+                partnerId: partnerID,
+                params: {
+                  channelVoiceEnabled: true,
+                  channelSmsEnabled: true,
+                  channelEmailEnabled: true,
+                  channelMobileAppEnabled: true,
+                  partnerCanView: true,
+                  partnerCanEdit: true,
+                  alertTypes: alertTypes
+                }
+              }
+              const response = await apiCall(
+                registerData,
+                'location/updateRegistration'
+              )
+              if (response.errorMessage) {
+                await setJsonData(redis, elasticacheKey, {
+                  stage: 'Step 3 of 7 - linking your locations with nearby flood areas',
+                  status: 'error',
+                  percent: locationPercent
+                })
+                throw new Error(response.errorMessage)
+              }
+            }
+
+            nearbyIndex++
           }
 
           // locations have been migrated now update the organisation with a description to show it's been migrated
           const newOrgData = {
             id: orgData.organization.id || null,
-            name:  orgData.organization.name || null,
+            name: orgData.organization.name || null,
             description:
                orgData.organization.description ||
               JSON.stringify({
-                name:  orgData.organization.name || null,
+                name: orgData.organization.name || null,
                 address: null,
                 compHouseNum: null,
                 emergencySector: null,
@@ -254,15 +253,15 @@ module.exports = [
                   jobTitle: null
                 }
               }),
-            postalCode:  orgData.organization.postalCode || null,
-            longName:  orgData.organization.longName || null,
-            logoUrl:  orgData.organization.logoUrl || null,
-            backgroundUrl:  orgData.organization.backgroundUrl || null,
+            postalCode: orgData.organization.postalCode || null,
+            longName: orgData.organization.longName || null,
+            logoUrl: orgData.organization.logoUrl || null,
+            backgroundUrl: orgData.organization.backgroundUrl || null,
             alertDiffusionZone:
                orgData.organization.alertDiffusionZone || null,
             alertDiffusionZoneBoundingBox:
                orgData.organization.alertDiffusionZoneBoundingBox || null,
-            urlSlug:  orgData.organization.urlSlug || null
+            urlSlug: orgData.organization.urlSlug || null
           }
 
           const response = await apiCall(
@@ -305,7 +304,7 @@ module.exports = [
           const linkedContactsArr = []
 
           for (const contact of contactRes.data.contacts) {
-            let newPercent = Math.round((contactIndex/numContacts)*100)
+            const newPercent = Math.round((contactIndex / numContacts) * 100)
             if (percent !== newPercent) {
               percent = newPercent
               await setJsonData(redis, elasticacheKey, {
@@ -314,7 +313,7 @@ module.exports = [
                 percent: percent
               })
             }
-            let contactsLocations = []
+            const contactsLocations = []
             const options = {
               contactId: contact.id,
               limit: 1000,
@@ -344,11 +343,11 @@ module.exports = [
               locationIDs.push(location.id)
             })
 
-            linkedContactsArr.push({id: contact.id, linkIDs: locationIDs})
+            linkedContactsArr.push({ id: contact.id, linkIDs: locationIDs })
             contactIndex++
           }
-          
-          const linkedLocationsMap = linkedContactsArr.reduce((acc, {id, linkIDs}) => {
+
+          const linkedLocationsMap = linkedContactsArr.reduce((acc, { id, linkIDs }) => {
             linkIDs.forEach((locationID) => {
               if (!acc[locationID]) acc[locationID] = []
               acc[locationID].push(id)

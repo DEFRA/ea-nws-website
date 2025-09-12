@@ -26,13 +26,13 @@ module.exports = [
           } else {
             return h.response({
               status: 500,
-              errorMessage: !error ? 'Oops, something happened!' : error
+              errorMessage: !response.errorMessage ? 'Oops, something happened!' : response.errorMessage
             })
           }
         } else {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: 'Oops, something happened!'
           })
         }
       } catch (error) {

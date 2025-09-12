@@ -154,7 +154,7 @@ export default function SignInValidatePage() {
             // don't wait for the result, just kick it off for the backend
             backendCall({orgData: data}, 'api/org_signin_migrated')
             // navigate to migration status page
-            navigate('/sign-in/organisation/migration')
+            return navigate('/sign-in/organisation/migration')
           }
         }
 

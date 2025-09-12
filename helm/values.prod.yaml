@@ -21,7 +21,7 @@ frontend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: 'frontend-0.5.10'
+        tag: 'frontend-0.5.11'
       livenessProbe:
         httpGet:
           path: /
@@ -30,7 +30,10 @@ frontend:
         httpGet:
           path: /
           port: 3000
-      resources: {}
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 2Gi
       volumeMounts: []
   service:
     type: ClusterIP
@@ -92,7 +95,7 @@ backend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: 'backend-0.5.10'
+        tag: 'backend-0.5.11'
       livenessProbe:
         httpGet:
           path: /liveness
@@ -101,7 +104,10 @@ backend:
         httpGet:
           path: /readiness
           port: 5000
-      resources: {}
+      resources:
+        limits:
+          cpu: 7000m
+          memory: 30Gi
       volumeMounts: []
   service:
     type: ClusterIP

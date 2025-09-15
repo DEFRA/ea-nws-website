@@ -12,6 +12,7 @@ export default function Header({ type, phase }) {
 
   //   return feedbackLink
   // }
+  
 
   return (
     <>
@@ -31,7 +32,7 @@ export default function Header({ type, phase }) {
             <span className='govuk-phase-banner__text'>
               This is a new service. Help us improve it and{' '}
               <a
-                href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                href={type === 'org' ? 'https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8' : 'https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'}
                 className='govuk-link'
                 target='_blank'
                 rel='noopener noreferrer'

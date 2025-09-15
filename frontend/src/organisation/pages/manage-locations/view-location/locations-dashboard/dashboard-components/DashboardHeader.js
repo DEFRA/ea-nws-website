@@ -256,11 +256,6 @@ const FloodBanner = React.memo(function FloodBanner({
             What are flood areas?
           </Link>
         )}
-        {type === 'noFloodMessages' && (
-          <Link to='#' className='govuk-link'>
-            Link these locations to nearby flood areas to get flood messages
-          </Link>
-        )}
       </p>
     </div>
   )

@@ -181,7 +181,10 @@ export default function FloodAreaPage() {
               [location.coordinates.longitude, location.coordinates.latitude],
               area.geometry
             ) && locationsUpdate.push(location)
-          } else if (location.additionals.other.location_data_type === LocationDataType.BOUNDARY) {
+          } else if (
+            location.additionals.other.location_data_type ===
+            LocationDataType.BOUNDARY
+          ) {
             const boundary = await getOperationalBoundaryByTaCode(
               location.geocode
             )

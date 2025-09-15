@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getRegistrationParams,
   updateAdditionals
 } from '../../../../common/services/ProfileServices'
 import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLayout'
@@ -48,32 +47,9 @@ export default function AddFullNamePage() {
     if (errorMessage !== null) {
       setError(errorMessage)
     } else {
-      // update all locations since channel preferences will now be set
-      await updateAllLocationsRegistrations(authToken, data.profile)
       dispatch(setProfile(data.profile))
       navigate('/signup/declaration')
     }
-  }
-
-  const updateAllLocationsRegistrations = async (authToken, profile) => {
-    profile.pois.map(async (poi) => {
-      const alertTypes =
-        locationRegistrations.find((loc) => loc.location === poi.address)
-          ?.alertTypes || []
-
-      const data = {
-        authToken,
-        locationId: poi.id,
-        partnerId,
-        params: getRegistrationParams(profile, alertTypes)
-      }
-
-      await backendCall(
-        data,
-        'api/partner/update_location_registration',
-        navigate
-      )
-    })
   }
 
   return (

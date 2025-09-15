@@ -223,8 +223,8 @@ const removeLocation = (profile, id) => {
 }
 
 const getRegistrationParams = (profile, alertTypes) => {
-  const channelVoiceEnabled = true
-  const channelSmsEnabled = true
+  const channelVoiceEnabled = profile.homePhones.length !== 0
+  const channelSmsEnabled = profile.mobilePhones.length !== 0
   const channelEmailEnabled = true // always true as user will have primary email
   const channelMobileAppEnabled = false
 

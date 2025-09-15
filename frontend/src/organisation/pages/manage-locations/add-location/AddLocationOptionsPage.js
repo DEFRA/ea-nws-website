@@ -38,7 +38,7 @@ export default function AddLocationOptionsPage() {
     },
     {
       value: 'BulkShapefile',
-      label: 'Upload a location as a polyglon or line',
+      label: 'Upload a location as a polygon or line',
       hint: "You'll need to do this as a shapefile in a ZIP file"
     }
   ]

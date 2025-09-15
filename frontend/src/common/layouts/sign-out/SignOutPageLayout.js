@@ -61,7 +61,7 @@ export default function SignOutLayout({ text, signUpNotComplete = false }) {
             {!signUpNotComplete && (
               <p className='govuk-body'>
                 <a
-                  href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                  href={isOrganisation ? 'https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8' : 'https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'}
                   className='govuk-link'
                   target='_blank'
                   rel='noopener noreferrer'

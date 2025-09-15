@@ -139,7 +139,7 @@ export default function SignUpSuccessPage() {
                     </h2>
                     <p className='govuk-!-margin-top-6'>
                       <a
-                        href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                        href='https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8'
                         className='govuk-link'
                         target='_blank'
                         rel='noopener noreferrer'
@@ -160,7 +160,7 @@ export default function SignUpSuccessPage() {
                       className='govuk-button'
                       onClick={() =>
                         window.open(
-                          'https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y',
+                          'https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8',
                           '_blank',
                           'noopener, noreferrer'
                         )

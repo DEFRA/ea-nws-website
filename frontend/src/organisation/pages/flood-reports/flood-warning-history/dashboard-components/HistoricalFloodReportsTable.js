@@ -39,11 +39,9 @@ export default function HistoricalFloodReportsTable({
       const objLocationName =
         obj.locationData.name || obj.locationData.additionals.locationName
       const objLocationType =
-        obj.locationData.additionals.other.location_type ||
-        returnEmptyTableContents()
+        obj.locationData.additionals.other.location_type || '-'
       const objBusinessCriticality =
-        obj.locationData.additionals.other.business_criticality ||
-        returnEmptyTableContents()
+        obj.locationData.additionals.other.business_criticality || '-'
       const objStartDate = obj.floodData.startDate
       const objLastUpdatedTime = obj.floodData.lastUpdatedTime
       const objFloodWarningType = obj.floodData.type

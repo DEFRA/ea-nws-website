@@ -65,7 +65,7 @@ function App() {
 
   // remove GA if cookies are manually deleted
   if ('cookieStore' in window) {
-    cookieStore.addEventListener('change', (event) => {
+    window.cookieStore.addEventListener('change', (event) => {
       for (const cookie of event.deleted) {
         if (cookie.name.includes('_ga')) {
           // don't remove cookies as they have already been removed

@@ -20,7 +20,6 @@ function App() {
   const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
   const inactivityTimer = useRef(null)
   const redirectTimer = useRef(null)
-  const currentRoute = window.location.pathname
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie, removeCookie] = useCookies([
     'authToken',
@@ -153,10 +152,10 @@ function App() {
     clearTimeout(redirectTimer.current)
   }
 
-  const isSignOutRoute = () => {
+  const isSignOutRoute = (path) => {
     return (
-      currentRoute.includes('/signout') ||
-      currentRoute === '/account/delete/confirm'
+      path.includes('/signout') ||
+      path === '/account/delete/confirm'
     )
   }
 
@@ -175,7 +174,7 @@ function App() {
               key={route.path}
               path={route.path}
               element={
-                hasAuthCookie || isSignOutRoute() ? (
+                (hasAuthCookie || isSignOutRoute(route.path)) ? (
                   route.component
                 ) : (
                   <Navigate to={SignBackInLink()} />

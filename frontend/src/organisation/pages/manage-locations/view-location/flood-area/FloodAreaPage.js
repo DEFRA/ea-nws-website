@@ -171,7 +171,7 @@ export default function FloodAreaPage() {
 
       const locationsUpdate = []
       if (webLocations.length > 0) {
-        webLocations.forEach(async (location) => {
+        for (const location of webLocations) {
           location.within = true
           if (
             location.additionals.other.location_data_type ===
@@ -206,7 +206,7 @@ export default function FloodAreaPage() {
               }
             }
           }
-        })
+        }
       }
 
       const riverSeaRisks = await Promise.all(

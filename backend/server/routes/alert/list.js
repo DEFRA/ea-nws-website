@@ -57,7 +57,6 @@ module.exports = [
         }]
         let alerts
         let { liveAlerts, historicAlerts } = {liveAlerts:[], historicAlerts:[]}
-        console.log(options)
         if (historic) {
           const { redis } = request.server.app
           let cachedHistoricAlerts = await getFloodHistory(redis)

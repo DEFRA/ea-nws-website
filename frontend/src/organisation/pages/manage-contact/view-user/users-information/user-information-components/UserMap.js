@@ -56,7 +56,7 @@ export default function UserMap({ locations }) {
     if (locations && locations.length > 0) {
       // centre must be set to 0, 0 as map will be fit accordingly to locations loaded
       setCentre([0, 0])
-      locations.forEach(async (location) => {
+      for (const location of locations) {
         let feature
         const locationType = location?.additionals?.other?.location_data_type
 
@@ -93,7 +93,7 @@ export default function UserMap({ locations }) {
 
           locationsCollection.push(feature)
         }
-      })
+      }
 
       if (locationsCollection.length > 0) {
         setMarkers(points)

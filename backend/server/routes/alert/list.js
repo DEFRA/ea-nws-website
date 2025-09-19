@@ -11,6 +11,32 @@ const {
   getFloodHistory
 } = require('../../services/elasticache')
 
+const getAlerts = async (options) => {
+  const allAlerts = []
+  const alerts = await apiCall({ options: options }, 'alert/list')
+  allAlerts.push(...alerts.data.alerts)
+  const additionalAlerts = []
+  if (alerts.data.total > 1000) {
+    const fetchAlertsPromises = []
+    const totalRecalls = Math.floor(alerts.data.total / 1000)
+    let i = 1
+    while (i <= totalRecalls) {
+      options.offset = 1000 * i 
+      fetchAlertsPromises.push(
+        apiCall({ options: options }, 'alert/list')
+      )
+      i++
+    }
+
+    const results = await Promise.all(fetchAlertsPromises)
+    results.forEach((response) => {
+      additionalAlerts.push(...response.data.alerts)
+    })
+  }
+  allAlerts.push(...additionalAlerts)
+  return allAlerts
+}
+
 module.exports = [
   {
     method: ['POST'],
@@ -24,17 +50,21 @@ module.exports = [
         const { options, filterDate, historic, taCodes } = request.payload
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         options.states = ['CURRENT', 'PAST']
-        let response
+        options.limit = 1000
+        options.sort = [{
+          fieldName: 'id',
+          order: 'DESCENDING'
+        }]
+        let alerts
         let { liveAlerts, historicAlerts } = {liveAlerts:[], historicAlerts:[]}
-
         if (historic) {
           const { redis } = request.server.app
           let cachedHistoricAlerts = await getFloodHistory(redis)
           if (cachedHistoricAlerts === null) {
             // get alerts from geosafe
-            response = await apiCall({ options: options }, 'alert/list')
+            alerts = await getAlerts(options)
             ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
-              response.data.alerts
+              alerts
             ))
             // add alerts from file
             const fileHistoricAlerts = historicAlerts.concat(
@@ -51,9 +81,9 @@ module.exports = [
           }
         } else if (taCodes && taCodes.length > 0) {
           // get alerts from geosafe
-          response = await apiCall({ options: options }, 'alert/list')
+          alerts = await getAlerts(options)
           ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
-            response.data.alerts
+            alerts
           ))
           // add alerts from file
           const fileHistoricAlerts = historicAlerts.concat(
@@ -67,9 +97,9 @@ module.exports = [
             taCodes.includes(alert.TA_CODE)
           )
         } else {
-          response = await apiCall({ options: options }, 'alert/list')
+          alerts = await getAlerts(options)
           ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
-            response.data.alerts
+            alerts
           ))
         }
 

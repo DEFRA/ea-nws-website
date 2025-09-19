@@ -130,7 +130,7 @@ export default function LiveMap({
     // if a location is a shape or boundary, save the geojson
     const locationsCollection = []
     if (locations.length > 0) {
-      locations.forEach(async (location) => {
+      for (const location of locations) {
         let feature
         const locationType = location.additionals.other.location_data_type
 
@@ -149,7 +149,7 @@ export default function LiveMap({
           feature = location.geometry.geoJson
         }
         locationsCollection.push(feature)
-      })
+      }
 
       // calculate boundary around locations
       const geoJsonFeatureCollection =

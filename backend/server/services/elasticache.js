@@ -85,49 +85,51 @@ const addToKeywordArr = async (client, key, value) => {
   }
 }
 
+const setKeywordArr = async (client, key, object) => {
+  const keywordMap = {}
+
+  Object.entries(object).forEach(([key, obj]) => {
+    obj.additionals.filter(additional => additional.id === 'keywords').forEach(additional => {
+      JSON.parse(additional.value.s).forEach(keyword => {
+        if (!keywordMap[keyword]) {
+          keywordMap[keyword] = {name: keyword, linked_ids: []}
+        }
+        keywordMap[keyword].linked_ids.push(key)
+      })
+    })
+  })
+
+  const value = Object.values(keywordMap)
+  await setJsonData(client, key, value)
+}
+
 /*
 Functions for Valid locations to be used accross the
 entire site
 */
 
 const setLocations = async (client, orgId, locations, statusKey) => {
-  const key = orgId + ':t_POIS'
+  await setJsonData(client, statusKey, {
+    stage: 'Step 5 of 7 - saving your updated location information',
+    status: 'working',
+    percent: 0
+  })
   const formattedLocations = {}
   locations.forEach((location) => {
     formattedLocations[location.id] = location
   })
-  const numLocations = Object.keys(formattedLocations).length
-  await setJsonData(client, key, formattedLocations)
-  let i = 1
-  let percent = 0
-
-  for (const key of Object.keys(formattedLocations)) {
-    let newPercent = Math.round((i / numLocations) * 100)
-    if (percent !== newPercent) {
-      percent = newPercent
-      await setJsonData(client, statusKey, {
-        stage: 'Step 5 of 7 - saving your updated location information',
-        status: 'working',
-        percent: percent
-      })
-    }
-
-    const location = formattedLocations[key]
-    let keywords = []
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'keywords') {
-        keywords = JSON.parse(additional.value?.s)
-      }
-    })
-
-    for (const keyword of keywords) {
-      await addToKeywordArr(client, orgId + ':t_Keywords_location', {
-        name: keyword,
-        linked_ids: [key]
-      })
-    }
-    i++
-  }
+  await setJsonData(client, orgId + ':t_POIS', formattedLocations)
+  await setJsonData(client, statusKey, {
+    stage: 'Step 5 of 7 - saving your updated location information',
+    status: 'working',
+    percent: 50
+  })
+  await setKeywordArr(client, orgId + ':t_Keywords_location', formattedLocations)
+  await setJsonData(client, statusKey, {
+    stage: 'Step 5 of 7 - saving your updated location information',
+    status: 'working',
+    percent: 100
+  })
 }
 
 const addLocation = async (client, orgId, location) => {
@@ -277,38 +279,48 @@ const listInvLocations = async (client, orgId) => {
   return locationArr
 }
 
+const setContacts = async (client, orgId, contacts, statusKey) => {
+  await setJsonData(client, statusKey, {
+    stage: 'Step 6 of 7 - saving your updated contact information',
+    status: 'working',
+    percent: 0
+  })
+  const formattedContacts = {}
+  contacts.forEach((contact) => {
+    formattedContacts[contact.id] = contact
+  })
+  await setJsonData(client, orgId + ':t_Contacts', formattedContacts)
+  await setJsonData(client, statusKey, {
+    stage: 'Step 6 of 7 - saving your updated contact information',
+    status: 'working',
+    percent: 50
+  })
+  await setKeywordArr(client, orgId + ':t_Keywords_contact', formattedContacts)
+  await setJsonData(client, statusKey, {
+    stage: 'Step 6 of 7 - saving your updated contact information',
+    status: 'working',
+    percent: 100
+  })
+}
+
 const addContact = async (client, orgId, contact) => {
   const contactID = contact.id
-  const key = orgId + ':t_Contacts:' + contactID
-  const exists = await checkKeyExists(client, key)
-  if (!exists) {
-    await setJsonData(client, key, contact)
-    // add Contact ID to list
-    await addToList(client, orgId + ':t_Contacts_ID', contactID)
-    let keywords = []
-    contact.additionals.forEach((additional) => {
-      if (additional.id === 'keywords') {
-        keywords = JSON.parse(additional.value?.s)
-      }
-    })
-    for (const keyword of keywords) {
-      await addToKeywordArr(client, orgId + ':t_Keywords_contact', {
-        name: keyword,
-        linked_ids: [contactID]
-      })
+  const key = orgId + ':t_Contacts'
+  await setJsonData(client, key, contact, contactID)
+  let keywords = []
+  contact.additionals.forEach((additional) => {
+    if (additional.id === 'keywords') {
+      keywords = JSON.parse(additional.value?.s)
     }
+  })
+  for (const keyword of keywords) {
+    await addToKeywordArr(client, orgId + ':t_Keywords_contact', {
+      name: keyword,
+      linked_ids: [contactID]
+    })
   }
 }
 
-const getContactKeys = async (client, orgId) => {
-  // Contact keys are stored as a list
-  const ids = await getList(client, orgId + ':t_Contacts_ID')
-  const keys = []
-  ids.forEach((id) => {
-    keys.push(orgId + ':t_Contacts:' + id)
-  })
-  return keys
-}
 
 const updateContact = async (client, orgId, contact) => {
   await removeContact(client, orgId, contact.id)
@@ -316,10 +328,9 @@ const updateContact = async (client, orgId, contact) => {
 }
 
 const removeContact = async (client, orgId, contactID) => {
-  const key = orgId + ':t_Contacts:' + contactID
+  const key = orgId + ':t_Contacts'
   await removeContactFromKeywords(client, orgId, contactID)
-  await deleteJsonData(client, key)
-  await removeFromList(client, orgId + ':t_Contacts_ID', contactID)
+  await deleteJsonData(client, key, contactID)
 }
 
 const removeContactFromKeywords = async (client, orgId, contactID) => {
@@ -338,14 +349,11 @@ const removeContactFromKeywords = async (client, orgId, contactID) => {
 }
 
 const listContacts = async (client, orgId) => {
-  const contactKeys = await getContactKeys(client, orgId)
+  const contacts = await getJsonData(client, orgId + ':t_Contacts')
   const contactArr = []
-  await Promise.all(
-    contactKeys.map(async (key) => {
-      const contact = await getJsonData(client, key)
-      contact && contactArr.push(contact)
-    })
-  )
+  Object.keys(contacts).forEach((key) => {
+    contactArr.push(contacts[key])
+  })
   return contactArr
 }
 
@@ -362,8 +370,8 @@ const listLinkedContacts = async (client, orgId, locationID) => {
         if (link.id === locationID) {
           await Promise.all(
             link.linkIDs.map(async (contactID) => {
-              const contactKey = orgId + ':t_Contacts:' + contactID
-              const contact = await getJsonData(client, contactKey)
+              const contactKey = orgId + ':t_Contacts'
+              const contact = await getJsonData(client, contactKey, contactID)
               contact && contactArr.push(contact)
             })
           )
@@ -566,22 +574,7 @@ const orgSignIn = async (
   if (!orgExists) {
     await setJsonData(client, organization.id + ':org_data', organization)
     await setLocations(client, organization.id, locations, statusKey)
-    const numContacts = contacts.length
-    let i = 1
-    let percent = 0
-    for (const contact of contacts) {
-      let newPercent = Math.round((i / numContacts) * 100)
-      if (percent !== newPercent) {
-        percent = newPercent
-        await setJsonData(client, statusKey, {
-          stage: 'Step 6 of 7 - saving your updated contact information',
-          status: 'working',
-          percent: percent
-        })
-      }
-      await addContact(client, orgId, contact)
-      i++
-    }
+    await setContacts(client, organization.id, contacts, statusKey)
   }
 }
 
@@ -598,22 +591,16 @@ const orgSignOut = async (client, profileId, orgId, authToken) => {
     // delete locations
     // delete contacts
     const invLocationKeys = await getInvLocationKeys(client, orgId)
-    const contactKeys = await getContactKeys(client, orgId)
     await deleteJsonData(client, orgId + ':t_POIS')
+    await deleteJsonData(client, orgId + ':t_Contacts')
 
     await Promise.all(
       invLocationKeys.map(async (key) => {
         await deleteJsonData(client, key)
       })
     )
-    await Promise.all(
-      contactKeys.map(async (key) => {
-        await deleteJsonData(client, key)
-      })
-    )
 
     await deleteData(client, orgId + ':t_invPOIS_locID')
-    await deleteData(client, orgId + ':t_Contacts_ID')
     // delete contact and location keywords
     await deleteJsonData(client, orgId + ':t_Keywords_location')
     await deleteJsonData(client, orgId + ':t_Keywords_contact')

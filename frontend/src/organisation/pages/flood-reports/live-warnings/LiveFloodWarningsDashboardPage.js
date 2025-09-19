@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf'
 import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
@@ -6,9 +7,11 @@ import BackLink from '../../../../common/components/custom/BackLink.js'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner.js'
 import Button from '../../../../common/components/gov-uk/Button.js'
 import Pagination from '../../../../common/components/gov-uk/Pagination.js'
-import AlertState from '../../../../common/enums/AlertState.js'
 import AlertType from '../../../../common/enums/AlertType.js'
+import LocationDataType from '../../../../common/enums/LocationDataType.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
+import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler.js'
+import { getOperationalBoundaryByTaCode } from '../../../../common/services/WfsFloodDataService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter.js'
 import FloodReportsTable from './dashboard-components/FloodReportsTable.js'
@@ -74,54 +77,98 @@ export default function LiveFloodWarningsDashboardPage() {
     setLocationsAffected([])
     setDisplayedLocationsAffected([])
 
-    const { data: partnerId } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
-
-    const options = {
-      states: [AlertState.CURRENT],
-      boundingBox: null,
-      channels: [],
-      partnerId
-    }
-
-    // load alerts
-    const { data: alerts } = await backendCall(
-      { options },
-      'api/alert/list',
+    // get orgs locations
+    const { data: locationsData, errorMessage } = await backendCall(
+      { authToken },
+      'api/elasticache/list_locations',
       navigate
     )
 
-    if (alerts?.liveAlerts) {
-      const { data: locationsData } = await backendCall(
-        { authToken },
-        'api/elasticache/list_locations',
-        navigate
-      )
-
-      const locations = []
-      // link contacts and convert to web format
-      for (let location of locationsData) {
+    const locations = []
+    if (locationsData && !errorMessage) {
+      locationsData.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
+      })
+    }
+
+    // loop through locations and convert points(xy coords locations) to geojson point to calculate bbox and compare
+    // if a location is a shape or boundary, save the geojson
+    const locationsCollection = []
+    if (locations.length > 0) {
+      for (const location of locations) {
+        let feature
+        const locationType = location.additionals.other.location_data_type
+
+        if (locationType === LocationDataType.X_AND_Y_COORDS) {
+          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+          feature = convertDataToGeoJsonFeature('Point', [
+            location.coordinates.longitude,
+            location.coordinates.latitude
+          ])
+        } else if (locationType === LocationDataType.BOUNDARY) {
+          const boundary = await getOperationalBoundaryByTaCode(
+            location.geocode
+          )
+          feature = boundary
+        } else {
+          feature = location.geometry.geoJson
+        }
+        locationsCollection.push(feature)
       }
 
-      const { data: contactCount } = await backendCall(
-        { authToken },
-        'api/elasticache/list_linked_contacts',
+      // calculate boundary around locations
+      const geoJsonFeatureCollection =
+        turf.featureCollection(locationsCollection)
+
+      const bbox = turf.bbox(geoJsonFeatureCollection)
+
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
+
+      const options = {
+        states: [],
+        boundingBox: {
+          southWest: {
+            latitude: parseInt(bbox[1] * 10 ** 6),
+            longitude: parseInt(bbox[0] * 10 ** 6)
+          },
+          northEast: {
+            latitude: parseInt(bbox[3] * 10 ** 6),
+            longitude: parseInt(bbox[2] * 10 ** 6)
+          }
+        },
+        channels: [],
+        partnerId
+      }
+
+      // load alerts
+      const { data: alerts } = await backendCall(
+        { options },
+        'api/alert/list',
         navigate
       )
 
-      if (locations) {
-        // loop through live alerts - loop through all locations to find affected locations
-        for (const liveAlert of alerts?.liveAlerts) {
-          for (const location of locations) {
-            await processLocation(location, liveAlert, contactCount)
+      if (alerts?.liveAlerts) {
+        const { data: contactCount } = await backendCall(
+          { authToken },
+          'api/elasticache/list_linked_contacts',
+          navigate
+        )
+
+        if (locations) {
+          // loop through live alerts - loop through all locations to find affected locations
+          for (const liveAlert of alerts?.liveAlerts) {
+            for (const location of locations) {
+              await processLocation(location, liveAlert, contactCount)
+            }
           }
         }
       }
     }
   }
+  
 
   const processLocation = async (location, liveAlert, contactCount) => {
     const TA_CODE = liveAlert.TA_CODE

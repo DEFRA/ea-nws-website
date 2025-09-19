@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf'
 import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
@@ -7,10 +8,14 @@ import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary.js'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
+import LocationDataType from '../../../../common/enums/LocationDataType.js'
 import { backendCall } from '../../../../common/services/BackendService.js'
+import { convertDataToGeoJsonFeature } from '../../../../common/services/GeoJsonHandler.js'
+import { getOperationalBoundaryByTaCode } from '../../../../common/services/WfsFloodDataService.js'
 import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter.js'
 import FloodReportFilter from '../components/FloodReportFilter'
 import FloodWarningsRemovedReportsTable from './dashboard-components/FloodWarningsRemovedReportsTable.js'
+
 
 export default function FloodWarningsRemovedDashboardPage() {
   const navigate = useNavigate()
@@ -50,47 +55,88 @@ export default function FloodWarningsRemovedDashboardPage() {
     setLocationsAffected([])
     setDisplayedLocationsAffected([])
 
-    const { data: partnerId } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
-
-    const options = {
-      states: [],
-      boundingBox: null,
-      channels: [],
-      partnerId
-    }
-
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
-
-    // load alerts
-    const { data: alerts } = await backendCall(
-      { options, filterDate: yesterday },
-      'api/alert/list',
+    // get orgs locations
+    const { data: locationsData, errorMessage } = await backendCall(
+      { authToken },
+      'api/elasticache/list_locations',
       navigate
     )
 
-    if (alerts?.historicAlerts) {
-      // get orgs locations
-      const { data: locationsData } = await backendCall(
-        { authToken },
-        'api/elasticache/list_locations',
+    const locations = []
+    if (locationsData && !errorMessage) {
+      locationsData.forEach((location) => {
+        locations.push(geoSafeToWebLocation(location))
+      })
+    }
+
+    // loop through locations and convert points(xy coords locations) to geojson point to calculate bbox and compare
+    // if a location is a shape or boundary, save the geojson
+    const locationsCollection = []
+    if (locations.length > 0) {
+      for (const location of locations) {
+        let feature
+        const locationType = location.additionals.other.location_data_type
+
+        if (locationType === LocationDataType.X_AND_Y_COORDS) {
+          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+          feature = convertDataToGeoJsonFeature('Point', [
+            location.coordinates.longitude,
+            location.coordinates.latitude
+          ])
+        } else if (locationType === LocationDataType.BOUNDARY) {
+          const boundary = await getOperationalBoundaryByTaCode(
+            location.geocode
+          )
+          feature = boundary
+        } else {
+          feature = location.geometry.geoJson
+        }
+        locationsCollection.push(feature)
+      }
+
+      // calculate boundary around locations
+      const geoJsonFeatureCollection =
+        turf.featureCollection(locationsCollection)
+
+      const bbox = turf.bbox(geoJsonFeatureCollection)
+
+      const { data: partnerId } = await backendCall(
+        'data',
+        'api/service/get_partner_id'
+      )
+
+      const options = {
+        states: [],
+        boundingBox: {
+          southWest: {
+            latitude: parseInt(bbox[1] * 10 ** 6),
+            longitude: parseInt(bbox[0] * 10 ** 6)
+          },
+          northEast: {
+            latitude: parseInt(bbox[3] * 10 ** 6),
+            longitude: parseInt(bbox[2] * 10 ** 6)
+          }
+        },
+        channels: [],
+        partnerId
+      }
+
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+
+      // load alerts
+      const { data: alerts } = await backendCall(
+        { options, filterDate: yesterday },
+        'api/alert/list',
         navigate
       )
 
-      const locations = []
-      if (locationsData) {
-        for (const location of locationsData) {
-          locations.push(geoSafeToWebLocation(location))
-        }
-      }
-
-      if (locations) {
-        for (const liveAlert of alerts?.historicAlerts) {
-          for (const location of locations) {
-            processLocation(location, liveAlert)
+      if (alerts?.historicAlerts) {
+        if (locations) {
+          for (const liveAlert of alerts?.historicAlerts) {
+            for (const location of locations) {
+              processLocation(location, liveAlert)
+            }
           }
         }
       }

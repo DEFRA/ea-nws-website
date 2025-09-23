@@ -40,8 +40,6 @@ export default function LinkedLocationsPage() {
     .join(' ')
   const authToken = useSelector((state) => state.session.authToken)
 
-  console.log('contact name', contactName)
-
   const locationsPerPage = 10
 
   useEffect(() => {

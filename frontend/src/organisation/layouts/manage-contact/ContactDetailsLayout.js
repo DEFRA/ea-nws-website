@@ -42,7 +42,7 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
   const originalFirstName =
     useSelector((state) => state.session.orgCurrentContact.firstname) || ''
   const originalLastName =
-    useSelector((state) => state.session.orgCurrentContact.firstname) || ''
+    useSelector((state) => state.session.orgCurrentContact.lastname) || ''
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -81,11 +81,11 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
 
   const checkMandatory = () => {
     let mandatoryMissing = false
-    if (!firstname) {
+    if (!firstname.trim()) {
       setFirstNameError('Enter first name')
       mandatoryMissing = true
     }
-    if (!lastname) {
+    if (!lastname.trim()) {
       setLastNameError('Enter last name')
       mandatoryMissing = true
     }
@@ -105,13 +105,16 @@ export default function ContactDetailsLayout({ navigateToNextPage, error }) {
     event.preventDefault()
     if (!validateData()) return
 
+    const normaliseName = (name) =>
+      (typeof name === 'string' ? name : '').trim().toLowerCase()
+
     // Ensure name given is not a duplicate with existing user
     // When editing only check if name is changed
-    if (originalFirstName !== firstname && originalLastName !== lastname) {
+    if (originalFirstName !== firstname || originalLastName !== lastname) {
       const isDuplicate = contacts?.some(
         (c) =>
-          c.firstname.trim().toLowerCase() === firstname.trim().toLowerCase() &&
-          c.lastname.trim().toLowerCase() === lastname.trim().toLowerCase()
+          normaliseName(c.firstname) === normaliseName(firstname) &&
+          normaliseName(c.lastname) === normaliseName(lastname)
       )
       if (isDuplicate) {
         setFirstNameError(

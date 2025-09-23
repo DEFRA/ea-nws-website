@@ -43,7 +43,6 @@ export default function DropPinOnMapLayout({
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const showMarkerInitially = location?.state?.mapArea == null
   let { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
@@ -66,6 +65,9 @@ export default function DropPinOnMapLayout({
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
+  const [showMarkerInitially, setShowMarkerInitially] = useState(
+    location?.state?.mapArea === null
+  )
 
   const pinDropCoordsDisplay = () => {
     if (pinCoords) {
@@ -307,6 +309,11 @@ export default function DropPinOnMapLayout({
     navigate(-1)
   }
 
+  const setCoordinates = (newCoordinates) => {
+    setShowMarkerInitially(true)
+    setPinCoords(newCoordinates)
+  }
+
   return (
     <>
       <BackLink onClick={navigateBack} />
@@ -368,7 +375,7 @@ export default function DropPinOnMapLayout({
               }
             >
               <Map
-                setCoordinates={setPinCoords}
+                setCoordinates={setCoordinates}
                 type='drop'
                 showFloodWarningAreas={showFloodWarningAreas}
                 showFloodAlertAreas={showFloodAlertAreas}

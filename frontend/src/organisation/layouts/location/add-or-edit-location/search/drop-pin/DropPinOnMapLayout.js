@@ -310,7 +310,7 @@ export default function DropPinOnMapLayout({
   }
 
   const setCoordinates = (newCoordinates) => {
-    setShowMarkerInitially(true)
+    !showMarkerInitially && setShowMarkerInitially(true)
     setPinCoords(newCoordinates)
   }
 

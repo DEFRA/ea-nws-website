@@ -52,7 +52,7 @@ module.exports = [
         options.states = ['CURRENT', 'PAST']
         options.limit = 1000
         options.sort = [{
-          fieldName: 'id',
+          fieldName: 'effectiveDate',
           order: 'DESCENDING'
         }]
         let alerts

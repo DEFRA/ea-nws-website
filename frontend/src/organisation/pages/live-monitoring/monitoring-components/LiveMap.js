@@ -228,7 +228,7 @@ export default function LiveMap({
 
     const severity = liveAlert.type
     const startDate = new Date(liveAlert.startDate)
-    const lastUpdatedTime = new Date(liveAlert.startDate)
+    const lastUpdatedTime = liveAlert.endDate ? new Date(liveAlert.endDate) : new Date(liveAlert.startDate)
     const floodArea = await getFloodAreaByTaCode(TA_CODE)
 
     setLocationsAffected((prevLoc) => [...prevLoc, location.id])
@@ -282,25 +282,44 @@ export default function LiveMap({
         }
       }
       setRemovedPoints((prevPoints) => [...prevPoints, point])
-      setRemovedFloodAreas((prevAreas) => [...prevAreas, updatedFloodArea])
+      setRemovedFloodAreas((prevAreas) => {
+        const exists = prevAreas.some(area => area.properties.TA_CODE === updatedFloodArea.properties.TA_CODE)
+        if (exists) return prevAreas
+        return [...prevAreas, updatedFloodArea]
+      })
     } else {
       setLocationsAffected((prevLoc) => [...prevLoc, location.id])
       processLiveFloodArea(severity, point, floodArea)
     }
   }
 
-  const processLiveFloodArea = (severity, point) => {
+  const processLiveFloodArea = (severity, point, floodArea) => {
     switch (severity) {
       case AlertType.SEVERE_FLOOD_WARNING:
         setSeverePoints((prevPoints) => [...prevPoints, point])
+        setSevereFloodAreas(((prevAreas) => {
+          const exists = prevAreas.some(area => area.properties.TA_CODE === floodArea.properties.TA_CODE)
+          if (exists) return prevAreas
+          return [...prevAreas, floodArea]
+        }))
         break
 
       case AlertType.FLOOD_WARNING:
         setWarningPoints((prevPoints) => [...prevPoints, point])
+        setWarningFloodAreas(((prevAreas) => {
+          const exists = prevAreas.some(area => area.properties.TA_CODE === floodArea.properties.TA_CODE)
+          if (exists) return prevAreas
+          return [...prevAreas, floodArea]
+        }))
         break
 
       case AlertType.FLOOD_ALERT:
         setAlertPoints((prevPoints) => [...prevPoints, point])
+        setAlertFloodAreas(((prevAreas) => {
+          const exists = prevAreas.some(area => area.properties.TA_CODE === floodArea.properties.TA_CODE)
+          if (exists) return prevAreas
+          return [...prevAreas, floodArea]
+        }))
         break
     }
   }
@@ -427,7 +446,7 @@ export default function LiveMap({
   }
 
   const findAllFloodAreasAffectingLocation = (data) => {
-    const allPoints = [...severePoints, ...warningPoints, ...alertPoints]
+    const allPoints = [...severePoints, ...warningPoints, ...alertPoints, ...removedPoints]
 
     return allPoints
       .filter(

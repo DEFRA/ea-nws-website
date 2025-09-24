@@ -1,4 +1,8 @@
+import { useSelector } from 'react-redux'
+
 export default function Header({ type, phase }) {
+  const serviceType = useSelector((state) => state.session.serviceType)
+  const currentPageUrl = window.location.href
   // const getFeedbackLink = () => {
   //   let feedbackLink = '/signup/feedback'
 
@@ -12,7 +16,6 @@ export default function Header({ type, phase }) {
 
   //   return feedbackLink
   // }
-  
 
   return (
     <>
@@ -32,7 +35,15 @@ export default function Header({ type, phase }) {
             <span className='govuk-phase-banner__text'>
               This is a new service. Help us improve it and{' '}
               <a
-                href={type === 'org' ? 'https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8' : 'https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'}
+                href={
+                  type === 'org' || serviceType === 'organisation'
+                    ? `https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8?source=${encodeURIComponent(
+                        currentPageUrl
+                      )}`
+                    : `https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y?source=${encodeURIComponent(
+                        currentPageUrl
+                      )}`
+                }
                 className='govuk-link'
                 target='_blank'
                 rel='noopener noreferrer'

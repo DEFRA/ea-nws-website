@@ -37,10 +37,10 @@ export default function Header({ type, phase }) {
               <a
                 href={
                   type === 'org' || serviceType === 'organisation'
-                    ? `https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8?source=${encodeURIComponent(
+                    ? `https://defragroup.eu.qualtrics.com/jfe/form/SV_3z9xqQivBNzX1D8?Source=${encodeURIComponent(
                         currentPageUrl
                       )}`
-                    : `https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y?source=${encodeURIComponent(
+                    : `https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y?Source=${encodeURIComponent(
                         currentPageUrl
                       )}`
                 }

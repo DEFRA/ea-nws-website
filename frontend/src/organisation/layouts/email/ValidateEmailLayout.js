@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -17,8 +16,8 @@ import {
   setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { formatGovUKTime } from '../../../common/services/formatters/TimeFormatter'
 import { updateAdditionals } from '../../../common/services/ProfileServices'
+import { formatGovUKTime } from '../../../common/services/formatters/TimeFormatter'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 
 export default function ValidateEmailLayout({
@@ -37,8 +36,6 @@ export default function ValidateEmailLayout({
   const [codeExpired, setCodeExpired] = useState(false)
   const profile = useSelector((state) => state.session.profile)
   const signinType = useSelector((state) => state.session.signinType)
-  // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie] = useCookies(['authToken'])
   const enterCodeId = 'enter-code'
 
   // if error remove code sent notification
@@ -74,7 +71,6 @@ export default function ValidateEmailLayout({
           setError(errorMessage)
         }
       } else {
-        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         const updatedProfile = updateAdditionals(profile, [
           { id: 'signupComplete', value: { s: 'false' } },

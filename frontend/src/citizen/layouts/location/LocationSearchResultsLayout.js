@@ -288,7 +288,7 @@ export default function LocationSearchResultsLayout({
                     />
                   ) : (
                     <Link
-                      onClick={() => navigate(-1)}
+                      to={returnToSearchPage}
                       className='govuk-link'
                       style={{ cursor: 'pointer' }}
                     >

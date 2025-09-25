@@ -14,7 +14,7 @@ const setJsonData = async (client, key, json, path) => {
   const time = 60 * 60 * 24
   // send the data
   if (path) {
-    await client.json.set(key, `'$.["${path}"]'`, json)
+    await client.json.set(key, `$.["${path}"]`, json)
   } else {
     await client.json.set(key, '$', json)
   }
@@ -24,7 +24,7 @@ const setJsonData = async (client, key, json, path) => {
 const getJsonData = async (client, key, path) => {
   let result
   if (path) {
-    result = (await client.json.get(key, { path: `'$.["${path}"]'` }))[0]
+    result = (await client.json.get(key, { path: `$.["${path}"]` }))[0]
   } else {
     result = await client.json.get(key)
   }
@@ -34,7 +34,7 @@ const getJsonData = async (client, key, path) => {
 const deleteJsonData = async (client, key, path) => {
   // delete the data
   if (path) {
-    await client.json.del(key, `'$.["${path}"]'`)
+    await client.json.del(key, `$.["${path}"]`)
   } else {
     await client.json.del(key)
   }

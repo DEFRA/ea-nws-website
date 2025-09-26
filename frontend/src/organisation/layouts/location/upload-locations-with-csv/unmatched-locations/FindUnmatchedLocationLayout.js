@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -9,9 +9,9 @@ import {
   getLocationAdditional,
   getLocationName,
   getLocationOther,
-  setCurrentLocationPostcode,
-  setLocationSearchResults
+  setCurrentLocationPostcode
 } from '../../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../../../common/services/BackendService'
 import UnmatchedLocationInfo from '../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
@@ -23,7 +23,6 @@ export default function FindUnmatchedLocationLayout({
   flow
 }) {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')
   const findLocationOptionsId = 'find-location-options'
@@ -84,9 +83,13 @@ export default function FindUnmatchedLocationLayout({
           navigate
         )
         if (!errorMessage) {
-          dispatch(setCurrentLocationPostcode(data[0].postcode))
-          dispatch(setLocationSearchResults(data))
-          navigateToFindAddress()
+          dispatchAndSetReady(
+            [
+              setCurrentLocationPostcode(data[0].postcode).
+              setLocationSearchResults(data)
+            ],
+            () => navigateToFindAddress()
+          )
         } else {
           navigateToFindPostCode()
         }

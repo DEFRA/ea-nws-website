@@ -87,6 +87,7 @@ const setOrgAdditional = (additionals, id, value) => {
 const userSlice = createSlice({
   name: 'session',
   initialState: {
+    lastUpdated: 0,
     lastActivity: null,
     authToken: null,
     registerToken: null,
@@ -967,6 +968,13 @@ const userSlice = createSlice({
     replaceState: (state, action) => {
       return action.payload
     }
+  },
+  extraReducers: (builder) => {
+    builder.addDefaultCase((state, action) => {
+      if (action.type.startsWith('session/')) {
+        state.lastUpdated = Date.now();
+      }
+    })
   },
   selectors: {
     getLocationAdditionals: (state) => {

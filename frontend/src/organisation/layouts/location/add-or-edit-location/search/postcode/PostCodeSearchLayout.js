@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -9,6 +8,7 @@ import {
   setCurrentLocationPostcode,
   setLocationSearchResults
 } from '../../../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
@@ -18,7 +18,6 @@ export default function PostCodeSearchLayout({
   navigateToNotInEnglandPage,
   flow
 }) {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
@@ -38,9 +37,13 @@ export default function PostCodeSearchLayout({
         navigate
       )
       if (!errorMessage) {
-        dispatch(setCurrentLocationPostcode(data[0].postcode))
-        dispatch(setLocationSearchResults(data))
-        navigateToNextPage()
+        dispatchAndSetReady(
+          [
+            setCurrentLocationPostcode(data[0].postcode),
+            setLocationSearchResults(data)
+          ],
+          () => navigateToNextPage()
+        )
       } else {
         if (flow?.includes('unmatched-locations')) {
           navigateToNotInEnglandPage()

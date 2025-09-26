@@ -10,6 +10,7 @@ import { clearAuth, setLastActivity } from './common/redux/userSlice'
 import { backendCall } from './common/services/BackendService'
 import { removeHoverIosSafari } from './common/services/formatters/iosDoubleTapRemoval'
 import { loadGA, removeGA } from './common/services/hooks/GoogleAnalytics'
+import RouteWrapper from './common/wrappers/RouteWrapper'
 import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { authenticatedRoutes, routes } from './routes'
 
@@ -166,46 +167,48 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Routes>
-        <Route path='/' element={<StartPage />} />
-        <Route path='/' element={<Layout />}>
-          {authenticatedRoutes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                (hasAuthCookie || isSignOutRoute(route.path)) ? (
-                  route.component
-                ) : (
-                  <Navigate to={SignBackInLink()} />
-                )
-              }
-            />
-          ))}
-          {routes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                (route.path === '/sign-in' ||
-                  route.path === '/signup/register-location/search') &&
-                hasAuthCookie ? (
-                  <Navigate
-                    to={
-                      signinType === 'org'
-                        ? orgManageLocationsUrls.monitoring.view
-                        : '/home'
-                    }
-                    replace
-                  />
-                ) : (
-                  route.component
-                )
-              }
-            />
-          ))}
-        </Route>
-      </Routes>
+      <RouteWrapper>
+        <Routes>
+          <Route path='/' element={<StartPage />} />
+          <Route path='/' element={<Layout />}>
+            {authenticatedRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  (hasAuthCookie || isSignOutRoute(route.path)) ? (
+                    route.component
+                  ) : (
+                    <Navigate to={SignBackInLink()} />
+                  )
+                }
+              />
+            ))}
+            {routes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  (route.path === '/sign-in' ||
+                    route.path === '/signup/register-location/search') &&
+                  hasAuthCookie ? (
+                    <Navigate
+                      to={
+                        signinType === 'org'
+                          ? orgManageLocationsUrls.monitoring.view
+                          : '/home'
+                      }
+                      replace
+                    />
+                  ) : (
+                    route.component
+                  )
+                }
+              />
+            ))}
+          </Route>
+        </Routes>
+      </RouteWrapper>
       {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}
     </BrowserRouter>
   )

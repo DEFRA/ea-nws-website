@@ -55,16 +55,16 @@ export default function AddLocationOptionsPage() {
     } else {
       switch (addLocationType) {
         case addLocationOptions[0].value:
-          navigate(orgManageLocationsUrls.add.name)
           dispatch(setCurrentLocationDataType(LocationDataType.X_AND_Y_COORDS))
+          navigate(orgManageLocationsUrls.add.name)
           break
         case addLocationOptions[1].value:
-          navigate(orgManageLocationsUrls.add.addressInfo)
           dispatch(setCurrentLocationDataType(LocationDataType.X_AND_Y_COORDS))
+          navigate(orgManageLocationsUrls.add.addressInfo)
           break
         case addLocationOptions[2].value:
-          navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
           dispatch(setCurrentLocationDataType(LocationDataType.BOUNDARY))
+          navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
           break
         case addLocationOptions[3].value:
           navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)

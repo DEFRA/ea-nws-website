@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -11,6 +11,7 @@ import {
   setCurrentLocationEasting,
   setCurrentLocationNorthing
 } from '../../../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../../../common/redux/utils/navigationHelpers'
 import { convertCoordinatesToEspg4326 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
@@ -22,7 +23,6 @@ export default function LocationXYCoordinatesSearchLayout({
   navigateToNotInEngland,
   flow
 }) {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const currentXCoordinate = useSelector((state) =>
     getLocationOther(state, 'x_coordinate')
@@ -70,11 +70,15 @@ export default function LocationXYCoordinatesSearchLayout({
 
       if (await locationInEngland(latitude, longitude)) {
         const coordinates = { latitude, longitude }
-        dispatch(setCurrentLocationCoordinates(coordinates))
-        dispatch(setCurrentLocationEasting(Number(xCoordinate)))
-        dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
+        dispatchAndSetReady(
+          [
+            setCurrentLocationCoordinates(coordinates),
+            setCurrentLocationEasting(Number(xCoordinate)),
+            setCurrentLocationNorthing(Number(yCoordinate))
+          ],
+          () => navigateToNextPage()
+        )
 
-        navigateToNextPage()
       } else {
         navigateToNotInEngland()
       }

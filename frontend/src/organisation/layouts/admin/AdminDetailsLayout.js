@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -11,6 +11,7 @@ import {
   setProfile,
   setRegisterToken
 } from '../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../common/services/BackendService'
 import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
@@ -21,7 +22,6 @@ export default function AdminDetailsLayout({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
   const profile = useSelector((state) => state.session.profile)
@@ -100,10 +100,14 @@ export default function AdminDetailsLayout({
         { id: 'firstLogin', value: { s: 'true' } }
       ])
 
-      dispatch(setProfile(updatedProfile))
-      dispatch(setRegisterToken(data.orgRegisterToken))
-      dispatch(setCurrentContact(email))
-      navigateToNextPage()
+      dispatchAndSetReady(
+        [
+          setProfile(updatedProfile),
+          setRegisterToken(data.orgRegisterToken),
+          setCurrentContact(email)
+        ],
+        () => navigateToNextPage()
+      )
     }
   }
 

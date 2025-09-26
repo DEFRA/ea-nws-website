@@ -14,6 +14,7 @@ import {
   setCurrentLocationReference,
   setCurrentLocationType
 } from '../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../common/services/BackendService'
 
 export default function KeyInformationLayout({
@@ -82,13 +83,14 @@ export default function KeyInformationLayout({
       }
     }
 
-    dispatch(setCurrentLocationReference(internalReference))
-    dispatch(setCurrentLocationCriticality(businessCriticality))
-    dispatch(setCurrentLocationType(locationType))
-
-    // should update the geosafe profile here?
-
-    navigateToNextPage()
+    dispatchAndSetReady(
+      [
+        setCurrentLocationReference(internalReference),
+        setCurrentLocationCriticality(businessCriticality),
+        setCurrentLocationType(locationType)
+      ],
+      () => navigateToNextPage()
+    )
   }
 
   const navigateBack = (event) => {

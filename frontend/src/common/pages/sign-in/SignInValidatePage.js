@@ -23,6 +23,7 @@ import {
   setRegistrations,
   setSigninType
 } from '../../redux/userSlice'
+import { dispatchAndSetReady } from '../../redux/utils/navigationHelpers'
 import { backendCall } from '../../services/BackendService'
 import { getAdditionals } from '../../services/ProfileServices'
 import { formatGovUKTime } from '../../services/formatters/TimeFormatter'
@@ -79,7 +80,7 @@ export default function SignInValidatePage() {
             )
             setupAuthentication(orgData)
             if (isAdminUsersFirstLogin === 'true') {
-              navigate('/sign-in/organisation/admin-controls')
+              return navigate('/sign-in/organisation/admin-controls')
             } else {
               navigate(orgManageLocationsUrls.monitoring.view)
             }
@@ -139,22 +140,28 @@ export default function SignInValidatePage() {
         setLastAccessedUrl(lastAccessedUrl)
 
         if (data.organization) {
-          dispatch(setProfileId(data.profile.id))
-          dispatch(setOrganization(data.organization))
-          dispatch(setSigninType('org'))
+          dispatchAndSetReady([
+            setProfileId(data.profile.id),
+            setOrganization(data.organization),
+            setSigninType('org')
+          ])
+
           const migrated = (() => {
             // check the JSON structure doesn't include name to identify migrated data
             try { return !('name' in JSON.parse(data.organization?.description)) }
             catch { return true }
           })()
           if (migrated) {
-            // migrated data has no org description
-            dispatch(setAuthToken(data.authToken))
-            dispatch(setProfile(data.profile))
             // don't wait for the result, just kick it off for the backend
             backendCall({orgData: data}, 'api/org_signin_migrated')
             // navigate to migration status page
-            return navigate('/sign-in/organisation/migration')
+            return dispatchAndSetReady(
+              [
+                setAuthToken(data.authToken),
+                setProfile(data.profile)
+              ],
+              () => navigate('/sign-in/organisation/migration')
+            )
           }
         } else {
           const { errorMessage, data: verifyData } = await backendCall(
@@ -190,8 +197,7 @@ export default function SignInValidatePage() {
 
   const setupAuthentication = (data) => {
     setCookie('authToken', data.authToken)
-    dispatch(setAuthToken(data.authToken))
-    dispatch(setProfile(data.profile))
+    dispatchAndSetReady([setAuthToken(data.authToken), setProfile(data.profile)])
   }
 
   const getNewCode = async (event) => {

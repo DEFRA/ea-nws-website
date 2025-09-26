@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -10,11 +10,11 @@ import {
   setProfile,
   setRegistrations
 } from '../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 
 export default function DeclarationOfAgreementPage() {
-  const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
   const session = useSelector((state) => state.session)
   const [error, setError] = useState('')
@@ -52,13 +52,17 @@ export default function DeclarationOfAgreementPage() {
           ]
         }
       }
-      dispatch(setRegistrations(registrations))
       const updatedProfile = updateAdditionals(session.profile, [
         { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
       ])
-      dispatch(setProfile(updatedProfile))
       updateBackendProfile(updatedProfile)
-      navigate('/signup/review')
+      dispatchAndSetReady(
+        [
+          setProfile(updatedProfile),
+          setRegistrations(registrations)
+        ],
+        () => navigate('/signup/review')
+      )
     }
   }
 

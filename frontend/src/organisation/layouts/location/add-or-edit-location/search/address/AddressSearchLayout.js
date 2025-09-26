@@ -16,6 +16,7 @@ import {
   setCurrentLocationNorthing,
   setCurrentLocationPostcode
 } from '../../../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../../../common/redux/utils/navigationHelpers'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
@@ -45,24 +46,28 @@ export default function AddressSearchLayout({
     setLoading(true)
     try {
       !existingName && dispatch(setCurrentLocationName(selectedLocation.name))
-      dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
-      dispatch(setCurrentLocationAddress(selectedLocation.address))
 
       const postcodePattern = /\s*,?\s+\b[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}\b/
       const fullAddress = selectedLocation.address
         .replace(postcodePattern, '')
         .trim()
-      dispatch(setCurrentLocationFullAddress(fullAddress))
-      dispatch(setCurrentLocationPostcode(selectedLocation.postcode))
 
       const { northing, easting } = convertCoordinatesToEspg27700(
         selectedLocation.coordinates.longitude,
         selectedLocation.coordinates.latitude
       )
 
-      dispatch(setCurrentLocationNorthing(northing))
-      dispatch(setCurrentLocationEasting(easting))
-      navigateToNextPage()
+      dispatchAndSetReady(
+        [
+          setCurrentLocationCoordinates(selectedLocation.coordinates),
+          setCurrentLocationAddress(selectedLocation.address),
+          setCurrentLocationFullAddress(fullAddress),
+          setCurrentLocationPostcode(selectedLocation.postcode),
+          setCurrentLocationNorthing(northing),
+          setCurrentLocationEasting(easting)
+        ],
+        () => navigateToNextPage()
+      )
     } finally {
       setLoading(false)
     }

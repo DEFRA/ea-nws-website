@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
 import Radio from '../../components/gov-uk/Radio'
+import { setServiceType } from '../../redux/userSlice'
 
 export default function ServiceSelectionPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [serviceOption, setServiceOption] = useState('')
   const [reasonError, setReasonError] = useState('')
-  
+
   const serviceSelectionId = 'service-selection'
 
   useEffect(() => {
@@ -29,6 +32,7 @@ export default function ServiceSelectionPage() {
     }
 
     if (isValidInput) {
+      dispatch(setServiceType(serviceOption))
       if (serviceOption === 'citizen') {
         navigate('/signup/register-location/search')
       } else {

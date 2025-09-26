@@ -774,6 +774,9 @@ const userSlice = createSlice({
     setAddingAdminFlow: (state, action) => {
       state.addingAdminFlow = action.payload
     },
+    setServiceType: (state, action) => {
+      state.serviceType = action.payload
+    },
     clearOrgCurrentContact: (state) => {
       state.orgCurrentContact = {
         id: null,
@@ -936,6 +939,7 @@ const userSlice = createSlice({
         urlSlug: null
       }
       state.addingAdminFlow = null
+      state.serviceType = null
       state.orgCurrentContact = {
         id: null,
         enabled: true,
@@ -1166,6 +1170,7 @@ export const {
   setOrgCurrentContactRole,
   setOrgCurrentContactPendingRole,
   setContacts,
+  setServiceType,
   // flow
   setAddingAdminFlow,
   // clear state

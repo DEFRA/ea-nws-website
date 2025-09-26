@@ -31,6 +31,7 @@ import {
 import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
+import { dispatchAndSetReady } from '../../../../common/redux/utils/navigationHelpers'
 
 export default function LinkLocationsLayout({
   navigateToPreviousPage,
@@ -401,12 +402,16 @@ export default function LinkLocationsLayout({
         'api/location/update_registration',
         navigate
       )
-      dispatch(setCurrentLocation(locationToAdd))
-      dispatch(setCurrentLocationAlertTypes(alertTypes))
-      navigateToNextPage(
-        `${
-          currentLocation.name || additionalData.locationName
-        } linked to ${toWords(childrenIDs.length)} nearby flood areas`
+      dispatchAndSetReady(
+        [
+          setCurrentLocation(locationToAdd),
+          setCurrentLocationAlertTypes(alertTypes)
+        ],
+        () => navigateToNextPage(
+            `${
+              currentLocation.name || additionalData.locationName
+            } linked to ${toWords(childrenIDs.length)} nearby flood areas`
+          )
       )
     } else {
       // TODO set an error

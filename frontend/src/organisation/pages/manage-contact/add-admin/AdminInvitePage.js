@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
-import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -14,6 +13,7 @@ import {
   setProfileId,
   setSigninType
 } from '../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgInviteUrls } from '../../../routes/invite/InviteRoutes'
 
@@ -22,7 +22,6 @@ export default function AdminInvitePage() {
   const location = useLocation()
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
-  const dispatch = useDispatch()
   const [orgData, setOrgData] = useState(null)
   const [stage, setStage] = useState('Step 1 of 7 - finding your locations')
   const [percent, setPercent] = useState(null)
@@ -85,17 +84,19 @@ export default function AdminInvitePage() {
     )
     if (data) {
       setCookie('authToken', data.authToken)
-      dispatch(setAuthToken(data.authToken))
-      dispatch(setProfile(data.profile))
-      dispatch(setProfileId(data.profile.id))
-      dispatch(setOrganization(data.organization))
-      dispatch(setSigninType('org'))
-      dispatch(
-        setContactPreferences([
-          data.profile.emails.length !== 0 && 'Email Address',
-          data.profile.homePhones.length !== 0 && 'PhoneCall',
-          data.profile.mobilePhones.length !== 0 && 'Text'
-        ])
+      dispatchAndSetReady(
+        [
+          setAuthToken(data.authToken),
+          setProfile(data.profile),
+          setProfileId(data.profile.id),
+          setOrganization(data.organization),
+          setSigninType('org'),
+          setContactPreferences([
+            data.profile.emails.length !== 0 && 'Email Address',
+            data.profile.homePhones.length !== 0 && 'PhoneCall',
+            data.profile.mobilePhones.length !== 0 && 'Text'
+          ])
+        ]
       )
       if (data?.orgExists === 0) {
         setOrgData(data)

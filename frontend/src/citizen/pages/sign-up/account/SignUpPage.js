@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -12,6 +12,7 @@ import {
   setProfile,
   setRegisterToken
 } from '../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
   addVerifiedContact,
@@ -21,7 +22,6 @@ import { emailValidation } from '../../../../common/services/validations/EmailVa
 
 export default function SignUpPage() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
@@ -63,9 +63,13 @@ export default function SignUpPage() {
           )
         }
         updatedProfile = addVerifiedContact(updatedProfile, 'email', email)
-        dispatch(setProfile(updatedProfile))
-        dispatch(setRegisterToken(data.registerToken))
-        navigate('/signup/validate')
+        dispatchAndSetReady(
+          [
+            setProfile(updatedProfile),
+            setRegisterToken(data.registerToken)
+          ],
+          () => navigate('/signup/validate')
+        )
       }
     }
   }

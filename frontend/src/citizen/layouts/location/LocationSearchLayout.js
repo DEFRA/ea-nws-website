@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -10,6 +9,7 @@ import {
   setLocationSearchResults,
   setLocationSearchType
 } from '../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 import { removeDuplicates } from '../../../common/utils/removeDuplicates'
@@ -19,7 +19,6 @@ export default function LocationSearchLayout({
   returnToReview
 }) {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
   const [postCode, setPostCode] = useState('')
   const [placeName, setPlaceName] = useState('')
@@ -56,10 +55,14 @@ export default function LocationSearchLayout({
               navigate
             )
             if (!errorMessage) {
-              dispatch(setLocationPostCode(data[0].postcode))
-              dispatch(setLocationSearchResults(data))
-              dispatch(setLocationSearchType('postcode'))
-              continueToNextPage()
+              dispatchAndSetReady(
+                [
+                  setLocationPostCode(data[0].postcode),
+                  setLocationSearchResults(data),
+                  setLocationSearchType('postcode')
+
+                ], () => continueToNextPage()
+              )
             } else {
               // show error message from OS Api postcode search
               setPostCodeError(errorMessage)
@@ -94,12 +97,14 @@ export default function LocationSearchLayout({
               navigate
             )
             if (!errorMessage) {
-              dispatch(setLocationPostCode(''))
-              dispatch(
-                setLocationSearchResults(removeDuplicates(data, 'address'))
+              dispatchAndSetReady(
+                [
+                  setLocationPostCode(''),
+                  setLocationSearchResults(removeDuplicates(data, 'address')),
+                  setLocationSearchType('placename')
+                ],
+                () => continueToNextPage()
               )
-              dispatch(setLocationSearchType('placename'))
-              continueToNextPage()
             } else {
               // show error message from OS Api postcode search
               setPlaceNameError(errorMessage)

@@ -12,8 +12,14 @@ const deleteData = async (client, key) => {
 const setJsonData = async (client, key, json, path) => {
   // only store data for 24 hours in the event the browser is closed without signing out
   const time = 60 * 60 * 24
+  console.log(key)
+  console.log(json)
   // send the data
   if (path) {
+    const keyExists = await checkKeyExists(client, key)
+    if (!keyExists) {
+      await client.json.set(key, '$', {})
+    }
     await client.json.set(key, `$.["${path}"]`, json)
   } else {
     await client.json.set(key, '$', json)

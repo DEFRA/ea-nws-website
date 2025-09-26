@@ -225,9 +225,9 @@ export default function SearchFilter({
       filteredLocations = filteredLocations.filter(
         (location) =>
           (selectedLinkedFilters.includes('Yes') &&
-            location.linked_contacts?.length > 0) ||
+            location.linked_contacts > 0) ||
           (selectedLinkedFilters.includes('No') &&
-            location.linked_contacts?.length === 0)
+            location.linked_contacts === 0)
       )
     }
 

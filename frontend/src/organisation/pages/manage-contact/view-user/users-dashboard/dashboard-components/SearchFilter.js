@@ -130,9 +130,9 @@ export default function SearchFilter({
       filteredContacts = filteredContacts.filter(
         (contact) =>
           (selectedLinkedFilters.includes('Yes') &&
-            contact.linked_locations.length > 0) ||
+            contact.linked_locations > 0) ||
           (selectedLinkedFilters.includes('No') &&
-            contact.linked_locations.length === 0)
+            contact.linked_locations === 0)
       )
     }
 

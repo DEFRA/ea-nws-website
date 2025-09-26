@@ -19,7 +19,6 @@ module.exports = [
         }
 
         const { code, orgRegisterToken } = request.payload
-        const { redis } = request.server.app
         const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && orgRegisterToken) {

@@ -165,9 +165,18 @@ module.exports = [
             if (parentID) {
               const linkedIDs = linkedLocations[parentID]?.linkedIDs || []
               const AlertTypes = linkedLocations[parentID]?.AlertTypes || []
-              linkedLocations[parentID] = {
-                linkedIDs: [...new Set(linkedIDs.concat([location.id]))],
-                AlertTypes: [...new Set(AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
+              const targetArea = getLocationOtherAdditional(location.additionals, 'targetAreas').find(targetArea => targetArea.TA_Name === location.address)
+              if (targetArea) {
+                linkedLocations[parentID] = {
+                  linkedIDs: linkedIDs.push(
+                    {
+                      id: location.id,
+                      TA_Name: targetArea.TA_Name,
+                      TA_CODE: targetArea.TA_CODE,
+                      category: targetArea.category
+                    }),
+                  AlertTypes: [...new Set(AlertTypes.concat(getLocationOtherAdditional(location.additionals, 'alertTypes')))]
+                }
               }
             }
           }

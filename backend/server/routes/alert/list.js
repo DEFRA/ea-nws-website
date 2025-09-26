@@ -21,10 +21,8 @@ const getAlerts = async (options) => {
     const totalRecalls = Math.floor(alerts.data.total / 1000)
     let i = 1
     while (i <= totalRecalls) {
-      options.offset = 1000 * i 
-      fetchAlertsPromises.push(
-        apiCall({ options: options }, 'alert/list')
-      )
+      options.offset = 1000 * i
+      fetchAlertsPromises.push(apiCall({ options: options }, 'alert/list'))
       i++
     }
 
@@ -51,56 +49,50 @@ module.exports = [
         options.channels = ['WEBSITE_CHANNEL', 'MOBILE_APP']
         options.states = ['CURRENT', 'PAST']
         options.limit = 1000
-        options.sort = [{
-          fieldName: 'effectiveDate',
-          order: 'DESCENDING'
-        }]
+        options.sort = [
+          {
+            fieldName: 'effectiveDate',
+            order: 'DESCENDING'
+          }
+        ]
         let alerts
-        let { liveAlerts, historicAlerts } = {liveAlerts:[], historicAlerts:[]}
+        let { liveAlerts, historicAlerts } = {
+          liveAlerts: [],
+          historicAlerts: []
+        }
         if (historic) {
           const { redis } = request.server.app
           let cachedHistoricAlerts = await getFloodHistory(redis)
           if (cachedHistoricAlerts === null) {
             // get alerts from geosafe
             alerts = await getAlerts(options)
-            ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
-              alerts
-            ))
+            ;({ liveAlerts, historicAlerts } = processGeosafeAlerts(alerts))
             // add alerts from file
-            const fileHistoricAlerts = historicAlerts.concat(
+            historicAlerts = historicAlerts.concat(
               await getAllPastAlerts(request)
             )
-            historicAlerts = historicAlerts.concat(fileHistoricAlerts)
 
-            await setFloodHistory(
-              redis,
-              historicAlerts.concat(fileHistoricAlerts)
-            )
+            await setFloodHistory(redis, historicAlerts)
           } else {
             historicAlerts = cachedHistoricAlerts
           }
         } else if (taCodes && taCodes.length > 0) {
           // get alerts from geosafe
           alerts = await getAlerts(options)
-          ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
-            alerts
-          ))
+          ;({ liveAlerts, historicAlerts } = processGeosafeAlerts(alerts))
           // add alerts from file
-          const fileHistoricAlerts = historicAlerts.concat(
+          historicAlerts = historicAlerts.concat(
             await getAllPastAlerts(request)
           )
-          historicAlerts = historicAlerts.concat(fileHistoricAlerts)
-          historicAlerts = historicAlerts.filter((alert) => 
+          historicAlerts = historicAlerts.filter((alert) =>
             taCodes.includes(alert.TA_CODE)
           )
-          liveAlerts = liveAlerts.filter((alert) => 
+          liveAlerts = liveAlerts.filter((alert) =>
             taCodes.includes(alert.TA_CODE)
           )
         } else {
           alerts = await getAlerts(options)
-          ;({liveAlerts, historicAlerts} = processGeosafeAlerts(
-            alerts
-          ))
+          ;({ liveAlerts, historicAlerts } = processGeosafeAlerts(alerts))
         }
 
         if (filterDate) {

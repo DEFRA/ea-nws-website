@@ -5,7 +5,6 @@ const { apiCall } = require('../../services/ApiService')
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { setJsonData } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 const { GENERIC_ERROR_MSG } = require('../../constants/errorMessages')
 
@@ -20,7 +19,6 @@ module.exports = [
         }
 
         const { code, orgRegisterToken } = request.payload
-        const { redis } = request.server.app
         const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && orgRegisterToken) {
@@ -28,7 +26,6 @@ module.exports = [
             { orgRegisterToken: orgRegisterToken, code: formattedCode },
             'organization/registerValidate'
           )
-          await setJsonData(redis, response.data.organization.id + ':org_data', response.data.organization)
           return h.response(response)
         } else {
           return h.response({

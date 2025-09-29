@@ -14,6 +14,10 @@ const setJsonData = async (client, key, json, path) => {
   const time = 60 * 60 * 24
   // send the data
   if (path) {
+    const keyExists = await checkKeyExists(client, key)
+    if (!keyExists) {
+      await client.json.set(key, '$', {})
+    }
     await client.json.set(key, `$.["${path}"]`, json)
   } else {
     await client.json.set(key, '$', json)

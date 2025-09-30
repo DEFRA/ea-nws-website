@@ -1,6 +1,5 @@
 import { initAll } from 'govuk-frontend'
 import React, { useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
 import CitizenAccountNavigation from './common/components/custom/CitizenAccountNavigation'
@@ -17,10 +16,6 @@ function Layout() {
   const auth = useSelector((state) => state.session.authToken)
   const [servicePhase, setServicePhase] = useState(false)
   const hideHeader = location.pathname.includes('preview')
-  // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie] = useCookies(['authToken'])
-  const hasAuthCookie = cookies.authToken
-
 
   async function getServicePhase() {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
@@ -47,21 +42,17 @@ function Layout() {
         <>
           <Header />
           <div className='sub-navigation'>
-            {hasAuthCookie &&
-            <>
-              {location.pathname.includes('organisation') ? (
-                <div className='custom-width-container'>
-                  <OrganisationAccountNavigation
-                    currentPage={location.pathname}
-                  />
-                </div>
-              ) : (
-                <div className='govuk-width-container'>
-                  <CitizenAccountNavigation currentPage={location.pathname} />
-                </div>
-              )}
-              </>
-            }
+            {location.pathname.includes('organisation') ? (
+              <div className='custom-width-container'>
+                <OrganisationAccountNavigation
+                  currentPage={location.pathname}
+                />
+              </div>
+            ) : (
+              <div className='govuk-width-container'>
+                <CitizenAccountNavigation currentPage={location.pathname} />
+              </div>
+            )}
           </div>
         </>
       )}

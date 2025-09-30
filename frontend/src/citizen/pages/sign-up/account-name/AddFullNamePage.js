@@ -36,7 +36,7 @@ export default function AddFullNamePage() {
 
   const updateProfile = async (profile, authToken) => {
     const updatedProfile = updateAdditionals(profile, [
-      { id: 'lastAccessedUrl', value: { s: '/declaration' } }
+      { id: 'lastAccessedUrl', value: { s: '/signup/declaration' } }
     ])
     const dataToSend = { profile: updatedProfile, authToken }
     const { errorMessage, data } = await backendCall(

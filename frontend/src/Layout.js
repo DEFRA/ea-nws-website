@@ -18,7 +18,8 @@ function Layout() {
   const [servicePhase, setServicePhase] = useState(false)
   const hideHeader = location.pathname.includes('preview')
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie] = useCookies(['CookieControl'])
+  const [cookies, setCookie] = useCookies(['authToken'])
+  const hasAuthCookie = cookies.authToken
 
 
   async function getServicePhase() {
@@ -46,17 +47,21 @@ function Layout() {
         <>
           <Header />
           <div className='sub-navigation'>
-            {location.pathname.includes('organisation') && auth ? (
-              <div className='custom-width-container'>
-                <OrganisationAccountNavigation
-                  currentPage={location.pathname}
-                />
-              </div>
-            ) : (
-              <div className='govuk-width-container'>
-                <CitizenAccountNavigation currentPage={location.pathname} />
-              </div>
-            )}
+            {hasAuthCookie &&
+            <>
+              {location.pathname.includes('organisation') ? (
+                <div className='custom-width-container'>
+                  <OrganisationAccountNavigation
+                    currentPage={location.pathname}
+                  />
+                </div>
+              ) : (
+                <div className='govuk-width-container'>
+                  <CitizenAccountNavigation currentPage={location.pathname} />
+                </div>
+              )}
+              </>
+            }
           </div>
         </>
       )}

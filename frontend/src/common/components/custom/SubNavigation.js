@@ -67,8 +67,8 @@ export default function SubNavigation({ pages, currentPage, type }) {
 
     const urls =
       journey === 'org'
-        ? [orgSignUpUrls.signUp, 'organisation/admin-controls', 'organisation/migration',...baseUrls]
-        : ['/signup', ...baseUrls]
+        ? [orgSignUpUrls.signUp, 'organisation/admin-controls', 'organisation/migration',...baseUrls, '/sign-in']
+        : ['/signup', ...baseUrls, '/sign-in']
 
     return (
       authToken !== null && !urls.some((url) => location.pathname.includes(url))

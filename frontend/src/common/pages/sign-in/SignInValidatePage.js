@@ -78,7 +78,7 @@ export default function SignInValidatePage() {
               orgData.profile,
               'firstLogin'
             )
-            setupAuthentication(orgData)
+            setupAuthentication(orgData, true)
             if (isAdminUsersFirstLogin === 'true') {
               return navigate('/sign-in/organisation/admin-controls')
             } else {
@@ -146,11 +146,12 @@ export default function SignInValidatePage() {
             setSigninType('org')
           ])
 
-          const migrated = (() => {
+          const noOrgDesc = (() => {
             // check the JSON structure doesn't include name to identify migrated data
             try { return !('name' in JSON.parse(data.organization?.description)) }
             catch { return true }
           })()
+          const migrated = noOrgDesc && !(isSignUpComplete !== 'true' && lastAccessedUrl !== undefined)
           if (migrated) {
             // don't wait for the result, just kick it off for the backend
             backendCall({orgData: data}, 'api/org_signin_migrated')
@@ -187,7 +188,7 @@ export default function SignInValidatePage() {
           if (data.organization) {
             setOrgData(data)
           } else {
-            setupAuthentication(data)
+            setupAuthentication(data, true)
             navigate('/home')
           }
         }
@@ -195,8 +196,8 @@ export default function SignInValidatePage() {
     }
   }
 
-  const setupAuthentication = (data) => {
-    setCookie('authToken', data.authToken)
+  const setupAuthentication = (data, cookie = false) => {
+    cookie && setCookie('authToken', data.authToken)
     dispatchAndSetReady([setAuthToken(data.authToken), setProfile(data.profile)])
   }
 

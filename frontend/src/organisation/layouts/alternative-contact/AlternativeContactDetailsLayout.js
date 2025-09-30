@@ -6,10 +6,10 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import store from '../../../common/redux/store'
 import { setOrganizationAlternativeContact } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-import { backendCall } from '../../../common/services/BackendService'
 
 export default function AlternativeContactDetailsLayout({
   navigateToNextPage,
@@ -83,8 +83,7 @@ export default function AlternativeContactDetailsLayout({
       )
       const organization = store.getState().session.organization
       const dataToSend = { organization, authToken }
-      backendCall
-      await backendCall(dataToSend, 'api/organization/update', navigate)
+      await backendCall(dataToSend, 'api/organization/update')
       navigateToNextPage()
     }
   }

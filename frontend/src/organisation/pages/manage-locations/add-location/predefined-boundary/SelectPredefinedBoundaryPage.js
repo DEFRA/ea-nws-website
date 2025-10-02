@@ -1,25 +1,40 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Select from '../../../../../common/components/gov-uk/Select'
+import AlertType from '../../../../../common/enums/AlertType'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
+import store from '../../../../../common/redux/store'
 import {
   setConsecutiveBoundariesAdded,
-  setCurrentLocationGeometry,
+  setCurrentLocation,
+  setCurrentLocationDataType,
+  setCurrentLocationGeocode,
   setCurrentLocationName,
-  setLocationBoundaries,
+  setCurrentLocationType,
   setPredefinedBoundaryFlow,
   setSelectedBoundary,
   setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
-import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataService'
+import { backendCall } from '../../../../../common/services/BackendService'
+import {
+  getBoundaryTypes,
+  getFloodAreasFromShape
+} from '../../../../../common/services/WfsFloodDataService'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
+import { formatSentenceCase } from '../../../../../common/utils/FormatSentenceCase'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function SelectPredefinedBoundaryPage () {
+export default function SelectPredefinedBoundaryPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [boundaryTypeError, setBoundaryTypeError] = useState('')
@@ -33,12 +48,35 @@ export default function SelectPredefinedBoundaryPage () {
   const selectedBoundary = useSelector(
     (state) => state.session.selectedBoundary
   )
-  const locationBoundaries = useSelector(
-    (state) => state.session.locationBoundaries
-  )
   const consecutiveBoundariesAdded = useSelector(
     (state) => state.session.consecutiveBoundariesAdded
   )
+  const authToken = useSelector((state) => state.session.authToken)
+  const boundaryTypeId = 'BoundaryType'
+  const boundaryId = 'Boundary'
+
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId() {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  async function getBoundarysAlreadyAdded() {
+    const { data: locationsData, errorMessage } = await backendCall(
+      { authToken },
+      'api/elasticache/list_locations',
+      navigate
+    )
+    const locations = locationsData?.map(geoSafeToWebLocation) || []
+
+    const boundaryLocations = locations.filter(
+      (loc) =>
+        loc.additionals.other.location_data_type === LocationDataType.BOUNDARY
+    )
+
+    setBoundariesAlreadyAdded(boundaryLocations)
+  }
 
   // Get boundary types
   useEffect(() => {
@@ -47,6 +85,8 @@ export default function SelectPredefinedBoundaryPage () {
       setBoundaryTypes(boundaryTypesList)
     }
     getBoundaryTypesList()
+    getBoundarysAlreadyAdded()
+    getPartnerId()
   }, [])
 
   useEffect(() => {
@@ -57,21 +97,11 @@ export default function SelectPredefinedBoundaryPage () {
     setBoundaryError('')
   }, [selectedBoundary])
 
+  // Clear any previous boundary selection
   useEffect(() => {
-    if (locationBoundaries) {
-      setBoundariesAlreadyAdded(
-        locationBoundaries
-          .filter((locationBoundary) => {
-            return locationBoundary.boundary_type === selectedBoundaryType
-          })
-          .map((locationBoundary) => {
-            return locationBoundary.boundary
-          })
-      )
-    } else {
-      setBoundariesAlreadyAdded([])
-    }
-  }, [selectedBoundaryType, locationBoundaries])
+    dispatch(setSelectedBoundary(null))
+    dispatch(setSelectedBoundaryType(null))
+  }, [])
 
   const onBoundaryTypeSelected = (boundaryType) => {
     dispatch(setSelectedBoundaryType(boundaryType))
@@ -79,13 +109,14 @@ export default function SelectPredefinedBoundaryPage () {
 
   const onBoundarySelected = (boundaryName) => {
     const boundarySelected = boundaries.find(
-      (boundary) => boundary.properties.layer === boundaryName
+      (boundary) => boundary.properties.TA_Name === boundaryName
     )
 
     dispatch(setSelectedBoundary(boundarySelected))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (!selectedBoundaryType) {
       setBoundaryTypeError('Select a boundary type')
     }
@@ -94,34 +125,93 @@ export default function SelectPredefinedBoundaryPage () {
       setBoundaryError('Select a boundary')
     }
 
-    // update profile to add location and navigate
     if (selectedBoundaryType && selectedBoundary) {
-      const locationBoundary = {
-        boundary_type: selectedBoundaryType,
-        boundary: selectedBoundary
-      }
-      locationBoundaries
-        ? dispatch(
-          setLocationBoundaries([...locationBoundaries, locationBoundary])
-        )
-        : dispatch(setLocationBoundaries([locationBoundary]))
-      dispatch(
-        setCurrentLocationGeometry({
-          geoJson: JSON.stringify(locationBoundary.boundary)
+      dispatch(setCurrentLocationName(selectedBoundary.properties.TA_Name))
+      dispatch(setCurrentLocationGeocode(selectedBoundary.properties.TA_CODE))
+      dispatch(setCurrentLocationType(selectedBoundaryType))
+      dispatch(setCurrentLocationDataType(LocationDataType.BOUNDARY))
+      // since we added to currentLocation we need to get that information to pass to the api
+      const locationToAdd = store.getState().session.currentLocation
+
+      // Set default alert types
+      const newWebLocation = geoSafeToWebLocation(
+        JSON.parse(JSON.stringify(locationToAdd))
+      )
+      // get the target areas
+      const TAs = await getFloodAreasFromShape(selectedBoundary?.geometry)
+      newWebLocation.additionals.other.targetAreas = []
+      TAs.forEach((area) => {
+        newWebLocation.additionals.other.targetAreas.push({
+          TA_CODE: area.properties?.TA_CODE,
+          TA_Name: area.properties?.TA_Name,
+          category: area.properties?.category
         })
-      )
-      // This might change at a later date, but store in the additional name field for now
-      dispatch(
-        setCurrentLocationName(
-          locationBoundary.boundary_type +
-            ', ' +
-            locationBoundary.boundary.properties.layer
+      })
+      newWebLocation.additionals.other.riverSeaRisk = 'unavailable'
+      newWebLocation.additionals.other.groundWaterRisk = 'unavailable'
+
+      // Set alert types
+      newWebLocation.additionals.other.alertTypes = []
+      const categoryToType = (type) => {
+        const typeMap = {
+          'Flood Warning': 'warning',
+          'Flood Warning Groundwater': 'warning',
+          'Flood Warning Rapid Response': 'warning',
+          'Flood Alert': 'alert',
+          'Flood Alert Groundwater': 'alert'
+        }
+        return typeMap[type] || []
+      }
+      newWebLocation.additionals.other.targetAreas.some(
+        (area) => categoryToType(area.category) === 'warning'
+      ) &&
+        newWebLocation.additionals.other.alertTypes.push(
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING,
+          AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+          AlertType.REMOVE_FLOOD_WARNING
         )
+
+      newWebLocation.additionals.other.targetAreas.some(
+        (area) => categoryToType(area.category) === 'alert'
+      ) &&
+        newWebLocation.additionals.other.alertTypes.push(AlertType.FLOOD_ALERT)
+
+      const newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+
+      const dataToSend = { authToken, location: newGeosafeLocation }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/location/create',
+        navigate
       )
-      dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
-      dispatch(setPredefinedBoundaryFlow(true))
-      // TODO: This needs to navigate to optional info page once it has been developed
-      navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+      if (data) {
+        const registerData = {
+          authToken,
+          locationId: data.id,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: newWebLocation.additionals.other.alertTypes
+          }
+        }
+
+        await backendCall(
+          registerData,
+          'api/location/register_to_partner',
+          navigate
+        )
+
+        dispatch(setCurrentLocation(data))
+        dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
+        dispatch(setPredefinedBoundaryFlow(true))
+        navigate(orgManageLocationsUrls.add.optionalInformation.optionalInfo)
+      }
     }
   }
 
@@ -135,57 +225,83 @@ export default function SelectPredefinedBoundaryPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Select a predefined boundary for this location - Manage locations -
+          Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(boundaryTypeError || boundaryError) && (
-              <ErrorSummary errorList={[boundaryTypeError, boundaryError]} />
+              <ErrorSummary
+                errorList={[
+                  { text: boundaryTypeError, componentId: boundaryTypeId },
+                  { text: boundaryError, componentId: boundaryId }
+                ]}
+              />
             )}
-            <h1 className='govuk-heading-l'>Add predefined boundary</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Add predefined boundary
+            </h1>
             <div className='govuk-body'>
               <p>Select a boundary to add to this account.</p>
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-one-third'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-third'>
                   <br />
                   <Select
+                    id={boundaryTypeId}
                     name='BoundaryType'
                     label='Boundary type'
                     options={boundaryTypes}
                     onSelect={onBoundaryTypeSelected}
                     error={boundaryTypeError}
                     initialSelectOptionText={
-                      selectedBoundaryType || 'Select type'
+                      selectedBoundaryType
+                        ? formatSentenceCase(selectedBoundaryType)
+                        : 'Select type'
                     }
+                    disabledOptions={selectedBoundaryType}
+                    snakeCaseText={true}
+                    value={selectedBoundaryType}
                   />
                   <Select
-                    // key forces the boundary select to re-render after the boundary type is changed
-                    // when boundary type is changed, the selected boundary is reset. we must force this
-                    // re-render for the intial text option to show correctly
+                    id={boundaryId}
                     name='Boundary'
-                    key={selectedBoundary}
                     label='Boundary'
-                    options={boundaries.map((boundary) => {
-                      return boundary.properties.layer
-                    })}
+                    options={boundaries
+                      .slice() // create a shallow copy to avoid mutating orignal values
+                      .sort((a, b) =>
+                        a.properties.TA_Name.localeCompare(b.properties.TA_Name)
+                      )
+                      .map((boundary) => {
+                        return boundary.properties.TA_Name
+                      })}
                     onSelect={onBoundarySelected}
                     error={boundaryError}
                     initialSelectOptionText={
                       selectedBoundary
-                        ? selectedBoundary.properties.layer
+                        ? selectedBoundary.properties.TA_Name
                         : 'Select boundary'
                     }
                     disabledOptions={boundariesAlreadyAdded.map((boundary) => {
-                      return boundary.properties.layer
+                      return boundary.name || boundary.additionals.locationName
                     })}
+                    value={selectedBoundary?.properties?.TA_Name}
                   />
                   <Button
                     className='govuk-button govuk-!-margin-top-4'
                     text='Add predefined boundary'
-                    onClick={handleSubmit}
+                    onClick={(event) => handleSubmit(event)}
                   />
                 </div>
-                <div class='govuk-grid-column-two-thirds'>
+                <div
+                  className='govuk-grid-column-two-thirds'
+                  role='group'
+                  aria-label='map showing predefined boundary to add to this account'
+                >
                   <Map
                     type='boundary'
                     showFloodWarningAreas={false}
@@ -194,7 +310,9 @@ export default function SelectPredefinedBoundaryPage () {
                     boundaryList={(val) => setBoundaries(val)}
                     boundariesAlreadyAdded={boundariesAlreadyAdded.map(
                       (boundary) => {
-                        return boundary.id
+                        return (
+                          boundary.name || boundary.additionals.locationName
+                        )
                       }
                     )}
                   />

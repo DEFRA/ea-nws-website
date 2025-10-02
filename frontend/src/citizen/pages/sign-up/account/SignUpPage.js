@@ -1,27 +1,40 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
+import UserContactType from '../../../../common/enums/UserContactType'
 import {
   setProfile,
   setRegisterToken
 } from '../../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../../common/services/BackendService'
-import { addVerifiedContact } from '../../../../common/services/ProfileServices'
+import {
+  addVerifiedContact,
+  removeVerifiedContact
+} from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 
-export default function SignUpPage () {
+export default function SignUpPage() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
+  const emailAddressId = 'email-address'
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    if (profile?.pois?.length === 0) {
+      navigate('/signup/service-selection')
+    }
+  }, [profile])
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const validationError = emailValidation(email)
     setError(validationError)
     if (validationError === '') {
@@ -41,39 +54,74 @@ export default function SignUpPage () {
           setError(errorMessage)
         }
       } else {
-        // add email to  emails list
-        const updatedProfile = addVerifiedContact(profile, 'email', email)
-        dispatch(setProfile(updatedProfile))
-        dispatch(setRegisterToken(data.registerToken))
-        navigate('/signup/validate')
+        let updatedProfile = profile
+        if (profile.emails[0]) {
+          updatedProfile = removeVerifiedContact(
+            updatedProfile,
+            profile.emails[0],
+            UserContactType.Email
+          )
+        }
+        updatedProfile = addVerifiedContact(updatedProfile, 'email', email)
+        dispatchAndSetReady(
+          [
+            setProfile(updatedProfile),
+            setRegisterToken(data.registerToken)
+          ],
+          () => navigate('/signup/validate')
+        )
       }
     }
   }
 
   return (
     <>
+      <Helmet>
+        <title>Enter an email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
-              Enter an email address - you'll use this to sign in to your
-              account
-            </h2>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: emailAddressId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Enter an email address
+            </h1>
             <div className='govuk-body'>
+              <p>We'll send flood messages to this address. </p>
               <p>
-                You'll be able to use your account to update your locations,
-                flood messages or contact details.{' '}
+                You'll also use this to sign in to your account to update your
+                locations, flood messages or contact details.{' '}
               </p>
               <InsetText text='We recommend using an email address you can access 24 hours a day.' />
               <Input
-                className='govuk-input govuk-input--width-10'
+                id={emailAddressId}
+                className='govuk-input govuk-input--width-20'
                 inputType='text'
+                inputMode='email'
                 name='Email address'
                 error={error}
-                onChange={(val) => setEmail(val)}
+                value={email}
+                onChange={(val) =>
+                  setEmail(val.replaceAll(' ', '').toLowerCase())
+                }
               />
+              <p>
+                Read our{' '}
+                <a
+                  href='/privacy'
+                  target='_blank'
+                  style={{ cursor: 'pointer' }}
+                  className='govuk-link'
+                >
+                  privacy notice
+                </a>{' '}
+                to find out how we use your personal data.
+              </p>
               <Button
                 className='govuk-button'
                 text='Continue'

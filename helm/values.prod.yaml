@@ -4,13 +4,13 @@
 frontend:
   replicaCount: 2
   imagePullSecrets: []
-  nameOverride: ""
-  fullnameOverride: ""
+  nameOverride: ''
+  fullnameOverride: ''
   serviceAccount:
     create: false
     automount: true
     annotations: {}
-    name: "prd-public-website-s3-service-account"
+    name: 'prd-public-website-s3-service-account'
   podAnnotations: {}
   podLabels:
     app: frontend
@@ -21,7 +21,7 @@ frontend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "frontend-0.2.1"
+        tag: 'frontend-1.0.0'
       livenessProbe:
         httpGet:
           path: /
@@ -48,40 +48,40 @@ frontend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-20241126153657334000000005
+    eks.amazonaws.com/nodegroup: public-website-20250814070305380000000001
 
   tolerations: []
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - frontend
-        topologyKey: "topology.kubernetes.io/zone"
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - frontend
+          topologyKey: 'topology.kubernetes.io/zone'
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        - matchExpressions:
-          - key: "topology.kubernetes.io/zone"
-            operator: In
-            values:
-            - eu-west-2a
-            - eu-west-2b
+          - matchExpressions:
+              - key: 'topology.kubernetes.io/zone'
+                operator: In
+                values:
+                  - eu-west-2a
+                  - eu-west-2b
   dnsPolicy: ClusterFirst
 
 backend:
   replicaCount: 2
   imagePullSecrets: []
-  nameOverride: ""
-  fullnameOverride: ""
+  nameOverride: ''
+  fullnameOverride: ''
   serviceAccount:
     create: false
     automount: true
     annotations: {}
-    name: "prd-public-website-s3-service-account"
+    name: 'prd-public-website-s3-service-account'
   podAnnotations: {}
   podLabels:
     app: backend
@@ -92,7 +92,7 @@ backend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "backend-0.2.1"
+        tag: 'backend-1.0.0'
       livenessProbe:
         httpGet:
           path: /liveness
@@ -119,25 +119,25 @@ backend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-20241126153657334000000005
+    eks.amazonaws.com/nodegroup: public-website-20250814070305380000000001
   tolerations: []
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - backend
-        topologyKey: "topology.kubernetes.io/zone"
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - backend
+          topologyKey: 'topology.kubernetes.io/zone'
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        - matchExpressions:
-          - key: "topology.kubernetes.io/zone"
-            operator: In
-            values:
-            - eu-west-2a
-            - eu-west-2b
+          - matchExpressions:
+              - key: 'topology.kubernetes.io/zone'
+                operator: In
+                values:
+                  - eu-west-2a
+                  - eu-west-2b
   dnsPolicy: ClusterFirst

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import LocationSearchLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/LocationSearchLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -15,5 +16,12 @@ export default function LocationSearchPage () {
     )
   }
 
-  return <LocationSearchLayout navigateToNextPage={navigateToNextPage} />
+  return (
+    <>
+      <Helmet>
+        <title>Location search - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <LocationSearchLayout navigateToNextPage={navigateToNextPage} />
+    </>
+  )
 }

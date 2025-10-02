@@ -1,3 +1,5 @@
+const { default: UserContactType } = require('../enums/UserContactType')
+
 const addUnverifiedContact = (profile, type, contact) => {
   let unverifiedContactList
   const formattedContact = { address: contact }
@@ -28,8 +30,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, formattedContact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -39,28 +41,21 @@ const addUnverifiedContact = (profile, type, contact) => {
   }
 }
 
-const removeUnverifiedContact = (profile, contact) => {
+const removeUnverifiedContact = (profile, contact, type) => {
   let unverifiedContactListKey
 
   // need to check if there are any unverified
   if (profile.unverified) {
-    if (
-      profile.unverified.emails &&
-      profile.unverified.emails.some((email) => email.address === contact)
-    ) {
+    if (type === UserContactType.Email && profile.unverified.emails) {
       unverifiedContactListKey = 'emails'
     } else if (
-      profile.unverified.mobilePhones &&
-      profile.unverified.mobilePhones.some(
-        (mobilePhone) => mobilePhone.address === contact
-      )
+      type === UserContactType.Mobile &&
+      profile.unverified.mobilePhones
     ) {
       unverifiedContactListKey = 'mobilePhones'
     } else if (
-      profile.unverified.homePhones &&
-      profile.unverified.homePhones.some(
-        (homePhone) => homePhone.address === contact
-      )
+      type === UserContactType.Telephone &&
+      profile.unverified.homePhones
     ) {
       unverifiedContactListKey = 'homePhones'
     } else {
@@ -119,8 +114,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -129,14 +124,14 @@ const addVerifiedContact = (profile, type, contact) => {
   }
 }
 
-const removeVerifiedContact = (profile, contact) => {
+const removeVerifiedContact = (profile, contact, type) => {
   let verifiedContactListKey
 
-  if (profile.emails.includes(contact)) {
+  if (type === UserContactType.Email) {
     verifiedContactListKey = 'emails'
-  } else if (profile.mobilePhones.includes(contact)) {
+  } else if (type === UserContactType.Mobile) {
     verifiedContactListKey = 'mobilePhones'
-  } else if (profile.homePhones.includes(contact)) {
+  } else if (type === UserContactType.Telephone) {
     verifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list
@@ -156,9 +151,6 @@ const removeVerifiedContact = (profile, contact) => {
 }
 
 const addAccountName = (profile, firstname, lastname) => {
-  profile.firstname = firstname
-  profile.lastname = lastname
-
   const updatedProfile = {
     ...profile,
     firstname,
@@ -170,20 +162,24 @@ const addAccountName = (profile, firstname, lastname) => {
 
 const getAdditionals = (profile, id) => {
   if (profile.additionals) {
-    for (let i = 0; i < profile.additionals.length; i++) {
-      if (profile.additionals[i].id === id) {
-        return profile.additionals[i].value?.s
+    if (Array.isArray(profile.additionals)) {
+      for (let i = 0; i < profile.additionals.length; i++) {
+        if (profile.additionals[i].id === id) {
+          return profile.additionals[i].value?.s
+        }
       }
+    } else {
+      return profile.additionals[id] || ''
     }
   }
   return ''
 }
 
 const updateAdditionals = (profile, updatedAdditionals) => {
-  let idFound = false
   const additionals = JSON.parse(JSON.stringify(profile.additionals))
 
   for (let i = 0; i < updatedAdditionals.length; i++) {
+    let idFound = false
     const id = updatedAdditionals[i].id
     const value = updatedAdditionals[i].value
     for (let j = 0; j < additionals.length; j++) {
@@ -204,57 +200,19 @@ const updateAdditionals = (profile, updatedAdditionals) => {
 
   return updatedProfile
 }
-const setOrganisationAdditionals = (profile) => {
-  const orgJson = {
-    name: null,
-    address: null,
-    compHouseNum: null,
-    emergencySector: null,
-    isAdminRegistering: null,
-    alternativeContact: {
-      firstName: null,
-      lastName: null,
-      email: null,
-      telephone: null,
-      jobTitle: null
-    }
-  }
-  return updateOrganisationAdditionals(profile, orgJson)
-}
-const getOrganisationAdditionals = (profile) => {
-  const orgAdditionals = getAdditionals(profile, 'organisation')
-
-  return JSON.parse(orgAdditionals === '' ? '{}' : orgAdditionals)
-}
-
-const updateOrganisationAdditionals = (profile, updatedOrganisation) => {
-  return updateAdditionals(profile, [
-    { id: 'organisation', value: { s: JSON.stringify(updatedOrganisation) } }
-  ])
-}
 
 const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
 
-  const exists = currentLocations.some(
-    (existingLocation) => existingLocation.address === newLocation.address
-  )
-
-  if (!exists) {
-    const updatedProfile = {
-      ...profile,
-      pois: [...currentLocations, newLocation]
-    }
-    return updatedProfile
-  } else {
-    return profile
+  const updatedProfile = {
+    ...profile,
+    pois: [...currentLocations, newLocation]
   }
+  return updatedProfile
 }
 
-const removeLocation = (profile, address) => {
-  const newLocationList = profile.pois.filter(
-    (location) => location.address !== address
-  )
+const removeLocation = (profile, id) => {
+  const newLocationList = profile.pois.filter((location) => location.id !== id)
 
   const updatedProfile = {
     ...profile,
@@ -264,27 +222,9 @@ const removeLocation = (profile, address) => {
   return updatedProfile
 }
 
-const updateLocationsAlertTypes = (profile, location, updatedAlertTypes) => {
-  const parsedProfile = JSON.parse(JSON.stringify(profile))
-
-  const locationIndex = parsedProfile.pois.findIndex(
-    (poi) => poi.address === location.address
-  )
-
-  if (locationIndex !== -1) {
-    parsedProfile.pois[locationIndex].additionals = setLocationOtherAdditionals(
-      [],
-      'alertTypes',
-      updatedAlertTypes
-    )
-  }
-
-  return parsedProfile
-}
-
 const getRegistrationParams = (profile, alertTypes) => {
-  const channelVoiceEnabled = profile.homePhones.length > 0
-  const channelSmsEnabled = profile.mobilePhones.length > 0
+  const channelVoiceEnabled = true
+  const channelSmsEnabled = true
   const channelEmailEnabled = true // always true as user will have primary email
   const channelMobileAppEnabled = false
 
@@ -299,7 +239,7 @@ const getRegistrationParams = (profile, alertTypes) => {
   }
 }
 
-function findPOIByAddress (profile, address) {
+function findPOIByAddress(profile, address) {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   return parsedProfile.pois.find((poi) => poi.address === address)
@@ -349,9 +289,5 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
-  removeLocation,
-  updateLocationsAlertTypes,
-  setOrganisationAdditionals,
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
+  removeLocation
 }

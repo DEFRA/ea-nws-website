@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import ValidateEmailLayout from '../../../common/layouts/email/ValidateEmailLayout'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import ValidateEmailLayout from '../../../common/layouts/email/ValidateEmailLayout'
 
-export default function ChangeEmailValidationPage () {
+export default function ChangeEmailValidationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState('')
@@ -14,14 +15,15 @@ export default function ChangeEmailValidationPage () {
     navigate('/account/change-email')
   }
 
-  const updateProfile = async (profile, authToken) => {
+  const updateProfile = async (profile, authToken, signinType) => {
     // The sign in email is always the first one in the array
     // Pop out the last email added and put it in first position
     const profileEmails = profile.emails
+    const signinEmail = profileEmails[0]
     profileEmails[0] = profileEmails.pop()
     profile.emails = profileEmails
 
-    const dataToSend = { profile, authToken }
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',
@@ -29,6 +31,11 @@ export default function ChangeEmailValidationPage () {
     )
 
     if (errorMessage !== null) {
+      if (errorMessage.includes('already registered')) {
+        profileEmails[0] = signinEmail
+        profile.emails = profileEmails
+        dispatch(setProfile(profile))
+      }
       setError(errorMessage)
     } else {
       dispatch(setProfile(profile))
@@ -42,13 +49,18 @@ export default function ChangeEmailValidationPage () {
   }
 
   return (
-    <ValidateEmailLayout
-      DifferentEmail={DifferentEmail}
-      NavigateToPreviousPage={DifferentEmail}
-      buttonText='Confirm email address'
-      changeSignIn
-      profileError={error}
-      updateProfile={updateProfile}
-    />
+    <>
+      <Helmet>
+        <title>Check your email - Get flood warnings - GOV.UK</title>
+      </Helmet>
+      <ValidateEmailLayout
+        DifferentEmail={DifferentEmail}
+        NavigateToPreviousPage={DifferentEmail}
+        buttonText='Confirm email address'
+        changeSignIn
+        profileError={error}
+        updateProfile={updateProfile}
+      />
+    </>
   )
 }

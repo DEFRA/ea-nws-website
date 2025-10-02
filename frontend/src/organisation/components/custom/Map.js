@@ -1,7 +1,7 @@
-import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
@@ -12,22 +12,33 @@ import {
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
-import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import gdsPinSVG from '../../../common/assets/images/location_pin.svg'
+import OsMapTerms from '../../../common/components/custom/OsMapTerms'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
-import { setSelectedBoundary } from '../../../common/redux/userSlice'
+import LocationDataType from '../../../common/enums/LocationDataType'
+import {
+  getLocationOther,
+  setSelectedBoundary
+} from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   getBoundaries,
-  getSurroundingFloodAreas
+  getOperationalBoundaryByTaCode,
+  getSurroundingFloodAreas,
+  getSurroundingFloodAreasFromShape
 } from '../../../common/services/WfsFloodDataService'
-import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
+import {
+  createAlertPattern,
+  createShapefilePattern,
+  createWarningPattern
+} from './FloodAreaPatterns'
 import { createExistingBoundaryPattern } from './PredefinedBoundaryPattern'
+import ResetMapButton from './ResetMapButton'
 
-export default function Map ({
+export default function Map({
   type,
   setCoordinates,
   showMapControls = true,
@@ -36,58 +47,94 @@ export default function Map ({
   showFloodAlertAreas = true,
   showMarker = false,
   boundaryList,
-  boundariesAlreadyAdded = []
+  boundariesAlreadyAdded = [],
+  manualCoords,
+  accessibleMap = false,
+  showOsMapTerms = true
 }) {
   const dispatch = useDispatch()
-  const { latitude, longitude } = useSelector(
-    (state) => state.session.currentLocation.coordinates
+  const { latitude: currentLatitude, longitude: currentLongitude } =
+    useSelector((state) => state?.session?.currentLocation?.coordinates) || {
+      latitude: 0,
+      longitude: 0
+    }
+  const { latitude, longitude } = manualCoords || {
+    latitude: currentLatitude,
+    longitude: currentLongitude
+  }
+  const [locationGeometry, setLocationGeometry] = useState(null)
+  const currentLocationDataType = useSelector((state) =>
+    getLocationOther(state, 'location_data_type')
   )
+  const currentLocationGeometry = useSelector(
+    (state) => state?.session?.currentLocation?.geometry
+  )
+  const currentLocationGeocode = useSelector(
+    (state) => state?.session?.currentLocation?.geocode
+  )
+
+  useEffect(() => {
+    const fetchLocationGeometry = async () => {
+      if (currentLocationDataType === LocationDataType.BOUNDARY) {
+        const boundary = await getOperationalBoundaryByTaCode(
+          currentLocationGeocode
+        )
+
+        setLocationGeometry(boundary)
+      } else {
+        setLocationGeometry(currentLocationGeometry)
+      }
+    }
+
+    fetchLocationGeometry()
+  }, [currentLocationDataType])
+
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
+  const [shapeBounds, setShapeBounds] = useState(null)
+  const [fitBoundsTriggered, setFitBoundsTriggered] = useState(false)
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
-      const { alertArea, warningArea } = await getSurroundingFloodAreas(
-        latitude,
-        longitude
-      )
+    async function fetchFloodAreaData() {
+      let floodAreas
+      if (
+        (currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
+          currentLocationDataType === LocationDataType.SHAPE_LINE) &&
+        locationGeometry
+      ) {
+        floodAreas = await getSurroundingFloodAreasFromShape(
+          JSON.parse(locationGeometry.geoJson)
+        )
+      } else if (
+        currentLocationDataType === LocationDataType.BOUNDARY &&
+        locationGeometry
+      ) {
+        floodAreas = await getSurroundingFloodAreasFromShape(locationGeometry)
+      } else {
+        floodAreas = await getSurroundingFloodAreas(latitude, longitude)
+      }
+      const { alertArea, warningArea } = floodAreas
       setAlertArea(alertArea)
       setWarningArea(warningArea)
     }
-    fetchFloodAreaData()
+    type !== 'boundary' && fetchFloodAreaData()
   }, [])
-
-  // reset the map to selected location
-  const ResetMapButton = () => {
-    const map = useMap()
-
-    const handleClick = () => {
-      map.setView(centre, 12)
-    }
-
-    return (
-      <div className='reset-map-button' onClick={handleClick}>
-        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
-      </div>
-    )
-  }
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
-    iconUrl,
-    iconRetinaUrl,
+    iconUrl: gdsPinSVG,
     shadowUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    iconSize: [54.5, 64],
+    iconAnchor: [27.5, 38.2]
   })
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -145,37 +192,103 @@ export default function Map ({
   )
   const ref = useRef(null)
 
-  function AddMarker () {
+  const [keyboardNav, setKeyboardNav] = useState(false)
+  const [showMapLegend, setShowMapLegend] = useState(false)
+  const [mapLegendOpen, setMapLegendOpen] = useState(false)
+  const [touchInput, setTouchInput] = useState(false)
+
+  function MapEvents() {
     useMapEvents({
       click: (e) => {
-        const mapHeight = ref.current.clientHeight
-        const mapWidth = ref.current.clientWidth
-        const { x, y } = e.containerPoint
-        if (
-          !(
-            x > mapWidth - 30 &&
-            x < mapWidth - 9 &&
-            y > mapHeight - 110 &&
-            y < mapHeight - 77
-          )
-        ) {
-          const { lat, lng } = e.latlng
+        if (e.originalEvent.target.matches('.govuk-button') && accessibleMap) {
+          const { lat, lng } = e.target.getCenter()
+          setMarker([lat, lng])
+          setCoordinates({ latitude: lat, longitude: lng })
+        } else {
+          const mapHeight = ref.current.clientHeight
+          const mapWidth = ref.current.clientWidth
+          const { x, y } = e.containerPoint
+          if (
+            !(
+              x > mapWidth - 30 &&
+              x < mapWidth - 9 &&
+              y > mapHeight - 110 &&
+              y < mapHeight - 77
+            )
+          ) {
+            const { lat, lng } = e.latlng
+            setMarker([lat, lng])
+            setCoordinates({ latitude: lat, longitude: lng })
+          }
+        }
+      },
+      keydown: (e) => {
+        if (e.originalEvent.code === 'Space' && accessibleMap) {
+          e.originalEvent.preventDefault()
+          const { lat, lng } = e.target.getCenter()
           setMarker([lat, lng])
           setCoordinates({ latitude: lat, longitude: lng })
         }
       }
     })
-    if (showMarker && !marker) {
-      setMarker([latitude, longitude])
-    }
-    return marker && <Marker position={marker} interactive={false} />
+    return null
   }
 
   useEffect(() => {
     createWarningPattern()
     createAlertPattern()
     createExistingBoundaryPattern()
+    createShapefilePattern()
+    const handleKeyDown = (e) => {
+      if (e.key === 'Tab' && accessibleMap) {
+        setKeyboardNav(true)
+      }
+    }
+
+    const handleMouseDown = (e) => {
+      setKeyboardNav(false)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('pointerdown', handleMouseDown)
+    window.addEventListener('wheel', handleMouseDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('pointerdown', handleMouseDown)
+      window.removeEventListener('wheel', handleMouseDown)
+    }
   }, [])
+
+  const handleFocus = () => {
+    if (keyboardNav && accessibleMap) {
+      setShowMapLegend(true)
+    }
+  }
+
+  const handleBlur = () => {
+    if (!accessibleMap) return
+    setShowMapLegend(false)
+    setMapLegendOpen(false)
+    setTouchInput(false)
+  }
+
+  const handleTouchStart = () => {
+    if (!accessibleMap) return
+    setTouchInput(true)
+  }
+
+  const handleKeyDown = (e) => {
+    if (!accessibleMap) return
+    if (e.altKey && e.key.toLowerCase() === 'k') {
+      e.preventDefault()
+      setMapLegendOpen(true)
+    }
+  }
+
+  const handleCloseKeyboardLegend = () => {
+    setMapLegendOpen(false)
+  }
 
   const onEachWarningAreaFeature = (feature, layer) => {
     if (showFloodWarningAreas) {
@@ -205,9 +318,42 @@ export default function Map ({
     }
   }
 
+  const onEachShapefileFeature = (feature, layer) => {
+    layer.options.className = 'shapefile-area-pattern-fill'
+    layer.setStyle({
+      color: '#809095',
+      weight: 2,
+      fillOpacity: 1.0
+    })
+    setShapeBounds(layer.getBounds())
+  }
+
+  const onEachViewBoundaryFeature = (feature, layer) => {
+    layer.options.className = 'existing-boundary-area-pattern-fill'
+    layer.setStyle({
+      opacity: 1,
+      color: '#6d7475',
+      weight: 2,
+      fillOpacity: 0.6
+    })
+    setShapeBounds(layer.getBounds())
+  }
+
+  const FitBounds = () => {
+    const map = useMap()
+
+    useEffect(() => {
+      if (shapeBounds && !fitBoundsTriggered) {
+        map.fitBounds(shapeBounds)
+        setFitBoundsTriggered(true)
+      }
+    }, [shapeBounds])
+  }
+
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
   const boundaryRef = useRef(null)
+  const shapefileRef = useRef(null)
   const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
   const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
   const [boundaryRefVisible, setBoundaryRefVisible] = useState(false)
@@ -288,32 +434,32 @@ export default function Map ({
     (state) => state.session.selectedBoundary
   )
 
-  // get boundary data
+  // get boundary data if on boundary page
   useEffect(() => {
-    async function fetchBoundaries () {
-      if (type === 'boundary' && selectedBoundaryType) {
+    async function fetchBoundaries() {
+      if (
+        currentLocationDataType === LocationDataType.BOUNDARY &&
+        selectedBoundaryType
+      ) {
         const data = await getBoundaries(selectedBoundaryType)
         if (data) {
           setBoundaries(data)
           // return list of boundaries for user to choose from
-          boundaryList(
-            data.features.map((feature) => {
-              return { properties: feature.properties, id: feature.id }
-            })
-          )
+          boundaryList(data.features)
 
-          await dispatch(setSelectedBoundary(null))
+          dispatch(setSelectedBoundary(null))
         }
       }
     }
-
-    fetchBoundaries()
-    setBoundaryStyles()
+    if (type === 'boundary') {
+      fetchBoundaries()
+      setBoundaryStyles()
+    }
   }, [selectedBoundaryType])
 
   useEffect(() => {
     // loads new boundary layers onto map after user has updated boundary type
-    if (boundaryRefVisible && boundaryRef.current) {
+    if (type === 'boundary' && boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.clearLayers()
       boundaryRef.current.addData(boundaries)
       setBoundaryStyles()
@@ -323,11 +469,12 @@ export default function Map ({
   const setBoundaryStyles = () => {
     if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.eachLayer((layer) => {
-        if (boundariesAlreadyAdded.includes(layer.feature.id)) {
+        if (boundariesAlreadyAdded.includes(layer.feature.properties.TA_Name)) {
           layer.options.interactive = false
         } else if (
           selectedBoundary &&
-          layer.feature.id === selectedBoundary.id
+          layer.feature.properties.TA_Name ===
+            selectedBoundary.properties.TA_Name
         ) {
           layer.setStyle({
             color: '#6d7475',
@@ -356,7 +503,7 @@ export default function Map ({
   const onEachBoundaryFeature = (feature, layer) => {
     layer.on({
       mouseover: () => {
-        const text = feature.properties.NAME
+        const text = feature.properties.TA_Name
         layer
           .bindTooltip(text, {
             opacity: 1,
@@ -369,7 +516,7 @@ export default function Map ({
       }
     })
 
-    if (boundariesAlreadyAdded.includes(layer.feature.id)) {
+    if (boundariesAlreadyAdded.includes(layer.feature.properties.TA_Name)) {
       layer.options.className = 'existing-boundary-area-pattern-fill'
       layer.setStyle({
         opacity: 1,
@@ -423,7 +570,13 @@ export default function Map ({
   }
 
   return (
-    <div ref={ref}>
+    <div
+      ref={ref}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onTouchStart={handleTouchStart}
+      onKeyDown={handleKeyDown}
+    >
       <MapContainer
         key={centre}
         center={centre}
@@ -432,50 +585,161 @@ export default function Map ({
         attributionControl={false}
         minZoom={7}
         maxBounds={maxBounds}
-        className='map-container'
+        className='map-container-org'
       >
-        {apiKey && apiKey !== 'error'
-          ? (
-            <>
-              {tileLayerWithHeader}
-              {showMapControls && (
+        {apiKey && apiKey !== 'error' ? (
+          <>
+            {showMapLegend && (
+              <div
+                className={`accessible-map-legend-container govuk-body-s ${
+                  mapLegendOpen ? 'keyboard' : ''
+                }`}
+              >
+                {!mapLegendOpen ? (
+                  <>
+                    <span className='govuk-visually-hidden'>
+                      Interactive map.{' '}
+                    </span>
+                    <kbd>Alt</kbd> + <kbd>K</kbd>{' '}
+                    <span className='govuk-visually-hidden'>Show</span> keyboard
+                    controls
+                    <span className='govuk-visually-hidden'>.</span>
+                  </>
+                ) : (
+                  <>
+                    <h3 className='govuk-heading-m'>Keyboard</h3>
+                    <div
+                      className='map-legend-close-container'
+                      onClick={handleCloseKeyboardLegend}
+                    >
+                      <FontAwesomeIcon
+                        icon={faXmark}
+                        className='warnings-selected-filter-icon'
+                      />
+                    </div>
+                    <dl className='keyboard-list govuk-body-s'>
+                      <div className='keyboard-list__item'>
+                        <dt>Select a map control</dt>
+                        <dd>
+                          <kbd>Tab</kbd> or <kbd>Shift</kbd> + <kbd>Tab</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Move in large steps</dt>
+                        <dd>
+                          <kbd>&larr;</kbd>, <kbd>&uarr;</kbd>,{' '}
+                          <kbd>&rarr;</kbd> or <kbd>&darr;</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Move in small steps</dt>
+                        <dd>
+                          <kbd>Shift</kbd> + <kbd>&larr;</kbd>,{' '}
+                          <kbd>&uarr;</kbd>, <kbd>&rarr;</kbd> or{' '}
+                          <kbd>&darr;</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Adjust zoom level</dt>
+                        <dd>
+                          <kbd>+</kbd> or <kbd>=</kbd> and <kbd>-</kbd> or{' '}
+                          <kbd>_</kbd>
+                        </dd>
+                      </div>
+                      <div className='keyboard-list__item'>
+                        <dt>Drop pin</dt>
+                        <dd>
+                          <kbd>Space</kbd>
+                        </dd>
+                      </div>
+                    </dl>
+                  </>
+                )}
+              </div>
+            )}
+            {(showMapLegend || touchInput) && (
+              <div className='map-marker' aria-label='Map marker'>
+                <svg
+                  width='66'
+                  height='66'
+                  viewBox='0 0 66 66'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <circle
+                    cx='33'
+                    cy='33'
+                    r='19'
+                    stroke='black'
+                    strokeWidth='2'
+                    strokeDasharray='8 8'
+                  />
+                  <circle cx='33' cy='33' r='4' fill='#0B0C0C' />
+                  <path d='M33 0L36.4641 12H29.5359L33 0Z' fill='#0B0C0C' />
+                  <path d='M33 66L29.5359 54H36.4641L33 66Z' fill='#0B0C0C' />
+                  <path d='M0 33L12 29.5359V36.4641L0 33Z' fill='#0B0C0C' />
+                  <path d='M66 33L54 36.4641V29.5359L66 33Z' fill='#0B0C0C' />
+                </svg>
+              </div>
+            )}
+            {tileLayerWithHeader}
+            {showMapControls && (
+              <>
+                <ZoomControl position='bottomright' />
+                <ResetMapButton center={centre} />
+              </>
+            )}
+            {touchInput && (
+              <div className='drop-pin-container'>
+                <div className='leaflet-control'>
+                  <button type='button' className='govuk-button'>
+                    Drop a pin
+                  </button>
+                </div>
+              </div>
+            )}
+            {currentLocationDataType !== LocationDataType.BOUNDARY &&
+              currentLocationDataType !== LocationDataType.SHAPE_POLYGON &&
+              currentLocationDataType !== LocationDataType.SHAPE_LINE && (
                 <>
-                  <ZoomControl position='bottomright' />
-                  <ResetMapButton />
-                </>
-              )}
-              {type !== 'boundary' && (
-                <>
-                  {type === 'drop'
-                    ? (
-                      <AddMarker />
-                      )
-                    : (
-                      <Marker position={centre} interactive={false} />
+                  {type === 'drop' ? (
+                    <>
+                      <MapEvents />
+                      {showMarker && (
+                        <Marker
+                          position={marker ? marker : centre}
+                          interactive={false}
+                        />
                       )}
+                    </>
+                  ) : (
+                    <Marker position={centre} interactive={false} />
+                  )}
                 </>
               )}
-              {alertArea && (
-                <GeoJSON
-                  data={alertArea}
-                  onEachFeature={onEachAlertAreaFeature}
-                  ref={(el) => {
-                    alertAreaRef.current = el
-                    setAlertAreaRefVisible(true)
-                  }}
-                />
-              )}
-              {warningArea && (
-                <GeoJSON
-                  data={warningArea}
-                  onEachFeature={onEachWarningAreaFeature}
-                  ref={(el) => {
-                    warningAreaRef.current = el
-                    setWarningAreaRefVisible(true)
-                  }}
-                />
-              )}
-              {boundaries && type === 'boundary' && (
+
+            {alertArea && (
+              <GeoJSON
+                data={alertArea}
+                onEachFeature={onEachAlertAreaFeature}
+                ref={(el) => {
+                  alertAreaRef.current = el
+                  setAlertAreaRefVisible(true)
+                }}
+              />
+            )}
+            {warningArea && (
+              <GeoJSON
+                data={warningArea}
+                onEachFeature={onEachWarningAreaFeature}
+                ref={(el) => {
+                  warningAreaRef.current = el
+                  setWarningAreaRefVisible(true)
+                }}
+              />
+            )}
+            {boundaries &&
+              currentLocationDataType === LocationDataType.BOUNDARY && (
                 <GeoJSON
                   data={boundaries}
                   onEachFeature={onEachBoundaryFeature}
@@ -485,16 +749,43 @@ export default function Map ({
                   }}
                 />
               )}
-            </>
-            )
-          : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
-            )}
+            {locationGeometry &&
+              (currentLocationDataType === LocationDataType.SHAPE_LINE ||
+                currentLocationDataType === LocationDataType.SHAPE_POLYGON) && (
+                <>
+                  <GeoJSON
+                    data={JSON.parse(locationGeometry.geoJson)}
+                    onEachFeature={onEachShapefileFeature}
+                    ref={(el) => {
+                      shapefileRef.current = el
+                    }}
+                  />
+                  <FitBounds />
+                </>
+              )}
+            {locationGeometry &&
+              currentLocationDataType === LocationDataType.BOUNDARY && (
+                <>
+                  <GeoJSON
+                    data={locationGeometry.geometry}
+                    onEachFeature={onEachViewBoundaryFeature}
+                    ref={(el) => {
+                      shapefileRef.current = el
+                    }}
+                  />
+                  <FitBounds />
+                </>
+              )}
+            {showOsMapTerms && <OsMapTerms />}
+          </>
+        ) : (
+          <div className='map-error-container'>
+            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+            <Link className='govuk-body-s' onClick={() => getApiKey()}>
+              Reload map
+            </Link>
+          </div>
+        )}
       </MapContainer>
     </div>
   )

@@ -1,0 +1,385 @@
+import {
+  faAngleDown,
+  faAngleUp,
+  faMagnifyingGlass,
+  faXmark
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
+import UserType from '../../../../../../common/enums/UserType'
+
+export default function SearchFilter({
+  // TODO: Combine filter values into a single object
+  contacts,
+  setFilteredContacts,
+  resetPaging,
+  setResetPaging,
+  selectedFilters,
+  setSelectedFilters,
+  contactNameFilter,
+  setContactNameFilter,
+  selectedUserTypeFilters,
+  setSelectedUserTypeFilters,
+  selectedJobTitleFilters,
+  setSelectedJobTitleFilters,
+  selectedKeywordFilters,
+  setSelectedKeywordFilters,
+  selectedLinkedFilters,
+  setSelectedLinkedFilters
+}) {
+  const EMPTY_LABEL = '(empty)'
+  const userTypes = Object.values(UserType)
+  const jobTitles = [
+    ...new Set(
+      contacts.map((contact) => {
+        const raw = contact?.additionals?.jobTitle ?? ''
+        const trimmed = typeof raw === 'string' ? raw.trim() : '' // Guard against null or undefined values
+        return trimmed !== '' ? trimmed : EMPTY_LABEL
+      })
+    )
+  ]
+
+  const keywords = [
+    ...new Set(contacts.flatMap((contact) => contact.additionals.keywords))
+  ]
+
+  const linkedLocations = [...new Set(['No', 'Yes'])]
+
+  // search filters visibility
+  const [contactNameVisible, setContactNameVisible] = useState(false)
+  const [userTypeVisible, setUserTypeVisible] = useState(
+    selectedUserTypeFilters > 0
+  )
+  const [jobTitleVisible, setJobTitleVisible] = useState(
+    selectedJobTitleFilters.length > 0
+  )
+  const [keywordVisible, setKeywordVisible] = useState(
+    selectedKeywordFilters.length > 0
+  )
+  const [linkedVisible, setLinkedVisible] = useState(
+    selectedLinkedFilters.length > 0
+  )
+
+  // handle filters applied
+  const handleFilterChange = (e, setFilters) => {
+    const { value } = e.target
+    setFilters((prev) => {
+      if (selectedFilters.includes(value)) {
+        setSelectedFilters([
+          ...selectedFilters.filter((preference) => preference !== value)
+        ])
+        return prev.filter((preference) => preference !== value)
+      } else {
+        setSelectedFilters([...selectedFilters, value])
+        return [...prev, value]
+      }
+    })
+  }
+
+  const filterContacts = (event) => {
+    event.preventDefault()
+    let filteredContacts = contacts
+
+    // Apply contact name filter
+    if (contactNameFilter.length > 0) {
+      filteredContacts = filteredContacts.filter((contact) =>
+        (contact.firstname + contact.lastname)
+          .toLowerCase()
+          .includes(contactNameFilter.toLowerCase())
+      )
+    }
+
+    // Apply user type filter
+    if (selectedUserTypeFilters.length > 0) {
+      filteredContacts = filteredContacts.filter((contact) => {
+        return (
+          (selectedUserTypeFilters.includes(UserType.Admin) &&
+            contact.role === UserType.Admin) ||
+          (selectedUserTypeFilters.includes(UserType.Contact) &&
+            (contact.role === null || contact.role === undefined) &&
+            contact.pendingRole !== UserType.PendingAdmin) ||
+          (selectedUserTypeFilters.includes(UserType.PendingAdmin) &&
+            (contact.role === null || contact.role === undefined) &&
+            contact.pendingRole === UserType.PendingAdmin)
+        )
+      })
+    }
+    // Apply job title filter
+    if (selectedJobTitleFilters.length > 0) {
+      filteredContacts = filteredContacts.filter((contact) => {
+        const raw = (contact.additionals?.jobTitle ?? '').trim()
+        const label = raw === '' ? EMPTY_LABEL : raw
+        return selectedJobTitleFilters.includes(label)
+      })
+    }
+
+    // Apply keyword filter
+    if (selectedKeywordFilters.length > 0) {
+      filteredContacts = filteredContacts.filter((contact) =>
+        selectedKeywordFilters.some((keyword) =>
+          contact.additionals?.keywords.includes(keyword)
+        )
+      )
+    }
+
+    // Apply linked locations filter
+    if (selectedLinkedFilters.length > 0) {
+      filteredContacts = filteredContacts.filter(
+        (contact) =>
+          (selectedLinkedFilters.includes('Yes') &&
+            contact.linked_locations > 0) ||
+          (selectedLinkedFilters.includes('No') &&
+            contact.linked_locations === 0)
+      )
+    }
+
+    setResetPaging(!resetPaging)
+    setFilteredContacts(filteredContacts)
+  }
+
+  // Clear all filters
+  const clearFilters = () => {
+    setFilteredContacts(contacts)
+    setSelectedFilters([])
+    setContactNameFilter([])
+    setSelectedUserTypeFilters([])
+    setSelectedJobTitleFilters([])
+    setSelectedKeywordFilters([])
+    setSelectedLinkedFilters([])
+  }
+
+  // Contact name filter
+  const contactNameSearchFilter = (
+    <>
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
+      <div
+        className='contacts-filter-name-section'
+        onClick={() => setContactNameVisible(!contactNameVisible)}
+      >
+        <FontAwesomeIcon
+          icon={contactNameVisible ? faAngleUp : faAngleDown}
+          size='lg'
+        />
+        <label className='govuk-label' style={{ color: '#1d70b8' }}>
+          User name
+        </label>
+      </div>
+      {(contactNameVisible || contactNameFilter.length > 0) && (
+        <div className='govuk-form-group contacts-name-filter'>
+          <div className='input-with-icon'>
+            <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
+            <input
+              className='govuk-input govuk-input-icon govuk-!-margin-top-3'
+              id='contact-name'
+              type='text'
+              value={contactNameFilter}
+              onChange={(event) => {
+                setContactNameFilter(event.target.value)
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  )
+
+  // All other filters
+  const otherFilter = (
+    filterTitle,
+    filterType,
+    selectedFilterType,
+    setSelectedFilterType,
+    visible,
+    setVisible
+  ) => {
+    return (
+      <>
+        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
+        <div
+          className='contacts-filter-other-section'
+          onClick={() => {
+            setVisible(!visible)
+          }}
+        >
+          <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
+          &nbsp;
+          <label className='govuk-label' style={{ color: '#1d70b8' }}>
+            {filterTitle}
+          </label>
+        </div>
+        {visible && (
+          <div className='govuk-checkboxes govuk-checkboxes--small contacts-select-filter'>
+            {filterType
+              .sort((a, b) => {
+                // Ensure that '(empty)' appears at bottom of options
+                if (a === EMPTY_LABEL) return 1
+                if (b === EMPTY_LABEL) return -1
+                return a.toLowerCase().localeCompare(b.toLowerCase())
+              })
+              .map((option) => {
+                const slug = (s) =>
+                  String(s).toLowerCase().trim().replace(/\s+/g, '-') // spaces -> hyphens
+                const optionId = `contacts-filter-${slug(filterTitle)}-${slug(
+                  option
+                )}`
+                return (
+                  <CheckBox
+                    key={option}
+                    id={optionId}
+                    label={option}
+                    value={option}
+                    checked={selectedFilterType.includes(option)}
+                    onChange={(e) =>
+                      handleFilterChange(e, setSelectedFilterType)
+                    }
+                  />
+                )
+              })}
+          </div>
+        )}
+      </>
+    )
+  }
+
+  // Selected filters
+  const selectedFilterContents = (filterName, filterArray, setFilterArray) => {
+    if (filterArray.length === 0) return null
+
+    return (
+      <>
+        <div className='contacts-selected-filter-panel'>
+          <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
+            {filterName}
+          </h3>
+          <div className='contacts-selected-filter-row'>
+            {filterArray.map((filter, index) => (
+              <div key={index} className='contacts-selected-filter'>
+                <label className='govuk-label contacts-selected-filter-label'>
+                  {filter}&nbsp;
+                </label>
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  className='contacts-selected-filter-icon'
+                  onClick={() => {
+                    setFilterArray(
+                      filterArray.filter((item) => item !== filter)
+                    )
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <div
+        id='filter-region'
+        role='region'
+        className='contacts-filter-panel'
+        aria-labelledby='filter-heading'
+      >
+        <div className='contacts-filter-header'>
+          <h1
+            id='filter-heading'
+            className='govuk-heading-m govuk-!-margin-bottom-2'
+            tabIndex={-1}
+          >
+            Filter
+          </h1>
+        </div>
+
+        {/* Selected filters */}
+        {selectedFilters?.length > 0 && (
+          <div className='contacts-selected-filters-panel'>
+            <div className='contacts-selected-filters-section'>
+              <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
+                Selected filters
+              </h2>
+              <Link
+                onClick={clearFilters}
+                className='govuk-body govuk-link inline-link'
+                style={{ marginLeft: 'auto', marginBottom: '0' }}
+              >
+                Clear filters
+              </Link>
+            </div>
+            {selectedFilterContents(
+              'User type',
+              selectedUserTypeFilters,
+              setSelectedUserTypeFilters
+            )}
+            {selectedFilterContents(
+              'Job title',
+              selectedJobTitleFilters,
+              setSelectedJobTitleFilters
+            )}
+            {selectedFilterContents(
+              'Keywords',
+              selectedKeywordFilters,
+              setSelectedKeywordFilters
+            )}
+            {selectedFilterContents(
+              'Linked locations',
+              selectedLinkedFilters,
+              setSelectedLinkedFilters
+            )}
+          </div>
+        )}
+
+        <div className='govuk-!-margin-top-6 contacts-apply-filters'>
+          <Button
+            text='Apply filters'
+            className='govuk-button govuk-button--primary'
+            onClick={(event) => filterContacts(event)}
+          />
+        </div>
+
+        {/* Filters */}
+        {contactNameSearchFilter}
+
+        {otherFilter(
+          'User type',
+          userTypes,
+          selectedUserTypeFilters,
+          setSelectedUserTypeFilters,
+          userTypeVisible,
+          setUserTypeVisible
+        )}
+
+        {otherFilter(
+          'Job title',
+          jobTitles,
+          selectedJobTitleFilters,
+          setSelectedJobTitleFilters,
+          jobTitleVisible,
+          setJobTitleVisible
+        )}
+
+        {otherFilter(
+          'Keywords',
+          keywords,
+          selectedKeywordFilters,
+          setSelectedKeywordFilters,
+          keywordVisible,
+          setKeywordVisible
+        )}
+
+        {otherFilter(
+          'Linked locations',
+          linkedLocations,
+          selectedLinkedFilters,
+          setSelectedLinkedFilters,
+          linkedVisible,
+          setLinkedVisible
+        )}
+      </div>
+    </>
+  )
+}

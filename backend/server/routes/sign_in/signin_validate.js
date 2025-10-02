@@ -5,7 +5,9 @@ const {
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { orgSignIn } = require('../../services/elasticache')
+const { logger } = require('../../plugins/logging')
+const { setJsonData } = require('../../services/elasticache')
+const { GENERIC_ERROR_MSG } = require('../../constants/errorMessages')
 
 module.exports = [
   {
@@ -17,34 +19,43 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { signinToken, code, signinType } = request.payload
-        const error = authCodeValidation(code)
+        const { redis } = request.server.app
+        const { signinToken, code } = request.payload
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && signinToken) {
           const response = await apiCall(
-            { signinToken: signinToken, code: code },
+            { signinToken: signinToken, code: formattedCode },
             'member/signinValidate'
           )
-          if (signinType === 'org') {
-            const locationRes = await apiCall(
-              { authToken: response.data.authToken },
-              'location/list'
+
+          if (response.data.organization) {
+            const signupComplete = response.data.profile.additionals?.find(
+              (additional) => additional.id === 'signupComplete'
             )
-            const contactRes = await apiCall(
-              { authToken: response.data.authToken },
-              'organization/listContacts'
-            )
-            // Send the profile to elasticache
-            await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
+
+            if (signupComplete?.value?.s === 'pending') {
+              return h.response({
+                status: 500,
+                errorMessage: 'account pending'
+              })
+            }
+
+            // store the organisation ID serverside
+            await setJsonData(redis, response.data.authToken, {
+              orgId: response.data.organization.id
+            })
           }
+
           return h.response(response)
         } else {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error ? GENERIC_ERROR_MSG : error
           })
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

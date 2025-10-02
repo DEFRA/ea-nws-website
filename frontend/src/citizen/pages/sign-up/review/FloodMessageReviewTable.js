@@ -1,77 +1,167 @@
-import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import AlertType from '../../../../common/enums/AlertType'
+import { getLocationOtherAdditional } from '../../../../common/redux/userSlice'
 
-export default function FloodMessageReviewTable ({ registration }) {
-  const hasSevereFloodWarning = registration.params.categories.some(
-    (category) =>
-      category.code === 'SEVERE_FLOOD_WARNING' ||
-      category.code === 'FLOOD_WARNING'
+export default function FloodMessageReviewTable() {
+  const nearByAreas =
+    useSelector((state) => state.session.nearbyTargetAreasAdded) || []
+  const locationsSelected = useSelector((state) => state.session.profile.pois)
+  const floodAreasInfo = useSelector(
+    (state) => state.session.floodAreasInfo || null
   )
+  const floodWarningAreasSet = new Set()
+  const floodAlertAreasSet = new Set()
+  locationsSelected.forEach((location) => {
+    const locationTargetAreas = getLocationOtherAdditional(
+      location.additionals,
+      'targetAreas'
+    )
+    if (locationTargetAreas) {
+      locationTargetAreas.forEach((targetArea) => {
+        if (targetArea.category.toLowerCase().includes('warning')) {
+          floodWarningAreasSet.add(targetArea.TA_Name)
+        }
+        if (targetArea.category.toLowerCase().includes('alert')) {
+          floodAlertAreasSet.add(targetArea.TA_Name)
+        }
+      })
+    } else {
+      const locationLevels =
+        floodAreasInfo?.find((area) => area.address === location.address)
+          ?.alertTypes || []
 
-  const hasFloodAlert = registration.params.categories.some(
-    (category) => category.code === 'FLOOD_ALERT'
-  )
+      const warningLevels = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING
+      ]
+      const alertLevels = [AlertType.FLOOD_ALERT]
+
+      locationLevels.forEach((level) => {
+        if (warningLevels.includes(level)) {
+          floodWarningAreasSet.add(location.address)
+        }
+        if (alertLevels.includes(level)) {
+          floodAlertAreasSet.add(location.address)
+        }
+      })
+    }
+  })
+
+  const floodWarningAreas = [...floodWarningAreasSet]
+  const floodAlertAreas = [...floodAlertAreasSet]
 
   return (
     <div className='govuk-!-padding-bottom-4'>
-      <h3 className='govuk-heading-m'>Flood messages you'll get</h3>
-      {registration.params.categories.length > 0
-        ? (
-          <table className='govuk-table'>
-            <tbody className='govuk-table__body'>
-              {hasSevereFloodWarning
-                ? (
-                  <>
-                    <tr className='govuk-table__row'>
-                      <th
-                        scope='row'
-                        className='govuk-table__header govuk-!-width-one-half'
-                      >
-                        Severe flood warnings and flood warnings
-                      </th>
-                      <td className='govuk-table__cell  govuk-!-width-full'>Yes</td>
-                      <td className='govuk-table__cell' />
-                    </tr>
-                    <tr className='govuk-table__row'>
-                      <th
-                        scope='row'
-                        className='govuk-table__header govuk-!-width-one-half'
-                      >
-                        Flood alerts (optional)
-                      </th>
-                      <td className='govuk-table__cell govuk-!-width-full'>
-                        {hasFloodAlert ? 'Yes' : 'No'}
-                      </td>
-                      <td className='govuk-table__cell'>
-                        <Link
-                          to='/signup/review/change-flood-alert'
-                          className='govuk-link'
-                        >
-                          Change
-                        </Link>
-                      </td>
-                    </tr>
-                  </>
-                  )
-                : (
-                  <>
-                    <tr className='govuk-table__row'>
-                      <th
-                        scope='row'
-                        className='govuk-table__header govuk-!-width-one-half'
-                      >
-                        Flood alerts
-                      </th>
-                      <td className='govuk-table__cell govuk-!-width-full'>Yes</td>
+      <table className='govuk-table govuk-!-margin-bottom-0'>
+        <tbody className='govuk-table__body'>
+          <tr className='govuk-table__row'>
+            <th
+              scope='row'
+              className='govuk-table__header govuk-!-width-full'
+              style={{ borderBottom: 'none' }}
+            >
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-2'>
+                Flood messages
+              </h2>
+            </th>
 
-                      <td className='govuk-table__cell' />
-                    </tr>
-                  </>
-                  )}
-            </tbody>
-          </table>
-          )
-        : null}
+            {/* Only show change links if locations were added by nearby search */}
+            {nearByAreas.length > 0 && (
+              <td
+                className='govuk-table__cell'
+                style={{ borderBottom: 'none' }}
+              >
+                <Link
+                  to='/signup/register-location/location-near-flood-areas'
+                  className='govuk-link'
+                  style={{ cursor: 'pointer' }}
+                  aria-label={`Change flood messages you'll get`}
+                >
+                  Change
+                </Link>
+              </td>
+            )}
+          </tr>
+        </tbody>
+      </table>
+      <table className='govuk-table check-your-answers-table'>
+        <tbody className='govuk-table__body'>
+          <tr className='govuk-table__row'>
+            <th
+              className='govuk-!-width-one-third govuk-table__cell'
+              scope='row'
+            >
+              {/* Screen reader only combined label to clarify that the adjacent cell applies to both headings */}
+              <span
+                id='warning-combined-label'
+                className='govuk-visually-hidden'
+              >
+                Severe flood warnings and Flood warnings
+              </span>
+
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                Severe flood warnings
+              </h3>
+              <span className='govuk-caption-m' style={{ fontSize: '16px' }}>
+                Danger to life - act now
+              </span>
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                Flood warnings
+              </h3>
+              <span className='govuk-caption-m' style={{ fontSize: '16px' }}>
+                Flooding expected - act now
+              </span>
+            </th>
+            <td
+              className='govuk-table__cell govuk-!-width-full'
+              aria-labelledby='warning-combined-label'
+            >
+              {floodWarningAreas.length > 0 ? (
+                <ul
+                  className={`govuk-list ${
+                    floodWarningAreas.length > 1 && 'govuk-list--bullet'
+                  }`}
+                >
+                  {floodWarningAreas.map((item, key) => (
+                    <li key={key}>{item}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No flood warning areas selected</p>
+              )}
+            </td>
+          </tr>
+          <tr className='govuk-table__row'>
+            <th
+              className='govuk-!-width-one-third govuk-table__cell'
+              scope='row'
+            >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                Flood alerts
+              </h3>
+              <span className='govuk-caption-m' style={{ fontSize: '16px' }}>
+                Early alerts of possible flooding - be prepared
+              </span>
+            </th>
+            <td className='govuk-table__cell govuk-!-width-full'>
+              {floodAlertAreas.length > 0 ? (
+                <ul
+                  className={`govuk-list ${
+                    floodAlertAreas.length > 1 && 'govuk-list--bullet'
+                  }`}
+                >
+                  {floodAlertAreas.map((item, key) => (
+                    <li key={key}>{item}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No flood alert areas selected</p>
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }

@@ -1,21 +1,15 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
+import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import AddressLayout from '../../../../../../layouts/optional-info/AddressLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function AddressPage () {
-  const navigate = useNavigate()
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
-  )
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} address changed` }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Address changed'
+  )
 
   const additionalInfo = (
     <p>
@@ -29,9 +23,16 @@ export default function AddressPage () {
   )
 
   return (
-    <AddressLayout
-      navigateToNextPage={navigateToNextPage}
-      additionalInfo={additionalInfo}
-    />
+    <>
+      <Helmet>
+        <title>Edit this location's address - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <AddressLayout
+        navigateToNextPage={navigateToNextPage}
+        additionalInfo={additionalInfo}
+        error={error}
+        setError={setError}
+      />
+    </>
   )
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
@@ -12,11 +11,15 @@ import {
   setOrgCurrentContactNotes
 } from '../../../common/redux/userSlice'
 
-export default function NotesLayout ({
+export default function NotesLayout({
   navigateToNextPage,
   keywordType,
   instructionText,
-  buttonText = 'Continue'
+  buttonText = 'Continue',
+  onSubmit,
+  error,
+  setError,
+  title = null
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -26,8 +29,8 @@ export default function NotesLayout ({
       : state.session.orgCurrentContact.comments
   )
   const [notes, setNotes] = useState(currentNotes || '')
-  const [error, setError] = useState('')
   const charLimit = 500
+  const locationNotesId = 'location-notes'
 
   useEffect(() => {
     if (notes.length > charLimit) {
@@ -37,24 +40,25 @@ export default function NotesLayout ({
     }
   }, [notes])
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (error) return
-    if (notes) {
-      switch (keywordType) {
-        case 'location':
-          dispatch(setCurrentLocationNotes(notes))
-          break
-        case 'contact':
-          dispatch(setOrgCurrentContactNotes(notes))
-          break
-        default:
-          break
-      }
+
+    switch (keywordType) {
+      case 'location':
+        dispatch(setCurrentLocationNotes(notes))
+        break
+      case 'contact':
+        dispatch(setOrgCurrentContactNotes(notes))
+        break
+      default:
+        break
     }
-
-    // should we update geosafe profile here?
-
-    navigateToNextPage()
+    if (onSubmit) {
+      await onSubmit()
+    } else {
+      navigateToNextPage()
+    }
   }
 
   const navigateBack = (event) => {
@@ -64,24 +68,34 @@ export default function NotesLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <br />
-            <h1 className='govuk-heading-l'>Notes (optional)</h1>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: locationNotesId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              {title || 'Notes (optional)'}
+            </h1>
             <div className='govuk-body'>
               <p className='govuk-hint'>{instructionText}</p>
               <TextArea
+                id={locationNotesId}
+                name={title || 'location-notes'}
                 error={error}
                 inputType='text'
-                rows='5'
+                rows={5}
                 onChange={(val) => setNotes(val)}
                 value={notes}
                 className='govuk-textarea'
-                additionalInfo={`You can enter up to ${charLimit} characters`}
+                visuallyHidden={true}
+                additionalInfo={`You can enter up to ${
+                  charLimit - notes.length
+                } characters`}
+                labelledByID='main-content'
               />
               <br />
               <Button

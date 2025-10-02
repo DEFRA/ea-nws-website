@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -10,21 +11,26 @@ import NotificationBanner from '../../../../common/components/gov-uk/Notificatio
 import ExpiredCodeLayout from '../../../../common/layouts/email/ExpiredCodeLayout'
 import {
   setAuthToken,
+  setLocationRegistrations,
   setProfile,
   setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
-  getLocationOtherAdditional,
   getRegistrationParams,
   updateAdditionals
 } from '../../../../common/services/ProfileServices'
+import { formatGovUKTime } from '../../../../common/services/formatters/TimeFormatter'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
-export default function SignUpValidationPage () {
+
+export default function SignUpValidationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || []
+  )
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [codeResent, setCodeResent] = useState(false)
@@ -32,20 +38,33 @@ export default function SignUpValidationPage () {
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
+  const [partnerId, setPartnerId] = useState(false)
+  const enterCodeId = 'enter-code'
+
+  async function getPartnerId() {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)
   }, [error])
 
-  const handleSubmit = async () => {
-    const validationError = authCodeValidation(code)
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
 
     if (validationError === '') {
       const dataToSend = {
         registerToken,
-        code
+        code: formattedCode
       }
 
       const { data, errorMessage } = await backendCall(
@@ -66,7 +85,7 @@ export default function SignUpValidationPage () {
       } else {
         dispatch(setAuthToken(data.authToken))
         let updatedProfile = updateAdditionals(profile, [
-          { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          { id: 'lastAccessedUrl', value: { s: '/signup/contactpreferences' } }
         ])
 
         updatedProfile = await updateGeosafeProfile(
@@ -76,23 +95,35 @@ export default function SignUpValidationPage () {
 
         await registerAllLocations(data.authToken, updatedProfile)
 
-        dispatch(setProfile(updatedProfile))
-        navigate('/signup/contactpreferences')
+        const { errorMessage, data: verifyData } = await backendCall(
+          { authToken: data.authToken },
+          'api/sign_in_verify'
+        )
+
+        if (errorMessage) {
+          setError(errorMessage)
+        } else {
+          dispatch(setLocationRegistrations(verifyData.locationRegistrations))
+          dispatch(setProfile(verifyData.profile))
+        }
+
+        navigate('/signup/contactpreferences', {
+          state: { loginEmail: loginEmail }
+        })
       }
     }
   }
 
   const registerAllLocations = async (authToken, profile) => {
     profile.pois.map(async (poi) => {
-      const alertTypes = getLocationOtherAdditional(
-        poi.additionals,
-        'alertTypes'
-      )
+      const alertTypes =
+        locationRegistrations.find((loc) => loc.location === poi.address)
+          ?.alertTypes || []
 
       const data = {
         authToken,
         locationId: poi.id,
-        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 
@@ -128,82 +159,91 @@ export default function SignUpValidationPage () {
     } else {
       dispatch(setRegisterToken(data.registerToken))
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
 
   return (
     <>
-      {codeExpired
-        ? (
-          <ExpiredCodeLayout getNewCode={getNewCode} />
-          )
-        : (
-          <>
-            <BackLink to='/signup' />
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && (
-                    <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
+      <Helmet>
+        <title>Confirm email address - Get flood warnings - GOV.UK</title>
+      </Helmet>
+      {codeExpired ? (
+        <ExpiredCodeLayout getNewCode={getNewCode} />
+      ) : (
+        <>
+          <BackLink to='/signup' />
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {codeResent && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
+                  />
+                )}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeId }]}
+                  />
+                )}
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Check your email
+                </h2>
+                <div className='govuk-body'>
+                  <p>You need to confirm your email address.</p>
+                  <p className='govuk-!-margin-top-6'>
+                    We've sent an email with a code to:
+                  </p>
+                  <InsetText text={loginEmail} />
+                  Enter the code within 4 hours or it will expire.
+                  <div className='govuk-!-margin-top-6'>
+                    <Input
+                      id={enterCodeId}
+                      className='govuk-input govuk-input--width-10'
+                      inputType='text'
+                      value={code}
+                      name='Enter code'
+                      error={error}
+                      onChange={(val) => setCode(val)}
                     />
-                  )}
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Check your email</h2>
-                  <div className='govuk-body'>
-                    <p>You need to confirm your email address.</p>
-                    <p className='govuk-!-margin-top-6'>
-                      We've sent an email with a code to:
-                    </p>
-                    <InsetText text={loginEmail} />
-                    Enter the code within 4 hours or it will expire.
-                    <div className='govuk-!-margin-top-6'>
-                      <Input
-                        className='govuk-input govuk-input--width-10'
-                        inputType='text'
-                        value={code}
-                        name='Enter code'
-                        error={error}
-                        onChange={(val) => setCode(val)}
-                      />
-                    </div>
-                    <Button
-                      className='govuk-button'
-                      text='Confirm email address'
-                      onClick={handleSubmit}
-                    />
-                  &nbsp; &nbsp;
+                  </div>
+                  <Button
+                    className='govuk-button govuk-!-margin-right-4'
+                    text='Confirm email address'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    to='/signup'
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 0 7px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Use a different email
+                  </Link>
+                  <div className='govuk-!-margin-top-1'>
                     <Link
-                      to='/signup'
+                      onClick={getNewCode}
                       className='govuk-link'
                       style={{
                         display: 'inline-block',
-                        padding: '8px 10px 7px'
+                        cursor: 'pointer'
                       }}
                     >
-                      Use a different email
+                      Get a new code
                     </Link>
-                    <div className='govuk-!-margin-top-1'>
-                      <Link
-                        onClick={getNewCode}
-                        className='govuk-link'
-                        style={{
-                          display: 'inline-block'
-                        }}
-                      >
-                        Get a new code
-                      </Link>
-                    </div>
                   </div>
                 </div>
               </div>
-            </main>
-          </>
-          )}
+            </div>
+          </main>
+        </>
+      )}
     </>
   )
 }

@@ -1,22 +1,61 @@
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import PrivateBetaHeader from '../../pages/private-beta/PrivateBetaHeader'
+import { backendCall } from '../../services/BackendService'
 import OrganisationHeader from '../custom/OrganisationHeader'
 
-export default function Header () {
+export default function Header() {
   const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType) // Assuming signinType is a different state property
+  const [servicePhase, setServicePhase] = useState(false)
 
-  const isOrganisationPage = location.pathname.includes('organisation')
+  const path = location.pathname
+  const isOrganisationPage =
+    path.includes('organisation') &&
+    !path.includes('sign-up') &&
+    !path.includes('organisation/admin-controls') &&
+    !path.includes('organisation/migration')
+
+  // Hide "Sign out" link on all signup pages until user reaches end
+  const inCitizenSignUpFlow =
+    path.includes('signup') || path.includes('sign-up')
+  const atOrPastConfirmation = path.includes('success')
+  const isPreConfirmation = inCitizenSignUpFlow && !atOrPastConfirmation
+
+  async function getServicePhase() {
+    const { data } = await backendCall('data', 'api/service/get_service_phase')
+    setServicePhase(data)
+  }
+
+  useEffect(() => {
+    getServicePhase()
+  }, [])
+
+  // reset focus to header on route change as client side routing doesn't do it automatically
+  useEffect(() => {
+    const header = document.querySelector('header')
+    if (header) {
+      header.setAttribute('tabindex', '-1')
+      header.focus()
+    }
+  }, [location.pathname])
 
   return (
     <>
-      {isOrganisationPage && authToken
-        ? (
+      {isOrganisationPage && authToken ? (
+        <>
+          {servicePhase === 'beta' && <PrivateBetaHeader type='org' />}
           <OrganisationHeader />
-          )
-        : (
-          <header className='govuk-header' data-module='govuk-header'>
+        </>
+      ) : (
+        <div>
+          {servicePhase === 'beta' && <PrivateBetaHeader type='cit' />}
+          <header
+            className='govuk-header govuk-header--full-width-border'
+            data-module='govuk-header'
+          >
             <div className='govuk-width-container govuk-header__container'>
               <div className='govuk-header__logo'>
                 <a
@@ -42,34 +81,30 @@ export default function Header () {
                 className='govuk-header__content govuk-grid-row'
                 style={{ display: 'inline-block' }}
               >
-                <p className='govuk-header__service-name'>
-                  {isOrganisationPage
-                    ? 'Get flood warnings for your organisation'
-                    : 'Get flood warnings by text, phone or email'}
-                </p>
-                {authToken
-                  ? (
-                    <Link
-                      className='govuk-header__link custom-header-link'
-                      to={
-                    signinType === 'org' ? '/organisation/signout' : '/signout'
-                  }
-                    >
-                      Sign Out
-                    </Link>
-                    )
-                  : (
-                    <Link
-                      className='govuk-header__link custom-header-link'
-                      to='/contact'
-                    >
-                      Contact us
-                    </Link>
-                    )}
+                {authToken && !isPreConfirmation ? (
+                  <Link
+                    className='govuk-header__link custom-header-link'
+                    to={
+                      signinType === 'org'
+                        ? '/organisation/signout'
+                        : '/signout'
+                    }
+                  >
+                    Sign Out
+                  </Link>
+                ) : (
+                  <Link
+                    className='govuk-header__link custom-header-link'
+                    to='/contact'
+                  >
+                    Contact
+                  </Link>
+                )}
               </div>
             </div>
           </header>
-          )}
+        </div>
+      )}
     </>
   )
 }

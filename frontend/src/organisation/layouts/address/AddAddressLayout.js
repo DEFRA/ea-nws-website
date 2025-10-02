@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -8,27 +9,28 @@ import Input from '../../../common/components/gov-uk/Input'
 import {
   setLocationPostCode,
   setLocationSearchResults,
-  setProfile
+  setOrgBuildingName,
+  setOrganizationAddress,
+  setOrganizationPostalCode
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout ({
-  NavigateToNextPage,
-  NavigateToPreviousPage
+export default function AddAddressLayout({
+  navigateToNextPage,
+  navigateToPreviousPage,
+  navigateToConfirmPage,
+  navigateToEnterAddressManuallyPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
-  const profile = useSelector((state) => state.session.profile)
+  const postcodeId = 'postcode'
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const validationError = postCodeValidation(postCode)
 
     if (!validationError) {
@@ -42,8 +44,11 @@ export default function AddAddressLayout ({
       )
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
+        dispatch(setOrganizationPostalCode(data[0].postcode))
+        dispatch(setLocationSearchResults(data))
 
         if (buildingNum) {
+          dispatch(setOrgBuildingName(buildingNum))
           const normalisedBuildingNum = buildingNum.toLowerCase().trim()
           const address = data.filter((location) =>
             location.address
@@ -51,29 +56,17 @@ export default function AddAddressLayout ({
               .trim()
               .includes(normalisedBuildingNum)
           )
+          // exact match found
           if (address.length === 1) {
-            const organisation = Object.assign(
-              {},
-              getOrganisationAdditionals(profile)
-            )
-            organisation.address = address[0]
-
-            const updatedProfile = updateOrganisationAdditionals(
-              profile,
-              organisation
-            )
-            dispatch(setProfile(updatedProfile))
-
-            navigate('/organisation/sign-up/address-confirm')
-            return // Ensure none of the following code is executed
-          } else {
-            // Multiple addresses with buildingNum returned, take them to pagination to confirm
-            dispatch(setLocationSearchResults(address))
+            dispatch(setOrganizationAddress(address[0].address))
+            navigateToConfirmPage()
+            return
           }
         } else {
-          dispatch(setLocationSearchResults(data))
+          dispatch(setOrgBuildingName(''))
         }
-        NavigateToNextPage()
+
+        navigateToNextPage()
       } else {
         setError(errorMessage)
       }
@@ -82,9 +75,15 @@ export default function AddAddressLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigateToPreviousPage()
+  }
+
+  const navigateToEnterAddressManually = (event) => {
+    event.preventDefault()
+    dispatch(setLocationSearchResults(null))
+    navigateToEnterAddressManuallyPage()
   }
 
   return (
@@ -93,26 +92,34 @@ export default function AddAddressLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: postcodeId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
               Your organisation's UK head office address
             </h1>
             <div className='govuk-body'>
               <Input
+                id={postcodeId}
                 inputType='text'
                 value={postCode}
                 name='Postcode'
                 onChange={(val) => setPostCode(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
                 defaultValue={postCode}
               />
               <Input
+                id='building-name'
                 inputType='text'
                 value={buildingNum}
                 name='Building name or number (optional)'
                 onChange={(val) => setBuildingNum(val)}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
                 defaultValue={buildingNum}
               />
               <Button
@@ -120,6 +127,10 @@ export default function AddAddressLayout ({
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              <br />
+              <Link onClick={navigateToEnterAddressManually}>
+                Enter address manually
+              </Link>
             </div>
           </div>
         </div>

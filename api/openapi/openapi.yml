@@ -96,6 +96,10 @@ paths:
     $ref: paths/location_updateRegistration.yml
   /location/unregisterFromPartner:
     $ref: paths/location_unregisterFromPartner.yml
+  /alert/list:
+    $ref: paths/alert_list.yml
+  /alert/get:
+    $ref: paths/alert_get.yml
   /mobileApp/checkVersion:
     $ref: paths/mobileApp_checkVersion.yml
 components:

@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationAddress } from '../../../common/redux/userSlice'
 
-export default function AddressLayout ({
+export default function AddressLayout({
   navigateToNextPage,
-  additionalInfo = ''
+  additionalInfo = '',
+  error,
+  setError
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -18,8 +19,8 @@ export default function AddressLayout ({
     (state) => state.session.currentLocation.address
   )
   const [address, setAddress] = useState(currentAddress || '')
-  const [error, setError] = useState('')
   const charLimit = 200
+  const locationAddressId = 'location-address'
 
   useEffect(() => {
     if (address.length > charLimit) {
@@ -29,7 +30,8 @@ export default function AddressLayout ({
     }
   }, [address])
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (error) return
     dispatch(setCurrentLocationAddress(address))
     navigateToNextPage()
@@ -42,15 +44,17 @@ export default function AddressLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>What is the address?</h1>
+            {error && <ErrorSummary errorList={[{text: error, componentId: locationAddressId}]} />}
+            <h1 className='govuk-heading-l' id='main-content'>
+              What is the address?
+            </h1>
             {additionalInfo && <>{additionalInfo}</>}
             <TextArea
+              id={locationAddressId}
               error={error}
               className='govuk-textarea'
               rows={5}

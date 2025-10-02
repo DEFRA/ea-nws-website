@@ -1,16 +1,17 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function OptionalInformationPage () {
+export default function OptionalInformationPage() {
   const navigate = useNavigate()
 
-  const navigateToNextPage = () => {
+  const navigateToNextPage = (event) => {
+    event.preventDefault()
     navigate(orgManageLocationsUrls.add.optionalInformation.addKeywords)
   }
 
@@ -21,7 +22,12 @@ export default function OptionalInformationPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <Helmet>
+        <title>
+          Useful information you can include to help identify this location -
+          Manage locations - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -32,7 +38,7 @@ export default function OptionalInformationPage () {
               text='Predefined boundary location added'
             />
             &nbsp; &nbsp;
-            <h1 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l' id='main-content'>
               Useful information you can include to help you easily identify
               this location
             </h1>
@@ -40,26 +46,19 @@ export default function OptionalInformationPage () {
               Providing these details will allow you to filter your
               organisation’s locations, making it quicker to find them.
             </p>
-
-            <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-              Address
-            </h3>
-
+            <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>Address</h3>
             <p className='govuk-body'>
-              If you add a location as X and Y coordinates you can add an address. This address will then be associated with the location.
+              If you add a location as X and Y coordinates you can add an
+              address. This address will then be associated with the location.
             </p>
-
-            <h3 className='govuk-heading-s'>
-              Key information
-            </h3>
+            <h3 className='govuk-heading-s'>Key information</h3>
             <ul className='govuk-list govuk-list--bullet'>
               <li>
                 <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                   Internal reference
                 </h3>
                 <p>
-                  Your internal reference, for example:
-                  PS01, unit 57, Brid_04.
+                  Your internal reference, for example: PS01, unit 57, Brid_04.
                   This can help you identify the location more easily.
                 </p>
               </li>
@@ -69,8 +68,8 @@ export default function OptionalInformationPage () {
                   Business criticality
                 </h3>
                 <p>
-                  How important the location is to your business.
-                  For example, low or medium, business critical.
+                  How important the location is to your business. For example,
+                  low or medium, business critical.
                 </p>
               </li>
 
@@ -79,12 +78,11 @@ export default function OptionalInformationPage () {
                   Location type
                 </h3>
                 <p>
-                  For example, pumping station, ground floor flat, office, retail unit.
+                  For example, pumping station, ground floor flat, office,
+                  retail unit.
                 </p>
               </li>
-
             </ul>
-
             <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
               Keywords for locations
             </h3>
@@ -124,13 +122,12 @@ export default function OptionalInformationPage () {
               You can add a maximum of 500 characters.
             </p>
             <Button
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-right-2'
               text='Add useful information now'
               onClick={navigateToNextPage}
             />
-            &nbsp; &nbsp;
             <Link
-              to='/' // this will change when page is created
+              to='#' // this will change when page is created
               className='govuk-link inline-link'
             >
               I'll do this later

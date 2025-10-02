@@ -1,41 +1,33 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
-import { setProfile } from '../../../common/redux/userSlice'
-import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
+import { setOrganizationEmergencySector } from '../../../common/redux/userSlice'
 
-export default function SectorLayout ({
-  NavigateToNextPage,
+export default function SectorLayout({
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
-  const profile = useSelector((state) => state.session.profile)
+  const emergencySectorId = 'emergency-sector'
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (emergencySector === null) {
       setError(
-        'Select whether your organisation is involved in responding to public emergencies or incidents'
+        'Select whether your organisation is a Category 1 or Category 2 responder'
       )
       return
     }
-
-    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
-    organisation.emergencySector = emergencySector
-
-    const updatedProfile = updateOrganisationAdditionals(profile, organisation)
-    dispatch(setProfile(updatedProfile))
-    NavigateToNextPage()
+    dispatch(setOrganizationEmergencySector(emergencySector))
+    navigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }
@@ -46,10 +38,13 @@ export default function SectorLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>
-              Is your organisation involved in responding to public emergencies
-              or incidents?
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: emergencySectorId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Is your organisation a Category 1 or Category 2 responder?
             </h1>
             <div className='govuk-body'>
               <div
@@ -60,30 +55,37 @@ export default function SectorLayout ({
                 }
               >
                 <p className='govuk-hint'>
-                  Known as Category 1 or Category 2 responders. For example,
-                  police, fire or ambulance services, local authorities or
-                  member of a local resilience forum.
+                  For example, a police, fire or ambulance service, local
+                  authority or member of <br />a local resilience forum.
                 </p>
                 {error && (
                   <p className='govuk-error-message'>
                     <br />
+                    <span className='govuk-visually-hidden'>Error:</span>
                     {error}
                   </p>
                 )}
-                <div className='govuk-radios'>
-                  <Radio
-                    key='radio_yes'
-                    name='emergencySectorRadio'
-                    label='Yes'
-                    onChange={() => setEmergencySector(true)}
-                  />
-                  <Radio
-                    key='radio_no'
-                    name='emergencySectorRadio'
-                    label='No'
-                    onChange={() => setEmergencySector(false)}
-                  />
-                  <br />
+                <div id={emergencySectorId} className='govuk-radios'>
+                  <fieldset
+                    className='govuk-form-group govuk-fieldset'
+                    aria-describedby={
+                      error ? 'emergency-sector-error' : undefined
+                    }
+                  >
+                    <Radio
+                      key='radio_yes'
+                      name='emergencySectorRadio'
+                      label='Yes'
+                      onChange={() => setEmergencySector(true)}
+                    />
+                    <Radio
+                      key='radio_no'
+                      name='emergencySectorRadio'
+                      label='No'
+                      onChange={() => setEmergencySector(false)}
+                    />
+                    <br />
+                  </fieldset>
                 </div>
               </div>
               <Button

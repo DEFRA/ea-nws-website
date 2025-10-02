@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
@@ -10,6 +11,7 @@ export default function FindUnmatchedLocationsPage () {
   const [unmatchedLocationOption, setUnmatchedLocationOption] = useState('')
   const [error, setError] = useState('')
   const location = useLocation()
+  const unmatchedLocationsRadiosId = 'unmatched-locations-radios'
 
   // Default values for null location.state
   const addedLocations = location?.state?.added || 0
@@ -24,7 +26,8 @@ export default function FindUnmatchedLocationsPage () {
     setError('')
   }, [unmatchedLocationOption])
 
-  const handleButton = async () => {
+  const handleButton = async (event) => {
+    event.preventDefault()
     if (!unmatchedLocationOption) {
       setError('Select if you want to manually find, or not add, locations')
     } else if (unmatchedLocationOption === unmatchedLocationsOptions[1].value) {
@@ -39,15 +42,20 @@ export default function FindUnmatchedLocationsPage () {
 
   return (
     <>
-      <NotificationBanner
-        className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
-        title='Success'
-        text={`${addedLocations} locations added`}
-      />
+      <Helmet>
+        <title>Finding unmatched locations - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      {addedLocations > 0 && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
+          title='Success'
+          text={`${addedLocations} locations added`}
+        />
+      )}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {error && <ErrorSummary errorList={[{text: error, componentId: unmatchedLocationsRadiosId}]} />}
             <h1 className='govuk-heading-l'>
               What do you want to do with the {notAddedLocations} locations not
               matched?
@@ -60,8 +68,12 @@ export default function FindUnmatchedLocationsPage () {
                     : 'govuk-form-group'
                 }
               >
-                {error && <p className='govuk-error-message'>{error}</p>}
-                <div className='govuk-radios' data-module='govuk-radios'>
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span> {error}
+                  </p>
+                )}
+                <div id={unmatchedLocationsRadiosId} className='govuk-radios' data-module='govuk-radios'>
                   {unmatchedLocationsOptions.map((option) => (
                     <Radio
                       key={option.value}

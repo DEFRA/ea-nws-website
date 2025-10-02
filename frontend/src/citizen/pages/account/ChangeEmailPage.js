@@ -4,7 +4,7 @@ import ChangeEmailLayout from '../../layouts/email/ChangeEmailLayout'
 export default function ChangeEmailPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/account/change-email/validate')
   }
 
@@ -13,9 +13,11 @@ export default function ChangeEmailPage () {
   }
 
   return (
-    <ChangeEmailLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <ChangeEmailLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

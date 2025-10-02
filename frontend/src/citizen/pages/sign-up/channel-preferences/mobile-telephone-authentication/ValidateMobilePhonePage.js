@@ -1,19 +1,24 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../layouts/mobile/ValidateMobileLayout'
 
-export default function ValidateMobilePhone () {
+export default function ValidateMobilePhone() {
   const navigate = useNavigate()
   const contactPreferences = useSelector(
     (state) => state.session.contactPreferences
   )
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = (mobile) => {
     if (contactPreferences.includes('PhoneCall')) {
-      navigate('/signup/contactpreferences/landline/add')
+      navigate('/signup/contactpreferences/landline/add', {
+        state: { banner: { heading: 'Mobile number confirmed', text: mobile } }
+      })
     } else {
-      navigate('/signup/accountname/add')
+      navigate('/signup/accountname/add', {
+        state: { banner: { heading: 'Mobile number confirmed', text: mobile } }
+      })
     }
   }
   const SkipValidation = () => {
@@ -28,11 +33,14 @@ export default function ValidateMobilePhone () {
     })
   }
   return (
-    <ValidateMobileLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={DifferentMobile}
-      SkipValidation={SkipValidation}
-      DifferentMobile={DifferentMobile}
-    />
+    <>
+      <ValidateMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentMobile}
+        SkipValidation={SkipValidation}
+        DifferentMobile={DifferentMobile}
+        isSignUpJourney
+      />
+    </>
   )
 }

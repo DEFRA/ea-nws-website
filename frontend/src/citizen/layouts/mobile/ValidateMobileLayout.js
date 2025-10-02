@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -7,21 +8,25 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import UserContactType from '../../../common/enums/UserContactType'
+import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { formatGovUKTime } from '../../../common/services/formatters/TimeFormatter'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  updateAdditionals
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 
-export default function ValidateMobileLayout ({
-  NavigateToNextPage,
+export default function ValidateMobileLayout({
+  navigateToNextPage,
   SkipValidation,
   DifferentMobile,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  isSignUpJourney = false
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -30,6 +35,7 @@ export default function ValidateMobileLayout ({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const enterCodeInputId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -42,10 +48,11 @@ export default function ValidateMobileLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken, code, msisdn: mobile }
+      const dataToSend = { authToken, code: formattedCode, msisdn: mobile }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/mobile/validate',
@@ -61,8 +68,24 @@ export default function ValidateMobileLayout ({
           setError(errorMessage)
         }
       } else {
-        dispatch(setProfile(data.profile))
-        NavigateToNextPage()
+        let updatedProfile = data.profile
+        if (isSignUpJourney) {
+          // Set lastAccessedUrl explicitly for signup journey
+          updatedProfile = updateAdditionals(updatedProfile, [
+            { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          ])
+
+          const profileUpdateResponse = await backendCall(
+            { profile: updatedProfile, authToken },
+            'api/profile/update',
+            navigate
+          )
+
+          dispatch(setProfile(profileUpdateResponse.data.profile))
+        } else {
+          dispatch(setProfile(data.profile))
+        }
+        navigateToNextPage(mobile)
       }
     }
   }
@@ -79,7 +102,7 @@ export default function ValidateMobileLayout ({
       setError(errorMessage)
     } else {
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
@@ -87,7 +110,11 @@ export default function ValidateMobileLayout ({
   const skipValidation = (event) => {
     event.preventDefault()
     // remove email from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(profile, mobile)
+    const updatedProfile = removeVerifiedContact(
+      profile,
+      mobile,
+      UserContactType.Mobile
+    )
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
@@ -113,12 +140,28 @@ export default function ValidateMobileLayout ({
         (unverifiedMobilePhone) => unverifiedMobilePhone.address === mobile
       )
     ) {
-      updatedProfile = removeUnverifiedContact(profile, mobile)
-      dispatch(setProfile(removeUnverifiedContact(profile, mobile)))
+      updatedProfile = removeUnverifiedContact(
+        profile,
+        mobile,
+        UserContactType.Mobile
+      )
+      dispatch(
+        setProfile(
+          removeUnverifiedContact(profile, mobile, UserContactType.Mobile)
+        )
+      )
     }
     if (profile.mobilePhones.includes(mobile)) {
-      updatedProfile = removeVerifiedContact(profile, mobile)
-      dispatch(setProfile(removeVerifiedContact(profile, mobile)))
+      updatedProfile = removeVerifiedContact(
+        profile,
+        mobile,
+        UserContactType.Mobile
+      )
+      dispatch(
+        setProfile(
+          removeVerifiedContact(profile, mobile, UserContactType.Mobile)
+        )
+      )
     }
 
     const dataToSend = { profile: updatedProfile, authToken }
@@ -134,66 +177,83 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
-      {codeExpired
-        ? (
-          <ExpiredCodeLayout getNewCode={getNewCode} />
-          )
-        : (
-          <>
-            <BackLink onClick={backLink} />
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && (
-                    <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
-                    />
-                  )}
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Check your mobile phone</h2>
-                  <div className='govuk-body'>
-                    We've sent a text with a code to:
-                    <InsetText text={mobile} />
-                    Use the code within 4 hours or it will expire.
-                    <br /> <br />
-                    <Input
-                      className='govuk-input govuk-input--width-10'
-                      name='Enter code'
-                      inputType='text'
-                      error={error}
-                      onChange={(val) => setCode(val)}
-                    />
-                    <Button
-                      className='govuk-button'
-                      text='Continue'
-                      onClick={handleSubmit}
-                    />
-                    <Link
-                      onClick={skipValidation}
-                      className='govuk-link'
-                      style={{
-                        display: 'inline-block',
-                        padding: '8px 10px 7px'
-                      }}
-                    >
-                      Skip and confirm later
-                    </Link>
-                    <br />
-                    <Link onClick={getNewCode} className='govuk-link'>
-                      Get a new code
-                    </Link>
-                    <br /> <br />
-                    <Link onClick={differentMobile} className='govuk-link'>
-                      Enter a different mobile
-                    </Link>
-                  </div>
+      <Helmet>
+        <title>Confirm your mobile number - Get flood warnings - GOV.UK</title>
+      </Helmet>
+      {codeExpired ? (
+        <ExpiredCodeLayout getNewCode={getNewCode} />
+      ) : (
+        <>
+          <BackLink onClick={backLink} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {codeResent && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
+                  />
+                )}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: enterCodeInputId }]}
+                  />
+                )}
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Check your mobile phone
+                </h2>
+                <div className='govuk-body'>
+                  We've sent a text with a code to:
+                  <InsetText text={mobile} />
+                  Use the code within 4 hours or it will expire.
+                  <br /> <br />
+                  <Input
+                    id={enterCodeInputId}
+                    className='govuk-input govuk-input--width-10'
+                    name='Enter code'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button govuk-!-margin-right-2'
+                    text='Continue'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    onClick={skipValidation}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 0 7px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Skip and confirm later
+                  </Link>
+                  <br />
+                  <Link
+                    onClick={getNewCode}
+                    className='govuk-link'
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Get a new code
+                  </Link>
+                  <br /> <br />
+                  <Link
+                    onClick={differentMobile}
+                    className='govuk-link'
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Enter a different mobile
+                  </Link>
                 </div>
               </div>
-            </main>
-          </>
-          )}
+            </div>
+          </main>
+        </>
+      )}
     </>
   )
 }

@@ -1,15 +1,37 @@
-import {
-  faAngleDown,
-  faAngleUp,
-  faMagnifyingGlass
-} from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { orgAccountUrls } from '../../../organisation/routes/account/AccountRoutes'
+import { urlManageKeywordsOrg } from '../../../organisation/routes/manage-keywords/ManageKeywordsRoutes'
 
-export default function OrganisationHeader () {
+export default function OrganisationHeader() {
   const [activeHeader, setActiveHeader] = useState(null)
+  const navigate = useNavigate()
+  const firstname =
+    useSelector((state) => state?.session?.profile?.firstname) || null
+  const lastname =
+    useSelector((state) => state?.session?.profile?.lastname) || null
+  const formattedName =
+    firstname && lastname ? firstname.charAt(0) + '.' + lastname : ''
+  const orgName =
+    useSelector((state) => state?.session?.organization?.name) || null
+  const [menuOpen, setMenuOpen] = useState(false)
+  const session = useSelector((state) => state.session)
+  const authToken = session.authToken
+  const location = useLocation()
+  const currentPage = location.pathname
+
+  useEffect(() => {
+    if (currentPage !== '/organisation/manage-admin/admin-details') {
+      setActiveHeader(null)
+    }
+  }, [currentPage])
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen)
+  }
 
   const handleActiveHeader = (item) => {
     if (item === activeHeader) {
@@ -18,6 +40,34 @@ export default function OrganisationHeader () {
       setActiveHeader(item)
     }
   }
+
+  const handleAdmin = (event) => {
+    event.preventDefault()
+    if (activeHeader === 'accountDetails') {
+      setActiveHeader(null)
+    } else {
+      setActiveHeader('accountDetails')
+      navigate(orgAccountUrls.admin.details)
+    }
+  }
+
+  const handleClick = (event, link) => {
+    event.preventDefault()
+    setActiveHeader(null)
+    navigate(link)
+  }
+
+  const pages = [
+    {
+      title: 'Organisation details',
+      link: orgAccountUrls.organisation.orgDetails,
+      subpages: [
+        { title: 'Manage keywords', link: '/organisation/manage-keywords' }
+      ]
+    },
+    { title: 'Administrator details', link: orgAccountUrls.admin.details },
+    { title: 'Sign out', link: '/organisation/signout' }
+  ]
 
   return (
     <>
@@ -50,77 +100,193 @@ export default function OrganisationHeader () {
               </a>
             </div>
 
-            <p className='govuk-header__org-service-name'>
-              Get flood warnings for your organisation
-            </p>
+            <nav className='header-nav'>
+              <button className='menu-button' onClick={() => toggleMenu()}>
+                Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+              </button>
+              {authToken !== null &&
+                !location.pathname.includes('signup') &&
+                !location.pathname.includes('declaration') &&
+                menuOpen && (
+                  <ul className='header-navigation-menu'>
+                    {pages.map((page, index) => (
+                      <li key={index} className='header-navigation-menu-pages'>
+                        <Link
+                          to={page.link}
+                          className='header-navigation-menu-link'
+                          aria-current={
+                            currentPage === page.link ? 'page' : 'no'
+                          }
+                        >
+                          {page.title}
+                        </Link>
 
-            <nav className='one-login-header__nav'>
+                        {page.subpages && (
+                          <ul className='header-navigation-submenu'>
+                            {page.subpages.map((subpage, subIndex) => (
+                              <li
+                                key={subIndex}
+                                className='header-navigation-submenu-pages'
+                              >
+                                <Link
+                                  to={subpage.link}
+                                  className='header-navigation-submenu-link'
+                                  aria-current={
+                                    currentPage === subpage.link ? 'page' : 'no'
+                                  }
+                                >
+                                  {subpage.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+            </nav>
+
+            <nav className='one-login-header__nav' aria-label='Main navigation'>
               <ul className='one-login-header__nav__list'>
                 <li
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'orgDetails' && 'active'
                   }`}
-                  onClick={() => handleActiveHeader('orgDetails')}
                 >
-                  <FontAwesomeIcon
-                    icon={
-                      activeHeader === 'orgDetails' ? faAngleDown : faAngleUp
+                  <a
+                    href='#'
+                    role='button'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleActiveHeader('orgDetails')
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleActiveHeader('orgDetails')
+                      }
+                    }}
+                    tabIndex='0'
+                    aria-expanded={
+                      activeHeader === 'orgDetails' ? 'true' : 'false'
                     }
-                    size='lg'
-                    className={`${
-                      activeHeader === 'orgDetails' && 'active'
-                    } highlighted`}
-                  />
-                  <AccountCircleOutlinedIcon
-                    style={{ fontSize: 38 }}
-                    className={`${
-                      activeHeader === 'orgDetails' && 'active'
-                    } highlighted`}
-                  />
+                    aria-controls='organisation-service-header'
+                  >
+                    <FontAwesomeIcon
+                      icon={
+                        activeHeader === 'orgDetails' ? faAngleUp : faAngleDown
+                      }
+                      className={`${
+                        activeHeader === 'orgDetails' && 'active'
+                      } highlighted`}
+                    />
+                    <svg
+                      width='25'
+                      height='25'
+                      viewBox='0 0 21 21'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <g clipPath='url(#clip0_2324_180503)'>
+                        <path d='M6.41797 4.58337V6.25004' strokeWidth='2' />
+                        <path d='M6.41797 7.91669V9.58335' strokeWidth='2' />
+                        <path d='M6.41797 11.25V12.9167' strokeWidth='2' />
+                        <path d='M10.5859 7.91669V9.58335' strokeWidth='2' />
+                        <path d='M10.5859 4.58337V6.25004' strokeWidth='2' />
+                        <path d='M10.5859 11.25V12.9167' strokeWidth='2' />
+                        <path
+                          d='M14.3359 8.33337H19.3359V18.3334H14.3359V8.33337Z'
+                          strokeWidth='2'
+                        />
+                        <path
+                          d='M14.3346 18.3334V1.66669H2.66797V18.3334H14.3346Z'
+                          strokeWidth='2'
+                        />
+                        <path d='M8.5 15V18.3333' strokeWidth='2' />
+                      </g>
+                      <defs>
+                        <clipPath id='clip0_2324_180503'>
+                          <rect
+                            width='20'
+                            height='20'
+                            fill={
+                              activeHeader === 'orgDetails'
+                                ? '#1D70B8'
+                                : 'white'
+                            }
+                            transform='translate(1)'
+                          />
+                        </clipPath>
+                      </defs>
+                    </svg>
 
-                  <span>Flood Inc.</span>
+                    <span className='govuk-!-font-weight-bold'>{orgName}</span>
+                  </a>
+                </li>
+                {/* Divider */}
+                <li className='one-login-header__nav__list-item org-header-divider-line-container no-highlight'>
+                  <div className='org-header-divider-line' aria-hidden='true' />
                 </li>
                 <li
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'accountDetails' && 'active'
                   }`}
-                  onClick={() => handleActiveHeader('accountDetails')}
                 >
-                  <FontAwesomeIcon
-                    icon={
-                      activeHeader === 'accountDetails'
-                        ? faAngleDown
-                        : faAngleUp
-                    }
-                    size='lg'
-                    className={`${
-                      activeHeader === 'accountDetails' && 'active'
-                    } highlighted`}
-                  />
-                  <AccountCircleOutlinedIcon
-                    style={{ fontSize: 38 }}
-                    className={`${
-                      activeHeader === 'accountDetails' && 'active'
-                    } highlighted`}
-                  />
+                  <a
+                    href='#'
+                    role='button'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleAdmin(e)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleAdmin(e)
+                      }
+                    }}
+                    tabIndex='0'
+                  >
+                    <svg
+                      width='25'
+                      height='25'
+                      viewBox='0 0 23 23'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        d='M11.3475 12.9411C13.5458 12.9411 15.3279 11.159 15.3279 8.9607C15.3279 6.76242 13.5458 4.98035 11.3475 4.98035C9.14926 4.98035 7.36719 6.76242 7.36719 8.9607C7.36719 11.159 9.14926 12.9411 11.3475 12.9411Z'
+                        strokeWidth='1.71'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                      <path
+                        d='M4.55078 19.1504C5.26126 17.9842 6.2598 17.0203 7.45041 16.3516C8.64101 15.6827 9.98363 15.3314 11.3492 15.3314C12.7148 15.3314 14.0575 15.6827 15.2481 16.3516C16.4387 17.0203 17.4371 17.9842 18.1477 19.1504'
+                        strokeWidth='1.71'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                      <path
+                        d='M11.3489 21.6979C17.0646 21.6979 21.6979 17.0646 21.6979 11.3489C21.6979 5.63338 17.0646 1 11.3489 1C5.63338 1 1 5.63338 1 11.3489C1 17.0646 5.63338 21.6979 11.3489 21.6979Z'
+                        strokeWidth='1.71'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                    </svg>
 
-                  <span>F.Waters</span>
+                    <span className='govuk-!-font-weight-bold'>
+                      {formattedName}
+                    </span>
+                  </a>
                 </li>
-
-                <li className='one-login-header__nav__list-item org-header-divider-line-container'>
-                  <div className='org-header-divider-line' />
-                </li>
-                <li
-                  className='one-login-header__nav__list-item'
-                  style={{
-                    backgroundColor: '#1d70b8'
-                  }}
-                >
-                  <FontAwesomeIcon icon={faMagnifyingGlass} size='lg' />
+                {/* Divider */}
+                <li className='one-login-header__nav__list-item org-header-divider-line-container no-highlight'>
+                  <div className='org-header-divider-line' aria-hidden='true' />
                 </li>
                 <li className='one-login-header__nav__list-item no-highlight'>
                   <Link
-                    className='one-login-header__nav__link'
+                    className='one-login-header__nav__link govuk-!-font-weight-bold'
                     to='organisation/signout'
                   >
                     Sign out
@@ -135,11 +301,9 @@ export default function OrganisationHeader () {
         {activeHeader === 'orgDetails' && (
           <div className='service-header toggle-enabled govuk-!-padding-top-5 govuk-!-padding-bottom-5'>
             <div>
-              <div className='service-header__container'>
-                <h2 className='service-header__heading'>
-                  Organisation
-                  <br />
-                  details
+              <div className='service-header__container custom-width-container'>
+                <h2 className='service-header__heading govuk-!-font-weight-bold'>
+                  {orgName}
                 </h2>
                 <div>
                   <nav>
@@ -148,23 +312,34 @@ export default function OrganisationHeader () {
                       id='service-header__nav'
                       data-open-className='service-header__nav--open'
                     >
-                      <li className='service-header__nav-list-item '>
+                      <li className='service-header__nav-list-item'>
                         <Link
                           className='service-header__nav-list-item-link'
-                          to='/organisation/manage-organisation-details'
+                          onClick={(event) =>
+                            handleClick(
+                              event,
+                              orgAccountUrls.organisation.orgDetails
+                            )
+                          }
                         >
                           Organisation Details
                         </Link>
                       </li>
+                      {/* TODO: option 2 to manage admin users
                       <li className='service-header__nav-list-item '>
                         <a className='service-header__nav-list-item-link'>
                           Manage admin users
                         </a>
-                      </li>
+                      </li> */}
                       <li className='service-header__nav-list-item'>
-                        <a className='service-header__nav-list-item-link'>
+                        <Link
+                          className='service-header__nav-list-item-link'
+                          onClick={(event) =>
+                            handleClick(event, urlManageKeywordsOrg)
+                          }
+                        >
                           Manage Keywords
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </nav>
@@ -177,9 +352,7 @@ export default function OrganisationHeader () {
           style={{
             backgroundColor: '#1d70b8',
             margin: '0 auto',
-            padding: '0.3rem',
-            marginRight: '1.875rem',
-            marginLeft: '1.875rem'
+            padding: '0.2rem'
           }}
         />
       </header>

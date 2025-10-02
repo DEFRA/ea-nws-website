@@ -1,0 +1,197 @@
+const { apiCall } = require('../../services/ApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
+const {
+  orgSignIn,
+  setJsonData,
+  getJsonData,
+  setLinkLocations
+} = require('../../services/elasticache')
+const { logger } = require('../../plugins/logging')
+
+// geosafe api restricted to 1024 locations per response
+// recall to api required to collect all locations
+const getAdditionalLocations = async (
+  firstLocationApiCall,
+  authToken,
+  contactId = null
+) => {
+  const additionalLocations = []
+
+  if (firstLocationApiCall.data.total > 1000) {
+    const fetchLocationsPromises = []
+    const totalRecalls = Math.floor(firstLocationApiCall.data.total / 1000)
+    let i = 1
+    while (i <= totalRecalls) {
+      const options = {
+        offset: 1000 * i,
+        limit: 1000,
+        sort: [{
+          fieldName: 'id',
+          order: 'ASCENDING'
+        }]
+      }
+      if (contactId) options.contactId = contactId
+      fetchLocationsPromises.push(
+        apiCall(
+          {
+            authToken: authToken,
+            options: options
+          },
+          'location/list'
+        )
+      )
+      i++
+    }
+
+    const results = await Promise.all(fetchLocationsPromises)
+    results.forEach((response) => {
+      additionalLocations.push(...response.data.locations)
+    })
+  }
+
+  return additionalLocations
+}
+
+module.exports = [
+  {
+    method: ['POST'],
+    path: '/api/org_signin',
+    handler: async (request, h) => {
+      try {
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
+        }
+
+        const { orgData } = request.payload
+        const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, orgData?.authToken)
+
+        if (orgData && sessionData) {
+          const elasticacheKey = 'signin_status:' + orgData.authToken
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Step 1 of 7 - finding your locations',
+            status: 'working'
+          })
+
+          const locations = []
+          const options = {
+            limit: 1000,
+            sort: [{
+              fieldName: 'id',
+              order: 'ASCENDING'
+            }]
+          }
+          const locationRes = await apiCall(
+            { authToken: orgData.authToken, options: options },
+            'location/list'
+          )
+          locations.push(...locationRes.data.locations)
+
+          const additionalLocations = await getAdditionalLocations(
+            locationRes,
+            orgData.authToken
+          )
+          locations.push(...additionalLocations)
+
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Step 4 of 7 - finding your contacts',
+            status: 'working'
+          })
+          const contactRes = await apiCall(
+            { authToken: orgData.authToken },
+            'organization/listContacts'
+          )
+
+          // Send the profile to elasticache
+          await orgSignIn(
+            redis,
+            orgData.profile,
+            orgData.organization,
+            locations,
+            contactRes.data.contacts,
+            sessionData.orgId,
+            orgData.authToken
+          )
+
+          const numContacts = contactRes.data.contacts.length
+          let contactIndex = 1
+          let percent = 0
+          const linkedContactsArr = []
+
+          for (const contact of contactRes.data.contacts) {
+            const newPercent = Math.round((contactIndex / numContacts) * 100)
+            if (percent !== newPercent) {
+              percent = newPercent
+              await setJsonData(redis, elasticacheKey, {
+                stage: 'Step 7 of 7 - linking your contacts to locations',
+                status: 'working',
+                percent: percent
+              })
+            }
+            const contactsLocations = []
+            const options = {
+              contactId: contact.id,
+              limit: 1000,
+              sort: [{
+                fieldName: 'id',
+                order: 'ASCENDING'
+              }]
+            }
+            const linkLocationsRes = await apiCall(
+              {
+                authToken: orgData.authToken,
+                options: options
+              },
+              'location/list'
+            )
+            contactsLocations.push(...linkLocationsRes.data.locations)
+
+            const additionalLocations = await getAdditionalLocations(
+              locationRes,
+              orgData.authToken,
+              contact.id
+            )
+            contactsLocations.push(...additionalLocations)
+
+            const locationIDs = []
+            contactsLocations.forEach(function (location) {
+              locationIDs.push(location.id)
+            })
+
+            linkedContactsArr.push({ id: contact.id, linkIDs: locationIDs })
+            contactIndex++
+          }
+
+          const linkedLocationsMap = linkedContactsArr.reduce((acc, { id, linkIDs }) => {
+            linkIDs.forEach((locationID) => {
+              if (!acc[locationID]) acc[locationID] = []
+              acc[locationID].push(id)
+            })
+            return acc
+          }, {})
+
+          const linkedLocationsArr = Object.entries(linkedLocationsMap).map(([linkIDs, id]) => ({
+            id: linkIDs,
+            linkIDs: id
+          }))
+
+          await setLinkLocations(redis, orgData.organization.id, linkedLocationsArr, linkedContactsArr)
+
+          await setJsonData(redis, elasticacheKey, {
+            stage: 'Step 7 of 7 - linking your contacts to locations',
+            status: 'complete'
+          })
+
+          return h.response({ status: 200 })
+        } else {
+          return createGenericErrorResponse(h)
+        }
+      } catch (error) {
+        logger.error(error)
+        return createGenericErrorResponse(h)
+      }
+    }
+  }
+]

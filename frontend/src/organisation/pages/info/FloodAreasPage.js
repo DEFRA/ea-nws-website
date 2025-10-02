@@ -1,11 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Details from '../../../common/components/gov-uk/Details'
 import WarningText from '../../../common/components/gov-uk/WarningText'
-import { infoUrls } from '../../routes/info/InfoRoutes'
 
-export default function FloodAreasPage () {
+export default function FloodAreasPage() {
   const navigate = useNavigate()
 
   const navigateBack = (e) => {
@@ -16,35 +15,43 @@ export default function FloodAreasPage () {
   const detailsMessage = (
     <div>
       <p>
-        There may be no measurement guages in the area of the location. Or the
+        There may be no measurement gauges in the area of the location. Or the
         location is in an area where not many people live or work.
       </p>
       <p>
-        Locations may still be at risk even if youcannot get flood messages for
+        Locations may still be at risk even if you cannot get flood messages for
         that area.
       </p>
       <p>
         If you cannot get flood messages for your organisation's locations you
-        can check the Met Office forecasts or following local news channels.
+        may be able to link these locations to nearby flood areas that can get
+        flood messages.
       </p>
     </div>
   )
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <Helmet>
+        <title>
+          What are flood areas? - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               What are flood areas?
             </h1>
             <p>
               A flood area is a zone in England that's monitored for flooding.
             </p>
             <p className='govuk-!-margin-top-6'>
-              Your organisations's location may be in an area that can get:
+              Your organisation's location may be in an area that can get:
             </p>
             <ul className='govuk-list govuk-list--bullet govuk-!-margin-top-6'>
               <li>
@@ -52,7 +59,7 @@ export default function FloodAreasPage () {
               </li>
               <li>flood alerts (flood alert area)</li>
               <li>
-                severes flood warnings, flood warnings and flood alerts (when
+                severe flood warnings, flood warnings and flood alerts (when
                 location is in both a flood warning and a flood alert area)
               </li>
               <li>no flood messages</li>
@@ -105,10 +112,14 @@ export default function FloodAreasPage () {
             </p>
 
             <p>
-              <Link to={infoUrls.levels} className='govuk-link'>
+              <a
+                href='https://check-for-flooding.service.gov.uk/how-we-measure-river-sea-groundwater-levels'
+                target='_blank'
+                className='govuk-link'
+              >
                 Find out more about how we measure river, sea and groundwater
                 levels.
-              </Link>
+              </a>
             </p>
           </div>
         </div>

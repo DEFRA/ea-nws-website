@@ -8,7 +8,7 @@ export const locationInEngland = async (lat, lng) => {
     map: 'uk-ob.qgz',
     version: '1.1.0',
     request: 'GetFeature',
-    typename: 'aoi-national-boundary',
+    typename: 'national_boundary',
     srsname: 'EPSG:4326',
     outputFormat: 'GEOJSON'
   }

@@ -28,8 +28,8 @@ async function getSigninValidate(
     code: string
     signinToken: string
   }
-  if(code === '111111'){
-    console.log("invalid credentials, responding 101")
+  if (code === '111111') {
+    console.log('invalid credentials, responding 101')
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }
   if (code === '999999' || signinToken === undefined) {
@@ -46,7 +46,30 @@ async function getSigninValidate(
     authToken: uuidv4(),
     profile: profile,
     registrations: registrations,
+
+    // comment below out to login as citizen or set as null
     organization: organization
   }
 }
-module.exports = { getSigninStart, getSigninValidate }
+
+async function getSigninVerify(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  console.log('Received SignInVerify request for: ', req.payload)
+  const { authToken } = req.payload as { authToken: string }
+
+  if (!authToken) {
+    return res.response({ errorMessage: 'Missing authToken' }).code(500)
+  }
+
+  return {
+    profile: mockResponses.citizenProfile2,
+    registrations: mockResponses.registrations,
+    locationRegistrations: mockResponses.locationRegistrations,
+    organization: mockResponses.organization
+  }
+}
+
+module.exports = { getSigninStart, getSigninValidate, getSigninVerify }

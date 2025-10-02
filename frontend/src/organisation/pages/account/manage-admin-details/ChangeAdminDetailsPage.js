@@ -1,29 +1,31 @@
 import React, { useState } from 'react'
-import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import Button from '../../../../common/components/gov-uk/Button'
-import Input from '../../../../common/components/gov-uk/Input'
+import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { useSelector, useDispatch } from 'react-redux'
+import BackLink from '../../../../common/components/custom/BackLink'
+import Button from '../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../../common/components/gov-uk/Input'
+import {
+  setCurrentContact,
+  setProfile
+} from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import {
+  addAccountName,
+  addUnverifiedContact
+} from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../../common/services/validations/FullNameValidation'
-import { backendCall } from '../../../../common/services/BackendService'
-import { addUnverifiedContact, addAccountName } from '../../../../common/services/ProfileServices'
-import { setCurrentContact, setProfile } from '../../../../common/redux/userSlice'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
-export default function ChangeAdminDetailsPage () {
+export default function ChangeAdminDetailsPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const currentFirstName = useSelector(
     (state) => state.session.profile.firstname
   )
-  const currentLastName = useSelector(
-    (state) => state.session.profile.lastname
-  )
-  const currentEmail = useSelector(
-    (state) => state.session.profile.emails[0]
-  )
+  const currentLastName = useSelector((state) => state.session.profile.lastname)
+  const currentEmail = useSelector((state) => state.session.profile.emails[0])
 
   const currentFullName = currentFirstName + ' ' + currentLastName
 
@@ -34,14 +36,18 @@ export default function ChangeAdminDetailsPage () {
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
+  const signinType = useSelector((state) => state.session.authToken)
+
+  const fullNameId = 'full-name'
+  const emailAddressId = 'email-address'
 
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
-  const updateProfile = async (profile, authToken) => {
-    const dataToSend = { profile, authToken }
+  const updateProfile = async (profile, authToken, signinType) => {
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',
@@ -52,7 +58,8 @@ export default function ChangeAdminDetailsPage () {
     }
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     let emailValidationError = ''
     if (email !== null) {
       emailValidationError = emailValidation(email)
@@ -77,7 +84,8 @@ export default function ChangeAdminDetailsPage () {
         updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
         successMessages.push('Email address changed')
       }
-      await updateProfile(updatedProfile, authToken)
+      await updateProfile(updatedProfile, authToken, signinType)
+
       if (email) {
         const dataToSend = { email, authToken }
         const { errorMessage } = await backendCall(
@@ -112,21 +120,31 @@ export default function ChangeAdminDetailsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <Helmet>
+        <title>
+          Change administrator details - Get flood warnings (professional) -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
           {(error || errorEmail || errorName) && (
             <ErrorSummary
-              errorList={[error, errorEmail, errorName]}
+              errorList={[
+                error,
+                errorName && { text: errorName, componentId: fullNameId },
+                errorEmail && { text: errorEmail, componentId: emailAddressId }
+              ].filter(Boolean)}
             />
           )}
-          <h1 className='govuk-heading-l'>
+          <h1 className='govuk-heading-l' id='main-content'>
             Change administrator details
           </h1>
 
           <Input
+            id={fullNameId}
             inputType='text'
             value={fullName}
             name='Full name'
@@ -138,10 +156,12 @@ export default function ChangeAdminDetailsPage () {
           />
 
           <Input
+            id={emailAddressId}
             inputType='text'
-            value={email}
+            inputMode='email'
             name='Email address'
-            onChange={(val) => setEmail(val)}
+            value={email}
+            onChange={(val) => setEmail(val.replaceAll(' ', '').toLowerCase())}
             error={errorEmail}
             className='govuk-input govuk-input--width-20'
             defaultValue={currentEmail}

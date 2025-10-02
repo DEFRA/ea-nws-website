@@ -1,0 +1,134 @@
+import { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import { backendCall } from '../../../common/services/BackendService'
+import { getAdditionals } from '../../../common/services/ProfileServices'
+import { infoUrls } from '../../routes/info/InfoRoutes'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
+
+export default function AccountMigrationPage () {
+  const organization = useSelector((state) => state.session.organization)
+  const authToken = useSelector((state) => state.session.authToken)
+  const profile = useSelector((state) => state.session.profile)
+
+  const [stage, setStage] = useState('Step 1 of 7 - finding your locations')
+  const [percent, setPercent] = useState(null)
+  const [error, setError] = useState('')
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
+
+  const navigate = useNavigate()
+
+  const [templateUrl, setTemplateUrl] = useState(null)
+
+  async function getGuideUrl () {
+    const { data } = await backendCall('data', 'api/info/download_guide')
+    setTemplateUrl(data)
+  }
+
+  useEffect(() => {
+    getGuideUrl()
+    if (organization && authToken && !error) {
+      const interval = setInterval(async function getStatus () {
+        if (getStatus.isRunning) return
+        getStatus.isRunning = true
+        const dataToSend = { authToken }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/org_signin_migrated_status',
+          navigate
+        )
+        if (data) {
+          if (data?.stage !== stage) {
+            setStage(data.stage)
+          }
+          if (data?.percent) {
+            setPercent(data.percent)
+          } else {
+            setPercent(null)
+          }
+          if (data?.status === 'complete') {
+            // once complete set the cookie so user isn't timed out
+            setCookie('authToken', authToken)
+            const isAdminUsersFirstLogin = getAdditionals(
+              profile,
+              'firstLogin'
+            )
+            if (isAdminUsersFirstLogin === 'true') {
+              navigate('/sign-in/organisation/admin-controls')
+            } else {
+              navigate(orgManageLocationsUrls.monitoring.view)
+            }
+          }
+          if (data?.status === 'error') {
+            setError('migration error')
+          }
+        }
+        if (errorMessage) {
+          setError(errorMessage)
+        }
+        getStatus.isRunning = false
+      }, 2000)
+      return () => {
+        clearInterval(interval)
+      }
+    }
+  }, [])
+
+  return (
+    <>
+      <Helmet>
+        <title>Account migration - Get flood warnings - GOV.UK</title>
+      </Helmet>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Bringing information across from your old account
+            </h1>
+            <div className='govuk-body'>
+              <div className='govuk-inset-text'>
+                Do not refresh this page. You'll be automatically redirected when this is completed.
+              </div>
+              <p>
+                This may take between a few minutes up to 2 hours, depending on the amount of data in your old account.
+                You'll only need to do this once.
+              </p>
+              <LoadingSpinner
+                loadingText={<p className='govuk-body'>{!error ? `${stage}` : 'Error'}</p>}
+                percent={percent}
+                wide
+              />
+              <h2 className='govuk-heading-m'>
+                While you wait
+              </h2>
+              <p>
+                <Link
+                  className='govuk-link'
+                  to={infoUrls.preview}
+                  target='_blank'
+                  aria-label='Preview what the professional service offers'
+                >
+                  Preview this new service
+                </Link> {' '}(opens in new tab)
+                <br />
+                <a className='govuk-link ' href={templateUrl} target='_blank' rel='noopener noreferrer'>
+                  Download a quick-start PDF guide
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}

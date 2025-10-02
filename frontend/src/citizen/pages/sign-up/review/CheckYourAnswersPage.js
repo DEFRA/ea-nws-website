@@ -1,9 +1,11 @@
-import { React } from 'react'
+import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { setProfile } from '../../../../common/redux/userSlice'
+import {
+  setProfile
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import AccountDetailsTable from './AccountDetailsTable'
@@ -11,17 +13,26 @@ import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
 import LocationReviewTable from './LocationReviewTable'
 
-export default function CheckYourAnswersPage () {
+export default function CheckYourAnswersPage() {
   const session = useSelector((state) => state.session)
   const profile = useSelector((state) => state.session.profile)
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
+  const contacts = {
+    emails: profile?.emails,
+    unverifiedEmails: profile?.unverified?.emails,
+    mobilePhones: profile?.mobilePhones,
+    unverifiedMobiles: profile?.unverified?.mobilePhones,
+    homePhones: profile?.homePhones,
+    unverifiedHomePhones: profile?.unverified?.homePhones
+  }
   const registration = useSelector((state) => state.session.registrations)
-  const contactPreferences = useSelector(
-    (state) => state.session.contactPreferences
-  )
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const handleButton = async () => {
-    if (signUpAccountValidation) {
+
+  const handleButton = async (event) => {
+    event.preventDefault()
+    if (signUpAccountValidation()) {
       const updatedProfile = updateAdditionals(profile, [
         { id: 'signupComplete', value: { s: 'true' } },
         { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
@@ -33,32 +44,29 @@ export default function CheckYourAnswersPage () {
       }
       await backendCall(dataToSend, 'api/profile/update', navigate)
 
+      setCookie('authToken', session.authToken)
       navigate('/signup/success')
     }
   }
 
   const signUpAccountValidation = () => {
-    return (
-      profile.emails[0] &&
-      profile.firstname &&
-      profile.lastname &&
-      profile.pois.length !== 0
-    )
+    return profile.emails[0] && profile.firstname && profile.pois.length !== 0
   }
 
   return (
     <>
-      <BackLink to='/declaration' />
+      <Helmet>
+        <title>Check your answers - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row '>
-          <div className='govuk-grid-column-three-quarters'>
-            <h2 className='govuk-heading-l'>Check your answers</h2>
-            <LocationReviewTable locations={profile.pois} />
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-full'>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Check your answers
+            </h1>
+            <LocationReviewTable />
             <FloodMessageReviewTable registration={registration} />
-            <ContactReviewTable
-              profile={profile}
-              contactPreferences={contactPreferences}
-            />
+            <ContactReviewTable contacts={contacts} />
             <AccountDetailsTable profile={profile} />
           </div>
         </div>

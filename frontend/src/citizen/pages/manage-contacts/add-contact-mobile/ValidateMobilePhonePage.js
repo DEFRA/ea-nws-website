@@ -4,7 +4,14 @@ import ValidateMobileLayout from '../../../layouts/mobile/ValidateMobileLayout'
 export default function ValidateMobilePhonePage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => navigate('/managecontacts')
+  const navigateToNextPage = (mobilePhone) => {
+    navigate('/managecontacts', {
+      state: {
+        confirmedtype: 'mobilePhone',
+        confirmedvalue: mobilePhone
+      }
+    })
+  }
   const SkipValidation = (mobilePhone) => {
     navigate('/managecontacts', {
       state: {
@@ -18,11 +25,13 @@ export default function ValidateMobilePhonePage () {
   }
 
   return (
-    <ValidateMobileLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={DifferentMobile}
-      SkipValidation={SkipValidation}
-      DifferentMobile={DifferentMobile}
-    />
+    <>
+      <ValidateMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentMobile}
+        SkipValidation={SkipValidation}
+        DifferentMobile={DifferentMobile}
+      />
+    </>
   )
 }

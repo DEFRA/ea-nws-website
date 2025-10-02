@@ -1,11 +1,9 @@
-
-
 const citizenContactAdditionals = [
   { id: 'signupComplete', value: { s: '' } },
   { id: 'lastAccessedUrl', value: { s: '' } },
   { id: 'businessName', value: { s: '' } },
   { id: 'jobTitle', value: { s: '' } },
-  { id: 'keywords', value: { s: '[]' } },
+  { id: 'keywords', value: { s: '[]' } }
 ]
 
 const orgContactAdditionals = [
@@ -13,7 +11,7 @@ const orgContactAdditionals = [
   { id: 'lastAccessedUrl', value: { s: '' } },
   { id: 'businessName', value: { s: '' } },
   { id: 'jobTitle', value: { s: '' } },
-  { id: 'keywords', value: { s: '[]' } },
+  { id: 'keywords', value: { s: '[]' } }
 ]
 
 const locationAdditionals = [
@@ -21,48 +19,167 @@ const locationAdditionals = [
   { id: 'parentID', value: { s: '' } },
   { id: 'targetAreas', value: { s: '' } },
   { id: 'keywords', value: { s: '[]' } },
-  { id: 'other', value: { s: '' } },
+  {
+    id: 'other',
+    value: {
+      s: JSON.stringify({
+        alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+      })
+    }
+  }
 ]
 
-const citizenPOIs = [{
-  name: '10023463293',
-  address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
-  coordinates: {
-    latitude: '52612444.5',
-    longitude: '1724640.5'
+const citizenPOIs = [
+  // below is a location added that lies within a flood area
+  {
+    name: '10023463293',
+    address: 'House Of Commons, Houses Of Parliament, London,  SW1A 0AA',
+    coordinates: {
+      latitude: 51.4998415 * 10 ** 6,
+      longitude: -0.1246377 * 10 ** 6
+    },
+    id: '1',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: '1, Sun Street, Ulverston,  LA12 7BX' }
+      },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            targetAreas: [
+              {
+                TA_CODE: '063FWT23WestminA',
+                TA_Name:
+                  'Tidal Thames from Blackfriars Bridge to Vauxhall Bridge',
+                category: 'Flood Warning'
+              },
+              {
+                TA_CODE: '063WAT23Central',
+                TA_Name:
+                  'Tidal Thames riverside from the Thames Barrier to Putney Bridge',
+                category: 'Flood alert'
+              },
+              {
+                TA_CODE: '063WAT232N',
+                TA_Name:
+                  'Tidal Thames in the boroughs of Tower Hamlets, City of London, City of Westminster, Ken and Chelsea',
+                category: 'Flood alert'
+              }
+            ]
+          })
+        }
+      }
+    ]
   },
-  id: '1',
-  enabled: true,
-  geometry: { geoJson: '' },
-  geocode: '',
-  metadata: { nbAttachedContacts: 0 },
-  additionals: []
-}]
+  // below is a nearby target area added
+  {
+    name: '',
+    address: 'Upper hull river catchment',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '2',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: 'Marlow, SL7, Buckinghamshire' }
+      }
+    ]
+  },
+  {
+    name: '',
+    address: 'Lower river catchment',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '3',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: 'Marlow, SL7, Buckinghamshire' }
+      }
+    ]
+  },
+  {
+    name: '',
+    address: 'Upper hull river catchment',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '4',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
+      }
+    ]
+  },
+  {
+    name: '',
+    address: 'Lower river catchment',
+    coordinates: {
+      latitude: 54.1992721 * 10 ** 6,
+      longitude: -3.0970548 * 10 ** 6
+    },
+    id: '5',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: [
+      {
+        id: 'locationName',
+        value: { s: '50 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA' }
+      }
+    ]
+  }
+]
 
-const orgPOI = [{
-  name: '10023463293',
-  address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
-  coordinates: {
-    latitude: '52612444.5',
-    longitude: '1724640.5'
-  },
-  id: '1',
-  enabled: true,
-  geometry: { geoJson: '' },
-  geocode: '',
-  metadata: { nbAttachedContacts: 0 },
-  additionals: locationAdditionals
-}]
+const orgPOI = [
+  {
+    name: '10023463293',
+    address:
+      'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
+    coordinates: {
+      latitude: '52612444.5',
+      longitude: '1724640.5'
+    },
+    id: '1435',
+    enabled: true,
+    geometry: { geoJson: '' },
+    geocode: '',
+    metadata: { nbAttachedContacts: 0 },
+    additionals: locationAdditionals
+  }
+]
 
 const citizenContact = {
   id: '1',
   enabled: true,
   firstname: 'John',
   lastname: 'Smith',
-  emails: [
-    'updated.matthew.pepper@gmail.com',
-    'perry.pepper@gmail.com'
-  ],
+  emails: ['updated.matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
   mobilePhones: ['07343454590', '07889668367'],
   homePhones: ['01475721535'],
   language: 'EN',
@@ -84,34 +201,22 @@ const citizenContact = {
 const citizenContact2 = {
   id: '1',
   enabled: true,
-  firstname: '',
-  lastname: '',
+  firstname: 'John',
+  lastname: 'Smith',
   emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
   mobilePhones: ['07343454590', '07889668367'],
   homePhones: ['01475721535'],
   language: 'EN',
-  additionals: [{ id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } }, { id: "signupComplete", value: { s: 'true' } }],
+  additionals: [
+    //uncomment below to test intial admin page
+    //{ id: 'firstLogin', value: { s: 'true' } },
+    { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
+    { id: 'signupComplete', value: { s: 'true' } }
+  ],
   unverified: {
     homePhones: [{ address: '01475721535' }]
   },
-  pois: [
-    {
-      address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
-      name: '10023463293',
-      coordinates: {
-        latitude: '52612444.5',
-        longitude: '1724640.5'
-      }
-    },
-    {
-      address: 'Exmouth, United Kingdom',
-      name: '',
-      coordinates: {
-        latitude: '50621091',
-        longitude: '-3412665'
-      }
-    }
-  ]
+  pois: citizenPOIs
 }
 
 const registrations = {
@@ -121,7 +226,7 @@ const registrations = {
     description: 'We work to create better places for people and...',
     longName: 'Environment Agency - England',
     logoUrl: 'logo.png',
-    backgroundUrl: 'http://assets.gov.uk',
+    backgroundUrl: 'https://assets.gov.uk',
     urlSlug: 'england'
   },
   registrationDate: '1683741990',
@@ -148,11 +253,92 @@ const registrations = {
   }
 }
 
+const locationRegistrations = [
+  {
+    locationId: '1',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741990',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '2',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741995',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '3',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '4',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_1']
+        }
+      }
+    ]
+  },
+  {
+    locationId: '5',
+    registrations: [
+      {
+        partner: registrations.partner,
+        registrationDate: '1683741999',
+        params: {
+          ...registrations.params,
+          alertTypes: ['ALERT_LVL_3']
+        }
+      }
+    ]
+  }
+]
+
 const organization = {
-  id: '1',
-  name: 'Royal Mail',
-  description: '',
-  postalCode: 'NR30 1AA',
+  id: '13435',
+  name: 'Flood Inc.',
+  description: JSON.stringify({
+    name: 'Flood Inc.',
+    address: '1 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA',
+    compHouseNum: '787878',
+    emergencySector: true,
+    isAdminRegistering: true,
+    alternativeContact: {
+      firstName: 'Joan',
+      lastName: 'Smith',
+      email: 'j.smith@floodinc.com',
+      telephone: '02071739372',
+      jobTitle: 'IT Director'
+    }
+  }),
+  postalCode: '',
   longName: '',
   logoUrl: '',
   backgroundUrl: '',
@@ -170,11 +356,11 @@ const organization = {
       boundary: {
         points: [{ latitude: 0, longitude: 0 }]
       },
-      holes:
-        [{
+      holes: [
+        {
           points: [{ latitude: 0, longitude: 0 }]
-        }]
-
+        }
+      ]
     }
   },
   alertDiffusionZoneBoundingBox: {
@@ -188,5 +374,6 @@ module.exports = {
   citizenProfile: citizenContact,
   citizenProfile2: citizenContact2,
   registrations: registrations,
+  locationRegistrations: locationRegistrations,
   organization: organization
 }

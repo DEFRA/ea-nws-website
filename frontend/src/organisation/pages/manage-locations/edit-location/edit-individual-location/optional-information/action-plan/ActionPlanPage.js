@@ -1,25 +1,26 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
-import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
+import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import ActionPlanLayout from '../../../../../../layouts/optional-info/ActionPlanLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function ActionPlanPage () {
-  const navigate = useNavigate()
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
-  )
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} action plan changed` }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Action plan changed'
+  )
 
   return (
     <>
-      <ActionPlanLayout navigateToNextPage={navigateToNextPage} />
+      <Helmet>
+        <title>Edit this location's action plan - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <ActionPlanLayout
+        navigateToNextPage={navigateToNextPage}
+        error={error}
+        setError={setError}
+      />
     </>
   )
 }

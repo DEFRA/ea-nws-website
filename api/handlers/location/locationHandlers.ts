@@ -9,10 +9,18 @@ async function getLocationCreate(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, location } = req.payload as { authToken: string, location: any }
+  const { authToken, location } = req.payload as {
+    authToken: string
+    location: any
+  }
 
   if (authToken !== 'WrongAuthToken' && location) {
     let updatedLocation = location
+    // act like geosafe and strip out the geoJson
+    if (updatedLocation?.geometry?.geoJson) {
+      let oldGeoJson = JSON.parse(updatedLocation.geometry.geoJson)
+      updatedLocation.geometry.geoJson = JSON.stringify(oldGeoJson.geometry)
+    }
     updatedLocation.id = uuidv4()
 
     return {
@@ -28,20 +36,35 @@ async function getLocationList(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, options } = req.payload as { authToken: string, options: { contactId: string } }
+  const { authToken, options } = req.payload as {
+    authToken: string
+    options: { contactId: string; offset: Number }
+  }
 
   if (authToken !== 'WrongAuthToken') {
-    if (options?.contactId) {
+    if (options?.offset) {
+      return {
+        locations: mockLocations.offsetLocations,
+        total: 1
+      }
+    } else if (options?.contactId) {
       // Geosafe returns all locations linked to contactId#
       console.log('there is a contact ID')
+      return {
+        locations: mockLocations.allLocations,
+        total: mockLocations.allLocations.length
+        // to test offset option, uncomment below
+        //total: 1025
+      }
     } else {
       console.log('no contact ID returning all locations')
       return {
         locations: mockLocations.allLocations,
         total: mockLocations.allLocations.length
+        // to test offset option, uncomment below
+        //total: 1025
       }
     }
-    return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
   }
@@ -52,7 +75,10 @@ async function getLocationRemove(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, locationIds } = req.payload as { authToken: string, locationIds: Array<string> }
+  const { authToken, locationIds } = req.payload as {
+    authToken: string
+    locationIds: Array<string>
+  }
 
   if (authToken !== 'WrongAuthToken' && locationIds) {
     return res.response(responseCodes.SUCCESS)
@@ -66,15 +92,29 @@ async function getLocationUpdate(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, location } = req.payload as { authToken: string, location: Object }
-  //location object must already contain location.id 
+  const { authToken, location } = req.payload as {
+    authToken: string
+    location: any
+  }
+  //location object must already contain location.id
   if (authToken !== 'WrongAuthToken' && location) {
+    let updatedLocation = location
+    // act like geosafe and strip out the geoJson
+    if (updatedLocation?.geometry?.geoJson) {
+      let oldGeoJson = JSON.parse(updatedLocation.geometry.geoJson)
+      updatedLocation.geometry.geoJson = JSON.stringify(oldGeoJson.geometry)
+    }
     return {
-      location: location
+      location: updatedLocation
     }
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
   }
 }
 
-module.exports = { getLocationCreate, getLocationList, getLocationRemove, getLocationUpdate }
+module.exports = {
+  getLocationCreate,
+  getLocationList,
+  getLocationRemove,
+  getLocationUpdate
+}

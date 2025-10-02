@@ -1,19 +1,29 @@
-import React from 'react'
+import React, { forwardRef, useState } from 'react'
 
-export default function Button ({
-  text,
-  className,
-  onClick,
-  imageSrc = null,
-  imageHgt = '20px'
-}) {
+const Button = forwardRef(function Button(
+  {
+    text,
+    className,
+    onClick,
+    imageSrc = null,
+    imageHgt = '20px',
+    disable = false,
+    ariaLabel
+  },
+  ref
+) {
+  const [cursor, setCursor] = useState('pointer')
   return (
     <>
       <button
         type='submit'
         className={className}
-        onClick={onClick}
+        onClick={async (event) => { setCursor('wait'); await onClick(event); setCursor('pointer') }}
         data-module='govuk-button'
+        style={{ cursor }}
+        disabled={cursor === 'wait' || disable}
+        ref={ref}
+        aria-label={ariaLabel}
       >
         {imageSrc && (
           <img
@@ -26,4 +36,6 @@ export default function Button ({
       </button>
     </>
   )
-}
+})
+
+export default Button

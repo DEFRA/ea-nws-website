@@ -1,18 +1,14 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
-import { setProfile } from '../../../common/redux/userSlice'
-import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
+import { setOrganizationCompHouseNum } from '../../../common/redux/userSlice'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout ({
-  NavigateToNextPage,
+export default function CompaniesHouseNumLayout({
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
@@ -20,49 +16,35 @@ export default function CompaniesHouseNumLayout ({
   const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
-  const profile = useSelector((state) => state.session.profile)
+  const compHouseRadiosId = 'comp-house-radios'
+  const compHouseNumberId = 'comp-house-number'
 
-  const handleSubmit = async () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (companyNum === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'
       )
       return
     }
-
-    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
-
     // No was clicked
     // Explicitly checking for false as !companyNum would also include empty string
     if (companyNum === false) {
-      organisation.compHouseNum = null
-
-      const updatedProfile = updateOrganisationAdditionals(
-        profile,
-        organisation
-      )
-      dispatch(setProfile(updatedProfile))
-
-      NavigateToNextPage()
+      dispatch(setOrganizationCompHouseNum(null))
+      navigateToNextPage()
     } else {
       // Yes was clicked - validate input before proceeding
       const validationError = compHouseNumberValidation(companyNum)
       if (!validationError) {
-        organisation.compHouseNum = companyNum
-
-        const updatedProfile = updateOrganisationAdditionals(
-          profile,
-          organisation
-        )
-        dispatch(setProfile(updatedProfile))
-        NavigateToNextPage()
+        dispatch(setOrganizationCompHouseNum(companyNum))
+        navigateToNextPage()
       } else {
         setNumberError(validationError)
       }
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }
@@ -70,17 +52,24 @@ export default function CompaniesHouseNumLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main
+        id='main-content'
+        className='govuk-main-wrapper govuk-!-padding-top-4'
+      >
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || numberError) && (
-              <ErrorSummary errorList={[error, numberError]} />
+              <ErrorSummary
+                errorList={[
+                  error && { text: error, componentId: compHouseRadiosId },
+                  numberError && {
+                    text: numberError,
+                    compHouseNumberId: compHouseNumberId
+                  }
+                ].filter(Boolean)}
+              />
             )}
-            <h1 className='govuk-heading-l'>
-              Does your organisation have a Companies House number?
-            </h1>
             <div className='govuk-body'>
-              {error && <p className='govuk-error-message'>{error}</p>}
               <div
                 className={
                   error
@@ -88,28 +77,53 @@ export default function CompaniesHouseNumLayout ({
                     : 'govuk-form-group'
                 }
               >
-                <div className='govuk-radios'>
-                  <Radio
-                    key='radio_yes'
-                    name='comp-house-radios'
-                    label='Yes'
-                    onChange={() => {
-                      setCompanyNumExists(true)
-                      setCompanyNum('')
-                    }}
-                    conditional={companyNumExists}
-                    conditionalQuestion='Companies House number'
-                    conditionalInput={(val) => setCompanyNum(val)}
-                    conditionalError={numberError}
-                  />
-                  <Radio
-                    key='radio_no'
-                    name='comp-house-radios'
-                    label='No'
-                    onChange={() => setCompanyNum(false)}
-                  />
-                  <br />
-                </div>
+                {error && (
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>{' '}
+                    {error}
+                  </p>
+                )}
+                <fieldset
+                  id={compHouseRadiosId}
+                  className='govuk-fieldset'
+                  aria-describedby='comp-house-hint'
+                >
+                  <legend className='govuk-fieldset__legend govuk-fieldset__legend--l'>
+                    <h1 className='govuk-fieldset__heading'>
+                      Does your organisation have a Companies House number?
+                    </h1>
+                  </legend>
+                  <div id='comp-house-hint' className='govuk-hint'>
+                    Limited companies and limited liability partnerships have
+                    these numbers.
+                  </div>
+                  <div className='govuk-radios'>
+                    <Radio
+                      key='radio_yes'
+                      name='comp-house-radios'
+                      label='Yes'
+                      onChange={() => {
+                        setCompanyNumExists(true)
+                        setCompanyNum('')
+                      }}
+                      conditional={companyNumExists}
+                      conditionalQuestion='Companies House number'
+                      conditionalInput={(val) => setCompanyNum(val)}
+                      conditionalError={numberError}
+                      conditionalId={compHouseNumberId}
+                    />
+                    <Radio
+                      key='radio_no'
+                      name='comp-house-radios'
+                      label='No'
+                      onChange={() => {
+                        setCompanyNumExists(false)
+                        setCompanyNum(false)
+                      }}
+                    />
+                    <br />
+                  </div>
+                </fieldset>
               </div>
               <Button
                 text='Continue'

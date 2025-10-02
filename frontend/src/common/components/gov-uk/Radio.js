@@ -4,7 +4,8 @@ import Input from './Input'
 const ConditionalWrapper = ({ condition, wrapper, children }) =>
   condition ? wrapper(children) : children
 
-export default function Radio ({
+export default function Radio({
+  id,
   label,
   value,
   name,
@@ -12,9 +13,12 @@ export default function Radio ({
   checked,
   small,
   conditional,
+  conditionalHint,
   conditionalQuestion,
   conditionalInput,
-  conditionalError
+  conditionalError,
+  conditionalId,
+  hint
 }) {
   return (
     <>
@@ -31,7 +35,7 @@ export default function Radio ({
             value={value}
             name={name}
             onChange={onChange}
-            id={'id' + label}
+            id= {id || 'id' + label}
             checked={checked}
           />
           <label
@@ -39,6 +43,7 @@ export default function Radio ({
             htmlFor={'id' + label}
           >
             {label}
+            {hint && <div className='govuk-hint'>{hint}</div>}
           </label>
         </div>
         {conditional && (
@@ -50,7 +55,11 @@ export default function Radio ({
                   : 'govuk-form-group'
               }
             >
+              {conditionalHint && (
+                <div className='govuk-hint'>{conditionalHint}</div>
+              )}
               <Input
+                id={conditionalId}
                 name={conditionalQuestion}
                 className='govuk-input govuk-!-width-one-half'
                 inputType='text'

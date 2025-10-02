@@ -1,22 +1,30 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../layouts/email/ValidateEmailLayout'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
 export default function ValidateAdminEmailPage () {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const NavigateToNextPage = () => {
-    navigate('/organisation/sign-up/alternative-contact')
+  const navigateToNextPage = async () => {
+    if (location.state?.returnToReview) {
+      navigate(orgSignUpUrls.review)
+    } else {
+      navigate(orgSignUpUrls.address.add)
+    }
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/admin-details')
+    navigate(orgSignUpUrls.admin.details)
   }
 
   return (
-    <ValidateEmailLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      buttonText='Continue'
-    />
+    <>
+      <ValidateEmailLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+        buttonText='Continue'
+      />
+    </>
   )
 }

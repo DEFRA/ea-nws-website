@@ -14,12 +14,13 @@ export default function LocationNotNearDangerLayout ({
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-l' id='main-content'>
                 You cannot get flood messages for this location
               </h1>
               <InsetText text={selectedLocation.address} />
@@ -41,6 +42,7 @@ export default function LocationNotNearDangerLayout ({
                       e.preventDefault()
                       continueToSearchResultsPage()
                     }}
+                    style={{ cursor: 'pointer' }}
                   >
                     try another postcode
                   </Link>

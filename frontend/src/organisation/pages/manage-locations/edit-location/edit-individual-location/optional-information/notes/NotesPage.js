@@ -1,27 +1,26 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
-import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
+import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import NotesLayout from '../../../../../../layouts/optional-info/NotesLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function NotesPage () {
-  const navigate = useNavigate()
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
-  )
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} notes changed` }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Notes changed'
+  )
 
   return (
     <>
+      <Helmet>
+        <title>Edit this location's notes - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'
+        error={error}
+        setError={setError}
       />
     </>
   )

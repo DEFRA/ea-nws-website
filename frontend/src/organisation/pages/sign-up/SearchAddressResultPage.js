@@ -1,20 +1,41 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import SelectAddressLayout from '../../layouts/address/SearchAddressResultLayout'
+import { Helmet } from 'react-helmet'
+import { useLocation, useNavigate } from 'react-router-dom'
+import SearchAddressResultLayout from '../../layouts/address/SearchAddressResultLayout'
+import { orgSignUpUrls } from '../../routes/sign-up/SignUpRoutes'
 
-export default function SelectAddressPage () {
+export default function SelectAddressPage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = () =>
-    navigate('/organisation/sign-up/address-confirm')
+  const location = useLocation()
 
-  const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/address')
+  const navigateToNextPage = () => {
+    if (location.state?.returnToReview) {
+      navigate(orgSignUpUrls.address.confirm, {
+        state: { returnToReview: true }
+      })
+    } else {
+      navigate(orgSignUpUrls.address.confirm)
+    }
+  }
+
+  const navigateToPreviousPage = () => navigate(orgSignUpUrls.address.add)
+
+  const navigateToManualAddressEntry = () => {
+    navigate(orgSignUpUrls.address.manuallyAdd)
   }
 
   return (
-    <SelectAddressLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>
+          Select an address - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
+      <SearchAddressResultLayout
+        navigateToNextPage={navigateToNextPage}
+        navigateToPreviousPage={navigateToPreviousPage}
+        navigateToManualAddressEntry={navigateToManualAddressEntry}
+      />
+    </>
   )
 }

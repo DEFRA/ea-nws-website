@@ -2,22 +2,27 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
-import { getLocationOther, setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
+import {
+  getLocationOther,
+  setCurrentLocationActionPlan
+} from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({ navigateToNextPage }) {
+export default function ActionPlanLayout({
+  navigateToNextPage,
+  error,
+  setError
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const currentActionPlan = useSelector(
-    (state) =>
-      getLocationOther(state, 'action_plan')
+  const currentActionPlan = useSelector((state) =>
+    getLocationOther(state, 'action_plan')
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
-  const [error, setError] = useState('')
   const charLimit = 500
+  const actionPlanId = 'action-plan'
 
   useEffect(() => {
     if (actionPlan.length > charLimit) {
@@ -27,9 +32,9 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
     }
   }, [actionPlan])
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (error) return
-
     dispatch(setCurrentLocationActionPlan(actionPlan))
     // should update the geosafe profile here?
 
@@ -43,13 +48,18 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
 
   return (
     <>
-      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
+      <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Action plan (optional)</h1>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: actionPlanId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Action plan (optional)
+            </h1>
             <div className='govuk-body'>
               <p>
                 Use this section to indicate what you can do to reduce the
@@ -57,6 +67,8 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
                 then move stock to the top floor and evacuate.
               </p>
               <TextArea
+                id={actionPlanId}
+                name='action-plan'
                 error={error}
                 inputType='text'
                 rows='5'
@@ -64,6 +76,7 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
                 value={actionPlan}
                 className='govuk-textarea'
                 additionalInfo={`You can enter up to ${charLimit} characters`}
+                visuallyHidden={true}
               />
               <Button
                 text='Continue'

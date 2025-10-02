@@ -1,27 +1,117 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useCookies, withCookies } from 'react-cookie'
+import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
+import StartPage from './common/pages/start/StartPage'
+import { clearAuth, setLastActivity } from './common/redux/userSlice'
+import { backendCall } from './common/services/BackendService'
+import { removeHoverIosSafari } from './common/services/formatters/iosDoubleTapRemoval'
+import { loadGA, removeGA } from './common/services/hooks/GoogleAnalytics'
+import RouteWrapper from './common/wrappers/RouteWrapper'
+import { orgManageLocationsUrls } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import { authenticatedRoutes, routes } from './routes'
 
-export default function App () {
+function App() {
   const auth = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
   const [isInactive, setIsInactive] = useState(false)
   const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
   const inactivityTimer = useRef(null)
   const redirectTimer = useRef(null)
-  const currentRoute = window.location.pathname
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'authToken',
+    'CookieControl'
+  ])
+  const hasAuthCookie = cookies.authToken
+  const dispatch = useDispatch()
+  const lastActivity = useSelector((state) => state.session.lastActivity)
+  const [gtmId, setGtmId] = useState(null)
+
+  useEffect(() => {
+    removeHoverIosSafari()
+    !cookies.CookieControl &&
+      setCookie(
+        'CookieControl',
+        { analytics: false, preferencesSet: false, popup: true },
+        { maxAge: 60 * 60 * 24 * 365 }
+      )
+      const getGtmId = async () => {
+        const { data } = await backendCall(
+          'data',
+          'api/values/gtm'
+        )
+        if (data) {
+          setGtmId(data)
+        } else {
+          setGtmId(null)
+        }
+      }
+      !gtmId && getGtmId()
+  }, [])
+
+  useEffect(() => {
+    if (gtmId) {
+      if (cookies?.CookieControl?.analytics) {
+      loadGA(gtmId)
+      } else {
+        removeGA(true)
+      }
+    }
+  }, [cookies, gtmId])
+
+  // remove GA if cookies are manually deleted
+  if ('cookieStore' in window) {
+    window.cookieStore.addEventListener('change', (event) => {
+      for (const cookie of event.deleted) {
+        if (cookie.name.includes('_ga')) {
+          // don't remove cookies as they have already been removed
+          removeGA(false)
+        }
+      }
+    })
+  }
+
+  /* Clear local storage if no cookies,
+  cookies are only for the browser session. */
+  useEffect(() => {
+    if (auth && !hasAuthCookie) {
+      dispatch(clearAuth())
+    }
+  }, [hasAuthCookie])
+
+  /* Remove the cookie and clear local storage
+  after inactivity period. This protects when closing
+  all website tabs (but not the browser) so there is
+  still a session cookie */
+  useEffect(() => {
+    if (lastActivity) {
+      const currentTime = Date.now()
+      const timeout =
+        (Number(process.env.REACT_APP_INACTIVITY_POPUP) +
+          Number(process.env.REACT_APP_TIMEOUT_POPUP)) *
+        1000
+      if (currentTime - lastActivity > timeout) {
+        removeCookie('authToken', { path: '/' })
+        dispatch(clearAuth())
+      }
+    }
+  }, [lastActivity])
 
   useEffect(() => {
     if (isPopUpOnScreen === false) {
       const resetInactivityTimer = () => {
-        if (auth) {
+        if (hasAuthCookie) {
           clearTimeout(inactivityTimer.current)
           clearTimeout(redirectTimer.current)
           setIsInactive(false)
+          /* Keep track of the last active time to be
+          used to determine whether to clear storage and
+          cookies. */
+          dispatch(setLastActivity(Date.now()))
           inactivityTimer.current = setTimeout(() => {
             setIsInactive(true)
             setIsPopUpOnScreen(true)
@@ -31,11 +121,10 @@ export default function App () {
 
       const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
 
-      if (auth) {
+      if (hasAuthCookie) {
         events.forEach((event) =>
           window.addEventListener(event, resetInactivityTimer)
         )
-        resetInactivityTimer()
       }
 
       return () => {
@@ -46,7 +135,7 @@ export default function App () {
         clearTimeout(redirectTimer.current)
       }
     }
-  }, [auth, isPopUpOnScreen])
+  }, [hasAuthCookie, isPopUpOnScreen])
 
   useEffect(() => {
     if (isPopUpOnScreen === true) {
@@ -57,66 +146,72 @@ export default function App () {
     }
   }, [isPopUpOnScreen])
 
-  const handleStayLoggedIn = () => {
+  const handleStayLoggedIn = (event) => {
+    event.preventDefault()
     setIsInactive(false)
     setIsPopUpOnScreen(false)
     clearTimeout(redirectTimer.current)
   }
 
-  const isSignOutRoute = () => {
-    if (
-      currentRoute.includes('/signout') ||
-      currentRoute === '/account/delete/confirm'
-    ) {
-      return true
-    } else {
-      return false
-    }
+  const isSignOutRoute = (path) => {
+    return (
+      path.includes('/signout') ||
+      path === '/account/delete/confirm'
+    )
   }
 
   const SignBackInLink = () => {
-    if (currentRoute.includes('organisation')) {
-      return '/organisation/sign-back-in'
-    } else {
-      return '/sign-back-in'
-    }
+    return '/sign-back-in'
   }
 
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Routes>
-        <Route path='/' element={<Layout />}>
-          {authenticatedRoutes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                auth || isSignOutRoute()
-                  ? (
-                      route.component
-                    )
-                  : (
+      <RouteWrapper>
+        <Routes>
+          <Route path='/' element={<StartPage />} />
+          <Route path='/' element={<Layout />}>
+            {authenticatedRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  (hasAuthCookie || isSignOutRoute(route.path)) ? (
+                    route.component
+                  ) : (
                     <Navigate to={SignBackInLink()} />
-                    )
-              }
-            />
-          ))}
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                 (route.path === '/signin' || route.path === '/signup/register-location/search') && auth
-                   ? <Navigate to='/home' replace />
-                   : route.component
-              }
-            />
-          ))}
-
-        </Route>
-      </Routes>
+                  )
+                }
+              />
+            ))}
+            {routes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  (route.path === '/sign-in' ||
+                    route.path === '/signup/register-location/search') &&
+                  hasAuthCookie ? (
+                    <Navigate
+                      to={
+                        signinType === 'org'
+                          ? orgManageLocationsUrls.monitoring.view
+                          : '/home'
+                      }
+                      replace
+                    />
+                  ) : (
+                    route.component
+                  )
+                }
+              />
+            ))}
+          </Route>
+        </Routes>
+      </RouteWrapper>
       {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}
     </BrowserRouter>
   )
 }
+
+export default withCookies(App)

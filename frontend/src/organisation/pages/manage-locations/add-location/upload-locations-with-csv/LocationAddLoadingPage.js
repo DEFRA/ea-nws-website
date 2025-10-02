@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
+import {
+  setNotFoundLocations,
+  setNotInEnglandLocations
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage () {
+export default function LocationAddLoadingPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [status, setStatus] = useState('')
-  const [stage, setStage] = useState('Scanning Upload')
+  const [stage, setStage] = useState('Scanning upload')
   const [validLocations, setValidLocations] = useState(null)
   const [invalidLocations, setInvalidLocations] = useState(null)
+  const [duplicateLocations, setDuplicateLocations] = useState(null)
   const location = useLocation()
+  const authToken = useSelector((state) => state.session.authToken)
   const fileName = location.state?.fileName
+  const [errors, setErrors] = useState(null)
 
   if (!fileName) {
     // theres not fileName so navigate back. will need to give an error
@@ -30,19 +40,28 @@ export default function LocationAddLoadingPage () {
           state: {
             fileName,
             valid: validLocations,
-            invalid: invalidLocations
+            duplicates: duplicateLocations
           }
         })
       }
     }
     if (status === 'complete') {
       continueToNextPage()
+    } else if (status === 'rejected') {
+      // navigate back to the upload page and pass the errors
+      navigate(orgManageLocationsUrls.add.uploadFile, {
+        state: {
+          errors
+        }
+      })
     }
   }, [status])
 
   // Check the status of the processing and update state
   useEffect(() => {
-    const interval = setInterval(async () => {
+    const interval = setInterval(async function getStatus() {
+      if (getStatus.isRunning) return
+      getStatus.isRunning = true
       const dataToSend = { fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
@@ -54,9 +73,38 @@ export default function LocationAddLoadingPage () {
           setStage(data.stage)
         }
         if (data?.status !== status) {
+          if (data?.error) {
+            setErrors(data.error)
+          }
           if (data?.data) {
-            setValidLocations(data.data?.valid.length)
-            setInvalidLocations(data.data?.invalid.length)
+            setValidLocations(data.data.valid.length)
+
+            // Duplicate location that are found
+            const duplicateLocations = data.data.invalid.filter(
+              (invalid) =>
+                Array.isArray(invalid.error) &&
+                invalid.error.includes('duplicate') &&
+                invalid.error.length === 1
+            ).length
+            setDuplicateLocations(duplicateLocations)
+
+            // Not in England locations
+            const notInEnglandLocations = data.data.invalid.filter(
+              (invalid) =>
+                Array.isArray(invalid.error) &&
+                invalid.error.includes('not in England')
+            ).length
+            dispatch(setNotInEnglandLocations(notInEnglandLocations))
+
+            // Not found locations
+            dispatch(
+              setNotFoundLocations(
+                data.data.invalid.length -
+                  duplicateLocations -
+                  notInEnglandLocations
+              )
+            )
+            setInvalidLocations(data.data.invalid.length)
           }
           setStatus(data.status)
         }
@@ -67,16 +115,16 @@ export default function LocationAddLoadingPage () {
       if (errorMessage) {
         // redirect to error page, something went wrong
       }
+      getStatus.isRunning = false
     }, 2000)
     return () => {
       clearInterval(interval)
     }
   }, [])
 
-  // Only temporary to trigger file processing until scanning in AWS is implemented
   useEffect(() => {
     const startProcessing = async () => {
-      const dataToSend = { Message: fileName }
+      const dataToSend = { Message: fileName, authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_file',
@@ -91,9 +139,17 @@ export default function LocationAddLoadingPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Loading - Manage locations - Get flood warnings (professional) -
+          GOV.UK
+        </title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-full govuk-!-text-align-centre'>
-          <h1 className='govuk-heading-l'>{stage}</h1>
+          <h1 className='govuk-heading-l' id='main-content'>
+            {stage}
+          </h1>
           <div className='govuk-body'>
             <Spinner size='75' />
           </div>

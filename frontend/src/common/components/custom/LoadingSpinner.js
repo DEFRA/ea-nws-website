@@ -1,22 +1,30 @@
-import Spinner from 'react-bootstrap/Spinner'
+import { ProgressBar, Spinner } from 'react-bootstrap'
 
-export default function LoadingSpinner ({ text, loadingText = 'loading...' }) {
+export default function LoadingSpinner({
+  text,
+  loadingText = 'loading...',
+  percent = null,
+  wide = false
+}) {
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          marginTop: '3rem'
-        }}
-      >
-        <h2 className='govuk-heading-m'>{text}</h2>
-        <div style={{ marginTop: '0.2rem' }}>
-          <Spinner
-            animation='border'
-            style={{ width: '3rem', height: '3rem' }}
-          />
+      <div className='loading-spinner-container'>
+        {text && <h2 className='govuk-heading-m'>{text}</h2>}
+        <div className='loading-spinner'>
+          {percent ? (
+            <ProgressBar
+              now={parseInt(percent)}
+              label={loadingText !== 'Error' ? `${parseInt(percent)}%`: ``}
+              style={{ width: wide? '45rem' : '20rem', height: '2rem' }}
+              variant={loadingText !== 'Error' ?` info` : `danger`}
+            />
+          ) : (
+            <Spinner
+              animation='border'
+              variant='primary'
+              style={{ width: '3rem', height: '3rem' }}
+            />
+          )}
         </div>
         {loadingText}
       </div>

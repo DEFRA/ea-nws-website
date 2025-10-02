@@ -3,7 +3,7 @@ import AddMobileLayout from '../../../layouts/mobile/AddMobileLayout'
 
 export default function AddMobilePhonePage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/managecontacts/validate-mobile')
   }
 
@@ -12,9 +12,11 @@ export default function AddMobilePhonePage () {
   }
 
   return (
-    <AddMobileLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <AddMobileLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

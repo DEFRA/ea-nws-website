@@ -1,9 +1,11 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import ConfirmDeleteContactDetailsLayout from '../../../../layouts/contact-management/ConfirmDeleteContactDetailsLayout'
+
 export default function RemoveContactFromReviewConfirmationPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = (type, contact) => {
+  const navigateToNextPage = (type, contact) => {
     navigate('/signup/review', {
       state: {
         removedType: type,
@@ -17,9 +19,14 @@ export default function RemoveContactFromReviewConfirmationPage () {
   }
 
   return (
-    <ConfirmDeleteContactDetailsLayout
-      NavigateToNextPage={() => NavigateToNextPage()}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Are you sure you want to this remove contact? - Get flood warnings - GOV.UK</title>
+      </Helmet>
+      <ConfirmDeleteContactDetailsLayout
+        navigateToNextPage={() => navigateToNextPage()}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

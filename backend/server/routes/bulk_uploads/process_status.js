@@ -1,8 +1,11 @@
+const { logger } = require('../../plugins/logging')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { getJsonData } = require('../../services/elasticache')
+const {
+  getJsonData
+} = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -14,11 +17,12 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { fileName } = request.payload
+        const { redis } = request.server.app
 
         if (fileName) {
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
 
-          const result = await getJsonData(elasticacheKey)
+          const result = await getJsonData(redis, elasticacheKey)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {
@@ -28,6 +32,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

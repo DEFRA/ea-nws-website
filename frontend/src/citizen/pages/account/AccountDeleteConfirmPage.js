@@ -1,26 +1,63 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
+import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import { clearAuth } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
-export default function AccountDeleteConfirmPage () {
+export default function AccountDeleteConfirmPage() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const profile = useSelector((state) => state.session.profile)
+  const [servicePhase, setServicePhase] = useState(false)
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'authToken',
+    'CookieControl'
+  ])
+
+  async function getServicePhase() {
+    const { data } = await backendCall('data', 'api/service/get_service_phase')
+    setServicePhase(data)
+  }
+
+  async function notifyAccountDeletionSuccess() {
+    const dataToSend = {
+      email: profile.emails[0],
+      fullName: profile.firstname + ' ' + profile.lastname
+    }
+
+    await backendCall(dataToSend, 'api/notify/account_deletion', navigate)
+  }
+
   useEffect(() => {
+    getServicePhase()
+    if (profile.emails[0] && profile.firstname && profile.lastname) {
+      notifyAccountDeletionSuccess()
+    }
     dispatch(clearAuth())
-  })
+    removeCookie('authToken', { path: '/' })
+  }, [])
 
   return (
     <>
+      <Helmet>
+        <title>Account deleted - Get flood warnings - GOV.UK</title>
+      </Helmet>
       {/* Main body */}
       <main className='govuk-main-wrapper'>
         {/* Account deletion confirmation panel */}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <ConfirmationPanel
-              title='Account deleted'
-              body="You'll no longer get flood warnings"
-            />
+            <div id='main-content' aria-label='Account deleted'>
+              <ConfirmationPanel
+                title='Account deleted'
+                body="You'll no longer get flood warnings"
+                preTitle={servicePhase === 'beta' ? 'TESTING PHASE ONLY' : ''}
+              />
+            </div>
           </div>
         </div>
 
@@ -30,25 +67,59 @@ export default function AccountDeleteConfirmPage () {
         <h2 className='govuk-heading-m'>If you change your mind</h2>
         <p className='govuk-body govuk-!-margin-bottom-6'>
           You'll need to{' '}
-          <Link to='/signup/register-location/search' className='govuk-link'>
+          <Link
+            to='/signup/service-selection'
+            className='govuk-link'
+            style={{ cursor: 'pointer' }}
+          >
             sign up again
           </Link>
           .
         </p>
-        <p className='govuk-body govuk-!-margin-bottom-6'>
-          <Link to='/survey' className='govuk-link'>
-            What do you think of this service?
-          </Link>{' '}
-          Takes 30 seconds
-        </p>
-        <h2 className='govuk-heading-m'>More about flooding</h2>
-        <p className='govuk-body govuk-!-margin-bottom-6'>
-          Find out how to{' '}
-          <Link to='https://gov.uk/flood' className='govuk-link'>
-            protect yourself and your property online from flooding
-          </Link>
-          .
-        </p>
+        {servicePhase !== 'beta' && (
+          <div>
+            <p className='govuk-body govuk-!-margin-bottom-6'>
+              Find out how to{' '}
+              <Link
+                to='https://gov.uk/flood'
+                className='govuk-link'
+                style={{ cursor: 'pointer' }}
+              >
+                protect yourself and your property online from flooding
+              </Link>
+              .
+            </p>
+            <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+              Help us improve this service
+            </h2>
+            <p className='govuk-body govuk-!-margin-bottom-6'>
+              <a
+                href='https://defragroup.eu.qualtrics.com/jfe/form/SV_6Y9YvJmgRnqd19Y'
+                className='govuk-link'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                What did you think of this service?
+              </a>{' '}
+              Takes 30 seconds
+            </p>
+          </div>
+        )}
+        {servicePhase === 'beta' && (
+          <div>
+            <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+              Now answer some questions about closing your account
+            </h1>
+            <Button
+              text='Continue'
+              className='govuk-button'
+              onClick={(event) => {
+                event.preventDefault()
+                window.location.href = 'https://forms.office.com/e/Rd76JZqNbV'
+              }}
+            />
+          </div>
+        )}
       </main>
     </>
   )

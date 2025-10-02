@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -7,10 +8,13 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { getAdditionals, updateAdditionals } from '../../../common/services/ProfileServices'
+import {
+  getAdditionals,
+  updateAdditionals
+} from '../../../common/services/ProfileServices'
 import { businessDetailsValidation } from '../../../common/services/validations/BusinessDetailsValidation'
 
-export default function ChangeBusinessDetailsPage () {
+export default function ChangeBusinessDetailsPage() {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
   const profile = session.profile
@@ -19,17 +23,24 @@ export default function ChangeBusinessDetailsPage () {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const authToken = session.authToken
-  const [businessName, setBusinessName] = useState(getAdditionals(profile, 'businessName'))
+  const [businessName, setBusinessName] = useState(
+    getAdditionals(profile, 'businessName')
+  )
   const [jobTitle, setJobTitle] = useState(getAdditionals(profile, 'jobTitle'))
-
-  const handleSubmit = async () => {
-    const { validationErrorBusiness, validationErrorJob } = businessDetailsValidation(businessName, jobTitle)
+  const businessNameId = 'business-name'
+  const jobTitleId = 'job-title'
+  const businessDetailsId = 'business-details-body'
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const { validationErrorBusiness, validationErrorJob } =
+      businessDetailsValidation(businessName, jobTitle)
     setBusinessNameError(validationErrorBusiness)
     setJobTitleError(validationErrorJob)
-    const updatedProfile = updateAdditionals(
-      profile,
-      [{ id: 'businessName', value: { s: businessName } }, { id: 'jobTitle', value: { s: jobTitle } }]
-    )
+    const updatedProfile = updateAdditionals(profile, [
+      { id: 'businessName', value: { s: businessName } },
+      { id: 'jobTitle', value: { s: jobTitle } }
+    ])
 
     const dataToSend = { profile: updatedProfile, authToken }
     if (!validationErrorBusiness && !validationErrorJob) {
@@ -41,9 +52,7 @@ export default function ChangeBusinessDetailsPage () {
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(
-          setProfile(data.profile)
-        )
+        dispatch(setProfile(data.profile))
         navigate('/account', {
           state: {
             changeBusinessDetails: true,
@@ -57,20 +66,31 @@ export default function ChangeBusinessDetailsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Additional details for business registrations - Get flood warnings -
+          GOV.UK
+        </title>
+      </Helmet>
       <BackLink to='/account' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(businessNameError || jobTitleError || error) && (
               <ErrorSummary
-                errorList={[businessNameError, jobTitleError, error]}
-              />
+              errorList={[
+                businessNameError && { text: businessNameError, componentId: businessNameId },
+                jobTitleError && { text: jobTitleError, componentId: jobTitleId },
+                error && { text: error, componentId: businessDetailsId }
+              ].filter(Boolean)}
+            />
             )}
-            <h2 className='govuk-heading-l'>
+            <h2 className='govuk-heading-l' id='main-content'>
               Additional details for business registrations
             </h2>
-            <div className='govuk-body'>
+            <div className='govuk-body' id={businessDetailsId}>
               <Input
+                id={businessNameId}
                 name='Business name (optional)'
                 inputType='text'
                 error={businessNameError}
@@ -79,6 +99,7 @@ export default function ChangeBusinessDetailsPage () {
                 defaultValue={getAdditionals(profile, 'businessName')}
               />
               <Input
+                id={jobTitleId}
                 name='Job title (optional)'
                 inputType='text'
                 error={jobTitleError}
@@ -94,6 +115,7 @@ export default function ChangeBusinessDetailsPage () {
               <Link
                 to='/account'
                 className='govuk-body govuk-link inline-link'
+                style={{ cursor: 'pointer' }}
               >
                 Cancel
               </Link>

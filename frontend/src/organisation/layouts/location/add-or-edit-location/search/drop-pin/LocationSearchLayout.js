@@ -1,119 +1,128 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Autocomplete from '../../../../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import Radio from '../../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
-export default function LocationSearchLayout ({ navigateToNextPage }) {
+export default function LocationSearchLayout({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [searchOption, setSearchOption] = useState('')
-  const [searchOptionError, setSearchOptionError] = useState('')
-  const searchOptionErrorText = 'Select how you want to find this location'
-  const [placeNameTownOrPostcode, setPlaceNameTownOrPostcode] = useState('')
-  const placeNameTownOrPostcodeText = 'Enter a place name, town or postcode'
-  const [placeNameTownOrPostcodeCoords, setPlaceNameTownOrPostcodeCoords] =
-    useState(null)
-  const [placeNameTownOrPostcodeError, setPlaceNameTownOrPostcodeError] =
-    useState('')
-  const [results, setResults] = useState(null)
 
-  // remove error if user changes search option
-  useEffect(() => {
-    setSearchOptionError('')
-    setPlaceNameTownOrPostcodeError('')
-    setPlaceNameTownOrPostcode('')
-  }, [searchOption])
+  const [showNotFound, setShowNotFound] = useState(null)
+  const [placeNameOrTown, setPlaceNameOrTown] = useState('')
+  const placeNameTownOrPostcodeText = 'Enter a place name or town in England'
+  const [placeNameOrTownCoords, setPlaceNameOrTownCoords] = useState(null)
+  const [placeNameOrTownError, setPlaceNameOrTownError] = useState('')
+  const [results, setResults] = useState(null)
+  const locationSearchId = 'location-search'
+  const debounceRef = useRef(null)
 
   // remove error if user changes place name, town or postcode
   useEffect(() => {
-    if (placeNameTownOrPostcodeError) {
-      setPlaceNameTownOrPostcodeError('')
+    if (placeNameOrTownError) {
+      setPlaceNameOrTownError('')
     }
-  }, [placeNameTownOrPostcode])
+  }, [placeNameOrTown])
 
-  const searchOptions = [
-    { label: 'Place name', value: 'PlaceName' },
-    { label: 'Town', value: 'Town' },
-    { label: 'Postcode', value: 'Postcode' }
-  ]
+  const fetchLocationResults = async (value) => {
+    const dataToSend = {
+      name: value,
+      filters: [
+        'City',
+        'Hamlet',
+        'Harbour',
+        'Other_Settlement',
+        'Suburban_Area',
+        'Town',
+        'Urban_Greenspace',
+        'Village'
+      ],
+      loop: false
+    }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/os-api/name-search',
+      navigate
+    )
+    if (!errorMessage) {
+      setResults(data)
+      setPlaceNameOrTownError('')
+      setShowNotFound(false)
+    } else {
+      // show error message from OS Api postcode search
+      setPlaceNameOrTownError(errorMessage)
+      setShowNotFound(true)
+    }
+  }
 
   const handleInputChange = async (value) => {
-    setPlaceNameTownOrPostcode(value)
+    setPlaceNameOrTown(value)
     setResults([])
-    const valueEmpty = value.length === 0
-    if (searchOption) {
-      const valueLongEnough = value.length >= 3
-      const valueValid = !valueEmpty && valueLongEnough
-      let searchFilter = null
-      if (valueValid) {
-        switch (searchOption) {
-          case searchOptions[0].value:
-            // Leave search filter set to null
-            break
-          case searchOptions[1].value:
-            searchFilter = ['City', 'Town', 'Village']
-            break
-          case searchOptions[2].value:
-            searchFilter = ['Postcode']
-            break
-          default:
-            break
-        }
-        const dataToSend = {
-          name: value,
-          filter: searchFilter
-        }
-        const { data, errorMessage } = await backendCall(
-          dataToSend,
-          'api/os-api/name-search',
-          navigate
-        )
-        if (!errorMessage) {
-          setResults(data)
-          setPlaceNameTownOrPostcodeError('')
-        } else {
-          // show error message from OS Api postcode search
-          setPlaceNameTownOrPostcodeError(errorMessage)
-        }
-      }
-    } else {
-      setSearchOptionError(valueEmpty ? '' : searchOptionErrorText)
-    }
   }
 
   const handleOnClick = (value) => {
-    setPlaceNameTownOrPostcode(value.address)
-    setPlaceNameTownOrPostcodeCoords(value.coordinates)
+    setPlaceNameOrTown(value.address)
+    setPlaceNameOrTownCoords(value.coordinates)
   }
 
-  const handleSubmit = () => {
-    if (!searchOption) {
-      setSearchOptionError(searchOptionErrorText)
-    }
-
-    const trimmedPlaceNameTownOrPostcode = placeNameTownOrPostcode.trim()
-    if (trimmedPlaceNameTownOrPostcode === '') {
-      setPlaceNameTownOrPostcodeError(placeNameTownOrPostcodeText)
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const trimmedPlaceNameOrTown = placeNameOrTown.trim()
+    if (trimmedPlaceNameOrTown === '') {
+      setPlaceNameOrTownError(placeNameTownOrPostcodeText)
     } else if (results && results.length === 0) {
-      setPlaceNameTownOrPostcodeError(
-        'Place name, town or postcode is not recognised'
-      )
+      setPlaceNameOrTownError('Place name or town is not recognised')
     }
 
-    if (
-      !searchOptionError &&
-      !placeNameTownOrPostcodeError &&
-      placeNameTownOrPostcodeCoords
-    ) {
-      dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
-      navigateToNextPage(placeNameTownOrPostcode)
+    if (!placeNameOrTownError && placeNameOrTownCoords) {
+      dispatch(setCurrentLocationCoordinates(placeNameOrTownCoords))
+      navigateToNextPage(placeNameOrTown)
+    }
+  }
+
+  // 1 second debounce on the OS API call
+  useEffect(() => {
+    if (placeNameOrTown.length < 3) {
+      setResults([])
+      return
+    }
+
+    if (placeNameOrTown) {
+      if (isPostCode(placeNameOrTown)) {
+        setPlaceNameOrTownError(
+          'You cannot enter a postcode - enter a town or place name'
+        )
+        return
+      }
+    }
+
+    // Clear timer
+    clearTimeout(debounceRef.current)
+
+    // Schedule fetch
+    debounceRef.current = setTimeout(() => {
+      fetchLocationResults(placeNameOrTown)
+    }, 1000)
+
+    // Cleanup on exit
+    return () => clearTimeout(debounceRef.current)
+  }, [placeNameOrTown])
+
+  const isPostCode = (input) => {
+    // UK postcode regex pattern
+    const postcodePattern = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i
+    const partialPostcodePattern =
+      /^[a-z](\d\d?|[a-z]\d[a-z\d]?|[a-z]?\d?\d \d[a-z]{2}|[a-z]\d [a-z] \d[a-z]{2})$/i
+
+    if (postcodePattern.test(input) || partialPostcodePattern.test(input)) {
+      return true
+    } else {
+      return false
     }
   }
 
@@ -124,50 +133,35 @@ export default function LocationSearchLayout ({ navigateToNextPage }) {
 
   return (
     <>
-      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
-          <div className='govuk-grid-column-two-thirds'>
-            {(searchOptionError || placeNameTownOrPostcodeError) && (
+          <div className='govuk-grid-column-one-half'>
+            {placeNameOrTownError && (
               <ErrorSummary
-                errorList={[searchOptionError, placeNameTownOrPostcodeError]}
+                errorList={[
+                  {
+                    text: placeNameOrTownError,
+                    componentId: locationSearchId
+                  }
+                ]}
               />
             )}
-            <h1 className='govuk-heading-l'>
-              How do you want to find the location on a map?
+            <h1 className='govuk-heading-l' id='main-content'>
+              <label for='govuk-text-input'>Find the location on a map</label>
             </h1>
-            <p>
-              We need some additional information to help us find the location.
-              Select from the following options which of these you want to use.
-            </p>
+            {flow?.includes('unmatched-locations') && (
+              <p>
+                The location you're searching for cannot be found. We need some
+                additional information to help us find it.
+              </p>
+            )}
+            {flow?.includes('unmatched-locations') && <UnmatchedLocationInfo />}
+
             <div
+              id={locationSearchId}
               className={
-                searchOptionError
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
-            >
-              {searchOptionError && (
-                <p className='govuk-error-message'>{searchOptionError}</p>
-              )}
-              <fieldset className='govuk-fieldset'>
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  {searchOptions.map((option) => (
-                    <Radio
-                      key={option.label}
-                      label={option.label}
-                      value={option.value}
-                      name='searchOptionsRadios'
-                      onChange={(e) => setSearchOption(e.target.value)}
-                    />
-                  ))}
-                </div>
-              </fieldset>
-            </div>
-            <div
-              className={
-                placeNameTownOrPostcodeError
+                placeNameOrTownError
                   ? 'govuk-form-group govuk-form-group--error'
                   : 'govuk-form-group'
               }
@@ -176,13 +170,15 @@ export default function LocationSearchLayout ({ navigateToNextPage }) {
                 className='govuk-input govuk-!-width-full'
                 name={placeNameTownOrPostcodeText}
                 inputType='text'
-                error={placeNameTownOrPostcodeError}
+                error={placeNameOrTownError}
                 onChange={(val) => handleInputChange(val)}
                 results={results}
                 menuOpen
-                value={placeNameTownOrPostcode}
+                value={placeNameOrTown}
                 onClick={(val) => handleOnClick(val)}
+                showNotFound={showNotFound}
                 nameField='address'
+                ariaDescribedBy='find-location-hint'
               />
             </div>
             <Button

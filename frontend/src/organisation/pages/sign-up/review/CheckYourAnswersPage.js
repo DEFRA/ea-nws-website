@@ -1,34 +1,65 @@
 import { React } from 'react'
-import { useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { getOrganisationAdditionals } from '../../../../common/services/ProfileServices'
+import { setProfile } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import { updateAdditionals } from '../../../../common/services/ProfileServices'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
-export default function CheckYourAnswersPage () {
-  const profile = useSelector((state) => state.session.profile)
-  const organisation = Object.assign({}, getOrganisationAdditionals(profile))
-  const navigate = useNavigate()
 
-  const handleButton = () => {
+export default function CheckYourAnswersPage() {
+  const profile = useSelector((state) => state.session.profile)
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const authToken = useSelector((state) => state.session.authToken)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleButton = async (event) => {
+    event.preventDefault()
     // TODO once we have updated API
     // call to update profile with final profile here
-    navigate('/organisation/sign-up/success')
+    const dataToSend = { organization, authToken }
+    await backendCall(dataToSend, 'api/organization/update', navigate)
+
+    const updatedProfile = updateAdditionals(profile, [
+      { id: 'signupComplete', value: { s: 'pending' } },
+      { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/success' } }
+    ])
+    dispatch(setProfile(updatedProfile))
+
+    const profileDataToSend = {
+      profile: updatedProfile,
+      authToken,
+      signinType: 'org'
+    }
+    await backendCall(profileDataToSend, 'api/profile/update', navigate)
+
+    navigate(orgSignUpUrls.success)
   }
 
   return (
     <>
-      {/* TODO - Should navigate back to Terms and Condition - Sprint 7 */}
-      <BackLink to='/organisation/sign-up/alternative-contact' />
+      <Helmet>
+        <title>
+          Check your answers - Get flood warnings (professional) - GOV.UK
+        </title>
+      </Helmet>
+      <BackLink to='/organisation/sign-up/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
-          <h2 className='govuk-heading-l'>Check your answers</h2>
-          <OrganisationDetailsTable organisation={organisation} />
+          <h2 className='govuk-heading-l' id='main-content'>
+            Check your answers
+          </h2>
+          <OrganisationDetailsTable organisation={organizationAdditionals} />
           <MainAdministratorTable profile={profile} />
           <AlternativeContactTable
-            alternativeContact={organisation.alternativeContact}
+            alternativeContact={organizationAdditionals.alternativeContact}
           />
           <Button
             onClick={handleButton}

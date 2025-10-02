@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
@@ -13,14 +14,17 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { key, paths } = request.payload
+        const { type, paths, authToken } = request.payload
+        const { redis } = request.server.app
+        const sessionData = await getJsonData(redis, authToken)
+        const key = sessionData?.orgId + type
 
         if (key) {
           let result
           if (paths) {
-            result = await getJsonData(key, paths)
+            result = await getJsonData(redis, key, paths)
           } else {
-            result = await getJsonData(key)
+            result = await getJsonData(redis, key)
           }
           if (result) {
             return h.response({ status: 200, data: result })
@@ -31,6 +35,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

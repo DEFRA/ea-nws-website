@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
@@ -23,6 +24,7 @@ module.exports = [
           return h.response(response)
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

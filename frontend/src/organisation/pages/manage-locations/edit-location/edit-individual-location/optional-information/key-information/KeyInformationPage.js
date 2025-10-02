@@ -1,22 +1,25 @@
-import { useNavigate } from 'react-router-dom'
+import { React, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import KeyInformationLayout from '../../../../../../layouts/optional-info/KeyInformationLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function KeyInformationPage () {
-  const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = (locationName) => {
-    // If user has updated the location name, we require it here
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} key information changed` }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Key information changed'
+  )
 
   return (
     <>
+      <Helmet>
+        <title>Edit this location's key information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <KeyInformationLayout
         flow='edit'
         navigateToNextPage={navigateToNextPage}
+        error={error}
       />
     </>
   )

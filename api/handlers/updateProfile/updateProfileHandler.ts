@@ -15,7 +15,7 @@ async function getUpdateProfile(
     if (Array.isArray(profile.pois)) {
       profile.pois = profile.pois.map((poi, index) => ({
         ...poi,
-        id: index + 1
+        id: `${index + 1}`
       }))
     }
 

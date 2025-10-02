@@ -1,20 +1,133 @@
 import React, { useEffect, useState } from 'react'
 import Spinner from 'react-bootstrap/esm/Spinner'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function UploadFileLayout ({
+const csvErrorText = (error, index, templateUrl) => {
+  let errorText
+  switch (error.errorType) {
+    case 'incorrect template':
+      return (
+        <p key={index} className='govuk-body'>
+          <a className='govuk-link ' href={templateUrl}>
+            Download the template
+          </a>
+          , add your organisation's locations and try again.
+        </p>
+      )
+    case 'virus':
+      return (
+        <div key={index}>
+          <p className='govuk-body'>
+            <a className='govuk-link ' href={templateUrl}>
+              Download the template
+            </a>
+            and try again.
+          </p>
+          <p classNAme='govuk-body'>
+            If you still cannot upload your organisation's locations contact us
+            within 48 hours at{' '}
+            <Link
+              className='govuk-link'
+              onClick={() => {
+                window.location =
+                  'mailto:getfloodwarnings@environment-agency.gov.uk'
+              }}
+            >
+              getfloodwarnings@environment-agency.gov.uk
+            </Link>
+            .
+          </p>
+        </div>
+      )
+    case 'Duplicates':
+      errorText =
+        'Each location name must be unique. You need to change the location names, or delete the duplicate locations from the file, for the following lines that have the same location name:'
+      break
+    case 'Missing location details':
+      errorText =
+        'You need to add either a full address and postcode or X and Y coordinates for lines:'
+      break
+    case 'Missing location name':
+      errorText = 'You need to add unique location names for lines:'
+      break
+    default:
+      return
+  }
+  return (
+    <p key={index} className='govuk-body'>
+      {errorText} <br />
+      {error.errorDetails && error.errorDetails.join(', ')}
+    </p>
+  )
+}
+
+const shapeErrorText = (error, index) => {
+  switch (error.errorType) {
+    case 'virus':
+      return (
+        <div key={index}>
+          <p className='govuk-body'>Create a new shapefile and try again.</p>
+          <p classNAme='govuk-body'>
+            If you still cannot upload your organisation's locations contact us
+            within 48 hours at{' '}
+            <Link
+              className='govuk-link'
+              onClick={() => {
+                window.location =
+                  'mailto:getfloodwarnings@environment-agency.gov.uk'
+              }}
+            >
+              getfloodwarnings@environment-agency.gov.uk
+            </Link>
+            .
+          </p>
+        </div>
+      )
+    default:
+  }
+}
+
+export default function UploadFileLayout({
   uploadMethod // Currently either "csv" or "shape"
 }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
+  const [errorShapefile, setErrorShapefile] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
+  const [csvErrors, setCsvErrors] = useState([])
+  const [templateUrl, setTemplateUrl] = useState(null)
+
+  const fileUploadInputId = 'file-upload'
+  const fileTypeErrorId = 'error-file-type'
+  const fileSizeErrorId = 'error-file-size'
+
+  async function getTemplateUrl() {
+    const { data } = await backendCall(
+      'data',
+      'api/bulk_uploads/download_template'
+    )
+    setTemplateUrl(data)
+  }
+
+  useEffect(() => {
+    if (location?.state?.errors) {
+      if (uploadMethod === 'csv') {
+        setCsvErrors(location?.state?.errors)
+      } else if (uploadMethod === 'shape') {
+        setErrorShapefile(location?.state?.errors)
+      }
+      setUploading(false)
+      getTemplateUrl()
+    }
+  }, [])
 
   const backendRoute = 'api/bulk_uploads/upload_file'
 
@@ -27,7 +140,7 @@ export default function UploadFileLayout ({
   switch (uploadMethod) {
     // CSV file uploaded for bulk upload
     case 'csv':
-      allowedFileTypes = ['text/csv']
+      allowedFileTypes = ['text/csv', 'application/vnd.ms-excel']
       maxFileSize = 5
       fileTypeHint = 'File must be .csv'
       fileTypeErrorMsg = 'The selected file must be .csv'
@@ -35,11 +148,11 @@ export default function UploadFileLayout ({
       break
     // ZIP file uploaded for shapefile parsing
     case 'shape':
-      allowedFileTypes = ['application/zip']
+      allowedFileTypes = ['application/zip', 'application/x-zip-compressed']
       maxFileSize = 5
       fileTypeHint = 'File must be .zip'
       fileTypeErrorMsg = 'The selected file must be .zip'
-      bucketFolder = 'zip-uploads'
+      bucketFolder = 'zip-uploads/zip'
       break
     default:
       // Null values already set
@@ -47,8 +160,12 @@ export default function UploadFileLayout ({
   }
 
   useEffect(() => {
-    setErrorFileType(null)
-    setErrorFileSize(null)
+    if (selectedFile !== null) {
+      setErrorFileType(null)
+      setErrorFileSize(null)
+      setCsvErrors([])
+      setErrorShapefile([])
+    }
   }, [selectedFile])
 
   const setValidSelectedFile = (data) => {
@@ -66,6 +183,13 @@ export default function UploadFileLayout ({
       return false
     }
 
+    // For firefox on windows we have to allow xls file MIME type.
+    // check the file name ends with .csv to stop .xls.
+    if (uploadMethod === 'csv' && !file.name.endsWith('.csv')) {
+      setErrorFileType(fileTypeErrorMsg)
+      return false
+    }
+
     if (file.size === 0) {
       setErrorFileSize('The file is empty')
       return false
@@ -76,10 +200,11 @@ export default function UploadFileLayout ({
     return true
   }
 
-  const handleUpload = async (e) => {
-    e.preventDefault()
+  const handleUpload = async (event) => {
+    event.preventDefault()
     setErrorFileSize(null)
     setErrorFileType(null)
+    setErrorShapefile([])
 
     if (!selectedFile) {
       setErrorFileSize('The file is empty')
@@ -128,33 +253,16 @@ export default function UploadFileLayout ({
             }
           })
         } else if (uploadMethod === 'shape') {
-          // Unzip the uploaded file and send output back to S3
-          const { errorMessage: unzipErrorMessage } = await backendCall(
-            { zipFileName: uniqFileName },
-            'api/shapefile/unzip',
-            navigate
-          )
-          if (unzipErrorMessage) {
-            throw new Error('Error uploading file')
-          }
-
-          // Validate the files contained within the zip
-          const { errorMessage: shapefileErrorMessage } = await backendCall(
-            { zipFileName: uniqFileName },
-            'api/shapefile/validate',
-            navigate
-          )
-          if (shapefileErrorMessage) {
-            // Displays appropriate error message
-            throw new Error(shapefileErrorMessage)
-          }
-
-          // TDO: Navigate to confirmation page (once made)
+          navigate(orgManageLocationsUrls.add.loadingShapefilePage, {
+            state: {
+              fileName: uniqFileName
+            }
+          })
         }
       }
     } catch (err) {
       setUploading(false)
-      setErrorFileType(err.message)
+      setErrorFileType(err)
     }
   }
 
@@ -162,67 +270,97 @@ export default function UploadFileLayout ({
     <>
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-width-two-thirds'>
         <div className='govuk-grid-row'>
-          {!uploading
-            ? (
-              <>
-                {(errorFileType || errorFileSize) && (
-                  <ErrorSummary errorList={[errorFileType, errorFileSize]} />
-                )}
-                <div className='govuk-grid-column-full'>
-                  <h1 className='govuk-heading-l'>Upload file</h1>
-                  <div
-                    className={
-                    errorFileSize || errorFileType
+          {!uploading ? (
+            <>
+              {(errorFileType ||
+                errorFileSize ||
+                csvErrors.length > 0 ||
+                errorShapefile.length > 0) && (
+                <ErrorSummary
+                  errorList={[
+                    { text: errorFileType, componentId: fileTypeErrorId },
+                    { text: errorFileSize, componentId: fileSizeErrorId },
+                    ...Array.from(
+                      errorShapefile,
+                      (error) => error.errorMessage
+                    ).map((e) => ({ text: e, componentId: fileUploadInputId })),
+                    ...Array.from(csvErrors, (error) => error.errorMessage).map(
+                      (e) => ({ text: e, componentId: fileUploadInputId })
+                    )
+                  ].filter(Boolean)}
+                />
+              )}
+              <div className='govuk-grid-column-two-thirds'>
+                <h1 className='govuk-heading-l' id='main-content'>
+                  Upload file
+                </h1>
+                <div
+                  className={
+                    errorFileSize ||
+                    errorFileType ||
+                    csvErrors.length > 0 ||
+                    errorShapefile.length > 0
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
-                  >
-                    <p className='govuk-hint'>{fileTypeHint}</p>
-                    {errorFileType && (
-                      <p id='file-upload-1-error' className='govuk-error-message'>
-                        {errorFileType}
-                      </p>
-                    )}
-                    {errorFileSize && (
-                      <p id='file-upload-2-error' className='govuk-error-message'>
-                        {errorFileSize}
-                      </p>
-                    )}
-                    <input
-                      type='file'
-                      className={
+                >
+                  <p className='govuk-hint'>{fileTypeHint}</p>
+                  {errorFileType && (
+                    <p id={fileTypeErrorId} className='govuk-error-message'>
+                      {errorFileType}
+                    </p>
+                  )}
+                  {errorFileSize && (
+                    <p id={fileSizeErrorId} className='govuk-error-message'>
+                      {errorFileSize}
+                    </p>
+                  )}
+                  {errorShapefile.map((error, index) => (
+                    <p key={index} className='govuk-error-message'>
+                      {error.errorMessage}
+                    </p>
+                  ))}
+                  {csvErrors.map((error, index) => (
+                    <p key={index} className='govuk-error-message'>
+                      {error.errorMessage}
+                    </p>
+                  ))}
+                  <input
+                    type='file'
+                    className={
                       errorFileSize || errorFileType
                         ? 'govuk-file-upload govuk-file-upload--error'
                         : 'govuk-file-upload'
                     }
-                      id='file-upload'
-                      onChange={setValidSelectedFile}
-                    />
-                  </div>
-                  <Button
-                    text='Upload'
-                    className='govuk-button'
-                    onClick={handleUpload}
+                    id={fileUploadInputId}
+                    onChange={setValidSelectedFile}
                   />
-                  <Link
-                    onClick={() => navigate(-1)}
-                    className='govuk-body govuk-link inline-link'
-                  >
-                    Cancel
-                  </Link>
                 </div>
-              </>
-              )
-            : (
-              <div className='govuk-!-text-align-centre'>
-                <h1 className='govuk-heading-l'>Uploading</h1>
-                <div className='govuk-body'>
-                  <Spinner size='75' />
-                </div>
+                {csvErrors.map((error, index) =>
+                  csvErrorText(error, index, templateUrl)
+                )}
+                {errorShapefile.map((error, index) =>
+                  shapeErrorText(error, index)
+                )}
+                <Button
+                  text='Upload file'
+                  className='govuk-button govuk-!-margin-top-4'
+                  onClick={handleUpload}
+                />
               </div>
-              )}
+            </>
+          ) : (
+            <div className='govuk-!-text-align-centre'>
+              <h1 className='govuk-heading-l' id='main-content'>
+                Uploading
+              </h1>
+              <div className='govuk-body'>
+                <Spinner size='75' />
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </>

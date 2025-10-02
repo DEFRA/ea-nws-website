@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -11,8 +12,8 @@ import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function AddMobileLayout ({
-  NavigateToNextPage,
+export default function AddMobileLayout({
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -21,6 +22,7 @@ export default function AddMobileLayout ({
   const dispatch = useDispatch()
   const sessionProfile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
+  const mobileNumberInputId = 'uk-mobile-telephone-number'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -53,7 +55,7 @@ export default function AddMobileLayout ({
           setError(errorMessage)
         } else {
           dispatch(setCurrentContact(normalisedPhoneNumber))
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }
@@ -66,12 +68,18 @@ export default function AddMobileLayout ({
 
   return (
     <>
+      <Helmet>
+        <title>
+          Enter a mobile number to get flood messages by text - Get flood
+          warnings - GOV.UK
+        </title>
+      </Helmet>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h2 className='govuk-heading-l'>
+            {error && <ErrorSummary errorList={[{text: error, componentId: mobileNumberInputId}]} />}
+            <h2 className='govuk-heading-l' id='main-content'>
               Enter a mobile number to get flood messages by text
             </h2>
             <div className='govuk-body'>
@@ -80,6 +88,7 @@ export default function AddMobileLayout ({
                 hours a day.
               </p>
               <Input
+                id={mobileNumberInputId}
                 name='UK mobile telephone number'
                 inputType='text'
                 error={error}

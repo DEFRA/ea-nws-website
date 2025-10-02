@@ -1,6 +1,3 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-
 export default function ContactReviewTable ({ profile }) {
   const fullName = `${profile.firstname} ${profile.lastname}`
   return (
@@ -10,27 +7,35 @@ export default function ContactReviewTable ({ profile }) {
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-quarter'>Name</td>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
+            Name
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
-            {/* TODO - Add correct link when implemented */}
-            <Link to='/' className='govuk-link'>
+            {/* TODO: ability to change name (compatibility with geosafe), add aria-label
+            <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
-            </Link>
+            </Link> */}
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-quarter'>
+          <th
+            scope='row'
+            className='govuk-table__header  govuk-!-width-one-quarter'
+          >
             Email address
-          </td>
+          </th>
           <td className='govuk-table__cell  govuk-!-width-full'>
             {profile.emails[0]}
           </td>
           <td className='govuk-table__cell'>
-            {/* TODO - Add correct link when implemented */}
-            <Link to='/' className='govuk-link'>
+            {/* TODO: ability to change email (compatibility with geosafe), add aria-label
+            <Link to={orgSignUpUrls.change.mainAdmin} className='govuk-link'>
               Change
-            </Link>
+            </Link> */}
           </td>
         </tr>
         <br />

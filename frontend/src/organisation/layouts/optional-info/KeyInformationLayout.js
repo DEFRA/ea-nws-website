@@ -2,27 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import {
   getLocationAdditionals,
+  getLocationName,
   setCurrentLocationCriticality,
   setCurrentLocationName,
   setCurrentLocationReference,
   setCurrentLocationType
 } from '../../../common/redux/userSlice'
+import { dispatchAndSetReady } from '../../../common/redux/utils/navigationHelpers'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
+export default function KeyInformationLayout({
+  flow,
+  navigateToNextPage,
+  error
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
+  const name = useSelector((state) => getLocationName(state))
+
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const [locationName, setLocationName] = useState(
-    additionalData.locationName ? additionalData.locationName : ''
+    name || additionalData.locationName || ''
   )
   const [locationNameError, setLocationNameError] = useState('')
   const [internalReference, setInternalReference] = useState(
@@ -36,16 +43,21 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
   const [locationType, setLocationType] = useState(
     additionalData.location_type ? additionalData.location_type : ''
   )
+  const locationNameId = 'location-name'
 
   useEffect(() => {
     setLocationNameError('')
   }, [locationName])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     // location name can be amended when a user is editing a locations key information
     if (flow === 'edit') {
       // only execute if location name has been changed
-      if (locationName !== additionalData.locationName) {
+      if (
+        locationName !== name ||
+        locationName !== additionalData.locationName
+      ) {
         if (locationName) {
           const dataToSend = { authToken, locationName }
           const { errorMessage } = await backendCall(
@@ -71,13 +83,14 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
       }
     }
 
-    dispatch(setCurrentLocationReference(internalReference))
-    dispatch(setCurrentLocationCriticality(businessCriticality))
-    dispatch(setCurrentLocationType(locationType))
-
-    // should update the geosafe profile here?
-
-    navigateToNextPage(locationName)
+    dispatchAndSetReady(
+      [
+        setCurrentLocationReference(internalReference),
+        setCurrentLocationCriticality(businessCriticality),
+        setCurrentLocationType(locationType)
+      ],
+      () => navigateToNextPage()
+    )
   }
 
   const navigateBack = (event) => {
@@ -110,21 +123,29 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
 
   return (
     <>
-      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {locationNameError && (
-              <ErrorSummary errorList={[locationNameError]} />
+            {(locationNameError || error) && (
+              <ErrorSummary
+                errorList={[
+                  { text: locationNameError, componentId: locationNameId },
+                  error
+                ]}
+              />
             )}
-            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+            <h1
+              className='govuk-heading-l govuk-!-margin-top-3'
+              id='main-content'
+            >
               Key information
             </h1>
             <div className='govuk-body'>
               <Details title='Why add useful information?' text={detailsText} />
               {flow === 'edit' && (
                 <Input
+                  id={locationNameId}
                   inputType='text'
                   name='Location name'
                   onChange={(val) => setLocationName(val)}
@@ -136,6 +157,7 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
                 />
               )}
               <Input
+                id='internal-reference'
                 inputType='text'
                 name='Internal reference (optional)'
                 onChange={(val) => setInternalReference(val)}
@@ -145,6 +167,7 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
                 labelSize='s'
               />
               <Input
+                id='business-criticality'
                 inputType='text'
                 name='Business criticality (optional)'
                 onChange={(val) => setBusinessCriticality(val)}
@@ -154,6 +177,7 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
                 labelSize='s'
               />
               <Input
+                id='location-type'
                 inputType='text'
                 name='Location type (optional)'
                 onChange={(val) => setLocationType(val)}

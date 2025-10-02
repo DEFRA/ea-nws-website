@@ -11,7 +11,7 @@ export default function ValidateLandlineContactPage () {
   )
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     if (!contactPreferences.includes('PhoneCall')) {
       dispatch(addContactPreference('PhoneCall'))
     }
@@ -25,11 +25,13 @@ export default function ValidateLandlineContactPage () {
   }
 
   return (
-    <ValidateLandlineLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={DifferentHomePhone}
-      SkipValidation={SkipValidation}
-      DifferentHomePhone={DifferentHomePhone}
-    />
+    <>
+      <ValidateLandlineLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={DifferentHomePhone}
+        SkipValidation={SkipValidation}
+        DifferentHomePhone={DifferentHomePhone}
+      />
+    </>
   )
 }

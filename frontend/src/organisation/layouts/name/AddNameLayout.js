@@ -1,48 +1,43 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setProfile } from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
 import {
-  getOrganisationAdditionals,
-  setOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
+  setOrganizationName,
+  setSigninType
+} from '../../../common/redux/userSlice'
+// import { backendCall } from '../../../common/services/BackendService'
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
-export default function AddNameLayout ({
-  NavigateToNextPage,
+export default function AddNameLayout({
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
-  const profile = useSelector((state) => state.session.profile)
+  const orgNameId = 'organisation-name'
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    dispatch(setSigninType('org'))
+  }, [])
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
     const validationError = orgNameValidation(name)
-    const organisationProfile = setOrganisationAdditionals(profile)
-    const organisation = getOrganisationAdditionals(organisationProfile)
 
     if (!validationError) {
-      organisation.name = name
-
-      const updatedProfile = updateOrganisationAdditionals(
-        organisationProfile,
-        organisation
-      )
-      dispatch(setProfile(updatedProfile))
+      dispatch(setOrganizationName(name))
     } else {
       setError(validationError)
       return
     }
 
-    // Check for duplicate organisation name
+    navigateToNextPage()
+
+    /* // Check for duplicate organisation name
     const dataToSend = { name }
     const { errorMessage } = await backendCall(
       dataToSend,
@@ -59,11 +54,11 @@ export default function AddNameLayout ({
         setError(errorMessage)
       }
     } else {
-      NavigateToNextPage()
-    }
+      navigateToNextPage()
+    } */
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }
@@ -74,16 +69,25 @@ export default function AddNameLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Your organisation's name</h1>
+            {error && (
+              <ErrorSummary
+                errorList={[{ text: error, componentId: orgNameId }]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              Your organisation's name
+            </h1>
             <div className='govuk-body'>
               <Input
+                id={orgNameId}
                 inputType='text'
                 value={name}
+                name="Your organisation's name"
                 onChange={(val) => setName(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={name}
+                hideLabel={true}
               />
               <Button
                 text='Continue'

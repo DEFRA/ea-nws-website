@@ -1,19 +1,15 @@
 import { React } from 'react'
-import { useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
-import { getLocationAdditional } from '../../../../../../common/redux/userSlice'
 import ConfirmLocationLayout from '../../../../../layouts/location/add-or-edit-location/confirm-location/ConfirmLocationLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationPage () {
+export default function ConfirmLocationPage() {
   const navigate = useNavigate()
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
-  )
 
   const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} location changed` }
+      state: { successMessage: 'X and Y coordinates changed' }
     })
   }
 
@@ -25,9 +21,13 @@ export default function ConfirmLocationPage () {
 
   return (
     <>
+      <Helmet>
+        <title>Confirm location - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <ConfirmLocationLayout
         navigateToNextPage={navigateToNextPage}
         navigateToPinDropFlow={navigateToPinDropFlow}
+        flow='change-coords'
       />
     </>
   )

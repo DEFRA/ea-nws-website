@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
@@ -10,34 +10,36 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
   getLocationAdditional,
   setCurrentLocationKeywords,
-  setOrgCurrentContact
+  setOrgCurrentContactKeywords
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  getAdditionals,
-  updateAdditionals
-} from '../../../common/services/ProfileServices'
+import { getAdditionals } from '../../../common/services/ProfileServices'
 
-export default function KeywordsLayout ({
+export default function KeywordsLayout({
   keywordType,
   navigateToNextPage,
-  keywordText
+  keywordText,
+  keywordTitle = null,
+  error = null
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
 
+  // UPDATE HERE - need to update he actual endpoint
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
   useEffect(() => {
     const getOrgKeywordsOriginal = async () => {
-      const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
-      const dataToSend = { key }
+      const type =
+        keywordType === 'location'
+          ? ':t_Keywords_location'
+          : ':t_Keywords_contact'
       const { data } = await backendCall(
-        dataToSend,
+        { type, authToken },
         'api/elasticache/get_data',
         navigate
       )
-      let orgKeywords = null
+      let orgKeywords = []
       if (data) {
         orgKeywords = data
       }
@@ -47,25 +49,25 @@ export default function KeywordsLayout ({
   }, [keywordType])
 
   const currentObject = useSelector((state) =>
-    keywordType === 'location '
+    keywordType === 'location'
       ? state.session.currentLocation
         ? state.session.currentLocation
         : null
       : state.session.orgCurrentContact
-        ? state.session.orgCurrentContact
-        : null
+      ? state.session.orgCurrentContact
+      : null
   )
 
   let orgKeywords = [...orgKeywordsOriginal]
 
   const entryId = useSelector((state) =>
-    keywordType === 'location '
+    keywordType === 'location'
       ? state.session.currentLocation.id
         ? state.session.currentLocation.id
         : ''
       : state.session.orgCurrentContact.id
-        ? state.session.orgCurrentContact.id
-        : ''
+      ? state.session.orgCurrentContact.id
+      : ''
   )
 
   let currentKeywords = useSelector((state) =>
@@ -74,10 +76,14 @@ export default function KeywordsLayout ({
         ? getLocationAdditional(state, 'keywords')
         : ''
       : getAdditionals(currentObject, 'keywords')
-        ? getAdditionals(currentObject, 'keywords')
-        : ''
+      ? getAdditionals(currentObject, 'keywords')
+      : ''
   )
-  if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
+
+  // if currentKeywords is not an array
+  if (currentKeywords.length > 0 && !Array.isArray(currentKeywords)) {
+    currentKeywords = JSON.parse(currentKeywords)
+  }
 
   const checkboxArray = Array(currentKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
@@ -89,6 +95,7 @@ export default function KeywordsLayout ({
   const [keywords, setKeywords] = useState([])
   const [searchInput, setSearchInput] = useState(null)
 
+  const keywordInputId = 'keywordInput'
   const maxKeywords = 50
   const maxKeywordChar = 20
   const maxKeywordError =
@@ -140,7 +147,8 @@ export default function KeywordsLayout ({
     }
   }
 
-  const handleAddKeyword = () => {
+  const handleAddKeyword = (event) => {
+    event.preventDefault()
     if (searchInput) {
       if (searchInput.length > maxKeywordChar) {
         setKeywordError(maxKeywordCharError)
@@ -162,7 +170,8 @@ export default function KeywordsLayout ({
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
     const keywordsArrayChecked = []
 
     // Loop over keywords array
@@ -229,13 +238,9 @@ export default function KeywordsLayout ({
     if (keywordType === 'location') {
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
-      const updatedContact = updateAdditionals(currentObject, [
-        {
-          id: 'keywords',
-          value: JSON.stringify(keywordsArrayChecked)
-        }
-      ])
-      dispatch(setOrgCurrentContact(updatedContact))
+      dispatch(
+        setOrgCurrentContactKeywords(JSON.stringify(keywordsArrayChecked))
+      )
     }
 
     navigateToNextPage()
@@ -248,31 +253,42 @@ export default function KeywordsLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            {keywordError && <ErrorSummary errorList={[keywordError]} />}
-            <h1 className='govuk-heading-l'>
-              {`Add keywords for this ${keywordType} (optional)`}
+          <div className='govuk-grid-column-one-half'>
+            {(keywordError || error) && (
+              <ErrorSummary
+                errorList={[
+                  { text: keywordError, componentId: keywordInputId },
+                  error
+                ]}
+              />
+            )}
+            <h1 className='govuk-heading-l' id='main-content'>
+              {keywordTitle ||
+                `Add keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
               {keywordText}
-
-              {keywordsArray.length !== 0 &&
-                keywordsArray.map((keyword, index) => (
-                  <div className='govuk-checkboxes--small' key={index}>
-                    <Checkbox
-                      label={keyword}
-                      checked={isCheckboxCheckedArray[index]}
-                      onChange={(e) => {
-                        handleCheckboxChange(e.target.checked, index)
-                      }}
-                    />
-                  </div>
-                ))}
-
+              {/* Div with role='status' in order for the change to announce for screen readers */}
+              <div role='status' aria-live='polite'>
+                {keywordsArray.length !== 0 &&
+                  keywordsArray.map((keyword, index) => (
+                    <div className='govuk-checkboxes--small' key={index}>
+                      <Checkbox
+                        key={index}
+                        id={`keyword-${index}`}
+                        ariaLabelledBy={`keyword-${index}-label`}
+                        label={keyword}
+                        checked={isCheckboxCheckedArray[index]}
+                        onChange={(e) => {
+                          handleCheckboxChange(e.target.checked, index)
+                        }}
+                      />
+                    </div>
+                  ))}
+              </div>
               <div
                 className={
                   keywordError
@@ -281,13 +297,23 @@ export default function KeywordsLayout ({
                 }
               >
                 {keywordError && (
-                  <p className='govuk-error-message'>{keywordError}</p>
+                  <p className='govuk-error-message'>
+                    <span className='govuk-visually-hidden'>Error:</span>
+                    {keywordError}
+                  </p>
                 )}
               </div>
+              <label
+                htmlFor='keywordInput'
+                className='govuk-label govuk-!-padding-bottom-2'
+              >
+                Type keyword
+              </label>
               <div className='inline-button'>
                 <Autocomplete
                   inputType='text'
                   value={searchInput}
+                  id={keywordInputId}
                   onChange={(val) => handleOnChange(val)}
                   onClick={(val) => handleOnClick(val)}
                   className='govuk-input govuk-input--width-20'
@@ -295,6 +321,7 @@ export default function KeywordsLayout ({
                   position='absolute'
                   showNotFound={false}
                   nameField='name'
+                  ariaLabel='Add keyword'
                 />
                 <Button
                   text='Add keyword'
@@ -302,12 +329,19 @@ export default function KeywordsLayout ({
                   className='govuk-button govuk-button--secondary govuk-!-margin-top-0'
                 />
               </div>
-
               <Button
                 text='Continue'
                 className='govuk-button'
                 onClick={handleSubmit}
               />
+              {keywordType !== 'location' && (
+                <Link
+                  to='/organisation/manage-contacts/add/notes'
+                  className='govuk-link inline-link govuk-body'
+                >
+                  Skip
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -6,11 +6,36 @@ const {
   convertGeoSafeProfile,
   convertWebProfile
 } = require('./formatters/profileFormatter')
+const { logger } = require('../plugins/logging')
 
 const getErrorMessage = (path, errorMessage) => {
   const apiPath = path.split('/').pop()
   const apiPathCode = apiPath.concat('_', errorMessage.code)
   return apiToFrontendError[apiPathCode] || errorMessage.desc
+}
+
+const setLastModified = (additionals) => {
+  if (!additionals) {
+      additionals = []
+  }
+  let idFound = false
+  let otherAdditionals = {}
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      idFound = true
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      otherAdditionals['lastModified'] = Date.now()
+      additionals[i].value = { s: JSON.stringify(otherAdditionals) }
+    }
+  }
+  if (!idFound) {
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ ['lastModified']: Date.now() }) }
+    })
+  }
+
+  return additionals
 }
 
 const apiCall = async (data, path) => {
@@ -22,6 +47,25 @@ const apiCall = async (data, path) => {
     webProfile = JSON.parse(JSON.stringify(data.profile))
     data.profile = convertWebProfile(data.profile)
   }
+
+  if (data.location) {
+    // data.location is only present in update and create location requests
+    // set the last modified date for the location
+    data.location.additionals = setLastModified(data.location?.additionals)
+
+    if (
+      data.location?.coordinates?.latitude &&
+      data.location?.coordinates?.longitude
+    ) {
+      data.location.coordinates.latitude = parseInt(
+        data.location.coordinates.latitude * 10 ** 6
+      )
+      data.location.coordinates.longitude = parseInt(
+        data.location.coordinates.longitude * 10 ** 6
+      )
+    }
+  }
+
 
   try {
     const response = await axios.post(url, data, {
@@ -41,9 +85,50 @@ const apiCall = async (data, path) => {
       )
     }
 
+    if (
+      response.data.location?.coordinates?.latitude &&
+      response.data.location?.coordinates?.longitude
+    ) {
+      response.data.location.coordinates.latitude =
+        response.data.location.coordinates.latitude / 10 ** 6
+      response.data.location.coordinates.longitude =
+        response.data.location.coordinates.longitude / 10 ** 6
+    }
+
+    if (response.data.location?.geometry?.geoJson) {
+      response.data.location.geometry.geoJson = JSON.stringify(
+        {
+          type: 'Feature',
+          properties: {},
+          geometry: JSON.parse(response.data.location.geometry.geoJson)
+        }
+      )
+    }
+
+    if (response.data.locations) {
+      response.data.locations.forEach((location) => {
+        if (location.coordinates?.latitude && location.coordinates?.longitude) {
+          location.coordinates.latitude =
+            location.coordinates.latitude / 10 ** 6
+          location.coordinates.longitude =
+            location.coordinates.longitude / 10 ** 6
+        }
+        if (location?.geometry?.geoJson) {
+          location.geometry.geoJson = JSON.stringify(
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: JSON.parse(location.geometry.geoJson)
+            }
+          )
+        }
+      })
+    }
+
     return { status: response.status, data: response.data }
   } catch (error) {
     if (error.response) {
+      logger.error(error.response)
       const { status } = error.response
       if (status === 400) {
         return {
@@ -59,6 +144,7 @@ const apiCall = async (data, path) => {
         }
       }
     } else if (error.request) {
+      logger.error(error.request)
       // no response was received - probably need to return
       // returning an error so frontend can handle
       return {
@@ -66,6 +152,7 @@ const apiCall = async (data, path) => {
         errorMessage: 'Oops something broke, try again'
       }
     }
+    logger.error(error)
   }
   return null
 }

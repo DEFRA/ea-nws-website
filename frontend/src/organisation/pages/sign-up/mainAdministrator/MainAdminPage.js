@@ -1,21 +1,28 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import MainAdminLayout from '../../../layouts/admin/MainAdminLayout'
+import { orgSignUpUrls } from '../../../routes/sign-up/SignUpRoutes'
 
 export default function MainAdminPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
-    navigate('/organisation/sign-up/admin-details')
+  const navigateToNextPage = () => {
+    navigate(orgSignUpUrls.admin.details)
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/sector')
+    navigate(orgSignUpUrls.signUp)
   }
 
   return (
-    <MainAdminLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-    />
+    <>
+      <Helmet>
+        <title>Will you be the main administrator on this account? - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
+      <MainAdminLayout
+        navigateToNextPage={navigateToNextPage}
+        NavigateToPreviousPage={NavigateToPreviousPage}
+      />
+    </>
   )
 }

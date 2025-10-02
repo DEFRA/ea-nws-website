@@ -1,14 +1,15 @@
+import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import KeywordsLayout from '../../../../layouts/optional-info/KeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddKeywordsPage () {
+export default function AddKeywordsPage() {
   const navigate = useNavigate()
 
   const keywordText = (
     <p>
-      You can add new keywords. Or you can remove existing keywords associated
-      with this location by unticking the relevant box.
+      You can add new keywords. Or you can remove existing keywords by unticking
+      the relevant box.
       <br /> <br />
       <strong> Why add keywords </strong>
       <br /> <br />
@@ -22,18 +23,21 @@ export default function AddKeywordsPage () {
       <br /> <br />
       You can add a maximum of 50 keywords and each keyword can be single or
       multiple words, for example ‘South’ or ‘South West’.
-      <br /> <br />
-      Once you use a keyword it will be saved so you can select it for any other
-      contacts.
     </p>
   )
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addNotes)
   }
 
   return (
     <>
+      <Helmet>
+        <title>
+          Add keywords for this location - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       <KeywordsLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'

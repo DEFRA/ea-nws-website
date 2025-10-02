@@ -1,24 +1,32 @@
-import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
+/* import { useState } from 'react' */
+import * as turf from '@turf/turf'
+import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+/* import locationPin from '../../../../../common/assets/images/location_pin.svg' */
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { getLocationAdditionals } from '../../../../../common/redux/userSlice'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+/* import FullscreenMap from '../FullscreenMap' */
 import LocationHeader from './location-information-components/LocationHeader'
 
-export default function LocationInformationPage () {
+export default function LocationInformationPage() {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const webLocation = geoSafeToWebLocation(
+    JSON.parse(JSON.stringify(currentLocation))
+  )
   const additionalData = useSelector((state) => getLocationAdditionals(state))
-  console.log(additionalData)
+  /* const [showMap, setShowMap] = useState(false) */
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []
+  const locationName = currentLocation.name || additionalData.locationName
 
   const formattedAddress = currentLocation.address?.split(',')
 
@@ -35,6 +43,29 @@ export default function LocationInformationPage () {
     }
   }
 
+  const getShapePolygonArea = () => {
+    if (!currentLocation.geometry) {
+      return 0
+    }
+
+    const formatShapeArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+
+    const areaInSqKm = turf.area(webLocation.geometry.geoJson) / 1000000
+    return formatShapeArea(Math.round(areaInSqKm))
+  }
+
+  const getLineLength = () => {
+    if (!currentLocation.geometry) {
+      return 0
+    }
+
+    return turf
+      .length(webLocation.geometry.geoJson, { units: 'kilometers' })
+      .toFixed(1)
+  }
+
   const LocationData = () => {
     switch (additionalData.location_data_type) {
       case LocationDataType.X_AND_Y_COORDS:
@@ -46,14 +77,11 @@ export default function LocationInformationPage () {
           </>
         )
       case LocationDataType.SHAPE_POLYGON:
-        // code to return shape area
-        return <>2 square km (dummy data)</>
+        return <>{getShapePolygonArea()} square km</>
       case LocationDataType.SHAPE_LINE:
-        // code to return length of line
-        return <>0.5km (dummy data)</>
+        return <>{getLineLength()}km </>
       case LocationDataType.BOUNDARY:
-        // code to return boundary name
-        return <>Unitary Authority (dummy data)</>
+        return <>{additionalData.location_type}</>
     }
   }
 
@@ -84,8 +112,7 @@ export default function LocationInformationPage () {
         </h2>
         {additionalData.location_data_type !== LocationDataType.BOUNDARY && (
           <Link
-            className='govuk-link govuk-!-display-inline-block'
-            style={{ float: 'right' }}
+            className='govuk-link right'
             onClick={(e) => navigateToChangeLocation(e)}
           >
             Change
@@ -139,6 +166,10 @@ export default function LocationInformationPage () {
     </>
   )
 
+  /*  const openMap = () => {
+    setShowMap(true)
+  } */
+
   const navigateBack = (e) => {
     e.preventDefault()
     navigate(orgManageLocationsUrls.view.dashboard)
@@ -146,7 +177,9 @@ export default function LocationInformationPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <Helmet>
+        <title>{locationName ? locationName : 'This location'}'s information - Manage locations - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <LocationHeader
@@ -162,8 +195,7 @@ export default function LocationInformationPage () {
                   Address
                 </h2>
                 <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
+                  className='govuk-link right'
                   to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.address
@@ -189,14 +221,13 @@ export default function LocationInformationPage () {
             {/* Key Information details */}
             {additionalData.location_data_type !==
               LocationDataType.BOUNDARY && (
-                <div className='govuk-!-margin-top-7'>
-                  <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
-                    Key Information
-                  </h2>
-                  <Link
-                    className='govuk-link govuk-!-display-inline-block'
-                    style={{ float: 'right' }}
-                    to={
+              <div className='govuk-!-margin-top-7'>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+                  Key Information
+                </h2>
+                <Link
+                  className='govuk-link right'
+                  to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.keyInformation
                   }
@@ -207,7 +238,7 @@ export default function LocationInformationPage () {
                   <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                     Location name
                   </h3>
-                  <p>{additionalData.locationName}</p>
+                  <p>{locationName}</p>
                   {additionalData.internal_reference && (
                     <>
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
@@ -236,14 +267,13 @@ export default function LocationInformationPage () {
             )}
 
             {/* Keywords details */}
-            {additionalData.keywords && (
+            {keywords.length > 0 && (
               <div className='govuk-!-margin-top-7'>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Keywords
                 </h2>
                 <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
+                  className='govuk-link right'
                   to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.keywords
@@ -263,8 +293,7 @@ export default function LocationInformationPage () {
                   Action Plan
                 </h2>
                 <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
+                  className='govuk-link right'
                   to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.actionPlan
@@ -273,7 +302,7 @@ export default function LocationInformationPage () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <pre>{additionalData.action_plan}</pre>
+                <p className='action-plan-body'>{additionalData.action_plan}</p>
               </div>
             )}
 
@@ -284,8 +313,7 @@ export default function LocationInformationPage () {
                   Notes
                 </h2>
                 <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
+                  className='govuk-link right'
                   to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.notes
@@ -294,131 +322,155 @@ export default function LocationInformationPage () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{additionalData.notes}</p>
+                <p className='notes-body'>{additionalData.notes}</p>
               </div>
             )}
 
             {/* Add more info links */}
             <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
-              {!currentLocation.address &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
+              <div className='govuk-!-margin-bottom-1'>
+                {!currentLocation.address &&
+                  additionalData.location_data_type !==
+                    LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link'
                       to={
-                      orgManageLocationsUrls.edit.individualLocation
-                        .optionalInformation.address
-                    }
+                        orgManageLocationsUrls.edit.individualLocation
+                          .optionalInformation.address
+                      }
                     >
                       Add address
                     </Link>
-              )}
-              {!additionalData.internal_reference &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
+                  )}
+              </div>
+              <div className='govuk-!-margin-bottom-1'>
+                {!additionalData.internal_reference &&
+                  additionalData.location_data_type !==
+                    LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link'
                       to={
-                      orgManageLocationsUrls.edit.individualLocation
-                        .optionalInformation.keyInformation
-                    }
+                        orgManageLocationsUrls.edit.individualLocation
+                          .optionalInformation.keyInformation
+                      }
                     >
                       Add internal reference
                     </Link>
-              )}
-              {!additionalData.business_criticality &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
+                  )}
+              </div>
+              <div className='govuk-!-margin-bottom-1'>
+                {!additionalData.business_criticality &&
+                  additionalData.location_data_type !==
+                    LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link'
                       to={
-                      orgManageLocationsUrls.edit.individualLocation
-                        .optionalInformation.keyInformation
-                    }
+                        orgManageLocationsUrls.edit.individualLocation
+                          .optionalInformation.keyInformation
+                      }
                     >
                       Add business criticality
                     </Link>
-              )}
-              {!additionalData.location_type &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
+                  )}
+              </div>
+              <div className='govuk-!-margin-bottom-1'>
+                {!additionalData.location_type &&
+                  additionalData.location_data_type !==
+                    LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link'
                       to={
-                      orgManageLocationsUrls.edit.individualLocation
-                        .optionalInformation.keyInformation
-                    }
+                        orgManageLocationsUrls.edit.individualLocation
+                          .optionalInformation.keyInformation
+                      }
                     >
                       Add location type
                     </Link>
-              )}
-              {!additionalData.keywords && (
-                <Link
-                  className='govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={
-                    orgManageLocationsUrls.edit.individualLocation
-                      .optionalInformation.keywords
-                  }
-                >
-                  Add keywords
-                </Link>
-              )}
-              {!additionalData.action_plan && (
-                <Link
-                  className='govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={
-                    orgManageLocationsUrls.edit.individualLocation
-                      .optionalInformation.actionPlan
-                  }
-                >
-                  Add action plan
-                </Link>
-              )}
-              {!additionalData.notes && (
-                <Link
-                  className='govuk-!-display-block'
-                  to={
-                    orgManageLocationsUrls.edit.individualLocation
-                      .optionalInformation.notes
-                  }
-                >
-                  Add notes
-                </Link>
-              )}
+                  )}
+              </div>
+              <div className='govuk-!-margin-bottom-1'>
+                {(!keywords || keywords.length === 0) && (
+                  <Link
+                    className='govuk-link'
+                    to={
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.keywords
+                    }
+                  >
+                    Add keywords
+                  </Link>
+                )}
+              </div>
+              <div className='govuk-!-margin-bottom-1'>
+                {!additionalData.action_plan && (
+                  <Link
+                    className='govuk-link'
+                    to={
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.actionPlan
+                    }
+                  >
+                    Add action plan
+                  </Link>
+                )}
+              </div>
+              <div>
+                {!additionalData.notes && (
+                  <Link
+                    className='govuk-link'
+                    to={
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.notes
+                    }
+                  >
+                    Add notes
+                  </Link>
+                )}
+              </div>
             </div>
             {/* flood risk details */}
             {additionalData.location_data_type ===
               LocationDataType.X_AND_Y_COORDS && (
-                <div className='govuk-!-margin-top-7'>
-                  <Details
-                    title='What is a flood risk?'
-                    text={floodRiskDetails}
-                  />
-                </div>
+              <div className='govuk-!-margin-top-7'>
+                <Details
+                  title='What is a flood risk?'
+                  text={floodRiskDetails}
+                />
+              </div>
             )}
           </div>
           {/* other half - map */}
-          {/* nly show map if data allows */}
-          {currentLocation.coordinates?.latitude && currentLocation.coordinates?.longitude &&
-              (
-                <div className='govuk-grid-column-one-half'>
-                  <Map showMapControls={false} zoomLevel={14} />
-                  <div className='govuk-!-margin-top-4'>
-                    <FloodWarningKey type='both' />
-                  </div>
-                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                    This is not a live flood map
-                  </span>
-                  <span className='govuk-caption-m govuk-!-font-size-16'>
-                    It shows fixed areas we provide flood warnings and alerts for
-                  </span>
-                  <div className=' govuk-!-margin-top-4'>
-                    <RoomOutlinedIcon style={{ fontSize: 30 }} />
-                    <Link>Open Map</Link>
-                  </div>
-                </div>
-              )}
-
+          <div
+            className='govuk-grid-column-one-half'
+            role='group'
+            aria-label='map showing fixed areas that we provide flood warnings and alerts for'
+          >
+            <Map showMapControls={false} zoomLevel={14} />
+            <FloodWarningKey />
+            <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+              This is not a live flood map
+            </span>
+            <span className='govuk-caption-m govuk-!-font-size-16'>
+              it shows fixed areas that we provide flood warnings and alerts for
+            </span>
+            {/* <div
+              className=' govuk-!-margin-top-4'
+              style={{ display: 'flex', marginLeft: '-0.5rem' }}
+            >
+              <img src={locationPin} alt='Location pin icon' />
+              <Link className='govuk-link' onClick={openMap}>
+                Open map
+              </Link>
+            </div>
+            {showMap && (
+              <FullscreenMap
+                showMap={showMap}
+                setShowMap={setShowMap}
+                locations={[webLocation]}
+                filteredLocations={[webLocation]}
+              />
+            )} */}
+          </div>
         </div>
       </main>
     </>

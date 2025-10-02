@@ -1,13 +1,9 @@
-import React from 'react'
-import BackLink from '../../../common/components/custom/BackLink'
-import { useNavigate } from 'react-router'
+import PrivacyNoticeLayout from '../../../common/layouts/footer-link-layouts/PrivacyNoticeLayout'
 
-export default function PrivacyNoticePage () {
-  const navigate = useNavigate()
+export default function PrivacyNoticePage() {
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
-      <h1 className='govuk-heading-l'>Privacy notice</h1>
+      <PrivacyNoticeLayout isOrg={true} />
     </>
   )
 }

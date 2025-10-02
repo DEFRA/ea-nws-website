@@ -1,33 +1,68 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+export default function Footer() {
+  const location = useLocation()
+  const isOrganisationPage =
+    location.pathname.includes('organisation') &&
+    !location.pathname.includes('sign-up')
 
-export default function Footer () {
   return (
     <>
-      <footer className='govuk-footer govuk-!-margin-top-9'>
-        <div className='govuk-width-container'>
+      <footer className='govuk-footer app-footer'>
+        <div
+          className={
+            isOrganisationPage
+              ? 'custom-width-container'
+              : 'govuk-width-container'
+          }
+        >
           <div className='govuk-footer__meta'>
             <div className='govuk-footer__meta-item govuk-footer__meta-item--grow'>
               <h2 className='govuk-visually-hidden'>Support links</h2>
               <ul className='govuk-footer__inline-list'>
                 <li className='govuk-footer__inline-list-item'>
-                  <Link className='govuk-footer__link' to='/contact'>
+                  <Link
+                    className='govuk-footer__link'
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/contact'
+                        : '/contact'
+                    }
+                  >
                     Contact
                   </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <Link className='govuk-footer__link' to='/privacy'>
+                  <Link
+                    className='govuk-footer__link'
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/privacy'
+                        : '/privacy'
+                    }
+                  >
                     Privacy
                   </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <Link className='govuk-footer__link' to='/cookies'>
+                  <Link
+                    className='govuk-footer__link'
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/cookies'
+                        : '/cookies'
+                    }
+                  >
                     Cookies
                   </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link'
-                    to='/accessibility-statement'
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/accessibility-statement'
+                        : '/accessibility-statement'
+                    }
                   >
                     Accessibility statement
                   </Link>
@@ -35,7 +70,11 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link'
-                    to='/terms-and-conditions'
+                    to={
+                      location.pathname.includes('organisation')
+                        ? '/organisation/terms-and-conditions'
+                        : '/terms-and-conditions'
+                    }
                   >
                     Terms and conditions
                   </Link>

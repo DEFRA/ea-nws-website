@@ -1,25 +1,22 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
-import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
 import FloodWarningKey from '../../../../common/components/custom/FloodWarningKey'
+import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
 import Map from '../../../../common/components/custom/Map'
 import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import AlertType from '../../../../common/enums/AlertType'
-import { setProfile } from '../../../../common/redux/userSlice'
+import { setLocationRegistrations } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { csvToJson } from '../../../../common/services/CsvToJson'
-import {
-  getLocationOtherAdditional,
-  getRegistrationParams,
-  removeLocation,
-  updateLocationsAlertTypes
-} from '../../../../common/services/ProfileServices'
+import { getRegistrationParams } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
+import { useFetchAlerts } from '../../../../common/services/hooks/GetHistoricalAlerts'
 
 const floodWarningCardDetails = (
   <>
@@ -48,40 +45,104 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+const removeLocationdetails = (
+  <>
+    <p>You must keep at least one location on your account.</p>
+    <p>
+      <Link className='govuk-link' to='/manage-locations/add/search'>
+        Add a new location
+      </Link>{' '}
+      before removing any you do not need.
+    </p>
+    <p>
+      Or you could{' '}
+      <Link className='govuk-link' to='/account/delete'>
+        delete your account
+      </Link>{' '}
+      instead.
+    </p>
+  </>
+)
+
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { type } = useParams()
   const [successMessage, setSuccessMessage] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const locationRegistrations = useSelector(
+    (state) => state.session.locationRegistrations || null
+  )
+  const canRemoveLocation = profile.pois.length > 1
+  const [selectedFloodArea, setSelectedFloodArea] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
-  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const floodHistoryData = useFetchAlerts()
   const [floodAlertCount, setFloodAlertCount] = useState(null)
   const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
+  const [locationType, setLocationType] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  let alertTypes = getLocationOtherAdditional(
-    selectedLocation.additionals,
-    'alertTypes'
-  )
+  let locationsAlertTypes =
+    locationRegistrations?.find((loc) => loc.locationId == selectedLocation.id)
+      ?.registrations[0]?.params?.alertTypes || []
 
-  const [optionalAlerts, setOptionalAlerts] = useState(
-    alertTypes.includes(AlertType.FLOOD_ALERT)
-  )
+  const initialAlerts = locationsAlertTypes
+    ? locationsAlertTypes.includes(AlertType.FLOOD_ALERT)
+    : false
+  const [savedOptionalAlerts, setSavedOptionalAlerts] = useState(initialAlerts)
+  const [pendingOptionalAlerts, setPendingOptionalAlerts] =
+    useState(initialAlerts)
 
-  const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId() {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  const isSavedLocationTargetArea = (locationName, areas) => {
+    return areas.filter((area) => locationName === area.properties.TA_Name)
+  }
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function setupSelectedLocation() {
+      // need to check if location was added as a nearby target area (TA)
+      // if added as a nearby TA, location name will be that nearby TA name
+      // 1.5km bbox is set as placename search radius is set at 1.5km
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude
+        selectedLocation.coordinates.longitude,
+        0.001
       )
+
+      const locationIsWarningArea = isSavedLocationTargetArea(
+        selectedLocation.address,
+        warningArea.features
+      )
+
+      const locationIsAlertArea = isSavedLocationTargetArea(
+        selectedLocation.address,
+        alertArea.features
+      )
+
+      if (locationIsWarningArea.length > 0) {
+        setLocationType('severe')
+        setSelectedFloodArea(locationIsWarningArea[0])
+      } else if (locationIsAlertArea.length > 0) {
+        setLocationType('alert')
+        setSelectedFloodArea(locationIsAlertArea[0])
+      } else {
+        if (warningArea?.features.length > 0) {
+          setLocationType('both')
+        } else {
+          setLocationType('alert')
+        }
+      }
 
       const isError = !warningArea && !alertArea
       if (isError) {
@@ -90,9 +151,22 @@ export default function ViewLocationPage () {
 
       setAlertArea(alertArea)
       setWarningArea(warningArea)
+      setIsLoading(false)
     }
-    fetchFloodAreaData()
+    setupSelectedLocation()
+    getPartnerId()
   }, [])
+
+  const mapType = () => {
+    switch (locationType) {
+      case 'severe':
+        return [AlertType.FLOOD_WARNING]
+      case 'alert':
+        return [AlertType.FLOOD_ALERT]
+      case 'both':
+        return [AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+    }
+  }
 
   // get flood history data
   useEffect(() => {
@@ -100,14 +174,16 @@ export default function ViewLocationPage () {
       const oneYearAgo = moment().subtract(1, 'years')
       if (alertArea) {
         const taCodes = alertArea.features.map((el) => {
-          return el.properties.FWS_TACODE
+          return el.properties.TA_CODE
         })
 
-        const filteredAlert = floodHistoryData
-          .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+        const alertAreasHistory = floodHistoryData.filter(
+          (alert) =>
+            taCodes.includes(alert.TA_CODE) &&
+            new Date(alert.startDate) > oneYearAgo
+        )
 
-        setFloodAlertCount(filteredAlert.length)
+        setFloodAlertCount(alertAreasHistory.length)
       }
     }
 
@@ -116,37 +192,20 @@ export default function ViewLocationPage () {
 
       if (warningArea) {
         const taCodes = warningArea.features.map((el) => {
-          return el.properties.FWS_TACODE
+          return el.properties.TA_CODE
         })
 
-        const filteredWarning = floodHistoryData
-          .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+        const warningAreasHistory = floodHistoryData.filter(
+          (alert) =>
+            taCodes.includes(alert.TA_CODE) &&
+            new Date(alert.startDate) > oneYearAgo
+        )
 
-        setSevereFloodWarningCount(filteredWarning.length)
+        setSevereFloodWarningCount(warningAreasHistory.length)
       }
     }
 
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-
-      data &&
-        fetch(data)
-          .then((response) => response.text())
-          .then((data) => {
-            setFloodHistoryData(csvToJson(data))
-          })
-          .catch((e) =>
-            console.error('Could not fetch Historic Flood Warning file', e)
-          )
-    }
-
-    async function processFloodHist () {
-      await getHistoryUrl()
-
+    async function processFloodHist() {
       if (floodHistoryData) {
         if (alertArea) {
           setHistoricalAlertNumber()
@@ -159,48 +218,46 @@ export default function ViewLocationPage () {
     processFloodHist()
   }, [alertArea, warningArea])
 
-  const deleteLocation = async () => {
-    const data = {
-      authToken,
-      locationId: selectedLocation.id,
-      partnerId: '1' // this is currently a hardcoded value - geosafe to update us
-    }
-
-    const { errorMessage } = await backendCall(
-      data,
-      'api/partner/unregister_location_from_partner',
-      navigate
-    )
-
-    if (!errorMessage) {
-      const updatedProfile = removeLocation(profile, selectedLocation.address)
-      dispatch(setProfile(updatedProfile))
-
-      await updateGeosafeProfile(updatedProfile)
-
-      navigate('/manage-locations/remove', {
-        state: { name: selectedLocation.address }
-      })
-    }
+  const deleteLocation = async (event) => {
+    event.preventDefault()
+    navigate('/manage-locations/remove', {
+      state: {
+        name: selectedLocation.address,
+        locationId: selectedLocation.id,
+        partnerId
+      }
+    })
   }
 
   const handleOptionalAlertSave = async (e) => {
     e.preventDefault()
     let updatedProfile
 
-    if (optionalAlerts) {
-      if (!alertTypes.includes(AlertType.FLOOD_ALERT)) {
-        alertTypes = [...alertTypes, AlertType.FLOOD_ALERT]
+    if (!locationsAlertTypes) {
+      locationsAlertTypes = [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_WARNING,
+        AlertType.REMOVE_FLOOD_SEVERE_WARNING,
+        AlertType.INFO
+      ]
+    }
+
+    if (pendingOptionalAlerts) {
+      if (!locationsAlertTypes.includes(AlertType.FLOOD_ALERT)) {
+        locationsAlertTypes = [...locationsAlertTypes, AlertType.FLOOD_ALERT]
       }
     } else {
-      alertTypes = alertTypes.filter((type) => type !== AlertType.FLOOD_ALERT)
+      locationsAlertTypes = locationsAlertTypes.filter(
+        (type) => type !== AlertType.FLOOD_ALERT
+      )
     }
 
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
-      params: getRegistrationParams(profile, alertTypes)
+      partnerId,
+      params: getRegistrationParams(profile, locationsAlertTypes)
     }
 
     const { errorMessage } = await backendCall(
@@ -210,36 +267,38 @@ export default function ViewLocationPage () {
     )
 
     if (!errorMessage) {
-      updatedProfile = await updateLocationAlerts(alertTypes)
-
-      await updateGeosafeProfile(updatedProfile)
+      // Update alerts in locationRegistrations
+      const updatedLocationRegistrations = locationRegistrations?.map((loc) =>
+        loc.locationId == selectedLocation.id
+          ? {
+              ...loc,
+              registrations: [
+                {
+                  params: {
+                    ...loc?.registrations[0]?.params,
+                    alertTypes: locationsAlertTypes
+                  }
+                }
+              ]
+            }
+          : loc
+      )
+      dispatch(setLocationRegistrations(updatedLocationRegistrations))
 
       const message = `You've turned ${
-        optionalAlerts ? 'on' : 'off'
+        pendingOptionalAlerts ? 'on' : 'off'
       } early flood alerts`
+
       setSuccessMessage(message)
+      setSavedOptionalAlerts(pendingOptionalAlerts)
     }
-  }
-
-  const updateLocationAlerts = async (alertTypes) => {
-    const updatedProfile = updateLocationsAlertTypes(
-      profile,
-      selectedLocation,
-      alertTypes
-    )
-    dispatch(setProfile(updatedProfile))
-
-    return updatedProfile
-  }
-
-  const updateGeosafeProfile = async (updatedProfile) => {
-    const dataToSend = { authToken, profile: updatedProfile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (
     <>
-      <CitizenAccountNavigation currentPage='/home' />
+      <Helmet>
+        <title>View location - Get flood warnings - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
@@ -252,15 +311,40 @@ export default function ViewLocationPage () {
                   text={successMessage}
                 />
               )}
-              <h1 className='govuk-heading-l'>{selectedLocation.address}</h1>
-              <Map types={areaAreas} />
-              <FloodWarningKey type={type} />
+              <h1
+                className='govuk-!-margin-top-4 govuk-heading-l'
+                id='main-content'
+              >
+                {selectedLocation.address}
+              </h1>
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <div
+                  className={
+                    isMobile
+                      ? 'view-location-map mobile'
+                      : 'view-location-map desktop'
+                  }
+                  role='group'
+                  aria-label={`map showing ${selectedLocation.address}`}
+                >
+                  <Map
+                    types={mapType()}
+                    interactive={selectedFloodArea === null}
+                    selectedFloodArea={selectedFloodArea}
+                    showOnlySelectedFloodArea={selectedFloodArea !== null}
+                    showMarker={selectedFloodArea === null}
+                  />
+                </div>
+              )}
+              <FloodWarningKey type={locationType} />
               <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
                 Flood messages you get
               </h2>
 
               {/* flood warnings card */}
-              {(type === 'both' || type === 'severe') && (
+              {(locationType === 'both' || locationType === 'severe') && (
                 <div className='govuk-summary-card'>
                   <div
                     className='govuk-summary-card__title-wrapper'
@@ -286,7 +370,7 @@ export default function ViewLocationPage () {
               )}
 
               {/* flood alerts card */}
-              {(type === 'both' || type === 'alert') && (
+              {(locationType === 'both' || locationType === 'alert') && (
                 <div className='govuk-summary-card'>
                   <div className='govuk-summary-card__title-wrapper govuk-!-padding-0'>
                     <div
@@ -294,13 +378,13 @@ export default function ViewLocationPage () {
                       style={{ flexDirection: 'column' }}
                     >
                       <h2 className='govuk-summary-card__title govuk-!-font-size-24'>
-                        Flood alerts {type === 'both' && '(optional)'}
+                        Flood alerts {locationType === 'both' && '(optional)'}
                       </h2>
                       <p className='govuk-!-margin-bottom-1 govuk-!-margin-top-0'>
                         Early alerts that flooding is possible - be prepared
                       </p>
                     </div>
-                    {type === 'both' && (
+                    {locationType === 'both' && (
                       <div
                         className='govuk-summary-card__title-wrapper'
                         style={{ alignItems: 'center' }}
@@ -316,8 +400,10 @@ export default function ViewLocationPage () {
                               name='alert'
                               type='radio'
                               value='on'
-                              checked={optionalAlerts === true}
-                              onChange={() => setOptionalAlerts(true)}
+                              checked={pendingOptionalAlerts === true}
+                              onChange={() => {
+                                setPendingOptionalAlerts(true)
+                              }}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -333,8 +419,10 @@ export default function ViewLocationPage () {
                               name='alert'
                               type='radio'
                               value='off'
-                              checked={optionalAlerts === false}
-                              onChange={() => setOptionalAlerts(false)}
+                              checked={pendingOptionalAlerts === false}
+                              onChange={() => {
+                                setPendingOptionalAlerts(false)
+                              }}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -346,8 +434,13 @@ export default function ViewLocationPage () {
                         </div>
 
                         <Link
-                          onClick={(e) => handleOptionalAlertSave(e)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleOptionalAlertSave(e)
+                          }}
                           className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
+                          style={{ cursor: 'pointer' }}
+                          aria-label='Save your preference for receiving early flood alerts'
                         >
                           Save
                         </Link>
@@ -355,11 +448,6 @@ export default function ViewLocationPage () {
                     )}
                   </div>
                   <div className='govuk-summary-card__content'>
-                    <p className='govuk-body'>
-                      {optionalAlerts
-                        ? 'You currently get these early flood alerts.'
-                        : 'You turned these early flood alerts off.'}
-                    </p>
                     <p className='govuk-body'>
                       Sent in last year: <b>{floodAlertCount || 0}</b>
                     </p>
@@ -371,14 +459,25 @@ export default function ViewLocationPage () {
                 </div>
               )}
 
-              <h2 className='govuk-heading-m'>
-                To stop all flood messages for this location
-              </h2>
-              <Button
-                onClick={deleteLocation}
-                className='govuk-button govuk-button--warning'
-                text='Remove location'
-              />
+              {canRemoveLocation ? (
+                <>
+                  <h2 className='govuk-heading-m'>
+                    To stop all flood messages for this location
+                  </h2>
+                  <Button
+                    onClick={deleteLocation}
+                    className='govuk-button govuk-button--warning'
+                    text='Remove location'
+                  />
+                </>
+              ) : (
+                <>
+                  <Details
+                    title='If you want to remove this location'
+                    text={removeLocationdetails}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

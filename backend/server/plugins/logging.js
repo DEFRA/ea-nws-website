@@ -24,6 +24,7 @@ const logger = pino(
 )
 
 module.exports = {
+  logger,
   plugin: require('hapi-pino'),
   options: {
     instance: logger,

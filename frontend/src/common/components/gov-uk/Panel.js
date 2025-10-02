@@ -2,7 +2,8 @@ import React from 'react'
 
 export default function ConfirmationPanel ({
   title,
-  body
+  body,
+  preTitle
 }) {
   return (
     <>
@@ -12,17 +13,25 @@ export default function ConfirmationPanel ({
         aria-labelledby='govuk-panel__title'
         data-module='govuk-panel'
       >
+
         <div className='govuk-panel__title'>
-          <h2
+          {preTitle &&
+            <h2
+              className='govuk-panel__title'
+              id='govuk-panel-title'
+            >
+              {preTitle}
+            </h2>}
+          <h1
             className='govuk-panel__title'
             id='govuk-panel-title'
           >
             {title}
-          </h2>
+          </h1>
         </div>
         {body &&
           <div className='govuk-panel__body'>
-            <h3 className='govuk-panel__body'>{body}</h3>
+            <p className='govuk-panel__body'>{body}</p>
           </div>}
       </div>
     </>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
@@ -9,21 +10,23 @@ import {
   setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManuallyFindLocationsPage () {
+export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
   const [locations, setLocations] = useState(null)
   const location = useLocation()
 
   useEffect(() => {
     const getInvLocations = async () => {
-      const dataToSend = { orgId }
       const { data } = await backendCall(
-        dataToSend,
+        { authToken },
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
@@ -38,7 +41,8 @@ export default function ManuallyFindLocationsPage () {
     getInvLocations()
   }, [])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     navigate('/organisation/manage-locations/view-locations')
   }
 
@@ -67,9 +71,7 @@ export default function ManuallyFindLocationsPage () {
     const poi = location
     dispatch(setCurrentLocation(webToGeoSafeLocation(poi)))
     const isAddressValid = await findAvailableAddresses(
-      poi.additionals.other.full_address +
-        ', ' +
-        poi.additionals.other.postcode
+      poi.additionals.other.full_address + ', ' + poi.additionals.other.postcode
     )
     // If there is results for the unmatched address, navigate to the radio screen
     // where user can select how to find the address
@@ -83,6 +85,12 @@ export default function ManuallyFindLocationsPage () {
 
   return (
     <>
+      <Helmet>
+        <title>
+          Manually find locations - Manage locations - Get flood warnings
+          (professional) - GOV.UK
+        </title>
+      </Helmet>
       {location.state && (
         <NotificationBanner
           className={`govuk-notification-banner ${
@@ -105,7 +113,7 @@ export default function ManuallyFindLocationsPage () {
               <p>
                 <>
                   <Link
-                    to='/' // link to download file of all locations not matched
+                    to='#' // link to download file of all locations not matched
                     className='govuk-link'
                   >
                     Download a file of all the locations not matched
@@ -117,38 +125,36 @@ export default function ManuallyFindLocationsPage () {
                 {locations?.length} locations not matched
               </h2>
 
-              <table class='govuk-table govuk-table--small-text-until-tablet'>
-                <thead class='govuk-table__head'>
-                  <tr class='govuk-table__row'>
-                    <th scope='col' class='govuk-table__header'>
+              <table className='govuk-table govuk-table--small-text-until-tablet'>
+                <thead className='govuk-table__head'>
+                  <tr className='govuk-table__row'>
+                    <th scope='col' className='govuk-table__header'>
                       Location name
                     </th>
-                    <th scope='col' class='govuk-table__header'>
+                    <th scope='col' className='govuk-table__header'>
                       Address uploaded
                     </th>
-                    <th scope='col' class='govuk-table__header'>
+                    <th scope='col' className='govuk-table__header'>
                       Postcode
                     </th>
-                    <th scope='col' class='govuk-table__header' />
+                    <th scope='col' className='govuk-table__header' />
                   </tr>
                 </thead>
-                <tbody class='govuk-table__body'>
+                <tbody className='govuk-table__body'>
                   {locations &&
                     locations.map((location, index) => {
                       return (
-                        <tr class='govuk-table__row' key={index}>
-                          <th scope='row' class='govuk-table__header'>
-                            {location.name}
+                        <tr className='govuk-table__row' key={index}>
+                          <th scope='row' className='govuk-table__header'>
+                            {location.name || location.additionals.locationName}
                           </th>
-                          <td class='govuk-table__cell'>
-                            {
-                              location.additionals.other.full_address
-                            }
+                          <td className='govuk-table__cell'>
+                            {location.additionals.other.full_address}
                           </td>
-                          <td class='govuk-table__cell'>
+                          <td className='govuk-table__cell'>
                             {location.additionals.other.postcode}
                           </td>
-                          <td class='govuk-table__cell'>
+                          <td className='govuk-table__cell'>
                             <Link
                               onClick={(event) => handleFind(event, location)}
                             >

@@ -5,6 +5,8 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { logger } = require('../../plugins/logging')
+const { GENERIC_ERROR_MSG } = require('../../constants/errorMessages')
 
 module.exports = [
   {
@@ -17,21 +19,22 @@ module.exports = [
         }
 
         const { registerToken, code } = request.payload
-        const error = authCodeValidation(code)
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && registerToken) {
           const response = await apiCall(
-            { registerToken: registerToken, code: code },
+            { registerToken: registerToken, code: formattedCode },
             'member/registerValidate'
           )
           return h.response(response)
         } else {
           return h.response({
             status: 500,
-            errorMessage: !error ? 'Oops, something happened!' : error
+            errorMessage: !error ? GENERIC_ERROR_MSG : error
           })
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

@@ -1,5 +1,5 @@
 export const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
-  const rows = text.split('\n')
+  const rows = text.split(/\r?\n|\r|\n/g)
   const headers = rows[0].split(',')
 
   const regex = new RegExp(
@@ -10,7 +10,7 @@ export const csvToJson = (text, quoteChar = '"', delimiter = ',') => {
   const match = (line) =>
     [...line.matchAll(regex)].map((m) => m[2]).slice(0, -1)
 
-  let lines = text.split('\n')
+  let lines = text.split(/\r?\n|\r|\n/g)
   const heads = headers ?? match(lines.shift())
   lines = lines.slice(1)
 

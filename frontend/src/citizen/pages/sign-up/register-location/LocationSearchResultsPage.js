@@ -1,17 +1,19 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import {
-  setAdditionalAlerts,
-  setProfile
-} from '../../../../common/redux/userSlice'
+import { setProfile } from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
-export default function LocationSearchResultsPage () {
+export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const locationSearchType = useSelector(
+    (state) => state.session.locationSearchType
+  )
 
   const continueToNextPage = (
+    floodAreasAlreadyAdded, //placeholder - do not remove
     isInWarningArea,
     isInAlertArea,
     isWithinWarningAreaProximity,
@@ -40,35 +42,33 @@ export default function LocationSearchResultsPage () {
 
     dispatch(setProfile(profile))
 
-    if (isInWarningArea) {
-      // take user to warning screen and then to alerts screen for optional alerts
-      dispatch(setAdditionalAlerts(true))
-      navigate('/signup/register-location/location-in-severe-warning-area')
-    } else if (isInAlertArea) {
-      // take user to non optional flood alerts screen
-      dispatch(setAdditionalAlerts(false))
-      navigate('/signup/register-location/location-in-alert-area')
-    } else if (isWithinWarningAreaProximity) {
-      // users location is within distance to severe flood area
+    if (isInWarningArea || isInAlertArea) {
+      navigate('/signup/register-location/location-in-flood-areas')
+    } else if (isWithinWarningAreaProximity || isWithinAlertAreaProximity) {
+      if (locationSearchType === 'placename') {
+        return navigate('/signup/register-location/location-near-flood-areas')
+      }
       navigate(
-        `/signup/register-location/location-in-proximity-area/${'severe'}`
-      )
-    } else if (isWithinAlertAreaProximity) {
-      // users location is within distance to alert flood area
-      navigate(
-        `/signup/register-location/location-in-proximity-area/${'alert'}`
+        '/signup/register-location/location-cannot-get-direct-flood-messages'
       )
     } else if (isError) {
       navigate('/error')
     } else {
-      // location isnt in danger area
       navigate('/signup/register-location/no-danger')
     }
   }
 
+  const returnToSearchPage = '/signup/register-location/search'
+
   return (
     <>
-      <LocationSearchResultsLayout continueToNextPage={continueToNextPage} />
+      <Helmet>
+        <title>Select an address - Get flood warnings - GOV.UK</title>
+      </Helmet>
+      <LocationSearchResultsLayout
+        continueToNextPage={continueToNextPage}
+        returnToSearchPage={returnToSearchPage}
+      />
     </>
   )
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -7,21 +8,25 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import UserContactType from '../../../common/enums/UserContactType'
+import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { formatGovUKTime } from '../../../common/services/formatters/TimeFormatter'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  updateAdditionals
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 
-export default function ValidateLandlineLayout ({
-  NavigateToNextPage,
+export default function ValidateLandlineLayout({
+  navigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  isSignUpJourney = false
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -33,6 +38,7 @@ export default function ValidateLandlineLayout ({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const codeInputId = 'enter-code'
 
   // if error remove code sent notification
   useEffect(() => {
@@ -41,10 +47,11 @@ export default function ValidateLandlineLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } =
+      authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken, msisdn: homePhone, code }
+      const dataToSend = { authToken, msisdn: homePhone, code: formattedCode }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/landline/validate',
@@ -60,8 +67,25 @@ export default function ValidateLandlineLayout ({
           setError(errorMessage)
         }
       } else {
-        dispatch(setProfile(data.profile))
-        NavigateToNextPage()
+        let updatedProfile = data.profile
+
+        if (isSignUpJourney) {
+          // Set lastAccessedUrl explicitly for signup journey
+          updatedProfile = updateAdditionals(updatedProfile, [
+            { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          ])
+
+          const profileUpdateResponse = await backendCall(
+            { profile: updatedProfile, authToken },
+            'api/profile/update',
+            navigate
+          )
+
+          dispatch(setProfile(profileUpdateResponse.data.profile))
+        } else {
+          dispatch(setProfile(data.profile))
+        }
+        navigateToNextPage(homePhone)
       }
     }
   }
@@ -78,7 +102,7 @@ export default function ValidateLandlineLayout ({
       setError(errorMessage)
     } else {
       setCodeResent(true)
-      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeResentTime(new Date())
       setCodeExpired(false)
     }
   }
@@ -86,7 +110,11 @@ export default function ValidateLandlineLayout ({
   const skipValidation = (event) => {
     event.preventDefault()
     // remove homephone from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(profile, homePhone)
+    const updatedProfile = removeVerifiedContact(
+      profile,
+      homePhone,
+      UserContactType.Telephone
+    )
     // we will need to add the homephone back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(
@@ -114,12 +142,28 @@ export default function ValidateLandlineLayout ({
         (unverifiedHomePhone) => unverifiedHomePhone.address === homePhone
       )
     ) {
-      updatedProfile = removeUnverifiedContact(profile, homePhone)
-      dispatch(setProfile(removeUnverifiedContact(profile, homePhone)))
+      updatedProfile = removeUnverifiedContact(
+        profile,
+        homePhone,
+        UserContactType.Telephone
+      )
+      dispatch(
+        setProfile(
+          removeUnverifiedContact(profile, homePhone, UserContactType.Telephone)
+        )
+      )
     }
     if (profile.homePhones.includes(homePhone)) {
-      updatedProfile = removeVerifiedContact(profile, homePhone)
-      dispatch(setProfile(removeVerifiedContact(profile, homePhone)))
+      updatedProfile = removeVerifiedContact(
+        profile,
+        homePhone,
+        UserContactType.Telephone
+      )
+      dispatch(
+        setProfile(
+          removeVerifiedContact(profile, homePhone, UserContactType.Telephone)
+        )
+      )
     }
     const dataToSend = { profile: updatedProfile, authToken }
     const { errorMessage } = await backendCall(
@@ -134,66 +178,85 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
-      {codeExpired
-        ? (
-          <ExpiredCodeLayout getNewCode={getNewCode} />
-          )
-        : (
-          <>
-            <BackLink onClick={backLink} />
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && (
-                    <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
-                    />
-                  )}
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Confirm telephone number</h2>
-                  <div className='govuk-body'>
-                    We're calling this number to read out a code:
-                    <InsetText text={homePhone} />
-                    Use the code within 4 hours or it will expire.
-                    <br /> <br />
-                    <Input
-                      className='govuk-input govuk-input--width-10'
-                      name='Enter code'
-                      inputType='text'
-                      error={error}
-                      onChange={(val) => setCode(val)}
-                    />
-                    <Button
-                      className='govuk-button'
-                      text='Continue'
-                      onClick={handleSubmit}
-                    />
-                    <Link
-                      onClick={skipValidation}
-                      className='govuk-link'
-                      style={{
-                        display: 'inline-block',
-                        padding: '8px 10px 7px'
-                      }}
-                    >
-                      Skip and confirm later
-                    </Link>
-                    <br />
-                    <Link onClick={getNewCode} className='govuk-link'>
-                      Get a new code
-                    </Link>
-                    <br /> <br />
-                    <Link onClick={differentHomePhone} className='govuk-link'>
-                      Enter a different telephone number
-                    </Link>
-                  </div>
+      <Helmet>
+        <title>
+          Confirm your telephone number - Get flood warnings - GOV.UK
+        </title>
+      </Helmet>
+      {codeExpired ? (
+        <ExpiredCodeLayout getNewCode={getNewCode} />
+      ) : (
+        <>
+          <BackLink onClick={backLink} />
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {codeResent && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + formatGovUKTime(codeResentTime)}
+                  />
+                )}
+                {error && (
+                  <ErrorSummary
+                    errorList={[{ text: error, componentId: codeInputId }]}
+                  />
+                )}
+                <h2 className='govuk-heading-l' id='main-content'>
+                  Confirm telephone number
+                </h2>
+                <div className='govuk-body'>
+                  We're calling this number to read out a code:
+                  <InsetText text={homePhone} />
+                  Use the code within 4 hours or it will expire.
+                  <br /> <br />
+                  <Input
+                    id={codeInputId}
+                    className='govuk-input govuk-input--width-10'
+                    name='Enter code'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button govuk-!-margin-right-2'
+                    text='Continue'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    onClick={skipValidation}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 0 7px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Skip and confirm later
+                  </Link>
+                  <br />
+                  <Link
+                    onClick={getNewCode}
+                    className='govuk-link'
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Get a new code
+                  </Link>
+                  <br /> <br />
+                  <Link
+                    onClick={differentHomePhone}
+                    className='govuk-link'
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Enter a different telephone number
+                  </Link>
                 </div>
               </div>
-            </main>
-          </>
-          )}
+            </div>
+          </main>
+        </>
+      )}
     </>
   )
 }

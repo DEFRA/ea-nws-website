@@ -3,8 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3000/signin/validate"
-previous_url = "http://localhost:3000/signin"
+url = "http://localhost:3000/sign-in/validate"
+previous_url = "http://localhost:3000/sign-in"
 next_page = "http://localhost:3000/home"
 
 def test_SignInValidate_render(get_browser):

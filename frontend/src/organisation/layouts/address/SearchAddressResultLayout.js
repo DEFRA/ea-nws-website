@@ -1,45 +1,46 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import Pagination from '../../../common/components/gov-uk/Pagination'
-import { setProfile } from '../../../common/redux/userSlice'
 import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
+  setEnterAddressManuallyFlow,
+  setOrganizationAddress,
+  setPreviousOrgAddress
+} from '../../../common/redux/userSlice'
 
-export default function SelectAddressLayout ({
-  NavigateToNextPage,
-  NavigateToPreviousPage
+export default function SearchAddressResultsLayout({
+  navigateToNextPage,
+  navigateToPreviousPage,
+  navigateToManualAddressEntry
 }) {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [currentPage, setCurrentPage] = useState(1)
-  const profile = useSelector((state) => state.session.profile)
   const locations = useSelector((state) => state.session.locationSearchResults)
-  const locationPostCode = useSelector(
-    (state) => state.session.locationPostCode
+  const orgPostcode = useSelector(
+    (state) => state.session.organization.postalCode
   )
-  const locationsPerPage = 20
-  const displayedLocations = locations.slice(
-    (currentPage - 1) * locationsPerPage,
-    currentPage * locationsPerPage
-  )
+  const orgBuildingName = useSelector((state) => state.session.orgBuildingName)
 
-  const handleSelectedLocation = async (event, selectedLocation) => {
+  // reset enter address manually flow
+  useEffect(() => {
+    dispatch(setEnterAddressManuallyFlow(null))
+    dispatch(setPreviousOrgAddress(null))
+  }, [])
+
+  const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
-    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
-    organisation.address = selectedLocation
-
-    const updatedProfile = updateOrganisationAdditionals(profile, organisation)
-    dispatch(setProfile(updatedProfile))
-    NavigateToNextPage()
+    dispatch(setPreviousOrgAddress(''))
+    dispatch(setOrganizationAddress(selectedLocation.address))
+    navigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigateToPreviousPage()
+  }
+
+  const navigateToManuallyEnterAddress = (event) => {
+    event.preventDefault()
+    navigateToManualAddressEntry()
   }
 
   return (
@@ -50,43 +51,91 @@ export default function SelectAddressLayout ({
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <div className='govuk-body'>
-                <h1 className='govuk-heading-l'>Select an address</h1>
-                {locationPostCode && (
-                  <p className='govuk-body'>
-                    Postcode: {locationPostCode}
-                    {'   '}
-                    <Link
-                      onClick={() => navigate(-1)}
-                      className='govuk-link govuk-!-padding-left-5'
-                    >
-                      Change postcode
+                {locations?.length > 0 ? (
+                  <>
+                    <h1 className='govuk-heading-l' id='main-content'>
+                      Select an address
+                    </h1>
+                    <p>
+                      {locations?.length} addresses found for{' '}
+                      <span className='govuk-!-font-weight-bold'>
+                        {orgPostcode} {!orgBuildingName && '.'}
+                      </span>
+                      {orgBuildingName && (
+                        <>
+                          {' '}
+                          and
+                          <span className='govuk-!-font-weight-bold'>
+                            {' '}
+                            {orgBuildingName}.
+                          </span>
+                        </>
+                      )}
+                      &nbsp; &nbsp;
+                      <Link onClick={navigateBack}>Search again</Link>
+                    </p>
+                    <table className='govuk-table'>
+                      <tbody className='govuk-table__body'>
+                        <tr className='govuk-table__row'>
+                          <td className='govuk-table__cell' />
+                        </tr>
+                        {locations.map((location, index) => (
+                          <tr key={index} className='govuk-table__row'>
+                            <td className='govuk-table__cell'>
+                              <Link
+                                className='govuk-link'
+                                onClick={(event) =>
+                                  handleSelectedLocation(event, location)
+                                }
+                              >
+                                {location.address}
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <br />
+                    <h2 className='govuk-heading-m'>
+                      If you cannot see your organisation's address
+                    </h2>
+                    <p>
+                      You can{' '}
+                      <Link onClick={navigateToManuallyEnterAddress}>
+                        enter the address manually.
+                      </Link>
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h1 className='govuk-heading-l' id='main-content'>
+                      No address found
+                    </h1>
+                    <p>
+                      We could not find an address that matches{' '}
+                      <span className='govuk-!-font-weight-bold'>
+                        {orgPostcode} {!orgBuildingName && '.'}
+                      </span>
+                      {orgBuildingName && (
+                        <>
+                          {' '}
+                          and
+                          <span className='govuk-!-font-weight-bold'>
+                            {' '}
+                            {orgBuildingName}.
+                          </span>
+                        </>
+                      )}
+                      . You can search again or enter the address manually.
+                    </p>
+                    <br />
+                    <Link onClick={navigateBack}>Search again</Link>
+                    <br />
+                    <Link onClick={navigateToManuallyEnterAddress}>
+                      Enter address manually
                     </Link>
-                  </p>
+                  </>
                 )}
-                <table className='govuk-table'>
-                  <tbody className='govuk-table__body'>
-                    <tr className='govuk-table__row'>
-                      <td className='govuk-table__cell' />
-                    </tr>
-                    {displayedLocations.map((location, index) => (
-                      <tr key={index} className='govuk-table__row'>
-                        <td className='govuk-table__cell'>
-                          <Link
-                            className='govuk-link'
-                            onClick={(event) =>
-                              handleSelectedLocation(event, location)}
-                          >
-                            {location.address}
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <Pagination
-                  totalPages={Math.ceil(locations.length / locationsPerPage)}
-                  onPageChange={(val) => setCurrentPage(val)}
-                />
               </div>
             </div>
           </div>

@@ -20,21 +20,51 @@ import OptionalLocationInformationPage from '../../pages/manage-locations/add-lo
 import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
 import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
-import LocationAddShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
+import ConfirmShapefilePolygonPage from '../../pages/manage-locations/add-location/shapefile-zip/ConfirmShapefilePolygonPage'
+import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
+import LocationLoadingShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationLoadingShapefilePage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
+import NotInEnglandShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/NotInEnglandShapefilePage'
+import ContactLinkInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/ContactLinkInfoPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
-import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
-import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
-import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
-import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
-import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
-import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
-import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
-import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
+
+// Unmatched locations not found
+import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/ConfirmLocationNotFoundPage'
+import FindLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/FindLocationNotFoundPage'
+import LocationsNotFoundDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/LocationsNotFoundDashboardPage'
+import FindLocationNotFoundByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-coordinates/FindLocationByCoordinatesPage'
+import CannotFindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-postcode/CannotFindLocationByAddressPage'
+import FindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-postcode/FindLocationByAddressPage'
+import FindLocationNotFoundByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-postcode/FindLocationByPostcodePage'
+import FindLocationNotFoundByDropPinPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-on-map/FindLocationByDropPinPage'
+import FindLocationNotFoundOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-on-map/FindLocationOnMapPage'
+import LocationNotFoundCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/CoordinatesNotInEnglandPage'
+import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/DropPinNotInEnglandPage'
+import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/PostcodeNotInEnglandPage'
+
+// Unmatched locations: location not in England
+import ConfirmLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/ConfirmLocationNotInEnglandPage'
+import FindLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/FindLocationNotInEnglandPage'
+import LocationNotInEnglandInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationNotInEnglandInfoPage'
+import LocationsNotInEnglandDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationsNotInEnglandDashboardPage'
+import FindLocationNotInEnglandByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-coordinates/FindLocationByCoordinatesPage'
+import CannotFindLocationNotInEnglandByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/CannotFindLocationByAddressPage'
+import FindLocationNotInEnglandByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/FindLocationByAddressPage'
+import FindLocationNotInEnglandByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/FindLocationByPostcodePage'
+import FindLocationNotInEnglandByDropPinPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-on-map/FindLocationByDropPinPage'
+import FindLocationNotInEnglandOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-on-map/FindLocationOnMapPage'
+import LocationNotInEnglandCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/CoordinatesNotInEnglandPage'
+import LocationNotInEnglandDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/DropPinNotInEnglandPage'
+import LocationNotInEnglandPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/PostcodeNotInEnglandPage'
+
+// Unmatched location: duplicates
+import DuplicateLocationComparisonPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationComparisonPage'
+import DuplicateLocationsOptionsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationsOptionsPage'
+import ManageDuplicateLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/ManageDuplicateLocationsPage'
 
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
@@ -52,44 +82,79 @@ import EditKeyInformationPage from '../../pages/manage-locations/edit-location/e
 import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
 
+// monitoring imports
+import LiveFloodMonitoringPage from '../../pages/live-monitoring/LiveFloodMonitoringPage'
+
 // view imports
+import LinkLocationsPage from '../../pages/manage-locations/link-locations/LinkLocationsPage'
+import FloodAreaPage from '../../pages/manage-locations/view-location/flood-area/FloodAreaPage'
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
+// post-add imports
+import LinkLocationToContactPage from '../../pages/manage-locations/add-location/LinkLocationToContactPage'
+
+// delete location
+import LocationNotInFloodAreaPage from '../../pages/manage-locations/add-location/not-flood-area/LocationNotInFloodAreasPage'
+import SelectNearbyFloodAreasPage from '../../pages/manage-locations/add-location/not-flood-area/SelectNearbyFloodAreasPage'
+import DeleteLocationPage from '../../pages/manage-locations/delete/DeleteLocationPage'
+
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgViewLocations = urlManageOrg + '/locations'
-const urlManageOrgAddLocations = urlManageOrg + '/add'
+export const urlManageOrgViewLocations = urlManageOrg + '/locations'
+const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
+export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
-const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
+const urlUnmatchedLocationsNotFound =
+  urlManageOrg + '/unmatched-locations-not-found'
+const urlUnmatchedLocationsNotInEngland =
+  urlManageOrg + '/unmatched-locations-not-in-england'
 
 // Manage location urls
 const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
-    viewMessages: urlManageOrgViewLocations + '/view-messages'
+    viewMessages: urlManageOrgViewLocations + '/view-messages',
+    viewLinkedContacts: urlManageOrgViewLocations + '/view-linked-contacts',
+    viewFloodArea: urlManageOrgViewLocations + '/view-flood-area'
+  },
+  monitoring: {
+    view: urlManageOrgLiveMonitoring + '/view'
   },
   add: {
     addLocationWithinBoundaries: {},
     manualAddLocation: {
       confirmManualSearchedLocation: urlManageOrg + '/add/confirm'
     },
-    uploadLocationsWithCsv: {},
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-upload',
+    loadingShapefilePage:
+      urlManageOrgAddLocations + '/shapefile-upload/loading',
+    confirmLocationsWithShapefile:
+      urlManageOrgAddLocations + '/shapefile-confirm',
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     loadingPage: urlManageOrgAddLocations + '/upload-file/loading',
-    confirm: urlManageOrgAddLocations + '/confirm',
+    duplicateLocationsOptionsPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-locations-options',
+    manageDuplicateLocationsPage:
+      urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
+    duplicateLocationComparisonPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-location-comparison',
+    contactLinkInfo:
+      urlManageOrgAddLocations + '/upload-file/contact-link-info',
+    confirm: urlManageOrgAddLocations + '/bulk/confirm',
     name: urlManageOrg + '/add/name',
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england',
+      shapefileNotInEngland: urlManageOrg + '/add/shapefile-not-in-england',
       dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england',
       alreadyExists: urlManageOrg + '/add/location-already-exists'
     },
@@ -117,7 +182,14 @@ const orgManageLocationsUrls = {
       addActionPlan:
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
-    }
+    },
+    notInFloodArea: {
+      locationNotInFloodArea: urlManageOrgAddLocations + '/not-in-flood-area',
+      selectNearbyFloodAreas:
+        urlManageOrgAddLocations + '/select-nearby-flood-areas'
+    },
+    linkToTargetArea: urlManageOrg + '/add/link',
+    linkLocationToContacts: urlManageOrg + '/add/link-location-to-contacts'
   },
   edit: {
     individualLocation: {
@@ -148,18 +220,56 @@ const orgManageLocationsUrls = {
     }
   },
   unmatchedLocations: {
-    index: urlManageOrgUnmatchedLocations,
-    doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
-    manuallyfind: {
-      index: urlManageOrgUnmatchedLocations + '/manually-find',
-      selectHow: urlManageOrgUnmatchedLocations + '/manually-find/select-how',
-      address: urlManageOrgUnmatchedLocations + '/manually-find/address',
-      areaName: urlManageOrgUnmatchedLocations + '/manually-find/area-name',
-      map: urlManageOrgUnmatchedLocations + '/manually-find/map',
-      notInEngland:
-        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
+    notFound: {
+      dashboard: urlUnmatchedLocationsNotFound,
+      find: urlUnmatchedLocationsNotFound + '/find-location',
+      postcode: urlUnmatchedLocationsNotFound + '/find-location-postcode',
+      address: urlUnmatchedLocationsNotFound + '/find-location-address',
+      cannotFindAddress:
+        urlUnmatchedLocationsNotFound + '/cannot-find-location-address',
+      coordinates: urlUnmatchedLocationsNotFound + '/find-location-coordinates',
+      map: urlUnmatchedLocationsNotFound + '/find-location-on-map',
+      mapDropPin:
+        urlUnmatchedLocationsNotFound + '/find-location-on-map/drop-pin',
+      notInEngland: {
+        postcode:
+          urlUnmatchedLocationsNotFound + '/postcode/location-not-in-england',
+        coordinates:
+          urlUnmatchedLocationsNotFound +
+          '/coordinates/location-not-in-england',
+        dropPin:
+          urlUnmatchedLocationsNotFound + '/drop-pin/location-not-in-england'
+      },
+      confirm: urlUnmatchedLocationsNotFound + '/confirm-location'
+    },
+    notInEngland: {
+      dashboard: urlUnmatchedLocationsNotInEngland,
+      info: urlUnmatchedLocationsNotInEngland + '/location-info',
+      find: urlUnmatchedLocationsNotInEngland + '/find-location',
+      postcode: urlUnmatchedLocationsNotInEngland + '/find-location-postcode',
+      address: urlUnmatchedLocationsNotInEngland + '/find-location-address',
+      cannotFindAddress:
+        urlUnmatchedLocationsNotInEngland + '/cannot-find-location-address',
+      coordinates:
+        urlUnmatchedLocationsNotInEngland + '/find-location-coordinates',
+      map: urlUnmatchedLocationsNotInEngland + '/find-location-on-map',
+      mapDropPin:
+        urlUnmatchedLocationsNotInEngland + '/find-location-on-map/drop-pin',
+      notInEngland: {
+        postcode:
+          urlUnmatchedLocationsNotInEngland +
+          '/postcode/location-not-in-england',
+        coordinates:
+          urlUnmatchedLocationsNotInEngland +
+          '/coordinates/location-not-in-england',
+        dropPin:
+          urlUnmatchedLocationsNotInEngland +
+          '/drop-pin/location-not-in-england'
+      },
+      confirm: urlUnmatchedLocationsNotInEngland + '/confirm-location'
     }
-  }
+  },
+  delete: urlManageOrg + '/delete-location'
 }
 
 // Manage location routes
@@ -177,6 +287,19 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
   },
+  {
+    path: orgManageLocationsUrls.view.viewFloodArea,
+    component: <FloodAreaPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewLinkedContacts,
+    component: <LinkedContactsPage />
+  },
+  // monitoring
+  {
+    path: orgManageLocationsUrls.monitoring.view,
+    component: <LiveFloodMonitoringPage />
+  },
   // add
   {
     path: orgManageLocationsUrls.add.options,
@@ -188,11 +311,19 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.addLocationsWithShapefile,
-    component: <LocationAddShapefilePage />
+    component: <LocationAddShapefileInfoPage />
   },
   {
     path: orgManageLocationsUrls.add.uploadLocationsWithShapefile,
     component: <LocationUploadShapeFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.loadingShapefilePage,
+    component: <LocationLoadingShapefilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.confirmLocationsWithShapefile,
+    component: <ConfirmShapefilePolygonPage />
   },
   {
     path: orgManageLocationsUrls.add.manualAddLocation
@@ -206,6 +337,18 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.loadingPage,
     component: <LocationAddLoadingPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.duplicateLocationsOptionsPage,
+    component: <DuplicateLocationsOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.manageDuplicateLocationsPage,
+    component: <ManageDuplicateLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+    component: <DuplicateLocationComparisonPage />
   },
   {
     path: orgManageLocationsUrls.add.confirm,
@@ -223,6 +366,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland,
     component: <XYCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.shapefileNotInEngland,
+    component: <NotInEnglandShapefilePage />
   },
   {
     path: orgManageLocationsUrls.add.error.dropPinNotInEngland,
@@ -265,38 +412,118 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
     component: <AddAnotherPredefinedBoundaryPage />
   },
-  // unmatched locations
   {
-    path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
-    component: <DoNotAddLocationsPage />
+    path: orgManageLocationsUrls.add.contactLinkInfo,
+    component: <ContactLinkInfoPage />
+  },
+  // unmatched locations: location not found
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.dashboard,
+    component: <LocationsNotFoundDashboardPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.index,
-    component: <FindUnmatchedLocationsPage />
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.find,
+    component: <FindLocationNotFoundPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.index,
-    component: <ManuallyFindLocationsPage />
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.postcode,
+    component: <FindLocationNotFoundByPostcodePage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,
-    component: <ProvideAreaNamePage />
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.address,
+    component: <FindLocationNotFoundByAddressPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.map,
-    component: <SelectOnMapPage />
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.cannotFindAddress,
+    component: <CannotFindLocationNotFoundByAddressPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
-    component: <NotInEnglandPage />
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.coordinates,
+    component: <FindLocationNotFoundByCoordinatesPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow,
-    component: <SelectHowToFindThisLocationPage />
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.confirm,
+    component: <ConfirmLocationNotFoundPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.address,
-    component: <FindLocationByMatchedAddressesPage />
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.map,
+    component: <FindLocationNotFoundOnMapPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.mapDropPin,
+    component: <FindLocationNotFoundByDropPinPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
+      .dropPin,
+    component: <LocationNotFoundDropPinNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
+      .coordinates,
+    component: <LocationNotFoundCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
+      .postcode,
+    component: <LocationNotFoundPostcodeNotInEnglandPage />
+  },
+  // unmatched locations: location not in England
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
+    component: <LocationsNotInEnglandDashboardPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.info,
+    component: <LocationNotInEnglandInfoPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.find,
+    component: <FindLocationNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.postcode,
+    component: <FindLocationNotInEnglandByPostcodePage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.address,
+    component: <FindLocationNotInEnglandByAddressPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland
+      .cannotFindAddress,
+    component: <CannotFindLocationNotInEnglandByAddressPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.coordinates,
+    component: <FindLocationNotInEnglandByCoordinatesPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.confirm,
+    component: <ConfirmLocationNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.map,
+    component: <FindLocationNotInEnglandOnMapPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.mapDropPin,
+    component: <FindLocationNotInEnglandByDropPinPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.notInEngland
+      .dropPin,
+    component: <LocationNotInEnglandDropPinNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.notInEngland
+      .coordinates,
+    component: <LocationNotInEnglandCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.notInEngland
+      .postcode,
+    component: <LocationNotInEnglandPostcodeNotInEnglandPage />
   },
   // optional information
   {
@@ -324,6 +551,14 @@ const orgManageLocationRoutes = [
     component: <AddOptionalAddress />
   },
   {
+    path: orgManageLocationsUrls.add.linkToTargetArea,
+    component: <LinkLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.linkLocationToContacts,
+    component: <LinkLocationToContactPage />
+  },
+  {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
@@ -331,6 +566,15 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
     component: <PredefinedBoundaryOptionalInfoPage />
+  },
+  // location not in flood area
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.locationNotInFloodArea,
+    component: <LocationNotInFloodAreaPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.notInFloodArea.selectNearbyFloodAreas,
+    component: <SelectNearbyFloodAreasPage />
   },
   // edit
   {
@@ -407,6 +651,11 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
       .keywords,
     component: <EditKeywordsPage />
+  },
+  // Delete location
+  {
+    path: orgManageLocationsUrls.delete,
+    component: <DeleteLocationPage />
   }
 ]
 

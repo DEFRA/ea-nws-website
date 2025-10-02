@@ -1,29 +1,38 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { setSigninType } from '../../../common/redux/userSlice'
 
-export default function ManageOrganisationDetailsPage () {
+export default function ManageOrganisationDetailsPage() {
   const dispatch = useDispatch()
+  const orgDetails =
+    useSelector((state) => state?.session?.organization) || null
+  const formattedOrg = JSON.parse(orgDetails?.description)
 
   useEffect(() => {
     dispatch(setSigninType('org'))
-  })
+  }, [])
 
   const email = 'getfloodwarnings@environment-agency.gov.uk'
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <Helmet>
+        <title>Manage your organisation's details - Get flood warnings (professional) - GOV.UK</title>
+      </Helmet>
       <main className='govuk-main-wrapper'>
         <div Name='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
-            <h1 className='govuk-heading-l'>Manage your organisation's details</h1>
+            <h1 className='govuk-heading-l' id='main-content'>
+              Manage your organisation's details
+            </h1>
 
             <p className='govuk-!-margin-top-3'>
               To change these details, email us at{' '}
-              <Link className='govuk-link'>{email}.</Link>
+              <a className='govuk-link' href={`mailto:${email}`}>
+                {email}.
+              </a>
             </p>
 
             <table className='govuk-table'>
@@ -33,7 +42,7 @@ export default function ManageOrganisationDetailsPage () {
                     Name
                   </td>
                   <td className='govuk-table__cell  govuk-!-width-three-quarter'>
-                    Flood Inc.
+                    {orgDetails?.name}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -41,7 +50,7 @@ export default function ManageOrganisationDetailsPage () {
                     UK head office address
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    1 All Saints house, The Causeway
+                    {formattedOrg?.address}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -49,7 +58,7 @@ export default function ManageOrganisationDetailsPage () {
                     Has Companies House number?
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    Yes
+                    {formattedOrg?.compHouseNum ? 'Yes' : 'No'}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -57,7 +66,7 @@ export default function ManageOrganisationDetailsPage () {
                     Companies House number
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    07889 456732
+                    {formattedOrg?.compHouseNum}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -65,7 +74,7 @@ export default function ManageOrganisationDetailsPage () {
                     Involved in responding to public emergencies or incidents?
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    Yes
+                    {formattedOrg?.emergencySector ? 'Yes' : 'No'}
                   </td>
                 </tr>
               </tbody>
@@ -80,7 +89,9 @@ export default function ManageOrganisationDetailsPage () {
                   Name
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  Joan Smith
+                  {formattedOrg?.alternativeContact?.firstName +
+                    ' ' +
+                    formattedOrg?.alternativeContact?.lastName}
                 </td>
               </tr>
               <tr className='govuk-table__row'>
@@ -88,7 +99,7 @@ export default function ManageOrganisationDetailsPage () {
                   Email address
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  j.smith@floodinc.com
+                  {formattedOrg?.alternativeContact?.email}
                 </td>
               </tr>
               <tr className='govuk-table__row'>
@@ -96,7 +107,7 @@ export default function ManageOrganisationDetailsPage () {
                   Telephone number
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  0207 1739372
+                  {formattedOrg?.alternativeContact?.telephone}
                 </td>
               </tr>
               <tr className='govuk-table__row'>
@@ -104,7 +115,7 @@ export default function ManageOrganisationDetailsPage () {
                   Job title (optional)
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  IT Director
+                  {formattedOrg?.alternativeContact?.jobTitle}
                 </td>
               </tr>
               <br />
@@ -114,11 +125,14 @@ export default function ManageOrganisationDetailsPage () {
             </h2>
             <p>
               You'll need to email us at{' '}
-              <Link className='govuk-link'>{email}</Link>
-              {' '} to delete your account.
+              <a className='govuk-link' href={`mailto:${email}`}>
+                {email}
+              </a>{' '}
+              to delete your account.
             </p>
             <p>
-              Tell us the reason why you’d like to delete your account in your email.
+              Tell us the reason why you’d like to delete your account in your
+              email.
             </p>
           </div>
         </div>

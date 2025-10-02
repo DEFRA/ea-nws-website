@@ -5,6 +5,7 @@ const {
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { logger } = require('../../plugins/logging')
 
 module.exports = [
   {
@@ -16,11 +17,12 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { name, filter } = request.payload
+        const { name, filters, loop } = request.payload
 
-        const response = await osFindNameApiCall(name, filter)
+        const response = await osFindNameApiCall(name, filters, loop)
         return h.response(response)
-      } catch {
+      } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }
@@ -37,7 +39,8 @@ module.exports = [
         const { name, minmatch } = request.payload
         const response = await osFindApiCall(name, minmatch)
         return h.response(response)
-      } catch {
+      } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

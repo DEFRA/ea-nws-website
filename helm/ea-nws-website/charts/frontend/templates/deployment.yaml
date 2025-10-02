@@ -80,3 +80,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       dnsPolicy: {{ .Values.dnsPolicy }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1

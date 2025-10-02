@@ -4,7 +4,9 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
+import store from '../../../common/redux/store'
 import { setOrganizationAlternativeContact } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
@@ -23,6 +25,7 @@ export default function AlternativeContactDetailsLayout({
   const [jobTitle, setJobTitle] = useState('')
   const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)
+  const authToken = useSelector((state) => state.session.authToken)
   const organizationAdditionals = JSON.parse(organization.description)
   const isAdmin = organizationAdditionals.isAdminRegistering
   const fullNameId = 'full-name'
@@ -78,6 +81,9 @@ export default function AlternativeContactDetailsLayout({
           jobTitle
         })
       )
+      const organization = store.getState().session.organization
+      const dataToSend = { organization, authToken }
+      await backendCall(dataToSend, 'api/organization/update')
       navigateToNextPage()
     }
   }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
@@ -10,6 +11,9 @@ export default function SubNavigation({ pages, currentPage, type }) {
   const authToken = session.authToken
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
+  const hasAuthCookie = cookies.authToken
 
   const getActiveNavLink = (title) => {
     const { pathname, state } = location
@@ -67,11 +71,11 @@ export default function SubNavigation({ pages, currentPage, type }) {
 
     const urls =
       journey === 'org'
-        ? [orgSignUpUrls.signUp, 'organisation/admin-controls', 'organisation/migration',...baseUrls]
-        : ['/signup', ...baseUrls]
+        ? [orgSignUpUrls.signUp, 'organisation/admin-controls', 'organisation/migration',...baseUrls, '/sign-in']
+        : ['/signup', ...baseUrls, '/sign-in']
 
     return (
-      authToken !== null && !urls.some((url) => location.pathname.includes(url))
+      hasAuthCookie && !urls.some((url) => location.pathname.includes(url))
     )
   }
 
@@ -131,7 +135,7 @@ export default function SubNavigation({ pages, currentPage, type }) {
     return (
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list sub'>
-          {authToken !== null &&
+          {hasAuthCookie &&
             pages.map((page, index) => (
               <li key={index} className='sub-navigation__item'>
                 <Link

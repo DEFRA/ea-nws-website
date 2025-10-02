@@ -1,3 +1,4 @@
+import { useCookies } from 'react-cookie'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -15,6 +16,8 @@ import LocationReviewTable from './LocationReviewTable'
 export default function CheckYourAnswersPage() {
   const session = useSelector((state) => state.session)
   const profile = useSelector((state) => state.session.profile)
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
   const contacts = {
     emails: profile?.emails,
     unverifiedEmails: profile?.unverified?.emails,
@@ -41,6 +44,7 @@ export default function CheckYourAnswersPage() {
       }
       await backendCall(dataToSend, 'api/profile/update', navigate)
 
+      setCookie('authToken', session.authToken)
       navigate('/signup/success')
     }
   }
